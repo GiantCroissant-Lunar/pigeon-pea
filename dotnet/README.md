@@ -82,7 +82,7 @@ dotnet run
 - [x] GoRogue integration
 - [x] Procedural dungeon generation (GoRogue)
 - [x] Field of View (FOV) system
-- [ ] Pathfinding for enemies
+- [x] Pathfinding for enemies
 - [ ] Turn-based combat
 - [ ] Inventory system
 - [ ] Character progression
