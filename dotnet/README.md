@@ -61,6 +61,7 @@ dotnet run
 ```
 
 **Controls**:
+
 - Arrow keys / WASD: Move
 - ESC: Exit
 
@@ -72,12 +73,14 @@ dotnet run
 ```
 
 **Controls**:
+
 - Arrow keys / wasd: Move
 - q: Quit
 
 ## Features (Planned)
 
 ### Shared (Core Game Logic)
+
 - [x] Arch ECS integration
 - [x] GoRogue integration
 - [x] Procedural dungeon generation (GoRogue)
@@ -88,6 +91,7 @@ dotnet run
 - [x] Character progression
 
 ### Windows App
+
 - [x] SkiaSharp tile renderer
 - [x] Avalonia HUD
 - [ ] Sprite/texture atlases
@@ -96,6 +100,7 @@ dotnet run
 - [ ] Mouse controls
 
 ### Console App
+
 - [x] Terminal.Gui HUD
 - [x] Terminal capability detection
 - [ ] Kitty Graphics Protocol renderer

@@ -13,4 +13,3 @@ public interface IRenderer
     void DrawString(int x, int y, string text, Color foreground);
     void Present();
 }
-
