@@ -1,0 +1,7 @@
+# Ignore pre-commit config to avoid conflicts with yamllint
+.pre-commit-config.yaml
+
+# Ignore lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

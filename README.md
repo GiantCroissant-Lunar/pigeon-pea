@@ -54,16 +54,19 @@ Once installed, the pre-commit hooks will automatically run on every commit. If 
 #### Manual Execution
 
 Run hooks on all files:
+
 ```bash
 pre-commit run --all-files
 ```
 
 Run a specific hook:
+
 ```bash
 pre-commit run <hook-id> --all-files
 ```
 
 Skip hooks (not recommended):
+
 ```bash
 git commit --no-verify
 ```
@@ -78,6 +81,7 @@ git commit --no-verify
 ### Updating Hooks
 
 Update all hooks to the latest version:
+
 ```bash
 pre-commit autoupdate
 ```
@@ -85,18 +89,22 @@ pre-commit autoupdate
 ### Troubleshooting
 
 **Hook installation fails:**
+
 - Ensure you have Python 3.6+ installed
 - Try: `pip install --upgrade pre-commit`
 
 **.NET format not working:**
+
 - Ensure .NET SDK is installed and accessible in PATH
 - Verify with: `dotnet --version`
 
 **Gitleaks fails:**
+
 - If it's a false positive, add the file/line to `.gitleaksignore`
 - Or update the `.secrets.baseline` for detect-secrets
 
 **Prettier/ESLint issues:**
+
 - Ensure Node.js is installed
 - Check `.prettierrc.json` for configuration
 
