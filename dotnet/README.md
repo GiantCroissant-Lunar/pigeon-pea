@@ -81,7 +81,7 @@ dotnet run
 - [x] Arch ECS integration
 - [x] GoRogue integration
 - [x] Procedural dungeon generation (GoRogue)
-- [ ] Field of View (FOV) system
+- [x] Field of View (FOV) system
 - [ ] Pathfinding for enemies
 - [ ] Turn-based combat
 - [ ] Inventory system
