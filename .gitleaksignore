@@ -1,0 +1,4 @@
+# Gitleaks ignore patterns
+# Add file paths or patterns to ignore false positives
+# Example:
+# path/to/false/positive:generic-api-key:1234567890abcdef

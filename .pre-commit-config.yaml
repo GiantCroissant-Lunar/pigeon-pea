@@ -1,0 +1,80 @@
+# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+# Installation: pip install pre-commit
+# Setup: pre-commit install
+
+repos:
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: ['--unsafe']  # Allow custom YAML tags
+      - id: check-json
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # Git-leaks for secret detection
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks
+
+  # Python formatting and linting
+  - repo: https://github.com/psf/black
+    rev: 24.1.1
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+        args: ["--profile", "black"]
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args: ['--max-line-length=88', '--extend-ignore=E203,W503']
+
+  # JavaScript/TypeScript/Node.js formatting
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        types_or: [javascript, jsx, ts, tsx, json, yaml, yml, markdown, css, scss]
+
+  # YAML linting
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: ['-d', '{extends: default, rules: {line-length: {max: 120}, document-start: disable}}']
+
+  # .NET formatting (using dotnet format)
+  # Note: This requires .NET SDK to be installed
+  - repo: local
+    hooks:
+      - id: dotnet-format
+        name: dotnet format
+        entry: bash -c 'if command -v dotnet &> /dev/null; then for file in "$@"; do dotnet format "$(dirname "$file")" --include "$file" --verify-no-changes || dotnet format "$(dirname "$file")" --include "$file"; done; fi'
+        language: system
+        types: [c-sharp]
+        pass_filenames: true
+
+  # Additional security checks
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: package-lock.json
