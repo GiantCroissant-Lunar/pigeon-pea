@@ -222,3 +222,42 @@ public struct Consumable
 public struct Pickup
 {
 }
+
+/// <summary>
+/// Experience and leveling component.
+/// </summary>
+public struct Experience
+{
+    public int CurrentXP { get; set; }
+    public int Level { get; set; }
+    public int XPToNextLevel { get; set; }
+
+    public Experience(int startingLevel = 1)
+    {
+        Level = startingLevel;
+        CurrentXP = 0;
+        XPToNextLevel = CalculateXPForLevel(startingLevel + 1);
+    }
+
+    /// <summary>
+    /// Calculates XP required to reach a given level.
+    /// Formula: 100 * level^1.5
+    /// </summary>
+    public static int CalculateXPForLevel(int level)
+    {
+        return (int)(100 * Math.Pow(level, 1.5));
+    }
+}
+
+/// <summary>
+/// Component indicating how much XP an entity awards when killed.
+/// </summary>
+public struct ExperienceValue
+{
+    public int XP { get; set; }
+
+    public ExperienceValue(int xp)
+    {
+        XP = xp;
+    }
+}
