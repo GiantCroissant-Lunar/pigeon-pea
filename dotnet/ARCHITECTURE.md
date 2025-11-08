@@ -36,13 +36,13 @@ Pigeon Pea is designed with **platform-agnostic game logic** at its core, with p
 
 All game entities are composed of components:
 
-| Component      | Purpose                          | Fields                           |
-|---------------|----------------------------------|----------------------------------|
-| `Position`    | Grid location                    | `Point Point`                    |
-| `Renderable`  | Visual representation            | `char Glyph, Color FG/BG`        |
-| `Health`      | Hit points                       | `int Current, int Maximum`       |
-| `FieldOfView` | Visibility tracking              | `int Radius, HashSet<Point>`     |
-| `PlayerComponent` | Marks player entity          | `string Name`                    |
+| Component         | Purpose               | Fields                       |
+| ----------------- | --------------------- | ---------------------------- |
+| `Position`        | Grid location         | `Point Point`                |
+| `Renderable`      | Visual representation | `char Glyph, Color FG/BG`    |
+| `Health`          | Hit points            | `int Current, int Maximum`   |
+| `FieldOfView`     | Visibility tracking   | `int Radius, HashSet<Point>` |
+| `PlayerComponent` | Marks player entity   | `string Name`                |
 
 ### Entity Creation Pattern
 
@@ -80,6 +80,7 @@ SKCanvas.DrawText(glyph, x*tileSize, y*tileSize)
 ```
 
 **Advantages**:
+
 - Hardware-accelerated
 - Smooth animations
 - Sprite/texture support
@@ -103,6 +104,7 @@ Terminal Capability Detection
 ```
 
 **Advantages**:
+
 - Runs over SSH
 - Low bandwidth
 - Lightweight
@@ -181,7 +183,7 @@ To add a new platform (e.g., mobile, web):
 ## Performance Considerations
 
 - **Arch ECS**: Zero-allocation queries, cache-friendly memory layout
-- **GoRogue**: Optimized algorithms (recursive shadowcasting, A*, etc.)
+- **GoRogue**: Optimized algorithms (recursive shadowcasting, A\*, etc.)
 - **SkiaSharp**: Hardware-accelerated GPU rendering
 - **Terminal.Gui**: Minimal redraws, efficient text rendering
 
