@@ -66,30 +66,31 @@ public partial class MainWindow : Window
 
     private void OnKeyDown(object? sender, KeyEventArgs e)
     {
-        Direction? direction = e.Key switch
+        Point? direction = e.Key switch
         {
-            Key.Up or Key.W => Direction.Up,
-            Key.Down or Key.S => Direction.Down,
-            Key.Left or Key.A => Direction.Left,
-            Key.Right or Key.D => Direction.Right,
+            Key.Up or Key.W => new Point(0, -1),
+            Key.Down or Key.S => new Point(0, 1),
+            Key.Left or Key.A => new Point(-1, 0),
+            Key.Right or Key.D => new Point(1, 0),
             _ => null
         };
 
-        if (direction.HasValue && _gameWorld.Player != null)
+        if (direction.HasValue)
         {
-            _gameWorld.Player.Move(direction.Value);
+            _gameWorld.TryMovePlayer(direction.Value);
             e.Handled = true;
         }
     }
 
     private void UpdateHud()
     {
-        if (_gameWorld.Player != null)
+        if (_gameWorld.PlayerEntity.IsAlive())
         {
-            var pos = _gameWorld.Player.GetPosition();
-            PositionText.Text = $"Pos: ({pos.X}, {pos.Y})";
+            ref readonly var pos = ref _gameWorld.PlayerEntity.Get<PigeonPea.Shared.Components.Position>();
+            PositionText.Text = $"Pos: ({pos.Point.X}, {pos.Point.Y})";
 
-            // TODO: Update health display from player entity
+            ref readonly var health = ref _gameWorld.PlayerEntity.Get<PigeonPea.Shared.Components.Health>();
+            HealthText.Text = $"HP: {health.Current}/{health.Maximum}";
         }
     }
 }

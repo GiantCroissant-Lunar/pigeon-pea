@@ -91,30 +91,32 @@ public class GameApplication : Toplevel
 
     private void OnKeyPress(KeyEventEventArgs e)
     {
-        Direction? direction = e.KeyEvent.Key switch
+        Point? direction = e.KeyEvent.Key switch
         {
-            Key.CursorUp or Key.w => Direction.Up,
-            Key.CursorDown or Key.s => Direction.Down,
-            Key.CursorLeft or Key.a => Direction.Left,
-            Key.CursorRight or Key.d => Direction.Right,
+            Key.CursorUp or Key.w => new Point(0, -1),
+            Key.CursorDown or Key.s => new Point(0, 1),
+            Key.CursorLeft or Key.a => new Point(-1, 0),
+            Key.CursorRight or Key.d => new Point(1, 0),
             Key.q => null, // Will quit via Terminal.Gui default
             _ => null
         };
 
-        if (direction.HasValue && _gameWorld.Player != null)
+        if (direction.HasValue)
         {
-            _gameWorld.Player.Move(direction.Value);
+            _gameWorld.TryMovePlayer(direction.Value);
             e.Handled = true;
         }
     }
 
     private void UpdateHud()
     {
-        if (_gameWorld.Player != null)
+        if (_gameWorld.PlayerEntity.IsAlive())
         {
-            var pos = _gameWorld.Player.GetPosition();
-            _positionLabel.Text = $"Pos: ({pos.X}, {pos.Y})";
-            // TODO: Update health from entity
+            ref readonly var pos = ref _gameWorld.PlayerEntity.Get<Position>();
+            _positionLabel.Text = $"Pos: ({pos.Point.X}, {pos.Point.Y})";
+
+            ref readonly var health = ref _gameWorld.PlayerEntity.Get<Health>();
+            _healthLabel.Text = $"HP: {health.Current}/{health.Maximum}";
         }
     }
 }
