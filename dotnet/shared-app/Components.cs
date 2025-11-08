@@ -99,3 +99,11 @@ public enum TileType
 public struct BlocksMovement
 {
 }
+
+/// <summary>
+/// Component marking a tile as explored (seen at least once by player).
+/// Used for fog of war - explored tiles are shown dimmed when not visible.
+/// </summary>
+public struct Explored
+{
+}
