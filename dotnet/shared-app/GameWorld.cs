@@ -60,6 +60,7 @@ public class GameWorld
         GenerateDungeon();
         SpawnPlayer();
         SpawnEnemies();
+        SpawnItems();
     }
 
     private void GenerateDungeon()
@@ -130,6 +131,7 @@ public class GameWorld
             new Health { Current = 100, Maximum = 100 },
             new CombatStats(attack: 5, defense: 2),
             new FieldOfView(8),
+            new Inventory(maxCapacity: 10),
             new BlocksMovement()
         );
 
@@ -212,6 +214,27 @@ public class GameWorld
         });
 
         return occupied;
+    }
+
+    private void SpawnItems()
+    {
+        // Spawn health potions in random locations
+        var random = new Random();
+        int potionCount = 5;
+
+        for (int i = 0; i < potionCount; i++)
+        {
+            Point itemPos = FindRandomWalkablePosition(random);
+
+            // Create health potion
+            EcsWorld.Create(
+                new Position(itemPos),
+                new Renderable('!', Color.Red),
+                new Item("Health Potion", ItemType.Consumable),
+                new Consumable(healthRestore: 25),
+                new Pickup()
+            );
+        }
     }
 
     /// <summary>
@@ -434,6 +457,83 @@ public class GameWorld
         // Move player
         playerPos.Point = targetPos;
         return true;
+    }
+
+    /// <summary>
+    /// Attempts to pick up an item at the player's current position.
+    /// </summary>
+    public bool TryPickupItem()
+    {
+        if (!PlayerEntity.IsAlive() || !PlayerEntity.Has<Inventory>())
+            return false;
+
+        ref var inventory = ref PlayerEntity.Get<Inventory>();
+        var playerPos = PlayerEntity.Get<Position>();
+
+        // Check if inventory is full
+        if (inventory.IsFull)
+            return false;
+
+        // Find pickup items at player position
+        var pickupQuery = new QueryDescription().WithAll<Position, Item, Pickup>();
+        Entity? itemToPickup = null;
+
+        EcsWorld.Query(in pickupQuery, (Entity entity, ref Position pos) =>
+        {
+            if (pos.Point == playerPos.Point)
+            {
+                itemToPickup = entity;
+            }
+        });
+
+        if (!itemToPickup.HasValue)
+            return false;
+
+        // Remove position and pickup components (item is now in inventory)
+        itemToPickup.Value.Remove<Position>();
+        itemToPickup.Value.Remove<Pickup>();
+
+        // Add to inventory
+        inventory.Items.Add(itemToPickup.Value);
+
+        return true;
+    }
+
+    /// <summary>
+    /// Attempts to use an item from the player's inventory by index.
+    /// </summary>
+    public bool TryUseItem(int itemIndex)
+    {
+        if (!PlayerEntity.IsAlive() || !PlayerEntity.Has<Inventory>())
+            return false;
+
+        ref var inventory = ref PlayerEntity.Get<Inventory>();
+
+        // Check if index is valid
+        if (itemIndex < 0 || itemIndex >= inventory.Items.Count)
+            return false;
+
+        var item = inventory.Items[itemIndex];
+
+        // Handle consumables
+        if (item.Has<Consumable>())
+        {
+            var consumable = item.Get<Consumable>();
+            ref var health = ref PlayerEntity.Get<Health>();
+
+            // Restore health
+            health.Current = Math.Min(health.Maximum, health.Current + consumable.HealthRestore);
+
+            // Remove item from inventory
+            inventory.Items.RemoveAt(itemIndex);
+
+            // Destroy the item entity
+            EcsWorld.Destroy(item);
+
+            return true;
+        }
+
+        return false;
     }
 
     public void Update(double deltaTime)
