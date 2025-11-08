@@ -38,7 +38,7 @@ repos:
     rev: 5.13.2
     hooks:
       - id: isort
-        args: ["--profile", "black"]
+        args: ['--profile', 'black']
 
   - repo: https://github.com/pycqa/flake8
     rev: 7.0.0
@@ -51,14 +51,20 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        types_or: [javascript, jsx, ts, tsx, json, yaml, yml, markdown, css, scss]
+        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
 
   # YAML linting
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.35.1
     hooks:
       - id: yamllint
-        args: ['-d', '{extends: default, rules: {line-length: {max: 120}, document-start: disable}}']
+        args:
+          - '-d'
+          - >-
+            {extends: default,
+            rules: {line-length: {max: 120},
+            document-start: disable,
+            truthy: {check-keys: false}}}
 
   # .NET formatting (using dotnet format)
   # Note: This requires .NET SDK to be installed
@@ -66,9 +72,14 @@ repos:
     hooks:
       - id: dotnet-format
         name: dotnet format
-        entry: bash -c 'if command -v dotnet &> /dev/null; then for file in "$@"; do dotnet format "$(dirname "$file")" --include "$file" --verify-no-changes || dotnet format "$(dirname "$file")" --include "$file"; done; fi'
+        entry: >-
+          bash -c 'if command -v dotnet &> /dev/null; then
+          for file in "$@"; do
+          dotnet format "$(dirname "$file")" --include "$file" --verify-no-changes ||
+          dotnet format "$(dirname "$file")" --include "$file";
+          done; fi'
         language: system
-        types: [c-sharp]
+        types: [c#]
         pass_filenames: true
 
   # Additional security checks
