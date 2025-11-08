@@ -84,7 +84,7 @@ dotnet run
 - [x] Field of View (FOV) system
 - [x] Pathfinding for enemies
 - [x] Turn-based combat
-- [ ] Inventory system
+- [x] Inventory system
 - [ ] Character progression
 
 ### Windows App
