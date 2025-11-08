@@ -85,7 +85,7 @@ dotnet run
 - [x] Pathfinding for enemies
 - [x] Turn-based combat
 - [x] Inventory system
-- [ ] Character progression
+- [x] Character progression
 
 ### Windows App
 - [x] SkiaSharp tile renderer

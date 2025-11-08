@@ -132,6 +132,7 @@ public class GameWorld
             new CombatStats(attack: 5, defense: 2),
             new FieldOfView(8),
             new Inventory(maxCapacity: 10),
+            new Experience(startingLevel: 1),
             new BlocksMovement()
         );
 
@@ -175,6 +176,7 @@ public class GameWorld
                 new Health { Current = 20, Maximum = 20 },
                 new CombatStats(attack: 3, defense: 1),
                 new AIComponent(AIBehavior.Aggressive),
+                new ExperienceValue(xp: 35),
                 new BlocksMovement()
             );
         }
@@ -345,6 +347,51 @@ public class GameWorld
     }
 
     /// <summary>
+    /// Awards experience to an entity and handles level-ups.
+    /// </summary>
+    public void GainExperience(Entity entity, int xp)
+    {
+        if (!entity.Has<Experience>())
+            return;
+
+        ref var experience = ref entity.Get<Experience>();
+        experience.CurrentXP += xp;
+
+        // Check for level up
+        while (experience.CurrentXP >= experience.XPToNextLevel)
+        {
+            experience.Level++;
+            experience.CurrentXP -= experience.XPToNextLevel;
+            experience.XPToNextLevel = Experience.CalculateXPForLevel(experience.Level + 1);
+
+            // Apply level-up bonuses
+            LevelUp(entity);
+        }
+    }
+
+    /// <summary>
+    /// Applies stat increases when leveling up.
+    /// </summary>
+    private void LevelUp(Entity entity)
+    {
+        // Increase health
+        if (entity.Has<Health>())
+        {
+            ref var health = ref entity.Get<Health>();
+            health.Maximum += 10;
+            health.Current = health.Maximum; // Fully heal on level up
+        }
+
+        // Increase combat stats
+        if (entity.Has<CombatStats>())
+        {
+            ref var stats = ref entity.Get<CombatStats>();
+            stats.Attack += 1;
+            stats.Defense += 1;
+        }
+    }
+
+    /// <summary>
     /// Resolves a melee attack from attacker to defender.
     /// </summary>
     private void ResolveMeleeAttack(Entity attacker, Entity defender)
@@ -377,6 +424,13 @@ public class GameWorld
         if (!defenderHealth.IsAlive && !defender.Has<Dead>())
         {
             defender.Add(new Dead());
+
+            // Award experience to attacker if they killed the defender
+            if (attacker.Has<Experience>() && defender.Has<ExperienceValue>())
+            {
+                var xpValue = defender.Get<ExperienceValue>();
+                GainExperience(attacker, xpValue.XP);
+            }
         }
     }
 
