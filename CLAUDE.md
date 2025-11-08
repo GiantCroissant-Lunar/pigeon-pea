@@ -10,6 +10,16 @@ This file provides guidance for Claude AI agents working with this codebase, inc
 
 Claude agents should follow the rules defined in the [`.agent/rules/`](.agent/rules/) directory.
 
+### Git and Commit Rules (CRITICAL)
+
+**ALL COMMITS MUST PASS PRE-COMMIT HOOKS** - See [`.agent/rules/git-commit-rules.md`](.agent/rules/git-commit-rules.md) for complete requirements.
+
+Key requirements:
+- Run `pre-commit run --all-files` before every commit
+- Never use `--no-verify` to skip hooks
+- Fix all formatting, security, and syntax issues
+- Follow conventional commit message format
+
 ### Code Quality Rules
 
 See [`.agent/rules/code-quality.md`](.agent/rules/code-quality.md) for detailed code quality standards including:
@@ -108,7 +118,9 @@ This project supports multiple languages. When working with code:
 
 ### Pre-commit Hooks
 
-Always ensure pre-commit hooks pass before committing. Configuration is in [`.pre-commit-config.yaml`](.pre-commit-config.yaml).
+**CRITICAL:** Always ensure pre-commit hooks pass before committing. See [`.agent/rules/git-commit-rules.md`](.agent/rules/git-commit-rules.md) for detailed requirements.
+
+Configuration is in [`.pre-commit-config.yaml`](.pre-commit-config.yaml).
 
 Run hooks manually:
 ```bash

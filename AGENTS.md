@@ -25,6 +25,7 @@ Rules define how agents should behave, what constraints they must follow, and wh
 **Location:** [`.agent/rules/`](.agent/rules/)
 
 **Examples:**
+- [`.agent/rules/git-commit-rules.md`](.agent/rules/git-commit-rules.md) - **Git and commit requirements (CRITICAL: commits must pass pre-commit hooks)**
 - [`.agent/rules/code-quality.md`](.agent/rules/code-quality.md) - Code quality and standards enforcement
 
 **Documentation:** [`.agent/rules/README.md`](.agent/rules/README.md)
