@@ -116,7 +116,13 @@ Use for:
    - Cross-platform view model support
    - Automatic UI updates from data changes
 
-3. **Cysharp ObservableCollections**
+3. **Cysharp MessagePipe**
+   - High-performance in-memory message bus
+   - Zero-allocation pub/sub for game events
+   - Decouples game systems from UI
+   - Type-safe event contracts
+
+4. **Cysharp ObservableCollections**
    - High-performance observable collections
    - Optimized for game scenarios
    - Minimal GC pressure
@@ -196,7 +202,9 @@ ffmpeg -f gdigrab -i "Pigeon Pea" -t 60 test-recording.mp4
 <PackageReference Include="GoRogue" Version="..." />
 <PackageReference Include="System.Reactive" Version="..." />
 <PackageReference Include="ReactiveUI" Version="..." />
+<PackageReference Include="MessagePipe" Version="..." />
 <PackageReference Include="ObservableCollections" Version="..." />
+<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="..." />
 
 <!-- Windows App -->
 <PackageReference Include="Avalonia" Version="..." />
@@ -285,5 +293,7 @@ ffmpeg -f gdigrab -i "Pigeon Pea" -t 60 test-recording.mp4
 - [Sixel Graphics Format](https://en.wikipedia.org/wiki/Sixel)
 - [System.CommandLine Documentation](https://learn.microsoft.com/en-us/dotnet/standard/commandline/)
 - [ReactiveUI Documentation](https://www.reactiveui.net/)
+- [MessagePipe Documentation](https://github.com/Cysharp/MessagePipe)
+- [ObservableCollections Documentation](https://github.com/Cysharp/ObservableCollections)
 - [node-pty Repository](https://github.com/microsoft/node-pty)
 - [asciinema Documentation](https://docs.asciinema.org/)

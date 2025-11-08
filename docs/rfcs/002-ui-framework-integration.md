@@ -8,7 +8,7 @@
 
 ## Summary
 
-Integrate reactive programming frameworks (System.Reactive, ReactiveUI, ObservableCollections) into Pigeon Pea to create a clean MVVM architecture with automatic UI updates from game state changes.
+Integrate reactive programming frameworks (System.Reactive, ReactiveUI, MessagePipe, ObservableCollections) into Pigeon Pea to create a clean MVVM architecture with automatic UI updates from game state changes and event-driven communication between systems.
 
 ## Motivation
 
@@ -53,6 +53,13 @@ Currently, the UI layer directly polls game state and manually updates UI elemen
 │  └────────────────────────────────────────────────┘ │
 │                                                       │
 │  ┌────────────────────────────────────────────────┐ │
+│  │ Event Bus (MessagePipe)                        │ │
+│  │  - PlayerDamagedEvent                          │ │
+│  │  - ItemPickedUpEvent                           │ │
+│  │  - EnemyDefeatedEvent                          │ │
+│  └────────────────────────────────────────────────┘ │
+│                                                       │
+│  ┌────────────────────────────────────────────────┐ │
 │  │ Observable Collections                         │ │
 │  │  - ObservableList<ItemViewModel>               │ │
 │  │  - ObservableList<MessageViewModel>            │ │
@@ -61,6 +68,7 @@ Currently, the UI layer directly polls game state and manually updates UI elemen
                       │
                       │ Property Change Notifications
                       │ IObservable<T> Streams
+                      │ MessagePipe Events
                       ▼
 ┌──────────────────────────────────────────────────────┐
 │              Platform-Specific Views                 │
@@ -133,6 +141,80 @@ public class PlayerViewModel : ReactiveObject
 }
 ```
 
+#### MessagePipe (Cysharp)
+
+**Purpose**: High-performance in-memory message bus for event-driven architecture
+
+**Key Features**:
+- Zero-allocation pub/sub messaging
+- Type-safe message contracts
+- Filter support for conditional message handling
+- Request/response pattern support
+- Async messaging support
+- Scoped message publishing (global, scoped, singleton)
+- Integration with DI containers
+
+**Usage Example**:
+```csharp
+// Define game events
+public class PlayerDamagedEvent
+{
+    public int Damage { get; init; }
+    public int RemainingHealth { get; init; }
+    public string Source { get; init; }
+}
+
+public class ItemPickedUpEvent
+{
+    public string ItemName { get; init; }
+    public ItemType Type { get; init; }
+}
+
+// Subscribe to events
+public class MessageLogViewModel : ReactiveObject
+{
+    private readonly ISubscriber<PlayerDamagedEvent> _subscriber;
+
+    public MessageLogViewModel(ISubscriber<PlayerDamagedEvent> subscriber)
+    {
+        _subscriber = subscriber;
+
+        // Subscribe to player damage events
+        var bag = DisposableBag.CreateBuilder();
+        _subscriber.Subscribe(e =>
+        {
+            AddMessage($"Took {e.Damage} damage from {e.Source}! ({e.RemainingHealth} HP remaining)",
+                MessageType.Combat);
+        }).AddTo(bag);
+    }
+}
+
+// Publish events from game systems
+public class CombatSystem
+{
+    private readonly IPublisher<PlayerDamagedEvent> _publisher;
+
+    public CombatSystem(IPublisher<PlayerDamagedEvent> publisher)
+    {
+        _publisher = publisher;
+    }
+
+    public void DamagePlayer(int damage, string source)
+    {
+        // Apply damage...
+        var remainingHealth = player.Health.Current;
+
+        // Publish event
+        _publisher.Publish(new PlayerDamagedEvent
+        {
+            Damage = damage,
+            RemainingHealth = remainingHealth,
+            Source = source
+        });
+    }
+}
+```
+
 #### ObservableCollections (Cysharp)
 
 **Purpose**: High-performance observable collections for games
@@ -160,6 +242,134 @@ inventory.ObserveRemove().Subscribe(e =>
 
 // Add item
 inventory.Add(new ItemViewModel { Name = "Sword", Damage = 10 });
+```
+
+### Dependency Injection Setup
+
+MessagePipe and other reactive services need to be registered with the DI container.
+
+**Program.cs (Console App)**:
+```csharp
+using MessagePipe;
+using Microsoft.Extensions.DependencyInjection;
+
+var services = new ServiceCollection();
+
+// Add MessagePipe
+services.AddMessagePipe();
+
+// Add game services
+services.AddSingleton<GameWorld>();
+services.AddSingleton<GameViewModel>();
+services.AddSingleton<PlayerViewModel>();
+services.AddSingleton<InventoryViewModel>();
+services.AddSingleton<MessageLogViewModel>();
+
+// Add game systems with event publishing
+services.AddSingleton<CombatSystem>();
+services.AddSingleton<InventorySystem>();
+
+var provider = services.BuildServiceProvider();
+
+// Run application
+var app = provider.GetRequiredService<GameApplication>();
+app.Run();
+```
+
+**Program.cs (Windows App)**:
+```csharp
+public class App : Application
+{
+    public IServiceProvider Services { get; private set; }
+
+    public override void Initialize()
+    {
+        AvaloniaXamlLoader.Load(this);
+
+        var services = new ServiceCollection();
+
+        // Add MessagePipe
+        services.AddMessagePipe();
+
+        // Add view models
+        services.AddSingleton<GameWorld>();
+        services.AddSingleton<GameViewModel>();
+
+        Services = services.BuildServiceProvider();
+    }
+
+    public override void OnFrameworkInitializationCompleted()
+    {
+        if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
+        {
+            desktop.MainWindow = new MainWindow
+            {
+                DataContext = Services.GetRequiredService<GameViewModel>()
+            };
+        }
+
+        base.OnFrameworkInitializationCompleted();
+    }
+}
+```
+
+### Event Definitions
+
+Define game events in `PigeonPea.Shared/Events/`:
+
+```csharp
+namespace PigeonPea.Shared.Events
+{
+    // Combat events
+    public readonly struct PlayerDamagedEvent
+    {
+        public int Damage { get; init; }
+        public int RemainingHealth { get; init; }
+        public string Source { get; init; }
+    }
+
+    public readonly struct EnemyDefeatedEvent
+    {
+        public string EnemyName { get; init; }
+        public int ExperienceGained { get; init; }
+    }
+
+    // Inventory events
+    public readonly struct ItemPickedUpEvent
+    {
+        public string ItemName { get; init; }
+        public ItemType Type { get; init; }
+    }
+
+    public readonly struct ItemUsedEvent
+    {
+        public string ItemName { get; init; }
+        public ItemType Type { get; init; }
+    }
+
+    public readonly struct ItemDroppedEvent
+    {
+        public string ItemName { get; init; }
+    }
+
+    // Level events
+    public readonly struct PlayerLevelUpEvent
+    {
+        public int NewLevel { get; init; }
+        public int HealthIncrease { get; init; }
+    }
+
+    // Map events
+    public readonly struct DoorOpenedEvent
+    {
+        public Position Position { get; init; }
+    }
+
+    public readonly struct StairsDescendedEvent
+    {
+        public int NewFloor { get; init; }
+    }
+}
 ```
 
 ### Shared View Models
@@ -845,7 +1055,9 @@ Add to `PigeonPea.Shared.csproj`:
 <ItemGroup>
   <PackageReference Include="System.Reactive" Version="6.0.1" />
   <PackageReference Include="ReactiveUI" Version="20.1.1" />
+  <PackageReference Include="MessagePipe" Version="1.8.0" />
   <PackageReference Include="ObservableCollections" Version="3.0.1" />
+  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
 </ItemGroup>
 ```
 
@@ -862,16 +1074,19 @@ Add to `PigeonPea.Console.csproj`:
 
 ### Phase 1: Add Reactive Infrastructure (Week 1)
 
-1. Add NuGet packages to `shared-app`
-2. Create `ViewModels/` directory
-3. Implement `GameViewModel`
-4. Implement `PlayerViewModel`
+1. Add NuGet packages to `shared-app` (System.Reactive, ReactiveUI, MessagePipe, ObservableCollections, DI)
+2. Set up MessagePipe dependency injection
+3. Create `Events/` directory and define game events
+4. Create `ViewModels/` directory
+5. Implement `GameViewModel`
+6. Implement `PlayerViewModel`
 
 ### Phase 2: Implement Remaining View Models (Week 2)
 
-1. Implement `InventoryViewModel`
-2. Implement `MessageLogViewModel`
+1. Implement `InventoryViewModel` with event subscriptions
+2. Implement `MessageLogViewModel` with event subscriptions
 3. Implement `MapViewModel`
+4. Update game systems to publish events via MessagePipe
 
 ### Phase 3: Windows App Integration (Week 3)
 
@@ -1010,6 +1225,7 @@ public class MainWindow : Window
 
 - [System.Reactive Documentation](https://github.com/dotnet/reactive)
 - [ReactiveUI Documentation](https://www.reactiveui.net/)
+- [MessagePipe Documentation](https://github.com/Cysharp/MessagePipe)
 - [ObservableCollections Documentation](https://github.com/Cysharp/ObservableCollections)
 - [System.CommandLine Documentation](https://learn.microsoft.com/en-us/dotnet/standard/commandline/)
 - [Avalonia MVVM Guide](https://docs.avaloniaui.net/docs/concepts/the-mvvm-pattern/)
