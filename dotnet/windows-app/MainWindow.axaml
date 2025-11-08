@@ -1,0 +1,24 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:PigeonPea.Windows"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="PigeonPea.Windows.MainWindow"
+        Title="Pigeon Pea - Dungeon Crawler"
+        Width="1280" Height="720">
+
+    <Grid RowDefinitions="*,Auto">
+        <!-- Game Render Area (SkiaSharp Canvas) -->
+        <local:GameCanvas Name="GameCanvas" Grid.Row="0" />
+
+        <!-- HUD Panel -->
+        <Border Grid.Row="1" Background="#222" Padding="10">
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <TextBlock Name="HealthText" Text="HP: 100/100" Foreground="Red" FontSize="16" />
+                <TextBlock Name="PositionText" Text="Pos: (0, 0)" Foreground="White" FontSize="16" />
+                <TextBlock Name="FpsText" Text="FPS: 0" Foreground="LightGreen" FontSize="16" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
