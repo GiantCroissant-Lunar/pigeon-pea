@@ -128,7 +128,9 @@ public class GameWorld
             new Renderable('@', Color.Yellow),
             new PlayerComponent { Name = "Hero" },
             new Health { Current = 100, Maximum = 100 },
-            new FieldOfView(8)
+            new CombatStats(attack: 5, defense: 2),
+            new FieldOfView(8),
+            new BlocksMovement()
         );
 
         // Calculate initial FOV for player
@@ -169,6 +171,7 @@ public class GameWorld
                 new Position(enemyPos),
                 new Renderable('g', Color.Green),
                 new Health { Current = 20, Maximum = 20 },
+                new CombatStats(attack: 3, defense: 1),
                 new AIComponent(AIBehavior.Aggressive),
                 new BlocksMovement()
             );
@@ -269,10 +272,14 @@ public class GameWorld
         var playerPos = PlayerEntity.Get<Position>();
 
         // Query all AI entities
-        var aiQuery = new QueryDescription().WithAll<Position, AIComponent>();
+        var aiQuery = new QueryDescription().WithAll<Position, AIComponent, Health>();
 
-        EcsWorld.Query(in aiQuery, (Entity entity, ref Position pos, ref AIComponent ai) =>
+        EcsWorld.Query(in aiQuery, (Entity entity, ref Position pos, ref AIComponent ai, ref Health health) =>
         {
+            // Skip dead entities
+            if (!health.IsAlive)
+                return;
+
             if (ai.Behavior == AIBehavior.Aggressive)
             {
                 // Calculate distance to player
@@ -295,8 +302,14 @@ public class GameWorld
                         {
                             Point nextPos = ai.CurrentPath[1]; // [0] is current position
 
+                            // Check if next position is the player - attack instead of move
+                            if (nextPos == playerPos.Point)
+                            {
+                                // Melee attack the player
+                                ResolveMeleeAttack(entity, PlayerEntity);
+                            }
                             // Only move if next position is not occupied by another entity
-                            if (!IsPositionOccupied(nextPos))
+                            else if (!IsPositionOccupied(nextPos))
                             {
                                 pos.Point = nextPos;
                             }
@@ -308,10 +321,126 @@ public class GameWorld
         });
     }
 
+    /// <summary>
+    /// Resolves a melee attack from attacker to defender.
+    /// </summary>
+    private void ResolveMeleeAttack(Entity attacker, Entity defender)
+    {
+        // Both entities must have Health and CombatStats
+        if (!attacker.Has<Health>() || !attacker.Has<CombatStats>() ||
+            !defender.Has<Health>() || !defender.Has<CombatStats>())
+            return;
+
+        ref var attackerHealth = ref attacker.Get<Health>();
+        ref var attackerStats = ref attacker.Get<CombatStats>();
+        ref var defenderHealth = ref defender.Get<Health>();
+        ref var defenderStats = ref defender.Get<CombatStats>();
+
+        // Skip if attacker is dead
+        if (!attackerHealth.IsAlive)
+            return;
+
+        // Calculate damage: Attack - Defense (minimum 1 damage)
+        int damage = Math.Max(1, attackerStats.Attack - defenderStats.Defense);
+
+        // Apply damage
+        defenderHealth.Current -= damage;
+
+        // Clamp health to 0
+        if (defenderHealth.Current < 0)
+            defenderHealth.Current = 0;
+
+        // Mark as dead if health reaches 0
+        if (!defenderHealth.IsAlive && !defender.Has<Dead>())
+        {
+            defender.Add(new Dead());
+        }
+    }
+
+    /// <summary>
+    /// Removes dead entities from the world.
+    /// </summary>
+    private void CleanupDeadEntities()
+    {
+        var deadQuery = new QueryDescription().WithAll<Dead>();
+        var entitiesToDestroy = new List<Entity>();
+
+        EcsWorld.Query(in deadQuery, (Entity entity) =>
+        {
+            entitiesToDestroy.Add(entity);
+        });
+
+        foreach (var entity in entitiesToDestroy)
+        {
+            EcsWorld.Destroy(entity);
+        }
+    }
+
+    /// <summary>
+    /// Gets an entity at the specified position (returns null if none found).
+    /// </summary>
+    public Entity? GetEntityAt(Point position)
+    {
+        var posQuery = new QueryDescription().WithAll<Position>();
+        Entity? foundEntity = null;
+
+        EcsWorld.Query(in posQuery, (Entity entity, ref Position pos) =>
+        {
+            if (pos.Point == position)
+            {
+                foundEntity = entity;
+            }
+        });
+
+        return foundEntity;
+    }
+
+    /// <summary>
+    /// Attempts to move the player in the given direction.
+    /// If an enemy is at the target position, attacks instead.
+    /// </summary>
+    public bool TryMovePlayer(Point direction)
+    {
+        if (!PlayerEntity.IsAlive())
+            return false;
+
+        ref var playerPos = ref PlayerEntity.Get<Position>();
+        Point targetPos = playerPos.Point + direction;
+
+        // Check bounds
+        if (targetPos.X < 0 || targetPos.X >= Width || targetPos.Y < 0 || targetPos.Y >= Height)
+            return false;
+
+        // Check if target is walkable
+        if (!WalkabilityMap[targetPos.X, targetPos.Y])
+            return false;
+
+        // Check if there's an entity at target position
+        var targetEntity = GetEntityAt(targetPos);
+        if (targetEntity.HasValue)
+        {
+            // If it's an enemy with health, attack it
+            if (targetEntity.Value.Has<AIComponent>() && targetEntity.Value.Has<Health>())
+            {
+                ResolveMeleeAttack(PlayerEntity, targetEntity.Value);
+                return true;
+            }
+
+            // If it blocks movement, can't move there
+            if (targetEntity.Value.Has<BlocksMovement>())
+                return false;
+        }
+
+        // Move player
+        playerPos.Point = targetPos;
+        return true;
+    }
+
     public void Update(double deltaTime)
     {
         // Run ECS systems
         UpdateFieldOfView();
         UpdateAI();
+        CleanupDeadEntities();
     }
 }
