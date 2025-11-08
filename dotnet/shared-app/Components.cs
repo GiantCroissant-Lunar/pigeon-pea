@@ -138,3 +138,25 @@ public enum AIBehavior
     /// </summary>
     Aggressive
 }
+
+/// <summary>
+/// Combat stats component.
+/// </summary>
+public struct CombatStats
+{
+    public int Attack { get; set; }
+    public int Defense { get; set; }
+
+    public CombatStats(int attack, int defense)
+    {
+        Attack = attack;
+        Defense = defense;
+    }
+}
+
+/// <summary>
+/// Marks that an entity is dead and should be removed.
+/// </summary>
+public struct Dead
+{
+}
