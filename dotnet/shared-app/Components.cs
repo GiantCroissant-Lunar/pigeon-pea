@@ -107,3 +107,34 @@ public struct BlocksMovement
 public struct Explored
 {
 }
+
+/// <summary>
+/// AI component for enemy behavior.
+/// </summary>
+public struct AIComponent
+{
+    public AIBehavior Behavior { get; set; }
+    public List<Point> CurrentPath { get; set; }
+
+    public AIComponent(AIBehavior behavior)
+    {
+        Behavior = behavior;
+        CurrentPath = new List<Point>();
+    }
+}
+
+/// <summary>
+/// AI behavior types.
+/// </summary>
+public enum AIBehavior
+{
+    /// <summary>
+    /// Enemy wanders randomly.
+    /// </summary>
+    Passive,
+
+    /// <summary>
+    /// Enemy actively chases the player when in FOV.
+    /// </summary>
+    Aggressive
+}

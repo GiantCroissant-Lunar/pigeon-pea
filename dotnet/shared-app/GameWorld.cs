@@ -4,6 +4,7 @@ using GoRogue.GameFramework;
 using GoRogue.MapGeneration;
 using GoRogue.MapGeneration.ContextComponents;
 using GoRogue.FOV;
+using GoRogue.Pathing;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using PigeonPea.Shared.Components;
@@ -32,6 +33,9 @@ public class GameWorld
     // FOV algorithm instance
     private IFOV _fovAlgorithm;
 
+    // Pathfinding instance for AI
+    private AStar _pathfinder;
+
     public GameWorld(int width = 80, int height = 50)
     {
         Width = width;
@@ -45,6 +49,9 @@ public class GameWorld
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
 
+        // Initialize pathfinding (A* with Chebyshev distance for 8-way movement)
+        _pathfinder = new AStar(WalkabilityMap, Distance.Chebyshev);
+
         InitializeWorld();
     }
 
@@ -52,6 +59,7 @@ public class GameWorld
     {
         GenerateDungeon();
         SpawnPlayer();
+        SpawnEnemies();
     }
 
     private void GenerateDungeon()
@@ -146,6 +154,63 @@ public class GameWorld
         return new Point(Width / 2, Height / 2);
     }
 
+    private void SpawnEnemies()
+    {
+        // Spawn a few enemies in random walkable positions
+        var random = new Random();
+        int enemyCount = 10;
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            Point enemyPos = FindRandomWalkablePosition(random);
+
+            // Create enemy entity (goblin)
+            EcsWorld.Create(
+                new Position(enemyPos),
+                new Renderable('g', Color.Green),
+                new Health { Current = 20, Maximum = 20 },
+                new AIComponent(AIBehavior.Aggressive),
+                new BlocksMovement()
+            );
+        }
+    }
+
+    private Point FindRandomWalkablePosition(Random random)
+    {
+        // Try to find a random walkable position (with max attempts to avoid infinite loops)
+        int maxAttempts = 100;
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
+        {
+            int x = random.Next(0, Width);
+            int y = random.Next(0, Height);
+
+            if (WalkabilityMap[x, y] && !IsPositionOccupied(new Point(x, y)))
+            {
+                return new Point(x, y);
+            }
+        }
+
+        // Fallback to first walkable if random attempts failed
+        return FindWalkablePosition();
+    }
+
+    private bool IsPositionOccupied(Point position)
+    {
+        // Check if any entity with BlocksMovement is at this position
+        var blockersQuery = new QueryDescription().WithAll<Position, BlocksMovement>();
+        bool occupied = false;
+
+        EcsWorld.Query(in blockersQuery, (ref Position pos) =>
+        {
+            if (pos.Point == position)
+            {
+                occupied = true;
+            }
+        });
+
+        return occupied;
+    }
+
     /// <summary>
     /// Updates the field of view for all entities with FOV components.
     /// </summary>
@@ -192,9 +257,61 @@ public class GameWorld
         });
     }
 
+    /// <summary>
+    /// Updates AI behavior for all entities with AI components.
+    /// </summary>
+    private void UpdateAI()
+    {
+        // Get player position
+        if (!PlayerEntity.IsAlive())
+            return;
+
+        var playerPos = PlayerEntity.Get<Position>();
+
+        // Query all AI entities
+        var aiQuery = new QueryDescription().WithAll<Position, AIComponent>();
+
+        EcsWorld.Query(in aiQuery, (Entity entity, ref Position pos, ref AIComponent ai) =>
+        {
+            if (ai.Behavior == AIBehavior.Aggressive)
+            {
+                // Calculate distance to player
+                double distance = Distance.Chebyshev.Calculate(pos.Point, playerPos.Point);
+
+                // Only chase if player is close enough (within ~15 tiles)
+                if (distance < 15)
+                {
+                    // Find path to player
+                    var path = _pathfinder.ShortestPath(pos.Point, playerPos.Point);
+
+                    if (path != null)
+                    {
+                        // Store path in AI component
+                        ai.CurrentPath.Clear();
+                        ai.CurrentPath.AddRange(path.Steps);
+
+                        // Move one step along the path (if path has more than 1 step)
+                        if (ai.CurrentPath.Count > 1)
+                        {
+                            Point nextPos = ai.CurrentPath[1]; // [0] is current position
+
+                            // Only move if next position is not occupied by another entity
+                            if (!IsPositionOccupied(nextPos))
+                            {
+                                pos.Point = nextPos;
+                            }
+                        }
+                    }
+                }
+            }
+            // Passive AI could wander randomly here
+        });
+    }
+
     public void Update(double deltaTime)
     {
         // Run ECS systems
         UpdateFieldOfView();
+        UpdateAI();
     }
 }
