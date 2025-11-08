@@ -18,7 +18,6 @@ public class GameWorld
 {
     public World EcsWorld { get; private set; }
     public ISettableMapView<IGameObject> Map { get; private set; }
-    public Player? Player { get; private set; }
     public Entity PlayerEntity { get; private set; }
 
     public int Width { get; }
@@ -31,10 +30,13 @@ public class GameWorld
     public ArrayView<bool> TransparencyMap { get; private set; }
 
     // FOV algorithm instance
-    private IFOV _fovAlgorithm;
+    private readonly IFOV _fovAlgorithm;
 
     // Pathfinding instance for AI
-    private AStar _pathfinder;
+    private readonly AStar _pathfinder;
+
+    // Shared random instance for all spawning
+    private readonly Random _random;
 
     public GameWorld(int width = 80, int height = 50)
     {
@@ -45,6 +47,7 @@ public class GameWorld
         Map = new ArrayMap<IGameObject>(width, height);
         WalkabilityMap = new ArrayView<bool>(width, height);
         TransparencyMap = new ArrayView<bool>(width, height);
+        _random = new Random();
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -162,12 +165,11 @@ public class GameWorld
     private void SpawnEnemies()
     {
         // Spawn a few enemies in random walkable positions
-        var random = new Random();
         int enemyCount = 10;
 
         for (int i = 0; i < enemyCount; i++)
         {
-            Point enemyPos = FindRandomWalkablePosition(random);
+            Point enemyPos = FindRandomWalkablePosition(_random);
 
             // Create enemy entity (goblin)
             EcsWorld.Create(
@@ -205,28 +207,29 @@ public class GameWorld
     {
         // Check if any entity with BlocksMovement is at this position
         var blockersQuery = new QueryDescription().WithAll<Position, BlocksMovement>();
-        bool occupied = false;
 
-        EcsWorld.Query(in blockersQuery, (ref Position pos) =>
+        foreach (var chunk in EcsWorld.Query(in blockersQuery))
         {
-            if (pos.Point == position)
+            foreach (ref readonly var pos in chunk.GetSpan<Position>())
             {
-                occupied = true;
+                if (pos.Point == position)
+                {
+                    return true; // Found a blocker, exit early
+                }
             }
-        });
+        }
 
-        return occupied;
+        return false;
     }
 
     private void SpawnItems()
     {
         // Spawn health potions in random locations
-        var random = new Random();
         int potionCount = 5;
 
         for (int i = 0; i < potionCount; i++)
         {
-            Point itemPos = FindRandomWalkablePosition(random);
+            Point itemPos = FindRandomWalkablePosition(_random);
 
             // Create health potion
             EcsWorld.Create(
