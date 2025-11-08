@@ -1,0 +1,22 @@
+name: run-tests
+description: Run tests for the project across all supported languages
+version: 1.0.0
+
+steps:
+  - name: Run .NET tests
+    command: dotnet test
+    working_directory: ./dotnet
+    condition: exists("./dotnet")
+
+  - name: Run Python tests
+    command: pytest
+    condition: exists("./tests") && exists("pytest.ini")
+
+  - name: Run JavaScript tests
+    command: npm test
+    condition: exists("./package.json")
+
+options:
+  parallel: false
+  fail_fast: true
+  verbose: true
