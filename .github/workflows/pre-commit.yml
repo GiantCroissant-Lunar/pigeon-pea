@@ -44,11 +44,9 @@ jobs:
             pre-commit-${{ runner.os }}-
 
       - name: Run pre-commit on all files
+        if: github.event_name == 'push'
         run: pre-commit run --all-files --show-diff-on-failure
 
-      - name: Run pre-commit on changed files only (if all-files check passed)
-        if: success()
-        run: |
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            pre-commit run --from-ref origin/${{ github.base_ref }} --to-ref HEAD
-          fi
+      - name: Run pre-commit on changed files only
+        if: github.event_name == 'pull_request'
+        run: pre-commit run --from-ref origin/${{ github.base_ref }} --to-ref HEAD
