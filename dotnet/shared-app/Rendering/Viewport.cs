@@ -46,4 +46,13 @@ public struct Viewport
     /// Gets the bounding rectangle of the viewport.
     /// </summary>
     public Rectangle Bounds => new(X, Y, Width, Height);
+
+    /// <summary>
+    /// Checks if the specified coordinates are within the viewport bounds.
+    /// </summary>
+    /// <param name="x">The X coordinate to check.</param>
+    /// <param name="y">The Y coordinate to check.</param>
+    /// <returns>True if the coordinates are within the viewport; otherwise, false.</returns>
+    public bool Contains(int x, int y)
+        => x >= X && x < X + Width && y >= Y && y < Y + Height;
 }
