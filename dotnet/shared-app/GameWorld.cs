@@ -17,7 +17,7 @@ namespace PigeonPea.Shared;
 public class GameWorld
 {
     public World EcsWorld { get; private set; }
-    public ISettableMapView<IGameObject> Map { get; private set; }
+    public ISettableGridView<IGameObject> Map { get; private set; }
     public Entity PlayerEntity { get; private set; }
 
     public int Width { get; }
@@ -44,7 +44,7 @@ public class GameWorld
         Height = height;
 
         EcsWorld = World.Create();
-        Map = new ArrayMap<IGameObject>(width, height);
+        Map = new ArrayView<IGameObject>(width, height);
         WalkabilityMap = new ArrayView<bool>(width, height);
         TransparencyMap = new ArrayView<bool>(width, height);
         _random = new Random();
