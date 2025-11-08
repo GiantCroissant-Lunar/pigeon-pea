@@ -80,7 +80,7 @@ dotnet run
 ### Shared (Core Game Logic)
 - [x] Arch ECS integration
 - [x] GoRogue integration
-- [ ] Procedural dungeon generation (GoRogue)
+- [x] Procedural dungeon generation (GoRogue)
 - [ ] Field of View (FOV) system
 - [ ] Pathfinding for enemies
 - [ ] Turn-based combat
