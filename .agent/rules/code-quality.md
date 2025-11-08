@@ -23,5 +23,5 @@
 ## Security
 
 - No secrets or credentials in code
-- Follow OWASP security guidelines
+- Follow [OWASP security guidelines](https://owasp.org/www-project-top-ten/)
 - Run security checks via pre-commit hooks

@@ -9,6 +9,7 @@ Adapters provide interfaces between agents and external tools, APIs, or services
 ## File Format
 
 Adapters can be implemented as:
+
 - `.py` - Python adapter modules
 - `.js` / `.ts` - JavaScript/TypeScript adapters
 - `.yaml` - Configuration-based adapters

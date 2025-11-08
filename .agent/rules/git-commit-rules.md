@@ -7,6 +7,7 @@
 ### Why This Matters
 
 Pre-commit hooks ensure:
+
 - Code formatting standards are met
 - Security checks pass (no secrets committed)
 - Syntax errors are caught early
@@ -15,6 +16,7 @@ Pre-commit hooks ensure:
 ### Enforcement
 
 1. **Before Every Commit:**
+
    ```bash
    pre-commit run --all-files
    ```
@@ -26,6 +28,7 @@ Pre-commit hooks ensure:
 ### What Gets Checked
 
 The pre-commit hooks (configured in [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml)) check:
+
 - Code formatting (dotnet format, black, isort, prettier)
 - Security (gitleaks, detect-secrets)
 - Syntax validation (YAML, JSON)
@@ -85,6 +88,7 @@ When pre-commit hooks fail:
 ## Exception Policy
 
 Skipping pre-commit hooks is **strongly discouraged**. Only skip when:
+
 1. Emergency hotfix required
 2. Pre-commit infrastructure is broken
 3. Explicitly approved by team lead

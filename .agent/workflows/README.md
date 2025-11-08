@@ -9,6 +9,7 @@ Workflows define sequences of operations, decision trees, and complex processes 
 ## File Format
 
 Workflows can be defined as:
+
 - `.yaml` - YAML workflow definitions
 - `.json` - JSON workflow configurations
 - `.md` - Documented workflow procedures
