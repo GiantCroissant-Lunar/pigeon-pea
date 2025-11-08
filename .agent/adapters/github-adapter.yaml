@@ -14,25 +14,35 @@ capabilities:
     method: POST
     endpoint: /repos/{owner}/{repo}/issues
     parameters:
-      - title (required)
-      - body (optional)
-      - labels (optional)
+      - name: title
+        required: true
+      - name: body
+        required: false
+      - name: labels
+        required: false
 
   - name: create-pull-request
     method: POST
     endpoint: /repos/{owner}/{repo}/pulls
     parameters:
-      - title (required)
-      - head (required)
-      - base (required)
-      - body (optional)
+      - name: title
+        required: true
+      - name: head
+        required: true
+      - name: base
+        required: true
+      - name: body
+        required: false
 
   - name: list-pull-requests
     method: GET
     endpoint: /repos/{owner}/{repo}/pulls
     parameters:
-      - state (optional, default: open)
-      - sort (optional)
+      - name: state
+        required: false
+        default: open
+      - name: sort
+        required: false
 
   - name: get-commit-status
     method: GET

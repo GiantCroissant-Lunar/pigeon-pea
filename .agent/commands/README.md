@@ -9,6 +9,7 @@ Commands define specific actions or operations that can be invoked by agents to 
 ## File Format
 
 Commands can be defined as:
+
 - Shell scripts (`.sh`)
 - PowerShell scripts (`.ps1`)
 - Python scripts (`.py`)

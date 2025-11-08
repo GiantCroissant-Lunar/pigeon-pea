@@ -25,6 +25,7 @@ Rules define how agents should behave, what constraints they must follow, and wh
 **Location:** [`.agent/rules/`](.agent/rules/)
 
 **Examples:**
+
 - [`.agent/rules/git-commit-rules.md`](.agent/rules/git-commit-rules.md) - **Git and commit requirements (CRITICAL: commits must pass pre-commit hooks)**
 - [`.agent/rules/code-quality.md`](.agent/rules/code-quality.md) - Code quality and standards enforcement
 
@@ -37,6 +38,7 @@ Commands are executable operations that agents can invoke to perform specific ta
 **Location:** [`.agent/commands/`](.agent/commands/)
 
 **Examples:**
+
 - [`.agent/commands/run-tests.yaml`](.agent/commands/run-tests.yaml) - Test execution across languages
 
 **Documentation:** [`.agent/commands/README.md`](.agent/commands/README.md)
@@ -48,6 +50,7 @@ Workflows orchestrate multiple steps and decisions into cohesive processes.
 **Location:** [`.agent/workflows/`](.agent/workflows/)
 
 **Examples:**
+
 - [`.agent/workflows/feature-development.yaml`](.agent/workflows/feature-development.yaml) - Feature development lifecycle
 
 **Documentation:** [`.agent/workflows/README.md`](.agent/workflows/README.md)
@@ -59,6 +62,7 @@ Adapters provide interfaces between agents and external systems, APIs, or servic
 **Location:** [`.agent/adapters/`](.agent/adapters/)
 
 **Examples:**
+
 - [`.agent/adapters/github-adapter.yaml`](.agent/adapters/github-adapter.yaml) - GitHub API integration
 
 **Documentation:** [`.agent/adapters/README.md`](.agent/adapters/README.md)
@@ -69,28 +73,28 @@ Adapters provide interfaces between agents and external systems, APIs, or servic
 
 1. Create a new file in [`.agent/rules/`](.agent/rules/)
 2. Use `.md` for documentation-style rules or `.yaml` for structured definitions
-3. Reference the rule in this document
+3. Follow the examples in the directory for consistency
 
 ### Adding a Command
 
 1. Create a new file in [`.agent/commands/`](.agent/commands/)
 2. Use appropriate format (`.yaml`, `.sh`, `.ps1`, `.py`)
 3. Ensure command is documented with clear description and parameters
-4. Add reference in this document
+4. Include conditions and error handling as needed
 
 ### Adding a Workflow
 
 1. Create a workflow definition in [`.agent/workflows/`](.agent/workflows/)
 2. Define clear stages and steps
-3. Include conditions and error handling
-4. Document in this file
+3. Use structured step format with type (manual/command) and description
+4. Include conditions for conditional steps
 
 ### Adding an Adapter
 
 1. Create adapter configuration in [`.agent/adapters/`](.agent/adapters/)
 2. Define capabilities and API endpoints
-3. Include authentication and retry policies
-4. Reference in this document
+3. Structure parameters as objects with name and required fields
+4. Include authentication and retry policies
 
 ## Integration
 
@@ -105,6 +109,7 @@ Workflows can be integrated with GitHub Actions or other CI/CD systems to automa
 ### With Development Tools
 
 Adapters enable agents to interact with:
+
 - GitHub (issues, PRs, commits)
 - Build systems (.NET, npm, Python)
 - Testing frameworks

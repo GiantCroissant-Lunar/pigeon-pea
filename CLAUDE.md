@@ -15,6 +15,7 @@ Claude agents should follow the rules defined in the [`.agent/rules/`](.agent/ru
 **ALL COMMITS MUST PASS PRE-COMMIT HOOKS** - See [`.agent/rules/git-commit-rules.md`](.agent/rules/git-commit-rules.md) for complete requirements.
 
 Key requirements:
+
 - Run `pre-commit run --all-files` before every commit
 - Never use `--no-verify` to skip hooks
 - Fix all formatting, security, and syntax issues
@@ -23,6 +24,7 @@ Key requirements:
 ### Code Quality Rules
 
 See [`.agent/rules/code-quality.md`](.agent/rules/code-quality.md) for detailed code quality standards including:
+
 - Formatting requirements
 - Documentation standards
 - Testing expectations
@@ -34,18 +36,11 @@ Claude can execute commands defined in [`.agent/commands/`](.agent/commands/).
 
 ### Run Tests
 
-Use the command defined in [`.agent/commands/run-tests.yaml`](.agent/commands/run-tests.yaml) to run tests across all supported languages:
+Use the `run-tests` command to run tests across all supported languages. This command is defined in [`.agent/commands/run-tests.yaml`](.agent/commands/run-tests.yaml) and will automatically:
 
-```bash
-# .NET tests
-dotnet test
-
-# Python tests (if configured)
-pytest
-
-# JavaScript tests (if configured)
-npm test
-```
+- Detect which tests to run based on the files present in the project
+- Install necessary dependencies before running tests
+- Execute tests for .NET, Python, and JavaScript as applicable
 
 ## Workflows
 
@@ -92,6 +87,7 @@ Claude can use adapters defined in [`.agent/adapters/`](.agent/adapters/) to int
 ### GitHub Integration
 
 The GitHub adapter ([`.agent/adapters/github-adapter.yaml`](.agent/adapters/github-adapter.yaml)) provides capabilities for:
+
 - Creating and managing issues
 - Creating and reviewing pull requests
 - Checking commit status
@@ -123,6 +119,7 @@ This project supports multiple languages. When working with code:
 Configuration is in [`.pre-commit-config.yaml`](.pre-commit-config.yaml).
 
 Run hooks manually:
+
 ```bash
 pre-commit run --all-files
 ```
@@ -143,6 +140,7 @@ pre-commit run --all-files
 ### Error Handling
 
 When encountering errors:
+
 1. Read error messages carefully
 2. Check relevant configuration files
 3. Verify tool installations and versions
@@ -152,6 +150,7 @@ When encountering errors:
 ## Task Management
 
 When working on complex tasks:
+
 1. Break down into smaller, manageable steps
 2. Follow the appropriate workflow from [`.agent/workflows/`](.agent/workflows/)
 3. Track progress systematically

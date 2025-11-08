@@ -9,6 +9,7 @@ Rules define how agents should behave, what constraints they must follow, and wh
 ## File Format
 
 Rules can be defined in various formats:
+
 - `.md` - Markdown documentation with embedded rules
 - `.yaml` - Structured rule definitions
 - `.json` - JSON-formatted rule configurations
