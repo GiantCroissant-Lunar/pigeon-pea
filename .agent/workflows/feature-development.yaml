@@ -1,0 +1,39 @@
+name: feature-development
+description: Standard workflow for developing a new feature
+version: 1.0.0
+
+stages:
+  - name: Planning
+    steps:
+      - Analyze requirements
+      - Review existing code
+      - Create task breakdown
+      - Identify potential risks
+
+  - name: Implementation
+    steps:
+      - Create feature branch
+      - Implement core functionality
+      - Write unit tests
+      - Update documentation
+
+  - name: Quality Checks
+    steps:
+      - Run pre-commit hooks
+      - Execute test suite
+      - Perform code review
+      - Check security implications
+
+  - name: Integration
+    steps:
+      - Merge latest changes from main
+      - Resolve conflicts if any
+      - Run integration tests
+      - Create pull request
+
+  - name: Completion
+    steps:
+      - Address review feedback
+      - Ensure CI/CD passes
+      - Merge to main branch
+      - Tag release if applicable

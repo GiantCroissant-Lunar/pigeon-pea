@@ -1,0 +1,44 @@
+name: github-adapter
+description: Adapter for GitHub API integration
+version: 1.0.0
+type: api-adapter
+
+configuration:
+  base_url: https://api.github.com
+  authentication:
+    type: token
+    token_env_var: GITHUB_TOKEN
+
+capabilities:
+  - name: create-issue
+    method: POST
+    endpoint: /repos/{owner}/{repo}/issues
+    parameters:
+      - title (required)
+      - body (optional)
+      - labels (optional)
+
+  - name: create-pull-request
+    method: POST
+    endpoint: /repos/{owner}/{repo}/pulls
+    parameters:
+      - title (required)
+      - head (required)
+      - base (required)
+      - body (optional)
+
+  - name: list-pull-requests
+    method: GET
+    endpoint: /repos/{owner}/{repo}/pulls
+    parameters:
+      - state (optional, default: open)
+      - sort (optional)
+
+  - name: get-commit-status
+    method: GET
+    endpoint: /repos/{owner}/{repo}/commits/{ref}/status
+
+retry_policy:
+  max_attempts: 3
+  backoff_strategy: exponential
+  initial_delay_ms: 1000
