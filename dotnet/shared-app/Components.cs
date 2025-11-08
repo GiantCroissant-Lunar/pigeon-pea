@@ -70,3 +70,32 @@ public struct FieldOfView
         VisibleTiles = new HashSet<Point>();
     }
 }
+
+/// <summary>
+/// Component marking an entity as a tile (wall or floor).
+/// </summary>
+public struct Tile
+{
+    public TileType Type { get; set; }
+
+    public Tile(TileType type)
+    {
+        Type = type;
+    }
+}
+
+/// <summary>
+/// Types of tiles in the game world.
+/// </summary>
+public enum TileType
+{
+    Floor,
+    Wall
+}
+
+/// <summary>
+/// Component marking an entity as blocking movement.
+/// </summary>
+public struct BlocksMovement
+{
+}
