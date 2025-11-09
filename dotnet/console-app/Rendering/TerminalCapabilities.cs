@@ -8,44 +8,44 @@ namespace PigeonPea.Console.Rendering;
 public class TerminalCapabilities
 {
     /// <summary>
-    /// Gets or sets the terminal type identifier.
+    /// Gets the terminal type identifier.
     /// </summary>
-    public string TerminalType { get; set; } = "unknown";
+    public string TerminalType { get; private set; } = "unknown";
 
     /// <summary>
-    /// Gets or sets whether Sixel graphics protocol is supported.
+    /// Gets whether Sixel graphics protocol is supported.
     /// </summary>
-    public bool SupportsSixel { get; set; }
+    public bool SupportsSixel { get; private set; }
 
     /// <summary>
-    /// Gets or sets whether Kitty Graphics Protocol is supported.
+    /// Gets whether Kitty Graphics Protocol is supported.
     /// </summary>
-    public bool SupportsKittyGraphics { get; set; }
+    public bool SupportsKittyGraphics { get; private set; }
 
     /// <summary>
-    /// Gets or sets whether Unicode Braille characters are supported.
+    /// Gets whether Unicode Braille characters are supported.
     /// </summary>
-    public bool SupportsBraille { get; set; } = true; // Unicode is widely supported
+    public bool SupportsBraille { get; private set; } = true; // Unicode is widely supported
 
     /// <summary>
-    /// Gets or sets whether 24-bit true color is supported.
+    /// Gets whether 24-bit true color is supported.
     /// </summary>
-    public bool SupportsTrueColor { get; set; }
+    public bool SupportsTrueColor { get; private set; }
 
     /// <summary>
-    /// Gets or sets whether 256 color palette is supported.
+    /// Gets whether 256 color palette is supported.
     /// </summary>
-    public bool Supports256Color { get; set; }
+    public bool Supports256Color { get; private set; }
 
     /// <summary>
-    /// Gets or sets the terminal width in columns.
+    /// Gets the terminal width in columns.
     /// </summary>
-    public int Width { get; set; }
+    public int Width { get; private set; }
 
     /// <summary>
-    /// Gets or sets the terminal height in rows.
+    /// Gets the terminal height in rows.
     /// </summary>
-    public int Height { get; set; }
+    public int Height { get; private set; }
 
     /// <summary>
     /// Detects terminal capabilities from the environment.
@@ -60,7 +60,7 @@ public class TerminalCapabilities
         var termProgram = Environment.GetEnvironmentVariable("TERM_PROGRAM") ?? "";
         var colorTerm = Environment.GetEnvironmentVariable("COLORTERM") ?? "";
 
-        caps.TerminalType = termProgram != "" ? termProgram : term;
+        caps.TerminalType = !string.IsNullOrEmpty(termProgram) ? termProgram : term;
 
         // Parse TERM environment variable for capabilities
         caps.ParseTermVariable(term);
@@ -80,11 +80,16 @@ public class TerminalCapabilities
             caps.SupportsSixel = true;
         }
 
-        // Detect true color support
+        // Detect true color support - prioritize explicit COLORTERM variable
         if (colorTerm.Contains("truecolor", StringComparison.OrdinalIgnoreCase) ||
             colorTerm.Contains("24bit", StringComparison.OrdinalIgnoreCase))
         {
             caps.SupportsTrueColor = true;
+        }
+        else
+        {
+            // If COLORTERM doesn't explicitly indicate true color, check TERM heuristics
+            caps.DetectTrueColorFromTerm(term);
         }
 
         // Get terminal dimensions
@@ -104,7 +109,13 @@ public class TerminalCapabilities
         {
             Supports256Color = true;
         }
+    }
 
+    /// <summary>
+    /// Detects true color support based on TERM heuristics.
+    /// </summary>
+    private void DetectTrueColorFromTerm(string term)
+    {
         // Common terminals with true color support
         if (term.StartsWith("xterm", StringComparison.OrdinalIgnoreCase) ||
             term.StartsWith("screen", StringComparison.OrdinalIgnoreCase) ||
@@ -128,9 +139,10 @@ public class TerminalCapabilities
             Width = System.Console.WindowWidth;
             Height = System.Console.WindowHeight;
         }
-        catch
+        catch (System.IO.IOException)
         {
             // Fallback to common default dimensions if detection fails
+            // (e.g., during output redirection)
             Width = 80;
             Height = 24;
         }
