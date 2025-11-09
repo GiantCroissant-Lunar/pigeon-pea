@@ -10,35 +10,39 @@ namespace PigeonPea.Shared.Tests;
 /// <summary>
 /// Tests for ServiceCollectionExtensions to verify DI configuration.
 /// </summary>
-public class ServiceCollectionExtensionsTests
+public class ServiceCollectionExtensionsTests : IDisposable
 {
+    private readonly ServiceProvider _serviceProvider;
+
+    public ServiceCollectionExtensionsTests()
+    {
+        var services = new ServiceCollection();
+        services.AddPigeonPeaServices();
+        _serviceProvider = services.BuildServiceProvider();
+    }
+
+    public void Dispose()
+    {
+        _serviceProvider.Dispose();
+    }
+
     [Fact]
     public void AddPigeonPeaServices_RegistersMessagePipe()
     {
-        // Arrange
-        var services = new ServiceCollection();
-
-        // Act
-        services.AddPigeonPeaServices();
-        var serviceProvider = services.BuildServiceProvider();
+        // Arrange & Act
+        var publisher = _serviceProvider.GetService<IPublisher<PlayerDamagedEvent>>();
 
         // Assert - Verify IPublisher can be resolved
-        var publisher = serviceProvider.GetService<IPublisher<PlayerDamagedEvent>>();
         publisher.Should().NotBeNull("IPublisher should be registered");
     }
 
     [Fact]
     public void AddPigeonPeaServices_RegistersSubscriber()
     {
-        // Arrange
-        var services = new ServiceCollection();
-
-        // Act
-        services.AddPigeonPeaServices();
-        var serviceProvider = services.BuildServiceProvider();
+        // Arrange & Act
+        var subscriber = _serviceProvider.GetService<ISubscriber<PlayerDamagedEvent>>();
 
         // Assert - Verify ISubscriber can be resolved
-        var subscriber = serviceProvider.GetService<ISubscriber<PlayerDamagedEvent>>();
         subscriber.Should().NotBeNull("ISubscriber should be registered");
     }
 
@@ -46,12 +50,8 @@ public class ServiceCollectionExtensionsTests
     public void MessagePipe_PublishSubscribe_Works()
     {
         // Arrange
-        var services = new ServiceCollection();
-        services.AddPigeonPeaServices();
-        var serviceProvider = services.BuildServiceProvider();
-
-        var publisher = serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
-        var subscriber = serviceProvider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
+        var publisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
+        var subscriber = _serviceProvider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
 
         PlayerDamagedEvent? receivedEvent = null;
         var subscription = subscriber.Subscribe(e => receivedEvent = e);
@@ -67,9 +67,7 @@ public class ServiceCollectionExtensionsTests
 
         // Assert
         receivedEvent.Should().NotBeNull("Event should be received");
-        receivedEvent!.Value.Damage.Should().Be(10);
-        receivedEvent!.Value.RemainingHealth.Should().Be(90);
-        receivedEvent!.Value.Source.Should().Be("Goblin");
+        receivedEvent!.Value.Should().BeEquivalentTo(expectedEvent);
 
         subscription.Dispose();
     }
@@ -78,15 +76,11 @@ public class ServiceCollectionExtensionsTests
     public void MessagePipe_MultipleEventTypes_Work()
     {
         // Arrange
-        var services = new ServiceCollection();
-        services.AddPigeonPeaServices();
-        var serviceProvider = services.BuildServiceProvider();
+        var damagePublisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
+        var damageSubscriber = _serviceProvider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
 
-        var damagePublisher = serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
-        var damageSubscriber = serviceProvider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
-
-        var itemPublisher = serviceProvider.GetRequiredService<IPublisher<ItemPickedUpEvent>>();
-        var itemSubscriber = serviceProvider.GetRequiredService<ISubscriber<ItemPickedUpEvent>>();
+        var itemPublisher = _serviceProvider.GetRequiredService<IPublisher<ItemPickedUpEvent>>();
+        var itemSubscriber = _serviceProvider.GetRequiredService<ISubscriber<ItemPickedUpEvent>>();
 
         PlayerDamagedEvent? receivedDamageEvent = null;
         ItemPickedUpEvent? receivedItemEvent = null;
@@ -94,16 +88,19 @@ public class ServiceCollectionExtensionsTests
         var damageSub = damageSubscriber.Subscribe(e => receivedDamageEvent = e);
         var itemSub = itemSubscriber.Subscribe(e => receivedItemEvent = e);
 
+        var expectedDamageEvent = new PlayerDamagedEvent { Damage = 5, RemainingHealth = 95, Source = "Trap" };
+        var expectedItemEvent = new ItemPickedUpEvent { ItemName = "Health Potion", ItemType = "Consumable" };
+
         // Act
-        damagePublisher.Publish(new PlayerDamagedEvent { Damage = 5, RemainingHealth = 95, Source = "Trap" });
-        itemPublisher.Publish(new ItemPickedUpEvent { ItemName = "Health Potion", ItemType = "Consumable" });
+        damagePublisher.Publish(expectedDamageEvent);
+        itemPublisher.Publish(expectedItemEvent);
 
         // Assert
         receivedDamageEvent.Should().NotBeNull();
-        receivedDamageEvent!.Value.Damage.Should().Be(5);
+        receivedDamageEvent!.Value.Should().BeEquivalentTo(expectedDamageEvent);
 
         receivedItemEvent.Should().NotBeNull();
-        receivedItemEvent!.Value.ItemName.Should().Be("Health Potion");
+        receivedItemEvent!.Value.Should().BeEquivalentTo(expectedItemEvent);
 
         damageSub.Dispose();
         itemSub.Dispose();
@@ -113,12 +110,8 @@ public class ServiceCollectionExtensionsTests
     public void MessagePipe_MultipleSubscribers_AllReceiveEvent()
     {
         // Arrange
-        var services = new ServiceCollection();
-        services.AddPigeonPeaServices();
-        var serviceProvider = services.BuildServiceProvider();
-
-        var publisher = serviceProvider.GetRequiredService<IPublisher<GameStateChangedEvent>>();
-        var subscriber = serviceProvider.GetRequiredService<ISubscriber<GameStateChangedEvent>>();
+        var publisher = _serviceProvider.GetRequiredService<IPublisher<GameStateChangedEvent>>();
+        var subscriber = _serviceProvider.GetRequiredService<ISubscriber<GameStateChangedEvent>>();
 
         int receivedCount = 0;
         var sub1 = subscriber.Subscribe(_ => receivedCount++);
@@ -140,12 +133,8 @@ public class ServiceCollectionExtensionsTests
     public void MessagePipe_DisposedSubscription_DoesNotReceiveEvent()
     {
         // Arrange
-        var services = new ServiceCollection();
-        services.AddPigeonPeaServices();
-        var serviceProvider = services.BuildServiceProvider();
-
-        var publisher = serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
-        var subscriber = serviceProvider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
+        var publisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
+        var subscriber = _serviceProvider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
 
         int receivedCount = 0;
         var subscription = subscriber.Subscribe(_ => receivedCount++);
