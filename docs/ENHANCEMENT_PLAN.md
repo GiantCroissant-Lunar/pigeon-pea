@@ -97,6 +97,7 @@ All 8 planned core game logic features are now complete:
 **Version**: 2.0.0-rc.2.25502.107
 
 Use for:
+
 - Console app launch options
 - Renderer selection (e.g., `--renderer=kitty`)
 - Debug flags
@@ -145,6 +146,7 @@ The shared library should provide:
   - Viewport and camera abstractions
 
 Platform-specific implementations:
+
 - `console-app`: Implements with Terminal.Gui + graphics protocols
 - `windows-app`: Implements with Avalonia + SkiaSharp
 
@@ -155,16 +157,19 @@ Platform-specific implementations:
 **Approach**: PTY + asciinema recording
 
 **Tools**:
+
 - [node-pty](https://github.com/microsoft/node-pty) - Pseudoterminal support
 - [asciinema](https://asciinema.org/) - Terminal session recording
 
 **Use Cases**:
+
 - Automated UI regression tests
 - Render output verification
 - Performance profiling
 - Documentation/demonstration
 
 **Implementation**:
+
 ```bash
 # Record a test session
 asciinema rec --command "dotnet run" console-test.cast
@@ -178,15 +183,18 @@ asciinema play console-test.cast
 **Approach**: FFmpeg screen recording
 
 **Tools**:
+
 - [FFmpeg](https://ffmpeg.org/) - Video recording and processing
 
 **Use Cases**:
+
 - Visual regression testing
 - Performance benchmarking
 - Animation smoothness verification
 - Bug reproduction
 
 **Implementation**:
+
 ```bash
 # Record window for testing
 ffmpeg -f gdigrab -i "Pigeon Pea" -t 60 test-recording.mp4
@@ -283,7 +291,7 @@ ffmpeg -f gdigrab -i "Pigeon Pea" -t 60 test-recording.mp4
 
 ### Discussion Notes
 
-*Add discussion notes and decisions here as they emerge*
+_Add discussion notes and decisions here as they emerge_
 
 ## References
 

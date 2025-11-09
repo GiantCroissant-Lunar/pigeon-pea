@@ -20,7 +20,7 @@ function runSimpleTest() {
     cols: 80,
     rows: 24,
     cwd: process.cwd(),
-    env: process.env
+    env: process.env,
   });
 
   let output = '';
@@ -41,9 +41,9 @@ function runSimpleTest() {
   ptyProcess.onExit(({ exitCode, signal }) => {
     clearTimeout(safetyTimeout); // Clear the safety timeout to prevent the script from hanging.
     console.log(`\nPTY process exited with code ${exitCode}, signal ${signal}`);
-    
+
     // A more robust check for specific output.
-    if (output.includes("Hello from PTY test")) {
+    if (output.includes('Hello from PTY test')) {
       console.log('✓ PTY spawn test passed: Received expected output from spawned process');
       process.exit(0);
     } else {
