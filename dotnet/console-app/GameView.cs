@@ -1,6 +1,7 @@
 using Terminal.Gui;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
+using PigeonPea.Console.Rendering;
 using System;
 using GuiAttribute = Terminal.Gui.Attribute;
 using SRColor = SadRogue.Primitives.Color;
@@ -27,7 +28,7 @@ public class GameView : View
         _renderer = terminalCaps switch
         {
             _ when terminalCaps.SupportsKittyGraphics => new KittyGraphicsRenderer(),
-            _ when terminalCaps.SupportsSixel => new SixelRenderer(),
+            _ when terminalCaps.SupportsSixel => new SixelRendererStub(),
             _ when terminalCaps.SupportsBraille => new BrailleRenderer(),
             _ => new AsciiRenderer()
         };
