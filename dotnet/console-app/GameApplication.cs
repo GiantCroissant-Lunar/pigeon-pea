@@ -56,7 +56,7 @@ public class GameApplication : Toplevel
         Add(statusBar);
 
         // Handle keyboard input
-        KeyPress += OnKeyPress;
+        KeyDown += OnKeyDown;
 
         // Game loop timer
         _gameTimer = new System.Timers.Timer(16); // ~60 FPS
@@ -86,26 +86,25 @@ public class GameApplication : Toplevel
         Application.MainLoop.Invoke(() =>
         {
             UpdateHud();
-            _gameView.SetNeedsDisplay();
+            _gameView.SetNeedsDraw();
         });
     }
 
-    private void OnKeyPress(KeyEventEventArgs e)
+    private void OnKeyDown(object? sender, Key e)
     {
-        Point? direction = e.KeyEvent.Key switch
+        Point? direction = e.KeyCode switch
         {
-            Key.CursorUp or Key.w => new Point(0, -1),
-            Key.CursorDown or Key.s => new Point(0, 1),
-            Key.CursorLeft or Key.a => new Point(-1, 0),
-            Key.CursorRight or Key.d => new Point(1, 0),
-            Key.q => null, // Will quit via Terminal.Gui default
+            KeyCode.CursorUp or KeyCode.W => new Point(0, -1),
+            KeyCode.CursorDown or KeyCode.S => new Point(0, 1),
+            KeyCode.CursorLeft or KeyCode.A => new Point(-1, 0),
+            KeyCode.CursorRight or KeyCode.D => new Point(1, 0),
+            KeyCode.Q => null, // Will quit via Terminal.Gui default
             _ => null
         };
 
         if (direction.HasValue)
         {
             _gameWorld.TryMovePlayer(direction.Value);
-            e.Handled = true;
         }
     }
 
