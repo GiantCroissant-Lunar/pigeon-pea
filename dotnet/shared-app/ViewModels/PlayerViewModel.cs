@@ -24,7 +24,12 @@ public class PlayerViewModel : ReactiveObject
     public int Health
     {
         get => _health;
-        set => this.RaiseAndSetIfChanged(ref _health, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _health, value);
+            this.RaisePropertyChanged(nameof(HealthDisplay));
+            this.RaisePropertyChanged(nameof(HealthPercentage));
+        }
     }
 
     /// <summary>
@@ -33,7 +38,12 @@ public class PlayerViewModel : ReactiveObject
     public int MaxHealth
     {
         get => _maxHealth;
-        set => this.RaiseAndSetIfChanged(ref _maxHealth, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _maxHealth, value);
+            this.RaisePropertyChanged(nameof(HealthDisplay));
+            this.RaisePropertyChanged(nameof(HealthPercentage));
+        }
     }
 
     /// <summary>
@@ -42,7 +52,11 @@ public class PlayerViewModel : ReactiveObject
     public int Level
     {
         get => _level;
-        set => this.RaiseAndSetIfChanged(ref _level, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _level, value);
+            this.RaisePropertyChanged(nameof(LevelDisplay));
+        }
     }
 
     /// <summary>

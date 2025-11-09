@@ -373,4 +373,109 @@ public class PlayerViewModelTests : IDisposable
         // Assert
         changeCount.Should().Be(0, "PropertyChanged should not fire when value is unchanged");
     }
+
+    [Fact]
+    public void Health_PropertyChanged_RaisesHealthDisplayNotification()
+    {
+        // Arrange
+        var viewModel = new PlayerViewModel { MaxHealth = 100 };
+        bool healthDisplayChanged = false;
+        viewModel.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(PlayerViewModel.HealthDisplay))
+            {
+                healthDisplayChanged = true;
+            }
+        };
+
+        // Act
+        viewModel.Health = 75;
+
+        // Assert
+        healthDisplayChanged.Should().BeTrue("HealthDisplay should be notified when Health changes");
+    }
+
+    [Fact]
+    public void Health_PropertyChanged_RaisesHealthPercentageNotification()
+    {
+        // Arrange
+        var viewModel = new PlayerViewModel { MaxHealth = 100 };
+        bool healthPercentageChanged = false;
+        viewModel.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(PlayerViewModel.HealthPercentage))
+            {
+                healthPercentageChanged = true;
+            }
+        };
+
+        // Act
+        viewModel.Health = 75;
+
+        // Assert
+        healthPercentageChanged.Should().BeTrue("HealthPercentage should be notified when Health changes");
+    }
+
+    [Fact]
+    public void MaxHealth_PropertyChanged_RaisesHealthDisplayNotification()
+    {
+        // Arrange
+        var viewModel = new PlayerViewModel { Health = 75 };
+        bool healthDisplayChanged = false;
+        viewModel.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(PlayerViewModel.HealthDisplay))
+            {
+                healthDisplayChanged = true;
+            }
+        };
+
+        // Act
+        viewModel.MaxHealth = 150;
+
+        // Assert
+        healthDisplayChanged.Should().BeTrue("HealthDisplay should be notified when MaxHealth changes");
+    }
+
+    [Fact]
+    public void MaxHealth_PropertyChanged_RaisesHealthPercentageNotification()
+    {
+        // Arrange
+        var viewModel = new PlayerViewModel { Health = 75 };
+        bool healthPercentageChanged = false;
+        viewModel.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(PlayerViewModel.HealthPercentage))
+            {
+                healthPercentageChanged = true;
+            }
+        };
+
+        // Act
+        viewModel.MaxHealth = 150;
+
+        // Assert
+        healthPercentageChanged.Should().BeTrue("HealthPercentage should be notified when MaxHealth changes");
+    }
+
+    [Fact]
+    public void Level_PropertyChanged_RaisesLevelDisplayNotification()
+    {
+        // Arrange
+        var viewModel = new PlayerViewModel();
+        bool levelDisplayChanged = false;
+        viewModel.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(PlayerViewModel.LevelDisplay))
+            {
+                levelDisplayChanged = true;
+            }
+        };
+
+        // Act
+        viewModel.Level = 10;
+
+        // Assert
+        levelDisplayChanged.Should().BeTrue("LevelDisplay should be notified when Level changes");
+    }
 }
