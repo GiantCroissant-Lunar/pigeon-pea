@@ -47,32 +47,52 @@ public class BrailleRenderer : IRenderer
             return;
         }
 
-        // Output all buffered characters
-        foreach (var kvp in _buffer)
+        try
         {
-            var (x, y) = kvp.Key;
-            var (glyph, fg, bg) = kvp.Value;
+            var sb = new System.Text.StringBuilder();
+            Color? lastFg = null;
+            Color? lastBg = null;
+            int lastX = -1, lastY = -1;
 
-            try
+            // Sort by position to optimize cursor movements and sequential writes
+            var sortedCells = _buffer.OrderBy(kvp => kvp.Key.y).ThenBy(kvp => kvp.Key.x);
+
+            foreach (var kvp in sortedCells)
             {
-                // Position cursor and write character with ANSI color codes
-                // Bounds checking is done by IsInViewport, but console window may have resized
-                if (x >= 0 && x < System.Console.WindowWidth && y >= 0 && y < System.Console.WindowHeight)
+                var (x, y) = kvp.Key;
+                var (glyph, fg, bg) = kvp.Value;
+
+                // Move cursor if not adjacent to the last character
+                if (y != lastY || x != lastX + 1)
                 {
-                    System.Console.SetCursorPosition(x, y);
-                    WriteWithColor(glyph, fg, bg);
+                    // Use 1-based ANSI cursor positioning
+                    sb.Append($"\x1b[{y + 1};{x + 1}H");
                 }
+
+                // Set colors if they have changed
+                if (fg != lastFg)
+                {
+                    sb.Append($"\x1b[38;2;{fg.R};{fg.G};{fg.B}m");
+                    lastFg = fg;
+                }
+                if (bg != lastBg)
+                {
+                    sb.Append($"\x1b[48;2;{bg.R};{bg.G};{bg.B}m");
+                    lastBg = bg;
+                }
+
+                sb.Append(glyph);
+                lastX = x;
+                lastY = y;
             }
-            catch (ArgumentOutOfRangeException)
-            {
-                // Console window was resized or coordinates are out of bounds
-                // Skip this character and continue
-            }
-            catch (System.IO.IOException)
-            {
-                // Console output was redirected or is unavailable
-                // Skip this character and continue
-            }
+
+            sb.Append("\x1b[0m"); // Reset colors at the very end
+            System.Console.Write(sb.ToString());
+        }
+        catch (System.IO.IOException)
+        {
+            // Console output was redirected or is unavailable
+            // Skip rendering and continue
         }
 
         _target.Present();
@@ -136,9 +156,9 @@ public class BrailleRenderer : IRenderer
         }
 
         // Fill entire viewport with empty Braille characters
-        for (int y = 0; y < _target.Height; y++)
+        for (int y = _viewport.Y; y < _viewport.Y + _viewport.Height; y++)
         {
-            for (int x = 0; x < _target.Width; x++)
+            for (int x = _viewport.X; x < _viewport.X + _viewport.Width; x++)
             {
                 _buffer[(x, y)] = (BraillePattern.Empty, color, color);
             }
@@ -233,17 +253,5 @@ public class BrailleRenderer : IRenderer
     {
         return x >= _viewport.X && x < _viewport.X + _viewport.Width &&
                y >= _viewport.Y && y < _viewport.Y + _viewport.Height;
-    }
-
-    /// <summary>
-    /// Writes a character to the console with ANSI color codes.
-    /// </summary>
-    private void WriteWithColor(char c, Color foreground, Color background)
-    {
-        // ANSI true color escape codes
-        // Foreground: ESC[38;2;r;g;bm
-        // Background: ESC[48;2;r;g;bm
-        // Combine all writes into a single output for better performance
-        System.Console.Write($"\x1b[38;2;{foreground.R};{foreground.G};{foreground.B}m\x1b[48;2;{background.R};{background.G};{background.B}m{c}\x1b[0m");
     }
 }
