@@ -3,8 +3,9 @@ using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
 using System;
 using GuiAttribute = Terminal.Gui.Attribute;
-using Rune = Terminal.Gui.Rune;
 using SRColor = SadRogue.Primitives.Color;
+using Arch.Core;
+using Arch.Core.Extensions;
 
 namespace PigeonPea.Console;
 
@@ -49,7 +50,8 @@ public class GameView : View
             {
                 var color = ConvertColor(renderable.Foreground);
                 Driver?.SetAttribute(new GuiAttribute(color, Color.Black));
-                AddRune(pos.Point.X, pos.Point.Y, (Rune)renderable.Glyph);
+                Driver?.Move(pos.Point.X, pos.Point.Y);
+                Driver?.AddStr(renderable.Glyph.ToString());
             }
         });
 

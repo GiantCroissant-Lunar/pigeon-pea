@@ -8,16 +8,19 @@ using GoRogue.Pathing;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using PigeonPea.Shared.Components;
-namespace PigeonPea.Shared;
+using PigeonPea.Shared.Rendering;
+using CTile = PigeonPea.Shared.Components.Tile;
+using RTile = PigeonPea.Shared.Rendering.Tile;
 
 /// <summary>
 /// Core game world managing ECS entities, map, and game state.
 /// </summary>
     public class GameWorld
-    {
-        public World EcsWorld { get; private set; }
-        public ISettableGridView<IGameObject> Map { get; private set; }
-        public Entity PlayerEntity { get; private set; }
+{
+    public World EcsWorld { get; private set; }
+    public ISettableGridView<IGameObject> Map { get; private set; }
+    public Entity PlayerEntity { get; private set; }
+    private readonly IRenderer? _renderer;
 
     public int Width { get; }
     public int Height { get; }
@@ -55,6 +58,13 @@ namespace PigeonPea.Shared;
         _pathfinder = new AStar(WalkabilityMap, Distance.Chebyshev);
 
         InitializeWorld();
+    }
+
+    // Compatibility constructor for rendering tests
+    public GameWorld(IRenderer renderer, int width, int height)
+        : this(width, height)
+    {
+        _renderer = renderer;
     }
 
     private void InitializeWorld()
@@ -106,7 +116,7 @@ namespace PigeonPea.Shared;
         EcsWorld.Create(
             new Position(x, y),
             new Renderable('.', Color.DarkGray),
-            new Tile(TileType.Floor)
+            new CTile(TileType.Floor)
         );
     }
 
@@ -115,7 +125,7 @@ namespace PigeonPea.Shared;
         EcsWorld.Create(
             new Position(x, y),
             new Renderable('#', Color.White),
-            new Tile(TileType.Wall),
+            new CTile(TileType.Wall),
             new BlocksMovement()
         );
     }
@@ -276,7 +286,7 @@ namespace PigeonPea.Shared;
     /// </summary>
     private void MarkTilesAsExplored(HashSet<Point> positions)
     {
-        var tileQuery = new QueryDescription().WithAll<Position, Tile>();
+        var tileQuery = new QueryDescription().WithAll<Position, CTile>();
 
         EcsWorld.Query(in tileQuery, (Entity entity, ref Position pos) =>
         {
@@ -598,5 +608,27 @@ namespace PigeonPea.Shared;
         UpdateFieldOfView();
         UpdateAI();
         CleanupDeadEntities();
+    }
+
+    // Compatibility render method for tests using Rendering.IRenderer
+    public void Render(Viewport viewport)
+    {
+        if (_renderer == null) return;
+
+        _renderer.SetViewport(viewport);
+        _renderer.BeginFrame();
+        _renderer.Clear(Color.Black);
+
+        var query = new QueryDescription().WithAll<Position, Renderable>();
+        EcsWorld.Query(in query, (ref Position pos, ref Renderable rend) =>
+        {
+            if (viewport.Contains(pos.Point.X, pos.Point.Y))
+            {
+                var tile = new RTile(rend.Glyph, rend.Foreground, rend.Background);
+                _renderer.DrawTile(pos.Point.X, pos.Point.Y, tile);
+            }
+        });
+
+        _renderer.EndFrame();
     }
 }
