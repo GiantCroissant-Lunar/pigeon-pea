@@ -82,14 +82,14 @@ This will:
 
 ### Parameters
 
-| Parameter            | Required | Default                        | Description                                      |
-| -------------------- | -------- | ------------------------------ | ------------------------------------------------ |
-| `-TestName`          | Yes      | -                              | Name for the test (used in output filename)      |
-| `-Duration`          | No       | 10                             | Recording duration in seconds                    |
-| `-OutputDir`         | No       | `recordings`                   | Directory for output files (relative to script)  |
-| `-WindowTitle`       | No       | `Pigeon Pea - Dungeon Crawler` | Window title to capture                          |
-| `-WindowsAppPath`    | No       | `../../dotnet/windows-app`     | Path to Windows app project (relative to script) |
-| `-StartupWaitSeconds`| No       | 3                              | Wait time for window initialization              |
+| Parameter             | Required | Default                        | Description                                      |
+| --------------------- | -------- | ------------------------------ | ------------------------------------------------ |
+| `-TestName`           | Yes      | -                              | Name for the test (used in output filename)      |
+| `-Duration`           | No       | 10                             | Recording duration in seconds                    |
+| `-OutputDir`          | No       | `recordings`                   | Directory for output files (relative to script)  |
+| `-WindowTitle`        | No       | `Pigeon Pea - Dungeon Crawler` | Window title to capture                          |
+| `-WindowsAppPath`     | No       | `../../dotnet/windows-app`     | Path to Windows app project (relative to script) |
+| `-StartupWaitSeconds` | No       | 3                              | Wait time for window initialization              |
 
 ## CI Integration
 

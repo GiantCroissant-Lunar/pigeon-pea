@@ -136,7 +136,7 @@ public class ImageComparator
                 var expectedRow = expectedAccessor.GetRowSpan(y);
                 var actualRow = actualAccessor.GetRowSpan(y);
                 var diffRow = diffAccessor.GetRowSpan(y);
-                
+
                 for (int x = 0; x < expectedAccessor.Width; x++)
                 {
                     var expectedPixel = expectedRow[x];

@@ -1,6 +1,5 @@
 using Terminal.Gui;
 using PigeonPea.Shared;
-using PigeonPea.Console.Rendering;
 using System;
 using System.CommandLine;
 
@@ -67,9 +66,8 @@ class Program
 
         // Display terminal information
         System.Console.WriteLine($"Terminal: {terminalInfo.TerminalType}");
-        System.Console.WriteLine($"Dimensions: {terminalInfo.Width}x{terminalInfo.Height}");
-        System.Console.WriteLine($"Supports Kitty Graphics: {terminalInfo.SupportsKittyGraphics}");
         System.Console.WriteLine($"Supports Sixel: {terminalInfo.SupportsSixel}");
+        System.Console.WriteLine($"Supports Kitty Graphics: {terminalInfo.SupportsKittyGraphics}");
         System.Console.WriteLine($"Supports Unicode Braille: {terminalInfo.SupportsBraille}");
         System.Console.WriteLine($"Supports True Color (24-bit): {terminalInfo.SupportsTrueColor}");
         System.Console.WriteLine($"Supports 256 Colors: {terminalInfo.Supports256Color}");

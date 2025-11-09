@@ -19,7 +19,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        _gameWorld = new GameWorld(new StubRenderer(), 80, 50);
+        _gameWorld = new GameWorld(80, 50);
 
         // Initialize game canvas
         GameCanvas.Initialize(_gameWorld);

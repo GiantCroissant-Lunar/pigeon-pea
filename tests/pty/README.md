@@ -26,6 +26,7 @@ npm install
 ```
 
 This will install:
+
 - `node-pty` - Node.js library for spawning pseudoterminals
 
 ## Usage
@@ -41,6 +42,7 @@ This runs `test-pty.js`, which performs a basic PTY spawn test to verify the set
 ### Test Script
 
 The `test-pty.js` script demonstrates:
+
 - Spawning a shell process in a PTY
 - Capturing output from the PTY
 - Sending commands to the PTY
