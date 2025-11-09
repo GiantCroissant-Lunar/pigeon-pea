@@ -53,9 +53,26 @@ public class BrailleRenderer : IRenderer
             var (x, y) = kvp.Key;
             var (glyph, fg, bg) = kvp.Value;
 
-            // Position cursor and write character with ANSI color codes
-            System.Console.SetCursorPosition(x, y);
-            WriteWithColor(glyph, fg, bg);
+            try
+            {
+                // Position cursor and write character with ANSI color codes
+                // Bounds checking is done by IsInViewport, but console window may have resized
+                if (x >= 0 && x < System.Console.WindowWidth && y >= 0 && y < System.Console.WindowHeight)
+                {
+                    System.Console.SetCursorPosition(x, y);
+                    WriteWithColor(glyph, fg, bg);
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // Console window was resized or coordinates are out of bounds
+                // Skip this character and continue
+            }
+            catch (System.IO.IOException)
+            {
+                // Console output was redirected or is unavailable
+                // Skip this character and continue
+            }
         }
 
         _target.Present();
