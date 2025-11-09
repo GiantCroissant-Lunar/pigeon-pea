@@ -2,6 +2,9 @@ using Terminal.Gui;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
 using System;
+using GuiAttribute = Terminal.Gui.Attribute;
+using Rune = Terminal.Gui.Rune;
+using SRColor = SadRogue.Primitives.Color;
 
 namespace PigeonPea.Console;
 
@@ -32,7 +35,7 @@ public class GameView : View
     protected override bool OnDrawingContent()
     {
         // Clear background
-        Driver?.SetAttribute(new Attribute(Color.White, Color.Black));
+        Driver?.SetAttribute(new GuiAttribute(Color.White, Color.Black));
 
         // Get viewport bounds
         var viewport = Viewport;
@@ -45,7 +48,7 @@ public class GameView : View
                 pos.Point.Y >= 0 && pos.Point.Y < viewport.Height)
             {
                 var color = ConvertColor(renderable.Foreground);
-                Driver?.SetAttribute(new Attribute(color, Color.Black));
+                Driver?.SetAttribute(new GuiAttribute(color, Color.Black));
                 AddRune(pos.Point.X, pos.Point.Y, (Rune)renderable.Glyph);
             }
         });
@@ -56,18 +59,15 @@ public class GameView : View
         return true;
     }
 
-    private Color ConvertColor(SadRogue.Primitives.Color color)
+    private Color ConvertColor(SRColor color)
     {
-        // Map to nearest Terminal.Gui color
-        return color.Name switch
-        {
-            "Yellow" => Color.Yellow,
-            "Red" => Color.Red,
-            "Green" => Color.Green,
-            "Blue" => Color.Blue,
-            "White" => Color.White,
-            "Black" => Color.Black,
-            _ => Color.White
-        };
+        // Map a few common colors directly; default to White
+        if (color == SRColor.Yellow) return Color.Yellow;
+        if (color == SRColor.Red) return Color.Red;
+        if (color == SRColor.Green) return Color.Green;
+        if (color == SRColor.Blue) return Color.Blue;
+        if (color == SRColor.White) return Color.White;
+        if (color == SRColor.Black) return Color.Black;
+        return Color.White;
     }
 }
