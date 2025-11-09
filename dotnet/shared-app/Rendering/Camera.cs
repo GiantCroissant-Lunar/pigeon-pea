@@ -20,25 +20,31 @@ public class Camera
     public Entity? FollowTarget { get; set; }
 
     /// <summary>
-    /// Gets or sets the viewport dimensions for the camera.
+    /// Gets or sets the viewport width in grid cells.
     /// </summary>
-    public Viewport Viewport { get; set; }
+    public int ViewportWidth { get; set; }
+
+    /// <summary>
+    /// Gets or sets the viewport height in grid cells.
+    /// </summary>
+    public int ViewportHeight { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Camera"/> class.
     /// </summary>
-    public Camera()
+    public Camera() : this(80, 24)
     {
-        Viewport = new Viewport(0, 0, 80, 24);
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Camera"/> class with specified viewport.
+    /// Initializes a new instance of the <see cref="Camera"/> class with specified viewport dimensions.
     /// </summary>
-    /// <param name="viewport">The viewport to use for the camera.</param>
-    public Camera(Viewport viewport)
+    /// <param name="viewportWidth">The width of the viewport in grid cells.</param>
+    /// <param name="viewportHeight">The height of the viewport in grid cells.</param>
+    public Camera(int viewportWidth, int viewportHeight)
     {
-        Viewport = viewport;
+        ViewportWidth = viewportWidth;
+        ViewportHeight = viewportHeight;
     }
 
     /// <summary>
@@ -54,8 +60,8 @@ public class Camera
             if (world.TryGet(FollowTarget.Value, out Position targetPosition))
             {
                 // Center camera on target
-                int centerX = targetPosition.Point.X - Viewport.Width / 2;
-                int centerY = targetPosition.Point.Y - Viewport.Height / 2;
+                int centerX = targetPosition.Point.X - ViewportWidth / 2;
+                int centerY = targetPosition.Point.Y - ViewportHeight / 2;
 
                 // Clamp camera position to map bounds
                 Position = ClampToMapBounds(new Point(centerX, centerY), mapBounds);
@@ -71,8 +77,8 @@ public class Camera
     /// <returns>The clamped camera position.</returns>
     private Point ClampToMapBounds(Point desiredPosition, Rectangle mapBounds)
     {
-        int maxCameraX = Math.Max(mapBounds.X, mapBounds.X + mapBounds.Width - Viewport.Width);
-        int maxCameraY = Math.Max(mapBounds.Y, mapBounds.Y + mapBounds.Height - Viewport.Height);
+        int maxCameraX = Math.Max(mapBounds.X, mapBounds.X + mapBounds.Width - ViewportWidth);
+        int maxCameraY = Math.Max(mapBounds.Y, mapBounds.Y + mapBounds.Height - ViewportHeight);
         
         int clampedX = Math.Clamp(desiredPosition.X, mapBounds.X, maxCameraX);
         int clampedY = Math.Clamp(desiredPosition.Y, mapBounds.Y, maxCameraY);
@@ -86,7 +92,7 @@ public class Camera
     /// <returns>A viewport positioned at the camera's current position.</returns>
     public Viewport GetViewport()
     {
-        return new Viewport(Position.X, Position.Y, Viewport.Width, Viewport.Height);
+        return new Viewport(Position.X, Position.Y, ViewportWidth, ViewportHeight);
     }
 
     /// <summary>

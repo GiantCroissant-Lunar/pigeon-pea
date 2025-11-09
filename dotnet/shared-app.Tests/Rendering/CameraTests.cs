@@ -32,24 +32,21 @@ public class CameraTests : IDisposable
         // Assert
         Assert.Equal(Point.None, camera.Position);
         Assert.Null(camera.FollowTarget);
-        Assert.Equal(80, camera.Viewport.Width);
-        Assert.Equal(24, camera.Viewport.Height);
+        Assert.Equal(80, camera.ViewportWidth);
+        Assert.Equal(24, camera.ViewportHeight);
     }
 
     [Fact]
-    public void Camera_ViewportConstructor_InitializesCorrectly()
+    public void Camera_ConstructorWithDimensions_InitializesCorrectly()
     {
-        // Arrange
-        var viewport = new Viewport(0, 0, 100, 50);
-
-        // Act
-        var camera = new Camera(viewport);
+        // Arrange & Act
+        var camera = new Camera(100, 50);
 
         // Assert
         Assert.Equal(Point.None, camera.Position);
         Assert.Null(camera.FollowTarget);
-        Assert.Equal(100, camera.Viewport.Width);
-        Assert.Equal(50, camera.Viewport.Height);
+        Assert.Equal(100, camera.ViewportWidth);
+        Assert.Equal(50, camera.ViewportHeight);
     }
 
     [Fact]
@@ -101,7 +98,7 @@ public class CameraTests : IDisposable
     public void Camera_Update_WithFollowTarget_CentersOnTarget()
     {
         // Arrange
-        var camera = new Camera(new Viewport(0, 0, 20, 10));
+        var camera = new Camera(20, 10);
         var entity = _world.Create(new Position(50, 50));
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
@@ -120,7 +117,7 @@ public class CameraTests : IDisposable
     public void Camera_Update_ClampsToMapBounds_Left()
     {
         // Arrange
-        var camera = new Camera(new Viewport(0, 0, 20, 10));
+        var camera = new Camera(20, 10);
         var entity = _world.Create(new Position(5, 50)); // Near left edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
@@ -137,7 +134,7 @@ public class CameraTests : IDisposable
     public void Camera_Update_ClampsToMapBounds_Top()
     {
         // Arrange
-        var camera = new Camera(new Viewport(0, 0, 20, 10));
+        var camera = new Camera(20, 10);
         var entity = _world.Create(new Position(50, 3)); // Near top edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
@@ -154,7 +151,7 @@ public class CameraTests : IDisposable
     public void Camera_Update_ClampsToMapBounds_Right()
     {
         // Arrange
-        var camera = new Camera(new Viewport(0, 0, 20, 10));
+        var camera = new Camera(20, 10);
         var entity = _world.Create(new Position(95, 50)); // Near right edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
@@ -171,7 +168,7 @@ public class CameraTests : IDisposable
     public void Camera_Update_ClampsToMapBounds_Bottom()
     {
         // Arrange
-        var camera = new Camera(new Viewport(0, 0, 20, 10));
+        var camera = new Camera(20, 10);
         var entity = _world.Create(new Position(50, 96)); // Near bottom edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
@@ -223,7 +220,7 @@ public class CameraTests : IDisposable
     public void Camera_GetViewport_ReturnsViewportAtCameraPosition()
     {
         // Arrange
-        var camera = new Camera(new Viewport(0, 0, 80, 24));
+        var camera = new Camera(80, 24);
         camera.Position = new Point(10, 20);
 
         // Act
@@ -240,7 +237,7 @@ public class CameraTests : IDisposable
     public void Camera_Update_WithSmallMap_HandlesGracefully()
     {
         // Arrange
-        var camera = new Camera(new Viewport(0, 0, 50, 30));
+        var camera = new Camera(50, 30);
         var entity = _world.Create(new Position(10, 10));
         camera.Follow(entity);
         // Map is smaller than viewport
@@ -259,7 +256,7 @@ public class CameraTests : IDisposable
     public void Camera_Update_WithNegativeMapBounds_WorksCorrectly()
     {
         // Arrange
-        var camera = new Camera(new Viewport(0, 0, 20, 10));
+        var camera = new Camera(20, 10);
         var entity = _world.Create(new Position(0, 0));
         camera.Follow(entity);
         var mapBounds = new Rectangle(-50, -50, 100, 100);
