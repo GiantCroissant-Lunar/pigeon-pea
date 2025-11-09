@@ -3,53 +3,51 @@ using PigeonPea.Shared;
 using PigeonPea.Console.Rendering;
 using System;
 using System.CommandLine;
-using System.Threading.Tasks;
 
 namespace PigeonPea.Console;
 
 class Program
 {
-    static async Task<int> Main(string[] args)
+    static int Main(string[] args)
     {
+        var rendererOption = new Option<string>("--renderer")
+        {
+            Description = "Renderer to use (auto, kitty, sixel, braille, ascii)",
+            DefaultValueFactory = _ => "auto"
+        };
+
+        var debugOption = new Option<bool>("--debug")
+        {
+            Description = "Enable debug mode"
+        };
+
+        var widthOption = new Option<int?>("--width")
+        {
+            Description = "Window width in characters"
+        };
+
+        var heightOption = new Option<int?>("--height")
+        {
+            Description = "Window height in characters"
+        };
+
         var rootCommand = new RootCommand("Pigeon Pea - Roguelike Dungeon Crawler");
+        rootCommand.Add(rendererOption);
+        rootCommand.Add(debugOption);
+        rootCommand.Add(widthOption);
+        rootCommand.Add(heightOption);
 
-        var rendererOption = new Option<string>(
-            name: "--renderer",
-            description: "Renderer to use (auto, kitty, sixel, braille, ascii)",
-            getDefaultValue: () => "auto"
-        );
-        rootCommand.AddOption(rendererOption);
+        rootCommand.SetAction((parseResult) =>
+        {
+            var renderer = parseResult.GetValue(rendererOption);
+            var debug = parseResult.GetValue(debugOption);
+            var width = parseResult.GetValue(widthOption);
+            var height = parseResult.GetValue(heightOption);
 
-        var debugOption = new Option<bool>(
-            name: "--debug",
-            description: "Enable debug mode"
-        );
-        rootCommand.AddOption(debugOption);
+            RunGame(renderer!, debug, width, height);
+        });
 
-        var widthOption = new Option<int?>(
-            name: "--width",
-            description: "Window width in characters"
-        );
-        rootCommand.AddOption(widthOption);
-
-        var heightOption = new Option<int?>(
-            name: "--height",
-            description: "Window height in characters"
-        );
-        rootCommand.AddOption(heightOption);
-
-        rootCommand.SetHandler(
-            (renderer, debug, width, height) =>
-            {
-                RunGame(renderer, debug, width, height);
-            },
-            rendererOption,
-            debugOption,
-            widthOption,
-            heightOption
-        );
-
-        return await rootCommand.InvokeAsync(args);
+        return rootCommand.Parse(args).Invoke();
     }
 
     static void RunGame(string renderer, bool debug, int? width, int? height)
