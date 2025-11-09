@@ -433,7 +433,7 @@ public class BrailleRendererTests
     [Theory]
     [InlineData(' ', '\u2800')] // Empty
     [InlineData('█', '\u28FF')] // Full
-    public void BrailleRenderer_ConvertToBraille_CommonCharacters(char input, char expected)
+    public void BrailleRenderer_ConvertToBraille_CommonCharacters(char input)
     {
         // This test verifies that common characters are mapped to expected Braille patterns
         // Arrange
