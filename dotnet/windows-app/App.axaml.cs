@@ -14,13 +14,13 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
-        
+
         // Set up dependency injection container
         var services = new ServiceCollection();
-        
+
         // Add MessagePipe and other Pigeon Pea services
         services.AddPigeonPeaServices();
-        
+
         // Build the service provider
         Services = services.BuildServiceProvider();
     }
