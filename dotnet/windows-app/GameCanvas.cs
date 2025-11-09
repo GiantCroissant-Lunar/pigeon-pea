@@ -48,10 +48,9 @@ public class GameCanvas : Control
         canvas.Clear(SKColors.Black);
 
         // Create paint for text rendering
+        using var font = new SKFont(_typeface, 16);
         using var paint = new SKPaint
         {
-            Typeface = _typeface,
-            TextSize = 16,
             IsAntialias = true
         };
 
@@ -59,7 +58,7 @@ public class GameCanvas : Control
         var query = new Arch.Core.QueryDescription().WithAll<Position, Renderable>();
         _gameWorld.EcsWorld.Query(in query, (ref Position pos, ref Renderable renderable) =>
         {
-            DrawGlyph(canvas, paint, pos.Point.X, pos.Point.Y,
+            DrawGlyph(canvas, font, paint, pos.Point.X, pos.Point.Y,
                      renderable.Glyph,
                      ConvertColor(renderable.Foreground),
                      ConvertColor(renderable.Background));
@@ -69,7 +68,7 @@ public class GameCanvas : Control
         // TODO: Apply FOV shading
     }
 
-    private void DrawGlyph(SKCanvas canvas, SKPaint paint, int x, int y,
+    private void DrawGlyph(SKCanvas canvas, SKFont font, SKPaint paint, int x, int y,
                           char glyph, SKColor foreground, SKColor background)
     {
         float pixelX = x * TileWidth;
@@ -80,10 +79,10 @@ public class GameCanvas : Control
         paint.Style = SKPaintStyle.Fill;
         canvas.DrawRect(pixelX, pixelY, TileWidth, TileHeight, paint);
 
-        // Draw glyph
+        // Draw glyph using modern SkiaSharp API (SKFont + DrawText overload)
         paint.Color = foreground;
         paint.Style = SKPaintStyle.Fill;
-        canvas.DrawText(glyph.ToString(), pixelX + 2, pixelY + 14, paint);
+        canvas.DrawText(glyph.ToString(), pixelX + 2, pixelY + 14, SKTextAlign.Left, font, paint);
     }
 
     private SKColor ConvertColor(SadRogue.Primitives.Color color)
