@@ -27,10 +27,10 @@ public class GameView : View
         // Select best available renderer
         _renderer = terminalCaps switch
         {
-            _ when terminalCaps.SupportsKittyGraphics => new KittyGraphicsRenderer(),
-            _ when terminalCaps.SupportsSixel => new SixelRendererStub(),
-            _ when terminalCaps.SupportsBraille => new BrailleRenderer(),
-            _ => new AsciiRenderer()
+            _ when terminalCaps.SupportsKittyGraphics => new KittyTerminalRenderer(),
+            _ when terminalCaps.SupportsSixel => new SixelTerminalRendererStub(),
+            _ when terminalCaps.SupportsBraille => new BrailleTerminalRenderer(),
+            _ => new AsciiTerminalRenderer()
         };
     }
 
