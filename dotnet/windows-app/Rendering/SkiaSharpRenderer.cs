@@ -8,8 +8,9 @@ namespace PigeonPea.Windows.Rendering;
 /// SkiaSharp-based renderer for the Windows app.
 /// Supports character/tile rendering with TrueColor support.
 /// </summary>
-public class SkiaSharpRenderer : IRenderer
+public class SkiaSharpRenderer : IRenderer, IDisposable
 {
+    private bool _disposed;
     private SkiaRenderTarget? _target;
     private SKCanvas? _canvas;
     private int _tileSize = 16;
@@ -54,6 +55,8 @@ public class SkiaSharpRenderer : IRenderer
     /// </summary>
     public void BeginFrame()
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+
         if (_canvas == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -67,6 +70,8 @@ public class SkiaSharpRenderer : IRenderer
     /// </summary>
     public void EndFrame()
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+
         if (_canvas == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -96,6 +101,8 @@ public class SkiaSharpRenderer : IRenderer
     /// <param name="tile">The tile to draw.</param>
     public void DrawTile(int x, int y, Tile tile)
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+
         if (_canvas == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -144,6 +151,8 @@ public class SkiaSharpRenderer : IRenderer
     /// <param name="background">The background color.</param>
     public void DrawText(int x, int y, string text, Color foreground, Color background)
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+
         if (_canvas == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -164,6 +173,8 @@ public class SkiaSharpRenderer : IRenderer
     /// <param name="color">The color to clear with.</param>
     public void Clear(Color color)
     {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+
         if (_canvas == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -201,5 +212,31 @@ public class SkiaSharpRenderer : IRenderer
     private static SKColor ToSKColor(Color color)
     {
         return new SKColor(color.R, color.G, color.B, color.A);
+    }
+
+    /// <summary>
+    /// Disposes of resources used by the renderer.
+    /// </summary>
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    /// <summary>
+    /// Disposes of managed and unmanaged resources.
+    /// </summary>
+    /// <param name="disposing">True if disposing managed resources.</param>
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed)
+            return;
+
+        if (disposing)
+        {
+            _typeface?.Dispose();
+        }
+
+        _disposed = true;
     }
 }
