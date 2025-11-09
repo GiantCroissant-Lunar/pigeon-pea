@@ -8,6 +8,27 @@ namespace PigeonPea.Console.Tests.Rendering;
 /// </summary>
 public class TerminalCapabilitiesTests
 {
+    /// <summary>
+    /// Helper class to manage scoped environment variable changes in tests.
+    /// </summary>
+    private class ScopedEnvironmentVariable : IDisposable
+    {
+        private readonly string _name;
+        private readonly string? _originalValue;
+
+        public ScopedEnvironmentVariable(string name, string? value)
+        {
+            _name = name;
+            _originalValue = Environment.GetEnvironmentVariable(name);
+            Environment.SetEnvironmentVariable(name, value);
+        }
+
+        public void Dispose()
+        {
+            Environment.SetEnvironmentVariable(_name, _originalValue);
+        }
+    }
+
     [Fact]
     public void Detect_ReturnsNonNullInstance()
     {
@@ -44,20 +65,13 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsKittyGraphics_WhenKittyWindowIdSet()
     {
         // Arrange
-        var originalKittyWindowId = Environment.GetEnvironmentVariable("KITTY_WINDOW_ID");
-        try
+        using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
         {
-            Environment.SetEnvironmentVariable("KITTY_WINDOW_ID", "1");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.SupportsKittyGraphics);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("KITTY_WINDOW_ID", originalKittyWindowId);
         }
     }
 
@@ -65,20 +79,13 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsKittyGraphics_WhenTermProgramIsKitty()
     {
         // Arrange
-        var originalTermProgram = Environment.GetEnvironmentVariable("TERM_PROGRAM");
-        try
+        using (new ScopedEnvironmentVariable("TERM_PROGRAM", "kitty"))
         {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", "kitty");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.SupportsKittyGraphics);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", originalTermProgram);
         }
     }
 
@@ -86,20 +93,13 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsSixel_WhenTermContainsSixel()
     {
         // Arrange
-        var originalTerm = Environment.GetEnvironmentVariable("TERM");
-        try
+        using (new ScopedEnvironmentVariable("TERM", "xterm-256color-sixel"))
         {
-            Environment.SetEnvironmentVariable("TERM", "xterm-256color-sixel");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.SupportsSixel);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM", originalTerm);
         }
     }
 
@@ -107,20 +107,13 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsSixel_WhenTermProgramIsMLTerm()
     {
         // Arrange
-        var originalTermProgram = Environment.GetEnvironmentVariable("TERM_PROGRAM");
-        try
+        using (new ScopedEnvironmentVariable("TERM_PROGRAM", "mlterm"))
         {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", "mlterm");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.SupportsSixel);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", originalTermProgram);
         }
     }
 
@@ -128,20 +121,13 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsSixel_WhenTermProgramIsWezTerm()
     {
         // Arrange
-        var originalTermProgram = Environment.GetEnvironmentVariable("TERM_PROGRAM");
-        try
+        using (new ScopedEnvironmentVariable("TERM_PROGRAM", "WezTerm"))
         {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", "WezTerm");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.SupportsSixel);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", originalTermProgram);
         }
     }
 
@@ -159,20 +145,13 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsTrueColor_WhenColorTermIsTruecolor()
     {
         // Arrange
-        var originalColorTerm = Environment.GetEnvironmentVariable("COLORTERM");
-        try
+        using (new ScopedEnvironmentVariable("COLORTERM", "truecolor"))
         {
-            Environment.SetEnvironmentVariable("COLORTERM", "truecolor");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.SupportsTrueColor);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("COLORTERM", originalColorTerm);
         }
     }
 
@@ -180,20 +159,13 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsTrueColor_WhenColorTermIs24bit()
     {
         // Arrange
-        var originalColorTerm = Environment.GetEnvironmentVariable("COLORTERM");
-        try
+        using (new ScopedEnvironmentVariable("COLORTERM", "24bit"))
         {
-            Environment.SetEnvironmentVariable("COLORTERM", "24bit");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.SupportsTrueColor);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("COLORTERM", originalColorTerm);
         }
     }
 
@@ -201,20 +173,13 @@ public class TerminalCapabilitiesTests
     public void Detect_Detects256Color_WhenTermContains256color()
     {
         // Arrange
-        var originalTerm = Environment.GetEnvironmentVariable("TERM");
-        try
+        using (new ScopedEnvironmentVariable("TERM", "xterm-256color"))
         {
-            Environment.SetEnvironmentVariable("TERM", "xterm-256color");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.Supports256Color);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM", originalTerm);
         }
     }
 
@@ -222,21 +187,14 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsTrueColor_WhenXterm256color()
     {
         // Arrange
-        var originalTerm = Environment.GetEnvironmentVariable("TERM");
-        try
+        using (new ScopedEnvironmentVariable("TERM", "xterm-256color"))
         {
-            Environment.SetEnvironmentVariable("TERM", "xterm-256color");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.Supports256Color);
             Assert.True(caps.SupportsTrueColor);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM", originalTerm);
         }
     }
 
@@ -244,21 +202,14 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsTrueColor_WhenScreen256color()
     {
         // Arrange
-        var originalTerm = Environment.GetEnvironmentVariable("TERM");
-        try
+        using (new ScopedEnvironmentVariable("TERM", "screen-256color"))
         {
-            Environment.SetEnvironmentVariable("TERM", "screen-256color");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.True(caps.Supports256Color);
             Assert.True(caps.SupportsTrueColor);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM", originalTerm);
         }
     }
 
@@ -266,11 +217,8 @@ public class TerminalCapabilitiesTests
     public void Detect_DetectsTrueColor_WhenTmux256color()
     {
         // Arrange
-        var originalTerm = Environment.GetEnvironmentVariable("TERM");
-        try
+        using (new ScopedEnvironmentVariable("TERM", "tmux-256color"))
         {
-            Environment.SetEnvironmentVariable("TERM", "tmux-256color");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
@@ -278,33 +226,20 @@ public class TerminalCapabilitiesTests
             Assert.True(caps.Supports256Color);
             Assert.True(caps.SupportsTrueColor);
         }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM", originalTerm);
-        }
     }
 
     [Fact]
     public void Detect_UsesTermProgram_WhenAvailable()
     {
         // Arrange
-        var originalTermProgram = Environment.GetEnvironmentVariable("TERM_PROGRAM");
-        var originalTerm = Environment.GetEnvironmentVariable("TERM");
-        try
+        using (new ScopedEnvironmentVariable("TERM_PROGRAM", "iTerm.app"))
+        using (new ScopedEnvironmentVariable("TERM", "xterm-256color"))
         {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", "iTerm.app");
-            Environment.SetEnvironmentVariable("TERM", "xterm-256color");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.Equal("iTerm.app", caps.TerminalType);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", originalTermProgram);
-            Environment.SetEnvironmentVariable("TERM", originalTerm);
         }
     }
 
@@ -312,23 +247,14 @@ public class TerminalCapabilitiesTests
     public void Detect_UsesTerm_WhenTermProgramNotAvailable()
     {
         // Arrange
-        var originalTermProgram = Environment.GetEnvironmentVariable("TERM_PROGRAM");
-        var originalTerm = Environment.GetEnvironmentVariable("TERM");
-        try
+        using (new ScopedEnvironmentVariable("TERM_PROGRAM", ""))
+        using (new ScopedEnvironmentVariable("TERM", "xterm-256color"))
         {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", "");
-            Environment.SetEnvironmentVariable("TERM", "xterm-256color");
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
             // Assert
             Assert.Equal("xterm-256color", caps.TerminalType);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", originalTermProgram);
-            Environment.SetEnvironmentVariable("TERM", originalTerm);
         }
     }
 
@@ -336,17 +262,11 @@ public class TerminalCapabilitiesTests
     public void Detect_HandlesMinimalEnvironment()
     {
         // Arrange
-        var originalTermProgram = Environment.GetEnvironmentVariable("TERM_PROGRAM");
-        var originalTerm = Environment.GetEnvironmentVariable("TERM");
-        var originalColorTerm = Environment.GetEnvironmentVariable("COLORTERM");
-        var originalKittyWindowId = Environment.GetEnvironmentVariable("KITTY_WINDOW_ID");
-        try
+        using (new ScopedEnvironmentVariable("TERM_PROGRAM", ""))
+        using (new ScopedEnvironmentVariable("TERM", ""))
+        using (new ScopedEnvironmentVariable("COLORTERM", ""))
+        using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", null))
         {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", "");
-            Environment.SetEnvironmentVariable("TERM", "");
-            Environment.SetEnvironmentVariable("COLORTERM", "");
-            Environment.SetEnvironmentVariable("KITTY_WINDOW_ID", null);
-
             // Act
             var caps = TerminalCapabilities.Detect();
 
@@ -355,13 +275,6 @@ public class TerminalCapabilitiesTests
             Assert.True(caps.SupportsBraille); // Default to true
             Assert.False(caps.SupportsKittyGraphics);
             Assert.False(caps.SupportsSixel);
-        }
-        finally
-        {
-            Environment.SetEnvironmentVariable("TERM_PROGRAM", originalTermProgram);
-            Environment.SetEnvironmentVariable("TERM", originalTerm);
-            Environment.SetEnvironmentVariable("COLORTERM", originalColorTerm);
-            Environment.SetEnvironmentVariable("KITTY_WINDOW_ID", originalKittyWindowId);
         }
     }
 
