@@ -21,7 +21,8 @@ public class AsciiTerminalRenderer : ITerminalRenderer
 }
 
 /// <summary>
-/// Braille Unicode renderer for higher resolution.
+/// Stub Braille renderer for ITerminalRenderer interface (Terminal.Gui integration).
+/// The full IRenderer implementation is in Rendering/BrailleRenderer.cs.
 /// </summary>
 public class BrailleTerminalRenderer : ITerminalRenderer
 {
