@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# NPM
+npm-debug.log*
+package-lock.json
+
+# Test outputs
+recordings/
+*.cast
+
+# Temporary files
+*.tmp
+*.log

@@ -1,0 +1,52 @@
+name: Console Visual Tests
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  console-pty-tests:
+    runs-on: ubuntu-latest
+    name: Console PTY Tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install node-pty dependencies
+        working-directory: tests/pty
+        run: npm install
+
+      - name: Run simple PTY spawn test
+        working-directory: tests/pty
+        run: npm test
+
+      - name: Install asciinema (optional)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y asciinema
+        continue-on-error: true
+
+      - name: Upload test artifacts on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pty-test-outputs
+          path: |
+            tests/pty/recordings/
+            tests/pty/*.log
+          retention-days: 7
