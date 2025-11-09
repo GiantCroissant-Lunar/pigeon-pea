@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# NPM
+npm-debug.log*
+
+# Test outputs
+recordings/
+*.cast
+
+# Temporary files
+*.tmp
+*.log
