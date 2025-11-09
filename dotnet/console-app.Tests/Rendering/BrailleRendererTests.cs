@@ -497,5 +497,117 @@ public class BrailleRendererTests
         Assert.True(target.PresentCalled);
     }
 
+    [Fact]
+    public void BrailleRenderer_EndFrame_ProducesCorrectANSIOutput()
+    {
+        // Arrange
+        var renderer = new BrailleRenderer();
+        var target = new MockRenderTarget(80, 24);
+        renderer.Initialize(target);
+
+        var originalOut = System.Console.Out;
+        var writer = new System.IO.StringWriter();
+        System.Console.SetOut(writer);
+
+        try
+        {
+            // Act
+            renderer.BeginFrame();
+            renderer.DrawTile(0, 0, new Tile('@', new Color(255, 255, 0), new Color(0, 0, 0)));
+            renderer.EndFrame();
+
+            var output = writer.ToString();
+
+            // Assert - Verify output contains expected ANSI codes and Braille character
+            Assert.Contains("\x1b[1;1H", output); // Cursor position
+            Assert.Contains("\x1b[38;2;255;255;0m", output); // Foreground color (yellow)
+            Assert.Contains("\x1b[48;2;0;0;0m", output); // Background color (black)
+            Assert.Contains("\x1b[0m", output); // Reset at end
+            // Should contain a Braille character (the converted '@' which maps to specific pattern)
+            Assert.True(output.Length > 0, "Output should not be empty");
+        }
+        finally
+        {
+            System.Console.SetOut(originalOut);
+        }
+    }
+
+    [Fact]
+    public void BrailleRenderer_EndFrame_OptimizesColorChanges()
+    {
+        // Arrange
+        var renderer = new BrailleRenderer();
+        var target = new MockRenderTarget(80, 24);
+        renderer.Initialize(target);
+
+        var originalOut = System.Console.Out;
+        var writer = new System.IO.StringWriter();
+        System.Console.SetOut(writer);
+
+        try
+        {
+            // Act - Draw three characters with same color
+            renderer.BeginFrame();
+            renderer.DrawTile(0, 0, new Tile('A', Color.White, Color.Black));
+            renderer.DrawTile(1, 0, new Tile('B', Color.White, Color.Black));
+            renderer.DrawTile(2, 0, new Tile('C', Color.White, Color.Black));
+            renderer.EndFrame();
+
+            var output = writer.ToString();
+
+            // Assert - Color should be set once, not three times
+            var fgColorCount = System.Text.RegularExpressions.Regex.Matches(output, @"\x1b\[38;2;255;255;255m").Count;
+            var bgColorCount = System.Text.RegularExpressions.Regex.Matches(output, @"\x1b\[48;2;0;0;0m").Count;
+
+            Assert.Equal(1, fgColorCount); // Foreground color set only once
+            Assert.Equal(1, bgColorCount); // Background color set only once
+        }
+        finally
+        {
+            System.Console.SetOut(originalOut);
+        }
+    }
+
+    [Fact]
+    public void BrailleRenderer_Clear_RespectsViewport()
+    {
+        // Arrange
+        var renderer = new BrailleRenderer();
+        var target = new MockRenderTarget(80, 24);
+        renderer.Initialize(target);
+
+        // Set a smaller viewport
+        var viewport = new Viewport(10, 10, 20, 10);
+        renderer.SetViewport(viewport);
+
+        var originalOut = System.Console.Out;
+        var writer = new System.IO.StringWriter();
+        System.Console.SetOut(writer);
+
+        try
+        {
+            // Act
+            renderer.BeginFrame();
+            renderer.Clear(Color.Red);
+            renderer.EndFrame();
+
+            var output = writer.ToString();
+
+            // Assert - Should only output characters within viewport bounds
+            // Count cursor position commands to verify we're only writing to viewport area
+            var cursorMoves = System.Text.RegularExpressions.Regex.Matches(output, @"\x1b\[\d+;\d+H").Count;
+
+            // Should have at least some cursor movements for the viewport area
+            Assert.True(cursorMoves > 0);
+
+            // Verify positions are within viewport (checking first position)
+            Assert.Contains("\x1b[11;11H", output); // First position should be (10+1, 10+1) in 1-based coords
+        }
+        finally
+        {
+            System.Console.SetOut(originalOut);
+        }
+    }
+
     #endregion
 }
