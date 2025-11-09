@@ -34,16 +34,11 @@ public class GameCanvas : Control
 
         if (_gameWorld == null) return;
 
-        // Get Skia canvas via Avalonia 11 lease feature
-        if (context.TryGetFeature(out ISkiaSharpApiLeaseFeature? leaseFeature))
-        {
-            using var lease = leaseFeature.Lease();
-            var canvas = lease.SkCanvas;
-            if (canvas != null)
-            {
-                RenderGame(canvas);
-            }
-        }
+        // Fallback: clear background using Avalonia primitives to avoid API mismatch
+        context.FillRectangle(Brushes.Black, new Rect(Bounds.Size));
+
+        // TODO: Reintroduce Skia lease-based rendering when targeting an Avalonia API that supports it here.
+        // If needed, move Skia rendering into a DrawingContextImpl-aware path.
     }
 
     private void RenderGame(SKCanvas canvas)
