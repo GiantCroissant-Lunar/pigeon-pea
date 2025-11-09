@@ -28,7 +28,7 @@ public class GameView : View
         _renderer = terminalCaps switch
         {
             _ when terminalCaps.SupportsKittyGraphics => new KittyTerminalRenderer(),
-            _ when terminalCaps.SupportsSixel => new SixelRenderer(),
+            _ when terminalCaps.SupportsSixel => new SixelRendererStub(),
             _ when terminalCaps.SupportsBraille => new BrailleRenderer(),
             _ => new AsciiRenderer()
         };

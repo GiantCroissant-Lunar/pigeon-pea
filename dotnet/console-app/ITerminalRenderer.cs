@@ -31,9 +31,9 @@ public class BrailleRenderer : ITerminalRenderer
 }
 
 /// <summary>
-/// Sixel graphics protocol renderer.
+/// Sixel graphics protocol renderer (stub).
 /// </summary>
-public class SixelRenderer : ITerminalRenderer
+public class SixelRendererStub : ITerminalRenderer
 {
     public void Clear() { }
     public void DrawTile(int x, int y, char glyph, ConsoleColor foreground, ConsoleColor background) { }
