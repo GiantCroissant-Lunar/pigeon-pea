@@ -109,7 +109,7 @@ This will:
   uses: actions/upload-artifact@v3
   with:
     name: test-recordings
-    path: tests/windows/recordings/*.mp4
+    path: tests/windows/recordings/
 ```
 
 ## Output
