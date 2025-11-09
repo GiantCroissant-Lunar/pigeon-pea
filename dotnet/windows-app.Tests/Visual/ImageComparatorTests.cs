@@ -40,8 +40,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator();
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
-        var image2 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image2 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
 
         // Act
         var result = comparator.Compare(image1, image2);
@@ -52,9 +52,6 @@ public class ImageComparatorTests : IDisposable
         Assert.Equal(0, result.DifferentPixels);
         Assert.Equal(10000, result.TotalPixels);
         Assert.Null(result.Reason);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -62,8 +59,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator();
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
-        var image2 = CreateSolidColorImage(50, 50, new Rgba32(255, 0, 0, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image2 = CreateSolidColorImage(50, 50, new Rgba32(255, 0, 0, 255));
 
         // Act
         var result = comparator.Compare(image1, image2);
@@ -72,9 +69,6 @@ public class ImageComparatorTests : IDisposable
         Assert.False(result.Match);
         Assert.Equal(0.0, result.Similarity);
         Assert.Contains("Dimensions differ", result.Reason);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -82,8 +76,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator();
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
-        var image2 = CreateSolidColorImage(100, 100, new Rgba32(0, 255, 0, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image2 = CreateSolidColorImage(100, 100, new Rgba32(0, 255, 0, 255));
 
         // Act
         var result = comparator.Compare(image1, image2);
@@ -93,9 +87,6 @@ public class ImageComparatorTests : IDisposable
         Assert.Equal(0.0, result.Similarity);
         Assert.Equal(10000, result.DifferentPixels);
         Assert.Equal(10000, result.TotalPixels);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -103,8 +94,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator { PixelTolerance = 10 };
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(100, 100, 100, 255));
-        var image2 = CreateSolidColorImage(100, 100, new Rgba32(105, 105, 105, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(100, 100, 100, 255));
+        using var image2 = CreateSolidColorImage(100, 100, new Rgba32(105, 105, 105, 255));
 
         // Act
         var result = comparator.Compare(image1, image2);
@@ -113,9 +104,6 @@ public class ImageComparatorTests : IDisposable
         Assert.True(result.Match);
         Assert.Equal(1.0, result.Similarity);
         Assert.Equal(0, result.DifferentPixels);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -123,8 +111,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator { PixelTolerance = 5 };
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(100, 100, 100, 255));
-        var image2 = CreateSolidColorImage(100, 100, new Rgba32(120, 120, 120, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(100, 100, 100, 255));
+        using var image2 = CreateSolidColorImage(100, 100, new Rgba32(120, 120, 120, 255));
 
         // Act
         var result = comparator.Compare(image1, image2);
@@ -133,9 +121,6 @@ public class ImageComparatorTests : IDisposable
         Assert.False(result.Match);
         Assert.Equal(0.0, result.Similarity);
         Assert.Equal(10000, result.DifferentPixels);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -143,8 +128,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator();
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
-        var image2 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image2 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
 
         // Make 10% of pixels different
         for (int y = 0; y < 10; y++)
@@ -163,9 +148,6 @@ public class ImageComparatorTests : IDisposable
         Assert.Equal(0.9, result.Similarity, 2);
         Assert.Equal(1000, result.DifferentPixels);
         Assert.Equal(10000, result.TotalPixels);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -173,8 +155,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator { Threshold = 0.95 };
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
-        var image2 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image2 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
 
         // Make 4% of pixels different (96% similarity)
         for (int y = 0; y < 4; y++)
@@ -191,9 +173,6 @@ public class ImageComparatorTests : IDisposable
         // Assert
         Assert.True(result.Match); // 96% > 95% threshold
         Assert.Equal(0.96, result.Similarity, 2);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -236,8 +215,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator();
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 255, 255, 255));
-        var image2 = CreateSolidColorImage(100, 100, new Rgba32(255, 255, 255, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 255, 255, 255));
+        using var image2 = CreateSolidColorImage(100, 100, new Rgba32(255, 255, 255, 255));
 
         // Make top-left corner different
         for (int y = 0; y < 10; y++)
@@ -268,9 +247,6 @@ public class ImageComparatorTests : IDisposable
         var matchingPixel = diffImage[50, 50];
         Assert.Equal(matchingPixel.R, matchingPixel.G);
         Assert.Equal(matchingPixel.G, matchingPixel.B);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -278,16 +254,13 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator();
-        var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
-        var image2 = CreateSolidColorImage(50, 50, new Rgba32(255, 0, 0, 255));
+        using var image1 = CreateSolidColorImage(100, 100, new Rgba32(255, 0, 0, 255));
+        using var image2 = CreateSolidColorImage(50, 50, new Rgba32(255, 0, 0, 255));
         var diffPath = Path.Combine(_testOutputDir, "diff.png");
 
         // Act & Assert
         Assert.Throws<ArgumentException>(() =>
             comparator.GenerateDiffImage(image1, image2, diffPath));
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -321,8 +294,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator { PixelTolerance = 0 };
-        var image1 = CreateSolidColorImage(50, 50, new Rgba32(255, 0, 0, 255));
-        var image2 = CreateSolidColorImage(50, 50, new Rgba32(255, 0, 0, 200));
+        using var image1 = CreateSolidColorImage(50, 50, new Rgba32(255, 0, 0, 255));
+        using var image2 = CreateSolidColorImage(50, 50, new Rgba32(255, 0, 0, 200));
 
         // Act
         var result = comparator.Compare(image1, image2);
@@ -330,9 +303,6 @@ public class ImageComparatorTests : IDisposable
         // Assert
         Assert.False(result.Match);
         Assert.Equal(0.0, result.Similarity);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -340,8 +310,8 @@ public class ImageComparatorTests : IDisposable
     {
         // Arrange
         var comparator = new ImageComparator();
-        var image1 = CreateSolidColorImage(1, 1, new Rgba32(128, 128, 128, 255));
-        var image2 = CreateSolidColorImage(1, 1, new Rgba32(128, 128, 128, 255));
+        using var image1 = CreateSolidColorImage(1, 1, new Rgba32(128, 128, 128, 255));
+        using var image2 = CreateSolidColorImage(1, 1, new Rgba32(128, 128, 128, 255));
 
         // Act
         var result = comparator.Compare(image1, image2);
@@ -350,9 +320,6 @@ public class ImageComparatorTests : IDisposable
         Assert.True(result.Match);
         Assert.Equal(1.0, result.Similarity);
         Assert.Equal(1, result.TotalPixels);
-
-        image1.Dispose();
-        image2.Dispose();
     }
 
     [Fact]
@@ -394,13 +361,13 @@ public class ImageComparatorTests : IDisposable
     private Image<Rgba32> CreateSolidColorImage(int width, int height, Rgba32 color)
     {
         var image = new Image<Rgba32>(width, height);
-        for (int y = 0; y < height; y++)
+        image.ProcessPixelRows(accessor =>
         {
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < accessor.Height; y++)
             {
-                image[x, y] = color;
+                accessor.GetRowSpan(y).Fill(color);
             }
-        }
+        });
         return image;
     }
 
