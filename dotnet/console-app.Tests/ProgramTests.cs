@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.CommandLine.Parsing;
 using Xunit;
 
 namespace PigeonPea.Console.Tests;
@@ -13,7 +12,7 @@ public class ProgramTests
     public void ParseArguments_WithNoArguments_UsesDefaults()
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, rendererOption, debugOption, widthOption, heightOption) = CreateRootCommand();
         var args = Array.Empty<string>();
 
         // Act
@@ -21,17 +20,17 @@ public class ProgramTests
 
         // Assert
         Assert.Empty(parseResult.Errors);
-        Assert.Equal("auto", parseResult.GetValueForOption(GetRendererOption(rootCommand)));
-        Assert.False(parseResult.GetValueForOption(GetDebugOption(rootCommand)));
-        Assert.Null(parseResult.GetValueForOption(GetWidthOption(rootCommand)));
-        Assert.Null(parseResult.GetValueForOption(GetHeightOption(rootCommand)));
+        Assert.Equal("auto", parseResult.GetValue(rendererOption));
+        Assert.False(parseResult.GetValue(debugOption));
+        Assert.Null(parseResult.GetValue(widthOption));
+        Assert.Null(parseResult.GetValue(heightOption));
     }
 
     [Fact]
     public void ParseArguments_WithRendererOption_ParsesCorrectly()
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, rendererOption, _, _, _) = CreateRootCommand();
         var args = new[] { "--renderer", "kitty" };
 
         // Act
@@ -39,7 +38,7 @@ public class ProgramTests
 
         // Assert
         Assert.Empty(parseResult.Errors);
-        Assert.Equal("kitty", parseResult.GetValueForOption(GetRendererOption(rootCommand)));
+        Assert.Equal("kitty", parseResult.GetValue(rendererOption));
     }
 
     [Theory]
@@ -51,7 +50,7 @@ public class ProgramTests
     public void ParseArguments_WithValidRendererValues_ParsesCorrectly(string renderer)
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, rendererOption, _, _, _) = CreateRootCommand();
         var args = new[] { "--renderer", renderer };
 
         // Act
@@ -59,14 +58,14 @@ public class ProgramTests
 
         // Assert
         Assert.Empty(parseResult.Errors);
-        Assert.Equal(renderer, parseResult.GetValueForOption(GetRendererOption(rootCommand)));
+        Assert.Equal(renderer, parseResult.GetValue(rendererOption));
     }
 
     [Fact]
     public void ParseArguments_WithDebugOption_ParsesCorrectly()
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, _, debugOption, _, _) = CreateRootCommand();
         var args = new[] { "--debug" };
 
         // Act
@@ -74,14 +73,14 @@ public class ProgramTests
 
         // Assert
         Assert.Empty(parseResult.Errors);
-        Assert.True(parseResult.GetValueForOption(GetDebugOption(rootCommand)));
+        Assert.True(parseResult.GetValue(debugOption));
     }
 
     [Fact]
     public void ParseArguments_WithWidthAndHeight_ParsesCorrectly()
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, _, _, widthOption, heightOption) = CreateRootCommand();
         var args = new[] { "--width", "120", "--height", "40" };
 
         // Act
@@ -89,15 +88,15 @@ public class ProgramTests
 
         // Assert
         Assert.Empty(parseResult.Errors);
-        Assert.Equal(120, parseResult.GetValueForOption(GetWidthOption(rootCommand)));
-        Assert.Equal(40, parseResult.GetValueForOption(GetHeightOption(rootCommand)));
+        Assert.Equal(120, parseResult.GetValue(widthOption));
+        Assert.Equal(40, parseResult.GetValue(heightOption));
     }
 
     [Fact]
     public void ParseArguments_WithAllOptions_ParsesCorrectly()
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, rendererOption, debugOption, widthOption, heightOption) = CreateRootCommand();
         var args = new[] { "--renderer", "sixel", "--debug", "--width", "100", "--height", "30" };
 
         // Act
@@ -105,17 +104,17 @@ public class ProgramTests
 
         // Assert
         Assert.Empty(parseResult.Errors);
-        Assert.Equal("sixel", parseResult.GetValueForOption(GetRendererOption(rootCommand)));
-        Assert.True(parseResult.GetValueForOption(GetDebugOption(rootCommand)));
-        Assert.Equal(100, parseResult.GetValueForOption(GetWidthOption(rootCommand)));
-        Assert.Equal(30, parseResult.GetValueForOption(GetHeightOption(rootCommand)));
+        Assert.Equal("sixel", parseResult.GetValue(rendererOption));
+        Assert.True(parseResult.GetValue(debugOption));
+        Assert.Equal(100, parseResult.GetValue(widthOption));
+        Assert.Equal(30, parseResult.GetValue(heightOption));
     }
 
     [Fact]
     public void ParseArguments_WithInvalidWidth_ReportsError()
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, _, _, _, _) = CreateRootCommand();
         var args = new[] { "--width", "invalid" };
 
         // Act
@@ -129,7 +128,7 @@ public class ProgramTests
     public void ParseArguments_WithInvalidHeight_ReportsError()
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, _, _, _, _) = CreateRootCommand();
         var args = new[] { "--height", "invalid" };
 
         // Act
@@ -143,7 +142,7 @@ public class ProgramTests
     public void ParseArguments_HelpOption_IsSupported()
     {
         // Arrange
-        var rootCommand = CreateRootCommand();
+        var (rootCommand, _, _, _, _) = CreateRootCommand();
         var args = new[] { "--help" };
 
         // Act
@@ -155,55 +154,35 @@ public class ProgramTests
     }
 
     // Helper methods to create command structure matching Program.cs
-    private static RootCommand CreateRootCommand()
+    private static (RootCommand, Option<string>, Option<bool>, Option<int?>, Option<int?>) CreateRootCommand()
     {
+        var rendererOption = new Option<string>("--renderer")
+        {
+            Description = "Renderer to use (auto, kitty, sixel, braille, ascii)",
+            DefaultValueFactory = _ => "auto"
+        };
+
+        var debugOption = new Option<bool>("--debug")
+        {
+            Description = "Enable debug mode"
+        };
+
+        var widthOption = new Option<int?>("--width")
+        {
+            Description = "Window width in characters"
+        };
+
+        var heightOption = new Option<int?>("--height")
+        {
+            Description = "Window height in characters"
+        };
+
         var rootCommand = new RootCommand("Pigeon Pea - Roguelike Dungeon Crawler");
+        rootCommand.Add(rendererOption);
+        rootCommand.Add(debugOption);
+        rootCommand.Add(widthOption);
+        rootCommand.Add(heightOption);
 
-        var rendererOption = new Option<string>(
-            name: "--renderer",
-            description: "Renderer to use (auto, kitty, sixel, braille, ascii)",
-            getDefaultValue: () => "auto"
-        );
-        rootCommand.AddOption(rendererOption);
-
-        var debugOption = new Option<bool>(
-            name: "--debug",
-            description: "Enable debug mode"
-        );
-        rootCommand.AddOption(debugOption);
-
-        var widthOption = new Option<int?>(
-            name: "--width",
-            description: "Window width in characters"
-        );
-        rootCommand.AddOption(widthOption);
-
-        var heightOption = new Option<int?>(
-            name: "--height",
-            description: "Window height in characters"
-        );
-        rootCommand.AddOption(heightOption);
-
-        return rootCommand;
-    }
-
-    private static Option<string> GetRendererOption(RootCommand command)
-    {
-        return (Option<string>)command.Options.First(o => o.Name == "renderer");
-    }
-
-    private static Option<bool> GetDebugOption(RootCommand command)
-    {
-        return (Option<bool>)command.Options.First(o => o.Name == "debug");
-    }
-
-    private static Option<int?> GetWidthOption(RootCommand command)
-    {
-        return (Option<int?>)command.Options.First(o => o.Name == "width");
-    }
-
-    private static Option<int?> GetHeightOption(RootCommand command)
-    {
-        return (Option<int?>)command.Options.First(o => o.Name == "height");
+        return (rootCommand, rendererOption, debugOption, widthOption, heightOption);
     }
 }
