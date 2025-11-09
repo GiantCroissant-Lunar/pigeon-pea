@@ -48,12 +48,13 @@ public class ImageComparator
         // Check dimensions
         if (expected.Width != actual.Width || expected.Height != actual.Height)
         {
+            var maxPixels = (int)Math.Max((long)expected.Width * expected.Height, (long)actual.Width * actual.Height);
             return new ImageComparisonResult
             {
                 Match = false,
                 Similarity = 0.0,
-                DifferentPixels = expected.Width * expected.Height,
-                TotalPixels = expected.Width * expected.Height,
+                DifferentPixels = maxPixels,
+                TotalPixels = maxPixels,
                 Reason = $"Dimensions differ: expected {expected.Width}x{expected.Height}, actual {actual.Width}x{actual.Height}"
             };
         }
@@ -61,20 +62,22 @@ public class ImageComparator
         int differentPixels = 0;
         int totalPixels = expected.Width * expected.Height;
 
-        // Pixel-by-pixel comparison
-        for (int y = 0; y < expected.Height; y++)
+        // Pixel-by-pixel comparison using Span-based APIs for performance
+        expected.ProcessPixelRows(actual, (expectedAccessor, actualAccessor) =>
         {
-            for (int x = 0; x < expected.Width; x++)
+            for (int y = 0; y < expectedAccessor.Height; y++)
             {
-                var expectedPixel = expected[x, y];
-                var actualPixel = actual[x, y];
-
-                if (!PixelsMatch(expectedPixel, actualPixel))
+                var expectedRow = expectedAccessor.GetRowSpan(y);
+                var actualRow = actualAccessor.GetRowSpan(y);
+                for (int x = 0; x < expectedAccessor.Width; x++)
                 {
-                    differentPixels++;
+                    if (!PixelsMatch(expectedRow[x], actualRow[x]))
+                    {
+                        differentPixels++;
+                    }
                 }
             }
-        }
+        });
 
         double similarity = totalPixels > 0 ? 1.0 - (double)differentPixels / totalPixels : 1.0;
 
@@ -126,26 +129,33 @@ public class ImageComparator
 
         using var diffImage = new Image<Rgba32>(expected.Width, expected.Height);
 
-        for (int y = 0; y < expected.Height; y++)
+        expected.ProcessPixelRows(actual, diffImage, (expectedAccessor, actualAccessor, diffAccessor) =>
         {
-            for (int x = 0; x < expected.Width; x++)
+            for (int y = 0; y < expectedAccessor.Height; y++)
             {
-                var expectedPixel = expected[x, y];
-                var actualPixel = actual[x, y];
+                var expectedRow = expectedAccessor.GetRowSpan(y);
+                var actualRow = actualAccessor.GetRowSpan(y);
+                var diffRow = diffAccessor.GetRowSpan(y);
+                
+                for (int x = 0; x < expectedAccessor.Width; x++)
+                {
+                    var expectedPixel = expectedRow[x];
+                    var actualPixel = actualRow[x];
 
-                if (PixelsMatch(expectedPixel, actualPixel))
-                {
-                    // Show matching pixels in grayscale
-                    byte gray = (byte)((expectedPixel.R + expectedPixel.G + expectedPixel.B) / 3);
-                    diffImage[x, y] = new Rgba32(gray, gray, gray, 255);
-                }
-                else
-                {
-                    // Highlight differing pixels in red
-                    diffImage[x, y] = new Rgba32(255, 0, 0, 255);
+                    if (PixelsMatch(expectedPixel, actualPixel))
+                    {
+                        // Show matching pixels in grayscale using luminance formula
+                        byte gray = (byte)(expectedPixel.R * 0.299 + expectedPixel.G * 0.587 + expectedPixel.B * 0.114);
+                        diffRow[x] = new Rgba32(gray, gray, gray, 255);
+                    }
+                    else
+                    {
+                        // Highlight differing pixels in red
+                        diffRow[x] = new Rgba32(255, 0, 0, 255);
+                    }
                 }
             }
-        }
+        });
 
         diffImage.Save(outputPath);
     }
