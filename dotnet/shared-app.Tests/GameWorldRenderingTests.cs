@@ -86,7 +86,7 @@ public class GameWorldRenderingTests
         // Assert - Should only draw entities within the viewport
         foreach (var (x, y, _) in mockRenderer.DrawnTiles)
         {
-            Assert.True(viewport.Contains(x, y), 
+            Assert.True(viewport.Contains(x, y),
                 $"Tile at ({x}, {y}) is outside viewport bounds");
         }
     }
@@ -106,7 +106,7 @@ public class GameWorldRenderingTests
         // Assert - Should only draw entities within the viewport
         foreach (var (x, y, _) in mockRenderer.DrawnTiles)
         {
-            Assert.True(viewport.Contains(x, y), 
+            Assert.True(viewport.Contains(x, y),
                 $"Tile at ({x}, {y}) is outside viewport bounds (viewport: X={viewport.X}, Y={viewport.Y}, W={viewport.Width}, H={viewport.Height})");
         }
     }
@@ -150,7 +150,7 @@ public class GameWorldRenderingTests
             .Where(t => t.X == playerPos.Point.X && t.Y == playerPos.Point.Y)
             .ToList();
         Assert.NotEmpty(tilesAtPlayerPos);
-        
+
         // The player tile should be among the tiles drawn at that position
         var playerTile = tilesAtPlayerPos.FirstOrDefault(t => t.Tile.Glyph == '@');
         Assert.NotEqual(default, playerTile);

@@ -18,6 +18,13 @@
     <!-- Utilities -->
     <PackageReference Include="Serilog" Version="4.2.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+
+    <!-- Reactive Programming -->
+    <PackageReference Include="System.Reactive" Version="6.0.1" />
+    <PackageReference Include="ReactiveUI" Version="20.1.1" />
+    <PackageReference Include="MessagePipe" Version="1.8.0" />
+    <PackageReference Include="ObservableCollections" Version="3.0.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

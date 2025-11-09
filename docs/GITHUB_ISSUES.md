@@ -5,6 +5,7 @@ This document breaks down the RFCs into actionable GitHub issues suitable for au
 ## Issue Template Format
 
 Each issue follows this structure:
+
 - **Title**: Clear, action-oriented
 - **Labels**: Type and scope
 - **RFC Reference**: Which RFC this implements
@@ -34,6 +35,7 @@ Each issue follows this structure:
 Create the core rendering abstraction interfaces and types in the shared library to enable platform-agnostic rendering.
 
 **Acceptance Criteria**:
+
 - [ ] `IRenderer` interface created with all methods (BeginFrame, EndFrame, DrawTile, Clear, SetViewport)
 - [ ] `IRenderTarget` interface created with properties (Width, Height, PixelWidth, PixelHeight, Present)
 - [ ] `Tile` struct created with character and sprite representations
@@ -43,6 +45,7 @@ Create the core rendering abstraction interfaces and types in the shared library
 - [ ] Unit tests for `Tile` and `RendererCapabilities` extensions
 
 **Files to Create**:
+
 - `dotnet/shared-app/Rendering/IRenderer.cs`
 - `dotnet/shared-app/Rendering/IRenderTarget.cs`
 - `dotnet/shared-app/Rendering/Tile.cs`
@@ -51,6 +54,7 @@ Create the core rendering abstraction interfaces and types in the shared library
 - `dotnet/shared-app.Tests/Rendering/RendererCapabilitiesTests.cs`
 
 **Code Example**:
+
 ```csharp
 namespace PigeonPea.Shared.Rendering
 {
@@ -87,6 +91,7 @@ namespace PigeonPea.Shared.Rendering
 Create viewport and camera classes to handle view positioning and culling for both Windows and Console renderers.
 
 **Acceptance Criteria**:
+
 - [ ] `Viewport` class created with position, size, and bounds
 - [ ] `Camera` class created with position, follow target, and bounds clamping
 - [ ] Viewport can calculate visible region based on camera position
@@ -94,12 +99,14 @@ Create viewport and camera classes to handle view positioning and culling for bo
 - [ ] Unit tests for viewport and camera calculations
 
 **Files to Create**:
+
 - `dotnet/shared-app/Rendering/Viewport.cs`
 - `dotnet/shared-app/Rendering/Camera.cs`
 - `dotnet/shared-app.Tests/Rendering/ViewportTests.cs`
 - `dotnet/shared-app.Tests/Rendering/CameraTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class Viewport
 {
@@ -145,6 +152,7 @@ public class Camera
 Create a color gradient utility class for smooth color transitions, distance-based fog of war, and visual effects.
 
 **Acceptance Criteria**:
+
 - [ ] `ColorGradient` class with Lerp method
 - [ ] `CreateGradient` method for generating gradient arrays
 - [ ] `ApplyDistanceFade` method for fog of war
@@ -152,10 +160,12 @@ Create a color gradient utility class for smooth color transitions, distance-bas
 - [ ] Tests verify correct color interpolation
 
 **Files to Create**:
+
 - `dotnet/shared-app/Rendering/ColorGradient.cs`
 - `dotnet/shared-app.Tests/Rendering/ColorGradientTests.cs`
 
 **Code Example**:
+
 ```csharp
 public static class ColorGradient
 {
@@ -192,6 +202,7 @@ public static class ColorGradient
 Update GameWorld to accept and use IRenderer instead of platform-specific rendering code. This decouples the game logic from rendering implementation.
 
 **Acceptance Criteria**:
+
 - [ ] GameWorld constructor accepts `IRenderer` parameter
 - [ ] Remove platform-specific rendering code from GameWorld
 - [ ] Add `Render()` method that uses `IRenderer`
@@ -200,13 +211,16 @@ Update GameWorld to accept and use IRenderer instead of platform-specific render
 - [ ] Unit tests with mock renderer
 
 **Files to Modify**:
+
 - `dotnet/shared-app/GameWorld.cs`
 
 **Files to Create**:
+
 - `dotnet/shared-app.Tests/Mocks/MockRenderer.cs`
 - `dotnet/shared-app.Tests/GameWorldRenderingTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class GameWorld
 {
@@ -263,6 +277,7 @@ public class GameWorld
 Create the SkiaSharp-based renderer for the Windows app with basic character/tile rendering support.
 
 **Acceptance Criteria**:
+
 - [ ] `SkiaSharpRenderer` implements `IRenderer`
 - [ ] Character glyph rendering with SkiaSharp
 - [ ] Color support for foreground/background
@@ -272,11 +287,13 @@ Create the SkiaSharp-based renderer for the Windows app with basic character/til
 - [ ] Integration tests with actual SKCanvas
 
 **Files to Create**:
+
 - `dotnet/windows-app/Rendering/SkiaSharpRenderer.cs`
 - `dotnet/windows-app/Rendering/SkiaRenderTarget.cs`
 - `dotnet/windows-app.Tests/Rendering/SkiaSharpRendererTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class SkiaSharpRenderer : IRenderer
 {
@@ -326,6 +343,7 @@ public class SkiaSharpRenderer : IRenderer
 Create a sprite atlas manager that can load texture atlases and extract individual sprites for rendering.
 
 **Acceptance Criteria**:
+
 - [ ] Load PNG texture atlases
 - [ ] Parse JSON sprite definitions (positions, sizes)
 - [ ] Extract sprites by ID
@@ -335,6 +353,7 @@ Create a sprite atlas manager that can load texture atlases and extract individu
 - [ ] Unit tests with test atlas
 
 **Files to Create**:
+
 - `dotnet/windows-app/Rendering/SpriteAtlasManager.cs`
 - `dotnet/windows-app/Rendering/SpriteDefinition.cs`
 - `dotnet/windows-app.Tests/Rendering/SpriteAtlasManagerTests.cs`
@@ -342,6 +361,7 @@ Create a sprite atlas manager that can load texture atlases and extract individu
 - `dotnet/windows-app.Tests/TestData/test-atlas.json`
 
 **Code Example**:
+
 ```csharp
 public class SpriteAtlasManager
 {
@@ -383,6 +403,7 @@ public class SpriteAtlasManager
 Extend SkiaSharpRenderer to render sprites from atlases when Tile has SpriteId set.
 
 **Acceptance Criteria**:
+
 - [ ] DrawTile checks for SpriteId and renders sprite if available
 - [ ] Falls back to glyph if sprite not found
 - [ ] Sprites scaled to tile size
@@ -390,9 +411,11 @@ Extend SkiaSharpRenderer to render sprites from atlases when Tile has SpriteId s
 - [ ] Integration tests with test sprites
 
 **Files to Modify**:
+
 - `dotnet/windows-app/Rendering/SkiaSharpRenderer.cs`
 
 **Code Example**:
+
 ```csharp
 public void DrawTile(int x, int y, Tile tile)
 {
@@ -431,6 +454,7 @@ private void DrawSprite(int x, int y, int spriteId)
 Create a particle system for rendering effects like combat hits, spell casting, and environmental effects.
 
 **Acceptance Criteria**:
+
 - [ ] Particle class with position, velocity, lifetime, color
 - [ ] ParticleEmitter configuration (rate, direction, spread, etc.)
 - [ ] Object pooling for particles
@@ -440,12 +464,14 @@ Create a particle system for rendering effects like combat hits, spell casting, 
 - [ ] Unit tests for particle lifecycle
 
 **Files to Create**:
+
 - `dotnet/windows-app/Rendering/Particle.cs`
 - `dotnet/windows-app/Rendering/ParticleEmitter.cs`
 - `dotnet/windows-app/Rendering/ParticleSystem.cs`
 - `dotnet/windows-app.Tests/Rendering/ParticleSystemTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class ParticleSystem
 {
@@ -505,6 +531,7 @@ public class ParticleSystem
 Create an animation system to support animated tiles (water, lava, torches, etc.) with frame-based animation.
 
 **Acceptance Criteria**:
+
 - [ ] Animation class with frames and timing
 - [ ] AnimationSystem manages all active animations
 - [ ] Update method advances animation frames
@@ -514,11 +541,13 @@ Create an animation system to support animated tiles (water, lava, torches, etc.
 - [ ] Unit tests for animation playback
 
 **Files to Create**:
+
 - `dotnet/windows-app/Rendering/Animation.cs`
 - `dotnet/windows-app/Rendering/AnimationSystem.cs`
 - `dotnet/windows-app.Tests/Rendering/AnimationSystemTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class Animation
 {
@@ -565,6 +594,7 @@ public class Animation
 Create a terminal capability detection system that probes for Kitty Graphics, Sixel, Unicode, and color support.
 
 **Acceptance Criteria**:
+
 - [ ] Detect Kitty Graphics Protocol support
 - [ ] Detect Sixel graphics support
 - [ ] Detect Unicode Braille support
@@ -575,10 +605,12 @@ Create a terminal capability detection system that probes for Kitty Graphics, Si
 - [ ] Unit tests with mocked terminal responses
 
 **Files to Create**:
+
 - `dotnet/console-app/Rendering/TerminalCapabilities.cs`
 - `dotnet/console-app.Tests/Rendering/TerminalCapabilitiesTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class TerminalCapabilities
 {
@@ -621,6 +653,7 @@ public class TerminalCapabilities
 Create the ASCII fallback renderer for maximum terminal compatibility.
 
 **Acceptance Criteria**:
+
 - [ ] Implements IRenderer
 - [ ] Renders character glyphs
 - [ ] ANSI color codes for foreground/background
@@ -631,10 +664,12 @@ Create the ASCII fallback renderer for maximum terminal compatibility.
 - [ ] Unit tests with output capture
 
 **Files to Create**:
+
 - `dotnet/console-app/Rendering/AsciiRenderer.cs`
 - `dotnet/console-app.Tests/Rendering/AsciiRendererTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class AsciiRenderer : IRenderer
 {
@@ -680,6 +715,7 @@ public class AsciiRenderer : IRenderer
 Create a renderer that uses Unicode Braille patterns for 2x4 dot resolution per character cell.
 
 **Acceptance Criteria**:
+
 - [ ] Implements IRenderer
 - [ ] Converts tiles to Braille patterns
 - [ ] 2x4 dot resolution per character
@@ -689,11 +725,13 @@ Create a renderer that uses Unicode Braille patterns for 2x4 dot resolution per 
 - [ ] Unit tests for pattern conversion
 
 **Files to Create**:
+
 - `dotnet/console-app/Rendering/BrailleRenderer.cs`
 - `dotnet/console-app/Rendering/BraillePattern.cs`
 - `dotnet/console-app.Tests/Rendering/BrailleRendererTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class BrailleRenderer : IRenderer
 {
@@ -738,6 +776,7 @@ public class BrailleRenderer : IRenderer
 Create a renderer using the Kitty Graphics Protocol for pixel-perfect graphics in Kitty terminal.
 
 **Acceptance Criteria**:
+
 - [ ] Implements IRenderer
 - [ ] Transmit images using Kitty protocol escape sequences
 - [ ] Display images at specific grid positions
@@ -747,10 +786,12 @@ Create a renderer using the Kitty Graphics Protocol for pixel-perfect graphics i
 - [ ] Integration tests with Kitty terminal
 
 **Files to Create**:
+
 - `dotnet/console-app/Rendering/KittyGraphicsRenderer.cs`
 - `dotnet/console-app.Tests/Rendering/KittyGraphicsRendererTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class KittyGraphicsRenderer : IRenderer
 {
@@ -806,6 +847,7 @@ public class KittyGraphicsRenderer : IRenderer
 Create a renderer using Sixel graphics format for terminals with Sixel support (xterm, mlterm, WezTerm).
 
 **Acceptance Criteria**:
+
 - [ ] Implements IRenderer
 - [ ] Convert images to Sixel format
 - [ ] Output Sixel sequences
@@ -814,11 +856,13 @@ Create a renderer using Sixel graphics format for terminals with Sixel support (
 - [ ] Integration tests with sixel output
 
 **Files to Create**:
+
 - `dotnet/console-app/Rendering/SixelRenderer.cs`
 - `dotnet/console-app/Rendering/SixelEncoder.cs`
 - `dotnet/console-app.Tests/Rendering/SixelRendererTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class SixelRenderer : IRenderer
 {
@@ -867,6 +911,7 @@ public class SixelRenderer : IRenderer
 Create a factory that detects terminal capabilities and selects the best available renderer.
 
 **Acceptance Criteria**:
+
 - [ ] Detects terminal capabilities
 - [ ] Selects Kitty renderer if supported
 - [ ] Falls back to Sixel if Kitty not available
@@ -876,10 +921,12 @@ Create a factory that detects terminal capabilities and selects the best availab
 - [ ] Unit tests for selection logic
 
 **Files to Create**:
+
 - `dotnet/console-app/Rendering/TerminalRendererFactory.cs`
 - `dotnet/console-app.Tests/Rendering/TerminalRendererFactoryTests.cs`
 
 **Code Example**:
+
 ```csharp
 public static class TerminalRendererFactory
 {
@@ -931,6 +978,7 @@ public static class TerminalRendererFactory
 Refactor the Windows app to use the new SkiaSharpRenderer instead of direct rendering in GameCanvas.
 
 **Acceptance Criteria**:
+
 - [ ] GameCanvas uses SkiaSharpRenderer
 - [ ] Remove old direct rendering code
 - [ ] Renderer initialized with proper render target
@@ -941,6 +989,7 @@ Refactor the Windows app to use the new SkiaSharpRenderer instead of direct rend
 - [ ] No regression in visual quality
 
 **Files to Modify**:
+
 - `dotnet/windows-app/GameCanvas.cs`
 - `dotnet/windows-app/MainWindow.axaml.cs`
 - `dotnet/windows-app/App.axaml.cs`
@@ -961,6 +1010,7 @@ Refactor the Windows app to use the new SkiaSharpRenderer instead of direct rend
 Refactor the Console app to use the terminal renderer factory and support CLI argument for renderer selection.
 
 **Acceptance Criteria**:
+
 - [ ] Use TerminalRendererFactory to create renderer
 - [ ] Support --renderer CLI argument
 - [ ] Remove old Terminal.Gui rendering code
@@ -970,11 +1020,13 @@ Refactor the Console app to use the terminal renderer factory and support CLI ar
 - [ ] Manual override works
 
 **Files to Modify**:
+
 - `dotnet/console-app/Program.cs`
 - `dotnet/console-app/GameApplication.cs`
 - `dotnet/console-app/GameView.cs`
 
 **Code Example**:
+
 ```csharp
 // In Program.cs
 var rendererType = ParseRenderer(rendererArg);
@@ -1003,6 +1055,7 @@ app.Run();
 Create performance benchmarks to measure rendering performance and ensure targets are met (60 FPS Windows, 30 FPS Console).
 
 **Acceptance Criteria**:
+
 - [ ] Benchmark for Windows renderer frame time
 - [ ] Benchmark for Console renderer frame time
 - [ ] Benchmark for large map rendering
@@ -1011,10 +1064,12 @@ Create performance benchmarks to measure rendering performance and ensure target
 - [ ] CI integration for regression detection
 
 **Files to Create**:
+
 - `dotnet/benchmarks/RenderingBenchmarks.cs`
 - `.github/workflows/benchmarks.yml`
 
 **Code Example**:
+
 ```csharp
 [MemoryDiagnoser]
 public class RenderingBenchmarks
@@ -1066,6 +1121,7 @@ public class RenderingBenchmarks
 Add all required NuGet packages for reactive programming: System.Reactive, ReactiveUI, MessagePipe, ObservableCollections, and Microsoft.Extensions.DependencyInjection.
 
 **Acceptance Criteria**:
+
 - [ ] System.Reactive 6.0.1 added to shared-app
 - [ ] ReactiveUI 20.1.1 added to shared-app
 - [ ] MessagePipe 1.8.0 added to shared-app
@@ -1076,9 +1132,11 @@ Add all required NuGet packages for reactive programming: System.Reactive, React
 - [ ] dotnet build succeeds
 
 **Files to Modify**:
+
 - `dotnet/shared-app/PigeonPea.Shared.csproj`
 
 **Code Example**:
+
 ```xml
 <ItemGroup>
   <PackageReference Include="System.Reactive" Version="6.0.1" />
@@ -1105,6 +1163,7 @@ Add all required NuGet packages for reactive programming: System.Reactive, React
 Create event structure definitions for all game events that will be published via MessagePipe.
 
 **Acceptance Criteria**:
+
 - [ ] Combat events defined (PlayerDamagedEvent, EnemyDefeatedEvent)
 - [ ] Inventory events defined (ItemPickedUpEvent, ItemUsedEvent, ItemDroppedEvent)
 - [ ] Level events defined (PlayerLevelUpEvent)
@@ -1114,12 +1173,14 @@ Create event structure definitions for all game events that will be published vi
 - [ ] XML documentation on all events
 
 **Files to Create**:
+
 - `dotnet/shared-app/Events/CombatEvents.cs`
 - `dotnet/shared-app/Events/InventoryEvents.cs`
 - `dotnet/shared-app/Events/LevelEvents.cs`
 - `dotnet/shared-app/Events/MapEvents.cs`
 
 **Code Example**:
+
 ```csharp
 namespace PigeonPea.Shared.Events
 {
@@ -1160,6 +1221,7 @@ namespace PigeonPea.Shared.Events
 Set up MessagePipe in the DI container for both Console and Windows apps.
 
 **Acceptance Criteria**:
+
 - [ ] Console app Program.cs sets up DI with MessagePipe
 - [ ] Windows app App.axaml.cs sets up DI with MessagePipe
 - [ ] IPublisher<T> and ISubscriber<T> can be injected
@@ -1167,13 +1229,16 @@ Set up MessagePipe in the DI container for both Console and Windows apps.
 - [ ] Example event publish/subscribe works
 
 **Files to Modify**:
+
 - `dotnet/console-app/Program.cs`
 - `dotnet/windows-app/App.axaml.cs`
 
 **Files to Create**:
+
 - `dotnet/shared-app/ServiceCollectionExtensions.cs`
 
 **Code Example**:
+
 ```csharp
 // ServiceCollectionExtensions.cs
 public static class ServiceCollectionExtensions
@@ -1218,6 +1283,7 @@ var provider = services.BuildServiceProvider();
 Create PlayerViewModel that exposes player state with reactive property change notifications.
 
 **Acceptance Criteria**:
+
 - [ ] Inherits from ReactiveObject
 - [ ] Properties for Health, MaxHealth, Level, Experience, Name, Position
 - [ ] RaiseAndSetIfChanged used for all properties
@@ -1226,10 +1292,12 @@ Create PlayerViewModel that exposes player state with reactive property change n
 - [ ] Unit tests for property notifications
 
 **Files to Create**:
+
 - `dotnet/shared-app/ViewModels/PlayerViewModel.cs`
 - `dotnet/shared-app.Tests/ViewModels/PlayerViewModelTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class PlayerViewModel : ReactiveObject
 {
@@ -1280,6 +1348,7 @@ public class PlayerViewModel : ReactiveObject
 Create the central GameViewModel that owns all other view models and orchestrates updates.
 
 **Acceptance Criteria**:
+
 - [ ] Inherits from ReactiveObject
 - [ ] Properties for Player, Inventory, MessageLog, Map view models
 - [ ] Constructor accepts GameWorld and IServiceProvider
@@ -1288,10 +1357,12 @@ Create the central GameViewModel that owns all other view models and orchestrate
 - [ ] Unit tests for initialization
 
 **Files to Create**:
+
 - `dotnet/shared-app/ViewModels/GameViewModel.cs`
 - `dotnet/shared-app.Tests/ViewModels/GameViewModelTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class GameViewModel : ReactiveObject, IDisposable
 {
@@ -1355,6 +1426,7 @@ public class GameViewModel : ReactiveObject, IDisposable
 Create InventoryViewModel with ObservableCollections and event subscriptions for inventory changes.
 
 **Acceptance Criteria**:
+
 - [ ] Inherits from ReactiveObject
 - [ ] Uses ObservableList<ItemViewModel> for items
 - [ ] Subscribes to ItemPickedUpEvent, ItemUsedEvent, ItemDroppedEvent
@@ -1364,11 +1436,13 @@ Create InventoryViewModel with ObservableCollections and event subscriptions for
 - [ ] Unit tests for event handling
 
 **Files to Create**:
+
 - `dotnet/shared-app/ViewModels/InventoryViewModel.cs`
 - `dotnet/shared-app/ViewModels/ItemViewModel.cs`
 - `dotnet/shared-app.Tests/ViewModels/InventoryViewModelTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class InventoryViewModel : ReactiveObject
 {
@@ -1414,6 +1488,7 @@ public class InventoryViewModel : ReactiveObject
 Create MessageLogViewModel that subscribes to all game events and displays messages.
 
 **Acceptance Criteria**:
+
 - [ ] Inherits from ReactiveObject
 - [ ] Uses ObservableList<MessageViewModel> for messages
 - [ ] Subscribes to combat, inventory, level, map events
@@ -1423,11 +1498,13 @@ Create MessageLogViewModel that subscribes to all game events and displays messa
 - [ ] Unit tests for event subscriptions
 
 **Files to Create**:
+
 - `dotnet/shared-app/ViewModels/MessageLogViewModel.cs`
 - `dotnet/shared-app/ViewModels/MessageViewModel.cs`
 - `dotnet/shared-app.Tests/ViewModels/MessageLogViewModelTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class MessageLogViewModel : ReactiveObject
 {
@@ -1492,6 +1569,7 @@ public class MessageLogViewModel : ReactiveObject
 Create MapViewModel to track map dimensions, camera position, and visible tiles.
 
 **Acceptance Criteria**:
+
 - [ ] Inherits from ReactiveObject
 - [ ] Properties for Width, Height, CameraPosition
 - [ ] ObservableList for VisibleTiles
@@ -1500,11 +1578,13 @@ Create MapViewModel to track map dimensions, camera position, and visible tiles.
 - [ ] Unit tests for camera tracking
 
 **Files to Create**:
+
 - `dotnet/shared-app/ViewModels/MapViewModel.cs`
 - `dotnet/shared-app/ViewModels/TileViewModel.cs`
 - `dotnet/shared-app.Tests/ViewModels/MapViewModelTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class MapViewModel : ReactiveObject
 {
@@ -1560,6 +1640,7 @@ public class MapViewModel : ReactiveObject
 Refactor game systems (combat, inventory, etc.) to publish events via MessagePipe when actions occur.
 
 **Acceptance Criteria**:
+
 - [ ] Combat system publishes PlayerDamagedEvent, EnemyDefeatedEvent
 - [ ] Inventory system publishes ItemPickedUpEvent, ItemUsedEvent, ItemDroppedEvent
 - [ ] Player progression publishes PlayerLevelUpEvent
@@ -1568,9 +1649,11 @@ Refactor game systems (combat, inventory, etc.) to publish events via MessagePip
 - [ ] Unit tests verify events are published
 
 **Files to Modify**:
+
 - `dotnet/shared-app/GameWorld.cs` (or create separate system classes)
 
 **Code Example**:
+
 ```csharp
 public class CombatSystem
 {
@@ -1632,6 +1715,7 @@ public class CombatSystem
 Update the Windows app MainWindow XAML to use data bindings to GameViewModel.
 
 **Acceptance Criteria**:
+
 - [ ] DataContext set to GameViewModel
 - [ ] Player health, level displayed with bindings
 - [ ] Inventory list bound to Items collection
@@ -1640,10 +1724,12 @@ Update the Windows app MainWindow XAML to use data bindings to GameViewModel.
 - [ ] No code-behind for UI updates
 
 **Files to Modify**:
+
 - `dotnet/windows-app/MainWindow.axaml`
 - `dotnet/windows-app/MainWindow.axaml.cs`
 
 **Code Example**:
+
 ```xml
 <Window xmlns="https://github.com/avaloniaui"
         x:DataType="vm:GameViewModel"
@@ -1680,6 +1766,7 @@ Update the Windows app MainWindow XAML to use data bindings to GameViewModel.
 Create ReactiveCommands for user actions like using items, dropping items, etc.
 
 **Acceptance Criteria**:
+
 - [ ] UseItemCommand created with CanExecute based on selection
 - [ ] DropItemCommand created with CanExecute based on selection
 - [ ] Commands bound to UI buttons
@@ -1688,9 +1775,11 @@ Create ReactiveCommands for user actions like using items, dropping items, etc.
 - [ ] Unit tests for command execution
 
 **Files to Modify**:
+
 - `dotnet/shared-app/ViewModels/GameViewModel.cs`
 
 **Code Example**:
+
 ```csharp
 public class GameViewModel : ReactiveObject
 {
@@ -1741,6 +1830,7 @@ public class GameViewModel : ReactiveObject
 Add System.CommandLine package and implement CLI argument parsing for renderer selection and other options.
 
 **Acceptance Criteria**:
+
 - [ ] System.CommandLine package added to console-app
 - [ ] --renderer option (auto, kitty, sixel, braille, ascii)
 - [ ] --debug option
@@ -1749,10 +1839,12 @@ Add System.CommandLine package and implement CLI argument parsing for renderer s
 - [ ] Arguments parsed and passed to app
 
 **Files to Modify**:
+
 - `dotnet/console-app/PigeonPea.Console.csproj`
 - `dotnet/console-app/Program.cs`
 
 **Code Example**:
+
 ```csharp
 using System.CommandLine;
 
@@ -1792,6 +1884,7 @@ return await rootCommand.InvokeAsync(args);
 Create Terminal.Gui view classes that subscribe to view model property changes.
 
 **Acceptance Criteria**:
+
 - [ ] PlayerView subscribes to PlayerViewModel changes
 - [ ] InventoryView subscribes to InventoryViewModel changes
 - [ ] MessageLogView subscribes to MessageLogViewModel changes
@@ -1800,11 +1893,13 @@ Create Terminal.Gui view classes that subscribe to view model property changes.
 - [ ] Integration tests
 
 **Files to Create**:
+
 - `dotnet/console-app/Views/PlayerView.cs`
 - `dotnet/console-app/Views/InventoryView.cs`
 - `dotnet/console-app/Views/MessageLogView.cs`
 
 **Code Example**:
+
 ```csharp
 public class PlayerView : FrameView
 {
@@ -1856,6 +1951,7 @@ public class PlayerView : FrameView
 Create xUnit test projects for shared-app, windows-app, and console-app with necessary test packages.
 
 **Acceptance Criteria**:
+
 - [ ] shared-app.Tests project created
 - [ ] windows-app.Tests project created
 - [ ] console-app.Tests project created
@@ -1865,11 +1961,13 @@ Create xUnit test projects for shared-app, windows-app, and console-app with nec
 - [ ] CI runs tests on every push
 
 **Files to Create**:
+
 - `dotnet/shared-app.Tests/shared-app.Tests.csproj`
 - `dotnet/windows-app.Tests/windows-app.Tests.csproj`
 - `dotnet/console-app.Tests/console-app.Tests.csproj`
 
 **Code Example**:
+
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -1906,6 +2004,7 @@ Create xUnit test projects for shared-app, windows-app, and console-app with nec
 Create mock implementations of IRenderer, IRenderTarget, and other interfaces for unit testing.
 
 **Acceptance Criteria**:
+
 - [ ] MockRenderer implements IRenderer
 - [ ] MockRenderTarget implements IRenderTarget
 - [ ] Mocks track method calls
@@ -1914,12 +2013,14 @@ Create mock implementations of IRenderer, IRenderTarget, and other interfaces fo
 - [ ] Unit tests use mocks successfully
 
 **Files to Create**:
+
 - `dotnet/shared-app.Tests/Mocks/MockRenderer.cs`
 - `dotnet/shared-app.Tests/Mocks/MockRenderTarget.cs`
 - `dotnet/shared-app.Tests/Mocks/MockPublisher.cs`
 - `dotnet/shared-app.Tests/Mocks/MockSubscriber.cs`
 
 **Code Example**:
+
 ```csharp
 public class MockRenderer : IRenderer
 {
@@ -1962,6 +2063,7 @@ public class MockRenderer : IRenderer
 Install Node.js and node-pty for console app testing via pseudoterminal.
 
 **Acceptance Criteria**:
+
 - [ ] package.json created in tests/pty directory
 - [ ] node-pty dependency added
 - [ ] npm install succeeds
@@ -1969,11 +2071,13 @@ Install Node.js and node-pty for console app testing via pseudoterminal.
 - [ ] CI installs Node.js and dependencies
 
 **Files to Create**:
+
 - `tests/pty/package.json`
 - `tests/pty/.gitignore`
 - `.github/workflows/console-visual-tests.yml`
 
 **Code Example**:
+
 ```json
 {
   "name": "pigeon-pea-pty-tests",
@@ -2003,6 +2107,7 @@ Install Node.js and node-pty for console app testing via pseudoterminal.
 Create a Node.js script that spawns the console app in a PTY, sends inputs, and captures output.
 
 **Acceptance Criteria**:
+
 - [ ] Script spawns console app in PTY
 - [ ] Loads test scenario from JSON
 - [ ] Sends inputs with delays
@@ -2012,6 +2117,7 @@ Create a Node.js script that spawns the console app in a PTY, sends inputs, and 
 - [ ] Returns exit code 0 on success
 
 **Files to Create**:
+
 - `tests/pty/test-pty.js`
 - `tests/pty/scenarios/basic-movement.json`
 
@@ -2033,6 +2139,7 @@ Create a Node.js script that spawns the console app in a PTY, sends inputs, and 
 Create a C# class to parse asciinema recordings and extract frames for verification.
 
 **Acceptance Criteria**:
+
 - [ ] Parse asciinema v2 format
 - [ ] Extract frames with timestamps
 - [ ] Find frames at specific timestamps
@@ -2041,6 +2148,7 @@ Create a C# class to parse asciinema recordings and extract frames for verificat
 - [ ] Unit tests for parser
 
 **Files to Create**:
+
 - `dotnet/console-app.Tests/Visual/AsciinemaParser.cs`
 - `dotnet/console-app.Tests/Visual/Frame.cs`
 - `dotnet/console-app.Tests/Visual/AsciinemaParserTests.cs`
@@ -2063,6 +2171,7 @@ Create a C# class to parse asciinema recordings and extract frames for verificat
 Create visual snapshot tests that compare console output against stored snapshots.
 
 **Acceptance Criteria**:
+
 - [ ] Test runs PTY scenario
 - [ ] Compares output with snapshot
 - [ ] Creates snapshot if missing
@@ -2071,6 +2180,7 @@ Create visual snapshot tests that compare console output against stored snapshot
 - [ ] CI fails on visual regression
 
 **Files to Create**:
+
 - `dotnet/console-app.Tests/Visual/SnapshotTests.cs`
 - `dotnet/console-app.Tests/snapshots/main-menu.txt`
 
@@ -2094,6 +2204,7 @@ Create visual snapshot tests that compare console output against stored snapshot
 Create a PowerShell script that starts the Windows app and records it with FFmpeg.
 
 **Acceptance Criteria**:
+
 - [ ] Script starts Windows app
 - [ ] FFmpeg captures window
 - [ ] Recording duration configurable
@@ -2102,6 +2213,7 @@ Create a PowerShell script that starts the Windows app and records it with FFmpe
 - [ ] Script works on CI
 
 **Files to Create**:
+
 - `tests/windows/record-test.ps1`
 
 **Code Example**: (See script in main document)
@@ -2122,6 +2234,7 @@ Create a PowerShell script that starts the Windows app and records it with FFmpe
 Create a C# utility that uses FFmpeg to extract individual frames from recorded video.
 
 **Acceptance Criteria**:
+
 - [ ] Extracts frames at 1 FPS
 - [ ] Saves as PNG files
 - [ ] Returns list of frame paths
@@ -2129,6 +2242,7 @@ Create a C# utility that uses FFmpeg to extract individual frames from recorded 
 - [ ] Works on CI
 
 **Files to Create**:
+
 - `dotnet/windows-app.Tests/Visual/FrameExtractor.cs`
 
 **Code Example**: (See implementation in main document)
@@ -2149,6 +2263,7 @@ Create a C# utility that uses FFmpeg to extract individual frames from recorded 
 Create an image comparison utility using ImageSharp for pixel-by-pixel comparison.
 
 **Acceptance Criteria**:
+
 - [ ] Compare two images
 - [ ] Return similarity percentage
 - [ ] Configurable threshold
@@ -2157,10 +2272,12 @@ Create an image comparison utility using ImageSharp for pixel-by-pixel compariso
 - [ ] Unit tests
 
 **Files to Create**:
+
 - `dotnet/windows-app.Tests/Visual/ImageComparator.cs`
 - `dotnet/windows-app.Tests/Visual/ImageComparisonResult.cs`
 
 **Files to Add Package**:
+
 - `dotnet/windows-app.Tests/windows-app.Tests.csproj` (add SixLabors.ImageSharp)
 
 **Code Example**: (See implementation in main document)
@@ -2181,6 +2298,7 @@ Create an image comparison utility using ImageSharp for pixel-by-pixel compariso
 Create visual snapshot tests that record Windows app, extract frames, and compare with stored snapshots.
 
 **Acceptance Criteria**:
+
 - [ ] Records test scenario
 - [ ] Extracts frames
 - [ ] Compares with snapshots
@@ -2189,6 +2307,7 @@ Create visual snapshot tests that record Windows app, extract frames, and compar
 - [ ] Snapshots in Git LFS
 
 **Files to Create**:
+
 - `dotnet/windows-app.Tests/Visual/WindowsVisualTests.cs`
 - `dotnet/windows-app.Tests/snapshots/.gitattributes` (Git LFS config)
 
@@ -2210,6 +2329,7 @@ Create visual snapshot tests that record Windows app, extract frames, and compar
 Create a frame rate monitor that tracks FPS, minimum, maximum, and average frame times.
 
 **Acceptance Criteria**:
+
 - [ ] FrameRateMetrics class
 - [ ] RecordFrame method
 - [ ] Calculate average, min, max FPS
@@ -2218,10 +2338,12 @@ Create a frame rate monitor that tracks FPS, minimum, maximum, and average frame
 - [ ] Unit tests
 
 **Files to Create**:
+
 - `dotnet/shared-app/Performance/FrameRateMetrics.cs`
 - `dotnet/shared-app.Tests/Performance/FrameRateMetricsTests.cs`
 
 **Code Example**:
+
 ```csharp
 public class FrameRateMetrics
 {
@@ -2259,6 +2381,7 @@ public class FrameRateMetrics
 Create BenchmarkDotNet benchmarks for rendering performance.
 
 **Acceptance Criteria**:
+
 - [ ] Benchmark for full screen rendering
 - [ ] Benchmark for particle rendering
 - [ ] Benchmark for sprite rendering
@@ -2267,6 +2390,7 @@ Create BenchmarkDotNet benchmarks for rendering performance.
 - [ ] Results tracked in CI
 
 **Files to Create**:
+
 - `dotnet/benchmarks/RenderingBenchmarks.cs`
 - `dotnet/benchmarks/benchmarks.csproj`
 
@@ -2283,6 +2407,7 @@ Total: **43 issues** across 3 RFCs
 - **RFC-003 (Testing)**: 12 issues
 
 Each issue is:
+
 - Moderate in scope (1-3 days of work)
 - Has clear acceptance criteria
 - Includes code examples

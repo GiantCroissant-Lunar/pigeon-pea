@@ -283,7 +283,7 @@ public class TerminalCapabilitiesTests
     {
         // This test just verifies the method doesn't crash when Console is unavailable
         // In actual execution, Console should be available, so dimensions should be detected
-        
+
         // Act
         var caps = TerminalCapabilities.Detect();
 

@@ -12,6 +12,9 @@
     <!-- Terminal.Gui v2 for Console HUD -->
     <PackageReference Include="Terminal.Gui" Version="2.0.0" />
 
+    <!-- System.CommandLine for CLI argument parsing -->
+    <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
+
     <!-- Terminal Graphics Support -->
     <!-- Note: For Sixel/Kitty/Braille, we'll implement custom renderers -->
     <!-- using ANSI escape sequences and terminal capabilities -->

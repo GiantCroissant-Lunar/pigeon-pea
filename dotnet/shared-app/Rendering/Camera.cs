@@ -79,7 +79,7 @@ public class Camera
     {
         int maxCameraX = Math.Max(mapBounds.X, mapBounds.X + mapBounds.Width - ViewportWidth);
         int maxCameraY = Math.Max(mapBounds.Y, mapBounds.Y + mapBounds.Height - ViewportHeight);
-        
+
         int clampedX = Math.Clamp(desiredPosition.X, mapBounds.X, maxCameraX);
         int clampedY = Math.Clamp(desiredPosition.Y, mapBounds.Y, maxCameraY);
 

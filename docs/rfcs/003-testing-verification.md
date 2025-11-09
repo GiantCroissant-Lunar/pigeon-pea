@@ -229,79 +229,81 @@ Use `node-pty` and `asciinema` for recording and verifying terminal output.
 #### Node.js PTY Test Script
 
 **test-pty.js**:
+
 ```javascript
 const pty = require('node-pty');
 const fs = require('fs');
 const { spawn } = require('child_process');
 
 async function runGameInPTY(testScenario) {
-    // Start asciinema recording
-    const recordingFile = `recordings/${testScenario}.cast`;
-    const asciicinema = spawn('asciinema', ['rec', '--overwrite', recordingFile]);
+  // Start asciinema recording
+  const recordingFile = `recordings/${testScenario}.cast`;
+  const asciicinema = spawn('asciinema', ['rec', '--overwrite', recordingFile]);
 
-    // Spawn the game in a PTY
-    const game = pty.spawn('dotnet', ['run'], {
-        name: 'xterm-256color',
-        cols: 80,
-        rows: 24,
-        cwd: '../console-app',
-        env: process.env
-    });
+  // Spawn the game in a PTY
+  const game = pty.spawn('dotnet', ['run'], {
+    name: 'xterm-256color',
+    cols: 80,
+    rows: 24,
+    cwd: '../console-app',
+    env: process.env,
+  });
 
-    // Send test inputs
-    const inputs = loadTestInputs(testScenario);
-    for (const input of inputs) {
-        await sleep(input.delay);
-        game.write(input.key);
-    }
+  // Send test inputs
+  const inputs = loadTestInputs(testScenario);
+  for (const input of inputs) {
+    await sleep(input.delay);
+    game.write(input.key);
+  }
 
-    // Capture output
-    let output = '';
-    game.onData(data => {
-        output += data;
-        asciicinema.stdin.write(data);
-    });
+  // Capture output
+  let output = '';
+  game.onData((data) => {
+    output += data;
+    asciicinema.stdin.write(data);
+  });
 
-    // Wait for test to complete
-    await sleep(5000);
+  // Wait for test to complete
+  await sleep(5000);
 
-    // Cleanup
-    game.kill();
-    asciicinema.stdin.end();
+  // Cleanup
+  game.kill();
+  asciicinema.stdin.end();
 
-    return {
-        output,
-        recording: recordingFile
-    };
+  return {
+    output,
+    recording: recordingFile,
+  };
 }
 
 function loadTestInputs(scenario) {
-    // Load test scenario JSON
-    const data = fs.readFileSync(`scenarios/${scenario}.json`, 'utf8');
-    return JSON.parse(data).inputs;
+  // Load test scenario JSON
+  const data = fs.readFileSync(`scenarios/${scenario}.json`, 'utf8');
+  return JSON.parse(data).inputs;
 }
 
 function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // Run test
 const scenario = process.argv[2] || 'basic-movement';
 runGameInPTY(scenario)
-    .then(result => {
-        console.log(`Test completed: ${scenario}`);
-        console.log(`Recording saved: ${result.recording}`);
-        process.exit(0);
-    })
-    .catch(error => {
-        console.error('Test failed:', error);
-        process.exit(1);
-    });
+  .then((result) => {
+    console.log(`Test completed: ${scenario}`);
+    console.log(`Recording saved: ${result.recording}`);
+    process.exit(0);
+  })
+  .catch((error) => {
+    console.error('Test failed:', error);
+    process.exit(1);
+  });
 ```
 
 #### Test Scenario Definition
 
 **scenarios/basic-movement.json**:
+
 ```json
 {
   "name": "Basic Movement Test",
@@ -485,6 +487,7 @@ Use FFmpeg for screen recording and image comparison.
 #### FFmpeg Recording Script
 
 **record-test.ps1**:
+
 ```powershell
 param(
     [string]$TestName,
@@ -735,6 +738,7 @@ public class PerformanceTests
 #### GitHub Actions Workflow
 
 **.github/workflows/visual-tests.yml**:
+
 ```yaml
 name: Visual Tests
 
