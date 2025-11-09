@@ -120,6 +120,18 @@ public class AsciiRendererTests
     }
 
     [Fact]
+    public void BeginFrame_ThrowsIfNotInitialized()
+    {
+        // Arrange
+        var renderer = new AsciiRenderer();
+
+        // Act & Assert
+        var exception = Assert.Throws<InvalidOperationException>(() => renderer.BeginFrame());
+        Assert.Contains("has not been initialized", exception.Message);
+        Assert.Contains("Initialize", exception.Message);
+    }
+
+    [Fact]
     public void BeginFrame_ClearsInternalBuffer()
     {
         // Arrange
@@ -129,23 +141,27 @@ public class AsciiRendererTests
 
         using (var capture = new ConsoleOutputCapture())
         {
-            // Act - First frame with content
+            // Act: Render a frame with content.
             renderer.BeginFrame();
             renderer.DrawTile(0, 0, new Tile('@', Color.White, Color.Black));
             renderer.EndFrame();
-
             var firstOutput = capture.GetOutput();
 
-            // Act - Second frame should start fresh
+            // Act: Render a second frame with different content to ensure the buffer was cleared.
             renderer.BeginFrame();
+            renderer.DrawTile(1, 1, new Tile('#', Color.White, Color.Black));
             renderer.EndFrame();
+            var totalOutput = capture.GetOutput();
+            var secondFrameOutput = totalOutput.Substring(firstOutput.Length);
 
-            var secondOutput = capture.GetOutput();
-
-            // Assert - Second frame should have less content than first
+            // Assert
             Assert.True(firstOutput.Length > 0);
-            // Second output contains first output plus empty frame
-            Assert.True(secondOutput.Length >= firstOutput.Length);
+            Assert.Contains("@", firstOutput);
+            Assert.DoesNotContain("#", firstOutput);
+
+            Assert.True(secondFrameOutput.Length > 0);
+            Assert.Contains("#", secondFrameOutput);
+            Assert.DoesNotContain("@", secondFrameOutput);
         }
     }
 
@@ -385,17 +401,65 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void SetViewport_StoresViewport()
+    public void SetViewport_ClipsDrawingOutsideBounds()
     {
         // Arrange
         var renderer = new AsciiRenderer();
-        var viewport = new Viewport(0, 0, 40, 20);
-
-        // Act
+        var target = new MockRenderTarget(80, 24);
+        renderer.Initialize(target);
+        
+        // Set a viewport that's smaller than the target
+        var viewport = new Viewport(5, 5, 10, 10);
         renderer.SetViewport(viewport);
 
-        // Assert - No exception thrown
-        Assert.NotNull(renderer);
+        using (var capture = new ConsoleOutputCapture())
+        {
+            // Act
+            renderer.BeginFrame();
+            
+            // Draw inside viewport - should appear
+            renderer.DrawTile(7, 7, new Tile('@', Color.White, Color.Black));
+            
+            // Draw outside viewport - should be clipped
+            renderer.DrawTile(0, 0, new Tile('#', Color.White, Color.Black));
+            renderer.DrawTile(20, 20, new Tile('$', Color.White, Color.Black));
+            
+            renderer.EndFrame();
+
+            var output = capture.GetOutput();
+
+            // Assert
+            Assert.Contains("@", output); // Inside viewport
+            Assert.DoesNotContain("#", output); // Outside viewport (before)
+            Assert.DoesNotContain("$", output); // Outside viewport (after)
+        }
+    }
+
+    [Fact]
+    public void SetViewport_TranslatesCoordinates()
+    {
+        // Arrange
+        var renderer = new AsciiRenderer();
+        var target = new MockRenderTarget(80, 24);
+        renderer.Initialize(target);
+        
+        // Set a viewport offset from origin
+        var viewport = new Viewport(10, 5, 20, 15);
+        renderer.SetViewport(viewport);
+
+        using (var capture = new ConsoleOutputCapture())
+        {
+            // Act - Draw at world coordinates (10, 5) which is (0, 0) in viewport space
+            renderer.BeginFrame();
+            renderer.DrawTile(10, 5, new Tile('@', Color.White, Color.Black));
+            renderer.EndFrame();
+
+            var output = capture.GetOutput();
+
+            // Assert - Should position cursor at (1, 1) in ANSI coordinates (0-based + 1)
+            Assert.Contains("\x1b[1;1H", output);
+            Assert.Contains("@", output);
+        }
     }
 
     [Fact]

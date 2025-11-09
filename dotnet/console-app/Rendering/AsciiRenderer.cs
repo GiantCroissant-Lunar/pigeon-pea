@@ -36,6 +36,7 @@ public class AsciiRenderer : IRenderer
     public void Initialize(IRenderTarget target)
     {
         _target = target;
+        _viewport = new Viewport(0, 0, target.Width, target.Height);
     }
 
     /// <summary>
@@ -43,6 +44,9 @@ public class AsciiRenderer : IRenderer
     /// </summary>
     public void BeginFrame()
     {
+        if (_target is null)
+            throw new InvalidOperationException($"{nameof(AsciiRenderer)} has not been initialized. Call {nameof(Initialize)} before use.");
+
         _buffer.Clear();
     }
 
@@ -66,7 +70,10 @@ public class AsciiRenderer : IRenderer
     /// <param name="tile">The tile to draw.</param>
     public void DrawTile(int x, int y, Tile tile)
     {
-        PositionCursor(x, y);
+        if (!_viewport.Contains(x, y))
+            return;
+
+        PositionCursor(x - _viewport.X, y - _viewport.Y);
 
         if (_supportsAnsiColors)
         {
@@ -90,7 +97,10 @@ public class AsciiRenderer : IRenderer
     /// <param name="background">The background color.</param>
     public void DrawText(int x, int y, string text, Color foreground, Color background)
     {
-        PositionCursor(x, y);
+        if (!_viewport.Contains(x, y))
+            return;
+
+        PositionCursor(x - _viewport.X, y - _viewport.Y);
 
         if (_supportsAnsiColors)
         {
