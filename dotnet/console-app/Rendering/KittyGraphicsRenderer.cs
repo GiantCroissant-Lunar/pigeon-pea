@@ -18,7 +18,6 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     private bool _disposed;
     private IRenderTarget? _target;
     private readonly Dictionary<int, CachedImage> _imageCache = new();
-    private Viewport _viewport;
     private readonly StringBuilder _commandBuffer = new();
 
     /// <summary>
@@ -147,9 +146,14 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     /// Sets the viewport for rendering.
     /// </summary>
     /// <param name="viewport">The viewport to use for rendering.</param>
+    /// <remarks>
+    /// Viewport is currently not used by the Kitty Graphics renderer as it operates
+    /// on absolute grid coordinates. This method is provided for interface compliance.
+    /// </remarks>
     public void SetViewport(Viewport viewport)
     {
-        _viewport = viewport;
+        // Note: Viewport is not currently used in Kitty Graphics rendering
+        // Future enhancement: Could be used to optimize image placement or clipping
     }
 
     /// <summary>
