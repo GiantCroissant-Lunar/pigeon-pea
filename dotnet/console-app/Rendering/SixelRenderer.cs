@@ -99,18 +99,10 @@ public class SixelRenderer : IRenderer
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
-        // Check if tile has a sprite
-        if (tile.SpriteId.HasValue)
-        {
-            // TODO: Implement sprite rendering with Sixel
-            // For now, fall back to character
-            DrawCharacter(x, y, tile.Glyph, tile.Foreground, tile.Background);
-        }
-        else
-        {
-            // Draw character with colors
-            DrawCharacter(x, y, tile.Glyph, tile.Foreground, tile.Background);
-        }
+        // Draw character with colors
+        // Note: Sprite rendering via Sixel is not implemented in this phase.
+        // Use DrawImage() method for direct pixel graphics rendering.
+        DrawCharacter(x, y, tile.Glyph, tile.Foreground, tile.Background);
     }
 
     /// <summary>
