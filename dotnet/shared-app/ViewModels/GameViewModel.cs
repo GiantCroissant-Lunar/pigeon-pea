@@ -1,4 +1,5 @@
 using System;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Arch.Core;
@@ -13,10 +14,12 @@ namespace PigeonPea.Shared.ViewModels;
 /// </summary>
 public class GameViewModel : ReactiveObject, IDisposable
 {
+    private const int UpdateIntervalMs = 16;
+    
     private readonly GameWorld _world;
     private readonly IServiceProvider _services;
     private readonly CompositeDisposable _subscriptions;
-    private IDisposable? _updateSubscription;
+    private readonly IScheduler _scheduler;
 
     /// <summary>
     /// ViewModel for player state.
@@ -43,17 +46,19 @@ public class GameViewModel : ReactiveObject, IDisposable
     /// </summary>
     /// <param name="world">The game world instance.</param>
     /// <param name="services">The service provider for dependency injection.</param>
-    public GameViewModel(GameWorld world, IServiceProvider services)
+    /// <param name="scheduler">The scheduler for the update loop. If null, uses the default scheduler.</param>
+    public GameViewModel(GameWorld world, IServiceProvider services, IScheduler? scheduler = null)
     {
         _world = world ?? throw new ArgumentNullException(nameof(world));
         _services = services ?? throw new ArgumentNullException(nameof(services));
+        _scheduler = scheduler ?? DefaultScheduler.Instance;
         _subscriptions = new CompositeDisposable();
 
-        // Initialize child view models
-        Player = new PlayerViewModel();
-        Inventory = new InventoryViewModel();
-        MessageLog = new MessageLogViewModel();
-        Map = new MapViewModel();
+        // Initialize child view models using dependency injection
+        Player = _services.GetRequiredService<PlayerViewModel>();
+        Inventory = _services.GetRequiredService<InventoryViewModel>();
+        MessageLog = _services.GetRequiredService<MessageLogViewModel>();
+        Map = _services.GetRequiredService<MapViewModel>();
 
         // Set up update loop
         InitializeUpdateLoop();
@@ -65,11 +70,9 @@ public class GameViewModel : ReactiveObject, IDisposable
     private void InitializeUpdateLoop()
     {
         // Update all view models at 60 FPS (16ms interval)
-        _updateSubscription = Observable
-            .Interval(TimeSpan.FromMilliseconds(16))
-            .Subscribe(_ => UpdateViewModels());
-
-        _subscriptions.Add(_updateSubscription);
+        _subscriptions.Add(Observable
+            .Interval(TimeSpan.FromMilliseconds(UpdateIntervalMs), _scheduler)
+            .Subscribe(_ => UpdateViewModels()));
     }
 
     /// <summary>
