@@ -430,24 +430,39 @@ public class BrailleRendererTests
         Assert.True(target.PresentCalled);
     }
 
-    [Theory]
-    [InlineData(' ', '\u2800')] // Empty
-    [InlineData('█', '\u28FF')] // Full
-    public void BrailleRenderer_ConvertToBraille_CommonCharacters(char input)
+    [Fact]
+    public void BrailleRenderer_ConvertToBraille_SpaceCharacter()
     {
-        // This test verifies that common characters are mapped to expected Braille patterns
         // Arrange
         var renderer = new BrailleRenderer();
         var target = new MockRenderTarget(80, 24);
         renderer.Initialize(target);
 
-        // Act - Draw the character and verify it doesn't throw
+        // Act - Draw space character and verify it doesn't throw
         renderer.BeginFrame();
-        var tile = new Tile(input, Color.White, Color.Black);
+        var tile = new Tile(' ', Color.White, Color.Black);
         renderer.DrawTile(0, 0, tile);
         renderer.EndFrame();
 
-        // Assert - Just verify no exception
+        // Assert
+        Assert.True(target.PresentCalled);
+    }
+
+    [Fact]
+    public void BrailleRenderer_ConvertToBraille_FullBlock()
+    {
+        // Arrange
+        var renderer = new BrailleRenderer();
+        var target = new MockRenderTarget(80, 24);
+        renderer.Initialize(target);
+
+        // Act - Draw full block character and verify it doesn't throw
+        renderer.BeginFrame();
+        var tile = new Tile('█', Color.White, Color.Black);
+        renderer.DrawTile(0, 0, tile);
+        renderer.EndFrame();
+
+        // Assert
         Assert.True(target.PresentCalled);
     }
 
