@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Arch.Core;
 using Arch.Core.Extensions;
 using GoRogue.GameFramework;
@@ -9,7 +8,6 @@ using GoRogue.Pathing;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using PigeonPea.Shared.Components;
-using PigeonPea.Shared.Rendering;
 
 namespace PigeonPea.Shared;
 
@@ -18,10 +16,8 @@ namespace PigeonPea.Shared;
 /// </summary>
 public class GameWorld
 {
-    private readonly IRenderer _renderer;
-
     public World EcsWorld { get; private set; }
-    public ISettableGridView<IGameObject> Map { get; private set; }
+    public ISettableMapView<IGameObject> Map { get; private set; }
     public Entity PlayerEntity { get; private set; }
 
     public int Width { get; }
@@ -42,14 +38,13 @@ public class GameWorld
     // Shared random instance for all spawning
     private readonly Random _random;
 
-    public GameWorld(IRenderer renderer, int width = 80, int height = 50)
+    public GameWorld(int width = 80, int height = 50)
     {
-        _renderer = renderer;
         Width = width;
         Height = height;
 
         EcsWorld = World.Create();
-        Map = new ArrayView<IGameObject>(width, height);
+        Map = new ArrayMap<IGameObject>(width, height);
         WalkabilityMap = new ArrayView<bool>(width, height);
         TransparencyMap = new ArrayView<bool>(width, height);
         _random = new Random();
@@ -112,7 +107,7 @@ public class GameWorld
         EcsWorld.Create(
             new Position(x, y),
             new Renderable('.', Color.DarkGray),
-            new Components.Tile(TileType.Floor)
+            new Tile(TileType.Floor)
         );
     }
 
@@ -121,7 +116,7 @@ public class GameWorld
         EcsWorld.Create(
             new Position(x, y),
             new Renderable('#', Color.White),
-            new Components.Tile(TileType.Wall),
+            new Tile(TileType.Wall),
             new BlocksMovement()
         );
     }
@@ -282,7 +277,7 @@ public class GameWorld
     /// </summary>
     private void MarkTilesAsExplored(HashSet<Point> positions)
     {
-        var tileQuery = new QueryDescription().WithAll<Position, Components.Tile>();
+        var tileQuery = new QueryDescription().WithAll<Position, Tile>();
 
         EcsWorld.Query(in tileQuery, (Entity entity, ref Position pos) =>
         {
@@ -604,36 +599,5 @@ public class GameWorld
         UpdateFieldOfView();
         UpdateAI();
         CleanupDeadEntities();
-    }
-
-    /// <summary>
-    /// Renders the game world using the provided viewport.
-    /// </summary>
-    /// <param name="viewport">The viewport defining the visible area to render.</param>
-    public void Render(Viewport viewport)
-    {
-        _renderer.BeginFrame();
-        _renderer.Clear(Color.Black);
-        _renderer.SetViewport(viewport);
-
-        // Query for all entities with Position and Renderable components
-        // Note: Lambda allocates per frame, but Arch 2.0's IForEach pattern is not available in this version
-        // Performance impact is minimal (~microseconds/frame) for current entity counts
-        var query = new QueryDescription().WithAll<Position, Renderable>();
-        
-        EcsWorld.Query(in query, (Entity entity, ref Position pos, ref Renderable renderable) =>
-        {
-            // Viewport culling - only draw entities within the viewport
-            if (viewport.Contains(pos.Point.X, pos.Point.Y))
-            {
-                _renderer.DrawTile(pos.Point.X, pos.Point.Y, new Rendering.Tile(
-                    renderable.Glyph,
-                    renderable.Foreground,
-                    renderable.Background
-                ));
-            }
-        });
-
-        _renderer.EndFrame();
     }
 }
