@@ -17,6 +17,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "console-app.Tests", "consol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Console.Tests", "console-app.Tests\PigeonPea.Console.Tests.csproj", "{A2C8A177-2A96-4DD2-B928-C557DF75A173}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows-app.Tests", "windows-app.Tests", "{F21C9BF3-AE8D-BEA1-BF85-B7CF85C223EF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Windows.Tests", "windows-app.Tests\PigeonPea.Windows.Tests.csproj", "{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,18 @@ Global
 		{A2C8A177-2A96-4DD2-B928-C557DF75A173}.Release|x64.Build.0 = Release|Any CPU
 		{A2C8A177-2A96-4DD2-B928-C557DF75A173}.Release|x86.ActiveCfg = Release|Any CPU
 		{A2C8A177-2A96-4DD2-B928-C557DF75A173}.Release|x86.Build.0 = Release|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Debug|x64.Build.0 = Debug|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Debug|x86.Build.0 = Debug|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Release|x64.ActiveCfg = Release|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Release|x64.Build.0 = Release|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Release|x86.ActiveCfg = Release|Any CPU
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,5 +110,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CD970AA6-D978-4BD9-8F90-9C023DB6BB0D} = {054E098A-DE7F-C2E2-D498-DCF28B4B3A18}
 		{A2C8A177-2A96-4DD2-B928-C557DF75A173} = {91848824-DE2F-F91E-F172-D8D4BD0164AA}
+		{EE275AC7-BB07-40E1-8310-4A54FE54C8BA} = {F21C9BF3-AE8D-BEA1-BF85-B7CF85C223EF}
 	EndGlobalSection
 EndGlobal
