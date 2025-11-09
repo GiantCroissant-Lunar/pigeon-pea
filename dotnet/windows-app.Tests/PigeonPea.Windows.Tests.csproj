@@ -35,7 +35,14 @@
     <!-- Include only the Rendering files we need for testing -->
     <Compile Include="../windows-app/Rendering/SkiaRenderTarget.cs" Link="Rendering/SkiaRenderTarget.cs" />
     <Compile Include="../windows-app/Rendering/SkiaSharpRenderer.cs" Link="Rendering/SkiaSharpRenderer.cs" />
+    <Compile Include="../windows-app/Rendering/SpriteAtlasManager.cs" Link="Rendering/SpriteAtlasManager.cs" />
+    <Compile Include="../windows-app/Rendering/SpriteDefinition.cs" Link="Rendering/SpriteDefinition.cs" />
     <Compile Include="../windows-app/StubRenderer.cs" Link="StubRenderer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy test data files to output directory -->
+    <None Include="TestData/**/*" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
