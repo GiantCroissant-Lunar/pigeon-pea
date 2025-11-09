@@ -60,7 +60,7 @@ class Program
         services.AddPigeonPeaServices();
         
         // Build the service provider
-        var serviceProvider = services.BuildServiceProvider();
+        using var serviceProvider = services.BuildServiceProvider();
 
         // Detect terminal capabilities
         var terminalInfo = TerminalCapabilities.Detect();
@@ -95,7 +95,6 @@ class Program
         finally
         {
             Application.Shutdown();
-            serviceProvider.Dispose();
         }
     }
 }
