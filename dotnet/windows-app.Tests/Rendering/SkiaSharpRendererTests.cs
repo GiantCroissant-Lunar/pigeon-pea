@@ -309,6 +309,64 @@ public class SkiaSharpRendererTests : IDisposable
         Assert.Equal(0, bgPixel.Blue);
     }
 
+    [Fact]
+    public void Dispose_CanBeCalledMultipleTimes()
+    {
+        // Arrange
+        var bitmap = new SKBitmap(160, 160);
+        var canvas = new SKCanvas(bitmap);
+        var target = new SkiaRenderTarget(canvas, 10, 10);
+        var renderer = new SkiaSharpRenderer();
+        renderer.Initialize(target);
+
+        // Act & Assert - should not throw
+        renderer.Dispose();
+        renderer.Dispose();
+
+        // Cleanup
+        canvas.Dispose();
+        bitmap.Dispose();
+    }
+
+    [Fact]
+    public void BeginFrame_AfterDispose_ThrowsObjectDisposedException()
+    {
+        // Arrange
+        var bitmap = new SKBitmap(160, 160);
+        var canvas = new SKCanvas(bitmap);
+        var target = new SkiaRenderTarget(canvas, 10, 10);
+        var renderer = new SkiaSharpRenderer();
+        renderer.Initialize(target);
+        renderer.Dispose();
+
+        // Act & Assert
+        Assert.Throws<ObjectDisposedException>(() => renderer.BeginFrame());
+
+        // Cleanup
+        canvas.Dispose();
+        bitmap.Dispose();
+    }
+
+    [Fact]
+    public void DrawTile_AfterDispose_ThrowsObjectDisposedException()
+    {
+        // Arrange
+        var bitmap = new SKBitmap(160, 160);
+        var canvas = new SKCanvas(bitmap);
+        var target = new SkiaRenderTarget(canvas, 10, 10);
+        var renderer = new SkiaSharpRenderer();
+        renderer.Initialize(target);
+        renderer.Dispose();
+
+        // Act & Assert
+        var tile = new Tile('@', Color.White, Color.Black);
+        Assert.Throws<ObjectDisposedException>(() => renderer.DrawTile(0, 0, tile));
+
+        // Cleanup
+        canvas.Dispose();
+        bitmap.Dispose();
+    }
+
     /// <summary>
     /// Mock render target for testing initialization validation.
     /// </summary>
