@@ -216,8 +216,13 @@ public class BrailleRenderer : IRenderer
             return BraillePattern.Empty;
         }
 
-        // Use character value to generate a pattern
-        byte pattern = (byte)((glyph * 17 + 31) % 256);
+        // Use character value to generate a deterministic pattern
+        // Using prime numbers (17, 31) to distribute patterns across the 256 possible values
+        const int PrimeMultiplier = 17;
+        const int PrimeOffset = 31;
+        const int BraillePatternRange = 256;
+
+        byte pattern = (byte)((glyph * PrimeMultiplier + PrimeOffset) % BraillePatternRange);
         return BraillePattern.ToChar(pattern);
     }
 
@@ -238,9 +243,7 @@ public class BrailleRenderer : IRenderer
         // ANSI true color escape codes
         // Foreground: ESC[38;2;r;g;bm
         // Background: ESC[48;2;r;g;bm
-        System.Console.Write($"\x1b[38;2;{foreground.R};{foreground.G};{foreground.B}m");
-        System.Console.Write($"\x1b[48;2;{background.R};{background.G};{background.B}m");
-        System.Console.Write(c);
-        System.Console.Write("\x1b[0m"); // Reset
+        // Combine all writes into a single output for better performance
+        System.Console.Write($"\x1b[38;2;{foreground.R};{foreground.G};{foreground.B}m\x1b[48;2;{background.R};{background.G};{background.B}m{c}\x1b[0m");
     }
 }
