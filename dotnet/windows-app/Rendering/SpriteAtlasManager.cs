@@ -10,7 +10,7 @@ namespace PigeonPea.Windows.Rendering;
 public class SpriteAtlasManager : IDisposable
 {
     private readonly Dictionary<int, SKImage> _sprites = new();
-    private readonly Dictionary<string, SKBitmap> _atlases = new();
+    private readonly Dictionary<string, SKImage> _atlases = new();
     private readonly Dictionary<string, List<SpriteDefinition>> _atlasDefinitions = new();
     private bool _disposed;
 
@@ -32,12 +32,14 @@ public class SpriteAtlasManager : IDisposable
         if (!File.Exists(definitionPath))
             throw new FileNotFoundException($"Definition file not found: {definitionPath}");
 
-        // Load the atlas image
-        var bitmap = SKBitmap.Decode(atlasPath);
+        // Load the atlas image as a bitmap first, then convert to immutable image
+        using var bitmap = SKBitmap.Decode(atlasPath);
         if (bitmap == null)
             throw new InvalidOperationException($"Failed to decode atlas image: {atlasPath}");
 
-        _atlases[atlasPath] = bitmap;
+        // Create an immutable SKImage from the bitmap for efficient subset operations
+        var atlasImage = SKImage.FromBitmap(bitmap);
+        _atlases[atlasPath] = atlasImage;
 
         // Load sprite definitions from JSON
         var jsonText = File.ReadAllText(definitionPath);
@@ -51,7 +53,7 @@ public class SpriteAtlasManager : IDisposable
         // Extract and cache sprites
         foreach (var sprite in definitions)
         {
-            ExtractSprite(bitmap, sprite);
+            ExtractSprite(atlasImage, sprite);
         }
     }
 
@@ -112,33 +114,34 @@ public class SpriteAtlasManager : IDisposable
     }
 
     /// <summary>
-    /// Extracts a sprite from the atlas bitmap and caches it.
+    /// Extracts a sprite from the atlas image and caches it.
     /// </summary>
-    private void ExtractSprite(SKBitmap atlas, SpriteDefinition definition)
+    private void ExtractSprite(SKImage atlasImage, SpriteDefinition definition)
     {
         // Validate sprite bounds
         if (definition.X < 0 || definition.Y < 0 ||
-            definition.X + definition.Width > atlas.Width ||
-            definition.Y + definition.Height > atlas.Height)
+            definition.X + definition.Width > atlasImage.Width ||
+            definition.Y + definition.Height > atlasImage.Height)
         {
             throw new InvalidOperationException(
                 $"Sprite {definition.Id} bounds ({definition.X},{definition.Y},{definition.Width},{definition.Height}) " +
-                $"exceed atlas dimensions ({atlas.Width}x{atlas.Height})");
+                $"exceed atlas dimensions ({atlasImage.Width}x{atlasImage.Height})");
         }
 
-        // Create a subset bitmap for the sprite
-        var subset = new SKBitmap();
-        if (!atlas.ExtractSubset(subset, SKRectI.Create(definition.X, definition.Y, definition.Width, definition.Height)))
+        // Use Subset() to create a lightweight view without copying pixel data
+        var spriteImage = atlasImage.Subset(SKRectI.Create(definition.X, definition.Y, definition.Width, definition.Height));
+        if (spriteImage == null)
         {
             throw new InvalidOperationException($"Failed to extract sprite {definition.Id}");
         }
 
-        // Convert to image and cache
-        var image = SKImage.FromBitmap(subset);
-        _sprites[definition.Id] = image;
-
-        // Dispose the temporary subset bitmap
-        subset.Dispose();
+        // If a sprite with this ID already exists, dispose the old one to prevent a memory leak
+        if (_sprites.TryGetValue(definition.Id, out var oldImage))
+        {
+            System.Diagnostics.Debug.WriteLine($"Warning: Sprite with ID {definition.Id} is being overwritten.");
+            oldImage.Dispose();
+        }
+        _sprites[definition.Id] = spriteImage;
     }
 
     /// <summary>
