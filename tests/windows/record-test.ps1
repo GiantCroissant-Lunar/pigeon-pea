@@ -89,11 +89,14 @@ Write-Host "Starting Windows application..." -ForegroundColor Yellow
 
 # Start the Windows application
 try {
-    $appProcess = Start-Process -FilePath "dotnet" `
-        -ArgumentList "run" `
-        -WorkingDirectory $windowsAppFullPath `
-        -PassThru `
-        -WindowStyle Normal
+    $startAppParams = @{
+        FilePath         = "dotnet"
+        ArgumentList     = "run"
+        WorkingDirectory = $windowsAppFullPath
+        PassThru         = $true
+        WindowStyle      = 'Normal'
+    }
+    $appProcess = Start-Process @startAppParams
 
     Write-Host "✓ Windows app started (PID: $($appProcess.Id))" -ForegroundColor Green
 }
@@ -126,14 +129,17 @@ try {
         "-t", "$Duration",
         "-framerate", "30",
         "-y",
-        "`"$recordingPath`""
+        $recordingPath
     )
 
-    $ffmpegProcess = Start-Process -FilePath "ffmpeg" `
-        -ArgumentList $ffmpegArgs `
-        -PassThru `
-        -NoNewWindow `
-        -RedirectStandardError "$fullOutputDir\$TestName-ffmpeg-log.txt"
+    $ffmpegProcParams = @{
+        FilePath              = "ffmpeg"
+        ArgumentList          = $ffmpegArgs
+        PassThru              = $true
+        NoNewWindow           = $true
+        RedirectStandardError = "$fullOutputDir\$TestName-ffmpeg-log.txt"
+    }
+    $ffmpegProcess = Start-Process @ffmpegProcParams
 
     Write-Host "✓ FFmpeg started (PID: $($ffmpegProcess.Id))" -ForegroundColor Green
 }
@@ -150,7 +156,7 @@ catch {
 
 # Wait for FFmpeg to complete recording
 try {
-    Wait-Process -Id $ffmpegProcess.Id -Timeout ($Duration + 10)
+    Wait-Process -Id $ffmpegProcess.Id -Timeout ($Duration + 30)
     Write-Host "✓ Recording completed" -ForegroundColor Green
 }
 catch {
