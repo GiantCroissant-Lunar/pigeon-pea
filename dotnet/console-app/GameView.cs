@@ -29,12 +29,13 @@ public class GameView : View
         };
     }
 
-    public override void OnDrawContent(Rect viewport)
+    protected override bool OnDrawingContent()
     {
-        base.OnDrawContent(viewport);
+        // Clear background
+        Driver?.SetAttribute(new Attribute(Color.White, Color.Black));
 
-        // Clear
-        Driver.SetAttribute(new Attribute(Color.White, Color.Black));
+        // Get viewport bounds
+        var viewport = Viewport;
 
         // Render all entities
         var query = new Arch.Core.QueryDescription().WithAll<Position, Renderable>();
@@ -44,13 +45,15 @@ public class GameView : View
                 pos.Point.Y >= 0 && pos.Point.Y < viewport.Height)
             {
                 var color = ConvertColor(renderable.Foreground);
-                Driver.SetAttribute(new Attribute(color, Color.Black));
+                Driver?.SetAttribute(new Attribute(color, Color.Black));
                 AddRune(pos.Point.X, pos.Point.Y, (Rune)renderable.Glyph);
             }
         });
 
         // TODO: Render map tiles
         // TODO: Use _renderer for advanced graphics (Sixel/Kitty/Braille)
+
+        return true;
     }
 
     private Color ConvertColor(SadRogue.Primitives.Color color)
