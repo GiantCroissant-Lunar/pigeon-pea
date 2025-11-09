@@ -9,7 +9,6 @@ namespace PigeonPea.Shared.Tests.Mocks;
 /// </summary>
 public class MockRenderer : IRenderer
 {
-    private IRenderTarget? _target;
     private Viewport _viewport;
 
     /// <summary>
@@ -54,7 +53,7 @@ public class MockRenderer : IRenderer
     /// </summary>
     public void Initialize(IRenderTarget target)
     {
-        _target = target;
+        // No-op for mock renderer
     }
 
     /// <summary>

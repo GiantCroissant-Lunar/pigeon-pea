@@ -173,9 +173,7 @@ public class GameWorldRenderingTests
         gameWorld.Render(viewport);
         int secondFrameTileCount = mockRenderer.DrawnTiles.Count;
 
-        // Assert - Both frames should have drawn tiles
-        // (BeginFrame should clear the list, so second frame count should be similar to first)
-        Assert.True(firstFrameTileCount > 0);
-        Assert.True(secondFrameTileCount > 0);
+        // Assert - Game state is unchanged, so tile counts should be identical
+        Assert.Equal(firstFrameTileCount, secondFrameTileCount);
     }
 }

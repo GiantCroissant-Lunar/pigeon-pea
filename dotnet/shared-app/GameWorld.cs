@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Arch.Core;
 using Arch.Core.Extensions;
 using GoRogue.GameFramework;
@@ -613,10 +614,13 @@ public class GameWorld
     {
         _renderer.BeginFrame();
         _renderer.Clear(Color.Black);
+        _renderer.SetViewport(viewport);
 
         // Query for all entities with Position and Renderable components
+        // Note: Lambda allocates per frame, but Arch 2.0's IForEach pattern is not available in this version
+        // Performance impact is minimal (~microseconds/frame) for current entity counts
         var query = new QueryDescription().WithAll<Position, Renderable>();
-
+        
         EcsWorld.Query(in query, (Entity entity, ref Position pos, ref Renderable renderable) =>
         {
             // Viewport culling - only draw entities within the viewport
