@@ -8,17 +8,16 @@ using GoRogue.Pathing;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using PigeonPea.Shared.Components;
-
 namespace PigeonPea.Shared;
 
 /// <summary>
 /// Core game world managing ECS entities, map, and game state.
 /// </summary>
-public class GameWorld
-{
-    public World EcsWorld { get; private set; }
-    public ISettableMapView<IGameObject> Map { get; private set; }
-    public Entity PlayerEntity { get; private set; }
+    public class GameWorld
+    {
+        public World EcsWorld { get; private set; }
+        public ISettableGridView<IGameObject> Map { get; private set; }
+        public Entity PlayerEntity { get; private set; }
 
     public int Width { get; }
     public int Height { get; }
@@ -44,7 +43,7 @@ public class GameWorld
         Height = height;
 
         EcsWorld = World.Create();
-        Map = new ArrayMap<IGameObject>(width, height);
+        Map = new ArrayView<IGameObject>(width, height);
         WalkabilityMap = new ArrayView<bool>(width, height);
         TransparencyMap = new ArrayView<bool>(width, height);
         _random = new Random();

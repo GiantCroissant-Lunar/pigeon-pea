@@ -9,11 +9,11 @@
 
   <ItemGroup>
     <!-- ECS Framework -->
-    <PackageReference Include="Arch" Version="1.3.2" />
+    <PackageReference Include="Arch" Version="2.0.0" />
 
     <!-- Roguelike Algorithms & Utilities -->
     <PackageReference Include="GoRogue" Version="3.0.0-beta10" />
-    <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-beta3" />
+    <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
 
     <!-- Utilities -->
     <PackageReference Include="Serilog" Version="4.2.0" />
