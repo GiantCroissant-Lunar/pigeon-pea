@@ -31,136 +31,38 @@ public class PlayerViewModelTests : IDisposable
         World.Destroy(_world);
     }
 
-    [Fact]
-    public void Health_PropertyChanged_RaisesNotification()
+    [Theory]
+    [MemberData(nameof(GetPropertyChangeNotificationData))]
+    public void Property_WhenChanged_RaisesNotification(string propertyName, object newValue)
     {
         // Arrange
         var viewModel = new PlayerViewModel();
         bool propertyChanged = false;
         viewModel.PropertyChanged += (sender, args) =>
         {
-            if (args.PropertyName == nameof(PlayerViewModel.Health))
+            if (args.PropertyName == propertyName)
             {
                 propertyChanged = true;
             }
         };
 
         // Act
-        viewModel.Health = 50;
+        var propertyInfo = typeof(PlayerViewModel).GetProperty(propertyName);
+        propertyInfo!.SetValue(viewModel, newValue);
 
         // Assert
-        propertyChanged.Should().BeTrue("Health property change should raise PropertyChanged");
-        viewModel.Health.Should().Be(50);
+        propertyChanged.Should().BeTrue($"{propertyName} property change should raise PropertyChanged");
+        propertyInfo.GetValue(viewModel).Should().Be(newValue);
     }
 
-    [Fact]
-    public void MaxHealth_PropertyChanged_RaisesNotification()
+    public static IEnumerable<object[]> GetPropertyChangeNotificationData()
     {
-        // Arrange
-        var viewModel = new PlayerViewModel();
-        bool propertyChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.MaxHealth))
-            {
-                propertyChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.MaxHealth = 150;
-
-        // Assert
-        propertyChanged.Should().BeTrue("MaxHealth property change should raise PropertyChanged");
-        viewModel.MaxHealth.Should().Be(150);
-    }
-
-    [Fact]
-    public void Level_PropertyChanged_RaisesNotification()
-    {
-        // Arrange
-        var viewModel = new PlayerViewModel();
-        bool propertyChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.Level))
-            {
-                propertyChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.Level = 10;
-
-        // Assert
-        propertyChanged.Should().BeTrue("Level property change should raise PropertyChanged");
-        viewModel.Level.Should().Be(10);
-    }
-
-    [Fact]
-    public void Experience_PropertyChanged_RaisesNotification()
-    {
-        // Arrange
-        var viewModel = new PlayerViewModel();
-        bool propertyChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.Experience))
-            {
-                propertyChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.Experience = 500;
-
-        // Assert
-        propertyChanged.Should().BeTrue("Experience property change should raise PropertyChanged");
-        viewModel.Experience.Should().Be(500);
-    }
-
-    [Fact]
-    public void Name_PropertyChanged_RaisesNotification()
-    {
-        // Arrange
-        var viewModel = new PlayerViewModel();
-        bool propertyChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.Name))
-            {
-                propertyChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.Name = "NewHero";
-
-        // Assert
-        propertyChanged.Should().BeTrue("Name property change should raise PropertyChanged");
-        viewModel.Name.Should().Be("NewHero");
-    }
-
-    [Fact]
-    public void Position_PropertyChanged_RaisesNotification()
-    {
-        // Arrange
-        var viewModel = new PlayerViewModel();
-        bool propertyChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.Position))
-            {
-                propertyChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.Position = new Point(5, 10);
-
-        // Assert
-        propertyChanged.Should().BeTrue("Position property change should raise PropertyChanged");
-        viewModel.Position.Should().Be(new Point(5, 10));
+        yield return new object[] { nameof(PlayerViewModel.Health), 50 };
+        yield return new object[] { nameof(PlayerViewModel.MaxHealth), 150 };
+        yield return new object[] { nameof(PlayerViewModel.Level), 10 };
+        yield return new object[] { nameof(PlayerViewModel.Experience), 500 };
+        yield return new object[] { nameof(PlayerViewModel.Name), "NewHero" };
+        yield return new object[] { nameof(PlayerViewModel.Position), new Point(5, 10) };
     }
 
     [Fact]
@@ -374,108 +276,62 @@ public class PlayerViewModelTests : IDisposable
         changeCount.Should().Be(0, "PropertyChanged should not fire when value is unchanged");
     }
 
-    [Fact]
-    public void Health_PropertyChanged_RaisesHealthDisplayNotification()
-    {
-        // Arrange
-        var viewModel = new PlayerViewModel { MaxHealth = 100 };
-        bool healthDisplayChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.HealthDisplay))
-            {
-                healthDisplayChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.Health = 75;
-
-        // Assert
-        healthDisplayChanged.Should().BeTrue("HealthDisplay should be notified when Health changes");
-    }
-
-    [Fact]
-    public void Health_PropertyChanged_RaisesHealthPercentageNotification()
-    {
-        // Arrange
-        var viewModel = new PlayerViewModel { MaxHealth = 100 };
-        bool healthPercentageChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.HealthPercentage))
-            {
-                healthPercentageChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.Health = 75;
-
-        // Assert
-        healthPercentageChanged.Should().BeTrue("HealthPercentage should be notified when Health changes");
-    }
-
-    [Fact]
-    public void MaxHealth_PropertyChanged_RaisesHealthDisplayNotification()
-    {
-        // Arrange
-        var viewModel = new PlayerViewModel { Health = 75 };
-        bool healthDisplayChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.HealthDisplay))
-            {
-                healthDisplayChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.MaxHealth = 150;
-
-        // Assert
-        healthDisplayChanged.Should().BeTrue("HealthDisplay should be notified when MaxHealth changes");
-    }
-
-    [Fact]
-    public void MaxHealth_PropertyChanged_RaisesHealthPercentageNotification()
-    {
-        // Arrange
-        var viewModel = new PlayerViewModel { Health = 75 };
-        bool healthPercentageChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.HealthPercentage))
-            {
-                healthPercentageChanged = true;
-            }
-        };
-
-        // Act
-        viewModel.MaxHealth = 150;
-
-        // Assert
-        healthPercentageChanged.Should().BeTrue("HealthPercentage should be notified when MaxHealth changes");
-    }
-
-    [Fact]
-    public void Level_PropertyChanged_RaisesLevelDisplayNotification()
+    [Theory]
+    [MemberData(nameof(GetComputedPropertyData))]
+    public void ComputedProperty_ReflectsSourcePropertyChanges(Action<PlayerViewModel> arrange, Action<PlayerViewModel> act, Func<PlayerViewModel, object> getValue, object expectedValue, string description)
     {
         // Arrange
         var viewModel = new PlayerViewModel();
-        bool levelDisplayChanged = false;
-        viewModel.PropertyChanged += (sender, args) =>
-        {
-            if (args.PropertyName == nameof(PlayerViewModel.LevelDisplay))
-            {
-                levelDisplayChanged = true;
-            }
-        };
+        arrange(viewModel);
 
         // Act
-        viewModel.Level = 10;
+        act(viewModel);
 
         // Assert
-        levelDisplayChanged.Should().BeTrue("LevelDisplay should be notified when Level changes");
+        getValue(viewModel).Should().Be(expectedValue, description);
+    }
+
+    public static IEnumerable<object[]> GetComputedPropertyData()
+    {
+        yield return new object[]
+        {
+            (Action<PlayerViewModel>)(vm => vm.MaxHealth = 100),
+            (Action<PlayerViewModel>)(vm => vm.Health = 75),
+            (Func<PlayerViewModel, object>)(vm => vm.HealthDisplay),
+            "75/100",
+            "HealthDisplay should reflect Health changes"
+        };
+        yield return new object[]
+        {
+            (Action<PlayerViewModel>)(vm => vm.MaxHealth = 100),
+            (Action<PlayerViewModel>)(vm => vm.Health = 75),
+            (Func<PlayerViewModel, object>)(vm => vm.HealthPercentage),
+            0.75,
+            "HealthPercentage should reflect Health changes"
+        };
+        yield return new object[]
+        {
+            (Action<PlayerViewModel>)(vm => vm.Health = 75),
+            (Action<PlayerViewModel>)(vm => vm.MaxHealth = 100),
+            (Func<PlayerViewModel, object>)(vm => vm.HealthDisplay),
+            "75/100",
+            "HealthDisplay should reflect MaxHealth changes"
+        };
+        yield return new object[]
+        {
+            (Action<PlayerViewModel>)(vm => vm.Health = 75),
+            (Action<PlayerViewModel>)(vm => vm.MaxHealth = 100),
+            (Func<PlayerViewModel, object>)(vm => vm.HealthPercentage),
+            0.75,
+            "HealthPercentage should reflect MaxHealth changes"
+        };
+        yield return new object[]
+        {
+            (Action<PlayerViewModel>)(vm => { }),
+            (Action<PlayerViewModel>)(vm => vm.Level = 10),
+            (Func<PlayerViewModel, object>)(vm => vm.LevelDisplay),
+            "Level 10",
+            "LevelDisplay should reflect Level changes"
+        };
     }
 }
