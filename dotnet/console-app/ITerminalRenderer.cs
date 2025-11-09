@@ -13,7 +13,7 @@ public interface ITerminalRenderer
 /// <summary>
 /// ASCII renderer (fallback, most compatible).
 /// </summary>
-public class AsciiRenderer : ITerminalRenderer
+public class AsciiTerminalRenderer : ITerminalRenderer
 {
     public void Clear() { }
     public void DrawTile(int x, int y, char glyph, ConsoleColor foreground, ConsoleColor background) { }
@@ -23,7 +23,7 @@ public class AsciiRenderer : ITerminalRenderer
 /// <summary>
 /// Braille Unicode renderer for higher resolution.
 /// </summary>
-public class BrailleRenderer : ITerminalRenderer
+public class BrailleTerminalRenderer : ITerminalRenderer
 {
     public void Clear() { }
     public void DrawTile(int x, int y, char glyph, ConsoleColor foreground, ConsoleColor background) { }
@@ -33,7 +33,7 @@ public class BrailleRenderer : ITerminalRenderer
 /// <summary>
 /// Sixel graphics protocol renderer (stub).
 /// </summary>
-public class SixelRendererStub : ITerminalRenderer
+public class SixelTerminalRendererStub : ITerminalRenderer
 {
     public void Clear() { }
     public void DrawTile(int x, int y, char glyph, ConsoleColor foreground, ConsoleColor background) { }
