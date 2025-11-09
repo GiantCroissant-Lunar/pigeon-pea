@@ -3,6 +3,7 @@ using PigeonPea.Shared;
 using PigeonPea.Console.Rendering;
 using System;
 using System.CommandLine;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PigeonPea.Console;
 
@@ -52,6 +53,15 @@ class Program
 
     static void RunGame(string renderer, bool debug, int? width, int? height)
     {
+        // Set up dependency injection container
+        var services = new ServiceCollection();
+        
+        // Add MessagePipe and other Pigeon Pea services
+        services.AddPigeonPeaServices();
+        
+        // Build the service provider
+        var serviceProvider = services.BuildServiceProvider();
+
         // Detect terminal capabilities
         var terminalInfo = TerminalCapabilities.Detect();
 
@@ -85,6 +95,7 @@ class Program
         finally
         {
             Application.Shutdown();
+            serviceProvider.Dispose();
         }
     }
 }
