@@ -26,7 +26,7 @@ public class GameApplication : Toplevel
     public GameApplication(TerminalCapabilities terminalCaps)
     {
         _terminalCaps = terminalCaps;
-        _gameWorld = new GameWorld(80, 40);
+        _gameWorld = new GameWorld(new StubRenderer(), 80, 40);
 
         // Main game view (80x40 grid)
         _gameView = new GameView(_gameWorld, terminalCaps)
