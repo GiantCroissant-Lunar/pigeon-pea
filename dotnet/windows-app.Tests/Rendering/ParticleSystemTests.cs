@@ -504,7 +504,7 @@ public class ParticleSystemTests : IDisposable
 
         // Act
         system.Emit(emitter, 0.1f);
-        
+
         // We can't directly access particles, but we can verify the render uses the color
         system.Render(_canvas, 16);
 
