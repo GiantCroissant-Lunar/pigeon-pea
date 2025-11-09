@@ -24,24 +24,31 @@ function runSimpleTest() {
   });
 
   let output = '';
-  let hasReceivedOutput = false;
 
   // Capture output
   ptyProcess.onData((data) => {
     output += data;
-    hasReceivedOutput = true;
     process.stdout.write(data);
   });
 
+  // Safety timeout to prevent the test from running indefinitely.
+  const safetyTimeout = setTimeout(() => {
+    console.log('\nTimeout reached, killing PTY process...');
+    ptyProcess.kill(); // This will trigger the onExit handler, centralizing the exit logic.
+  }, 2000);
+
   // Handle exit
   ptyProcess.onExit(({ exitCode, signal }) => {
+    clearTimeout(safetyTimeout); // Clear the safety timeout to prevent the script from hanging.
     console.log(`\nPTY process exited with code ${exitCode}, signal ${signal}`);
     
-    if (hasReceivedOutput) {
-      console.log('✓ PTY spawn test passed: Received output from spawned process');
+    // A more robust check for specific output.
+    if (output.includes("Hello from PTY test")) {
+      console.log('✓ PTY spawn test passed: Received expected output from spawned process');
       process.exit(0);
     } else {
-      console.error('✗ PTY spawn test failed: No output received');
+      console.error('✗ PTY spawn test failed: Did not receive expected output.');
+      console.error('--- Received output: ---\n' + output + '\n------------------------');
       process.exit(1);
     }
   });
@@ -54,22 +61,6 @@ function runSimpleTest() {
   setTimeout(() => {
     ptyProcess.write('exit\r');
   }, 500);
-
-  // Safety timeout
-  setTimeout(() => {
-    if (ptyProcess) {
-      console.log('\nTimeout reached, killing PTY process...');
-      ptyProcess.kill();
-      
-      if (hasReceivedOutput) {
-        console.log('✓ PTY spawn test passed: Received output from spawned process');
-        process.exit(0);
-      } else {
-        console.error('✗ PTY spawn test failed: No output received');
-        process.exit(1);
-      }
-    }
-  }, 2000);
 }
 
 // Run the test
