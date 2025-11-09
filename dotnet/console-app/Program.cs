@@ -54,23 +54,15 @@ class Program
         // Detect terminal capabilities
         var terminalInfo = TerminalCapabilities.Detect();
 
-        // Override dimensions if specified
-        if (width.HasValue || height.HasValue)
-        {
-            terminalInfo = new TerminalCapabilities(
-                terminalInfo,
-                width ?? terminalInfo.Width,
-                height ?? terminalInfo.Height
-            );
-        }
+        // Note: TerminalCapabilities does not track width/height on this branch.
+        // Width/height overrides can be handled by view layout instead.
 
         // Display terminal information
         System.Console.WriteLine($"Terminal: {terminalInfo.TerminalType}");
         System.Console.WriteLine($"Supports Sixel: {terminalInfo.SupportsSixel}");
         System.Console.WriteLine($"Supports Kitty Graphics: {terminalInfo.SupportsKittyGraphics}");
         System.Console.WriteLine($"Supports Unicode Braille: {terminalInfo.SupportsBraille}");
-        System.Console.WriteLine($"Supports True Color (24-bit): {terminalInfo.SupportsTrueColor}");
-        System.Console.WriteLine($"Supports 256 Colors: {terminalInfo.Supports256Color}");
+        // TrueColor/256-color detection not implemented in TerminalCapabilities on this branch.
         System.Console.WriteLine($"Renderer: {renderer}");
 
         if (debug)
