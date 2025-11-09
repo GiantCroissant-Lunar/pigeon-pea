@@ -41,9 +41,9 @@ public class SixelRenderer : ITerminalRenderer
 }
 
 /// <summary>
-/// Kitty graphics protocol renderer.
+/// Kitty graphics protocol renderer (Terminal.Gui integration - placeholder).
 /// </summary>
-public class KittyGraphicsRenderer : ITerminalRenderer
+public class KittyTerminalRenderer : ITerminalRenderer
 {
     public void Clear() { }
     public void DrawTile(int x, int y, char glyph, ConsoleColor foreground, ConsoleColor background) { }
