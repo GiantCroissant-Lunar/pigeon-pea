@@ -1,5 +1,6 @@
 using Terminal.Gui;
 using PigeonPea.Shared;
+using PigeonPea.Console.Rendering;
 using System;
 
 namespace PigeonPea.Console;
