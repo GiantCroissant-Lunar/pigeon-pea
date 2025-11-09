@@ -1,0 +1,15 @@
+# Ignore all recordings - they can be large and regenerated
+recordings/
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Ignore FFmpeg log files
+*-ffmpeg-log.txt
+
+# Ignore extracted frames
+frames/
+*.png
+*.jpg
+*.jpeg
