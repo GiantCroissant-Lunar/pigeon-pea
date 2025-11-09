@@ -12,10 +12,11 @@ public static class ColorGradient
     /// </summary>
     /// <param name="a">The starting color.</param>
     /// <param name="b">The ending color.</param>
-    /// <param name="t">The interpolation factor (0.0 = a, 1.0 = b).</param>
+    /// <param name="t">The interpolation factor (0.0 = a, 1.0 = b). Values outside [0, 1] are clamped.</param>
     /// <returns>The interpolated color.</returns>
     public static Color Lerp(Color a, Color b, float t)
     {
+        t = Math.Clamp(t, 0f, 1f);
         return new Color(
             (byte)(a.R + (b.R - a.R) * t),
             (byte)(a.G + (b.G - a.G) * t),
@@ -54,10 +55,15 @@ public static class ColorGradient
     /// </summary>
     /// <param name="baseColor">The base color to fade.</param>
     /// <param name="distance">The distance from the viewer.</param>
-    /// <param name="maxDistance">The maximum distance at which the color is fully faded to black.</param>
+    /// <param name="maxDistance">The maximum distance at which the color is fully faded to black. Must be greater than zero.</param>
     /// <returns>The faded color based on distance.</returns>
     public static Color ApplyDistanceFade(Color baseColor, float distance, float maxDistance)
     {
+        if (maxDistance <= 0f)
+        {
+            return distance > 0f ? Color.Black : baseColor;
+        }
+
         float t = Math.Clamp(distance / maxDistance, 0f, 1f);
         return Lerp(baseColor, Color.Black, t);
     }

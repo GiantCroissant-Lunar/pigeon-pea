@@ -22,10 +22,7 @@ public class ColorGradientTests
         var result = ColorGradient.Lerp(colorA, colorB, 0f);
 
         // Assert
-        Assert.Equal(colorA.R, result.R);
-        Assert.Equal(colorA.G, result.G);
-        Assert.Equal(colorA.B, result.B);
-        Assert.Equal(colorA.A, result.A);
+        Assert.Equal(colorA, result);
     }
 
     [Fact]
@@ -39,10 +36,7 @@ public class ColorGradientTests
         var result = ColorGradient.Lerp(colorA, colorB, 1f);
 
         // Assert
-        Assert.Equal(colorB.R, result.R);
-        Assert.Equal(colorB.G, result.G);
-        Assert.Equal(colorB.B, result.B);
-        Assert.Equal(colorB.A, result.A);
+        Assert.Equal(colorB, result);
     }
 
     [Fact]
@@ -207,9 +201,7 @@ public class ColorGradientTests
         var result = ColorGradient.ApplyDistanceFade(baseColor, distance, maxDistance);
 
         // Assert
-        Assert.Equal(baseColor.R, result.R);
-        Assert.Equal(baseColor.G, result.G);
-        Assert.Equal(baseColor.B, result.B);
+        Assert.Equal(baseColor, result);
     }
 
     [Fact]
@@ -224,9 +216,7 @@ public class ColorGradientTests
         var result = ColorGradient.ApplyDistanceFade(baseColor, distance, maxDistance);
 
         // Assert
-        Assert.Equal(Color.Black.R, result.R);
-        Assert.Equal(Color.Black.G, result.G);
-        Assert.Equal(Color.Black.B, result.B);
+        Assert.Equal(Color.Black, result);
     }
 
     [Fact]
@@ -247,7 +237,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithDistanceBeyondMax_ReturnsClamppedBlack()
+    public void ApplyDistanceFade_WithDistanceBeyondMax_ReturnsClampedBlack()
     {
         // Arrange
         var baseColor = Color.White;
@@ -258,13 +248,11 @@ public class ColorGradientTests
         var result = ColorGradient.ApplyDistanceFade(baseColor, distance, maxDistance);
 
         // Assert
-        Assert.Equal(Color.Black.R, result.R);
-        Assert.Equal(Color.Black.G, result.G);
-        Assert.Equal(Color.Black.B, result.B);
+        Assert.Equal(Color.Black, result);
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithNegativeDistance_ReturnsClamppedBaseColor()
+    public void ApplyDistanceFade_WithNegativeDistance_ReturnsClampedBaseColor()
     {
         // Arrange
         var baseColor = Color.Green;
@@ -275,9 +263,7 @@ public class ColorGradientTests
         var result = ColorGradient.ApplyDistanceFade(baseColor, distance, maxDistance);
 
         // Assert
-        Assert.Equal(baseColor.R, result.R);
-        Assert.Equal(baseColor.G, result.G);
-        Assert.Equal(baseColor.B, result.B);
+        Assert.Equal(baseColor, result);
     }
 
     [Fact]
@@ -318,6 +304,94 @@ public class ColorGradientTests
         Assert.Equal((byte)127, fade50.R); // 255 * 0.5
         Assert.Equal((byte)63, fade75.R);  // 255 * 0.25
         Assert.Equal((byte)0, fade100.R);
+    }
+
+    [Fact]
+    public void ApplyDistanceFade_WithZeroMaxDistance_AndZeroDistance_ReturnsBaseColor()
+    {
+        // Arrange
+        var baseColor = Color.Yellow;
+        float distance = 0f;
+        float maxDistance = 0f;
+
+        // Act
+        var result = ColorGradient.ApplyDistanceFade(baseColor, distance, maxDistance);
+
+        // Assert
+        Assert.Equal(baseColor, result);
+    }
+
+    [Fact]
+    public void ApplyDistanceFade_WithZeroMaxDistance_AndPositiveDistance_ReturnsBlack()
+    {
+        // Arrange
+        var baseColor = Color.Yellow;
+        float distance = 5f;
+        float maxDistance = 0f;
+
+        // Act
+        var result = ColorGradient.ApplyDistanceFade(baseColor, distance, maxDistance);
+
+        // Assert
+        Assert.Equal(Color.Black, result);
+    }
+
+    [Fact]
+    public void ApplyDistanceFade_WithNegativeMaxDistance_AndZeroDistance_ReturnsBaseColor()
+    {
+        // Arrange
+        var baseColor = Color.Blue;
+        float distance = 0f;
+        float maxDistance = -10f;
+
+        // Act
+        var result = ColorGradient.ApplyDistanceFade(baseColor, distance, maxDistance);
+
+        // Assert
+        Assert.Equal(baseColor, result);
+    }
+
+    [Fact]
+    public void ApplyDistanceFade_WithNegativeMaxDistance_AndPositiveDistance_ReturnsBlack()
+    {
+        // Arrange
+        var baseColor = Color.Blue;
+        float distance = 5f;
+        float maxDistance = -10f;
+
+        // Act
+        var result = ColorGradient.ApplyDistanceFade(baseColor, distance, maxDistance);
+
+        // Assert
+        Assert.Equal(Color.Black, result);
+    }
+
+    [Fact]
+    public void Lerp_WithTBelowZero_ClampsToZero()
+    {
+        // Arrange
+        var colorA = new Color(100, 150, 200, 255);
+        var colorB = new Color(200, 100, 50, 255);
+
+        // Act
+        var result = ColorGradient.Lerp(colorA, colorB, -0.5f);
+
+        // Assert
+        Assert.Equal(colorA, result);
+    }
+
+    [Fact]
+    public void Lerp_WithTAboveOne_ClampsToOne()
+    {
+        // Arrange
+        var colorA = new Color(100, 150, 200, 255);
+        var colorB = new Color(200, 100, 50, 255);
+
+        // Act
+        var result = ColorGradient.Lerp(colorA, colorB, 1.5f);
+
+        // Assert
+        Assert.Equal(colorB, result);
     }
 
     #endregion
