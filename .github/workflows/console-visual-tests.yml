@@ -10,6 +10,8 @@ jobs:
   console-pty-tests:
     runs-on: ubuntu-latest
     name: Console PTY Tests
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout code
