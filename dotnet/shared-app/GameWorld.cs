@@ -15,7 +15,7 @@ using RTile = PigeonPea.Shared.Rendering.Tile;
 /// <summary>
 /// Core game world managing ECS entities, map, and game state.
 /// </summary>
-    public class GameWorld
+public class GameWorld
 {
     public World EcsWorld { get; private set; }
     public ISettableGridView<IGameObject> Map { get; private set; }
