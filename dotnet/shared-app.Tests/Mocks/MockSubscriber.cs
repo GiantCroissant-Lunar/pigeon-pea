@@ -55,10 +55,6 @@ public class MockSubscriber<T>
     public void Reset()
     {
         _handlers.Clear();
-        foreach (var subscription in _subscriptions)
-        {
-            subscription.Dispose();
-        }
         _subscriptions.Clear();
     }
 }
