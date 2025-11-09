@@ -3,6 +3,7 @@ using Arch.Core;
 using Arch.Core.Extensions;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
+using PigeonPea.Console.Rendering;
 using SadRogue.Primitives;
 using System;
 using System.Threading;
