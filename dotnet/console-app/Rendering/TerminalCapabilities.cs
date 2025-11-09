@@ -48,6 +48,31 @@ public class TerminalCapabilities
     public int Height { get; private set; }
 
     /// <summary>
+    /// Creates a new TerminalCapabilities instance with overridden dimensions.
+    /// </summary>
+    /// <param name="source">The source capabilities to copy from.</param>
+    /// <param name="width">The width to override.</param>
+    /// <param name="height">The height to override.</param>
+    public TerminalCapabilities(TerminalCapabilities source, int width, int height)
+    {
+        TerminalType = source.TerminalType;
+        SupportsSixel = source.SupportsSixel;
+        SupportsKittyGraphics = source.SupportsKittyGraphics;
+        SupportsBraille = source.SupportsBraille;
+        SupportsTrueColor = source.SupportsTrueColor;
+        Supports256Color = source.Supports256Color;
+        Width = width;
+        Height = height;
+    }
+
+    /// <summary>
+    /// Private constructor for internal use by Detect method.
+    /// </summary>
+    private TerminalCapabilities()
+    {
+    }
+
+    /// <summary>
     /// Detects terminal capabilities from the environment.
     /// </summary>
     /// <returns>A TerminalCapabilities instance with detected capabilities.</returns>
