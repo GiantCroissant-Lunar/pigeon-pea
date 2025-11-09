@@ -1,8 +1,11 @@
 using Terminal.Gui;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
-using PigeonPea.Console.Rendering;
 using System;
+using GuiAttribute = Terminal.Gui.Attribute;
+using SRColor = SadRogue.Primitives.Color;
+using Arch.Core;
+using Arch.Core.Extensions;
 
 namespace PigeonPea.Console;
 
@@ -30,12 +33,13 @@ public class GameView : View
         };
     }
 
-    public override void OnDrawContent(Rect viewport)
+    protected override bool OnDrawingContent()
     {
-        base.OnDrawContent(viewport);
+        // Clear background
+        Driver?.SetAttribute(new GuiAttribute(Color.White, Color.Black));
 
-        // Clear
-        Driver.SetAttribute(new Attribute(Color.White, Color.Black));
+        // Get viewport bounds
+        var viewport = Viewport;
 
         // Render all entities
         var query = new Arch.Core.QueryDescription().WithAll<Position, Renderable>();
@@ -45,27 +49,27 @@ public class GameView : View
                 pos.Point.Y >= 0 && pos.Point.Y < viewport.Height)
             {
                 var color = ConvertColor(renderable.Foreground);
-                Driver.SetAttribute(new Attribute(color, Color.Black));
-                AddRune(pos.Point.X, pos.Point.Y, (Rune)renderable.Glyph);
+                Driver?.SetAttribute(new GuiAttribute(color, Color.Black));
+                Driver?.Move(pos.Point.X, pos.Point.Y);
+                Driver?.AddStr(renderable.Glyph.ToString());
             }
         });
 
         // TODO: Render map tiles
         // TODO: Use _renderer for advanced graphics (Sixel/Kitty/Braille)
+
+        return true;
     }
 
-    private Color ConvertColor(SadRogue.Primitives.Color color)
+    private Color ConvertColor(SRColor color)
     {
-        // Map to nearest Terminal.Gui color
-        return color.Name switch
-        {
-            "Yellow" => Color.Yellow,
-            "Red" => Color.Red,
-            "Green" => Color.Green,
-            "Blue" => Color.Blue,
-            "White" => Color.White,
-            "Black" => Color.Black,
-            _ => Color.White
-        };
+        // Map a few common colors directly; default to White
+        if (color == SRColor.Yellow) return Color.Yellow;
+        if (color == SRColor.Red) return Color.Red;
+        if (color == SRColor.Green) return Color.Green;
+        if (color == SRColor.Blue) return Color.Blue;
+        if (color == SRColor.White) return Color.White;
+        if (color == SRColor.Black) return Color.Black;
+        return Color.White;
     }
 }

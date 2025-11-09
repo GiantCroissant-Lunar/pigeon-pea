@@ -1,7 +1,10 @@
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
+using Arch.Core;
+using Arch.Core.Extensions;
 using PigeonPea.Shared;
+using PigeonPea.Shared.Components;
 using SadRogue.Primitives;
 using System;
 
@@ -19,7 +22,7 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
 
-        _gameWorld = new GameWorld(new StubRenderer(), 80, 50);
+        _gameWorld = new GameWorld(80, 50);
 
         // Initialize game canvas
         GameCanvas.Initialize(_gameWorld);
@@ -84,12 +87,12 @@ public partial class MainWindow : Window
 
     private void UpdateHud()
     {
-        if (_gameWorld.PlayerEntity.IsAlive())
+        // Arch v2: check Health component IsAlive instead of Entity.IsAlive
+        ref readonly var health = ref _gameWorld.PlayerEntity.Get<Health>();
+        if (health.IsAlive)
         {
-            ref readonly var pos = ref _gameWorld.PlayerEntity.Get<PigeonPea.Shared.Components.Position>();
+            ref readonly var pos = ref _gameWorld.PlayerEntity.Get<Position>();
             PositionText.Text = $"Pos: ({pos.Point.X}, {pos.Point.Y})";
-
-            ref readonly var health = ref _gameWorld.PlayerEntity.Get<PigeonPea.Shared.Components.Health>();
             HealthText.Text = $"HP: {health.Current}/{health.Maximum}";
         }
     }

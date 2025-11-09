@@ -91,12 +91,14 @@ Currently, the UI layer directly polls game state and manually updates UI elemen
 **Purpose**: Foundation for reactive programming
 
 **Key Features**:
+
 - `IObservable<T>` / `IObserver<T>` interfaces
 - LINQ operators for event streams
 - Schedulers for controlling concurrency
 - Composition of asynchronous operations
 
 **Usage Example**:
+
 ```csharp
 // Stream of player health changes
 IObservable<int> healthChanges = Observable
@@ -116,6 +118,7 @@ healthChanges.Subscribe(health =>
 **Purpose**: MVVM framework with reactive bindings
 
 **Key Features**:
+
 - `ReactiveObject` base class for view models
 - Property change notifications via `RaiseAndSetIfChanged`
 - `ReactiveCommand` for UI actions
@@ -123,6 +126,7 @@ healthChanges.Subscribe(health =>
 - Platform integration (Avalonia, WPF, etc.)
 
 **Usage Example**:
+
 ```csharp
 public class PlayerViewModel : ReactiveObject
 {
@@ -146,6 +150,7 @@ public class PlayerViewModel : ReactiveObject
 **Purpose**: High-performance in-memory message bus for event-driven architecture
 
 **Key Features**:
+
 - Zero-allocation pub/sub messaging
 - Type-safe message contracts
 - Filter support for conditional message handling
@@ -155,6 +160,7 @@ public class PlayerViewModel : ReactiveObject
 - Integration with DI containers
 
 **Usage Example**:
+
 ```csharp
 // Define game events
 public class PlayerDamagedEvent
@@ -220,12 +226,14 @@ public class CombatSystem
 **Purpose**: High-performance observable collections for games
 
 **Key Features**:
+
 - Minimal GC allocations
 - Change notifications with detailed diffs
 - Filter/Sort/Transform views
 - Optimized for game scenarios
 
 **Usage Example**:
+
 ```csharp
 var inventory = new ObservableList<ItemViewModel>();
 
@@ -249,6 +257,7 @@ inventory.Add(new ItemViewModel { Name = "Sword", Damage = 10 });
 MessagePipe and other reactive services need to be registered with the DI container.
 
 **Program.cs (Console App)**:
+
 ```csharp
 using MessagePipe;
 using Microsoft.Extensions.DependencyInjection;
@@ -277,6 +286,7 @@ app.Run();
 ```
 
 **Program.cs (Windows App)**:
+
 ```csharp
 public class App : Application
 {
@@ -770,6 +780,7 @@ namespace PigeonPea.Shared.ViewModels
 Avalonia has first-class ReactiveUI support.
 
 **MainWindow.axaml**:
+
 ```xml
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -798,6 +809,7 @@ Avalonia has first-class ReactiveUI support.
 ```
 
 **MainWindow.axaml.cs**:
+
 ```csharp
 public partial class MainWindow : Window
 {
@@ -812,6 +824,7 @@ public partial class MainWindow : Window
 ```
 
 **Reactive Commands**:
+
 ```csharp
 public class GameViewModel : ReactiveObject
 {
@@ -842,6 +855,7 @@ public class GameViewModel : ReactiveObject
 Terminal.Gui doesn't have built-in ReactiveUI support, but we can manually subscribe to observables.
 
 **GameApplication.cs**:
+
 ```csharp
 public class GameApplication
 {
@@ -872,6 +886,7 @@ public class GameApplication
 ```
 
 **PlayerView.cs**:
+
 ```csharp
 public class PlayerView : FrameView
 {
@@ -914,6 +929,7 @@ public class PlayerView : FrameView
 ```
 
 **InventoryView.cs**:
+
 ```csharp
 public class InventoryView : FrameView
 {
