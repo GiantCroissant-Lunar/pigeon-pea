@@ -12,7 +12,7 @@ public class Camera
     /// <summary>
     /// Gets or sets the camera position in world coordinates.
     /// </summary>
-    public Point Position { get; set; }
+    public Point Position { get; set; } = Point.None;
 
     /// <summary>
     /// Gets or sets the entity that the camera should follow (if any).
@@ -29,8 +29,6 @@ public class Camera
     /// </summary>
     public Camera()
     {
-        Position = Point.None;
-        FollowTarget = null;
         Viewport = new Viewport(0, 0, 80, 24);
     }
 
@@ -40,8 +38,6 @@ public class Camera
     /// <param name="viewport">The viewport to use for the camera.</param>
     public Camera(Viewport viewport)
     {
-        Position = Point.None;
-        FollowTarget = null;
         Viewport = viewport;
     }
 
