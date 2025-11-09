@@ -9,8 +9,20 @@ namespace PigeonPea.Shared.Tests.Rendering;
 /// <summary>
 /// Unit tests for the <see cref="Camera"/> class.
 /// </summary>
-public class CameraTests
+public class CameraTests : IDisposable
 {
+    private readonly World _world;
+
+    public CameraTests()
+    {
+        _world = World.Create();
+    }
+
+    public void Dispose()
+    {
+        _world.Dispose();
+    }
+
     [Fact]
     public void Camera_DefaultConstructor_InitializesCorrectly()
     {
@@ -44,27 +56,22 @@ public class CameraTests
     public void Camera_Follow_SetsFollowTarget()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera();
-        var entity = world.Create();
+        var entity = _world.Create();
 
         // Act
         camera.Follow(entity);
 
         // Assert
         Assert.Equal(entity, camera.FollowTarget);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Unfollow_ClearsFollowTarget()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera();
-        var entity = world.Create();
+        var entity = _world.Create();
         camera.Follow(entity);
 
         // Act
@@ -72,179 +79,144 @@ public class CameraTests
 
         // Assert
         Assert.Null(camera.FollowTarget);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_WithNoFollowTarget_DoesNotChangePosition()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera();
         var initialPosition = new Point(10, 10);
         camera.Position = initialPosition;
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert
         Assert.Equal(initialPosition, camera.Position);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_WithFollowTarget_CentersOnTarget()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera(new Viewport(0, 0, 20, 10));
-        var entity = world.Create(new Position(50, 50));
+        var entity = _world.Create(new Position(50, 50));
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert
         // Camera should center on entity (50, 50)
         // X: 50 - 20/2 = 40, Y: 50 - 10/2 = 45
         Assert.Equal(40, camera.Position.X);
         Assert.Equal(45, camera.Position.Y);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_ClampsToMapBounds_Left()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera(new Viewport(0, 0, 20, 10));
-        var entity = world.Create(new Position(5, 50)); // Near left edge
+        var entity = _world.Create(new Position(5, 50)); // Near left edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert
         // Camera should be clamped to X = 0
         Assert.Equal(0, camera.Position.X);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_ClampsToMapBounds_Top()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera(new Viewport(0, 0, 20, 10));
-        var entity = world.Create(new Position(50, 3)); // Near top edge
+        var entity = _world.Create(new Position(50, 3)); // Near top edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert
         // Camera should be clamped to Y = 0
         Assert.Equal(0, camera.Position.Y);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_ClampsToMapBounds_Right()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera(new Viewport(0, 0, 20, 10));
-        var entity = world.Create(new Position(95, 50)); // Near right edge
+        var entity = _world.Create(new Position(95, 50)); // Near right edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert
         // Camera should be clamped to X = 80 (100 - 20)
         Assert.Equal(80, camera.Position.X);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_ClampsToMapBounds_Bottom()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera(new Viewport(0, 0, 20, 10));
-        var entity = world.Create(new Position(50, 96)); // Near bottom edge
+        var entity = _world.Create(new Position(50, 96)); // Near bottom edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert
         // Camera should be clamped to Y = 90 (100 - 10)
         Assert.Equal(90, camera.Position.Y);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_WithDeadEntity_DoesNotCrash()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera();
-        var entity = world.Create(new Position(50, 50));
+        var entity = _world.Create(new Position(50, 50));
         camera.Follow(entity);
-        world.Destroy(entity); // Kill the entity
+        _world.Destroy(entity); // Kill the entity
         var mapBounds = new Rectangle(0, 0, 100, 100);
         var initialPosition = camera.Position;
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert - Camera position should not change
         Assert.Equal(initialPosition, camera.Position);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_WithEntityWithoutPosition_DoesNotCrash()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera();
-        var entity = world.Create(); // Entity without Position component
+        var entity = _world.Create(); // Entity without Position component
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
         var initialPosition = camera.Position;
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert - Camera position should not change
         Assert.Equal(initialPosition, camera.Position);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
@@ -268,45 +240,37 @@ public class CameraTests
     public void Camera_Update_WithSmallMap_HandlesGracefully()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera(new Viewport(0, 0, 50, 30));
-        var entity = world.Create(new Position(10, 10));
+        var entity = _world.Create(new Position(10, 10));
         camera.Follow(entity);
         // Map is smaller than viewport
         var mapBounds = new Rectangle(0, 0, 30, 20);
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert
         // Camera should be clamped at (0, 0) since map is smaller
         Assert.Equal(0, camera.Position.X);
         Assert.Equal(0, camera.Position.Y);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
     public void Camera_Update_WithNegativeMapBounds_WorksCorrectly()
     {
         // Arrange
-        var world = World.Create();
         var camera = new Camera(new Viewport(0, 0, 20, 10));
-        var entity = world.Create(new Position(0, 0));
+        var entity = _world.Create(new Position(0, 0));
         camera.Follow(entity);
         var mapBounds = new Rectangle(-50, -50, 100, 100);
 
         // Act
-        camera.Update(world, mapBounds);
+        camera.Update(_world, mapBounds);
 
         // Assert
         // Camera should center on (0, 0): X = 0 - 10 = -10, Y = 0 - 5 = -5
         Assert.Equal(-10, camera.Position.X);
         Assert.Equal(-5, camera.Position.Y);
-
-        // Cleanup
-        world.Dispose();
     }
 
     [Fact]
