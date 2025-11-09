@@ -17,7 +17,7 @@ public class SixelEncoderTests
         int width = 4;
         int height = 4;
         var imageData = new byte[width * height * 3];
-        
+
         // Fill with red color
         for (int i = 0; i < imageData.Length; i += 3)
         {
@@ -44,7 +44,7 @@ public class SixelEncoderTests
         int width = 4;
         int height = 4;
         var pixels = new Color[width * height];
-        
+
         // Fill with blue color
         for (int i = 0; i < pixels.Length; i++)
         {
@@ -132,7 +132,7 @@ public class SixelEncoderTests
         int width = 8;
         int height = 6;
         var pixels = new Color[width * height];
-        
+
         // Fill with white color
         for (int i = 0; i < pixels.Length; i++)
         {
@@ -173,7 +173,7 @@ public class SixelEncoderTests
         int width = 8;
         int height = 24; // 4 bands of 6 pixels each
         var pixels = new Color[width * height];
-        
+
         // Create gradient
         for (int y = 0; y < height; y++)
         {
@@ -202,7 +202,7 @@ public class SixelEncoderTests
         int width = 16;
         int height = 16;
         var pixels = new Color[width * height];
-        
+
         // Create 256 unique colors
         for (int i = 0; i < pixels.Length; i++)
         {
