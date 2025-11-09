@@ -1,5 +1,6 @@
 using MessagePipe;
 using Microsoft.Extensions.DependencyInjection;
+using PigeonPea.Shared.ViewModels;
 
 namespace PigeonPea.Shared;
 
@@ -17,6 +18,12 @@ public static class ServiceCollectionExtensions
     {
         // Add MessagePipe for event-driven communication
         services.AddMessagePipe();
+
+        // Add view models as transient services
+        services.AddTransient<PlayerViewModel>();
+        services.AddTransient<InventoryViewModel>();
+        services.AddTransient<MessageLogViewModel>();
+        services.AddTransient<MapViewModel>();
 
         return services;
     }
