@@ -34,11 +34,15 @@ public class GameCanvas : Control
 
         if (_gameWorld == null) return;
 
-        // Get Skia canvas from Avalonia context
-        if (context is ISkiaDrawingContextImpl skiaContext)
+        // Get Skia canvas via Avalonia 11 lease feature
+        if (context.TryGetFeature(out ISkiaSharpApiLeaseFeature? leaseFeature))
         {
-            var canvas = skiaContext.SkCanvas;
-            RenderGame(canvas);
+            using var lease = leaseFeature.Lease();
+            var canvas = lease.SkCanvas;
+            if (canvas != null)
+            {
+                RenderGame(canvas);
+            }
         }
     }
 

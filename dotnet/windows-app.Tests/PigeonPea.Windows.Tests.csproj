@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -20,18 +20,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="SkiaSharp" Version="3.116.1" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="3.116.1" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="FluentAssertions" Version="6.12.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="3.1.12" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../shared-app/PigeonPea.Shared.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!-- Include only the Rendering files we need for testing -->
-    <Compile Include="../windows-app/Rendering/SkiaRenderTarget.cs" Link="Rendering/SkiaRenderTarget.cs" />
-    <Compile Include="../windows-app/Rendering/SkiaSharpRenderer.cs" Link="Rendering/SkiaSharpRenderer.cs" />
+    <ProjectReference Include="../windows-app/PigeonPea.Windows.csproj" />
   </ItemGroup>
 
 </Project>
