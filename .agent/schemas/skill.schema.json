@@ -104,9 +104,7 @@
         "type": "string"
       },
       "uniqueItems": true,
-      "examples": [
-        ["dotnet-restore", "dotnet-clean"]
-      ]
+      "examples": [["dotnet-restore", "dotnet-clean"]]
     },
     "tags": {
       "type": "array",
@@ -128,9 +126,7 @@
         "type": "string"
       },
       "uniqueItems": true,
-      "examples": [
-        ["build-solution.md", "restore-deps.md", "run-benchmarks.md"]
-      ]
+      "examples": [["build-solution.md", "restore-deps.md", "run-benchmarks.md"]]
     }
   },
   "additionalProperties": false,

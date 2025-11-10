@@ -28,7 +28,7 @@ platform: claude | copilot | other
 version: 0.1.0
 
 capabilities:
-  context_window: 200000  # tokens
+  context_window: 200000 # tokens
   supports_mcp: true
   supports_tools: true
   max_tool_calls: 50
@@ -39,9 +39,9 @@ preferences:
   error_handling: detailed | concise
 
 hints:
-  - "Use MCP servers for external data access"
-  - "Leverage extended context for large codebases"
-  - "Batch file reads for efficiency"
+  - 'Use MCP servers for external data access'
+  - 'Leverage extended context for large codebases'
+  - 'Batch file reads for efficiency'
 ```
 
 ## Example: Claude Provider (claude.yaml)
@@ -65,21 +65,21 @@ preferences:
   thinking_process: visible
 
 hints:
-  - "Use extended thinking for complex problems"
-  - "Leverage MCP servers for Git, filesystem, and external APIs"
-  - "Batch independent tool calls for efficiency"
-  - "Use sequential thinking tool for multi-step reasoning"
-  - "Surface reasoning and trade-offs in responses"
+  - 'Use extended thinking for complex problems'
+  - 'Leverage MCP servers for Git, filesystem, and external APIs'
+  - 'Batch independent tool calls for efficiency'
+  - 'Use sequential thinking tool for multi-step reasoning'
+  - 'Surface reasoning and trade-offs in responses'
 
 skill_execution:
-  - "Load skill entry file first (SKILL.md)"
-  - "Only load reference files when specific procedure needed"
-  - "Progressive disclosure: start minimal, expand as needed"
+  - 'Load skill entry file first (SKILL.md)'
+  - 'Only load reference files when specific procedure needed'
+  - 'Progressive disclosure: start minimal, expand as needed'
 
 optimization:
-  - "Prefer parallel tool calls for independent operations"
-  - "Cache frequently accessed files in working memory"
-  - "Use git diff before full file reads when checking changes"
+  - 'Prefer parallel tool calls for independent operations'
+  - 'Cache frequently accessed files in working memory'
+  - 'Use git diff before full file reads when checking changes'
 ```
 
 ## Example: Copilot Provider (copilot.yaml)
@@ -102,20 +102,20 @@ preferences:
   thinking_process: hidden
 
 hints:
-  - "Keep responses focused and actionable"
-  - "Prioritize code snippets over explanations"
-  - "Use GitHub-specific tools when available"
-  - "Minimize token usage for faster responses"
+  - 'Keep responses focused and actionable'
+  - 'Prioritize code snippets over explanations'
+  - 'Use GitHub-specific tools when available'
+  - 'Minimize token usage for faster responses'
 
 skill_execution:
-  - "Load only necessary context"
-  - "Prefer direct execution over explanation"
-  - "Surface errors quickly for rapid iteration"
+  - 'Load only necessary context'
+  - 'Prefer direct execution over explanation'
+  - 'Surface errors quickly for rapid iteration'
 
 optimization:
-  - "Batch file operations when possible"
-  - "Use targeted file reads (line ranges)"
-  - "Minimize repeated tool calls"
+  - 'Batch file operations when possible'
+  - 'Use targeted file reads (line ranges)'
+  - 'Minimize repeated tool calls'
 ```
 
 ## When to Use Provider Hints
@@ -193,13 +193,13 @@ def load_provider_hints(provider_name):
 
 ## Platform Comparison
 
-| Feature              | Claude         | Copilot       | Universal |
-| -------------------- | -------------- | ------------- | --------- |
-| Context Window       | 200K tokens    | 128K tokens   | -         |
-| MCP Support          | Yes            | No            | No        |
-| Tool Calling         | Yes (extended) | Yes (limited) | Yes       |
-| Thinking Process     | Visible        | Hidden        | Varies    |
-| Code Execution       | Via MCP        | Via tools     | Varies    |
+| Feature          | Claude         | Copilot       | Universal |
+| ---------------- | -------------- | ------------- | --------- |
+| Context Window   | 200K tokens    | 128K tokens   | -         |
+| MCP Support      | Yes            | No            | No        |
+| Tool Calling     | Yes (extended) | Yes (limited) | Yes       |
+| Thinking Process | Visible        | Hidden        | Varies    |
+| Code Execution   | Via MCP        | Via tools     | Varies    |
 
 ## Future Providers
 
