@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.ViewModels;
+using PigeonPea.Windows.Rendering;
 using System;
 
 namespace PigeonPea.Windows;
@@ -15,6 +16,9 @@ namespace PigeonPea.Windows;
 public partial class MainWindow : Window, IDisposable
 {
     private readonly GameWorld _gameWorld;
+    private readonly SkiaSharpRenderer _renderer;
+    private readonly ParticleSystem _particleSystem;
+    private readonly AnimationSystem _animationSystem;
     private readonly GameViewModel _gameViewModel;
     private readonly DispatcherTimer _gameTimer;
     private DateTime _lastUpdate = DateTime.UtcNow;
@@ -22,7 +26,12 @@ public partial class MainWindow : Window, IDisposable
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
     private bool _disposed;
 
-    public MainWindow()
+    // Parameterless constructor for Avalonia XAML loader (AVLN3001)
+    public MainWindow() : this(null)
+    {
+    }
+
+    public MainWindow(SpriteAtlasManager? spriteAtlasManager = null)
     {
         InitializeComponent();
 
@@ -36,8 +45,19 @@ public partial class MainWindow : Window, IDisposable
         _gameViewModel = new GameViewModel(_gameWorld, services);
         DataContext = _gameViewModel;
 
-        // Initialize game canvas
-        GameCanvas.Initialize(_gameWorld);
+        // Initialize rendering systems
+        _renderer = new SkiaSharpRenderer();
+        _particleSystem = new ParticleSystem(1000);
+        _animationSystem = new AnimationSystem();
+
+        // Set sprite atlas manager on renderer if provided
+        if (spriteAtlasManager != null)
+        {
+            _renderer.SetSpriteAtlasManager(spriteAtlasManager);
+        }
+
+        // Initialize game canvas with renderer and systems
+        GameCanvas.Initialize(_gameWorld, _renderer, _particleSystem, _animationSystem);
 
         // Setup game loop
         _gameTimer = new DispatcherTimer
@@ -63,8 +83,12 @@ public partial class MainWindow : Window, IDisposable
         // Update game logic
         _gameWorld.Update(deltaTime);
 
+        // Update rendering systems
+        _particleSystem.Update((float)deltaTime);
+        _animationSystem.Update((float)deltaTime);
+
         // Render
-        GameCanvas.InvalidateVisual();
+        GameCanvas.RenderFrame();
 
         // Update FPS counter
         _frameCount++;
@@ -110,5 +134,13 @@ public partial class MainWindow : Window, IDisposable
         _gameViewModel?.Dispose();
         _disposed = true;
         GC.SuppressFinalize(this);
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+
+        // Dispose renderer on window close
+        _renderer?.Dispose();
     }
 }
