@@ -21,7 +21,7 @@ public class KittyGraphicsRendererTests : IDisposable
     {
         _renderer = new KittyGraphicsRenderer();
         _target = new MockRenderTarget(80, 24);
-        
+
         // Capture console output for verification
         _originalOutput = System.Console.Out;
         _consoleOutput = new StringWriter();
@@ -91,7 +91,7 @@ public class KittyGraphicsRendererTests : IDisposable
         _renderer.BeginFrame();
         _renderer.DrawTile(0, 0, new Tile('@', Color.White, Color.Black));
         _renderer.EndFrame();
-        
+
         // Clear the output
         _consoleOutput.GetStringBuilder().Clear();
 
@@ -347,11 +347,11 @@ public class KittyGraphicsRendererTests : IDisposable
         // Arrange
         _renderer.Initialize(_target);
         var imageData = new byte[16];
-        
+
         _renderer.BeginFrame();
         _renderer.TransmitImage(1, imageData, 2, 2);
         _renderer.EndFrame();
-        
+
         var firstOutput = _consoleOutput.ToString();
         _consoleOutput.GetStringBuilder().Clear();
 
@@ -371,11 +371,11 @@ public class KittyGraphicsRendererTests : IDisposable
         // Arrange
         _renderer.Initialize(_target);
         var imageData = new byte[16];
-        
+
         _renderer.BeginFrame();
         _renderer.TransmitImage(5, imageData, 2, 2);
         _consoleOutput.GetStringBuilder().Clear();
-        
+
         // Act
         _renderer.DisplayImage(10, 5, 5);
         _renderer.EndFrame();
@@ -404,11 +404,11 @@ public class KittyGraphicsRendererTests : IDisposable
         // Arrange
         _renderer.Initialize(_target);
         var imageData = new byte[16];
-        
+
         _renderer.BeginFrame();
         _renderer.TransmitImage(1, imageData, 2, 2);
         _renderer.EndFrame();
-        
+
         Assert.Equal(1, _renderer.CachedImageCount);
 
         // Act
@@ -426,11 +426,11 @@ public class KittyGraphicsRendererTests : IDisposable
         // Arrange
         _renderer.Initialize(_target);
         var imageData = new byte[16];
-        
+
         _renderer.BeginFrame();
         _renderer.TransmitImage(10, imageData, 2, 2);
         _renderer.EndFrame();
-        
+
         _consoleOutput.GetStringBuilder().Clear();
 
         // Act
@@ -463,12 +463,12 @@ public class KittyGraphicsRendererTests : IDisposable
         var renderer = new KittyGraphicsRenderer();
         renderer.Initialize(_target);
         var imageData = new byte[16];
-        
+
         renderer.BeginFrame();
         renderer.TransmitImage(1, imageData, 2, 2);
         renderer.TransmitImage(2, imageData, 2, 2);
         renderer.EndFrame();
-        
+
         _consoleOutput.GetStringBuilder().Clear();
 
         // Act
@@ -561,14 +561,14 @@ public class KittyGraphicsRendererTests : IDisposable
         // Arrange
         _renderer.Initialize(_target);
         var imageData = new byte[64];
-        
+
         // Transmit the sprite
         _renderer.BeginFrame();
         _renderer.TransmitImage(100, imageData, 4, 4);
         _renderer.EndFrame();
-        
+
         _consoleOutput.GetStringBuilder().Clear();
-        
+
         // Act - draw tile with sprite
         _renderer.BeginFrame();
         var tile = new Tile('@', Color.White, Color.Black, spriteId: 100);

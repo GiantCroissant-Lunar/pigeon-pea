@@ -98,11 +98,11 @@ public class TerminalRendererFactoryTests
         // Arrange - create capabilities with all graphics disabled
         var capabilities = new TerminalCapabilities(
             new TerminalCapabilities(TerminalCapabilities.Detect(), 80, 24), 80, 24);
-        
+
         // We need to create a capabilities instance where Braille is also disabled
         // Since the constructor doesn't allow this, and Braille defaults to true,
         // we test with the override parameter instead
-        
+
         // Act - Force ASCII with override
         var renderer = TerminalRendererFactory.CreateRenderer(TerminalRendererFactory.RendererType.Ascii);
 
@@ -207,7 +207,7 @@ public class TerminalRendererFactoryTests
     public void CreateRenderer_WithNullCapabilities_ThrowsArgumentNullException()
     {
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => 
+        Assert.Throws<ArgumentNullException>(() =>
             TerminalRendererFactory.CreateRenderer(null!));
     }
 
@@ -231,7 +231,7 @@ public class TerminalRendererFactoryTests
     public void CreateRenderer_SelectionPriorityOrder_IsCorrect()
     {
         // This test verifies the priority order: Kitty > Sixel > Braille > ASCII
-        
+
         // 1. Kitty is highest priority
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
         using (new ScopedEnvironmentVariable("TERM", "xterm-256color-sixel"))
@@ -307,7 +307,7 @@ public class TerminalRendererFactoryTests
         // Assert
         Assert.NotNull(renderer);
         Assert.IsAssignableFrom<IRenderer>(renderer);
-        
+
         // Verify it's one of the expected types
         Assert.True(renderer is KittyGraphicsRenderer ||
                    renderer is SixelRenderer ||

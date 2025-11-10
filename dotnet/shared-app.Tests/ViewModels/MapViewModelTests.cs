@@ -109,7 +109,7 @@ public class MapViewModelTests
 
         // Assert
         initialCameraPos.Should().NotBe(Point.None);
-        
+
         // Verify player actually moved
         if (movedPlayerPos != initialPlayerPos)
         {
@@ -144,7 +144,7 @@ public class MapViewModelTests
 
         // Assert
         viewModel.VisibleTiles.Count.Should().BeGreaterThan(0);
-        
+
         // All tiles should be within the camera viewport
         var viewport = camera.GetViewport();
         foreach (var tile in viewModel.VisibleTiles)
@@ -176,7 +176,7 @@ public class MapViewModelTests
             {
                 movesMade++;
             }
-            
+
             if (movesMade >= 6)
                 break;
         }
@@ -187,7 +187,7 @@ public class MapViewModelTests
 
         // Assert
         newTiles.Should().NotBeEmpty();
-        
+
         // Only verify tiles changed if camera actually moved
         if (newCameraPos != initialCameraPos)
         {
@@ -249,7 +249,7 @@ public class MapViewModelTests
     {
         // Arrange
         var viewModel = new MapViewModel();
-        
+
         // Kill the player
         ref var health = ref _gameWorld.EcsWorld.Get<Health>(_gameWorld.PlayerEntity);
         health.Current = 0;
@@ -332,16 +332,16 @@ public class MapViewModelTests
 
         // Assert
         viewModel.VisibleTiles.Should().NotBeEmpty();
-        
+
         foreach (var tile in viewModel.VisibleTiles)
         {
             // Each tile should have valid coordinates
             tile.X.Should().BeGreaterOrEqualTo(0);
             tile.Y.Should().BeGreaterOrEqualTo(0);
-            
+
             // Glyph should be set (not default)
             tile.Glyph.Should().NotBe('\0');
-            
+
             // Colors should be set
             tile.Foreground.Should().NotBe(default(Color));
             tile.Background.Should().NotBe(default(Color));
@@ -382,7 +382,7 @@ public class MapViewModelTests
         // Arrange
         var viewModel = new MapViewModel();
         bool collectionChanged = false;
-        
+
         viewModel.VisibleTiles.CollectionChanged += (in NotifyCollectionChangedEventArgs<TileViewModel> e) =>
         {
             collectionChanged = true;

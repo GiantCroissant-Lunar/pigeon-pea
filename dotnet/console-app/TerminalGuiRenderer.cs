@@ -85,7 +85,7 @@ public class TerminalGuiRenderer : IRenderer
 
         var fg = ConvertColor(tile.Foreground);
         var bg = ConvertColor(tile.Background);
-        
+
         _driver.SetAttribute(new GuiAttribute(fg, bg));
         _driver.Move(x - _viewport.X, y - _viewport.Y);
         _driver.AddStr(tile.Glyph.ToString());
@@ -106,7 +106,7 @@ public class TerminalGuiRenderer : IRenderer
 
         var fg = ConvertColor(foreground);
         var bg = ConvertColor(background);
-        
+
         _driver.SetAttribute(new GuiAttribute(fg, bg));
         _driver.Move(x - _viewport.X, y - _viewport.Y);
         _driver.AddStr(text);
@@ -153,7 +153,7 @@ public class TerminalGuiRenderer : IRenderer
         if (color == SadRogue.Primitives.Color.Magenta) return GuiColor.Magenta;
         if (color == SadRogue.Primitives.Color.Gray) return GuiColor.Gray;
         if (color == SadRogue.Primitives.Color.DarkGray) return GuiColor.DarkGray;
-        
+
         // Default to white for unmapped colors
         return GuiColor.White;
     }

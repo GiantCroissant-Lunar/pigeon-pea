@@ -47,7 +47,7 @@ public static class TerminalRendererFactory
     {
         // Detect terminal capabilities
         var capabilities = TerminalCapabilities.Detect();
-        
+
         return CreateRenderer(capabilities, rendererType);
     }
 

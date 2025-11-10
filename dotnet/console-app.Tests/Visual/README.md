@@ -11,11 +11,13 @@ The visual testing framework allows parsing and analyzing asciinema terminal rec
 ### Frame.cs
 
 Represents a single frame in an asciinema recording with:
+
 - **Timestamp**: The time (in seconds) when the frame was captured
 - **Content**: The raw terminal output (may include ANSI escape codes)
 - **PlainContent**: The content with ANSI escape codes removed for easier comparison
 
 The `PlainContent` property automatically removes ANSI escape sequences including:
+
 - SGR (Select Graphic Rendition) - colors, bold, etc.
 - Cursor positioning commands
 - Erase commands
@@ -27,23 +29,27 @@ The `PlainContent` property automatically removes ANSI escape sequences includin
 ### AsciinemaParser.cs
 
 Parses asciinema v2 format recordings. The asciinema v2 format is a newline-delimited JSON (JSONL) file:
+
 - **First line**: Header with metadata (version, width, height, timestamp, env)
 - **Subsequent lines**: Event records `[timestamp, event_type, data]`
 
 #### Key Methods
 
 **Parse from file:**
+
 ```csharp
 var parser = AsciinemaParser.ParseFile("recording.cast");
 ```
 
 **Parse from lines:**
+
 ```csharp
 var lines = File.ReadAllLines("recording.cast");
 var parser = AsciinemaParser.Parse(lines);
 ```
 
 **Access parsed data:**
+
 ```csharp
 // Get header information
 var header = parser.RecordingHeader;
@@ -88,10 +94,12 @@ Assert.Equal(expectedSnapshot, fullOutput);
 ## Testing
 
 All components have comprehensive unit tests:
+
 - **FrameTests.cs** - tests covering ANSI escape code removal
 - **AsciinemaParserTests.cs** - tests covering parsing and frame retrieval
 
 Run tests:
+
 ```bash
 cd dotnet
 dotnet test --filter "FullyQualifiedName~PigeonPea.Console.Tests.Visual"
@@ -102,17 +110,20 @@ dotnet test --filter "FullyQualifiedName~PigeonPea.Console.Tests.Visual"
 The asciinema v2 format consists of:
 
 **Header (first line):**
+
 ```json
-{"version": 2, "width": 80, "height": 24, "timestamp": 1234567890}
+{ "version": 2, "width": 80, "height": 24, "timestamp": 1234567890 }
 ```
 
 **Event lines:**
+
 ```json
 [0.5, "o", "Hello, World!"]
 [1.0, "o", "\u001b[31mRed text\u001b[0m"]
 ```
 
 Event types:
+
 - `"o"` - Output (terminal output to display)
 - `"i"` - Input (user input to terminal)
 

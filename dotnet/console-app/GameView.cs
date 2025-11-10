@@ -23,7 +23,7 @@ public class GameView : View
     {
         _gameWorld = gameWorld;
         _renderer = renderer;
-        
+
         // Use appropriate render target based on renderer type
         // Terminal.Gui-based renderers use TerminalGuiRenderTarget
         // Advanced renderers (Kitty, Sixel, Braille) use ConsoleRenderTarget for direct console output
@@ -37,7 +37,7 @@ public class GameView : View
             // Use console dimensions for the render target
             _renderTarget = new ConsoleRenderTarget(System.Console.WindowWidth, System.Console.WindowHeight);
         }
-        
+
         // Initialize the renderer with the render target
         _renderer.Initialize(_renderTarget);
     }
@@ -52,13 +52,13 @@ public class GameView : View
 
         // Use the renderer to draw the game world
         _renderer.BeginFrame();
-        
+
         // Clear with black background
         _renderer.Clear(SRColor.Black);
 
         // Get viewport bounds
         var viewport = Viewport;
-        
+
         // Set the viewport for the renderer
         _renderer.SetViewport(new PigeonPea.Shared.Rendering.Viewport(0, 0, viewport.Width, viewport.Height));
 

@@ -109,7 +109,7 @@ public class MapViewModel : ReactiveObject
 
         // Query all entities with Position and Renderable components
         var renderableQuery = new QueryDescription().WithAll<Position, Renderable>();
-        
+
         // Create a dictionary to store the topmost entity at each position
         var tilesInViewport = new Dictionary<Point, (Renderable renderable, bool isExplored)>();
 

@@ -25,14 +25,15 @@ dotnet run --configuration Release
 
 ### Run Specific Benchmark
 
-dotnet run --configuration Release -- --filter "*FullScreenRendering*"
-```
+dotnet run --configuration Release -- --filter "_FullScreenRendering_"
+
+````
 
 ### Run with Memory Diagnostics
 
 ```bash
 dotnet run --configuration Release -- --memory
-```
+````
 
 ### Quick Dry Run (for testing)
 
@@ -48,6 +49,7 @@ The benchmarks test different screen sizes:
 - **ScreenHeight**: 24, 48, 96
 
 This creates a matrix of test configurations covering:
+
 - Small terminal (80x24)
 - Medium terminal (160x48)
 - Large terminal (320x96)
@@ -55,6 +57,7 @@ This creates a matrix of test configurations covering:
 ## Output
 
 Results are exported to:
+
 - `BenchmarkDotNet.Artifacts/results/*.csv` - CSV format
 - `BenchmarkDotNet.Artifacts/results/*.html` - HTML report
 - `BenchmarkDotNet.Artifacts/results/*.md` - Markdown format
@@ -74,7 +77,7 @@ Example GitHub Actions workflow:
   run: |
     cd dotnet/benchmarks
     dotnet run --configuration Release -- --exporters json
-    
+
 - name: Compare with Baseline
   run: |
     # Compare results with stored baseline

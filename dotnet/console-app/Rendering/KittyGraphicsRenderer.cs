@@ -43,7 +43,7 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     public void BeginFrame()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -56,7 +56,7 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     public void EndFrame()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -79,7 +79,7 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     public void DrawTile(int x, int y, Tile tile)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -106,7 +106,7 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     public void DrawText(int x, int y, string text, Color foreground, Color background)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -128,16 +128,16 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     public void Clear(Color color)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
         // Clear screen using ANSI escape sequence
         _commandBuffer.Append("\x1b[2J");
-        
+
         // Set background color
         _commandBuffer.Append($"\x1b[48;2;{color.R};{color.G};{color.B}m");
-        
+
         // Move cursor to home position
         _commandBuffer.Append("\x1b[H");
     }
@@ -166,7 +166,7 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     public void TransmitImage(int imageId, byte[] imageData, int width, int height)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (imageData == null || imageData.Length == 0)
             throw new ArgumentException("Image data cannot be null or empty.", nameof(imageData));
 
@@ -200,7 +200,7 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     public void DisplayImage(int x, int y, int imageId)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (!_imageCache.ContainsKey(imageId))
             throw new InvalidOperationException($"Image {imageId} has not been transmitted. Call TransmitImage first.");
 
@@ -220,13 +220,13 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     public void DeleteImage(int imageId)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (!_imageCache.ContainsKey(imageId))
             return;
 
         // Delete using Kitty protocol: ESC_Ga=d,i=<id>ESC\
         _commandBuffer.Append($"\x1b_Ga=d,i={imageId}\x1b\\");
-        
+
         _imageCache.Remove(imageId);
     }
 
@@ -243,7 +243,7 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
         // For now, use the sprite ID directly as the image ID
         // In a full implementation, this would look up the sprite in an atlas
         // and transmit/display the appropriate frame
-        
+
         if (_imageCache.ContainsKey(spriteId))
         {
             DisplayImage(x, y, spriteId);
@@ -267,10 +267,10 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
         // Set foreground and background colors using 24-bit RGB ANSI codes
         _commandBuffer.Append($"\x1b[38;2;{foreground.R};{foreground.G};{foreground.B}m");
         _commandBuffer.Append($"\x1b[48;2;{background.R};{background.G};{background.B}m");
-        
+
         // Draw the glyph
         _commandBuffer.Append(glyph);
-        
+
         // Reset colors
         _commandBuffer.Append("\x1b[0m");
     }
@@ -309,13 +309,13 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
             {
                 _commandBuffer.Append($"\x1b_Ga=d,i={imageId}\x1b\\");
             }
-            
+
             if (_commandBuffer.Length > 0)
             {
                 System.Console.Write(_commandBuffer.ToString());
                 _commandBuffer.Clear();
             }
-            
+
             _imageCache.Clear();
         }
 

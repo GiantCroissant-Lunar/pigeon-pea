@@ -11,7 +11,7 @@ public class FrameRateMetrics
     private readonly Stopwatch _stopwatch = new();
     private double _lastFrameTime;
     private int _frameCount;
-    
+
     // Cached values for performance
     private double _minFrameTime = double.MaxValue;
     private double _maxFrameTime = double.MinValue;
@@ -120,14 +120,14 @@ public class FrameRateMetrics
         _frameTimes.Add(frameTime);
         _lastFrameTime = currentTime;
         _frameCount++;
-        
+
         // Update cached values incrementally
         _sumFrameTimes += frameTime;
         if (frameTime < _minFrameTime)
             _minFrameTime = frameTime;
         if (frameTime > _maxFrameTime)
             _maxFrameTime = frameTime;
-        
+
         // Invalidate sorted cache
         _sortedFrameTimes = null;
     }
@@ -147,7 +147,7 @@ public class FrameRateMetrics
 
         // Cache the sorted list to avoid repeated sorting
         _sortedFrameTimes ??= _frameTimes.OrderBy(x => x).ToList();
-        
+
         var index = (percentile / 100.0) * (_sortedFrameTimes.Count - 1);
         var lowerIndex = (int)Math.Floor(index);
         var upperIndex = (int)Math.Ceiling(index);
@@ -185,7 +185,7 @@ public class FrameRateMetrics
         _stopwatch.Reset();
         _lastFrameTime = 0;
         _frameCount = 0;
-        
+
         // Reset cached values
         _minFrameTime = double.MaxValue;
         _maxFrameTime = double.MinValue;

@@ -29,7 +29,7 @@ public class MessageLogViewTests : IDisposable
         var combatSubscriber = _serviceProvider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
         var inventorySubscriber = _serviceProvider.GetRequiredService<ISubscriber<ItemPickedUpEvent>>();
         var gameStateSubscriber = _serviceProvider.GetRequiredService<ISubscriber<GameStateChangedEvent>>();
-        
+
         _viewModel = new MessageLogViewModel(combatSubscriber, inventorySubscriber, gameStateSubscriber);
         _view = new MessageLogView(_viewModel);
     }
@@ -124,7 +124,7 @@ public class MessageLogViewTests : IDisposable
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
         var initialCount = _viewModel.Messages.Count;
-        
+
         // Act
         publisher.Publish(new PlayerDamagedEvent
         {
@@ -132,7 +132,7 @@ public class MessageLogViewTests : IDisposable
             RemainingHealth = 90,
             Source = "Goblin"
         });
-        
+
         // Give time for event to be processed
         await Task.Delay(100);
 
@@ -147,14 +147,14 @@ public class MessageLogViewTests : IDisposable
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<ItemPickedUpEvent>>();
         var initialCount = _viewModel.Messages.Count;
-        
+
         // Act
         publisher.Publish(new ItemPickedUpEvent
         {
             ItemName = "Health Potion",
             ItemType = "Consumable"
         });
-        
+
         // Give time for event to be processed
         await Task.Delay(100);
 
@@ -169,14 +169,14 @@ public class MessageLogViewTests : IDisposable
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<GameStateChangedEvent>>();
         var initialCount = _viewModel.Messages.Count;
-        
+
         // Act
         publisher.Publish(new GameStateChangedEvent
         {
             PreviousState = "Playing",
             NewState = "Paused"
         });
-        
+
         // Give time for event to be processed
         await Task.Delay(100);
 
@@ -192,11 +192,11 @@ public class MessageLogViewTests : IDisposable
         var services = new ServiceCollection();
         services.AddMessagePipe();
         var provider = services.BuildServiceProvider();
-        
+
         var combatSubscriber = provider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
         var inventorySubscriber = provider.GetRequiredService<ISubscriber<ItemPickedUpEvent>>();
         var gameStateSubscriber = provider.GetRequiredService<ISubscriber<GameStateChangedEvent>>();
-        
+
         var viewModel = new MessageLogViewModel(combatSubscriber, inventorySubscriber, gameStateSubscriber);
         var view = new MessageLogView(viewModel);
 
@@ -207,7 +207,7 @@ public class MessageLogViewTests : IDisposable
         // Assert - No exception should occur when adding messages after disposal
         var act = () => viewModel.AddMessage("Test", MessageType.Combat);
         act.Should().NotThrow();
-        
+
         // Cleanup
         provider.Dispose();
     }

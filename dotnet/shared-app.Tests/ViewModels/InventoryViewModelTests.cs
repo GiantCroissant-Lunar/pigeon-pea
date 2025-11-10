@@ -380,7 +380,7 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
-        
+
         int eventReceivedAfterDispose = 0;
         // Add a test item to track if events are still received after dispose
         viewModel.Update(_world, _playerEntity);
@@ -390,7 +390,7 @@ public class InventoryViewModelTests : IDisposable
 
         // Set up a separate subscription to verify the event is published
         var testSub = _itemPickedUpSubscriber.Subscribe(e => eventReceivedAfterDispose++);
-        
+
         // Publish an event after disposal
         _itemPickedUpPublisher.Publish(new ItemPickedUpEvent
         {
@@ -402,7 +402,7 @@ public class InventoryViewModelTests : IDisposable
         // If subscriptions were properly disposed, the viewModel won't receive the event
         viewModel.Items.Count.Should().Be(2, "Items should remain unchanged after disposal");
         eventReceivedAfterDispose.Should().Be(1, "Test subscription should still receive events");
-        
+
         testSub.Dispose();
     }
 
