@@ -78,7 +78,7 @@ public class GameWorldEventTests
 
         // Find a position next to the player for the enemy
         var enemyPos = new Point(playerPos.Point.X + 1, playerPos.Point.Y);
-        
+
         // Ensure the enemy position is walkable (enemies spawn on walkable tiles)
         if (enemyPos.X < gameWorld.Width && enemyPos.Y < gameWorld.Height)
         {

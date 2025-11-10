@@ -21,7 +21,7 @@ public class GameViewModelTests : IDisposable
     public GameViewModelTests()
     {
         _world = new GameWorld(width: 80, height: 50);
-        
+
         var serviceCollection = new ServiceCollection();
         serviceCollection.AddPigeonPeaServices();
         _services = serviceCollection.BuildServiceProvider();
@@ -88,10 +88,10 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
-        
+
         // Get initial values
         var initialHealth = viewModel.Player.Health;
         var initialName = viewModel.Player.Name;
@@ -156,7 +156,7 @@ public class GameViewModelTests : IDisposable
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
         bool propertyChanged = false;
-        
+
         viewModel.Player.PropertyChanged += (sender, args) =>
         {
             if (args.PropertyName == nameof(PlayerViewModel.Health))
@@ -228,7 +228,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -281,7 +281,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -298,7 +298,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -384,7 +384,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update to sync inventory
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -424,7 +424,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update to sync inventory
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -466,7 +466,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update to sync inventory
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -492,7 +492,7 @@ public class GameViewModelTests : IDisposable
 
         // Assert
         viewModel.Inventory.Items.Count.Should().Be(initialInventoryCount - 1, "Item should be removed from inventory");
-        
+
         // Verify item has Position and Pickup components (it's on the ground)
         oldSword.Has<Components.Position>().Should().BeTrue("Dropped item should have Position component");
         oldSword.Has<Components.Pickup>().Should().BeTrue("Dropped item should have Pickup component");
@@ -504,7 +504,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update to sync inventory
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -544,7 +544,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -565,7 +565,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         var scheduler = new TestScheduler();
         using var viewModel = new GameViewModel(_world, _services, scheduler);
-        
+
         // Initial update
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
@@ -587,7 +587,7 @@ public class GameViewModelTests : IDisposable
         // Arrange
         using var viewModel = new GameViewModel(_world, _services);
         bool propertyChanged = false;
-        
+
         viewModel.PropertyChanged += (sender, args) =>
         {
             if (args.PropertyName == nameof(GameViewModel.Fps))

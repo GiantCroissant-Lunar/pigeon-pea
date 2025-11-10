@@ -79,6 +79,7 @@ Test scenarios are defined in JSON files in the `scenarios/` directory:
 - `quick-test.json` - Quick smoke test for app startup and exit
 
 Each scenario defines:
+
 - Name and description
 - Array of inputs with delays and descriptions
 - Expected frames (for future validation)

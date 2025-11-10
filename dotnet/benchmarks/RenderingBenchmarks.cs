@@ -34,12 +34,12 @@ public class RenderingBenchmarks
         _renderTarget = new MockRenderTarget(ScreenWidth, ScreenHeight);
         _renderer = new MockRenderer();
         _renderer.Initialize(_renderTarget);
-        
+
         _viewport = new Viewport(0, 0, ScreenWidth, ScreenHeight);
         _renderer.SetViewport(_viewport);
 
         _testTile = new Tile('@', Color.White, Color.Black);
-        
+
         // Pre-generate tiles for particle/sprite benchmarks
         _tiles = new Tile[1000];
         for (int i = 0; i < _tiles.Length; i++)
@@ -52,14 +52,14 @@ public class RenderingBenchmarks
                 random.Next(4)
             );
         }
-        
+
         // Pre-generate positions for particle rendering benchmark
         _particlePositions = new (int, int)[100];
         for (int i = 0; i < _particlePositions.Length; i++)
         {
             _particlePositions[i] = (random.Next(ScreenWidth), random.Next(ScreenHeight));
         }
-        
+
         // Pre-generate positions for mixed rendering benchmark
         _mixedRenderPositions = new (int, int)[50];
         for (int i = 0; i < _mixedRenderPositions.Length; i++)
@@ -75,7 +75,7 @@ public class RenderingBenchmarks
     public void FullScreenRendering()
     {
         _renderer.BeginFrame();
-        
+
         for (int y = 0; y < ScreenHeight; y++)
         {
             for (int x = 0; x < ScreenWidth; x++)
@@ -83,7 +83,7 @@ public class RenderingBenchmarks
                 _renderer.DrawTile(x, y, _testTile);
             }
         }
-        
+
         _renderer.EndFrame();
     }
 
@@ -94,14 +94,14 @@ public class RenderingBenchmarks
     public void ParticleRendering()
     {
         _renderer.BeginFrame();
-        
+
         // Render 100 particles at pre-determined positions
         for (int i = 0; i < _particlePositions.Length; i++)
         {
             var (x, y) = _particlePositions[i];
             _renderer.DrawTile(x, y, _tiles[i % _tiles.Length]);
         }
-        
+
         _renderer.EndFrame();
     }
 
@@ -112,7 +112,7 @@ public class RenderingBenchmarks
     public void SpriteRendering()
     {
         _renderer.BeginFrame();
-        
+
         // Render sprites in a grid pattern
         int spriteCount = Math.Min(ScreenWidth * ScreenHeight / 4, 200);
         for (int i = 0; i < spriteCount; i++)
@@ -122,7 +122,7 @@ public class RenderingBenchmarks
             var spriteTile = _tiles[i % _tiles.Length];
             _renderer.DrawTile(x, y, spriteTile);
         }
-        
+
         _renderer.EndFrame();
     }
 
@@ -135,9 +135,9 @@ public class RenderingBenchmarks
         // Smaller viewport than screen size
         var smallViewport = new Viewport(10, 5, ScreenWidth / 2, ScreenHeight / 2);
         _renderer.SetViewport(smallViewport);
-        
+
         _renderer.BeginFrame();
-        
+
         // Attempt to render tiles across entire screen
         // Only tiles within viewport should be processed
         for (int y = 0; y < ScreenHeight; y++)
@@ -150,9 +150,9 @@ public class RenderingBenchmarks
                 }
             }
         }
-        
+
         _renderer.EndFrame();
-        
+
         // Reset viewport
         _renderer.SetViewport(_viewport);
     }
@@ -175,10 +175,10 @@ public class RenderingBenchmarks
     public void MixedRendering()
     {
         _renderer.BeginFrame();
-        
+
         // Clear
         _renderer.Clear(Color.Black);
-        
+
         // Draw background tiles
         for (int y = 0; y < ScreenHeight; y += 2)
         {
@@ -187,17 +187,17 @@ public class RenderingBenchmarks
                 _renderer.DrawTile(x, y, new Tile('.', Color.DarkGray, Color.Black));
             }
         }
-        
+
         // Draw some sprites at pre-determined positions
         for (int i = 0; i < _mixedRenderPositions.Length; i++)
         {
             var (x, y) = _mixedRenderPositions[i];
             _renderer.DrawTile(x, y, _tiles[i % _tiles.Length]);
         }
-        
+
         // Draw some text
         _renderer.DrawText(5, 5, "Benchmark Test", Color.Yellow, Color.Black);
-        
+
         _renderer.EndFrame();
     }
 
@@ -208,7 +208,7 @@ public class RenderingBenchmarks
     public void TextRendering()
     {
         _renderer.BeginFrame();
-        
+
         string[] messages = new[]
         {
             "Player health: 100",
@@ -217,12 +217,12 @@ public class RenderingBenchmarks
             "Items: 12/20",
             "Gold: 999999"
         };
-        
+
         for (int i = 0; i < messages.Length; i++)
         {
             _renderer.DrawText(2, 2 + i, messages[i], Color.White, Color.Black);
         }
-        
+
         _renderer.EndFrame();
     }
 }
@@ -263,10 +263,10 @@ internal class MockRenderer : IRenderer
     public void DrawTile(int x, int y, Tile tile)
     {
         if (!_inFrame) return;
-        
+
         // Simulate tile drawing with minimal operations
         if (!_viewport.Contains(x, y)) return;
-        
+
         // Simulate some work (accessing tile properties)
         _ = tile.Glyph;
         _ = tile.Foreground;
@@ -277,7 +277,7 @@ internal class MockRenderer : IRenderer
     public void DrawText(int x, int y, string text, Color foreground, Color background)
     {
         if (!_inFrame) return;
-        
+
         // Simulate text drawing by drawing individual tiles
         for (int i = 0; i < text.Length; i++)
         {
@@ -289,7 +289,7 @@ internal class MockRenderer : IRenderer
     public void Clear(Color color)
     {
         if (!_inFrame) return;
-        
+
         // Simulate clearing by touching the color value
         _ = color.R;
         _ = color.G;

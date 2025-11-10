@@ -99,7 +99,7 @@ public class InventoryView : FrameView
 
         // Update the list view source
         _listView.SetSource(new ObservableCollection<string>(_itemDisplayList));
-        
+
         SetNeedsDraw();
     }
 

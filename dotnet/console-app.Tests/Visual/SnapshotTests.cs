@@ -58,12 +58,12 @@ public class SnapshotTests
         // For now, we'll simulate the PTY scenario by running the console app directly
 
         var output = new StringBuilder();
-        
+
         // Find the console-app project path
         var testProjectDir = GetTestProjectDirectory();
         var consoleAppDir = Path.GetFullPath(Path.Combine(testProjectDir, "..", "console-app"));
         var consoleAppProject = Path.Combine(consoleAppDir, "PigeonPea.Console.csproj");
-        
+
         var startInfo = new ProcessStartInfo
         {
             FileName = "dotnet",
@@ -84,7 +84,7 @@ public class SnapshotTests
         };
 
         using var process = new Process { StartInfo = startInfo };
-        
+
         // Capture output
         process.OutputDataReceived += (sender, e) =>
         {
@@ -111,7 +111,7 @@ public class SnapshotTests
                 // Send 'q' to quit for a graceful shutdown.
                 await process.StandardInput.WriteAsync('q');
                 await process.StandardInput.FlushAsync();
-                
+
                 // Wait a short time for the process to exit.
                 await Task.WhenAny(process.WaitForExitAsync(), Task.Delay(TimeSpan.FromSeconds(1)));
             }
@@ -152,7 +152,7 @@ public class SnapshotTests
     private string ParseAsciinemaRecording(string recordingPath)
     {
         var parser = AsciinemaParser.ParseFile(recordingPath);
-        
+
         // Get accumulated content from all frames
         var frames = parser.Frames;
         if (frames.Count == 0)
@@ -162,10 +162,10 @@ public class SnapshotTests
 
         // Get the last timestamp
         var lastTimestamp = frames[frames.Count - 1].Timestamp;
-        
+
         // Get all accumulated content
         var content = parser.GetAccumulatedContentAtTimestamp(lastTimestamp);
-        
+
         return content;
     }
 
@@ -215,7 +215,7 @@ public class SnapshotTests
         {
             // Create new snapshot
             await File.WriteAllTextAsync(snapshotPath, actualOutput);
-            
+
             // Inform that a new snapshot was created
             // In CI, this should fail to ensure snapshots are reviewed
             if (IsRunningInCI())
@@ -223,7 +223,7 @@ public class SnapshotTests
                 Assert.Fail($"New snapshot created at {snapshotPath}. " +
                            "Please review and commit the snapshot file.");
             }
-            
+
             return;
         }
 
@@ -236,11 +236,11 @@ public class SnapshotTests
         {
             // Generate diff report
             var diff = GenerateDiff(expectedOutput, actualOutput);
-            
+
             // Save the actual output for inspection
             var failurePath = snapshotPath.Replace(".txt", ".actual.txt");
             await File.WriteAllTextAsync(failurePath, actualOutput);
-            
+
             // Fail with detailed diff
             Assert.Fail($"Visual regression detected!\n\n" +
                        $"Expected snapshot: {snapshotPath}\n" +
@@ -269,7 +269,7 @@ public class SnapshotTests
         var initialLength = diff.Length;
 
         var maxLines = Math.Max(expectedLines.Length, actualLines.Length);
-        
+
         for (int i = 0; i < maxLines; i++)
         {
             var expectedLine = i < expectedLines.Length ? expectedLines[i] : "<missing>";
@@ -337,7 +337,7 @@ public class SnapshotTests
     private string GetTestProjectDirectory()
     {
         var currentDir = Directory.GetCurrentDirectory();
-        
+
         // Look for the test project file
         while (!string.IsNullOrEmpty(currentDir))
         {

@@ -18,7 +18,7 @@ namespace PigeonPea.Shared.ViewModels;
 public class GameViewModel : ReactiveObject, IDisposable
 {
     private const int UpdateIntervalMs = 16;
-    
+
     private readonly GameWorld _world;
     private readonly IServiceProvider _services;
     private readonly CompositeDisposable _subscriptions;

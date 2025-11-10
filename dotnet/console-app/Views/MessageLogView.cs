@@ -79,7 +79,7 @@ public class MessageLogView : FrameView
 
         // Update the list view source
         _listView.SetSource(new ObservableCollection<string>(_messageDisplayList));
-        
+
         SetNeedsDraw();
     }
 

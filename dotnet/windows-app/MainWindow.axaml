@@ -19,20 +19,20 @@
             <Grid ColumnDefinitions="Auto,*,Auto,Auto">
                 <!-- Player Health and Level -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="20">
-                    <TextBlock Text="{Binding Player.HealthDisplay, FallbackValue='HP: 0/0'}" 
-                               Foreground="Red" 
+                    <TextBlock Text="{Binding Player.HealthDisplay, FallbackValue='HP: 0/0'}"
+                               Foreground="Red"
                                FontSize="16" />
-                    <TextBlock Text="{Binding Player.LevelDisplay, FallbackValue='Level 1'}" 
-                               Foreground="Gold" 
+                    <TextBlock Text="{Binding Player.LevelDisplay, FallbackValue='Level 1'}"
+                               Foreground="Gold"
                                FontSize="16" />
-                    <TextBlock Text="{Binding Player.PositionDisplay, FallbackValue='Pos: (0, 0)'}" 
-                               Foreground="White" 
+                    <TextBlock Text="{Binding Player.PositionDisplay, FallbackValue='Pos: (0, 0)'}"
+                               Foreground="White"
                                FontSize="16" />
                 </StackPanel>
-                
+
                 <!-- FPS Counter (kept for performance monitoring) -->
-                <TextBlock Grid.Column="3" 
-                           Foreground="LightGreen" 
+                <TextBlock Grid.Column="3"
+                           Foreground="LightGreen"
                            FontSize="16">
                     <Run Text="FPS: " />
                     <Run Text="{Binding Fps, FallbackValue=0}" />
@@ -43,16 +43,16 @@
         <!-- Bottom Panel: Inventory and Message Log -->
         <Grid Grid.Row="2" ColumnDefinitions="300,*" Background="#111">
             <!-- Inventory Panel -->
-            <Border Grid.Column="0" 
-                    BorderBrush="#444" 
-                    BorderThickness="0,1,1,0" 
+            <Border Grid.Column="0"
+                    BorderBrush="#444"
+                    BorderThickness="0,1,1,0"
                     Padding="10">
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Top" 
-                               Text="Inventory" 
-                               Foreground="White" 
-                               FontSize="14" 
-                               FontWeight="Bold" 
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="Inventory"
+                               Foreground="White"
+                               FontSize="14"
+                               FontWeight="Bold"
                                Margin="0,0,0,5" />
                     <ListBox ItemsSource="{Binding Inventory.Items}"
                              SelectedIndex="{Binding Inventory.SelectedIndex}"
@@ -73,23 +73,23 @@
             </Border>
 
             <!-- Message Log Panel -->
-            <Border Grid.Column="1" 
-                    BorderBrush="#444" 
-                    BorderThickness="0,1,0,0" 
+            <Border Grid.Column="1"
+                    BorderBrush="#444"
+                    BorderThickness="0,1,0,0"
                     Padding="10">
                 <DockPanel>
-                    <TextBlock DockPanel.Dock="Top" 
-                               Text="Message Log" 
-                               Foreground="White" 
-                               FontSize="14" 
-                               FontWeight="Bold" 
+                    <TextBlock DockPanel.Dock="Top"
+                               Text="Message Log"
+                               Foreground="White"
+                               FontSize="14"
+                               FontWeight="Bold"
                                Margin="0,0,0,5" />
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding MessageLog.Messages}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="vm:MessageViewModel">
-                                    <TextBlock Text="{Binding Text}" 
-                                               Foreground="LightGray" 
+                                    <TextBlock Text="{Binding Text}"
+                                               Foreground="LightGray"
                                                TextWrapping="Wrap"
                                                Margin="0,2" />
                                 </DataTemplate>

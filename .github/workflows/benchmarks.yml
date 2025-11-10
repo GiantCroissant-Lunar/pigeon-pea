@@ -48,6 +48,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: benchmark-results
+          path: |
+            dotnet/BenchmarkDotNet.Artifacts/**/*
+          retention-days: 30
       - name: Check performance targets
         working-directory: dotnet
         run: |

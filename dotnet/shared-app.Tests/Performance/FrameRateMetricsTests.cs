@@ -279,7 +279,7 @@ public class FrameRateMetricsTests
     {
         // Arrange
         var metrics = new FrameRateMetrics();
-        
+
         // Record some frames
         for (int i = 0; i < 5; i++)
         {
@@ -312,7 +312,7 @@ public class FrameRateMetricsTests
     {
         // Arrange
         var metrics = new FrameRateMetrics();
-        
+
         // Record and reset
         metrics.RecordFrame();
         Thread.Sleep(16);

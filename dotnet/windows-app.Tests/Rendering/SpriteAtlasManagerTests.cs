@@ -16,7 +16,7 @@ public class SpriteAtlasManagerTests : IDisposable
     public SpriteAtlasManagerTests()
     {
         _manager = new SpriteAtlasManager();
-        
+
         // Use paths relative to the test assembly location
         var testDataDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "TestData");
         _testAtlasPath = Path.Combine(testDataDir, "test-atlas.png");
@@ -185,7 +185,7 @@ public class SpriteAtlasManagerTests : IDisposable
         // Create a second test atlas in a temp location
         var tempAtlasPath = Path.Combine(Path.GetTempPath(), $"test-atlas-{Guid.NewGuid()}.png");
         var tempDefinitionPath = Path.Combine(Path.GetTempPath(), $"test-atlas-{Guid.NewGuid()}.json");
-        
+
         try
         {
             // Copy the test files to temp location (different path = different atlas)
@@ -373,13 +373,13 @@ public class SpriteAtlasManagerTests : IDisposable
 
         // Verify colors (allow for some encoding tolerance)
         // Note: ImageSharp's Color.Green is (0, 128, 0) not (0, 255, 0)
-        Assert.True(redPixel.Red > 200 && redPixel.Green < 100 && redPixel.Blue < 100, 
+        Assert.True(redPixel.Red > 200 && redPixel.Green < 100 && redPixel.Blue < 100,
             $"Red sprite should be predominantly red. Got R:{redPixel.Red} G:{redPixel.Green} B:{redPixel.Blue}");
-        Assert.True(greenPixel.Green > 100 && greenPixel.Red < 50 && greenPixel.Blue < 50, 
+        Assert.True(greenPixel.Green > 100 && greenPixel.Red < 50 && greenPixel.Blue < 50,
             $"Green sprite should be predominantly green. Got R:{greenPixel.Red} G:{greenPixel.Green} B:{greenPixel.Blue}");
-        Assert.True(bluePixel.Blue > 200 && bluePixel.Red < 100 && bluePixel.Green < 100, 
+        Assert.True(bluePixel.Blue > 200 && bluePixel.Red < 100 && bluePixel.Green < 100,
             $"Blue sprite should be predominantly blue. Got R:{bluePixel.Red} G:{bluePixel.Green} B:{bluePixel.Blue}");
-        Assert.True(yellowPixel.Red > 200 && yellowPixel.Green > 200 && yellowPixel.Blue < 100, 
+        Assert.True(yellowPixel.Red > 200 && yellowPixel.Green > 200 && yellowPixel.Blue < 100,
             $"Yellow sprite should be red+green. Got R:{yellowPixel.Red} G:{yellowPixel.Green} B:{yellowPixel.Blue}");
     }
 }

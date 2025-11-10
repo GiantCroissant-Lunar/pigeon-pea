@@ -31,7 +31,7 @@ public class InventoryViewTests : IDisposable
         var itemPickedUpSubscriber = _serviceProvider.GetRequiredService<ISubscriber<ItemPickedUpEvent>>();
         var itemUsedSubscriber = _serviceProvider.GetRequiredService<ISubscriber<ItemUsedEvent>>();
         var itemDroppedSubscriber = _serviceProvider.GetRequiredService<ISubscriber<ItemDroppedEvent>>();
-        
+
         _viewModel = new InventoryViewModel(itemPickedUpSubscriber, itemUsedSubscriber, itemDroppedSubscriber);
         _view = new InventoryView(_viewModel);
     }
@@ -52,8 +52,8 @@ public class InventoryViewTests : IDisposable
         var itemEntity = world.Create(new Item { Name = "Sword", Type = ItemType.Equipment });
 
         // Act
-        _viewModel.Items.Add(new ItemViewModel 
-        { 
+        _viewModel.Items.Add(new ItemViewModel
+        {
             SourceEntity = itemEntity,
             Name = "Sword",
             Type = ItemType.Equipment
@@ -62,7 +62,7 @@ public class InventoryViewTests : IDisposable
         // Assert
         _viewModel.Items.Count.Should().Be(1);
         _viewModel.Items[0].Name.Should().Be("Sword");
-        
+
         // Cleanup
         world.Dispose();
     }
@@ -73,8 +73,8 @@ public class InventoryViewTests : IDisposable
         // Arrange
         var world = World.Create();
         var itemEntity = world.Create(new Item { Name = "Potion", Type = ItemType.Consumable });
-        var itemViewModel = new ItemViewModel 
-        { 
+        var itemViewModel = new ItemViewModel
+        {
             SourceEntity = itemEntity,
             Name = "Potion",
             Type = ItemType.Consumable
@@ -86,7 +86,7 @@ public class InventoryViewTests : IDisposable
 
         // Assert
         _viewModel.Items.Count.Should().Be(0);
-        
+
         // Cleanup
         world.Dispose();
     }
@@ -97,8 +97,8 @@ public class InventoryViewTests : IDisposable
         // Arrange
         var world = World.Create();
         var itemEntity = world.Create(new Item { Name = "Shield", Type = ItemType.Equipment });
-        _viewModel.Items.Add(new ItemViewModel 
-        { 
+        _viewModel.Items.Add(new ItemViewModel
+        {
             SourceEntity = itemEntity,
             Name = "Shield",
             Type = ItemType.Equipment
@@ -110,7 +110,7 @@ public class InventoryViewTests : IDisposable
         // Assert
         _viewModel.SelectedItem.Should().NotBeNull();
         _viewModel.SelectedItem!.Name.Should().Be("Shield");
-        
+
         // Cleanup
         world.Dispose();
     }
@@ -128,8 +128,8 @@ public class InventoryViewTests : IDisposable
         // Arrange
         var world = World.Create();
         var itemEntity = world.Create(new Item { Name = "Ring", Type = ItemType.QuestItem });
-        _viewModel.Items.Add(new ItemViewModel 
-        { 
+        _viewModel.Items.Add(new ItemViewModel
+        {
             SourceEntity = itemEntity,
             Name = "Ring",
             Type = ItemType.QuestItem
@@ -140,7 +140,7 @@ public class InventoryViewTests : IDisposable
 
         // Assert
         _viewModel.SelectedItem.Should().BeNull();
-        
+
         // Cleanup
         world.Dispose();
     }
@@ -164,7 +164,7 @@ public class InventoryViewTests : IDisposable
         _viewModel.Items[0].Name.Should().Be("Sword");
         _viewModel.Items[1].Name.Should().Be("Potion");
         _viewModel.Items[2].Name.Should().Be("Shield");
-        
+
         // Cleanup
         world.Dispose();
     }
@@ -176,11 +176,11 @@ public class InventoryViewTests : IDisposable
         var services = new ServiceCollection();
         services.AddMessagePipe();
         var provider = services.BuildServiceProvider();
-        
+
         var itemPickedUpSubscriber = provider.GetRequiredService<ISubscriber<ItemPickedUpEvent>>();
         var itemUsedSubscriber = provider.GetRequiredService<ISubscriber<ItemUsedEvent>>();
         var itemDroppedSubscriber = provider.GetRequiredService<ISubscriber<ItemDroppedEvent>>();
-        
+
         var viewModel = new InventoryViewModel(itemPickedUpSubscriber, itemUsedSubscriber, itemDroppedSubscriber);
         var view = new InventoryView(viewModel);
 
@@ -191,14 +191,14 @@ public class InventoryViewTests : IDisposable
         // Assert - No exception should occur when modifying collection after disposal
         var world = World.Create();
         var itemEntity = world.Create(new Item { Name = "Test", Type = ItemType.Equipment });
-        var act = () => viewModel.Items.Add(new ItemViewModel 
-        { 
+        var act = () => viewModel.Items.Add(new ItemViewModel
+        {
             SourceEntity = itemEntity,
             Name = "Test",
             Type = ItemType.Equipment
         });
         act.Should().NotThrow();
-        
+
         // Cleanup
         world.Dispose();
         provider.Dispose();
