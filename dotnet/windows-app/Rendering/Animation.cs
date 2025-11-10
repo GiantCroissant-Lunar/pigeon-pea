@@ -44,6 +44,10 @@ public class Animation
         if (FrameDuration <= 0)
             return 0;
 
+        // Validate elapsed time
+        if (elapsedTime < 0 || float.IsNaN(elapsedTime) || float.IsInfinity(elapsedTime))
+            return 0;
+
         var totalTime = elapsedTime;
         var totalFrames = Frames.Length;
 

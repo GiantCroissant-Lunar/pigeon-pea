@@ -219,6 +219,63 @@ public class AnimationSystemTests
         Assert.Equal(0, frameIndex);
     }
 
+    [Fact]
+    public void Animation_GetFrameIndex_WithNegativeElapsedTime_ReturnsFirstFrame()
+    {
+        // Arrange
+        var animation = new Animation
+        {
+            Id = 1,
+            Frames = [100, 101, 102],
+            FrameDuration = 0.1f,
+            IsLooping = true
+        };
+
+        // Act
+        var frameIndex = animation.GetFrameIndex(-1f);
+
+        // Assert
+        Assert.Equal(0, frameIndex);
+    }
+
+    [Fact]
+    public void Animation_GetFrameIndex_WithNaNElapsedTime_ReturnsFirstFrame()
+    {
+        // Arrange
+        var animation = new Animation
+        {
+            Id = 1,
+            Frames = [100, 101, 102],
+            FrameDuration = 0.1f,
+            IsLooping = true
+        };
+
+        // Act
+        var frameIndex = animation.GetFrameIndex(float.NaN);
+
+        // Assert
+        Assert.Equal(0, frameIndex);
+    }
+
+    [Fact]
+    public void Animation_GetFrameIndex_WithInfinityElapsedTime_ReturnsFirstFrame()
+    {
+        // Arrange
+        var animation = new Animation
+        {
+            Id = 1,
+            Frames = [100, 101, 102],
+            FrameDuration = 0.1f,
+            IsLooping = true
+        };
+
+        // Act
+        var frameIndex = animation.GetFrameIndex(float.PositiveInfinity);
+
+        // Assert
+        Assert.Equal(0, frameIndex);
+    }
+
     #endregion
 
     #region AnimationSystem Tests
@@ -603,6 +660,75 @@ public class AnimationSystemTests
         // Assert
         Assert.Equal(0, system.ActiveInstanceCount);
         Assert.Equal(0, system.AnimationCount);
+    }
+
+    [Fact]
+    public void AnimationSystem_Update_WithNegativeDeltaTime_DoesNotUpdate()
+    {
+        // Arrange
+        var system = new AnimationSystem();
+        var animation = new Animation
+        {
+            Id = 1,
+            Frames = [100, 101, 102],
+            FrameDuration = 0.1f,
+            IsLooping = true
+        };
+        system.RegisterAnimation(animation);
+        var instanceId = system.PlayAnimation(1);
+
+        // Act
+        system.Update(-0.5f);
+
+        // Assert - elapsed time should still be 0
+        var elapsedTime = system.GetElapsedTime(instanceId);
+        Assert.Equal(0f, elapsedTime);
+    }
+
+    [Fact]
+    public void AnimationSystem_Update_WithNaNDeltaTime_DoesNotUpdate()
+    {
+        // Arrange
+        var system = new AnimationSystem();
+        var animation = new Animation
+        {
+            Id = 1,
+            Frames = [100, 101, 102],
+            FrameDuration = 0.1f,
+            IsLooping = true
+        };
+        system.RegisterAnimation(animation);
+        var instanceId = system.PlayAnimation(1);
+
+        // Act
+        system.Update(float.NaN);
+
+        // Assert - elapsed time should still be 0
+        var elapsedTime = system.GetElapsedTime(instanceId);
+        Assert.Equal(0f, elapsedTime);
+    }
+
+    [Fact]
+    public void AnimationSystem_Update_WithInfinityDeltaTime_DoesNotUpdate()
+    {
+        // Arrange
+        var system = new AnimationSystem();
+        var animation = new Animation
+        {
+            Id = 1,
+            Frames = [100, 101, 102],
+            FrameDuration = 0.1f,
+            IsLooping = true
+        };
+        system.RegisterAnimation(animation);
+        var instanceId = system.PlayAnimation(1);
+
+        // Act
+        system.Update(float.PositiveInfinity);
+
+        // Assert - elapsed time should still be 0
+        var elapsedTime = system.GetElapsedTime(instanceId);
+        Assert.Equal(0f, elapsedTime);
     }
 
     #endregion

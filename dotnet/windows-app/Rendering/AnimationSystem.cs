@@ -95,6 +95,10 @@ public class AnimationSystem
     /// <param name="deltaTime">The time elapsed since the last update in seconds.</param>
     public void Update(float deltaTime)
     {
+        // Validate deltaTime
+        if (deltaTime < 0 || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime))
+            return;
+
         var completedInstances = new List<int>();
 
         foreach (var kvp in _activeInstances)
