@@ -13,6 +13,10 @@ namespace PigeonPea.Windows.Tests.Visual;
 /// </summary>
 public class WindowsVisualTests : IDisposable
 {
+    private const int TestVideoWidth = 800;
+    private const int TestVideoHeight = 600;
+    private const int TestVideoFrameRate = 30;
+
     private readonly string _testOutputDir;
     private readonly string _snapshotsDir;
     private readonly FrameExtractor _frameExtractor;
@@ -27,9 +31,9 @@ public class WindowsVisualTests : IDisposable
         _createdDirectories.Add(_testOutputDir);
 
         // Snapshots are stored in the project directory for version control
-        _snapshotsDir = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
-            "..", "..", "..", "snapshots");
+        // Use Path.GetFullPath to resolve relative paths more robustly
+        _snapshotsDir = Path.GetFullPath(
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "snapshots"));
 
         // Ensure snapshots directory exists
         Directory.CreateDirectory(_snapshotsDir);
@@ -45,34 +49,37 @@ public class WindowsVisualTests : IDisposable
     public void Dispose()
     {
         // Clean up test files
-        foreach (var file in _createdFiles)
-        {
-            try
-            {
-                if (File.Exists(file))
-                {
-                    File.Delete(file);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[TEST CLEANUP] Failed to delete file {file}: {ex.Message}");
-            }
-        }
+        CleanupPaths(_createdFiles, File.Delete, File.Exists, "file");
 
         // Clean up test directories
-        foreach (var dir in _createdDirectories)
+        CleanupPaths(_createdDirectories, path => Directory.Delete(path, true), Directory.Exists, "directory");
+    }
+
+    /// <summary>
+    /// Helper method to clean up test artifacts (files or directories).
+    /// </summary>
+    /// <param name="paths">Collection of paths to clean up.</param>
+    /// <param name="deleteAction">Action to delete the path (e.g., File.Delete or Directory.Delete).</param>
+    /// <param name="existsCheck">Function to check if the path exists.</param>
+    /// <param name="pathType">Type of path (e.g., "file" or "directory") for logging.</param>
+    private static void CleanupPaths(
+        IEnumerable<string> paths,
+        Action<string> deleteAction,
+        Func<string, bool> existsCheck,
+        string pathType)
+    {
+        foreach (var path in paths)
         {
             try
             {
-                if (Directory.Exists(dir))
+                if (existsCheck(path))
                 {
-                    Directory.Delete(dir, true);
+                    deleteAction(path);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[TEST CLEANUP] Failed to delete directory {dir}: {ex.Message}");
+                Console.WriteLine($"[TEST CLEANUP] Failed to delete {pathType} {path}: {ex.Message}");
             }
         }
     }
@@ -109,7 +116,7 @@ public class WindowsVisualTests : IDisposable
         processStartInfo.ArgumentList.Add("-f");
         processStartInfo.ArgumentList.Add("lavfi");
         processStartInfo.ArgumentList.Add("-i");
-        processStartInfo.ArgumentList.Add($"testsrc=duration={duration}:size=800x600:rate=30");
+        processStartInfo.ArgumentList.Add($"testsrc=duration={duration}:size={TestVideoWidth}x{TestVideoHeight}:rate={TestVideoFrameRate}");
         processStartInfo.ArgumentList.Add("-pix_fmt");
         processStartInfo.ArgumentList.Add("yuv420p");
         processStartInfo.ArgumentList.Add(videoPath);
@@ -308,9 +315,10 @@ public class WindowsVisualTests : IDisposable
         // Assert
         _frameExtractor.FrameRate.Should().Be(1, "should extract 1 frame per second");
 
-        // Verify FFmpeg availability check works
+        // Verify FFmpeg availability check returns a boolean (method works without throwing)
         var isAvailable = await _frameExtractor.IsFFmpegAvailable();
-        isAvailable.Should().Be(isAvailable, "should return boolean indicating FFmpeg availability");
+        // The method should complete successfully and return a boolean value
+        Assert.IsType<bool>(isAvailable);
     }
 
     [Fact]
