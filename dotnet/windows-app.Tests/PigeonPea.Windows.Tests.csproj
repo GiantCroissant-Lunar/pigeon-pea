@@ -40,6 +40,8 @@
     <Compile Include="../windows-app/Rendering/Particle.cs" Link="Rendering/Particle.cs" />
     <Compile Include="../windows-app/Rendering/ParticleEmitter.cs" Link="Rendering/ParticleEmitter.cs" />
     <Compile Include="../windows-app/Rendering/ParticleSystem.cs" Link="Rendering/ParticleSystem.cs" />
+    <Compile Include="../windows-app/Rendering/Animation.cs" Link="Rendering/Animation.cs" />
+    <Compile Include="../windows-app/Rendering/AnimationSystem.cs" Link="Rendering/AnimationSystem.cs" />
     <Compile Include="../windows-app/StubRenderer.cs" Link="StubRenderer.cs" />
   </ItemGroup>
 
