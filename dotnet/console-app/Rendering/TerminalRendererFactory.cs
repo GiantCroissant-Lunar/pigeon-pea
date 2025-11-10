@@ -45,33 +45,10 @@ public static class TerminalRendererFactory
     /// <returns>An IRenderer instance for the best available terminal graphics mode.</returns>
     public static IRenderer CreateRenderer(RendererType rendererType = RendererType.Auto)
     {
-        // If manual override is specified, create that renderer directly
-        if (rendererType != RendererType.Auto)
-        {
-            return CreateSpecificRenderer(rendererType);
-        }
-
         // Detect terminal capabilities
         var capabilities = TerminalCapabilities.Detect();
-
-        // Select renderer based on capabilities (priority order)
-        if (capabilities.SupportsKittyGraphics)
-        {
-            return new KittyGraphicsRenderer();
-        }
-
-        if (capabilities.SupportsSixel)
-        {
-            return new SixelRenderer();
-        }
-
-        if (capabilities.SupportsBraille)
-        {
-            return new BrailleRenderer();
-        }
-
-        // Final fallback to ASCII renderer
-        return new AsciiRenderer();
+        
+        return CreateRenderer(capabilities, rendererType);
     }
 
     /// <summary>
@@ -95,6 +72,16 @@ public static class TerminalRendererFactory
         }
 
         // Select renderer based on capabilities (priority order)
+        return SelectRendererByCapabilities(capabilities);
+    }
+
+    /// <summary>
+    /// Selects the best renderer based on terminal capabilities.
+    /// </summary>
+    /// <param name="capabilities">Terminal capabilities to evaluate.</param>
+    /// <returns>An IRenderer instance for the best available terminal graphics mode.</returns>
+    private static IRenderer SelectRendererByCapabilities(TerminalCapabilities capabilities)
+    {
         if (capabilities.SupportsKittyGraphics)
         {
             return new KittyGraphicsRenderer();
