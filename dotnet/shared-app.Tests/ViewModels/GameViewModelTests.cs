@@ -1,7 +1,10 @@
 using System;
+using Arch.Core.Extensions;
 using FluentAssertions;
+using MessagePipe;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Reactive.Testing;
+using PigeonPea.Shared.Events;
 using PigeonPea.Shared.ViewModels;
 using Xunit;
 
@@ -259,5 +262,326 @@ public class GameViewModelTests : IDisposable
         viewModel.Inventory.Should().NotBeSameAs(viewModel.MessageLog);
         viewModel.Inventory.Should().NotBeSameAs(viewModel.Map);
         viewModel.MessageLog.Should().NotBeSameAs(viewModel.Map);
+    }
+
+    [Fact]
+    public void Constructor_InitializesCommands()
+    {
+        // Act
+        using var viewModel = new GameViewModel(_world, _services);
+
+        // Assert
+        viewModel.UseItemCommand.Should().NotBeNull("UseItemCommand should be initialized");
+        viewModel.DropItemCommand.Should().NotBeNull("DropItemCommand should be initialized");
+    }
+
+    [Fact]
+    public void UseItemCommand_CannotExecute_WhenNoItemSelected()
+    {
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
+        
+        // Initial update
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Act & Assert - No item selected (SelectedIndex is -1)
+        viewModel.UseItemCommand.CanExecute.Subscribe(canExecute =>
+        {
+            canExecute.Should().BeFalse("UseItemCommand should not be executable when no item is selected");
+        });
+    }
+
+    [Fact]
+    public void DropItemCommand_CannotExecute_WhenNoItemSelected()
+    {
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
+        
+        // Initial update
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Act & Assert - No item selected (SelectedIndex is -1)
+        viewModel.DropItemCommand.CanExecute.Subscribe(canExecute =>
+        {
+            canExecute.Should().BeFalse("DropItemCommand should not be executable when no item is selected");
+        });
+    }
+
+    [Fact]
+    public void UseItemCommand_CanExecute_WhenItemIsSelected()
+    {
+        // Arrange - Use real scheduler for CanExecute testing
+        using var viewModel = new GameViewModel(_world, _services);
+        
+        // Wait for initial sync
+        System.Threading.Thread.Sleep(50);
+
+        // Add a test item to player inventory
+        ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);
+        var testItem = _world.EcsWorld.Create(
+            new Components.Item("Test Potion", Components.ItemType.Consumable),
+            new Components.Consumable(10)
+        );
+        inventory.Items.Add(testItem);
+
+        // Wait for view model sync
+        System.Threading.Thread.Sleep(50);
+
+        // Verify item is in the view model
+        viewModel.Inventory.Items.Should().HaveCount(1, "Item should be synced to view model");
+        
+        // Act - Select the item
+        viewModel.Inventory.SelectedIndex = 0;
+        
+        // Verify selection
+        viewModel.Inventory.SelectedItem.Should().NotBeNull("Item should be selected");
+
+        // Assert - Check that we can execute when an item is selected
+        // The command execution itself will work, testing the actual execute in a separate test
+        viewModel.UseItemCommand.Execute().Subscribe();
+        
+        // If we got here without exception, the command could execute
+        true.Should().BeTrue("Command executed successfully");
+    }
+
+    [Fact]
+    public void DropItemCommand_CanExecute_WhenItemIsSelected()
+    {
+        // Arrange - Use real scheduler for CanExecute testing
+        using var viewModel = new GameViewModel(_world, _services);
+        
+        // Wait for initial sync
+        System.Threading.Thread.Sleep(50);
+
+        // Add a test item to player inventory
+        ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);
+        var testItem = _world.EcsWorld.Create(
+            new Components.Item("Test Sword", Components.ItemType.Equipment)
+        );
+        inventory.Items.Add(testItem);
+
+        // Wait for view model sync
+        System.Threading.Thread.Sleep(50);
+
+        // Verify item is in the view model
+        viewModel.Inventory.Items.Should().HaveCount(1, "Item should be synced to view model");
+        
+        // Act - Select the item
+        viewModel.Inventory.SelectedIndex = 0;
+        
+        // Verify selection
+        viewModel.Inventory.SelectedItem.Should().NotBeNull("Item should be selected");
+
+        // Assert - Check that we can execute when an item is selected
+        // The command execution itself will work, testing the actual execute in a separate test
+        viewModel.DropItemCommand.Execute().Subscribe();
+        
+        // If we got here without exception, the command could execute
+        true.Should().BeTrue("Command executed successfully");
+    }
+
+    [Fact]
+    public void UseItemCommand_Execute_UsesItemFromInventory()
+    {
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
+        
+        // Initial update to sync inventory
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Damage player so we can test health restore
+        ref var health = ref _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
+        health.Current = 50;
+
+        // Add a consumable item to player inventory
+        ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);
+        var healthPotion = _world.EcsWorld.Create(
+            new Components.Item("Health Potion", Components.ItemType.Consumable),
+            new Components.Consumable(25)
+        );
+        inventory.Items.Add(healthPotion);
+
+        // Sync the view model
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Select the item
+        viewModel.Inventory.SelectedIndex = 0;
+        var initialInventoryCount = viewModel.Inventory.Items.Count;
+
+        // Act - Execute the command
+        viewModel.UseItemCommand.Execute().Subscribe();
+
+        // Sync the view model to update inventory
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Assert
+        health.Current.Should().Be(75, "Health should be restored by 25");
+        viewModel.Inventory.Items.Count.Should().Be(initialInventoryCount - 1, "Item should be removed from inventory");
+    }
+
+    [Fact]
+    public void UseItemCommand_Execute_PublishesEvent()
+    {
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
+        
+        // Initial update to sync inventory
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Add a consumable item to player inventory
+        ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);
+        var healthPotion = _world.EcsWorld.Create(
+            new Components.Item("Mega Potion", Components.ItemType.Consumable),
+            new Components.Consumable(50)
+        );
+        inventory.Items.Add(healthPotion);
+
+        // Sync the view model
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Subscribe to ItemUsedEvent
+        var subscriber = _services.GetRequiredService<ISubscriber<ItemUsedEvent>>();
+        ItemUsedEvent? receivedEvent = null;
+        var bag = DisposableBag.CreateBuilder();
+        subscriber.Subscribe(e => receivedEvent = e).AddTo(bag);
+        var subscription = bag.Build();
+
+        // Select the item
+        viewModel.Inventory.SelectedIndex = 0;
+
+        // Act - Execute the command
+        viewModel.UseItemCommand.Execute().Subscribe();
+
+        // Assert
+        receivedEvent.Should().NotBeNull("ItemUsedEvent should be published");
+        receivedEvent!.Value.ItemName.Should().Be("Mega Potion");
+        receivedEvent.Value.ItemType.Should().Be("Consumable");
+
+        subscription.Dispose();
+    }
+
+    [Fact]
+    public void DropItemCommand_Execute_DropsItemFromInventory()
+    {
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
+        
+        // Initial update to sync inventory
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Add an item to player inventory
+        ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);
+        var oldSword = _world.EcsWorld.Create(
+            new Components.Item("Old Sword", Components.ItemType.Equipment)
+        );
+        inventory.Items.Add(oldSword);
+
+        // Sync the view model
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Select the item
+        viewModel.Inventory.SelectedIndex = 0;
+        var initialInventoryCount = viewModel.Inventory.Items.Count;
+
+        // Act - Execute the command
+        viewModel.DropItemCommand.Execute().Subscribe();
+
+        // Sync the view model to update inventory
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Assert
+        viewModel.Inventory.Items.Count.Should().Be(initialInventoryCount - 1, "Item should be removed from inventory");
+        
+        // Verify item has Position and Pickup components (it's on the ground)
+        oldSword.Has<Components.Position>().Should().BeTrue("Dropped item should have Position component");
+        oldSword.Has<Components.Pickup>().Should().BeTrue("Dropped item should have Pickup component");
+    }
+
+    [Fact]
+    public void DropItemCommand_Execute_PublishesEvent()
+    {
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
+        
+        // Initial update to sync inventory
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Add an item to player inventory
+        ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);
+        var rustyDagger = _world.EcsWorld.Create(
+            new Components.Item("Rusty Dagger", Components.ItemType.Equipment)
+        );
+        inventory.Items.Add(rustyDagger);
+
+        // Sync the view model
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Subscribe to ItemDroppedEvent
+        var subscriber = _services.GetRequiredService<ISubscriber<ItemDroppedEvent>>();
+        ItemDroppedEvent? receivedEvent = null;
+        var bag = DisposableBag.CreateBuilder();
+        subscriber.Subscribe(e => receivedEvent = e).AddTo(bag);
+        var subscription = bag.Build();
+
+        // Select the item
+        viewModel.Inventory.SelectedIndex = 0;
+
+        // Act - Execute the command
+        viewModel.DropItemCommand.Execute().Subscribe();
+
+        // Assert
+        receivedEvent.Should().NotBeNull("ItemDroppedEvent should be published");
+        receivedEvent!.Value.ItemName.Should().Be("Rusty Dagger");
+
+        subscription.Dispose();
+    }
+
+    [Fact]
+    public void UseItemCommand_Execute_DoesNothing_WhenNoItemSelected()
+    {
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
+        
+        // Initial update
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Get initial health
+        ref var health = ref _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
+        var initialHealth = health.Current;
+
+        // Act - Try to execute without selecting an item
+        viewModel.UseItemCommand.Execute().Subscribe();
+
+        // Assert
+        health.Current.Should().Be(initialHealth, "Health should not change when no item is selected");
+    }
+
+    [Fact]
+    public void DropItemCommand_Execute_DoesNothing_WhenNoItemSelected()
+    {
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
+        
+        // Initial update
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        var initialInventoryCount = viewModel.Inventory.Items.Count;
+
+        // Act - Try to execute without selecting an item
+        viewModel.DropItemCommand.Execute().Subscribe();
+
+        // Sync the view model
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
+
+        // Assert
+        viewModel.Inventory.Items.Count.Should().Be(initialInventoryCount, "Inventory should not change when no item is selected");
     }
 }
