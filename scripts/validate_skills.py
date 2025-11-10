@@ -27,59 +27,71 @@ def validate_skill(skill_path, schema_path):
     """Validate a single skill against schema and size limits."""
     skill_md = skill_path / "SKILL.md"
 
-    # Extract and validate front-matter
-    front_matter = extract_frontmatter(skill_md)
-
-    with open(schema_path) as f:
-        schema = json.load(f)
-
     try:
-        validate(instance=front_matter, schema=schema)
-        print(f"✓ {skill_md}: Schema valid")
-    except ValidationError as e:
-        print(f"✗ {skill_md}: {e.message}")
-        return False
+        # Extract and validate front-matter
+        front_matter = extract_frontmatter(skill_md)
 
-    # Check size limits
-    with open(skill_md) as f:
-        entry_lines = len(f.readlines())
+        with open(schema_path) as f:
+            schema = json.load(f)
 
-    if entry_lines > 220:
-        print(f"✗ {skill_md}: Entry too large ({entry_lines} lines, max 220)")
-        return False
+        try:
+            validate(instance=front_matter, schema=schema)
+            print(f"✓ {skill_md}: Schema valid")
+        except ValidationError as e:
+            print(f"✗ {skill_md}: {e.message}")
+            return False
 
-    print(f"✓ {skill_md}: Size OK ({entry_lines} lines)")
+        # Check size limits
+        with open(skill_md) as f:
+            entry_lines = len(f.readlines())
 
-    # Check references
-    ref_dir = skill_path / "references"
-    if ref_dir.exists():
-        refs = list(ref_dir.glob("*.md"))
-        if refs:
-            # Check first reference for cold-start budget
-            with open(refs[0]) as f:
-                ref_lines = len(f.readlines())
+        if entry_lines > 220:
+            print(f"✗ {skill_md}: Entry too large ({entry_lines} lines, max 220)")
+            return False
 
-            if ref_lines > 320:
-                print(f"✗ {refs[0]}: Reference too large ({ref_lines} lines, max 320)")
-                return False
+        print(f"✓ {skill_md}: Size OK ({entry_lines} lines)")
 
-            total = entry_lines + ref_lines
-            if total > 550:
-                print(f"✗ Cold-start budget exceeded: {total} lines (max 550)")
-                return False
-
-            print(f"✓ Cold-start budget OK: {total} lines")
-
-            # Check all other references
-            for ref in refs[1:]:
-                with open(ref) as f:
+        # Check references (sorted for deterministic order)
+        ref_dir = skill_path / "references"
+        if ref_dir.exists():
+            refs = sorted(ref_dir.glob("*.md"))
+            if refs:
+                # Check first reference for cold-start budget
+                with open(refs[0]) as f:
                     ref_lines = len(f.readlines())
 
                 if ref_lines > 320:
-                    print(f"✗ {ref}: Reference too large ({ref_lines} lines, max 320)")
+                    print(
+                        f"✗ {refs[0]}: Reference too large ({ref_lines} lines, max 320)"
+                    )
                     return False
 
-                print(f"✓ {ref}: Size OK ({ref_lines} lines)")
+                total = entry_lines + ref_lines
+                if total > 550:
+                    print(f"✗ Cold-start budget exceeded: {total} lines (max 550)")
+                    return False
+
+                print(f"✓ Cold-start budget OK: {total} lines")
+
+                # Check all other references
+                for ref in refs[1:]:
+                    with open(ref) as f:
+                        ref_lines = len(f.readlines())
+
+                    if ref_lines > 320:
+                        print(
+                            f"✗ {ref}: Reference too large ({ref_lines} lines, max 320)"
+                        )
+                        return False
+
+                    print(f"✓ {ref}: Size OK ({ref_lines} lines)")
+
+    except (OSError, IOError) as e:
+        print(f"✗ {skill_md}: Error reading file: {e}")
+        return False
+    except Exception as e:
+        print(f"✗ {skill_md}: Unexpected error: {e}")
+        return False
 
     return True
 
