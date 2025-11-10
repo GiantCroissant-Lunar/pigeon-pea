@@ -1,0 +1,201 @@
+# Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system
+
+**Labels:** `plugin-system`, `rfc-006`, `phase-2`, `game-logic`
+
+## Related RFC
+RFC-006 Phase 2: Plugin System Architecture
+
+## Summary
+Define game events in contracts and integrate EventBus into GameWorld to publish events for plugins.
+
+## Depends On
+Issue #3 (plugin system must exist)
+
+## Scope
+- Define game event contracts
+- Integrate `IEventBus` into `GameWorld`
+- Publish events from game actions
+- Create example plugin that subscribes to events
+- Verify events flow correctly
+
+## Acceptance Criteria
+
+### Game Events Defined
+- [ ] Game events defined in `PigeonPea.Game.Contracts/Events/`:
+  - [ ] `EntitySpawnedEvent.cs`
+  - [ ] `EntityMovedEvent.cs`
+  - [ ] `CombatEvent.cs`
+  - [ ] Additional events as needed (damage, heal, pickup, etc.)
+- [ ] Events are immutable records
+- [ ] Events contain all relevant data (no database/state lookups needed)
+
+### GameWorld Integration
+- [ ] `GameWorld.cs` updated:
+  - [ ] Constructor accepts `IEventBus` parameter
+  - [ ] `SpawnEntity()` publishes `EntitySpawnedEvent`
+  - [ ] `MoveEntity()` publishes `EntityMovedEvent`
+  - [ ] Combat actions publish `CombatEvent`
+  - [ ] Events published after state changes (not before)
+
+### Example Plugin
+- [ ] Example plugin created: `PigeonPea.Plugins.EventLogger`
+  - [ ] Located in `game-essential/plugins/PigeonPea.Plugins.EventLogger/`
+  - [ ] Subscribes to all game events
+  - [ ] Logs events to console/logger
+  - [ ] Has `plugin.json` manifest
+  - [ ] Can be enabled/disabled via config
+
+### Application Integration
+- [ ] Both console and Windows apps updated:
+  - [ ] Add `IEventBus` to dependency injection
+  - [ ] Pass `IEventBus` to `GameWorld` constructor
+  - [ ] Verify events are published during gameplay
+
+### Testing
+- [ ] Integration test verifies event flow:
+  - [ ] GameWorld publishes event
+  - [ ] EventLogger plugin receives event
+  - [ ] Event data is correct
+  - [ ] Multiple subscribers work correctly
+- [ ] No functional regressions
+- [ ] Performance acceptable (events don't slow down game loop)
+
+### Documentation
+- [ ] XML documentation for all event classes
+- [ ] README in EventLogger plugin explaining purpose
+- [ ] Updated ARCHITECTURE.md with event flow diagram
+
+## Implementation Notes
+- Use C# records for immutable events
+- Consider synchronous vs asynchronous event publishing (perf implications)
+- Ensure events are published *after* state changes (not before)
+- EventLogger is a development/debugging plugin (can be disabled in production)
+- Events should be fire-and-forget (don't block game logic)
+
+## Event Examples
+
+### EntitySpawnedEvent
+```csharp
+namespace PigeonPea.Game.Contracts.Events;
+
+public record EntitySpawnedEvent
+{
+    public required int EntityId { get; init; }
+    public required string EntityType { get; init; }
+    public required Point Position { get; init; }
+    public DateTime Timestamp { get; init; } = DateTime.UtcNow;
+}
+```
+
+### EntityMovedEvent
+```csharp
+public record EntityMovedEvent
+{
+    public required int EntityId { get; init; }
+    public required Point OldPosition { get; init; }
+    public required Point NewPosition { get; init; }
+    public DateTime Timestamp { get; init; } = DateTime.UtcNow;
+}
+```
+
+### CombatEvent
+```csharp
+public record CombatEvent
+{
+    public required int AttackerId { get; init; }
+    public required int TargetId { get; init; }
+    public required int DamageDealt { get; init; }
+    public required bool IsHit { get; init; }
+    public required bool IsKill { get; init; }
+    public DateTime Timestamp { get; init; } = DateTime.UtcNow;
+}
+```
+
+## GameWorld Integration Example
+
+```csharp
+public class GameWorld
+{
+    private readonly IEventBus _eventBus;
+
+    public GameWorld(IEventBus eventBus)
+    {
+        _eventBus = eventBus;
+    }
+
+    public void SpawnEntity(Entity entity)
+    {
+        // ... ECS entity creation ...
+
+        // Publish event for plugins
+        _eventBus.PublishAsync(new EntitySpawnedEvent
+        {
+            EntityId = entity.Id,
+            EntityType = GetEntityType(entity),
+            Position = entity.Get<Position>().Point
+        }).Wait();  // Or await in async context
+    }
+
+    public void MoveEntity(Entity entity, Point newPosition)
+    {
+        var oldPosition = entity.Get<Position>().Point;
+        entity.Get<Position>().Point = newPosition;
+
+        // Publish event
+        _eventBus.PublishAsync(new EntityMovedEvent
+        {
+            EntityId = entity.Id,
+            OldPosition = oldPosition,
+            NewPosition = newPosition
+        }).Wait();
+    }
+}
+```
+
+## EventLogger Plugin Example
+
+```csharp
+public class EventLoggerPlugin : IPlugin
+{
+    private ILogger? _logger;
+    private IEventBus? _eventBus;
+
+    public string Id => "event-logger";
+    public string Name => "Event Logger";
+    public string Version => "1.0.0";
+
+    public Task InitializeAsync(IPluginContext context, CancellationToken ct)
+    {
+        _logger = context.Logger;
+        _eventBus = context.Registry.Get<IEventBus>();
+
+        // Subscribe to all events
+        _eventBus.Subscribe<EntitySpawnedEvent>(OnEntitySpawned);
+        _eventBus.Subscribe<EntityMovedEvent>(OnEntityMoved);
+        _eventBus.Subscribe<CombatEvent>(OnCombat);
+
+        _logger.LogInformation("Event logger initialized");
+        return Task.CompletedTask;
+    }
+
+    private Task OnEntitySpawned(EntitySpawnedEvent evt)
+    {
+        _logger?.LogInformation(
+            "Entity spawned: {Type} at ({X},{Y})",
+            evt.EntityType, evt.Position.X, evt.Position.Y);
+        return Task.CompletedTask;
+    }
+
+    // ... other handlers ...
+}
+```
+
+## Estimated Effort
+2-3 days
+
+## Dependencies
+- Issue #3 must be completed (plugin system must exist)
+
+## See Also
+- [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
+- [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)
