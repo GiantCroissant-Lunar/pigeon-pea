@@ -312,11 +312,9 @@ public class GameViewModelTests : IDisposable
     [Fact]
     public void UseItemCommand_CanExecute_WhenItemIsSelected()
     {
-        // Arrange - Use real scheduler for CanExecute testing
-        using var viewModel = new GameViewModel(_world, _services);
-        
-        // Wait for initial sync
-        System.Threading.Thread.Sleep(50);
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
 
         // Add a test item to player inventory
         ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);
@@ -326,34 +324,32 @@ public class GameViewModelTests : IDisposable
         );
         inventory.Items.Add(testItem);
 
-        // Wait for view model sync
-        System.Threading.Thread.Sleep(50);
+        // Sync the view model to populate inventory
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
-        // Verify item is in the view model
-        viewModel.Inventory.Items.Should().HaveCount(1, "Item should be synced to view model");
-        
+        // Subscribe to CanExecute changes
+        var canExecuteResult = false;
+        using var subscription = viewModel.UseItemCommand.CanExecute.Subscribe(canExecute => canExecuteResult = canExecute);
+
+        // Assert initial state (no item selected yet)
+        canExecuteResult.Should().BeFalse("Command should not be executable before an item is selected");
+
         // Act - Select the item
         viewModel.Inventory.SelectedIndex = 0;
-        
-        // Verify selection
-        viewModel.Inventory.SelectedItem.Should().NotBeNull("Item should be selected");
 
-        // Assert - Check that we can execute when an item is selected
-        // The command execution itself will work, testing the actual execute in a separate test
-        viewModel.UseItemCommand.Execute().Subscribe();
-        
-        // If we got here without exception, the command could execute
-        true.Should().BeTrue("Command executed successfully");
+        // Give the observable pipeline time to process the change
+        scheduler.AdvanceBy(1);
+
+        // Assert
+        canExecuteResult.Should().BeTrue("Command should be executable after an item is selected");
     }
 
     [Fact]
     public void DropItemCommand_CanExecute_WhenItemIsSelected()
     {
-        // Arrange - Use real scheduler for CanExecute testing
-        using var viewModel = new GameViewModel(_world, _services);
-        
-        // Wait for initial sync
-        System.Threading.Thread.Sleep(50);
+        // Arrange
+        var scheduler = new TestScheduler();
+        using var viewModel = new GameViewModel(_world, _services, scheduler);
 
         // Add a test item to player inventory
         ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);
@@ -362,24 +358,24 @@ public class GameViewModelTests : IDisposable
         );
         inventory.Items.Add(testItem);
 
-        // Wait for view model sync
-        System.Threading.Thread.Sleep(50);
+        // Sync the view model to populate inventory
+        scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
-        // Verify item is in the view model
-        viewModel.Inventory.Items.Should().HaveCount(1, "Item should be synced to view model");
-        
+        // Subscribe to CanExecute changes
+        var canExecuteResult = false;
+        using var subscription = viewModel.DropItemCommand.CanExecute.Subscribe(canExecute => canExecuteResult = canExecute);
+
+        // Assert initial state (no item selected yet)
+        canExecuteResult.Should().BeFalse("Command should not be executable before an item is selected");
+
         // Act - Select the item
         viewModel.Inventory.SelectedIndex = 0;
-        
-        // Verify selection
-        viewModel.Inventory.SelectedItem.Should().NotBeNull("Item should be selected");
 
-        // Assert - Check that we can execute when an item is selected
-        // The command execution itself will work, testing the actual execute in a separate test
-        viewModel.DropItemCommand.Execute().Subscribe();
-        
-        // If we got here without exception, the command could execute
-        true.Should().BeTrue("Command executed successfully");
+        // Give the observable pipeline time to process the change
+        scheduler.AdvanceBy(1);
+
+        // Assert
+        canExecuteResult.Should().BeTrue("Command should be executable after an item is selected");
     }
 
     [Fact]
