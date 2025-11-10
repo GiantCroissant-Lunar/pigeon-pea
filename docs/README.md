@@ -8,6 +8,14 @@ Welcome to the Pigeon Pea documentation! This directory contains planning docume
 
 - **[ENHANCEMENT_PLAN.md](ENHANCEMENT_PLAN.md)**: Comprehensive plan for platform-specific enhancements after completing core game logic features
 
+### Implementation Guide
+
+- **[GITHUB_ISSUES.md](GITHUB_ISSUES.md)**: Breakdown of all RFCs into 43 actionable GitHub issues
+  - Each issue is sized for 1-3 days of work
+  - Includes clear acceptance criteria and code examples
+  - Suitable for GitHub coding agents
+  - Tracks dependencies between issues
+
 ### RFCs (Requests for Comments)
 
 RFCs provide detailed technical specifications for major features and architectural decisions.
@@ -43,8 +51,10 @@ RFCs provide detailed technical specifications for major features and architectu
 ### Implementing RFCs
 
 1. RFCs should be accepted before implementation begins
-2. Implementation can be done in phases as outlined in each RFC
-3. Update RFC status to "Implemented" when complete
+2. Use [GITHUB_ISSUES.md](GITHUB_ISSUES.md) to break down RFCs into actionable tasks
+3. Implementation can be done in phases as outlined in each RFC
+4. Create GitHub issues from the breakdown document
+5. Update RFC status to "Implemented" when complete
 
 ### Creating New RFCs
 
