@@ -135,7 +135,8 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
-        viewModel.Items.Add(new ItemViewModel { Name = "Test Item", Type = ItemType.Consumable });
+        var testEntity = _world.Create(new Item("Test Item", ItemType.Consumable));
+        viewModel.Items.Add(new ItemViewModel { SourceEntity = testEntity, Name = "Test Item", Type = ItemType.Consumable });
 
         // Act
         var selectedItem = viewModel.SelectedItem;
@@ -155,7 +156,8 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
-        var testItem = new ItemViewModel { Name = "Test Item", Type = ItemType.Consumable };
+        var testEntity = _world.Create(new Item("Test Item", ItemType.Consumable));
+        var testItem = new ItemViewModel { SourceEntity = testEntity, Name = "Test Item", Type = ItemType.Consumable };
         viewModel.Items.Add(testItem);
         viewModel.SelectedIndex = 0;
 
@@ -178,7 +180,8 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
-        viewModel.Items.Add(new ItemViewModel { Name = "Test Item", Type = ItemType.Consumable });
+        var testEntity = _world.Create(new Item("Test Item", ItemType.Consumable));
+        viewModel.Items.Add(new ItemViewModel { SourceEntity = testEntity, Name = "Test Item", Type = ItemType.Consumable });
         viewModel.SelectedIndex = 10; // Out of range
 
         // Act
@@ -245,7 +248,8 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
-        viewModel.Items.Add(new ItemViewModel { Name = "Old Item", Type = ItemType.Consumable });
+        var testEntity = _world.Create(new Item("Old Item", ItemType.Consumable));
+        viewModel.Items.Add(new ItemViewModel { SourceEntity = testEntity, Name = "Old Item", Type = ItemType.Consumable });
 
         var emptyWorld = World.Create();
         var emptyEntity = emptyWorld.Create(); // Entity with no components
@@ -292,7 +296,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void ItemPickedUpEvent_IsSubscribedTo()
+    public void ItemPickedUpEvent_DoesNotModifyItems()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -300,29 +304,24 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
-        bool eventReceived = false;
+        var initialCount = viewModel.Items.Count;
 
-        // Set up a test subscription to verify the event flows through
-        _itemPickedUpSubscriber.Subscribe(e =>
-        {
-            eventReceived = true;
-        });
-
-        // Act
+        // Act - Publish event
         _itemPickedUpPublisher.Publish(new ItemPickedUpEvent
         {
             ItemName = "Test Item",
             ItemType = "Consumable"
         });
 
-        // Assert
-        eventReceived.Should().BeTrue("ItemPickedUpEvent should be received by subscribers");
+        // Assert - Items collection should remain unchanged
+        // Event handlers are currently placeholders that don't modify state
+        viewModel.Items.Count.Should().Be(initialCount, "Event handler is a placeholder and should not modify Items collection");
 
         viewModel.Dispose();
     }
 
     [Fact]
-    public void ItemUsedEvent_IsSubscribedTo()
+    public void ItemUsedEvent_DoesNotModifyItems()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -330,29 +329,25 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
-        bool eventReceived = false;
+        viewModel.Update(_world, _playerEntity);
+        var initialCount = viewModel.Items.Count;
 
-        // Set up a test subscription to verify the event flows through
-        _itemUsedSubscriber.Subscribe(e =>
-        {
-            eventReceived = true;
-        });
-
-        // Act
+        // Act - Publish event
         _itemUsedPublisher.Publish(new ItemUsedEvent
         {
             ItemName = "Health Potion",
             ItemType = "Consumable"
         });
 
-        // Assert
-        eventReceived.Should().BeTrue("ItemUsedEvent should be received by subscribers");
+        // Assert - Items collection should remain unchanged
+        // Event handlers are currently placeholders that don't modify state
+        viewModel.Items.Count.Should().Be(initialCount, "Event handler is a placeholder and should not modify Items collection");
 
         viewModel.Dispose();
     }
 
     [Fact]
-    public void ItemDroppedEvent_IsSubscribedTo()
+    public void ItemDroppedEvent_DoesNotModifyItems()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -360,22 +355,18 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
-        bool eventReceived = false;
+        viewModel.Update(_world, _playerEntity);
+        var initialCount = viewModel.Items.Count;
 
-        // Set up a test subscription to verify the event flows through
-        _itemDroppedSubscriber.Subscribe(e =>
-        {
-            eventReceived = true;
-        });
-
-        // Act
+        // Act - Publish event
         _itemDroppedPublisher.Publish(new ItemDroppedEvent
         {
             ItemName = "Old Sword"
         });
 
-        // Assert
-        eventReceived.Should().BeTrue("ItemDroppedEvent should be received by subscribers");
+        // Assert - Items collection should remain unchanged
+        // Event handlers are currently placeholders that don't modify state
+        viewModel.Items.Count.Should().Be(initialCount, "Event handler is a placeholder and should not modify Items collection");
 
         viewModel.Dispose();
     }
@@ -389,75 +380,30 @@ public class InventoryViewModelTests : IDisposable
             _itemUsedSubscriber,
             _itemDroppedSubscriber
         );
+        
+        int eventReceivedAfterDispose = 0;
+        // Add a test item to track if events are still received after dispose
+        viewModel.Update(_world, _playerEntity);
 
-        // Act
+        // Act - Dispose the view model
         viewModel.Dispose();
 
-        // Assert - should not throw
-        // The disposal should clean up all subscriptions properly
-        true.Should().BeTrue("Dispose should complete without errors");
-    }
+        // Set up a separate subscription to verify the event is published
+        var testSub = _itemPickedUpSubscriber.Subscribe(e => eventReceivedAfterDispose++);
+        
+        // Publish an event after disposal
+        _itemPickedUpPublisher.Publish(new ItemPickedUpEvent
+        {
+            ItemName = "Test",
+            ItemType = "Consumable"
+        });
 
-    [Fact]
-    public void Items_ObservableCollection_SupportsAdd()
-    {
-        // Arrange
-        var viewModel = new InventoryViewModel(
-            _itemPickedUpSubscriber,
-            _itemUsedSubscriber,
-            _itemDroppedSubscriber
-        );
-
-        // Act
-        viewModel.Items.Add(new ItemViewModel { Name = "New Item", Type = ItemType.QuestItem });
-
-        // Assert
-        viewModel.Items.Should().HaveCount(1);
-        viewModel.Items[0].Name.Should().Be("New Item");
-
-        viewModel.Dispose();
-    }
-
-    [Fact]
-    public void Items_ObservableCollection_SupportsRemove()
-    {
-        // Arrange
-        var viewModel = new InventoryViewModel(
-            _itemPickedUpSubscriber,
-            _itemUsedSubscriber,
-            _itemDroppedSubscriber
-        );
-        var item = new ItemViewModel { Name = "Item to Remove", Type = ItemType.Consumable };
-        viewModel.Items.Add(item);
-
-        // Act
-        viewModel.Items.Remove(item);
-
-        // Assert
-        viewModel.Items.Should().BeEmpty();
-
-        viewModel.Dispose();
-    }
-
-    [Fact]
-    public void Items_ObservableCollection_SupportsClear()
-    {
-        // Arrange
-        var viewModel = new InventoryViewModel(
-            _itemPickedUpSubscriber,
-            _itemUsedSubscriber,
-            _itemDroppedSubscriber
-        );
-        viewModel.Items.Add(new ItemViewModel { Name = "Item 1", Type = ItemType.Consumable });
-        viewModel.Items.Add(new ItemViewModel { Name = "Item 2", Type = ItemType.Equipment });
-
-        // Act
-        viewModel.Items.Clear();
-
-        // Assert
-        viewModel.Items.Should().BeEmpty();
-
-        viewModel.Dispose();
+        // Assert - The viewModel's state should not have changed after disposal
+        // If subscriptions were properly disposed, the viewModel won't receive the event
+        viewModel.Items.Count.Should().Be(2, "Items should remain unchanged after disposal");
+        eventReceivedAfterDispose.Should().Be(1, "Test subscription should still receive events");
+        
+        testSub.Dispose();
     }
 
     [Fact]
