@@ -1,3 +1,4 @@
+using System.Numerics;
 using SadRogue.Primitives;
 
 namespace PigeonPea.Windows.Rendering;
@@ -10,12 +11,12 @@ public class Particle
     /// <summary>
     /// Gets or sets the current position of the particle in world coordinates.
     /// </summary>
-    public Point Position { get; set; }
+    public Vector2 Position { get; set; }
 
     /// <summary>
     /// Gets or sets the velocity of the particle (pixels per second).
     /// </summary>
-    public Point Velocity { get; set; }
+    public Vector2 Velocity { get; set; }
 
     /// <summary>
     /// Gets or sets the remaining lifetime of the particle in seconds.
@@ -51,7 +52,7 @@ public class Particle
         if (!IsActive)
             return;
 
-        Position += new Point((int)(Velocity.X * deltaTime), (int)(Velocity.Y * deltaTime));
+        Position += Velocity * deltaTime;
         Lifetime -= deltaTime;
 
         if (Lifetime < 0)
@@ -63,8 +64,8 @@ public class Particle
     /// </summary>
     public void Reset()
     {
-        Position = Point.None;
-        Velocity = Point.None;
+        Position = Vector2.Zero;
+        Velocity = Vector2.Zero;
         Lifetime = 0;
         InitialLifetime = 0;
         Color = Color.Transparent;

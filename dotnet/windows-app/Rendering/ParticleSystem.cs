@@ -1,3 +1,4 @@
+using System.Numerics;
 using SadRogue.Primitives;
 using SkiaSharp;
 
@@ -22,7 +23,7 @@ public class ParticleSystem
         _maxParticles = maxParticles;
         _particlePool = new List<Particle>(maxParticles);
         _activeParticles = new List<Particle>(maxParticles);
-        _random = new Random();
+        _random = Random.Shared;
 
         // Pre-allocate particles in the pool
         for (int i = 0; i < maxParticles; i++)
@@ -57,8 +58,12 @@ public class ParticleSystem
             if (!particle.IsActive)
             {
                 particle.Reset();
-                _activeParticles.RemoveAt(i);
                 _particlePool.Add(particle);
+
+                // O(1) removal by swapping with the last element before removing.
+                // This is safe because we are iterating backwards.
+                _activeParticles[i] = _activeParticles[^1];
+                _activeParticles.RemoveAt(_activeParticles.Count - 1);
             }
         }
     }
@@ -81,9 +86,6 @@ public class ParticleSystem
 
         foreach (var particle in _activeParticles)
         {
-            if (!particle.IsActive)
-                continue;
-
             // Calculate alpha based on particle age for fade-out effect
             float alpha = 1.0f - particle.Age;
             var color = particle.Color;
@@ -146,9 +148,9 @@ public class ParticleSystem
                 float randomAngle = directionRad + ((float)_random.NextDouble() - 0.5f) * spreadRad;
                 float velocity = Lerp(emitter.MinVelocity, emitter.MaxVelocity, (float)_random.NextDouble());
 
-                particle.Velocity = new Point(
-                    (int)(Math.Cos(randomAngle) * velocity),
-                    (int)(Math.Sin(randomAngle) * velocity));
+                particle.Velocity = new Vector2(
+                    (float)(Math.Cos(randomAngle) * velocity),
+                    (float)(Math.Sin(randomAngle) * velocity));
 
                 _activeParticles.Add(particle);
             }

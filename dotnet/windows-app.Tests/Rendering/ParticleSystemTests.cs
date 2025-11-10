@@ -1,3 +1,4 @@
+using System.Numerics;
 using PigeonPea.Windows.Rendering;
 using SadRogue.Primitives;
 using SkiaSharp;
@@ -76,8 +77,8 @@ public class ParticleSystemTests : IDisposable
         // Arrange
         var particle = new Particle
         {
-            Position = new Point(0, 0),
-            Velocity = new Point(10, 20),
+            Position = new Vector2(0, 0),
+            Velocity = new Vector2(10, 20),
             Lifetime = 1.0f,
             InitialLifetime = 1.0f
         };
@@ -98,8 +99,8 @@ public class ParticleSystemTests : IDisposable
         {
             Lifetime = 0.1f,
             InitialLifetime = 1.0f,
-            Position = new Point(0, 0),
-            Velocity = new Point(10, 10)
+            Position = new Vector2(0, 0),
+            Velocity = new Vector2(10, 10)
         };
 
         // Act
@@ -158,8 +159,8 @@ public class ParticleSystemTests : IDisposable
         // Arrange
         var particle = new Particle
         {
-            Position = new Point(100, 100),
-            Velocity = new Point(50, 50),
+            Position = new Vector2(100, 100),
+            Velocity = new Vector2(50, 50),
             Lifetime = 1.0f,
             InitialLifetime = 2.0f,
             Color = Color.Red
@@ -169,8 +170,8 @@ public class ParticleSystemTests : IDisposable
         particle.Reset();
 
         // Assert
-        Assert.Equal(Point.None, particle.Position);
-        Assert.Equal(Point.None, particle.Velocity);
+        Assert.Equal(Vector2.Zero, particle.Position);
+        Assert.Equal(Vector2.Zero, particle.Velocity);
         Assert.Equal(0, particle.Lifetime);
         Assert.Equal(0, particle.InitialLifetime);
         Assert.Equal(Color.Transparent, particle.Color);
@@ -211,7 +212,7 @@ public class ParticleSystemTests : IDisposable
     {
         // Arrange
         var emitter = new ParticleEmitter();
-        var position = new Point(100, 200);
+        var position = new Vector2(100, 200);
 
         // Act
         emitter.Position = position;
@@ -264,7 +265,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 100f
         };
 
@@ -328,7 +329,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(maxParticles);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 1000f // Very high rate
         };
 
@@ -346,7 +347,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 10f,
             MinLifetime = 1.0f,
             MaxLifetime = 1.0f
@@ -369,7 +370,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 10f,
             MinLifetime = 0.1f,
             MaxLifetime = 0.1f
@@ -391,7 +392,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 10f,
             MinLifetime = 0.1f,
             MaxLifetime = 0.1f
@@ -423,7 +424,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 10f,
             Color = Color.Red
         };
@@ -455,7 +456,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 100f
         };
 
@@ -476,7 +477,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 100f
         };
 
@@ -497,7 +498,7 @@ public class ParticleSystemTests : IDisposable
         var expectedColor = Color.Yellow;
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 10f,
             Color = expectedColor
         };
@@ -522,7 +523,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 100f,
             MinVelocity = 50f,
             MaxVelocity = 150f
@@ -544,7 +545,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 100f,
             Direction = 0f, // Right
             Spread = 30f
@@ -565,7 +566,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 10f
         };
 
@@ -590,7 +591,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter = new ParticleEmitter
         {
-            Position = new Point(100, 100),
+            Position = new Vector2(100, 100),
             Rate = 50f,
             Color = Color.Blue,
             MinLifetime = 0.5f,
@@ -618,13 +619,13 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
         var emitter1 = new ParticleEmitter
         {
-            Position = new Point(50, 50),
+            Position = new Vector2(50, 50),
             Rate = 10f,
             Color = Color.Red
         };
         var emitter2 = new ParticleEmitter
         {
-            Position = new Point(150, 150),
+            Position = new Vector2(150, 150),
             Rate = 10f,
             Color = Color.Blue
         };

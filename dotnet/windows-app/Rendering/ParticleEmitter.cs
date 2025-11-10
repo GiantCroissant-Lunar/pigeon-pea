@@ -1,3 +1,4 @@
+using System.Numerics;
 using SadRogue.Primitives;
 
 namespace PigeonPea.Windows.Rendering;
@@ -10,7 +11,7 @@ public class ParticleEmitter
     /// <summary>
     /// Gets or sets the position of the emitter in world coordinates.
     /// </summary>
-    public Point Position { get; set; }
+    public Vector2 Position { get; set; }
 
     /// <summary>
     /// Gets or sets the emission rate (particles per second).
