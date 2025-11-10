@@ -65,6 +65,7 @@ dotnet restore --runtime linux-x64        # Specific runtime
 **Causes:** No internet, NuGet.org down, firewall, proxy needed, DNS issues
 
 **Solutions:**
+
 - Check connection: `ping api.nuget.org`
 - Check status: https://status.nuget.org/
 - Configure proxy: `export HTTP_PROXY=http://proxy:8080`
@@ -75,6 +76,7 @@ dotnet restore --runtime linux-x64        # Specific runtime
 **Causes:** Package doesn't exist, version doesn't exist, private feed, typo
 
 **Solutions:**
+
 - Verify on nuget.org: https://www.nuget.org/packages/{PackageName}
 - Check package versions on nuget.org
 - Fix typos in `.csproj`

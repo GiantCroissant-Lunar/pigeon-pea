@@ -70,8 +70,8 @@ inputs:
   configuration: [Debug, Release]
   project_path: string
 contracts:
-  success: "Build completes with zero errors; artifacts in bin/"
-  failure: "Non-zero exit code or compilation errors"
+  success: 'Build completes with zero errors; artifacts in bin/'
+  failure: 'Non-zero exit code or compilation errors'
 ---
 
 # .NET Build Skill (Entry Map)
@@ -100,10 +100,13 @@ contracts:
 ## Common Patterns
 
 \`\`\`bash
+
 # Build solution (Debug)
+
 dotnet build ./dotnet/PigeonPea.sln
 
 # Build solution (Release)
+
 dotnet build ./dotnet/PigeonPea.sln -c Release
 \`\`\`
 ```
@@ -141,11 +144,11 @@ Skills are validated against `.agent/schemas/skill.schema.json` to ensure:
 
 ## Size Guidelines
 
-| File Type          | Max Lines | Purpose                    |
-| ------------------ | --------- | -------------------------- |
-| SKILL.md entry     | ~200      | Router/map to references   |
-| Reference file     | 200-300   | Detailed procedure         |
-| Cold-start budget  | ~500      | Entry + 1 reference        |
+| File Type         | Max Lines | Purpose                  |
+| ----------------- | --------- | ------------------------ |
+| SKILL.md entry    | ~200      | Router/map to references |
+| Reference file    | 200-300   | Detailed procedure       |
+| Cold-start budget | ~500      | Entry + 1 reference      |
 
 ## Adding a New Skill
 
