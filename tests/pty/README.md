@@ -76,6 +76,7 @@ The `test-pty.js` script provides:
 Test scenarios are defined in JSON files in the `scenarios/` directory:
 
 - `basic-movement.json` - Tests player movement in all directions
+- `quick-test.json` - Quick smoke test for app startup and exit
 
 Each scenario defines:
 - Name and description
