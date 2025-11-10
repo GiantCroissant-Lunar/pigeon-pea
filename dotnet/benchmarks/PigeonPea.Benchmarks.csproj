@@ -7,18 +7,16 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>false</IsPackable>
+    <RootNamespace>PigeonPea.Benchmarks</RootNamespace>
+    <AssemblyName>PigeonPea.Benchmarks</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
-    <!-- Include native SkiaSharp libraries for Linux -->
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="../shared-app/PigeonPea.Shared.csproj" />
-    <ProjectReference Include="../windows-app/PigeonPea.Windows.csproj" />
-    <ProjectReference Include="../console-app/PigeonPea.Console.csproj" />
   </ItemGroup>
 
 </Project>

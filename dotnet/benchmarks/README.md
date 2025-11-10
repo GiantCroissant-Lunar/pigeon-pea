@@ -1,17 +1,18 @@
 # Pigeon Pea Performance Benchmarks
 
-This project contains performance benchmarks for the Pigeon Pea rendering system using [BenchmarkDotNet](https://benchmarkdotnet.org/).
+This directory contains BenchmarkDotNet performance benchmarks for the Pigeon Pea game engine.
 
-## Benchmarks
+## Overview
 
-### Rendering Benchmarks (`RenderingBenchmarks.cs`)
+The benchmarks measure rendering performance across various scenarios:
 
-| Benchmark | Description | Performance Target |
-|-----------|-------------|-------------------|
-| `WindowsRendererFrameTime` | Measures Windows renderer frame time on a standard 80x50 map | < 16.67ms (60 FPS) |
-| `ConsoleRendererFrameTime` | Measures Console renderer frame time on a standard 80x50 map | < 33.33ms (30 FPS) |
-| `LargeMapRendering` | Stress test rendering a 200x150 map with Windows renderer | N/A (stress test) |
-| `ParticleSystemRendering` | Measures particle system rendering performance (500 particles) | N/A (informational) |
+- **Full Screen Rendering**: Measures performance when rendering a complete screen of tiles
+- **Particle Rendering**: Benchmarks scattered particle rendering (100 particles)
+- **Sprite Rendering**: Tests sprite rendering in a grid pattern
+- **Viewport Culling**: Measures performance of viewport-based culling
+- **Screen Clear**: Benchmarks screen clearing operations
+- **Mixed Rendering**: Tests combined operations (clear, tiles, sprites, text)
+- **Text Rendering**: Measures text rendering performance
 
 ## Running Benchmarks
 
@@ -24,99 +25,87 @@ dotnet run --configuration Release
 
 ### Run Specific Benchmark
 
-```bash
-cd dotnet/benchmarks
-dotnet run --configuration Release -- --filter "*WindowsRendererFrameTime*"
+dotnet run --configuration Release -- --filter "*FullScreenRendering*"
 ```
 
-### Quick Test (Short Job)
-
-For faster iteration during development:
+### Run with Memory Diagnostics
 
 ```bash
-cd dotnet/benchmarks
-dotnet run --configuration Release -- --job short
+dotnet run --configuration Release -- --memory
 ```
 
-### Export Results
-
-Export results to different formats:
+### Quick Dry Run (for testing)
 
 ```bash
-cd dotnet/benchmarks
-dotnet run --configuration Release -- --exporters json html csv
+dotnet run --configuration Release -- --job dry
 ```
+
+## Benchmark Parameters
+
+The benchmarks test different screen sizes:
+
+- **ScreenWidth**: 80, 160, 320
+- **ScreenHeight**: 24, 48, 96
+
+This creates a matrix of test configurations covering:
+- Small terminal (80x24)
+- Medium terminal (160x48)
+- Large terminal (320x96)
+
+## Output
+
+Results are exported to:
+- `BenchmarkDotNet.Artifacts/results/*.csv` - CSV format
+- `BenchmarkDotNet.Artifacts/results/*.html` - HTML report
+- `BenchmarkDotNet.Artifacts/results/*.md` - Markdown format
 
 ## CI Integration
 
-Benchmarks are automatically run on CI via the `.github/workflows/benchmarks.yml` workflow. Results are:
-- Uploaded as artifacts
-- Compared against performance targets
-- Posted as comments on pull requests
+These benchmarks are designed to track performance over time. To integrate with CI:
 
-## Requirements
+1. Run benchmarks on every pull request
+2. Compare results against baseline
+3. Fail if performance degrades beyond threshold
 
-### Windows Renderer Benchmarks
-- Requires native SkiaSharp libraries
-- On Linux, the `SkiaSharp.NativeAssets.Linux.NoDependencies` package provides the required native binaries
-- On Windows, native binaries are included in the base SkiaSharp package
+Example GitHub Actions workflow:
 
-### Console Renderer Benchmarks
-- No special requirements
-- Can run in any environment
-
-## Performance Targets
-
-### Windows Renderer
-- **Target**: 60 FPS (< 16.67ms per frame)
-- **Rationale**: Desktop applications should maintain smooth 60 FPS for responsive UI
-
-### Console Renderer
-- **Target**: 30 FPS (< 33.33ms per frame)
-- **Rationale**: Terminal rendering has higher overhead; 30 FPS provides acceptable user experience
-
-## Interpreting Results
-
-BenchmarkDotNet provides multiple statistical measures:
-
-- **Mean**: Average execution time
-- **Median**: Middle value when all measurements are sorted
-- **Min/Max**: Fastest and slowest execution times
-- **Error**: Half of 99.9% confidence interval
-- **StdDev**: Standard deviation of all measurements
-
-Focus on **Mean** and **Median** for typical performance, and **Max** for worst-case scenarios.
-
-## Troubleshooting
-
-### SkiaSharp Version Mismatch
-
-If you see errors like:
+```yaml
+- name: Run Benchmarks
+  run: |
+    cd dotnet/benchmarks
+    dotnet run --configuration Release -- --exporters json
+    
+- name: Compare with Baseline
+  run: |
+    # Compare results with stored baseline
+    # Fail if performance regression detected
 ```
-The version of the native libSkiaSharp library is incompatible
-```
-
-Ensure you have the correct SkiaSharp native assets installed:
-```bash
-dotnet add package SkiaSharp.NativeAssets.Linux.NoDependencies
-```
-
-### Benchmarks Fail to Initialize
-
-If benchmarks fail during `GlobalSetup`, check:
-1. All required native libraries are available
-2. Sufficient memory is available for large map benchmarks
-3. No other applications are consuming excessive resources
 
 ## Adding New Benchmarks
 
-1. Add a new method to `RenderingBenchmarks.cs` with the `[Benchmark]` attribute
-2. Update performance targets in the workflow and this README
-3. Run benchmarks locally to establish baseline
-4. Document the benchmark purpose and expected performance
+To add new benchmarks:
 
-## References
+1. Add a new `[Benchmark]` method to `RenderingBenchmarks.cs`
+2. Follow the existing pattern for setup and execution
+3. Use `[Params]` for parameterized benchmarks
+4. Document the benchmark purpose
 
-- [BenchmarkDotNet Documentation](https://benchmarkdotnet.org/articles/overview.html)
-- [RFC-001: Rendering Architecture](../../docs/rfcs/001-rendering-architecture.md)
-- [SkiaSharp Documentation](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/)
+Example:
+
+```csharp
+/// <summary>
+/// Benchmark for new feature.
+/// </summary>
+[Benchmark]
+public void NewFeatureBenchmark()
+{
+    _renderer.BeginFrame();
+    // Your benchmark code here
+    _renderer.EndFrame();
+}
+```
+
+## Related Documentation
+
+- [BenchmarkDotNet Documentation](https://benchmarkdotnet.org/)
+- [RFC-003: Testing and Verification](../../docs/rfcs/003-testing-verification.md)
