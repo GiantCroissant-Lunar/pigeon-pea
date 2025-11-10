@@ -414,7 +414,7 @@ public class ParticleSystemTests : IDisposable
         var system = new ParticleSystem(100);
 
         // Act & Assert
-        Assert.Throws<ArgumentNullException>(() => system.Render(null!, 16));
+        Assert.Throws<ArgumentNullException>(() => system.Render((SKCanvas)null!, 16));
     }
 
     [Fact]
