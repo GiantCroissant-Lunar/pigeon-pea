@@ -39,7 +39,15 @@
     "inputs": {
       "type": "object",
       "description": "Optional input parameters the skill accepts. Each key is a parameter name, and the value describes valid options or types.",
-      "additionalProperties": true,
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          { "type": "string" }
+        ]
+      },
       "examples": [
         {
           "target": ["solution", "project", "all"],
