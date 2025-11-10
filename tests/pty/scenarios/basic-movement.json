@@ -1,0 +1,25 @@
+{
+  "name": "Basic Movement Test",
+  "description": "Test player movement in all directions",
+  "inputs": [
+    { "delay": 500, "key": "\r", "description": "Press Enter to start game" },
+    { "delay": 1000, "key": "w", "description": "Move up" },
+    { "delay": 200, "key": "w", "description": "Move up again" },
+    { "delay": 200, "key": "d", "description": "Move right" },
+    { "delay": 200, "key": "d", "description": "Move right again" },
+    { "delay": 200, "key": "s", "description": "Move down" },
+    { "delay": 200, "key": "a", "description": "Move left" },
+    { "delay": 500, "key": "q", "description": "Quit game" }
+  ],
+  "expectedFrames": [
+    {
+      "timestamp": 1.0,
+      "contains": "@",
+      "playerPosition": { "x": 40, "y": 12 }
+    },
+    {
+      "timestamp": 2.0,
+      "playerPosition": { "x": 40, "y": 10 }
+    }
+  ]
+}

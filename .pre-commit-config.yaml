@@ -51,7 +51,8 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
+        types_or: [javascript, jsx, ts, tsx, json, markdown, css, scss]
+        exclude: '^\.pre-commit-config\.yaml$'
 
   # YAML linting
   - repo: https://github.com/adrienverge/yamllint
@@ -65,6 +66,8 @@ repos:
             rules: {line-length: {max: 120},
             document-start: disable,
             truthy: {check-keys: false}}}
+        exclude: >-
+          ^dotnet/_lib/modern-satsuma/|^ref-projects/hyacinth-bean-base/
 
   # .NET formatting (using dotnet format)
   # Note: This requires .NET SDK to be installed
@@ -72,15 +75,11 @@ repos:
     hooks:
       - id: dotnet-format
         name: dotnet format
-        entry: >-
-          bash -c 'if command -v dotnet &> /dev/null; then
-          for file in "$@"; do
-          dotnet format "$(dirname "$file")" --include "$file" --no-restore --verify-no-changes ||
-          dotnet format "$(dirname "$file")" --include "$file" --no-restore;
-          done; fi'
+        entry: dotnet
+        args: ["format", "dotnet/PigeonPea.sln", "--no-restore"]
         language: system
         types: [c#]
-        pass_filenames: true
+        pass_filenames: false
 
   # Additional security checks
   - repo: https://github.com/Yelp/detect-secrets
