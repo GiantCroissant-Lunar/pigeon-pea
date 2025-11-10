@@ -11,6 +11,12 @@ public class FrameRateMetrics
     private readonly Stopwatch _stopwatch = new();
     private double _lastFrameTime;
     private int _frameCount;
+    
+    // Cached values for performance
+    private double _minFrameTime = double.MaxValue;
+    private double _maxFrameTime = double.MinValue;
+    private double _sumFrameTimes;
+    private List<double>? _sortedFrameTimes;
 
     /// <summary>
     /// Gets the total number of frames recorded.
@@ -24,9 +30,9 @@ public class FrameRateMetrics
     {
         get
         {
-            if (_frameCount == 0 || _stopwatch.Elapsed.TotalSeconds == 0)
+            if (_frameTimes.Count == 0 || _stopwatch.Elapsed.TotalSeconds == 0)
                 return 0;
-            return _frameCount / _stopwatch.Elapsed.TotalSeconds;
+            return _frameTimes.Count / _stopwatch.Elapsed.TotalSeconds;
         }
     }
 
@@ -39,8 +45,7 @@ public class FrameRateMetrics
         {
             if (_frameTimes.Count == 0)
                 return 0;
-            var maxFrameTime = _frameTimes.Max();
-            return maxFrameTime > 0 ? 1000.0 / maxFrameTime : 0;
+            return _maxFrameTime > 0 ? 1000.0 / _maxFrameTime : 0;
         }
     }
 
@@ -53,8 +58,7 @@ public class FrameRateMetrics
         {
             if (_frameTimes.Count == 0)
                 return 0;
-            var minFrameTime = _frameTimes.Min();
-            return minFrameTime > 0 ? 1000.0 / minFrameTime : 0;
+            return _minFrameTime > 0 ? 1000.0 / _minFrameTime : 0;
         }
     }
 
@@ -67,7 +71,7 @@ public class FrameRateMetrics
         {
             if (_frameTimes.Count == 0)
                 return 0;
-            return _frameTimes.Average();
+            return _sumFrameTimes / _frameTimes.Count;
         }
     }
 
@@ -80,7 +84,7 @@ public class FrameRateMetrics
         {
             if (_frameTimes.Count == 0)
                 return 0;
-            return _frameTimes.Min();
+            return _minFrameTime;
         }
     }
 
@@ -93,7 +97,7 @@ public class FrameRateMetrics
         {
             if (_frameTimes.Count == 0)
                 return 0;
-            return _frameTimes.Max();
+            return _maxFrameTime;
         }
     }
 
@@ -116,6 +120,16 @@ public class FrameRateMetrics
         _frameTimes.Add(frameTime);
         _lastFrameTime = currentTime;
         _frameCount++;
+        
+        // Update cached values incrementally
+        _sumFrameTimes += frameTime;
+        if (frameTime < _minFrameTime)
+            _minFrameTime = frameTime;
+        if (frameTime > _maxFrameTime)
+            _maxFrameTime = frameTime;
+        
+        // Invalidate sorted cache
+        _sortedFrameTimes = null;
     }
 
     /// <summary>
@@ -131,16 +145,18 @@ public class FrameRateMetrics
         if (_frameTimes.Count == 0)
             return 0;
 
-        var sorted = _frameTimes.OrderBy(x => x).ToList();
-        var index = (percentile / 100.0) * (sorted.Count - 1);
+        // Cache the sorted list to avoid repeated sorting
+        _sortedFrameTimes ??= _frameTimes.OrderBy(x => x).ToList();
+        
+        var index = (percentile / 100.0) * (_sortedFrameTimes.Count - 1);
         var lowerIndex = (int)Math.Floor(index);
         var upperIndex = (int)Math.Ceiling(index);
 
         if (lowerIndex == upperIndex)
-            return sorted[lowerIndex];
+            return _sortedFrameTimes[lowerIndex];
 
-        var lowerValue = sorted[lowerIndex];
-        var upperValue = sorted[upperIndex];
+        var lowerValue = _sortedFrameTimes[lowerIndex];
+        var upperValue = _sortedFrameTimes[upperIndex];
         var weight = index - lowerIndex;
         return lowerValue + (upperValue - lowerValue) * weight;
     }
@@ -169,5 +185,11 @@ public class FrameRateMetrics
         _stopwatch.Reset();
         _lastFrameTime = 0;
         _frameCount = 0;
+        
+        // Reset cached values
+        _minFrameTime = double.MaxValue;
+        _maxFrameTime = double.MinValue;
+        _sumFrameTimes = 0;
+        _sortedFrameTimes = null;
     }
 }
