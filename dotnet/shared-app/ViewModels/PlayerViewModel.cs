@@ -91,6 +91,12 @@ public class PlayerViewModel : ReactiveObject
     /// </summary>
     public string LevelDisplay => _levelDisplay.Value;
 
+    private readonly ObservableAsPropertyHelper<string> _positionDisplay;
+    /// <summary>
+    /// Formatted position display (e.g., "Pos: (5, 10)").
+    /// </summary>
+    public string PositionDisplay => _positionDisplay.Value;
+
     public PlayerViewModel()
     {
         _healthDisplay = this.WhenAnyValue(x => x.Health, x => x.MaxHealth)
@@ -104,6 +110,10 @@ public class PlayerViewModel : ReactiveObject
         _levelDisplay = this.WhenAnyValue(x => x.Level)
             .Select(level => $"Level {level}")
             .ToProperty(this, x => x.LevelDisplay);
+
+        _positionDisplay = this.WhenAnyValue(x => x.Position)
+            .Select(pos => $"Pos: ({pos.X}, {pos.Y})")
+            .ToProperty(this, x => x.PositionDisplay);
     }
 
     /// <summary>
