@@ -1,0 +1,21 @@
+{
+  "name": "pigeon-pea-pty-tests",
+  "version": "1.0.0",
+  "description": "Pseudoterminal testing infrastructure for pigeon-pea console app",
+  "scripts": {
+    "test": "node test-pty.js basic-movement",
+    "test:no-record": "node test-pty.js basic-movement --no-record",
+    "test:scenario": "node test-pty.js"
+  },
+  "keywords": [
+    "pty",
+    "terminal",
+    "testing",
+    "asciinema"
+  ],
+  "author": "pigeon-pea team",
+  "license": "MIT",
+  "dependencies": {
+    "node-pty": "^1.0.0"
+  }
+}

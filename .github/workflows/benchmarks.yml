@@ -1,0 +1,133 @@
+name: Performance Benchmarks
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch:
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    name: Run Performance Benchmarks
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        working-directory: dotnet
+        run: dotnet restore benchmarks/PigeonPea.Benchmarks.csproj
+
+      - name: Build benchmarks
+        working-directory: dotnet
+        run: dotnet build benchmarks/PigeonPea.Benchmarks.csproj --configuration Release --no-restore
+
+      - name: Run benchmarks
+        working-directory: dotnet
+        run: |
+          dotnet run \
+            --project benchmarks/PigeonPea.Benchmarks.csproj \
+            --configuration Release \
+            --no-build -- \
+            --filter * \
+            --job short \
+            --exporters json
+
+      - name: Upload benchmark results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: |
+            dotnet/BenchmarkDotNet.Artifacts/**/*
+          retention-days: 30
+      - name: Check performance targets
+        working-directory: dotnet
+        run: |
+          echo "Checking performance targets..."
+          echo "Windows renderer target: < 16.67ms per frame (60 FPS)"
+          echo "Console renderer target: < 33.33ms per frame (30 FPS)"
+
+          # Parse benchmark results and check if targets are met
+          RESULTS="BenchmarkDotNet.Artifacts/results/PigeonPea.Benchmarks.RenderingBenchmarks-report.json"
+          if [ -f "$RESULTS" ]; then
+            echo "Benchmark results found. Analyzing..."
+
+            # Extract mean times for each benchmark
+            WINDOWS_MEAN=$(grep -A 20 "WindowsRendererFrameTime" "$RESULTS" | \
+              grep "Mean" | \
+              head -1 | \
+              grep -oP '\d+\.\d+' || echo "0")
+            CONSOLE_MEAN=$(grep -A 20 "ConsoleRendererFrameTime" "$RESULTS" | \
+              grep "Mean" | \
+              head -1 | \
+              grep -oP '\d+\.\d+' || echo "0")
+
+            echo "Windows renderer mean time: ${WINDOWS_MEAN}ms"
+            echo "Console renderer mean time: ${CONSOLE_MEAN}ms"
+
+            # Note: We don't fail the build on performance regressions yet, just report them
+            if (( $(echo "$WINDOWS_MEAN > 16.67" | bc -l 2>/dev/null || echo "0") )); then
+              echo "WARNING: Windows renderer is slower than 60 FPS target"
+            else
+              echo "Windows renderer meets 60 FPS target"
+            fi
+
+            if (( $(echo "$CONSOLE_MEAN > 33.33" | bc -l 2>/dev/null || echo "0") )); then
+              echo "WARNING: Console renderer is slower than 30 FPS target"
+            else
+              echo "Console renderer meets 30 FPS target"
+            fi
+          else
+            echo "No benchmark results found, skipping performance target check"
+          fi
+
+      - name: Comment PR with benchmark results
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const base = 'dotnet/BenchmarkDotNet.Artifacts/results/';
+            const path = base + 'PigeonPea.Benchmarks.RenderingBenchmarks-report.json';
+
+            if (fs.existsSync(path)) {
+              const results = JSON.parse(fs.readFileSync(path, 'utf8'));
+
+              let comment = '## Benchmark Results\n\n';
+              comment += '| Benchmark | Mean | Min | Max | Median |\n';
+              comment += '|-----------|------|-----|-----|--------|\n';
+
+              if (results.Benchmarks) {
+                results.Benchmarks.forEach(b => {
+                  const name = b.Method || b.FullName || 'Unknown';
+                  const mean = b.Statistics?.Mean?.toFixed(4) || 'N/A';
+                  const min = b.Statistics?.Min?.toFixed(4) || 'N/A';
+                  const max = b.Statistics?.Max?.toFixed(4) || 'N/A';
+                  const median = b.Statistics?.Median?.toFixed(4) || 'N/A';
+                  comment += `| ${name} | ${mean} ms | ${min} ms | ${max} ms | ${median} ms |\n`;
+                });
+              }
+
+              comment += '\n### Performance Targets\n';
+              comment += '- **Windows Renderer**: < 16.67ms (60 FPS)\n';
+              comment += '- **Console Renderer**: < 33.33ms (30 FPS)\n';
+
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }

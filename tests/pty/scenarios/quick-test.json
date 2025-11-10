@@ -1,0 +1,9 @@
+{
+  "name": "Quick Test",
+  "description": "Quick smoke test to verify basic app startup and exit",
+  "inputs": [
+    { "delay": 500, "key": "\r", "description": "Press Enter to start game" },
+    { "delay": 1000, "key": "q", "description": "Quit game immediately" }
+  ],
+  "expectedFrames": []
+}
