@@ -1,7 +1,7 @@
 using Terminal.Gui;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
-using PigeonPea.Console.Rendering;
+using PigeonPea.Shared.Rendering;
 using System;
 using GuiAttribute = Terminal.Gui.Attribute;
 using SRColor = SadRogue.Primitives.Color;
@@ -16,61 +16,54 @@ namespace PigeonPea.Console;
 public class GameView : View
 {
     private readonly GameWorld _gameWorld;
-    private readonly TerminalCapabilities _terminalCaps;
-    private readonly ITerminalRenderer _renderer;
+    private readonly IRenderer _renderer;
+    private readonly IRenderTarget _renderTarget;
 
-    public GameView(GameWorld gameWorld, TerminalCapabilities terminalCaps)
+    public GameView(GameWorld gameWorld, IRenderer renderer)
     {
         _gameWorld = gameWorld;
-        _terminalCaps = terminalCaps;
-
-        // Select best available renderer
-        _renderer = terminalCaps switch
-        {
-            _ when terminalCaps.SupportsKittyGraphics => new KittyTerminalRenderer(),
-            _ when terminalCaps.SupportsSixel => new SixelTerminalRendererStub(),
-            _ when terminalCaps.SupportsBraille => new BrailleTerminalRenderer(),
-            _ => new AsciiTerminalRenderer()
-        };
+        _renderer = renderer;
+        _renderTarget = new TerminalGuiRenderTarget(this);
+        
+        // Initialize the renderer with the render target
+        _renderer.Initialize(_renderTarget);
     }
 
     protected override bool OnDrawingContent()
     {
-        // Clear background
-        Driver?.SetAttribute(new GuiAttribute(Color.White, Color.Black));
+        // Set the Driver for Terminal.Gui-based rendering
+        if (_renderer is TerminalGuiRenderer tguiRenderer)
+        {
+            tguiRenderer.SetDriver(Driver);
+        }
+
+        // Use the renderer to draw the game world
+        _renderer.BeginFrame();
+        
+        // Clear with black background
+        _renderer.Clear(SRColor.Black);
 
         // Get viewport bounds
         var viewport = Viewport;
+        
+        // Set the viewport for the renderer
+        _renderer.SetViewport(new PigeonPea.Shared.Rendering.Viewport(0, 0, viewport.Width, viewport.Height));
 
-        // Render all entities
+        // Render all entities using the IRenderer
         var query = new Arch.Core.QueryDescription().WithAll<Position, Renderable>();
         _gameWorld.EcsWorld.Query(in query, (ref Position pos, ref Renderable renderable) =>
         {
             if (pos.Point.X >= 0 && pos.Point.X < viewport.Width &&
                 pos.Point.Y >= 0 && pos.Point.Y < viewport.Height)
             {
-                var color = ConvertColor(renderable.Foreground);
-                Driver?.SetAttribute(new GuiAttribute(color, Color.Black));
-                Driver?.Move(pos.Point.X, pos.Point.Y);
-                Driver?.AddStr(renderable.Glyph.ToString());
+                // Create a tile from the renderable component
+                var tile = new PigeonPea.Shared.Rendering.Tile(renderable.Glyph, renderable.Foreground, renderable.Background);
+                _renderer.DrawTile(pos.Point.X, pos.Point.Y, tile);
             }
         });
 
-        // TODO: Render map tiles
-        // TODO: Use _renderer for advanced graphics (Sixel/Kitty/Braille)
+        _renderer.EndFrame();
 
         return true;
-    }
-
-    private Color ConvertColor(SRColor color)
-    {
-        // Map a few common colors directly; default to White
-        if (color == SRColor.Yellow) return Color.Yellow;
-        if (color == SRColor.Red) return Color.Red;
-        if (color == SRColor.Green) return Color.Green;
-        if (color == SRColor.Blue) return Color.Blue;
-        if (color == SRColor.White) return Color.White;
-        if (color == SRColor.Black) return Color.Black;
-        return Color.White;
     }
 }

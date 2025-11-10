@@ -7,7 +7,9 @@ using GoRogue.FOV;
 using GoRogue.Pathing;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
+using MessagePipe;
 using PigeonPea.Shared.Components;
+using PigeonPea.Shared.Events;
 using PigeonPea.Shared.Rendering;
 using CTile = PigeonPea.Shared.Components.Tile;
 using RTile = PigeonPea.Shared.Rendering.Tile;
@@ -40,6 +42,20 @@ public class GameWorld
     // Shared random instance for all spawning
     private readonly Random _random;
 
+    // MessagePipe publishers for event-driven architecture
+    private readonly IPublisher<PlayerDamagedEvent>? _playerDamagedPublisher;
+    private readonly IPublisher<EnemyDefeatedEvent>? _enemyDefeatedPublisher;
+    private readonly IPublisher<ItemPickedUpEvent>? _itemPickedUpPublisher;
+    private readonly IPublisher<ItemUsedEvent>? _itemUsedPublisher;
+    private readonly IPublisher<ItemDroppedEvent>? _itemDroppedPublisher;
+    private readonly IPublisher<PlayerLevelUpEvent>? _playerLevelUpPublisher;
+    private readonly IPublisher<DoorOpenedEvent>? _doorOpenedPublisher;
+    private readonly IPublisher<StairsDescendedEvent>? _stairsDescendedPublisher;
+
+    /// <summary>
+    /// Creates a new GameWorld with the specified dimensions.
+    /// For use without dependency injection.
+    /// </summary>
     public GameWorld(int width = 80, int height = 50)
     {
         Width = width;
@@ -50,6 +66,60 @@ public class GameWorld
         WalkabilityMap = new ArrayView<bool>(width, height);
         TransparencyMap = new ArrayView<bool>(width, height);
         _random = new Random();
+
+        // Publishers remain null - no events published
+        _playerDamagedPublisher = null;
+        _enemyDefeatedPublisher = null;
+        _itemPickedUpPublisher = null;
+        _itemUsedPublisher = null;
+        _itemDroppedPublisher = null;
+        _playerLevelUpPublisher = null;
+        _doorOpenedPublisher = null;
+        _stairsDescendedPublisher = null;
+
+        // Initialize FOV algorithm (recursive shadowcasting)
+        _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
+
+        // Initialize pathfinding (A* with Chebyshev distance for 8-way movement)
+        _pathfinder = new AStar(WalkabilityMap, Distance.Chebyshev);
+
+        InitializeWorld();
+    }
+
+    /// <summary>
+    /// Creates a new GameWorld with MessagePipe event publishers.
+    /// For use with dependency injection - all publishers are automatically resolved from DI container.
+    /// </summary>
+    public GameWorld(
+        int width,
+        int height,
+        IPublisher<PlayerDamagedEvent> playerDamagedPublisher,
+        IPublisher<EnemyDefeatedEvent> enemyDefeatedPublisher,
+        IPublisher<ItemPickedUpEvent> itemPickedUpPublisher,
+        IPublisher<ItemUsedEvent> itemUsedPublisher,
+        IPublisher<ItemDroppedEvent> itemDroppedPublisher,
+        IPublisher<PlayerLevelUpEvent> playerLevelUpPublisher,
+        IPublisher<DoorOpenedEvent> doorOpenedPublisher,
+        IPublisher<StairsDescendedEvent> stairsDescendedPublisher)
+    {
+        Width = width;
+        Height = height;
+
+        EcsWorld = World.Create();
+        Map = new ArrayView<IGameObject>(width, height);
+        WalkabilityMap = new ArrayView<bool>(width, height);
+        TransparencyMap = new ArrayView<bool>(width, height);
+        _random = new Random();
+
+        // Store MessagePipe publishers
+        _playerDamagedPublisher = playerDamagedPublisher;
+        _enemyDefeatedPublisher = enemyDefeatedPublisher;
+        _itemPickedUpPublisher = itemPickedUpPublisher;
+        _itemUsedPublisher = itemUsedPublisher;
+        _itemDroppedPublisher = itemDroppedPublisher;
+        _playerLevelUpPublisher = playerLevelUpPublisher;
+        _doorOpenedPublisher = doorOpenedPublisher;
+        _stairsDescendedPublisher = stairsDescendedPublisher;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -386,11 +456,15 @@ public class GameWorld
     /// </summary>
     private void LevelUp(Entity entity)
     {
+        int healthIncrease = 0;
+        int newLevel = 0;
+
         // Increase health
         if (entity.Has<Health>())
         {
             ref var health = ref entity.Get<Health>();
-            health.Maximum += 10;
+            healthIncrease = 10;
+            health.Maximum += healthIncrease;
             health.Current = health.Maximum; // Fully heal on level up
         }
 
@@ -400,6 +474,22 @@ public class GameWorld
             ref var stats = ref entity.Get<CombatStats>();
             stats.Attack += 1;
             stats.Defense += 1;
+        }
+
+        // Get new level for event
+        if (entity.Has<Experience>())
+        {
+            newLevel = entity.Get<Experience>().Level;
+        }
+
+        // Publish level up event for player
+        if (entity.Has<PlayerComponent>() && _playerLevelUpPublisher != null)
+        {
+            _playerLevelUpPublisher.Publish(new PlayerLevelUpEvent
+            {
+                NewLevel = newLevel,
+                HealthIncrease = healthIncrease
+            });
         }
     }
 
@@ -432,10 +522,44 @@ public class GameWorld
         if (defenderHealth.Current < 0)
             defenderHealth.Current = 0;
 
+        // Publish PlayerDamagedEvent if defender is the player
+        if (defender.Has<PlayerComponent>() && _playerDamagedPublisher != null)
+        {
+            // Get attacker name for source
+            string sourceName = "Unknown";
+            if (attacker.Has<AIComponent>())
+            {
+                sourceName = "Enemy"; // Could be enhanced with enemy name component
+            }
+
+            _playerDamagedPublisher.Publish(new PlayerDamagedEvent
+            {
+                Damage = damage,
+                RemainingHealth = defenderHealth.Current,
+                Source = sourceName
+            });
+        }
+
         // Mark as dead if health reaches 0
         if (!defenderHealth.IsAlive && !defender.Has<Dead>())
         {
             defender.Add(new Dead());
+
+            // Publish EnemyDefeatedEvent if defender is an enemy and attacker is player
+            if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>() && _enemyDefeatedPublisher != null)
+            {
+                int xpGained = 0;
+                if (defender.Has<ExperienceValue>())
+                {
+                    xpGained = defender.Get<ExperienceValue>().XP;
+                }
+
+                _enemyDefeatedPublisher.Publish(new EnemyDefeatedEvent
+                {
+                    EnemyName = "Enemy", // Could be enhanced with enemy name component
+                    ExperienceGained = xpGained
+                });
+            }
 
             // Award experience to attacker if they killed the defender
             if (attacker.Has<Experience>() && defender.Has<ExperienceValue>())
@@ -555,12 +679,27 @@ public class GameWorld
         if (!itemToPickup.HasValue)
             return false;
 
+        // Get item details before removing components
+        var item = itemToPickup.Value.Get<Item>();
+        string itemName = item.Name;
+        string itemType = item.Type.ToString();
+
         // Remove position and pickup components (item is now in inventory)
         itemToPickup.Value.Remove<Position>();
         itemToPickup.Value.Remove<Pickup>();
 
         // Add to inventory
         inventory.Items.Add(itemToPickup.Value);
+
+        // Publish ItemPickedUpEvent
+        if (_itemPickedUpPublisher != null)
+        {
+            _itemPickedUpPublisher.Publish(new ItemPickedUpEvent
+            {
+                ItemName = itemName,
+                ItemType = itemType
+            });
+        }
 
         return true;
     }
@@ -584,6 +723,11 @@ public class GameWorld
         // Handle consumables
         if (item.Has<Consumable>())
         {
+            // Get item details before destruction
+            var itemComponent = item.Get<Item>();
+            string itemName = itemComponent.Name;
+            string itemType = itemComponent.Type.ToString();
+
             var consumable = item.Get<Consumable>();
             ref var health = ref PlayerEntity.Get<Health>();
 
@@ -596,10 +740,62 @@ public class GameWorld
             // Destroy the item entity
             EcsWorld.Destroy(item);
 
+            // Publish ItemUsedEvent
+            if (_itemUsedPublisher != null)
+            {
+                _itemUsedPublisher.Publish(new ItemUsedEvent
+                {
+                    ItemName = itemName,
+                    ItemType = itemType
+                });
+            }
+
             return true;
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// Attempts to drop an item from the player's inventory by index.
+    /// </summary>
+    public bool TryDropItem(int itemIndex)
+    {
+        if (!PlayerEntity.IsAlive() || !PlayerEntity.Has<Inventory>())
+            return false;
+
+        ref var inventory = ref PlayerEntity.Get<Inventory>();
+
+        // Check if index is valid
+        if (itemIndex < 0 || itemIndex >= inventory.Items.Count)
+            return false;
+
+        var item = inventory.Items[itemIndex];
+
+        // Get item details before dropping
+        var itemComponent = item.Get<Item>();
+        string itemName = itemComponent.Name;
+
+        // Get player position
+        var playerPos = PlayerEntity.Get<Position>();
+
+        // Remove from inventory
+        inventory.Items.RemoveAt(itemIndex);
+
+        // Add position and pickup components back (item is now on the ground)
+        item.Add(new Position(playerPos.Point));
+        item.Add(new Pickup());
+
+        // Publish ItemDroppedEvent
+        if (_itemDroppedPublisher != null)
+        {
+            _itemDroppedPublisher.Publish(new ItemDroppedEvent
+            {
+                ItemName = itemName
+            });
+        }
+
+        return true;
     }
 
     public void Update(double deltaTime)
