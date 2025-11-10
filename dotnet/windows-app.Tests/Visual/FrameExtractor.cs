@@ -47,20 +47,21 @@ public class FrameExtractor
         // Build output path
         var outputPath = Path.Combine(outputDirectory, outputPattern);
 
-        // Build FFmpeg arguments
-        var ffmpegExecutable = FFmpegPath ?? "ffmpeg";
-        var arguments = $"-i \"{videoPath}\" -vf fps={FrameRate} \"{outputPath}\" -y";
-
         // Run FFmpeg process
-        var processStartInfo = new ProcessStartInfo
+        var ffmpegExecutable = FFmpegPath ?? "ffmpeg";
+        var processStartInfo = new ProcessStartInfo(ffmpegExecutable)
         {
-            FileName = ffmpegExecutable,
-            Arguments = arguments,
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             UseShellExecute = false,
             CreateNoWindow = true
         };
+        processStartInfo.ArgumentList.Add("-i");
+        processStartInfo.ArgumentList.Add(videoPath);
+        processStartInfo.ArgumentList.Add("-vf");
+        processStartInfo.ArgumentList.Add($"fps={FrameRate}");
+        processStartInfo.ArgumentList.Add(outputPath);
+        processStartInfo.ArgumentList.Add("-y");
 
         using var process = new Process { StartInfo = processStartInfo };
 
@@ -106,10 +107,8 @@ public class FrameExtractor
     {
         // Convert FFmpeg pattern to file search pattern
         // e.g., "frame-%03d.png" becomes "frame-*.png"
-        var searchPattern = outputPattern.Replace("%03d", "*")
-                                        .Replace("%04d", "*")
-                                        .Replace("%05d", "*")
-                                        .Replace("%d", "*");
+        // Use regex to replace any sequential digit format specifier (%d, %03d, etc.) with wildcard
+        var searchPattern = System.Text.RegularExpressions.Regex.Replace(outputPattern, @"%0?\d+d", "*");
 
         return Directory.GetFiles(outputDirectory, searchPattern)
             .OrderBy(f => f)
@@ -125,15 +124,14 @@ public class FrameExtractor
         try
         {
             var ffmpegExecutable = FFmpegPath ?? "ffmpeg";
-            var processStartInfo = new ProcessStartInfo
+            var processStartInfo = new ProcessStartInfo(ffmpegExecutable)
             {
-                FileName = ffmpegExecutable,
-                Arguments = "-version",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
                 CreateNoWindow = true
             };
+            processStartInfo.ArgumentList.Add("-version");
 
             using var process = new Process { StartInfo = processStartInfo };
             process.Start();

@@ -26,18 +26,34 @@ public class FrameExtractorTests : IDisposable
         // Clean up test files
         foreach (var file in _createdFiles)
         {
-            if (File.Exists(file))
+            try
             {
-                try { File.Delete(file); } catch { }
+                if (File.Exists(file))
+                {
+                    File.Delete(file);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log cleanup errors to not hide potential issues
+                Console.WriteLine($"[TEST CLEANUP] Failed to delete file {file}: {ex.Message}");
             }
         }
 
         // Clean up test directories
         foreach (var dir in _createdDirectories)
         {
-            if (Directory.Exists(dir))
+            try
             {
-                try { Directory.Delete(dir, true); } catch { }
+                if (Directory.Exists(dir))
+                {
+                    Directory.Delete(dir, true);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log cleanup errors to not hide potential issues
+                Console.WriteLine($"[TEST CLEANUP] Failed to delete directory {dir}: {ex.Message}");
             }
         }
     }
@@ -181,9 +197,11 @@ public class FrameExtractorTests : IDisposable
         var frames2 = await extractor2.ExtractFrames(videoPath, outputDir2, "frame2-%03d.png");
 
         // Assert
-        // 1 FPS should extract fewer frames than 2 FPS for the same duration
-        Assert.True(frames1.Count < frames2.Count || frames1.Count == frames2.Count,
-            "1 FPS should extract fewer or equal frames than 2 FPS");
+        // For a 3s video, 1 FPS should be ~3 frames, 2 FPS should be ~6 frames.
+        // Allow some tolerance for ffmpeg behavior.
+        Assert.InRange(frames1.Count, 2, 4);
+        Assert.InRange(frames2.Count, 5, 7);
+        Assert.True(frames2.Count > frames1.Count, "2 FPS should extract more frames than 1 FPS.");
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
@@ -272,19 +290,23 @@ public class FrameExtractorTests : IDisposable
 
         // Create a simple test video using FFmpeg
         // This creates a test pattern video
-        var process = new System.Diagnostics.Process
+        var processStartInfo = new System.Diagnostics.ProcessStartInfo("ffmpeg")
         {
-            StartInfo = new System.Diagnostics.ProcessStartInfo
-            {
-                FileName = "ffmpeg",
-                Arguments = $"-f lavfi -i testsrc=duration={duration}:size={width}x{height}:rate=30 -pix_fmt yuv420p \"{videoPath}\" -y",
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            }
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            UseShellExecute = false,
+            CreateNoWindow = true
         };
+        processStartInfo.ArgumentList.Add("-f");
+        processStartInfo.ArgumentList.Add("lavfi");
+        processStartInfo.ArgumentList.Add("-i");
+        processStartInfo.ArgumentList.Add($"testsrc=duration={duration}:size={width}x{height}:rate=30");
+        processStartInfo.ArgumentList.Add("-pix_fmt");
+        processStartInfo.ArgumentList.Add("yuv420p");
+        processStartInfo.ArgumentList.Add(videoPath);
+        processStartInfo.ArgumentList.Add("-y");
 
+        var process = new System.Diagnostics.Process { StartInfo = processStartInfo };
         process.Start();
         process.WaitForExit();
 
