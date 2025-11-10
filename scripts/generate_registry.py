@@ -11,6 +11,13 @@ from typing import Any, Dict, List
 
 import yaml
 
+# Default values for missing fields in manifests
+DEFAULT_AGENT_NAME = "Unknown"
+DEFAULT_SKILL_NAME = "unknown"
+DEFAULT_DESCRIPTION = "No description"
+DEFAULT_VERSION = "0.0.0"
+DEFAULT_KIND = "unknown"
+
 
 def extract_frontmatter(skill_md_path: Path) -> Dict[str, Any]:
     """Extract YAML front-matter from SKILL.md file.
@@ -24,7 +31,7 @@ def extract_frontmatter(skill_md_path: Path) -> Dict[str, Any]:
     Raises:
         ValueError: If front-matter is missing or invalid
     """
-    with open(skill_md_path) as f:
+    with open(skill_md_path, encoding="utf-8") as f:
         content = f.read()
 
     if not content.startswith("---"):
@@ -48,10 +55,14 @@ def read_agents(agents_dir: Path) -> List[Dict[str, Any]]:
     """
     agents = []
     for agent_file in sorted(agents_dir.glob("*.yaml")):
-        with open(agent_file) as f:
-            agent = yaml.safe_load(f)
-            agents.append(agent)
-    return agents
+        try:
+            with open(agent_file, encoding="utf-8") as f:
+                agent = yaml.safe_load(f)
+            if agent:
+                agents.append(agent)
+        except yaml.YAMLError as e:
+            print(f"Warning: Failed to parse {agent_file}: {e}", file=sys.stderr)
+    return sorted(agents, key=lambda agent: agent.get("name", ""))
 
 
 def read_skills(skills_dir: Path) -> List[Dict[str, Any]]:
@@ -73,7 +84,7 @@ def read_skills(skills_dir: Path) -> List[Dict[str, Any]]:
                     skills.append(fm)
                 except (ValueError, yaml.YAMLError) as e:
                     print(f"Warning: Failed to parse {skill_md}: {e}", file=sys.stderr)
-    return skills
+    return sorted(skills, key=lambda skill: skill.get("name", ""))
 
 
 def generate_agent_table(agents: List[Dict[str, Any]]) -> str:
@@ -91,9 +102,9 @@ def generate_agent_table(agents: List[Dict[str, Any]]) -> str:
     ]
 
     for agent in agents:
-        name = agent.get("name", "Unknown")
-        description = agent.get("description", "No description")
-        version = agent.get("version", "0.0.0")
+        name = agent.get("name", DEFAULT_AGENT_NAME)
+        description = agent.get("description", DEFAULT_DESCRIPTION)
+        version = agent.get("version", DEFAULT_VERSION)
         skills = agent.get("skills", [])
         skills_list = ", ".join(skills) if skills else "None"
 
@@ -117,10 +128,10 @@ def generate_skill_table(skills: List[Dict[str, Any]]) -> str:
     ]
 
     for skill in skills:
-        name = skill.get("name", "unknown")
-        kind = skill.get("kind", "unknown")
-        description = skill.get("description", "No description")
-        version = skill.get("version", "0.0.0")
+        name = skill.get("name", DEFAULT_SKILL_NAME)
+        kind = skill.get("kind", DEFAULT_KIND)
+        description = skill.get("description", DEFAULT_DESCRIPTION)
+        version = skill.get("version", DEFAULT_VERSION)
 
         lines.append(f"| {name} | {kind} | {description} | {version} |")
 
@@ -168,7 +179,7 @@ def update_agents_md(agents_md_path: Path, registry_section: str) -> None:
         registry_section: The generated registry section
     """
     if agents_md_path.exists():
-        with open(agents_md_path) as f:
+        with open(agents_md_path, encoding="utf-8") as f:
             existing = f.read()
 
         # Find the registry section marker
@@ -184,7 +195,7 @@ def update_agents_md(agents_md_path: Path, registry_section: str) -> None:
         # No existing file, create with just the registry
         final_content = registry_section
 
-    with open(agents_md_path, "w") as f:
+    with open(agents_md_path, "w", encoding="utf-8") as f:
         f.write(final_content)
 
 
