@@ -13,18 +13,13 @@ namespace PigeonPea.Shared.Tests.ViewModels;
 /// <summary>
 /// Tests for MapViewModel to verify property notifications and ECS synchronization.
 /// </summary>
-public class MapViewModelTests : IDisposable
+public class MapViewModelTests
 {
     private readonly GameWorld _gameWorld;
 
     public MapViewModelTests()
     {
         _gameWorld = new GameWorld(40, 30);
-    }
-
-    public void Dispose()
-    {
-        // GameWorld cleanup handled by finalizer
     }
 
     [Theory]
@@ -162,18 +157,42 @@ public class MapViewModelTests : IDisposable
     [Fact]
     public void VisibleTiles_UpdatesWhenCameraMoves()
     {
-        // Arrange
-        var viewModel = new MapViewModel();
+        // Arrange - Use smaller camera viewport so camera can actually move within the map
+        var camera = new Camera(10, 10);
+        var viewModel = new MapViewModel(camera);
         viewModel.Update(_gameWorld);
-        var initialTileCount = viewModel.VisibleTiles.Count;
+        var initialTiles = viewModel.VisibleTiles.Select(t => t.Position).ToHashSet();
+        var initialCameraPos = viewModel.CameraPosition;
 
-        // Act - Move player which should move camera
-        _gameWorld.TryMovePlayer(new Point(1, 0));
+        // Act - Move player significantly to ensure camera movement
+        int movesMade = 0;
+        for (int i = 0; i < 10; i++)
+        {
+            if (_gameWorld.TryMovePlayer(new Point(1, 0)))
+            {
+                movesMade++;
+            }
+            else if (_gameWorld.TryMovePlayer(new Point(0, 1)))
+            {
+                movesMade++;
+            }
+            
+            if (movesMade >= 6)
+                break;
+        }
+
         viewModel.Update(_gameWorld);
+        var newTiles = viewModel.VisibleTiles.Select(t => t.Position).ToHashSet();
+        var newCameraPos = viewModel.CameraPosition;
 
         // Assert
-        viewModel.VisibleTiles.Count.Should().BeGreaterThan(0);
-        // The count might be the same but tiles should be different positions
+        newTiles.Should().NotBeEmpty();
+        
+        // Only verify tiles changed if camera actually moved
+        if (newCameraPos != initialCameraPos)
+        {
+            newTiles.Should().NotBeEquivalentTo(initialTiles, "The set of visible tiles should change when the camera moves.");
+        }
     }
 
     [Fact]
@@ -338,14 +357,22 @@ public class MapViewModelTests : IDisposable
         // Act
         viewModel.Update(_gameWorld);
 
-        // Assert
-        var visibleTiles = viewModel.VisibleTiles.Where(t => t.IsVisible).ToList();
-        var nonVisibleTiles = viewModel.VisibleTiles.Where(t => !t.IsVisible).ToList();
+        // Assert - Find explored but not visible tiles
+        var exploredNotVisible = viewModel.VisibleTiles
+            .Where(t => t.IsExplored && !t.IsVisible)
+            .ToList();
 
-        if (nonVisibleTiles.Any())
+        if (exploredNotVisible.Any())
         {
-            // Non-visible tiles should have dimmed colors compared to similar visible tiles
-            nonVisibleTiles.Should().NotBeEmpty();
+            // Verify that explored but not visible tiles have dimmed colors
+            // Dimmed colors should have RGB values that are half of the original
+            foreach (var tile in exploredNotVisible)
+            {
+                // Colors should not be at full brightness (not equal to white or bright colors)
+                // Dimmed colors have R/2, G/2, B/2, so they should be darker
+                (tile.Foreground.R < 200 || tile.Foreground.G < 200 || tile.Foreground.B < 200)
+                    .Should().BeTrue($"Explored but not visible tile at ({tile.X}, {tile.Y}) should have dimmed foreground color");
+            }
         }
     }
 
