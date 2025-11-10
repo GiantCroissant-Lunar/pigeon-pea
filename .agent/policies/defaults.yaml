@@ -1,0 +1,113 @@
+name: DefaultPolicies
+description: General guardrails and safety constraints for all agents
+version: 0.1.0
+
+# Rate limits prevent runaway behavior and excessive resource consumption
+rate_limits:
+  max_tool_calls_per_session: 1000
+  max_file_edits_per_session: 100
+  max_file_reads_per_session: 500
+
+# Safety constraints prevent accidental damage to the repository
+safety:
+  # Never commit build artifacts, dependencies, or generated files
+  never_commit:
+    - "bin/"
+    - "obj/"
+    - "*.exe"
+    - "*.dll"
+    - "*.pdb"
+    - "*.cache"
+    - "*.user"
+    - "*.suo"
+    - "*.userosscache"
+    - "node_modules/"
+    - "__pycache__/"
+    - "*.pyc"
+    - ".vs/"
+    - ".vscode/"
+    - "packages/"
+    - "*.log"
+    - "tmp/"
+    - "temp/"
+    - ".tox/"
+    - ".pytest_cache/"
+    - "coverage/"
+    - "htmlcov/"
+    - "test-results/"
+    - "TestResults/"
+    - "dist/"
+    - "build/"
+    - "*.egg-info/"
+
+  # Never delete critical repository files or infrastructure
+  never_delete:
+    - ".git/"
+    - ".agent/"
+    - ".github/"
+    - "*.sln"
+    - "*.csproj"
+    - "*.vbproj"
+    - "*.fsproj"
+    - "README.md"
+    - "LICENSE"
+    - "ARCHITECTURE.md"
+    - ".editorconfig"
+    - ".gitignore"
+    - ".pre-commit-config.yaml"
+    - "setup-pre-commit.sh"
+    - "setup-pre-commit.ps1"
+
+  # Never expose sensitive information
+  never_expose:
+    - secrets
+    - credentials
+    - API keys
+    - connection strings
+    - authentication tokens
+    - passwords
+    - private keys
+    - certificates
+
+# Repository boundaries define where agents can operate
+repository_boundaries:
+  # Directories where agents are allowed to make changes
+  allowed_directories:
+    - "./dotnet"
+    - "./tests"
+    - "./docs"
+    - "./.agent"
+    - "./.github"
+
+  # Directories where agents should not operate
+  forbidden_directories:
+    - "./bin"
+    - "./obj"
+    - "./packages"
+    - "./.vs"
+    - "./.vscode"
+    - "./node_modules"
+    - "./__pycache__"
+    - "./dist"
+    - "./build"
+    - "./.git"
+
+# Policy enforcement configuration
+enforcement:
+  # How violations should be handled
+  on_violation:
+    action: "block"  # block, warn, or log
+    notify: true
+    log: true
+
+  # Exceptions that can be allowed with justification
+  allow_override: false
+  require_justification: true
+
+# Metadata
+metadata:
+  created: "2025-11-10"
+  rfc: "RFC-004"
+  issue: "#99"
+  applies_to:
+    - "all agents"

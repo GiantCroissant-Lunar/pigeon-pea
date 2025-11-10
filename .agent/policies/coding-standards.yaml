@@ -1,0 +1,186 @@
+name: CodingStandards
+description: Development policies for maintaining code quality and consistency
+version: 0.1.0
+
+# .NET-specific coding standards
+dotnet:
+  # Style guidelines
+  style:
+    - "Follow .editorconfig rules strictly"
+    - "Use dotnet-format before every commit"
+    - "PascalCase for public members (classes, methods, properties)"
+    - "camelCase for private fields (_camelCase for backing fields)"
+    - "Use explicit access modifiers (public, private, internal, protected)"
+    - "Prefer var for local variables when type is obvious"
+    - "Use string interpolation over string concatenation"
+    - "Use expression-bodied members for simple methods"
+
+  # Testing requirements
+  testing:
+    - "All public APIs must have unit tests"
+    - "Test projects follow naming: {ProjectName}.Tests"
+    - "Use xUnit patterns consistently"
+    - "Test methods should be named: MethodName_Scenario_ExpectedBehavior"
+    - "Use [Fact] for simple tests, [Theory] for parameterized tests"
+    - "Aim for >70% code coverage on new code"
+    - "Mock external dependencies"
+    - "Tests should be independent and repeatable"
+
+  # Documentation requirements
+  documentation:
+    - "All public APIs must have XML documentation comments"
+    - "Use <summary>, <param>, <returns>, and <exception> tags"
+    - "Keep comments up-to-date with code changes"
+    - "Document complex algorithms and business logic"
+    - "Include usage examples for non-obvious APIs"
+
+  # Roslyn analyzers and code quality
+  analysis:
+    - "Enable all applicable Roslyn analyzers"
+    - "Treat warnings as errors in Release builds"
+    - "Fix all critical/high severity issues before merge"
+    - "Use nullable reference types in new code"
+    - "Suppress warnings only with justification and SA/CA comments"
+
+# Code formatting enforcement
+formatting:
+  # Tools used for formatting
+  tools:
+    dotnet:
+      - "dotnet-format (C#, F#, VB)"
+    general:
+      - "prettier (JSON, YAML, Markdown)"
+      - "black (Python)"
+      - "isort (Python imports)"
+
+  # Enforcement strategy
+  enforcement:
+    - "Run pre-commit hooks before every commit"
+    - "CI must validate formatting on every PR"
+    - "Zero tolerance for formatting violations in main branch"
+    - "Use --verify-no-changes flag in CI"
+
+  # Configuration files
+  config_files:
+    - ".editorconfig"
+    - ".prettierrc.json"
+    - ".pre-commit-config.yaml"
+
+# Code quality metrics and thresholds
+code_quality:
+  # Complexity metrics
+  metrics:
+    cyclomatic_complexity:
+      max_per_method: 15
+      prefer: 10
+    method_length:
+      max_lines: 50
+      prefer: 20
+    class_length:
+      max_lines: 300
+      prefer: 200
+    parameter_count:
+      max: 5
+      prefer: 3
+
+  # Code smells to avoid
+  avoid:
+    - "God classes (classes that do too much)"
+    - "Long methods (prefer small, focused methods)"
+    - "Deep nesting (max 3-4 levels)"
+    - "Duplicate code (DRY principle)"
+    - "Magic numbers (use named constants)"
+    - "Primitive obsession (use domain types)"
+
+  # Best practices
+  best_practices:
+    - "Follow SOLID principles"
+    - "Prefer composition over inheritance"
+    - "Use dependency injection"
+    - "Keep methods pure when possible"
+    - "Handle exceptions appropriately"
+    - "Use async/await for I/O operations"
+    - "Dispose resources properly (using statements)"
+
+# Git commit standards
+git:
+  commit_messages:
+    format: "imperative mood, present tense"
+    max_subject_length: 72
+    body_wrap: 72
+    examples:
+      - "Add user authentication feature"
+      - "Fix null reference in UserService"
+      - "Refactor payment processing logic"
+
+  branch_naming:
+    pattern: "type/description"
+    types:
+      - "feature/"
+      - "bugfix/"
+      - "hotfix/"
+      - "refactor/"
+      - "docs/"
+      - "test/"
+
+# Pull request standards
+pull_requests:
+  requirements:
+    - "All CI checks must pass"
+    - "Code review approval required"
+    - "No merge conflicts"
+    - "All conversations resolved"
+    - "Tests added for new functionality"
+    - "Documentation updated if needed"
+
+  description:
+    - "Link to related issue(s)"
+    - "Describe what changed and why"
+    - "List breaking changes if any"
+    - "Include screenshots for UI changes"
+
+# Security standards
+security:
+  practices:
+    - "Never commit secrets or credentials"
+    - "Use secure random number generation"
+    - "Validate all user input"
+    - "Sanitize output to prevent injection"
+    - "Use parameterized queries for database access"
+    - "Keep dependencies updated"
+    - "Run security scanners (gitleaks, detect-secrets)"
+
+  sensitive_data:
+    - "API keys"
+    - "Passwords"
+    - "Connection strings"
+    - "Tokens"
+    - "Private keys"
+    - "PII (personally identifiable information)"
+
+# Performance standards
+performance:
+  considerations:
+    - "Avoid premature optimization"
+    - "Profile before optimizing"
+    - "Use appropriate data structures"
+    - "Cache expensive computations"
+    - "Use async I/O for scalability"
+    - "Be mindful of memory allocations in hot paths"
+
+  benchmarking:
+    - "Use BenchmarkDotNet for performance testing"
+    - "Establish performance baselines"
+    - "Monitor for performance regressions"
+
+# Metadata
+metadata:
+  created: "2025-11-10"
+  rfc: "RFC-004"
+  issue: "#99"
+  applies_to:
+    - "development agents"
+    - "code review agents"
+    - "testing agents"
+  related_policies:
+    - "defaults.yaml"
