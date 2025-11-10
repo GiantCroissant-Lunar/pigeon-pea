@@ -88,8 +88,8 @@ Assert.Equal(expectedSnapshot, fullOutput);
 ## Testing
 
 All components have comprehensive unit tests:
-- **FrameTests.cs** - 23 tests covering ANSI escape code removal
-- **AsciinemaParserTests.cs** - 26 tests covering parsing and frame retrieval
+- **FrameTests.cs** - tests covering ANSI escape code removal
+- **AsciinemaParserTests.cs** - tests covering parsing and frame retrieval
 
 Run tests:
 ```bash
