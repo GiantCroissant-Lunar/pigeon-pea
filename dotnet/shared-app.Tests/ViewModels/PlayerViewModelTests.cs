@@ -133,6 +133,22 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
+    public void PositionDisplay_ReturnsFormattedString()
+    {
+        // Arrange
+        var viewModel = new PlayerViewModel
+        {
+            Position = new Point(10, 20)
+        };
+
+        // Act
+        var display = viewModel.PositionDisplay;
+
+        // Assert
+        display.Should().Be("Pos: (10, 20)");
+    }
+
+    [Fact]
     public void Update_SyncsHealthFromECS()
     {
         // Arrange
@@ -332,6 +348,14 @@ public class PlayerViewModelTests : IDisposable
             (Func<PlayerViewModel, object>)(vm => vm.LevelDisplay),
             "Level 10",
             "LevelDisplay should reflect Level changes"
+        };
+        yield return new object[]
+        {
+            (Action<PlayerViewModel>)(vm => { }),
+            (Action<PlayerViewModel>)(vm => vm.Position = new Point(15, 25)),
+            (Func<PlayerViewModel, object>)(vm => vm.PositionDisplay),
+            "Pos: (15, 25)",
+            "PositionDisplay should reflect Position changes"
         };
     }
 }

@@ -20,6 +20,16 @@ public class GameViewModel : ReactiveObject, IDisposable
     private readonly IServiceProvider _services;
     private readonly CompositeDisposable _subscriptions;
     private readonly IScheduler _scheduler;
+    private int _fps;
+
+    /// <summary>
+    /// Current frames per second for performance monitoring.
+    /// </summary>
+    public int Fps
+    {
+        get => _fps;
+        set => this.RaiseAndSetIfChanged(ref _fps, value);
+    }
 
     /// <summary>
     /// ViewModel for player state.

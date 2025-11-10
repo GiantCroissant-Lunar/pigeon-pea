@@ -1,12 +1,14 @@
+using MessagePipe;
+
 namespace PigeonPea.Shared.Tests.Mocks;
 
 /// <summary>
 /// Mock publisher for testing event publishing patterns.
 /// This is a simplified mock that tracks published events for verification in tests.
-/// For MessagePipe-specific testing, use the actual IPublisher from DI container.
+/// Implements MessagePipe's IPublisher interface for compatibility.
 /// </summary>
 /// <typeparam name="T">The type of event to publish.</typeparam>
-public class MockPublisher<T>
+public class MockPublisher<T> : IPublisher<T>
 {
     /// <summary>
     /// Gets the list of events that were published.
