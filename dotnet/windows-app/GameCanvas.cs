@@ -23,6 +23,7 @@ public class GameCanvas : Image
     private AnimationSystem? _animationSystem;
     private SKBitmap? _bitmap;
     private WriteableBitmap? _writeableBitmap;
+    private bool _isInitialized;
     private const int TileSize = 16;
     private const int CanvasWidth = 1280;
     private const int CanvasHeight = 720;
@@ -53,6 +54,16 @@ public class GameCanvas : Image
 
         Source = _writeableBitmap;
         Stretch = Avalonia.Media.Stretch.Uniform;
+
+        // Subscribe to cleanup event
+        DetachedFromVisualTree += OnDetachedFromVisualTree;
+    }
+
+    private void OnDetachedFromVisualTree(object? sender, Avalonia.VisualTreeAttachmentEventArgs e)
+    {
+        // Dispose resources when control is removed from visual tree
+        _bitmap?.Dispose();
+        _bitmap = null;
     }
 
     /// <summary>
@@ -70,8 +81,16 @@ public class GameCanvas : Image
         var height = CanvasHeight / TileSize;
         var renderTarget = new SkiaRenderTarget(canvas, width, height, TileSize);
 
-        // Initialize renderer with this canvas
-        _renderer.Initialize(renderTarget);
+        // Initialize renderer once, then use SetRenderTarget for subsequent frames
+        if (!_isInitialized)
+        {
+            _renderer.Initialize(renderTarget);
+            _isInitialized = true;
+        }
+        else
+        {
+            _renderer.SetRenderTarget(renderTarget);
+        }
 
         // Begin rendering frame
         _renderer.BeginFrame();
@@ -80,10 +99,10 @@ public class GameCanvas : Image
         // Render all entities with Position and Renderable components
         RenderEntities();
 
-        // Render particles if particle system is available
+        // Render particles if particle system is available - using renderer abstraction
         if (_particleSystem != null)
         {
-            _particleSystem.Render(canvas, TileSize);
+            _particleSystem.Render(_renderer, TileSize);
         }
 
         // End rendering frame

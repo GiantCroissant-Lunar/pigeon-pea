@@ -68,10 +68,20 @@ public partial class App : Application
                 }
             }
         }
-        catch (Exception ex)
+        catch (IOException ex)
         {
-            // Log but don't fail - sprites are optional
-            System.Diagnostics.Debug.WriteLine($"Failed to load sprite atlases: {ex.Message}");
+            // Log IO errors but don't fail - sprites are optional
+            System.Diagnostics.Debug.WriteLine($"Failed to load sprite atlases due to IO error: {ex.Message}");
+        }
+        catch (System.Text.Json.JsonException ex)
+        {
+            // Log JSON parsing errors but don't fail - sprites are optional
+            System.Diagnostics.Debug.WriteLine($"Failed to parse sprite atlas definition: {ex.Message}");
+        }
+        catch (InvalidOperationException ex)
+        {
+            // Log sprite extraction errors but don't fail - sprites are optional
+            System.Diagnostics.Debug.WriteLine($"Failed to extract sprites from atlas: {ex.Message}");
         }
     }
 }
