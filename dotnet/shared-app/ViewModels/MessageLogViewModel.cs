@@ -1,3 +1,4 @@
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using MessagePipe;
 using ObservableCollections;
@@ -63,14 +64,17 @@ public class MessageLogViewModel : ReactiveObject, IDisposable
     /// <param name="type">The message type for color coding.</param>
     public void AddMessage(string text, MessageType type)
     {
-        var message = new MessageViewModel(text, type);
-        _messages.Add(message);
-
-        // Keep only the last 100 messages
-        while (_messages.Count > MaxMessages)
+        RxApp.MainThreadScheduler.Schedule(() =>
         {
-            _messages.RemoveAt(0);
-        }
+            var message = new MessageViewModel(text, type);
+            _messages.Add(message);
+
+            // Keep only the last 100 messages
+            while (_messages.Count > MaxMessages)
+            {
+                _messages.RemoveAt(0);
+            }
+        });
     }
 
     /// <summary>
