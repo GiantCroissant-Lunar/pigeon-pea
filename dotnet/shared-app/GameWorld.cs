@@ -772,14 +772,14 @@ public class GameWorld
 
         var item = inventory.Items[itemIndex];
 
-        // Get item details before dropping
+        // Get item details before dropping (for event)
         var itemComponent = item.Get<Item>();
         string itemName = itemComponent.Name;
 
         // Get player position
         var playerPos = PlayerEntity.Get<Position>();
 
-        // Remove from inventory
+        // Remove item from inventory
         inventory.Items.RemoveAt(itemIndex);
 
         // Add position and pickup components back (item is now on the ground)
@@ -794,7 +794,6 @@ public class GameWorld
                 ItemName = itemName
             });
         }
-
         return true;
     }
 
