@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GiantCroissant-Lunar/pigeon-pea/schemas/orchestrator.schema.json",
+  "title": "Orchestrator Agent Definition",
+  "description": "Schema for validating orchestrator agent YAML manifests. The orchestrator is the top-level agent that routes user requests to appropriate sub-agents based on task intent.",
+  "type": "object",
+  "required": ["name", "description", "version", "subagents"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Z][a-zA-Z0-9]*$",
+      "description": "Orchestrator name in PascalCase format (e.g., 'Orchestrator', 'MainAgent'). Must start with an uppercase letter and contain only letters and numbers."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Clear description of the orchestrator's role. Must be at least 20 characters. Should explain how the orchestrator routes tasks to sub-agents."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version string (e.g., '0.1.0', '1.2.3'). Must follow the semver format: MAJOR.MINOR.PATCH."
+    },
+    "subagents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Z][a-zA-Z0-9]*$",
+        "description": "Sub-agent name in PascalCase format"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "List of sub-agents that the orchestrator can delegate to. Must contain at least one sub-agent. Each name should correspond to a valid sub-agent definition."
+    },
+    "routing": {
+      "type": "object",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["if", "to"],
+            "properties": {
+              "if": {
+                "type": "string",
+                "minLength": 5,
+                "description": "Condition expression that determines when this rule applies. Should describe task patterns or keywords that trigger routing to a specific sub-agent."
+              },
+              "to": {
+                "type": "string",
+                "pattern": "^[A-Z][a-zA-Z0-9]*$",
+                "description": "Sub-agent name to route to when condition matches. Must be a PascalCase name that exists in the subagents list."
+              }
+            },
+            "additionalProperties": false,
+            "description": "A routing rule that maps task conditions to sub-agents"
+          },
+          "minItems": 1,
+          "description": "List of routing rules that determine which sub-agent handles which tasks. Rules are evaluated in order."
+        }
+      },
+      "description": "Routing configuration that defines how tasks are delegated to sub-agents based on task intent and patterns."
+    },
+    "fallback": {
+      "type": "string",
+      "pattern": "^[A-Z][a-zA-Z0-9]*$",
+      "description": "Default sub-agent to use when no routing rules match. Must be a PascalCase name that exists in the subagents list."
+    },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["enforce"],
+        "properties": {
+          "enforce": {
+            "type": "string",
+            "pattern": "^(\\.agent/policies/|policies/)[a-z0-9-]+\\.yaml$",
+            "description": "Path to a policy file to enforce (e.g., '.agent/policies/defaults.yaml')"
+          }
+        },
+        "additionalProperties": false,
+        "description": "A policy enforcement directive"
+      },
+      "description": "List of policy files that the orchestrator must enforce. Policies define guardrails, rate limits, and safety constraints."
+    }
+  },
+  "additionalProperties": false
+}

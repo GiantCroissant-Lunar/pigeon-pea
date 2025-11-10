@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GiantCroissant-Lunar/pigeon-pea/schemas/subagent.schema.json",
+  "title": "Sub-Agent Definition",
+  "description": "Schema for validating sub-agent YAML manifests. Sub-agents are specialized actors that handle specific domains (build, test, code review) and invoke relevant skills.",
+  "type": "object",
+  "required": ["name", "description", "version", "skills", "goals"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[A-Z][a-zA-Z0-9]*$",
+      "description": "Sub-agent name in PascalCase format (e.g., 'DotNetBuildAgent', 'TestingAgent'). Must start with an uppercase letter and contain only letters and numbers."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "description": "Clear description of what this sub-agent does. Must be at least 20 characters. Should explain the agent's purpose and primary responsibilities."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version string (e.g., '0.1.0', '1.2.3'). Must follow the semver format: MAJOR.MINOR.PATCH."
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9-]*$",
+        "description": "Skill name in kebab-case format"
+      },
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "List of skills this sub-agent can invoke. Must contain at least one skill. Each skill should be a valid kebab-case skill name that corresponds to a skill definition."
+    },
+    "goals": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "description": "A specific goal this sub-agent aims to achieve"
+      },
+      "minItems": 1,
+      "description": "What this sub-agent aims to achieve. Must contain at least one goal. Goals should be clear, actionable objectives that define the agent's success criteria."
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "description": "A specific constraint or limitation"
+      },
+      "description": "Limitations and boundaries that govern this sub-agent's behavior. Each constraint should clearly define what the agent should NOT do or what limits apply to its actions."
+    },
+    "success_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 10,
+        "description": "A specific success criterion"
+      },
+      "description": "How to measure success for this sub-agent. Each criterion should be observable and verifiable, helping to determine if the agent has accomplished its goals."
+    }
+  },
+  "additionalProperties": false
+}

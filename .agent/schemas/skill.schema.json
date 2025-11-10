@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/GiantCroissant-Lunar/pigeon-pea/schemas/skill.schema.json",
+  "title": "Skill Front-Matter",
+  "description": "Schema for validating SKILL.md front-matter (YAML header). Ensures skills are properly defined with required metadata and contracts.",
+  "type": "object",
+  "required": ["name", "version", "kind", "description", "contracts"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Skill name in kebab-case format (e.g., 'dotnet-build', 'code-format'). Must start with a lowercase letter and contain only lowercase letters, numbers, and hyphens."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version string (e.g., '0.1.0', '1.2.3'). Must follow the semver format: MAJOR.MINOR.PATCH."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["cli", "mcp", "http", "script", "composite"],
+      "description": "Skill execution type. Defines how the skill should be invoked: 'cli' for command-line tools, 'mcp' for MCP servers, 'http' for REST APIs, 'script' for shell scripts, 'composite' for multi-step workflows."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 300,
+      "description": "Clear, concise description of what the skill does and WHEN to use it. Must be between 20 and 300 characters. Should help agents quickly determine if this skill is appropriate for their task."
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "oneOf": [
+          {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "List of allowed values for this input parameter"
+          },
+          {
+            "type": "string",
+            "description": "Type description for this input parameter"
+          }
+        ]
+      },
+      "description": "Input parameters and their possible values or types. Keys are parameter names, values are either an array of allowed values or a string describing the expected type."
+    },
+    "contracts": {
+      "type": "object",
+      "required": ["success", "failure"],
+      "properties": {
+        "success": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Criteria that define successful execution. Must be at least 10 characters. Should clearly describe what constitutes a successful outcome (e.g., 'Build completes with zero errors; artifacts in bin/')."
+        },
+        "failure": {
+          "type": "string",
+          "minLength": 10,
+          "description": "Criteria that define failed execution. Must be at least 10 characters. Should clearly describe what constitutes a failure (e.g., 'Non-zero exit code or compilation errors')."
+        }
+      },
+      "additionalProperties": false,
+      "description": "Success and failure criteria contracts. Defines clear expectations for what constitutes successful vs failed execution of this skill."
+    }
+  },
+  "additionalProperties": false
+}
