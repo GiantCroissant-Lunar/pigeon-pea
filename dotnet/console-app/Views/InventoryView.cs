@@ -53,14 +53,21 @@ public class InventoryView : FrameView
         UpdateListView();
     }
 
+    private void OnItemsCollectionChanged(in NotifyCollectionChangedEventArgs<ItemViewModel> args)
+    {
+        // ReactiveUI already marshals to the main thread scheduler, so we can call directly
+        UpdateListView();
+    }
+
+    private void OnListViewSelectedItemChanged(object? sender, ListViewItemEventArgs args)
+    {
+        _viewModel.SelectedIndex = _listView.SelectedItem;
+    }
+
     private void SetupSubscriptions()
     {
         // Subscribe to collection changes using CollectionChanged event
-        _viewModel.Items.CollectionChanged += (in NotifyCollectionChangedEventArgs<ItemViewModel> args) =>
-        {
-            // ReactiveUI already marshals to the main thread scheduler, so we can call directly
-            UpdateListView();
-        };
+        _viewModel.Items.CollectionChanged += OnItemsCollectionChanged;
 
         // Subscribe to SelectedIndex changes
         _viewModel.WhenAnyValue(x => x.SelectedIndex)
@@ -75,10 +82,7 @@ public class InventoryView : FrameView
             .DisposeWith(_subscriptions);
 
         // Update ViewModel when list view selection changes
-        _listView.SelectedItemChanged += (sender, args) =>
-        {
-            _viewModel.SelectedIndex = _listView.SelectedItem;
-        };
+        _listView.SelectedItemChanged += OnListViewSelectedItemChanged;
     }
 
     private void UpdateListView()
@@ -107,6 +111,8 @@ public class InventoryView : FrameView
     {
         if (disposing)
         {
+            _viewModel.Items.CollectionChanged -= OnItemsCollectionChanged;
+            _listView.SelectedItemChanged -= OnListViewSelectedItemChanged;
             _subscriptions?.Dispose();
         }
         base.Dispose(disposing);

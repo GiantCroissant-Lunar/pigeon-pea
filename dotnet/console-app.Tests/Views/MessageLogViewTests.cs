@@ -123,9 +123,6 @@ public class MessageLogViewTests : IDisposable
     {
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
-        var messageReceived = new TaskCompletionSource<bool>();
-        
-        // Subscribe to messages to detect when event is processed
         var initialCount = _viewModel.Messages.Count;
         
         // Act

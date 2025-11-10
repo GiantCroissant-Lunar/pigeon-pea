@@ -1,11 +1,7 @@
 using System.Collections.ObjectModel;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using ObservableCollections;
-using ReactiveUI;
 using Terminal.Gui;
 using PigeonPea.Shared.ViewModels;
-using GuiAttribute = Terminal.Gui.Attribute;
 
 namespace PigeonPea.Console.Views;
 
@@ -16,7 +12,6 @@ public class MessageLogView : FrameView
 {
     private readonly MessageLogViewModel _viewModel;
     private readonly ListView _listView;
-    private readonly CompositeDisposable _subscriptions;
     private List<string> _messageDisplayList;
 
     /// <summary>
@@ -26,7 +21,6 @@ public class MessageLogView : FrameView
     public MessageLogView(MessageLogViewModel viewModel)
     {
         _viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
-        _subscriptions = new CompositeDisposable();
         _messageDisplayList = new List<string>();
 
         Title = "Messages";
@@ -54,19 +48,21 @@ public class MessageLogView : FrameView
         UpdateListView();
     }
 
+    private void OnMessagesCollectionChanged(in NotifyCollectionChangedEventArgs<MessageViewModel> args)
+    {
+        UpdateListView();
+        // Auto-scroll to bottom when new message arrives
+        if (_messageDisplayList.Count > 1) // More than just "(no messages)"
+        {
+            _listView.SelectedItem = _messageDisplayList.Count - 1;
+        }
+    }
+
     private void SetupSubscriptions()
     {
         // Subscribe to collection changes using CollectionChanged event
         // ObservableCollections uses a different event signature (ref parameter)
-        ((ObservableList<MessageViewModel>)_viewModel.Messages).CollectionChanged += (in NotifyCollectionChangedEventArgs<MessageViewModel> args) =>
-        {
-            UpdateListView();
-            // Auto-scroll to bottom when new message arrives
-            if (_messageDisplayList.Count > 1) // More than just "(no messages)"
-            {
-                _listView.SelectedItem = _messageDisplayList.Count - 1;
-            }
-        };
+        ((ObservableList<MessageViewModel>)_viewModel.Messages).CollectionChanged += OnMessagesCollectionChanged;
     }
 
     private void UpdateListView()
@@ -111,7 +107,7 @@ public class MessageLogView : FrameView
     {
         if (disposing)
         {
-            _subscriptions?.Dispose();
+            ((ObservableList<MessageViewModel>)_viewModel.Messages).CollectionChanged -= OnMessagesCollectionChanged;
         }
         base.Dispose(disposing);
     }
