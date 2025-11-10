@@ -14,7 +14,6 @@ goals:
 constraints:
   - Work only within ./dotnet directory
   - Never commit build artifacts (bin/, obj/)
-  - Report build warnings and errors with context
   - Ensure builds are idempotent
 
 success_criteria:
