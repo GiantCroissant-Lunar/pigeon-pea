@@ -65,11 +65,7 @@ function isAsciinemaAvailable() {
  * @returns {Promise<object>} Test result with output and recording path
  */
 async function runGameInPTY(scenario, options = {}) {
-  const {
-    record = true,
-    outputDir = 'recordings',
-    scenarioName = 'test',
-  } = options;
+  const { record = true, outputDir = 'recordings', scenarioName = 'test' } = options;
 
   console.log(`\n=== Running PTY Test: ${scenario.name} ===`);
   console.log(`Description: ${scenario.description}`);
@@ -211,9 +207,7 @@ async function main() {
   const scenarioName = args.find((arg) => !arg.startsWith('--')) || 'basic-movement';
   const record = !args.includes('--no-record');
   const outputDirArg = args.find((arg) => arg.startsWith('--output-dir='));
-  const outputDir = outputDirArg
-    ? outputDirArg.split('=')[1]
-    : 'recordings';
+  const outputDir = outputDirArg ? outputDirArg.split('=')[1] : 'recordings';
 
   try {
     // Load test scenario
