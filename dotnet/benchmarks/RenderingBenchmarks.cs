@@ -18,7 +18,8 @@ public class RenderingBenchmarks
     private Viewport _viewport;
     private Tile _testTile;
     private Tile[] _tiles = null!;
-    private Random _random = null!;
+    private (int x, int y)[] _particlePositions = null!;
+    private (int x, int y)[] _mixedRenderPositions = null!;
 
     [Params(80, 160, 320)]
     public int ScreenWidth { get; set; }
@@ -29,7 +30,7 @@ public class RenderingBenchmarks
     [GlobalSetup]
     public void Setup()
     {
-        _random = new Random(42);
+        var random = new Random(42);
         _renderTarget = new MockRenderTarget(ScreenWidth, ScreenHeight);
         _renderer = new MockRenderer();
         _renderer.Initialize(_renderTarget);
@@ -44,12 +45,26 @@ public class RenderingBenchmarks
         for (int i = 0; i < _tiles.Length; i++)
         {
             _tiles[i] = new Tile(
-                (char)(_random.Next(33, 127)),
-                new Color(_random.Next(256), _random.Next(256), _random.Next(256)),
+                (char)(random.Next(33, 127)),
+                new Color(random.Next(256), random.Next(256), random.Next(256)),
                 Color.Black,
-                _random.Next(100),
-                _random.Next(4)
+                random.Next(100),
+                random.Next(4)
             );
+        }
+        
+        // Pre-generate positions for particle rendering benchmark
+        _particlePositions = new (int, int)[100];
+        for (int i = 0; i < _particlePositions.Length; i++)
+        {
+            _particlePositions[i] = (random.Next(ScreenWidth), random.Next(ScreenHeight));
+        }
+        
+        // Pre-generate positions for mixed rendering benchmark
+        _mixedRenderPositions = new (int, int)[50];
+        for (int i = 0; i < _mixedRenderPositions.Length; i++)
+        {
+            _mixedRenderPositions[i] = (random.Next(ScreenWidth), random.Next(ScreenHeight));
         }
     }
 
@@ -80,11 +95,10 @@ public class RenderingBenchmarks
     {
         _renderer.BeginFrame();
         
-        // Render 100 particles at random positions
-        for (int i = 0; i < 100; i++)
+        // Render 100 particles at pre-determined positions
+        for (int i = 0; i < _particlePositions.Length; i++)
         {
-            int x = _random.Next(ScreenWidth);
-            int y = _random.Next(ScreenHeight);
+            var (x, y) = _particlePositions[i];
             _renderer.DrawTile(x, y, _tiles[i % _tiles.Length]);
         }
         
@@ -174,11 +188,10 @@ public class RenderingBenchmarks
             }
         }
         
-        // Draw some sprites
-        for (int i = 0; i < 50; i++)
+        // Draw some sprites at pre-determined positions
+        for (int i = 0; i < _mixedRenderPositions.Length; i++)
         {
-            int x = _random.Next(ScreenWidth);
-            int y = _random.Next(ScreenHeight);
+            var (x, y) = _mixedRenderPositions[i];
             _renderer.DrawTile(x, y, _tiles[i % _tiles.Length]);
         }
         
