@@ -16,7 +16,8 @@ This guide provides instructions for formatting all code in the PigeonPea reposi
 ### Step 1: Navigate to Repository Root
 
 ```bash
-cd /home/runner/work/pigeon-pea/pigeon-pea
+# Navigate to repository root (if not already there)
+cd $(git rev-parse --show-toplevel)
 ```
 
 The format-all script should be run from the repository root.
@@ -187,8 +188,8 @@ dotnet --version
 # Verify solution exists
 ls ./dotnet/PigeonPea.sln
 
-# Navigate to correct directory
-cd /home/runner/work/pigeon-pea/pigeon-pea
+# Navigate to repository root
+cd $(git rev-parse --show-toplevel)
 ```
 
 ### Error: prettier not found
@@ -383,8 +384,8 @@ fi
 ### Format Specific Subsystems
 
 ```bash
-# Format only .agent directory
-cd /home/runner/work/pigeon-pea/pigeon-pea
+# Format only .agent directory (from repository root)
+cd $(git rev-parse --show-toplevel)
 npx prettier --write "./.agent/**/*.{json,yml,yaml,md}"
 
 # Format only dotnet directory
