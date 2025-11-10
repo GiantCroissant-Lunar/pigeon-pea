@@ -7,6 +7,7 @@ from pathlib import Path
 import yaml
 from jsonschema import ValidationError, validate
 
+
 def validate_agent(agent_path, schema, agent_type):
     """Validate a single agent YAML against a loaded schema (UTF-8)."""
     try:

@@ -9,6 +9,7 @@ This guide covers generating code coverage reports for the PigeonPea solution us
 Code coverage measures which lines of code are executed during test runs, helping identify untested code paths.
 
 **Coverage Metrics:**
+
 - **Line Coverage:** Percentage of lines executed
 - **Branch Coverage:** Percentage of conditional branches taken
 - **Method Coverage:** Percentage of methods called
@@ -237,11 +238,13 @@ fi
 **Solutions:**
 
 1. Check package in test project:
+
    ```bash
    dotnet list console-app.Tests/PigeonPea.Console.Tests.csproj package | grep coverlet
    ```
 
 2. Add coverlet.collector if missing:
+
    ```bash
    dotnet add console-app.Tests/PigeonPea.Console.Tests.csproj package coverlet.collector
    ```
@@ -255,6 +258,7 @@ fi
 **Solutions:**
 
 1. Verify coverage enabled:
+
    ```bash
    dotnet test --collect:"XPlat Code Coverage" --verbosity detailed
    ```

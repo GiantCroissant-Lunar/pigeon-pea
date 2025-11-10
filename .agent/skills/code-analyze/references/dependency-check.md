@@ -18,11 +18,13 @@ This guide provides step-by-step instructions for checking NuGet package depende
 Built-in .NET CLI command that checks NuGet packages against known vulnerability databases.
 
 **Data Sources:**
+
 - GitHub Advisory Database
 - National Vulnerability Database (NVD)
 - NuGet Advisory Database
 
 **What it detects:**
+
 - Known CVEs (Common Vulnerabilities and Exposures)
 - Security advisories for NuGet packages
 - Vulnerable transitive dependencies
@@ -131,6 +133,7 @@ Project `PigeonPea.Console` has the following vulnerable packages
 ### Vulnerability Details
 
 **Fields:**
+
 - **Package**: Name of vulnerable package
 - **Requested**: Version specified in `.csproj`
 - **Resolved**: Version actually used
@@ -175,11 +178,13 @@ Or edit `.csproj` directly:
 For indirect (transitive) dependencies:
 
 **Option A:** Update parent package that depends on it
+
 ```bash
 dotnet add package ParentPackage --version <newer-version>
 ```
 
 **Option B:** Add explicit reference to fixed version
+
 ```xml
 <ItemGroup>
   <!-- Force specific version of transitive dependency -->
@@ -188,6 +193,7 @@ dotnet add package ParentPackage --version <newer-version>
 ```
 
 **Option C:** Use PackageReference with VersionOverride (Central Package Management)
+
 ```xml
 <ItemGroup>
   <PackageVersion Include="System.Text.Json" Version="8.0.0" />
@@ -242,16 +248,19 @@ Project `PigeonPea.Console` has the following updates to its packages
 ### Selective Updates
 
 **Update only patch versions** (safest):
+
 ```bash
 dotnet add package Terminal.Gui --version 2.0.3
 ```
 
 **Update to minor version** (review breaking changes):
+
 ```bash
 dotnet add package Terminal.Gui --version 2.1.3
 ```
 
 **Update to major version** (expect breaking changes):
+
 ```bash
 dotnet add package Terminal.Gui --version 3.0.0
 ```
@@ -371,6 +380,7 @@ If a vulnerability cannot be patched:
 **Cause:** Vulnerability database not yet updated or scan cache stale
 
 **Solution:**
+
 ```bash
 # Clear NuGet cache
 dotnet nuget locals all --clear
@@ -385,6 +395,7 @@ dotnet list package --vulnerable --include-transitive
 **Cause:** Parent package doesn't support newer version
 
 **Solution 1:** Add explicit reference to fixed version
+
 ```xml
 <PackageReference Include="VulnerablePackage" Version="1.2.3" />
 ```
@@ -398,6 +409,7 @@ dotnet list package --vulnerable --include-transitive
 **Cause:** Breaking changes in new version
 
 **Solution:**
+
 ```bash
 # Revert to working version
 dotnet add package PackageName --version <previous-version>
