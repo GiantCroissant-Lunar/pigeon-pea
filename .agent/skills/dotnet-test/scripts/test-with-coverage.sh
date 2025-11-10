@@ -12,7 +12,10 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Change to dotnet directory
-cd "$(dirname "$0")/../../.."
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+cd "$REPO_ROOT/dotnet"
+
 if [ ! -f "PigeonPea.sln" ]; then
   echo -e "${RED}Error: PigeonPea.sln not found. Are you in the dotnet directory?${NC}"
   exit 1
