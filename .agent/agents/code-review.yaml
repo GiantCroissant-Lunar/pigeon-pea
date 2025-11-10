@@ -17,6 +17,6 @@ constraints:
   - Flag security issues with HIGH priority
 
 success_criteria:
-  - "All formatting checks pass"
-  - "No critical security issues found"
-  - "Analysis report generated"
+  - All formatting checks pass
+  - No critical security issues found
+  - Analysis report generated
