@@ -1,14 +1,15 @@
 using BenchmarkDotNet.Running;
+using PigeonPea.Benchmarks;
 
 namespace PigeonPea.Benchmarks;
 
 /// <summary>
-/// Entry point for running performance benchmarks.
+/// Entry point for BenchmarkDotNet benchmarks.
 /// </summary>
 public class Program
 {
     public static void Main(string[] args)
     {
-        BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
+        BenchmarkRunner.Run<RenderingBenchmarks>(args: args);
     }
 }
