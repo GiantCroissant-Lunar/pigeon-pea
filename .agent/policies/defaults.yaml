@@ -1,0 +1,49 @@
+name: DefaultPolicies
+description: General guardrails for all agents
+version: 0.1.0
+
+rate_limits:
+  max_tool_calls_per_session: 1000
+  max_file_edits_per_session: 100
+  max_file_reads_per_session: 500
+
+safety:
+  never_commit:
+    - "bin/"
+    - "obj/"
+    - "*.exe"
+    - "*.dll"
+    - "*.user"
+    - "*.suo"
+    - "node_modules/"
+    - ".vs/"
+
+  never_delete:
+    - ".git/"
+    - ".agent/"
+    - "*.sln"
+    - "*.csproj"
+    - "README.md"
+    - "LICENSE"
+
+  never_expose:
+    - secrets
+    - credentials
+    - API keys
+    - connection strings
+    - authentication tokens
+
+repository_boundaries:
+  allowed_directories:
+    - "./dotnet"
+    - "./tests"
+    - "./docs"
+    - "./.agent"
+    - "./.github"
+
+  forbidden_directories:
+    - "./bin"
+    - "./obj"
+    - "./packages"
+    - "./.vs"
+    - "./node_modules"
