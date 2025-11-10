@@ -87,7 +87,7 @@
           },
           "minItems": 1
         },
-        "default": {
+        "fallback": {
           "type": "string",
           "pattern": "^[A-Z][a-zA-Z0-9]*$",
           "description": "Optional default sub-agent to use if no routing rules match."
