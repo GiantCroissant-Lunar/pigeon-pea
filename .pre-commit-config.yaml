@@ -51,7 +51,8 @@ repos:
     rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
-        types_or: [javascript, jsx, ts, tsx, json, yaml, markdown, css, scss]
+        types_or: [javascript, jsx, ts, tsx, json, markdown, css, scss]
+        exclude: '^\.pre-commit-config\.yaml$'
 
   # YAML linting
   - repo: https://github.com/adrienverge/yamllint
@@ -74,13 +75,12 @@ repos:
         name: dotnet format
         entry: >-
           bash -c 'if command -v dotnet &> /dev/null; then
-          for file in "$@"; do
-          dotnet format "$(dirname "$file")" --include "$file" --no-restore --verify-no-changes ||
-          dotnet format "$(dirname "$file")" --include "$file" --no-restore;
-          done; fi'
+          cd dotnet && dotnet format PigeonPea.sln --no-restore --verify-no-changes ||
+          dotnet format PigeonPea.sln --no-restore;
+          fi'
         language: system
         types: [c#]
-        pass_filenames: true
+        pass_filenames: false
 
   # Additional security checks
   - repo: https://github.com/Yelp/detect-secrets
