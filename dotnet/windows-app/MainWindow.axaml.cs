@@ -12,7 +12,7 @@ using System;
 
 namespace PigeonPea.Windows;
 
-public partial class MainWindow : Window
+public partial class MainWindow : Window, IDisposable
 {
     private readonly GameWorld _gameWorld;
     private readonly GameViewModel _gameViewModel;
@@ -20,6 +20,7 @@ public partial class MainWindow : Window
     private DateTime _lastUpdate = DateTime.UtcNow;
     private int _frameCount;
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
+    private bool _disposed;
 
     public MainWindow()
     {
@@ -69,7 +70,7 @@ public partial class MainWindow : Window
         _frameCount++;
         if ((now - _lastFpsUpdate).TotalSeconds >= 1.0)
         {
-            FpsText.Text = $"FPS: {_frameCount}";
+            _gameViewModel.Fps = _frameCount;
             _frameCount = 0;
             _lastFpsUpdate = now;
         }
@@ -93,5 +94,21 @@ public partial class MainWindow : Window
             _gameWorld.TryMovePlayer(direction.Value);
             e.Handled = true;
         }
+    }
+
+    /// <summary>
+    /// Disposes of resources and stops timers.
+    /// </summary>
+    public void Dispose()
+    {
+        if (_disposed)
+        {
+            return;
+        }
+
+        _gameTimer?.Stop();
+        _gameViewModel?.Dispose();
+        _disposed = true;
+        GC.SuppressFinalize(this);
     }
 }

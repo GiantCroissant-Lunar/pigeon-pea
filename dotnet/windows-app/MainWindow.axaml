@@ -32,10 +32,11 @@
                 
                 <!-- FPS Counter (kept for performance monitoring) -->
                 <TextBlock Grid.Column="3" 
-                           Name="FpsText" 
-                           Text="FPS: 0" 
                            Foreground="LightGreen" 
-                           FontSize="16" />
+                           FontSize="16">
+                    <Run Text="FPS: " />
+                    <Run Text="{Binding Fps, FallbackValue=0}" />
+                </TextBlock>
             </Grid>
         </Border>
 
