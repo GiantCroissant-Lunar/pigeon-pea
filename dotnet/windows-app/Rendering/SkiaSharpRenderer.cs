@@ -32,6 +32,7 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
 
     /// <summary>
     /// Initializes the renderer with a render target.
+    /// This performs one-time initialization of expensive resources.
     /// </summary>
     /// <param name="target">The render target to draw to.</param>
     public void Initialize(IRenderTarget target)
@@ -47,17 +48,42 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
         _canvas = skiaTarget.Canvas;
         _tileSize = skiaTarget.TileSize;
 
-        // Initialize default typeface
-        _typeface = SKTypeface.FromFamilyName("Consolas", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
-            ?? SKTypeface.FromFamilyName("Courier New")
-            ?? SKTypeface.Default;
-
-        // Initialize sprite rendering objects
-        _spritePaint = new SKPaint
+        // Initialize default typeface (expensive operation - do only once)
+        if (_typeface == null)
         {
-            IsAntialias = true
-        };
-        _spriteSamplingOptions = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
+            _typeface = SKTypeface.FromFamilyName("Consolas", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
+                ?? SKTypeface.FromFamilyName("Courier New")
+                ?? SKTypeface.Default;
+        }
+
+        // Initialize sprite rendering objects (expensive operation - do only once)
+        if (_spritePaint == null)
+        {
+            _spritePaint = new SKPaint
+            {
+                IsAntialias = true
+            };
+            _spriteSamplingOptions = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
+        }
+    }
+
+    /// <summary>
+    /// Sets the render target for the current frame without re-initializing expensive resources.
+    /// Use this method for per-frame updates instead of Initialize.
+    /// </summary>
+    /// <param name="target">The render target to draw to.</param>
+    public void SetRenderTarget(IRenderTarget target)
+    {
+        if (target is not SkiaRenderTarget skiaTarget)
+        {
+            throw new ArgumentException(
+                "Target must be a SkiaRenderTarget for SkiaSharpRenderer",
+                nameof(target));
+        }
+
+        _target = skiaTarget;
+        _canvas = skiaTarget.Canvas;
+        _tileSize = skiaTarget.TileSize;
     }
 
     /// <summary>

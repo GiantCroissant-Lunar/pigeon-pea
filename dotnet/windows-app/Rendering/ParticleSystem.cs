@@ -69,7 +69,43 @@ public class ParticleSystem
     }
 
     /// <summary>
+    /// Renders all active particles using the provided renderer interface.
+    /// This is the preferred method for rendering particles through the abstraction layer.
+    /// </summary>
+    /// <param name="renderer">The renderer to use for drawing particles.</param>
+    /// <param name="tileSize">The size of each tile in pixels.</param>
+    public void Render(PigeonPea.Shared.Rendering.IRenderer renderer, int tileSize = 16)
+    {
+        if (renderer == null)
+            throw new ArgumentNullException(nameof(renderer));
+
+        foreach (var particle in _activeParticles)
+        {
+            // Calculate alpha based on particle age for fade-out effect
+            float alpha = 1.0f - particle.Age;
+            var color = particle.Color;
+
+            // Create a color with alpha applied
+            var particleColor = new Color(
+                color.R,
+                color.G,
+                color.B,
+                (byte)(color.A * alpha));
+
+            // Convert pixel position to grid coordinates
+            int gridX = (int)(particle.Position.X / tileSize);
+            int gridY = (int)(particle.Position.Y / tileSize);
+
+            // Draw particle as a small dot tile
+            var tile = new PigeonPea.Shared.Rendering.Tile('·', particleColor, Color.Transparent);
+            renderer.DrawTile(gridX, gridY, tile);
+        }
+    }
+
+    /// <summary>
     /// Renders all active particles to the specified canvas.
+    /// This method is provided for backward compatibility and specialized rendering.
+    /// Prefer using Render(IRenderer) for consistent rendering abstraction.
     /// </summary>
     /// <param name="canvas">The SkiaSharp canvas to render to.</param>
     /// <param name="tileSize">The size of each tile/particle in pixels.</param>
