@@ -16,7 +16,8 @@ This guide provides step-by-step instructions for formatting JSON, YAML, Markdow
 ### Step 1: Navigate to Repository Root
 
 ```bash
-cd /home/runner/work/pigeon-pea/pigeon-pea
+# Navigate to repository root (if not already there)
+cd $(git rev-parse --show-toplevel)
 ```
 
 Prettier commands should be run from the repository root.
@@ -320,11 +321,12 @@ package-lock.json
 ### Format from Any Directory
 
 ```bash
-# Specify full path
-npx prettier --write /home/runner/work/pigeon-pea/pigeon-pea/**/*.json
+# Use git to find repository root
+REPO_ROOT=$(git rev-parse --show-toplevel)
+npx prettier --write "$REPO_ROOT/**/*.json"
 
 # Or use --cwd
-npx prettier --write --cwd /home/runner/work/pigeon-pea/pigeon-pea "**/*.json"
+npx prettier --write --cwd "$(git rev-parse --show-toplevel)" "**/*.json"
 ```
 
 ## File Type Support
