@@ -42,7 +42,7 @@ public class SixelRenderer : IRenderer
     public void Initialize(IRenderTarget target)
     {
         _target = target ?? throw new ArgumentNullException(nameof(target));
-        
+
         // Calculate tile size based on pixel dimensions if available
         if (target.PixelWidth.HasValue && target.Width > 0)
         {
@@ -57,12 +57,12 @@ public class SixelRenderer : IRenderer
     public void BeginFrame()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
         _frameBuffer.Clear();
-        
+
         // Move cursor to home position
         _frameBuffer.Append("\x1b[H");
     }
@@ -74,14 +74,14 @@ public class SixelRenderer : IRenderer
     public void EndFrame()
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
         // Output the frame buffer to console
         System.Console.Write(_frameBuffer.ToString());
         System.Console.Out.Flush();
-        
+
         _target.Present();
     }
 
@@ -95,7 +95,7 @@ public class SixelRenderer : IRenderer
     public void DrawTile(int x, int y, Tile tile)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -116,7 +116,7 @@ public class SixelRenderer : IRenderer
     public void DrawText(int x, int y, string text, Color foreground, Color background)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
@@ -136,14 +136,14 @@ public class SixelRenderer : IRenderer
     public void Clear(Color color)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
         // Clear screen with ANSI escape codes
         _frameBuffer.Append("\x1b[2J");
         _frameBuffer.Append("\x1b[H");
-        
+
         // Set background color
         _frameBuffer.Append($"\x1b[48;2;{color.R};{color.G};{color.B}m");
         _frameBuffer.Append("\x1b[0m");
@@ -165,14 +165,14 @@ public class SixelRenderer : IRenderer
     {
         // Position cursor
         _frameBuffer.Append($"\x1b[{y + 1};{x + 1}H");
-        
+
         // Set foreground and background colors using true color ANSI codes
         _frameBuffer.Append($"\x1b[38;2;{foreground.R};{foreground.G};{foreground.B}m");
         _frameBuffer.Append($"\x1b[48;2;{background.R};{background.G};{background.B}m");
-        
+
         // Draw character
         _frameBuffer.Append(glyph);
-        
+
         // Reset colors
         _frameBuffer.Append("\x1b[0m");
     }
@@ -188,13 +188,13 @@ public class SixelRenderer : IRenderer
     public void DrawImage(int x, int y, byte[] imageData, int width, int height)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
         // Position cursor
         _frameBuffer.Append($"\x1b[{y + 1};{x + 1}H");
-        
+
         // Encode and output sixel
         string sixelData = _encoder.Encode(imageData, width, height);
         _frameBuffer.Append(sixelData);
@@ -211,13 +211,13 @@ public class SixelRenderer : IRenderer
     public void DrawImage(int x, int y, Color[] pixels, int width, int height)
     {
         ObjectDisposedException.ThrowIf(_disposed, this);
-        
+
         if (_target == null)
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
         // Position cursor
         _frameBuffer.Append($"\x1b[{y + 1};{x + 1}H");
-        
+
         // Encode and output sixel
         string sixelData = _encoder.Encode(pixels, width, height);
         _frameBuffer.Append(sixelData);
