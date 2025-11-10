@@ -1,9 +1,12 @@
 using System;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Arch.Core;
+using MessagePipe;
 using Microsoft.Extensions.DependencyInjection;
+using PigeonPea.Shared.Events;
 using ReactiveUI;
 
 namespace PigeonPea.Shared.ViewModels;
@@ -20,6 +23,8 @@ public class GameViewModel : ReactiveObject, IDisposable
     private readonly IServiceProvider _services;
     private readonly CompositeDisposable _subscriptions;
     private readonly IScheduler _scheduler;
+    private readonly IPublisher<ItemUsedEvent> _itemUsedPublisher;
+    private readonly IPublisher<ItemDroppedEvent> _itemDroppedPublisher;
 
     /// <summary>
     /// ViewModel for player state.
@@ -42,6 +47,18 @@ public class GameViewModel : ReactiveObject, IDisposable
     public MapViewModel Map { get; }
 
     /// <summary>
+    /// Command to use the selected item from inventory.
+    /// Can only execute when an item is selected.
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> UseItemCommand { get; }
+
+    /// <summary>
+    /// Command to drop the selected item from inventory.
+    /// Can only execute when an item is selected.
+    /// </summary>
+    public ReactiveCommand<Unit, Unit> DropItemCommand { get; }
+
+    /// <summary>
     /// Initializes a new instance of the GameViewModel.
     /// </summary>
     /// <param name="world">The game world instance.</param>
@@ -59,6 +76,17 @@ public class GameViewModel : ReactiveObject, IDisposable
         Inventory = _services.GetRequiredService<InventoryViewModel>();
         MessageLog = _services.GetRequiredService<MessageLogViewModel>();
         Map = _services.GetRequiredService<MapViewModel>();
+
+        // Get MessagePipe publishers
+        _itemUsedPublisher = _services.GetRequiredService<IPublisher<ItemUsedEvent>>();
+        _itemDroppedPublisher = _services.GetRequiredService<IPublisher<ItemDroppedEvent>>();
+
+        // Set up commands with CanExecute based on item selection
+        var canExecuteItemAction = this.WhenAnyValue(x => x.Inventory.SelectedItem)
+            .Select(selectedItem => selectedItem != null);
+
+        UseItemCommand = ReactiveCommand.Create(UseItem, canExecuteItemAction);
+        DropItemCommand = ReactiveCommand.Create(DropItem, canExecuteItemAction);
 
         // Set up update loop
         InitializeUpdateLoop();
@@ -84,6 +112,53 @@ public class GameViewModel : ReactiveObject, IDisposable
         Inventory.Update(_world.EcsWorld, _world.PlayerEntity);
         MessageLog.Update(_world);
         Map.Update(_world);
+    }
+
+    /// <summary>
+    /// Uses the currently selected item from inventory.
+    /// </summary>
+    private void UseItem()
+    {
+        if (Inventory.SelectedIndex < 0)
+            return;
+
+        var selectedItem = Inventory.SelectedItem;
+        if (selectedItem == null)
+            return;
+
+        // Try to use the item in the game world
+        if (_world.TryUseItem(Inventory.SelectedIndex))
+        {
+            // Publish event
+            _itemUsedPublisher.Publish(new ItemUsedEvent
+            {
+                ItemName = selectedItem.Name,
+                ItemType = selectedItem.Type.ToString()
+            });
+        }
+    }
+
+    /// <summary>
+    /// Drops the currently selected item from inventory.
+    /// </summary>
+    private void DropItem()
+    {
+        if (Inventory.SelectedIndex < 0)
+            return;
+
+        var selectedItem = Inventory.SelectedItem;
+        if (selectedItem == null)
+            return;
+
+        // Try to drop the item in the game world
+        if (_world.TryDropItem(Inventory.SelectedIndex))
+        {
+            // Publish event
+            _itemDroppedPublisher.Publish(new ItemDroppedEvent
+            {
+                ItemName = selectedItem.Name
+            });
+        }
     }
 
     /// <summary>

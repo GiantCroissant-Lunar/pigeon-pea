@@ -602,6 +602,33 @@ public class GameWorld
         return false;
     }
 
+    /// <summary>
+    /// Attempts to drop an item from the player's inventory by index.
+    /// </summary>
+    public bool TryDropItem(int itemIndex)
+    {
+        if (!PlayerEntity.IsAlive() || !PlayerEntity.Has<Inventory>())
+            return false;
+
+        ref var inventory = ref PlayerEntity.Get<Inventory>();
+
+        // Check if index is valid
+        if (itemIndex < 0 || itemIndex >= inventory.Items.Count)
+            return false;
+
+        var item = inventory.Items[itemIndex];
+        var playerPos = PlayerEntity.Get<Position>();
+
+        // Remove item from inventory
+        inventory.Items.RemoveAt(itemIndex);
+
+        // Add position and pickup components back to the item
+        item.Add(new Position(playerPos.Point));
+        item.Add(new Pickup());
+
+        return true;
+    }
+
     public void Update(double deltaTime)
     {
         // Run ECS systems
