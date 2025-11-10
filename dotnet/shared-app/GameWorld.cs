@@ -52,17 +52,55 @@ public class GameWorld
     private readonly IPublisher<DoorOpenedEvent>? _doorOpenedPublisher;
     private readonly IPublisher<StairsDescendedEvent>? _stairsDescendedPublisher;
 
+    /// <summary>
+    /// Creates a new GameWorld with the specified dimensions.
+    /// For use without dependency injection.
+    /// </summary>
+    public GameWorld(int width = 80, int height = 50)
+    {
+        Width = width;
+        Height = height;
+
+        EcsWorld = World.Create();
+        Map = new ArrayView<IGameObject>(width, height);
+        WalkabilityMap = new ArrayView<bool>(width, height);
+        TransparencyMap = new ArrayView<bool>(width, height);
+        _random = new Random();
+
+        // Publishers remain null - no events published
+        _playerDamagedPublisher = null;
+        _enemyDefeatedPublisher = null;
+        _itemPickedUpPublisher = null;
+        _itemUsedPublisher = null;
+        _itemDroppedPublisher = null;
+        _playerLevelUpPublisher = null;
+        _doorOpenedPublisher = null;
+        _stairsDescendedPublisher = null;
+
+        // Initialize FOV algorithm (recursive shadowcasting)
+        _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
+
+        // Initialize pathfinding (A* with Chebyshev distance for 8-way movement)
+        _pathfinder = new AStar(WalkabilityMap, Distance.Chebyshev);
+
+        InitializeWorld();
+    }
+
+    /// <summary>
+    /// Creates a new GameWorld with MessagePipe event publishers.
+    /// For use with dependency injection - all publishers are automatically resolved from DI container.
+    /// </summary>
     public GameWorld(
-        int width = 80,
-        int height = 50,
-        IPublisher<PlayerDamagedEvent>? playerDamagedPublisher = null,
-        IPublisher<EnemyDefeatedEvent>? enemyDefeatedPublisher = null,
-        IPublisher<ItemPickedUpEvent>? itemPickedUpPublisher = null,
-        IPublisher<ItemUsedEvent>? itemUsedPublisher = null,
-        IPublisher<ItemDroppedEvent>? itemDroppedPublisher = null,
-        IPublisher<PlayerLevelUpEvent>? playerLevelUpPublisher = null,
-        IPublisher<DoorOpenedEvent>? doorOpenedPublisher = null,
-        IPublisher<StairsDescendedEvent>? stairsDescendedPublisher = null)
+        int width,
+        int height,
+        IPublisher<PlayerDamagedEvent> playerDamagedPublisher,
+        IPublisher<EnemyDefeatedEvent> enemyDefeatedPublisher,
+        IPublisher<ItemPickedUpEvent> itemPickedUpPublisher,
+        IPublisher<ItemUsedEvent> itemUsedPublisher,
+        IPublisher<ItemDroppedEvent> itemDroppedPublisher,
+        IPublisher<PlayerLevelUpEvent> playerLevelUpPublisher,
+        IPublisher<DoorOpenedEvent> doorOpenedPublisher,
+        IPublisher<StairsDescendedEvent> stairsDescendedPublisher)
     {
         Width = width;
         Height = height;
