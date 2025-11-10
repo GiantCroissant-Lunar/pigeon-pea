@@ -9,22 +9,22 @@ rate_limits:
 
 safety:
   never_commit:
-    - "bin/"
-    - "obj/"
-    - "*.exe"
-    - "*.dll"
-    - "*.user"
-    - "*.suo"
-    - "node_modules/"
-    - ".vs/"
+    - 'bin/'
+    - 'obj/'
+    - '*.exe'
+    - '*.dll'
+    - '*.user'
+    - '*.suo'
+    - 'node_modules/'
+    - '.vs/'
 
   never_delete:
-    - ".git/"
-    - ".agent/"
-    - "*.sln"
-    - "*.csproj"
-    - "README.md"
-    - "LICENSE"
+    - '.git/'
+    - '.agent/'
+    - '*.sln'
+    - '*.csproj'
+    - 'README.md'
+    - 'LICENSE'
 
   never_expose:
     - secrets
@@ -35,15 +35,15 @@ safety:
 
 repository_boundaries:
   allowed_directories:
-    - "./dotnet"
-    - "./tests"
-    - "./docs"
-    - "./.agent"
-    - "./.github"
+    - './dotnet'
+    - './tests'
+    - './docs'
+    - './.agent'
+    - './.github'
 
   forbidden_directories:
-    - "./bin"
-    - "./obj"
-    - "./packages"
-    - "./.vs"
-    - "./node_modules"
+    - './bin'
+    - './obj'
+    - './packages'
+    - './.vs'
+    - './node_modules'
