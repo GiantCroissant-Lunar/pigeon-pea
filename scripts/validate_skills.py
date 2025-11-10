@@ -23,16 +23,13 @@ def extract_frontmatter(skill_md_path):
     return yaml.safe_load(parts[1])
 
 
-def validate_skill(skill_path, schema_path):
+def validate_skill(skill_path, schema):
     """Validate a single skill against schema and size limits."""
     skill_md = skill_path / "SKILL.md"
 
     try:
         # Extract and validate front-matter
         front_matter = extract_frontmatter(skill_md)
-
-        with open(schema_path) as f:
-            schema = json.load(f)
 
         try:
             validate(instance=front_matter, schema=schema)
@@ -86,7 +83,7 @@ def validate_skill(skill_path, schema_path):
 
                     print(f"✓ {ref}: Size OK ({ref_lines} lines)")
 
-    except (OSError, IOError) as e:
+    except OSError as e:
         print(f"✗ {skill_md}: Error reading file: {e}")
         return False
     except Exception as e:
@@ -108,12 +105,44 @@ def main():
         print("Error: skill schema not found")
         return 1
 
+    # Pre-load schema
+    with open(schema_path) as f:
+        schema = json.load(f)
+
+    # Determine which skill directories to validate
+    skill_dirs_to_validate = set()
+
+    if len(sys.argv) > 1:
+        # Files passed from pre-commit - extract skill directories
+        for file_path in sys.argv[1:]:
+            path = Path(file_path)
+            # Navigate up to find the skill directory
+            # Expected path: .agent/skills/{skill-name}/SKILL.md
+            # or .agent/skills/{skill-name}/references/*.md
+            if ".agent/skills" in str(path):
+                parts = path.parts
+                try:
+                    skills_idx = parts.index(".agent")
+                    if len(parts) > skills_idx + 2:
+                        skill_name = parts[skills_idx + 2]
+                        skill_dir = skills_dir / skill_name
+                        if skill_dir.is_dir() and (skill_dir / "SKILL.md").exists():
+                            skill_dirs_to_validate.add(skill_dir)
+                except (ValueError, IndexError):
+                    pass
+    else:
+        # No files specified, validate all skills
+        skill_dirs_to_validate = {
+            skill_dir
+            for skill_dir in skills_dir.iterdir()
+            if skill_dir.is_dir() and (skill_dir / "SKILL.md").exists()
+        }
+
     all_valid = True
-    for skill_dir in skills_dir.iterdir():
-        if skill_dir.is_dir() and (skill_dir / "SKILL.md").exists():
-            print(f"\nValidating {skill_dir.name}...")
-            if not validate_skill(skill_dir, schema_path):
-                all_valid = False
+    for skill_dir in sorted(skill_dirs_to_validate):
+        print(f"\nValidating {skill_dir.name}...")
+        if not validate_skill(skill_dir, schema):
+            all_valid = False
 
     return 0 if all_valid else 1
 

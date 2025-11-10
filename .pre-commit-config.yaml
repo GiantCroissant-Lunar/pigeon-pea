@@ -97,7 +97,6 @@ repos:
         entry: python scripts/validate_skills.py
         language: python
         files: '^\.agent/skills/.*\.md$'
-        pass_filenames: false
         additional_dependencies:
           - pyyaml
           - jsonschema
@@ -107,7 +106,6 @@ repos:
         entry: python scripts/validate_agents.py
         language: python
         files: '^\.agent/agents/.*\.yaml$'
-        pass_filenames: false
         additional_dependencies:
           - pyyaml
           - jsonschema

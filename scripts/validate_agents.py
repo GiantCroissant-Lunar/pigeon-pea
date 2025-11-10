@@ -8,14 +8,11 @@ import yaml
 from jsonschema import ValidationError, validate
 
 
-def validate_agent(agent_path, schema_path, agent_type):
-    """Validate a single agent YAML against schema."""
+def validate_agent(agent_path, schema, agent_type):
+    """Validate a single agent YAML against a loaded schema."""
     try:
         with open(agent_path) as f:
             agent = yaml.safe_load(f)
-
-        with open(schema_path) as f:
-            schema = json.load(f)
 
         try:
             validate(instance=agent, schema=schema)
@@ -25,7 +22,7 @@ def validate_agent(agent_path, schema_path, agent_type):
             print(f"✗ {agent_path.name}: {e.message}")
             return False
 
-    except (OSError, IOError) as e:
+    except OSError as e:
         print(f"✗ {agent_path.name}: Error reading file: {e}")
         return False
     except Exception as e:
@@ -45,29 +42,57 @@ def main():
         print("Error: .agent/schemas directory not found")
         return 1
 
+    # Get files to validate from arguments, or all files if none provided
+    files_to_validate = []
+    if len(sys.argv) > 1:
+        # Validate only specified files (from pre-commit)
+        files_to_validate = [Path(arg) for arg in sys.argv[1:]]
+    else:
+        # Validate all agent files
+        files_to_validate = sorted(agents_dir.glob("*.yaml"))
+
     all_valid = True
 
-    # Validate orchestrator
-    orchestrator = agents_dir / "orchestrator.yaml"
-    if orchestrator.exists():
-        orchestrator_schema = schemas_dir / "orchestrator.schema.json"
-        if not orchestrator_schema.exists():
-            print(f"Warning: orchestrator schema not found at {orchestrator_schema}")
-        else:
-            print(f"\nValidating orchestrator...")
-            if not validate_agent(orchestrator, orchestrator_schema, "orchestrator"):
-                all_valid = False
+    # Pre-load schemas
+    orchestrator_schema_path = schemas_dir / "orchestrator.schema.json"
+    subagent_schema_path = schemas_dir / "subagent.schema.json"
 
-    # Validate sub-agents
-    subagent_schema = schemas_dir / "subagent.schema.json"
-    if not subagent_schema.exists():
-        print(f"Warning: subagent schema not found at {subagent_schema}")
+    orchestrator_schema = None
+    subagent_schema = None
+
+    if orchestrator_schema_path.exists():
+        with open(orchestrator_schema_path) as f:
+            orchestrator_schema = json.load(f)
     else:
-        for agent_file in sorted(agents_dir.glob("*.yaml")):
-            if agent_file.name != "orchestrator.yaml":
-                print(f"\nValidating {agent_file.name}...")
-                if not validate_agent(agent_file, subagent_schema, "sub-agent"):
-                    all_valid = False
+        print(f"Warning: orchestrator schema not found at {orchestrator_schema_path}")
+
+    if subagent_schema_path.exists():
+        with open(subagent_schema_path) as f:
+            subagent_schema = json.load(f)
+    else:
+        print(f"Warning: subagent schema not found at {subagent_schema_path}")
+
+    # Validate files
+    for agent_file in files_to_validate:
+        agent_path = Path(agent_file)
+        if not agent_path.exists():
+            print(f"✗ {agent_file}: File not found")
+            all_valid = False
+            continue
+
+        # Determine which schema to use
+        if agent_path.name == "orchestrator.yaml":
+            if orchestrator_schema is None:
+                continue
+            print("\nValidating orchestrator...")
+            if not validate_agent(agent_path, orchestrator_schema, "orchestrator"):
+                all_valid = False
+        else:
+            if subagent_schema is None:
+                continue
+            print(f"\nValidating {agent_path.name}...")
+            if not validate_agent(agent_path, subagent_schema, "sub-agent"):
+                all_valid = False
 
     return 0 if all_valid else 1
 
