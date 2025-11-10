@@ -223,7 +223,7 @@ public class FrameExtractorTests : IDisposable
         {
             // Verify file has PNG extension
             Assert.EndsWith(".png", frame);
-            
+
             // Verify file can be loaded as PNG
             using var image = Image.Load(frame);
             Assert.NotNull(image);
