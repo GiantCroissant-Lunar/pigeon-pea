@@ -86,7 +86,7 @@ dotnet list package --outdated
 ### Full Analysis Suite
 
 ```bash
-cd /home/runner/work/pigeon-pea/pigeon-pea
+# Run from repository root
 .agent/skills/code-analyze/scripts/analyze.sh --all
 ```
 

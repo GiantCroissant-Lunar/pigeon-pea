@@ -347,7 +347,7 @@ dotnet build /p:RunAnalyzers=true /p:TreatWarningsAsErrors=true
 
 ## Integration with Pre-commit Hooks
 
-Analyzers run automatically via `dotnet format` pre-commit hook:
+The `dotnet-format` pre-commit hook helps enforce code style rules automatically. Full static analysis, including all code quality and security rules, is performed during the build process.
 
 ```bash
 pre-commit run dotnet-format --all-files
