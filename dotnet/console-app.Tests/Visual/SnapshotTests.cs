@@ -108,31 +108,29 @@ public class SnapshotTests
         {
             try
             {
-                // Send 'q' to quit
+                // Send 'q' to quit for a graceful shutdown.
                 await process.StandardInput.WriteAsync('q');
                 await process.StandardInput.FlushAsync();
                 
-                // Wait a bit for graceful exit
-                await Task.WhenAny(
-                    process.WaitForExitAsync(),
-                    Task.Delay(TimeSpan.FromSeconds(1))
-                );
-
-                if (!process.HasExited)
-                {
-                    process.Kill(entireProcessTree: true);
-                }
+                // Wait a short time for the process to exit.
+                await Task.WhenAny(process.WaitForExitAsync(), Task.Delay(TimeSpan.FromSeconds(1)));
             }
-            catch
+            catch (InvalidOperationException)
             {
-                // If we can't write to stdin or kill gracefully, force kill
+                // Process may have already exited or stdin is not available.
+                // Fall through to the kill logic below.
+            }
+
+            // If graceful shutdown failed or was not possible, force kill the process.
+            if (!process.HasExited)
+            {
                 try
                 {
                     process.Kill(entireProcessTree: true);
                 }
-                catch
+                catch (InvalidOperationException)
                 {
-                    // Process already exited
+                    // Ignore if process has already exited.
                 }
             }
         }
@@ -153,30 +151,22 @@ public class SnapshotTests
     /// <returns>The accumulated content from the recording.</returns>
     private string ParseAsciinemaRecording(string recordingPath)
     {
-        try
+        var parser = AsciinemaParser.ParseFile(recordingPath);
+        
+        // Get accumulated content from all frames
+        var frames = parser.Frames;
+        if (frames.Count == 0)
         {
-            var parser = AsciinemaParser.ParseFile(recordingPath);
-            
-            // Get accumulated content from all frames
-            var frames = parser.Frames;
-            if (frames.Count == 0)
-            {
-                return string.Empty;
-            }
-
-            // Get the last timestamp
-            var lastTimestamp = frames[frames.Count - 1].Timestamp;
-            
-            // Get all accumulated content
-            var content = parser.GetAccumulatedContentAtTimestamp(lastTimestamp);
-            
-            return content;
-        }
-        catch
-        {
-            // If parsing fails, return empty string
             return string.Empty;
         }
+
+        // Get the last timestamp
+        var lastTimestamp = frames[frames.Count - 1].Timestamp;
+        
+        // Get all accumulated content
+        var content = parser.GetAccumulatedContentAtTimestamp(lastTimestamp);
+        
+        return content;
     }
 
     /// <summary>
@@ -276,6 +266,7 @@ public class SnapshotTests
         var diff = new StringBuilder();
         diff.AppendLine("Line-by-line comparison:");
         diff.AppendLine();
+        var initialLength = diff.Length;
 
         var maxLines = Math.Max(expectedLines.Length, actualLines.Length);
         
@@ -293,7 +284,7 @@ public class SnapshotTests
             }
         }
 
-        if (diff.Length == 0)
+        if (diff.Length == initialLength)
         {
             diff.AppendLine("Outputs differ but line-by-line comparison shows no differences.");
             diff.AppendLine("This may be due to whitespace or encoding differences.");
