@@ -571,6 +571,17 @@ public class GameWorld
     }
 
     /// <summary>
+    /// Test helper method to trigger melee combat between two entities.
+    /// This public method allows testing of combat and event publishing without reflection.
+    /// </summary>
+    /// <param name="attacker">The attacking entity.</param>
+    /// <param name="defender">The defending entity.</param>
+    public void TestResolveMeleeAttack(Entity attacker, Entity defender)
+    {
+        ResolveMeleeAttack(attacker, defender);
+    }
+
+    /// <summary>
     /// Removes dead entities from the world.
     /// </summary>
     private void CleanupDeadEntities()

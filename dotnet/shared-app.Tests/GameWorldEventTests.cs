@@ -41,13 +41,13 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void ResolveMeleeAttack_PlayerDamaged_PublishesPlayerDamagedEvent()
+    public void EnemyAttacksPlayer_PlayerDamaged_PublishesPlayerDamagedEvent()
     {
         // Arrange
         var playerDamagedPublisher = new MockPublisher<PlayerDamagedEvent>();
         var gameWorld = CreateGameWorldWithPublisher(playerDamagedPublisher);
 
-        // Create an enemy entity manually
+        // Create an enemy entity
         var enemyEntity = gameWorld.EcsWorld.Create(
             new Position(new Point(5, 5)),
             new Health { Current = 20, Maximum = 20 },
@@ -55,11 +55,8 @@ public class GameWorldEventTests
             new AIComponent(AIBehavior.Aggressive)
         );
 
-        // Act - Enemy attacks player (TryMovePlayer simulates this by calling ResolveMeleeAttack)
-        // We'll use reflection to call ResolveMeleeAttack directly
-        var method = typeof(GameWorld).GetMethod("ResolveMeleeAttack",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        method?.Invoke(gameWorld, new object[] { enemyEntity, gameWorld.PlayerEntity });
+        // Act - Enemy attacks player using public test helper method
+        gameWorld.TestResolveMeleeAttack(enemyEntity, gameWorld.PlayerEntity);
 
         // Assert
         Assert.Single(playerDamagedPublisher.PublishedEvents);
@@ -70,25 +67,48 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void ResolveMeleeAttack_EnemyDefeated_PublishesEnemyDefeatedEvent()
+    public void PlayerAttack_EnemyDefeated_PublishesEnemyDefeatedEvent()
     {
         // Arrange
         var enemyDefeatedPublisher = new MockPublisher<EnemyDefeatedEvent>();
         var gameWorld = CreateGameWorldWithPublisher(enemyDefeatedPublisher);
 
-        // Create a weak enemy entity that can be killed in one hit
+        // Get player position
+        var playerPos = gameWorld.PlayerEntity.Get<Position>();
+
+        // Find a position next to the player for the enemy
+        var enemyPos = new Point(playerPos.Point.X + 1, playerPos.Point.Y);
+        
+        // Ensure the enemy position is walkable (enemies spawn on walkable tiles)
+        if (enemyPos.X < gameWorld.Width && enemyPos.Y < gameWorld.Height)
+        {
+            gameWorld.WalkabilityMap[enemyPos.X, enemyPos.Y] = true;
+        }
+
+        // Remove any existing floor/wall tiles at the enemy position so GetEntityAt can find the enemy
+        // (GetEntityAt returns the first entity found, which might be a floor tile)
+        var posQuery = new QueryDescription().WithAll<Position, Components.Tile>();
+        gameWorld.EcsWorld.Query(in posQuery, (Entity entity, ref Position pos, ref Components.Tile tile) =>
+        {
+            if (pos.Point == enemyPos)
+            {
+                gameWorld.EcsWorld.Destroy(entity);
+            }
+        });
+
+        // Create a weak enemy entity next to the player that can be killed in one hit
         var weakEnemyEntity = gameWorld.EcsWorld.Create(
-            new Position(new Point(5, 5)),
+            new Position(enemyPos),
             new Health { Current = 1, Maximum = 1 },
             new CombatStats(attack: 1, defense: 0),
             new AIComponent(AIBehavior.Aggressive),
-            new ExperienceValue(xp: 50)
+            new ExperienceValue(xp: 50),
+            new Renderable('E', SadRogue.Primitives.Color.Red)
         );
 
-        // Act - Player attacks weak enemy
-        var method = typeof(GameWorld).GetMethod("ResolveMeleeAttack",
-            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        method?.Invoke(gameWorld, new object[] { gameWorld.PlayerEntity, weakEnemyEntity });
+        // Act - Player moves into enemy position to attack
+        var direction = new Point(1, 0); // Move right into enemy
+        gameWorld.TryMovePlayer(direction);
 
         // Assert
         Assert.Single(enemyDefeatedPublisher.PublishedEvents);

@@ -322,7 +322,6 @@ internal class MockRenderTarget : IRenderTarget
 
     public void Present()
     {
-        // Simulate present operation with minimal work
-        Thread.SpinWait(100);
+        // No-op for benchmarking rendering logic without presentation overhead.
     }
 }
