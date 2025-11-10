@@ -6,6 +6,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
     <RootNamespace>PigeonPea.Benchmarks</RootNamespace>
     <AssemblyName>PigeonPea.Benchmarks</AssemblyName>
   </PropertyGroup>

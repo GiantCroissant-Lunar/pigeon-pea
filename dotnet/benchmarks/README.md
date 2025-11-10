@@ -25,7 +25,6 @@ dotnet run --configuration Release
 
 ### Run Specific Benchmark
 
-```bash
 dotnet run --configuration Release -- --filter "*FullScreenRendering*"
 ```
 
