@@ -74,6 +74,11 @@ TestResults/
 *.coverage
 *.coveragexml
 
+# Visual test recordings (CI artifacts only, not stored in git)
+console-app.Tests/recordings/
+*.cast
+*.actual.txt
+
 # Benchmark results
 BenchmarkDotNet.Artifacts/
 
