@@ -31,6 +31,12 @@ public class GameView : View
 
     protected override bool OnDrawingContent()
     {
+        // Set the Driver for Terminal.Gui-based rendering
+        if (_renderer is TerminalGuiRenderer tguiRenderer)
+        {
+            tguiRenderer.SetDriver(Driver);
+        }
+
         // Use the renderer to draw the game world
         _renderer.BeginFrame();
         
@@ -51,7 +57,7 @@ public class GameView : View
                 pos.Point.Y >= 0 && pos.Point.Y < viewport.Height)
             {
                 // Create a tile from the renderable component
-                var tile = new PigeonPea.Shared.Rendering.Tile(renderable.Glyph, renderable.Foreground, SRColor.Black);
+                var tile = new PigeonPea.Shared.Rendering.Tile(renderable.Glyph, renderable.Foreground, renderable.Background);
                 _renderer.DrawTile(pos.Point.X, pos.Point.Y, tile);
             }
         });
