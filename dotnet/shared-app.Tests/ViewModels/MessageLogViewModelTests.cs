@@ -249,25 +249,20 @@ public class MessageLogViewModelTests : IDisposable
     [Fact]
     public void Dispose_DisposesSubscriptions()
     {
-        // Arrange
-        var services = new ServiceCollection();
-        services.AddMessagePipe();
-        using var provider = services.BuildServiceProvider();
+        // Act
+        _viewModel.Dispose();
 
-        var combatSub = provider.GetRequiredService<ISubscriber<PlayerDamagedEvent>>();
-        var inventorySub = provider.GetRequiredService<ISubscriber<ItemPickedUpEvent>>();
-        var gameStateSub = provider.GetRequiredService<ISubscriber<GameStateChangedEvent>>();
-
-        var vm = new MessageLogViewModel(
-            combatSub,
-            inventorySub,
-            gameStateSub);
-
-        // Act - should not throw
-        Action act = () => vm.Dispose();
+        // Publish an event after disposal
+        _combatPublisher.Publish(new PlayerDamagedEvent
+        {
+            Damage = 5,
+            RemainingHealth = 95,
+            Source = "Rat"
+        });
 
         // Assert
-        act.Should().NotThrow();
+        // No new messages should be added after disposal.
+        _viewModel.Messages.Should().BeEmpty();
     }
 
     [Fact]
