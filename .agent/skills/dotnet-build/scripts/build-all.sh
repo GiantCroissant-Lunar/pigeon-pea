@@ -4,6 +4,7 @@
 
 set -e  # Exit on error
 set -u  # Exit on undefined variable
+set -o pipefail # Exit on pipeline failure
 
 # Colors for output
 RED='\033[0;31m'
@@ -109,15 +110,13 @@ build_solution() {
         build_args+=("--no-restore")
     fi
 
-    dotnet build "${build_args[@]}"
-
-    if [[ $? -eq 0 ]]; then
-        print_info "Build succeeded!"
-        return 0
-    else
+    if ! dotnet build "${build_args[@]}"; then
         print_error "Build failed!"
         return 1
     fi
+
+    print_info "Build succeeded!"
+    return 0
 }
 
 # Parse arguments
@@ -126,16 +125,32 @@ CLEAN=false
 while [[ $# -gt 0 ]]; do
     case $1 in
         -c|--configuration)
+            if [[ -z "${2-}" || "$2" =~ ^- ]]; then
+                print_error "Option '$1' requires an argument."
+                exit 1
+            fi
             CONFIGURATION="$2"
             shift 2
+            ;;
+        --configuration=*)
+            CONFIGURATION="${1#*=}"
+            shift
             ;;
         -r|--no-restore)
             RESTORE=false
             shift
             ;;
         -v|--verbosity)
+            if [[ -z "${2-}" || "$2" =~ ^- ]]; then
+                print_error "Option '$1' requires an argument."
+                exit 1
+            fi
             VERBOSITY="$2"
             shift 2
+            ;;
+        --verbosity=*)
+            VERBOSITY="${1#*=}"
+            shift
             ;;
         -C|--clean)
             CLEAN=true
