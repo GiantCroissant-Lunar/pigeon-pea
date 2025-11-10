@@ -10,6 +10,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        BenchmarkRunner.Run<RenderingBenchmarks>(args: args);
+        // Use BenchmarkSwitcher to honor CLI args like --filter/--exporters
+        BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args);
     }
 }

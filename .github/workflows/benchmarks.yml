@@ -41,6 +41,7 @@ jobs:
             --configuration Release \
             --no-build -- \
             --filter * \
+            --job short \
             --exporters json
 
       - name: Upload benchmark results
