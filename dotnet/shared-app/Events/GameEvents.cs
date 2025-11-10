@@ -12,10 +12,10 @@ public readonly struct GameStateChangedEvent
     /// <summary>
     /// Gets the new game state after the transition.
     /// </summary>
-    public string NewState { get; init; }
+    public required string NewState { get; init; }
 
     /// <summary>
     /// Gets the previous game state before the transition.
     /// </summary>
-    public string PreviousState { get; init; }
+    public required string PreviousState { get; init; }
 }
