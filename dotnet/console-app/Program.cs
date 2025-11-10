@@ -87,12 +87,14 @@ class Program
 
         // Parse renderer argument and create renderer using factory
         var rendererType = ParseRendererType(renderer);
-        var underlyingRenderer = TerminalRendererFactory.CreateRenderer(terminalInfo, rendererType);
+        var gameRenderer = TerminalRendererFactory.CreateRenderer(terminalInfo, rendererType);
         
-        // Wrap the factory-created renderer in a Terminal.Gui-compatible renderer.
-        // The underlying renderer provides capabilities detection and rendering logic,
-        // while TerminalGuiRenderer adapts it to use Terminal.Gui's Driver API.
-        var gameRenderer = new TerminalGuiRenderer(underlyingRenderer);
+        // Advanced renderers (Kitty, Sixel, Braille) render directly to console and don't need Terminal.Gui wrapping.
+        // Only wrap ASCII renderer in TerminalGuiRenderer for Terminal.Gui integration.
+        if (gameRenderer is AsciiRenderer asciiRenderer)
+        {
+            gameRenderer = new TerminalGuiRenderer(asciiRenderer);
+        }
 
         // Initialize Terminal.Gui application
         Application.Init();

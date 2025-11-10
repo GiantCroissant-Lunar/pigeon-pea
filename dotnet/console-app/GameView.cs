@@ -23,7 +23,20 @@ public class GameView : View
     {
         _gameWorld = gameWorld;
         _renderer = renderer;
-        _renderTarget = new TerminalGuiRenderTarget(this);
+        
+        // Use appropriate render target based on renderer type
+        // Terminal.Gui-based renderers use TerminalGuiRenderTarget
+        // Advanced renderers (Kitty, Sixel, Braille) use ConsoleRenderTarget for direct console output
+        if (_renderer is TerminalGuiRenderer)
+        {
+            _renderTarget = new TerminalGuiRenderTarget(this);
+        }
+        else
+        {
+            // Advanced renderers write directly to console
+            // Use console dimensions for the render target
+            _renderTarget = new ConsoleRenderTarget(System.Console.WindowWidth, System.Console.WindowHeight);
+        }
         
         // Initialize the renderer with the render target
         _renderer.Initialize(_renderTarget);
