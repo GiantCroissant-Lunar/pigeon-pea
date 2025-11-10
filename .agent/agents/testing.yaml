@@ -17,6 +17,6 @@ constraints:
   - Report test results in readable format
 
 success_criteria:
-  - "All tests pass or failures clearly reported"
-  - "Coverage data generated (if requested)"
-  - "Benchmark results available (if requested)"
+  - All tests pass or failures clearly reported
+  - Coverage data generated (if requested)
+  - Benchmark results available (if requested)
