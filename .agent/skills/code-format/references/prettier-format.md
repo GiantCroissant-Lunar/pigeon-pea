@@ -242,7 +242,7 @@ The `.pre-commit-config.yaml` includes Prettier:
 
 ```yaml
 - repo: https://github.com/pre-commit/mirrors-prettier
-  rev: v4.0.0-alpha.8
+  rev: v3.1.0
   hooks:
     - id: prettier
       types_or: [javascript, jsx, ts, tsx, json, markdown, css, scss]

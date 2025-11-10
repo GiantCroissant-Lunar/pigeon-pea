@@ -365,19 +365,19 @@ npx prettier --check "**/*.{json,yml,yaml,md}"
 
 ```bash
 # Get list of changed files
-changed_cs_files=$(git diff --name-only --diff-filter=ACMR | grep '\.cs$')
-changed_other_files=$(git diff --name-only --diff-filter=ACMR | grep -E '\.(json|yml|yaml|md)$')
+changed_cs_files=$(git diff --name-only --diff-filter=ACMR -z | grep -z '\.cs$' || true)
+changed_other_files=$(git diff --name-only --diff-filter=ACMR -z | grep -zE '\.(json|yml|yaml|md)$' || true)
 
 # Format only changed .NET files
 if [ -n "$changed_cs_files" ]; then
   cd ./dotnet
-  echo "$changed_cs_files" | xargs dotnet format --include
+  echo "$changed_cs_files" | xargs -0 dotnet format --include
   cd ..
 fi
 
 # Format only changed non-.NET files
 if [ -n "$changed_other_files" ]; then
-  echo "$changed_other_files" | xargs npx prettier --write
+  echo "$changed_other_files" | xargs -0 npx prettier --write
 fi
 ```
 

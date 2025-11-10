@@ -200,15 +200,14 @@ format_prettier() {
     
     local all_success=true
     
-    for pattern in "${prettier_patterns[@]}"; do
-        if [[ "$VERBOSE" == "true" ]]; then
-            print_info "Formatting pattern: $pattern"
-        fi
-        
-        if ! npx prettier "${prettier_args[@]}" "$pattern" --no-error-on-unmatched-pattern; then
-            all_success=false
-        fi
-    done
+    if [[ "$VERBOSE" == "true" ]]; then
+        print_info "Formatting patterns: ${prettier_patterns[*]}"
+    fi
+    
+    # Run prettier on all patterns at once for better performance
+    if ! npx prettier "${prettier_args[@]}" "${prettier_patterns[@]}" --no-error-on-unmatched-pattern; then
+        all_success=false
+    fi
     
     if [[ "$all_success" == "true" ]]; then
         if [[ "$VERIFY_MODE" == "true" ]]; then
