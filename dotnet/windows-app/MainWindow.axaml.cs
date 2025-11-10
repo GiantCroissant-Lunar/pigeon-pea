@@ -26,6 +26,11 @@ public partial class MainWindow : Window, IDisposable
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
     private bool _disposed;
 
+    // Parameterless constructor for Avalonia XAML loader (AVLN3001)
+    public MainWindow() : this(null)
+    {
+    }
+
     public MainWindow(SpriteAtlasManager? spriteAtlasManager = null)
     {
         InitializeComponent();
