@@ -76,17 +76,17 @@ dotnet restore --runtime linux-x64        # Specific runtime
 
 **Solutions:**
 - Verify on nuget.org: https://www.nuget.org/packages/{PackageName}
-- Check version: `dotnet nuget list PackageName`
+- Check package versions on nuget.org
 - Fix typos in `.csproj`
 - Add private feed if needed
 
 ### Error: NU1101 - Package not found
 
-**Fix:** Search `dotnet nuget search`, fix name in `.csproj`, check if renamed
+**Fix:** Search on nuget.org, fix name in `.csproj`, check if renamed
 
 ### Error: NU1102 - Version not found
 
-**Fix:** Check versions with `dotnet nuget list`, update `.csproj`, or use `--include-prerelease`
+**Fix:** Check available versions on nuget.org, update `.csproj`, or use `--include-prerelease` if the desired version is a pre-release.
 
 ### Error: NU1107 - Version conflict
 
@@ -171,14 +171,14 @@ Update: Edit `.csproj` package version, then `dotnet restore`
 
 ```bash
 # Standard restore
-dotnet restore
+dotnet restore PigeonPea.sln
 
 # Force full restore
-dotnet restore --force
+dotnet restore PigeonPea.sln --force
 
 # Clear cache and restore
 dotnet nuget locals all --clear
-dotnet restore
+dotnet restore PigeonPea.sln
 
 # Restore with verbose output for troubleshooting
 dotnet restore --verbosity detailed

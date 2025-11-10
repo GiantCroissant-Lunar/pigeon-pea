@@ -55,16 +55,18 @@ Example: `./dotnet/console-app/bin/Debug/net9.0/PigeonPea.Console.dll`
 ## Build Options
 
 ```bash
+# Usage: dotnet build <SOLUTION|PROJECT> [options]
+
 # Common flags
-dotnet build --no-restore              # Skip restore
-dotnet build -m                        # Parallel build
-dotnet build --verbosity detailed      # Verbose output
-dotnet build /p:RunAnalyzers=false     # Skip analyzers
-dotnet build /p:TreatWarningsAsErrors=true  # Warnings as errors
+--no-restore                       # Skip restore
+-m                                 # Parallel build
+--verbosity <level>                # Verbosity: q[uiet], m[inimal], n[ormal], d[etailed], diag[nostic]
+/p:RunAnalyzers=false              # Skip analyzers
+/p:TreatWarningsAsErrors=true      # Warnings as errors
 
 # MSBuild properties
-dotnet build /p:Version=1.2.3          # Set version
-dotnet build /p:Deterministic=true     # Reproducible builds
+/p:Version=1.2.3                   # Set version
+/p:Deterministic=true              # Reproducible builds
 ```
 
 ## Common Errors and Solutions
@@ -112,7 +114,7 @@ error NU1301: Unable to load the service index for source https://api.nuget.org/
 
 **Cause:** Corrupted cache
 
-**Fix:** Run `dotnet clean` then `rm -rf */bin */obj` then rebuild
+**Fix:** Run `dotnet clean`. If issues persist, manually remove the `bin` and `obj` directories from project folders before rebuilding.
 
 ### Error: CSxxxx - Compilation errors
 
@@ -139,7 +141,7 @@ error NU1301: Unable to load the service index for source https://api.nuget.org/
 Before committing:
 
 ```bash
-dotnet build ./dotnet/PigeonPea.sln
+(cd ./dotnet && dotnet build PigeonPea.sln)
 pre-commit run --all-files
 ```
 
@@ -159,7 +161,7 @@ Hooks run dotnet format, security checks, file validation.
 
 1. Check exit code: `echo $?` (should be 0)
 2. Output shows "Build succeeded. 0 Warning(s) 0 Error(s)"
-3. Artifacts exist: `ls ./dotnet/console-app/bin/Debug/net9.0/`
+3. Artifacts exist: `ls ./dotnet/{ProjectName}/bin/{Configuration}/net9.0/`
 4. Review and address any warnings before release
 
 ## Related Procedures
