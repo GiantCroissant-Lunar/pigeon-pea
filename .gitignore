@@ -108,3 +108,5 @@ TestResults/
 # Build outputs
 out/
 target/
+
+ref-projects/
