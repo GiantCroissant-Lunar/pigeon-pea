@@ -1,7 +1,9 @@
+using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using MessagePipe;
 using ObservableCollections;
+using PigeonPea.Shared;
 using PigeonPea.Shared.Events;
 using ReactiveUI;
 
@@ -75,6 +77,14 @@ public class MessageLogViewModel : ReactiveObject, IDisposable
                 _messages.RemoveAt(0);
             }
         });
+    }
+
+    /// <summary>
+    /// No-op update to satisfy GameViewModel signature while using event-driven updates.
+    /// </summary>
+    public void Update(GameWorld world)
+    {
+        // Intentionally left blank; this VM updates via MessagePipe events.
     }
 
     /// <summary>

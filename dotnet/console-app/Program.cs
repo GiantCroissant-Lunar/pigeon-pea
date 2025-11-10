@@ -55,10 +55,10 @@ class Program
     {
         // Set up dependency injection container
         var services = new ServiceCollection();
-        
+
         // Add MessagePipe and other Pigeon Pea services
         services.AddPigeonPeaServices();
-        
+
         // Build the service provider
         using var serviceProvider = services.BuildServiceProvider();
 
