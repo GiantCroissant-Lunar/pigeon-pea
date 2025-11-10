@@ -22,7 +22,7 @@ public readonly struct PlayerDamagedEvent
     /// <summary>
     /// Gets the source of the damage (e.g., enemy name, trap type).
     /// </summary>
-    public string Source { get; init; }
+    public required string Source { get; init; }
 }
 
 /// <summary>
@@ -37,7 +37,7 @@ public readonly struct EnemyDefeatedEvent
     /// <summary>
     /// Gets the name of the defeated enemy.
     /// </summary>
-    public string EnemyName { get; init; }
+    public required string EnemyName { get; init; }
 
     /// <summary>
     /// Gets the amount of experience points awarded for defeating the enemy.

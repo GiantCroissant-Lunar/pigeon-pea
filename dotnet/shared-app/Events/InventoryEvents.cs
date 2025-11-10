@@ -12,12 +12,12 @@ public readonly struct ItemPickedUpEvent
     /// <summary>
     /// Gets the name of the item that was picked up.
     /// </summary>
-    public string ItemName { get; init; }
+    public required string ItemName { get; init; }
 
     /// <summary>
     /// Gets the type of the item that was picked up (e.g., "Consumable", "Equipment", "QuestItem").
     /// </summary>
-    public string ItemType { get; init; }
+    public required string ItemType { get; init; }
 }
 
 /// <summary>
@@ -32,12 +32,12 @@ public readonly struct ItemUsedEvent
     /// <summary>
     /// Gets the name of the item that was used.
     /// </summary>
-    public string ItemName { get; init; }
+    public required string ItemName { get; init; }
 
     /// <summary>
     /// Gets the type of the item that was used (e.g., "Consumable", "Equipment", "QuestItem").
     /// </summary>
-    public string ItemType { get; init; }
+    public required string ItemType { get; init; }
 }
 
 /// <summary>
@@ -52,5 +52,5 @@ public readonly struct ItemDroppedEvent
     /// <summary>
     /// Gets the name of the item that was dropped.
     /// </summary>
-    public string ItemName { get; init; }
+    public required string ItemName { get; init; }
 }
