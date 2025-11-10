@@ -1,46 +1,21 @@
 namespace PigeonPea.Shared.Events;
 
 /// <summary>
-/// Example event published when a player takes damage.
+/// Event published when the game state changes between major states.
 /// </summary>
-public readonly struct PlayerDamagedEvent
-{
-    public int Damage { get; init; }
-    public int RemainingHealth { get; init; }
-    public string Source { get; init; }
-}
-
-/// <summary>
-/// Example event published when an item is picked up.
-/// </summary>
-public readonly struct ItemPickedUpEvent
-{
-    public string ItemName { get; init; }
-    public string ItemType { get; init; }
-}
-
-/// <summary>
-/// Event published when an item is used.
-/// </summary>
-public readonly struct ItemUsedEvent
-{
-    public string ItemName { get; init; }
-    public string ItemType { get; init; }
-}
-
-/// <summary>
-/// Event published when an item is dropped.
-/// </summary>
-public readonly struct ItemDroppedEvent
-{
-    public string ItemName { get; init; }
-}
-
-/// <summary>
-/// Example event published when the game state changes.
-/// </summary>
+/// <remarks>
+/// This event is triggered when the game transitions between states such as Menu, Playing, Paused, or GameOver,
+/// allowing systems to respond to state changes and update accordingly.
+/// </remarks>
 public readonly struct GameStateChangedEvent
 {
+    /// <summary>
+    /// Gets the new game state after the transition.
+    /// </summary>
     public string NewState { get; init; }
+
+    /// <summary>
+    /// Gets the previous game state before the transition.
+    /// </summary>
     public string PreviousState { get; init; }
 }
