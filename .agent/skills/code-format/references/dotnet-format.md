@@ -245,7 +245,7 @@ Exit code non-zero = formatting violations = build failure.
 
 ## Performance Tips
 
-1. **Format before restore**: Run after restore to avoid duplicate work
+1. **Skip restore if already done**: Run after restore to avoid duplicate work
 2. **Format specific projects**: Target only changed projects
 3. **Skip restore**: Use `--no-restore` if packages already restored
 4. **IDE formatting**: Configure IDE to format on save (reduces manual runs)
