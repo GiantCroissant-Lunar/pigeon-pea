@@ -88,3 +88,35 @@ repos:
       - id: detect-secrets
         args: ['--baseline', '.secrets.baseline']
         exclude: package-lock.json
+
+  # Agent infrastructure validation
+  - repo: local
+    hooks:
+      - id: validate-skills
+        name: Validate agent skills
+        entry: python scripts/validate_skills.py
+        language: python
+        files: '^\.agent/skills/.*\.md$'
+        pass_filenames: false
+        additional_dependencies:
+          - pyyaml
+          - jsonschema
+
+      - id: validate-agents
+        name: Validate agent manifests
+        entry: python scripts/validate_agents.py
+        language: python
+        files: '^\.agent/agents/.*\.yaml$'
+        pass_filenames: false
+        additional_dependencies:
+          - pyyaml
+          - jsonschema
+
+      - id: generate-registry
+        name: Generate agent registry
+        entry: python scripts/generate_registry.py
+        language: python
+        files: '^\.agent/(agents|skills)/.*\.(yaml|md)$'
+        pass_filenames: false
+        additional_dependencies:
+          - pyyaml
