@@ -23,9 +23,11 @@ public class RenderingBenchmarks
     private SkiaSharpRenderer? _windowsRenderer;
     private KittyGraphicsRenderer? _consoleRenderer;
     private SkiaRenderTarget? _skiaTarget;
+    private SkiaRenderTarget? _largeSkiaTarget;
     private MockRenderTarget? _mockTarget;
     private ParticleSystem? _particleSystem;
     private SKSurface? _surface;
+    private SKSurface? _largeSurface;
     
     private const int SmallMapWidth = 80;
     private const int SmallMapHeight = 50;
@@ -55,6 +57,16 @@ public class RenderingBenchmarks
             _surface = SKSurface.Create(imageInfo);
             _skiaTarget = new SkiaRenderTarget(_surface.Canvas, SmallMapWidth, SmallMapHeight, TileSize);
             _windowsRenderer.Initialize(_skiaTarget);
+            
+            // Setup large surface for large map benchmark
+            var largeImageInfo = new SKImageInfo(
+                LargeMapWidth * TileSize,
+                LargeMapHeight * TileSize,
+                SKColorType.Rgba8888,
+                SKAlphaType.Premul
+            );
+            _largeSurface = SKSurface.Create(largeImageInfo);
+            _largeSkiaTarget = new SkiaRenderTarget(_largeSurface.Canvas, LargeMapWidth, LargeMapHeight, TileSize);
         }
         catch (Exception ex)
         {
@@ -98,6 +110,7 @@ public class RenderingBenchmarks
         _windowsRenderer?.Dispose();
         _consoleRenderer?.Dispose();
         _surface?.Dispose();
+        _largeSurface?.Dispose();
     }
 
     /// <summary>
@@ -121,6 +134,8 @@ public class RenderingBenchmarks
         _windowsRenderer.SetViewport(viewport);
         
         // Draw tiles from the game world
+        var entityTile = new Tile('@', Color.White, Color.Black);
+        var emptyTile = new Tile('.', Color.Gray, Color.Black);
         for (int y = 0; y < SmallMapHeight; y++)
         {
             for (int x = 0; x < SmallMapWidth; x++)
@@ -128,13 +143,11 @@ public class RenderingBenchmarks
                 var gameObject = _smallWorld.Map[x, y];
                 if (gameObject != null)
                 {
-                    var tile = new Tile('@', Color.White, Color.Black);
-                    _windowsRenderer.DrawTile(x, y, tile);
+                    _windowsRenderer.DrawTile(x, y, entityTile);
                 }
                 else
                 {
-                    var tile = new Tile('.', Color.Gray, Color.Black);
-                    _windowsRenderer.DrawTile(x, y, tile);
+                    _windowsRenderer.DrawTile(x, y, emptyTile);
                 }
             }
         }
@@ -150,7 +163,9 @@ public class RenderingBenchmarks
     public void ConsoleRendererFrameTime()
     {
         if (_consoleRenderer == null || _mockTarget == null || _smallWorld == null)
-            return;
+        {
+            throw new InvalidOperationException("Console renderer not initialized.");
+        }
 
         _consoleRenderer.BeginFrame();
         _consoleRenderer.Clear(Color.Black);
@@ -160,6 +175,8 @@ public class RenderingBenchmarks
         _consoleRenderer.SetViewport(viewport);
         
         // Draw tiles from the game world
+        var entityTile = new Tile('@', Color.White, Color.Black);
+        var emptyTile = new Tile('.', Color.Gray, Color.Black);
         for (int y = 0; y < SmallMapHeight; y++)
         {
             for (int x = 0; x < SmallMapWidth; x++)
@@ -167,13 +184,11 @@ public class RenderingBenchmarks
                 var gameObject = _smallWorld.Map[x, y];
                 if (gameObject != null)
                 {
-                    var tile = new Tile('@', Color.White, Color.Black);
-                    _consoleRenderer.DrawTile(x, y, tile);
+                    _consoleRenderer.DrawTile(x, y, entityTile);
                 }
                 else
                 {
-                    var tile = new Tile('.', Color.Gray, Color.Black);
-                    _consoleRenderer.DrawTile(x, y, tile);
+                    _consoleRenderer.DrawTile(x, y, emptyTile);
                 }
             }
         }
@@ -188,22 +203,12 @@ public class RenderingBenchmarks
     [Benchmark]
     public void LargeMapRendering()
     {
-        if (_windowsRenderer == null || _largeWorld == null)
+        if (_windowsRenderer == null || _largeWorld == null || _largeSkiaTarget == null)
         {
             throw new InvalidOperationException("Windows renderer not initialized - SkiaSharp may not be available in this environment");
         }
 
-        // Create a larger surface for this benchmark
-        var largeImageInfo = new SKImageInfo(
-            LargeMapWidth * TileSize,
-            LargeMapHeight * TileSize,
-            SKColorType.Rgba8888,
-            SKAlphaType.Premul
-        );
-        using var largeSurface = SKSurface.Create(largeImageInfo);
-        var largeTarget = new SkiaRenderTarget(largeSurface.Canvas, LargeMapWidth, LargeMapHeight, TileSize);
-        
-        _windowsRenderer.SetRenderTarget(largeTarget);
+        _windowsRenderer.SetRenderTarget(_largeSkiaTarget);
         _windowsRenderer.BeginFrame();
         _windowsRenderer.Clear(Color.Black);
         
@@ -212,6 +217,8 @@ public class RenderingBenchmarks
         _windowsRenderer.SetViewport(viewport);
         
         // Draw tiles from the large game world
+        var entityTile = new Tile('@', Color.White, Color.Black);
+        var emptyTile = new Tile('.', Color.Gray, Color.Black);
         for (int y = 0; y < LargeMapHeight; y++)
         {
             for (int x = 0; x < LargeMapWidth; x++)
@@ -219,13 +226,11 @@ public class RenderingBenchmarks
                 var gameObject = _largeWorld.Map[x, y];
                 if (gameObject != null)
                 {
-                    var tile = new Tile('@', Color.White, Color.Black);
-                    _windowsRenderer.DrawTile(x, y, tile);
+                    _windowsRenderer.DrawTile(x, y, entityTile);
                 }
                 else
                 {
-                    var tile = new Tile('.', Color.Gray, Color.Black);
-                    _windowsRenderer.DrawTile(x, y, tile);
+                    _windowsRenderer.DrawTile(x, y, emptyTile);
                 }
             }
         }
