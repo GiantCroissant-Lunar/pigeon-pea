@@ -48,10 +48,10 @@ constraints:
   - Ensure builds are idempotent
 
 success_criteria:
-  - "Build succeeds with zero errors"
-  - "Artifacts generated in expected output path"
-  - "Build logs attached with full context"
-  - "Dependencies restored successfully"
+  - 'Build succeeds with zero errors'
+  - 'Artifacts generated in expected output path'
+  - 'Build logs attached with full context'
+  - 'Dependencies restored successfully'
 ```
 
 ## Architecture

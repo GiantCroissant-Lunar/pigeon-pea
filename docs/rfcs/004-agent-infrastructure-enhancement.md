@@ -168,7 +168,7 @@ routing:
       to: CodeReviewAgent
 
     - if: "task contains 'refactor' or 'code' or 'implement' or 'fix'"
-      to: CodeReviewAgent  # Default for coding tasks
+      to: CodeReviewAgent # Default for coding tasks
 
 fallback: CodeReviewAgent
 
@@ -205,10 +205,10 @@ constraints:
   - Ensure builds are idempotent
 
 success_criteria:
-  - "Build succeeds with zero errors"
-  - "Artifacts generated in expected output path"
-  - "Build logs attached with full context"
-  - "Dependencies restored successfully"
+  - 'Build succeeds with zero errors'
+  - 'Artifacts generated in expected output path'
+  - 'Build logs attached with full context'
+  - 'Dependencies restored successfully'
 ```
 
 #### CodeReviewAgent
@@ -237,10 +237,10 @@ constraints:
   - Provide actionable feedback with file/line references
 
 success_criteria:
-  - "All formatting checks pass"
-  - "No critical security issues found"
-  - "Analysis report generated with actionable items"
-  - "Code quality metrics within acceptable range"
+  - 'All formatting checks pass'
+  - 'No critical security issues found'
+  - 'Analysis report generated with actionable items'
+  - 'Code quality metrics within acceptable range'
 ```
 
 #### TestingAgent
@@ -268,10 +268,10 @@ constraints:
   - Fail fast on critical test failures
 
 success_criteria:
-  - "All tests pass or failures clearly reported"
-  - "Coverage data generated (if requested)"
-  - "Benchmark results available (if requested)"
-  - "Test execution time within acceptable range"
+  - 'All tests pass or failures clearly reported'
+  - 'Coverage data generated (if requested)'
+  - 'Benchmark results available (if requested)'
+  - 'Test execution time within acceptable range'
 ```
 
 ### 3. Skills (Progressive Disclosure Pattern)
@@ -291,44 +291,51 @@ description: Build .NET solution/projects using dotnet CLI. Use when task involv
 inputs:
   target: [solution, project, all]
   configuration: [Debug, Release]
-  project_path: string  # Optional, defaults to ./dotnet/PigeonPea.sln
+  project_path: string # Optional, defaults to ./dotnet/PigeonPea.sln
 contracts:
-  success: "Build completes with zero errors; artifacts in bin/"
-  failure: "Non-zero exit code or compilation errors"
+  success: 'Build completes with zero errors; artifacts in bin/'
+  failure: 'Non-zero exit code or compilation errors'
 ---
 
 # .NET Build Skill (Entry Map)
+
 > **Goal:** Guide agent to the exact build procedure needed.
 
 ## Quick Start (Pick One)
+
 - **Build entire solution** → `references/build-solution.md`
 - **Restore dependencies only** → `references/restore-deps.md`
 - **Run benchmarks after build** → `references/run-benchmarks.md`
 
 ## When to Use
+
 - Compiling .NET code (.csproj, .sln)
 - Restoring NuGet packages
 - Building specific configurations (Debug/Release)
 - Preparing for testing or packaging
 
 **Do NOT use for:**
+
 - Running tests (use `dotnet-test` skill)
 - Code formatting (use `code-format` skill)
 - Static analysis (use `code-analyze` skill)
 
 ## Inputs & Outputs (Concise)
+
 - `target`: solution | project | all
 - `configuration`: Debug | Release (default: Debug)
 - `project_path`: path to .sln or .csproj (default: ./dotnet/PigeonPea.sln)
 - **Output**: `artifact_path` (bin/ directory), `build_log`
 
 ## Guardrails
+
 - Operate within `./dotnet` directory
 - Never commit `bin/`, `obj/` folders
 - Surface warnings and errors clearly
 - Idempotent: safe to re-run
 
 ## Navigation (Pick Relevant Reference)
+
 1. **Build entire solution** → `references/build-solution.md`
 2. **Restore dependencies** → `references/restore-deps.md`
 3. **Build + run benchmarks** → `references/run-benchmarks.md`
@@ -347,6 +354,7 @@ dotnet restore ./dotnet && dotnet build ./dotnet/PigeonPea.sln
 ```
 
 ## Troubleshooting
+
 - **Build fails with missing deps**: Read `references/restore-deps.md`
 - **Compilation errors**: Capture first 20 error lines, surface to user
 - **Benchmark failures**: Check `references/run-benchmarks.md`
@@ -362,9 +370,11 @@ dotnet restore ./dotnet && dotnet build ./dotnet/PigeonPea.sln
 # Build .NET Solution - Detailed Procedure
 
 ## Overview
+
 Builds the entire PigeonPea.sln solution, including all projects and test projects.
 
 ## Prerequisites
+
 - .NET SDK installed (check: `dotnet --version`)
 - Solution file: `./dotnet/PigeonPea.sln`
 - All project files (.csproj) present
@@ -372,22 +382,26 @@ Builds the entire PigeonPea.sln solution, including all projects and test projec
 ## Standard Build Flow
 
 ### 1. Restore Dependencies
+
 ```bash
 cd ./dotnet
 dotnet restore PigeonPea.sln
 ```
 
 **Expected output:**
+
 ```
 Restore completed in X.XXs for ...
 ```
 
 ### 2. Build Solution (Debug)
+
 ```bash
 dotnet build PigeonPea.sln --configuration Debug
 ```
 
 **Expected output:**
+
 ```
 Build succeeded.
     0 Warning(s)
@@ -395,39 +409,47 @@ Build succeeded.
 ```
 
 ### 3. Build Solution (Release)
+
 ```bash
 dotnet build PigeonPea.sln --configuration Release --no-restore
 ```
 
 **Flags:**
+
 - `--no-restore`: Skip restore if already done
 - `-c Release`: Use Release configuration
 - `--verbosity normal`: Adjust log level (quiet, minimal, normal, detailed, diagnostic)
 
 ## Output Locations
+
 - **Binaries**: `./dotnet/{ProjectName}/bin/{Configuration}/net9.0/`
 - **Example**: `./dotnet/console-app/bin/Debug/net9.0/`
 
 ## Common Errors
 
 ### Error: NU1301 (Unable to load service index)
+
 **Cause:** NuGet package source unreachable.
 
 **Fix:**
+
 ```bash
 dotnet nuget list source
 dotnet restore --source https://api.nuget.org/v3/index.json
 ```
 
 ### Error: CS0246 (Type or namespace not found)
+
 **Cause:** Missing package reference or project reference.
 
 **Fix:** Check `.csproj` for `<PackageReference>` or `<ProjectReference>`.
 
 ### Error: MSB4018 (Unexpected error)
+
 **Cause:** Corrupted obj/ or bin/ folders.
 
 **Fix:**
+
 ```bash
 dotnet clean
 rm -rf ./dotnet/**/bin ./dotnet/**/obj
@@ -435,18 +457,22 @@ dotnet restore && dotnet build
 ```
 
 ## Performance Tips
+
 - Use `--no-restore` if restore already done
 - Parallel builds: `dotnet build -m` (multi-core)
 - Skip analyzing: `dotnet build /p:RunAnalyzers=false`
 
 ## Integration with Pre-commit Hooks
+
 Before committing code that modifies .csproj or source files:
+
 ```bash
 dotnet build PigeonPea.sln
 pre-commit run --all-files
 ```
 
 ## Related
+
 - Restore only: `restore-deps.md`
 - Build + benchmarks: `run-benchmarks.md`
 - Testing after build: See `dotnet-test` skill
@@ -489,10 +515,7 @@ pre-commit run --all-files
     "inputs": {
       "type": "object",
       "additionalProperties": {
-        "oneOf": [
-          { "type": "array", "items": { "type": "string" } },
-          { "type": "string" }
-        ]
+        "oneOf": [{ "type": "array", "items": { "type": "string" } }, { "type": "string" }]
       },
       "description": "Input parameters and their possible values"
     },
@@ -579,22 +602,22 @@ rate_limits:
 
 safety:
   never_commit:
-    - "bin/"
-    - "obj/"
-    - "*.exe"
-    - "*.dll"
-    - "*.user"
-    - "*.suo"
-    - "node_modules/"
-    - ".vs/"
+    - 'bin/'
+    - 'obj/'
+    - '*.exe'
+    - '*.dll'
+    - '*.user'
+    - '*.suo'
+    - 'node_modules/'
+    - '.vs/'
 
   never_delete:
-    - ".git/"
-    - ".agent/"
-    - "*.sln"
-    - "*.csproj"
-    - "README.md"
-    - "LICENSE"
+    - '.git/'
+    - '.agent/'
+    - '*.sln'
+    - '*.csproj'
+    - 'README.md'
+    - 'LICENSE'
 
   never_expose:
     - secrets
@@ -605,18 +628,18 @@ safety:
 
 repository_boundaries:
   allowed_directories:
-    - "./dotnet"
-    - "./tests"
-    - "./docs"
-    - "./.agent"
-    - "./.github"
+    - './dotnet'
+    - './tests'
+    - './docs'
+    - './.agent'
+    - './.github'
 
   forbidden_directories:
-    - "./bin"
-    - "./obj"
-    - "./packages"
-    - "./.vs"
-    - "./node_modules"
+    - './bin'
+    - './obj'
+    - './packages'
+    - './.vs'
+    - './node_modules'
 ```
 
 #### coding-standards.yaml
@@ -630,44 +653,44 @@ version: 0.1.0
 
 dotnet:
   style:
-    - "Follow .editorconfig rules strictly"
-    - "Use dotnet-format before every commit"
-    - "PascalCase for public members"
-    - "camelCase for private fields (_camelCase for backing fields)"
-    - "Use explicit access modifiers"
+    - 'Follow .editorconfig rules strictly'
+    - 'Use dotnet-format before every commit'
+    - 'PascalCase for public members'
+    - 'camelCase for private fields (_camelCase for backing fields)'
+    - 'Use explicit access modifiers'
 
   testing:
-    - "All public APIs must have unit tests"
-    - "Test projects follow naming: {ProjectName}.Tests"
-    - "Use xUnit/NUnit patterns consistently"
-    - "Aim for >70% code coverage on new code"
+    - 'All public APIs must have unit tests'
+    - 'Test projects follow naming: {ProjectName}.Tests'
+    - 'Use xUnit/NUnit patterns consistently'
+    - 'Aim for >70% code coverage on new code'
 
   documentation:
-    - "XML docs for all public APIs"
-    - "Inline comments for complex logic (why, not what)"
-    - "Keep README.md updated with new features"
-    - "Update ARCHITECTURE.md when adding new components"
+    - 'XML docs for all public APIs'
+    - 'Inline comments for complex logic (why, not what)'
+    - 'Keep README.md updated with new features'
+    - 'Update ARCHITECTURE.md when adding new components'
 
 formatting:
   tools:
-    - "dotnet-format (C#)"
-    - "prettier (JSON, YAML, Markdown)"
+    - 'dotnet-format (C#)'
+    - 'prettier (JSON, YAML, Markdown)'
 
   enforcement:
-    - "Run pre-commit hooks before every commit"
-    - "CI must validate formatting on every PR"
-    - "Zero tolerance for formatting violations in main"
+    - 'Run pre-commit hooks before every commit'
+    - 'CI must validate formatting on every PR'
+    - 'Zero tolerance for formatting violations in main'
 
 code_quality:
   metrics:
-    - "Cyclomatic complexity < 15 per method"
-    - "Method length < 50 lines (prefer < 20)"
-    - "Class length < 300 lines (prefer < 200)"
+    - 'Cyclomatic complexity < 15 per method'
+    - 'Method length < 50 lines (prefer < 20)'
+    - 'Class length < 300 lines (prefer < 200)'
 
   analysis:
-    - "Enable all Roslyn analyzers"
-    - "Treat warnings as errors in Release builds"
-    - "Fix all critical/high severity issues before merge"
+    - 'Enable all Roslyn analyzers'
+    - 'Treat warnings as errors in Release builds'
+    - 'Fix all critical/high severity issues before merge'
 ```
 
 ## Implementation Plan
@@ -788,13 +811,13 @@ task test:skill:dotnet-build
 
 ## Size Guidelines (Reddit Refactor Pattern)
 
-| File Type | Max Lines | Purpose |
-|-----------|-----------|---------|
-| SKILL.md entry | ~200 | Router/map to references |
-| Reference file | 200-300 | Detailed procedure |
-| Sub-agent YAML | ~50 | Concise definition |
-| Orchestrator YAML | ~80 | Routing rules |
-| Schema | ~100 | Validation contract |
+| File Type         | Max Lines | Purpose                  |
+| ----------------- | --------- | ------------------------ |
+| SKILL.md entry    | ~200      | Router/map to references |
+| Reference file    | 200-300   | Detailed procedure       |
+| Sub-agent YAML    | ~50       | Concise definition       |
+| Orchestrator YAML | ~80       | Routing rules            |
+| Schema            | ~100      | Validation contract      |
 
 **Cold-start budget:** Entry + 1 reference ≤ ~500 lines total
 
@@ -827,6 +850,7 @@ After implementation, agents should be able to:
 ## Migration Path
 
 ### Before (Manual Commands)
+
 ```yaml
 # .agent/commands/run-tests.yaml
 steps:
@@ -836,12 +860,12 @@ steps:
 ```
 
 ### After (Sub-Agent + Skill)
+
 ```yaml
 # .agent/agents/testing.yaml
 name: TestingAgent
 skills:
   - dotnet-test
-
 # .agent/skills/dotnet-test/SKILL.md
 # Agent reads skill, loads references, executes
 ```
@@ -856,6 +880,7 @@ skills:
 ## Backward Compatibility
 
 Existing `.agent` components are preserved:
+
 - `.agent/rules/` - Keep as-is
 - `.agent/commands/` - Keep as-is (can be wrapped by skills later)
 - `.agent/workflows/` - Keep as-is
