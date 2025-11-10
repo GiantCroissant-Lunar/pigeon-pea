@@ -81,7 +81,7 @@ public class GameViewModel : ReactiveObject, IDisposable
     private void UpdateViewModels()
     {
         Player.Update(_world.EcsWorld, _world.PlayerEntity);
-        Inventory.Update(_world);
+        Inventory.Update(_world.EcsWorld, _world.PlayerEntity);
         MessageLog.Update(_world);
         Map.Update(_world);
     }
