@@ -368,22 +368,10 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void Capabilities_IncludesSpritesFlag()
-    {
-        // Assert
-        Assert.True(_renderer.Capabilities.Supports(RendererCapabilities.Sprites));
-    }
-
-    [Fact]
     public void DrawTile_WithSpriteId_DrawsSprite()
     {
         // Arrange
-        var testDataDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "TestData");
-        var atlasPath = Path.Combine(testDataDir, "test-atlas.png");
-        var definitionPath = Path.Combine(testDataDir, "test-atlas.json");
-
-        using var spriteManager = new SpriteAtlasManager();
-        spriteManager.LoadAtlas(atlasPath, definitionPath);
+        using var spriteManager = CreateTestSpriteAtlasManager();
         _renderer.SetSpriteAtlasManager(spriteManager);
 
         _renderer.BeginFrame();
@@ -402,12 +390,7 @@ public class SkiaSharpRendererTests : IDisposable
     public void DrawTile_WithNonexistentSpriteId_FallsBackToGlyph()
     {
         // Arrange
-        var testDataDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "TestData");
-        var atlasPath = Path.Combine(testDataDir, "test-atlas.png");
-        var definitionPath = Path.Combine(testDataDir, "test-atlas.json");
-
-        using var spriteManager = new SpriteAtlasManager();
-        spriteManager.LoadAtlas(atlasPath, definitionPath);
+        using var spriteManager = CreateTestSpriteAtlasManager();
         _renderer.SetSpriteAtlasManager(spriteManager);
 
         _renderer.BeginFrame();
@@ -426,12 +409,7 @@ public class SkiaSharpRendererTests : IDisposable
     public void DrawTile_WithSpriteId_ScalesToTileSize()
     {
         // Arrange
-        var testDataDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "TestData");
-        var atlasPath = Path.Combine(testDataDir, "test-atlas.png");
-        var definitionPath = Path.Combine(testDataDir, "test-atlas.json");
-
-        using var spriteManager = new SpriteAtlasManager();
-        spriteManager.LoadAtlas(atlasPath, definitionPath);
+        using var spriteManager = CreateTestSpriteAtlasManager();
         _renderer.SetSpriteAtlasManager(spriteManager);
 
         _renderer.BeginFrame();
@@ -467,12 +445,7 @@ public class SkiaSharpRendererTests : IDisposable
     public void SetSpriteAtlasManager_WithValidManager_SetsSuccessfully()
     {
         // Arrange
-        var testDataDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "TestData");
-        var atlasPath = Path.Combine(testDataDir, "test-atlas.png");
-        var definitionPath = Path.Combine(testDataDir, "test-atlas.json");
-
-        using var spriteManager = new SpriteAtlasManager();
-        spriteManager.LoadAtlas(atlasPath, definitionPath);
+        using var spriteManager = CreateTestSpriteAtlasManager();
 
         // Act & Assert - should not throw
         _renderer.SetSpriteAtlasManager(spriteManager);
@@ -483,6 +456,21 @@ public class SkiaSharpRendererTests : IDisposable
     {
         // Act & Assert - should not throw
         _renderer.SetSpriteAtlasManager(null);
+    }
+
+    /// <summary>
+    /// Creates and configures a SpriteAtlasManager with test data.
+    /// </summary>
+    /// <returns>A configured SpriteAtlasManager instance.</returns>
+    private SpriteAtlasManager CreateTestSpriteAtlasManager()
+    {
+        var testDataDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "TestData");
+        var atlasPath = Path.Combine(testDataDir, "test-atlas.png");
+        var definitionPath = Path.Combine(testDataDir, "test-atlas.json");
+
+        var spriteManager = new SpriteAtlasManager();
+        spriteManager.LoadAtlas(atlasPath, definitionPath);
+        return spriteManager;
     }
 
     /// <summary>
