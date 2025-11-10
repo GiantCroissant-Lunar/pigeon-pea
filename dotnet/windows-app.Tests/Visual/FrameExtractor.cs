@@ -63,7 +63,7 @@ public class FrameExtractor
         };
 
         using var process = new Process { StartInfo = processStartInfo };
-        
+
         var errorOutput = new List<string>();
         process.ErrorDataReceived += (sender, e) =>
         {
