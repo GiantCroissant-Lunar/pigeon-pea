@@ -82,8 +82,10 @@ public class GameViewModel : ReactiveObject, IDisposable
         _itemDroppedPublisher = _services.GetRequiredService<IPublisher<ItemDroppedEvent>>();
 
         // Set up commands with CanExecute based on item selection
-        var canExecuteItemAction = this.WhenAnyValue(x => x.Inventory.SelectedItem)
-            .Select(selectedItem => selectedItem != null);
+        // Watch SelectedIndex - commands can execute when an item is selected (index >= 0)
+        var canExecuteItemAction = this.WhenAnyValue(
+            x => x.Inventory.SelectedIndex,
+            selectedIndex => selectedIndex >= 0);
 
         UseItemCommand = ReactiveCommand.Create(UseItem, canExecuteItemAction);
         DropItemCommand = ReactiveCommand.Create(DropItem, canExecuteItemAction);
@@ -119,12 +121,7 @@ public class GameViewModel : ReactiveObject, IDisposable
     /// </summary>
     private void UseItem()
     {
-        if (Inventory.SelectedIndex < 0)
-            return;
-
-        var selectedItem = Inventory.SelectedItem;
-        if (selectedItem == null)
-            return;
+        var selectedItem = Inventory.SelectedItem!;
 
         // Try to use the item in the game world
         if (_world.TryUseItem(Inventory.SelectedIndex))
@@ -143,12 +140,7 @@ public class GameViewModel : ReactiveObject, IDisposable
     /// </summary>
     private void DropItem()
     {
-        if (Inventory.SelectedIndex < 0)
-            return;
-
-        var selectedItem = Inventory.SelectedItem;
-        if (selectedItem == null)
-            return;
+        var selectedItem = Inventory.SelectedItem!;
 
         // Try to drop the item in the game world
         if (_world.TryDropItem(Inventory.SelectedIndex))
