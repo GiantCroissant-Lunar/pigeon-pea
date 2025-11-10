@@ -4,6 +4,9 @@ using ObservableCollections;
 using ReactiveUI;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Events;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PigeonPea.Shared.ViewModels;
 
@@ -151,23 +154,17 @@ public class InventoryViewModel : ReactiveObject, IDisposable
 
     private void HandleItemPickedUp(ItemPickedUpEvent e)
     {
-        // Event handler for when an item is picked up
-        // The actual update will happen via Update() method
-        // This is a placeholder for potential future event-driven updates
+        // Placeholder for potential future event-driven updates
     }
 
     private void HandleItemUsed(ItemUsedEvent e)
     {
-        // Event handler for when an item is used
-        // The actual update will happen via Update() method
-        // This is a placeholder for potential future event-driven updates
+        // Placeholder for potential future event-driven updates
     }
 
     private void HandleItemDropped(ItemDroppedEvent e)
     {
-        // Event handler for when an item is dropped
-        // The actual update will happen via Update() method
-        // This is a placeholder for potential future event-driven updates
+        // Placeholder for potential future event-driven updates
     }
 
     /// <summary>

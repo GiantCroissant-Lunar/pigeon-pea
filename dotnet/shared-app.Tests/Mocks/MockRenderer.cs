@@ -10,6 +10,7 @@ namespace PigeonPea.Shared.Tests.Mocks;
 public class MockRenderer : IRenderer
 {
     private Viewport _viewport;
+    private IRenderTarget? _renderTarget;
 
     /// <summary>
     /// Gets the list of tiles drawn during rendering.
@@ -20,6 +21,12 @@ public class MockRenderer : IRenderer
     /// Gets the list of text drawn during rendering.
     /// </summary>
     public List<(int X, int Y, string Text, Color Foreground, Color Background)> DrawnText { get; } = new();
+
+    /// <summary>
+    /// Gets the captured frames from completed render cycles.
+    /// Each frame contains a snapshot of tiles and text drawn during that frame.
+    /// </summary>
+    public List<CapturedFrame> CapturedFrames { get; } = new();
 
     /// <summary>
     /// Gets or sets whether BeginFrame was called.
@@ -42,6 +49,11 @@ public class MockRenderer : IRenderer
     public Viewport CurrentViewport => _viewport;
 
     /// <summary>
+    /// Gets the render target that was initialized.
+    /// </summary>
+    public IRenderTarget? RenderTarget => _renderTarget;
+
+    /// <summary>
     /// Gets the renderer capabilities.
     /// </summary>
     public RendererCapabilities Capabilities { get; } =
@@ -53,7 +65,7 @@ public class MockRenderer : IRenderer
     /// </summary>
     public void Initialize(IRenderTarget target)
     {
-        // No-op for mock renderer
+        _renderTarget = target;
     }
 
     /// <summary>
@@ -74,6 +86,16 @@ public class MockRenderer : IRenderer
     public void EndFrame()
     {
         EndFrameCalled = true;
+
+        // Capture the current frame for later inspection
+        var frame = new CapturedFrame
+        {
+            Tiles = new List<(int X, int Y, Tile Tile)>(DrawnTiles),
+            Text = new List<(int X, int Y, string Text, Color Foreground, Color Background)>(DrawnText),
+            ClearColor = LastClearColor,
+            Viewport = CurrentViewport
+        };
+        CapturedFrames.Add(frame);
     }
 
     /// <summary>
@@ -117,7 +139,43 @@ public class MockRenderer : IRenderer
         EndFrameCalled = false;
         DrawnTiles.Clear();
         DrawnText.Clear();
+        CapturedFrames.Clear();
         LastClearColor = null;
         _viewport = default;
+        _renderTarget = null;
     }
+
+    /// <summary>
+    /// Gets the most recently captured frame, or null if no frames have been captured.
+    /// </summary>
+    public CapturedFrame? GetLastCapturedFrame()
+    {
+        return CapturedFrames.Count > 0 ? CapturedFrames[^1] : null;
+    }
+}
+
+/// <summary>
+/// Represents a captured frame from a rendering cycle.
+/// </summary>
+public class CapturedFrame
+{
+    /// <summary>
+    /// Gets or sets the tiles drawn in this frame.
+    /// </summary>
+    public List<(int X, int Y, Tile Tile)> Tiles { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets the text drawn in this frame.
+    /// </summary>
+    public List<(int X, int Y, string Text, Color Foreground, Color Background)> Text { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets the clear color used for this frame.
+    /// </summary>
+    public Color? ClearColor { get; set; }
+
+    /// <summary>
+    /// Gets or sets the viewport used for this frame.
+    /// </summary>
+    public Viewport Viewport { get; set; }
 }
