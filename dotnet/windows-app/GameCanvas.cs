@@ -1,92 +1,140 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Media;
-using Avalonia.Skia;
-using Avalonia.Threading;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
+using PigeonPea.Windows.Rendering;
 using SkiaSharp;
 using System;
-using System.Linq;
+using RTile = PigeonPea.Shared.Rendering.Tile;
 
 namespace PigeonPea.Windows;
 
 /// <summary>
-/// Custom SkiaSharp-based renderer for the game world.
+/// Custom SkiaSharp-based canvas for rendering the game world.
+/// Uses SkiaSharpRenderer for all drawing operations.
 /// </summary>
-public class GameCanvas : Control
+public class GameCanvas : Image
 {
     private GameWorld? _gameWorld;
-    private SKTypeface? _typeface;
-    private const int TileWidth = 16;
-    private const int TileHeight = 16;
+    private SkiaSharpRenderer? _renderer;
+    private ParticleSystem? _particleSystem;
+    private AnimationSystem? _animationSystem;
+    private SKBitmap? _bitmap;
+    private WriteableBitmap? _writeableBitmap;
+    private bool _isInitialized;
+    private const int TileSize = 16;
+    private const int CanvasWidth = 1280;
+    private const int CanvasHeight = 720;
 
-    public void Initialize(GameWorld gameWorld)
+    /// <summary>
+    /// Initializes the canvas with a game world and rendering systems.
+    /// </summary>
+    /// <param name="gameWorld">The game world to render.</param>
+    /// <param name="renderer">The renderer to use for drawing.</param>
+    /// <param name="particleSystem">Optional particle system for visual effects.</param>
+    /// <param name="animationSystem">Optional animation system for sprite animations.</param>
+    public void Initialize(GameWorld gameWorld, SkiaSharpRenderer renderer,
+                          ParticleSystem? particleSystem = null,
+                          AnimationSystem? animationSystem = null)
     {
-        _gameWorld = gameWorld;
-        _typeface = SKTypeface.FromFamilyName("Consolas", SKFontStyle.Normal)
-                    ?? SKTypeface.FromFamilyName("Courier New", SKFontStyle.Normal);
+        _gameWorld = gameWorld ?? throw new ArgumentNullException(nameof(gameWorld));
+        _renderer = renderer ?? throw new ArgumentNullException(nameof(renderer));
+        _particleSystem = particleSystem;
+        _animationSystem = animationSystem;
+
+        // Create bitmap for rendering
+        _bitmap = new SKBitmap(CanvasWidth, CanvasHeight, SKColorType.Bgra8888, SKAlphaType.Premul);
+        _writeableBitmap = new WriteableBitmap(
+            new PixelSize(CanvasWidth, CanvasHeight),
+            new Avalonia.Vector(96, 96),
+            PixelFormat.Bgra8888,
+            AlphaFormat.Premul);
+
+        Source = _writeableBitmap;
+        Stretch = Avalonia.Media.Stretch.Uniform;
+
+        // Subscribe to cleanup event
+        DetachedFromVisualTree += OnDetachedFromVisualTree;
     }
 
-    public override void Render(DrawingContext context)
+    private void OnDetachedFromVisualTree(object? sender, Avalonia.VisualTreeAttachmentEventArgs e)
     {
-        base.Render(context);
-
-        if (_gameWorld == null) return;
-
-        // Fallback: clear background using Avalonia primitives to avoid API mismatch
-        context.FillRectangle(Brushes.Black, new Rect(Bounds.Size));
-
-        // TODO: Reintroduce Skia lease-based rendering when targeting an Avalonia API that supports it here.
-        // If needed, move Skia rendering into a DrawingContextImpl-aware path.
+        // Dispose resources when control is removed from visual tree
+        _bitmap?.Dispose();
+        _bitmap = null;
     }
 
-    private void RenderGame(SKCanvas canvas)
+    /// <summary>
+    /// Renders the current frame to the canvas.
+    /// </summary>
+    public void RenderFrame()
     {
-        if (_gameWorld == null || _typeface == null) return;
+        if (_gameWorld == null || _renderer == null || _bitmap == null || _writeableBitmap == null)
+            return;
 
-        canvas.Clear(SKColors.Black);
+        using var canvas = new SKCanvas(_bitmap);
 
-        // Create paint for text rendering
-        using var font = new SKFont(_typeface, 16);
-        using var paint = new SKPaint
+        // Create render target for this frame
+        var width = CanvasWidth / TileSize;
+        var height = CanvasHeight / TileSize;
+        var renderTarget = new SkiaRenderTarget(canvas, width, height, TileSize);
+
+        // Initialize renderer once, then use SetRenderTarget for subsequent frames
+        if (!_isInitialized)
         {
-            IsAntialias = true
-        };
+            _renderer.Initialize(renderTarget);
+            _isInitialized = true;
+        }
+        else
+        {
+            _renderer.SetRenderTarget(renderTarget);
+        }
+
+        // Begin rendering frame
+        _renderer.BeginFrame();
+        _renderer.Clear(SadRogue.Primitives.Color.Black);
+
+        // Render all entities with Position and Renderable components
+        RenderEntities();
+
+        // Render particles if particle system is available - using renderer abstraction
+        if (_particleSystem != null)
+        {
+            _particleSystem.Render(_renderer, TileSize);
+        }
+
+        // End rendering frame
+        _renderer.EndFrame();
+
+        // Copy bitmap data to WriteableBitmap
+        CopyBitmapToWriteableBitmap(_bitmap, _writeableBitmap);
+    }
+
+    private static unsafe void CopyBitmapToWriteableBitmap(SKBitmap source, WriteableBitmap destination)
+    {
+        using var framebuffer = destination.Lock();
+        var src = source.GetPixels();
+        var dst = framebuffer.Address;
+        var size = source.Width * source.Height * 4; // 4 bytes per pixel (BGRA)
+        Buffer.MemoryCopy(src.ToPointer(), dst.ToPointer(), size, size);
+    }
+
+    private void RenderEntities()
+    {
+        if (_gameWorld == null || _renderer == null) return;
 
         // Render all entities with Position and Renderable components
         var query = new Arch.Core.QueryDescription().WithAll<Position, Renderable>();
         _gameWorld.EcsWorld.Query(in query, (ref Position pos, ref Renderable renderable) =>
         {
-            DrawGlyph(canvas, font, paint, pos.Point.X, pos.Point.Y,
-                     renderable.Glyph,
-                     ConvertColor(renderable.Foreground),
-                     ConvertColor(renderable.Background));
+            var tile = new RTile(
+                renderable.Glyph,
+                renderable.Foreground,
+                renderable.Background);
+
+            _renderer.DrawTile(pos.Point.X, pos.Point.Y, tile);
         });
-
-        // TODO: Render map tiles
-        // TODO: Apply FOV shading
-    }
-
-    private void DrawGlyph(SKCanvas canvas, SKFont font, SKPaint paint, int x, int y,
-                          char glyph, SKColor foreground, SKColor background)
-    {
-        float pixelX = x * TileWidth;
-        float pixelY = y * TileHeight;
-
-        // Draw background
-        paint.Color = background;
-        paint.Style = SKPaintStyle.Fill;
-        canvas.DrawRect(pixelX, pixelY, TileWidth, TileHeight, paint);
-
-        // Draw glyph using modern SkiaSharp API (SKFont + DrawText overload)
-        paint.Color = foreground;
-        paint.Style = SKPaintStyle.Fill;
-        canvas.DrawText(glyph.ToString(), pixelX + 2, pixelY + 14, SKTextAlign.Left, font, paint);
-    }
-
-    private SKColor ConvertColor(SadRogue.Primitives.Color color)
-    {
-        return new SKColor(color.R, color.G, color.B, color.A);
     }
 }
