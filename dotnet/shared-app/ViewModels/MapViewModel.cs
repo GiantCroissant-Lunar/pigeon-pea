@@ -121,9 +121,16 @@ public class MapViewModel : ReactiveObject
             var point = pos.Point;
             bool isExplored = entity.Has<Explored>();
 
-            // If we don't have this position yet, or if this entity has BlocksMovement (higher priority)
-            if (!tilesInViewport.ContainsKey(point) || entity.Has<BlocksMovement>())
+            // If entity blocks movement, it has higher priority and overwrites other entities
+            if (entity.Has<BlocksMovement>())
             {
+                // Preserve explored status from underlying tile if it was already processed
+                bool wasExplored = tilesInViewport.TryGetValue(point, out var existing) && existing.isExplored;
+                tilesInViewport[point] = (rend, isExplored || wasExplored);
+            }
+            else if (!tilesInViewport.ContainsKey(point))
+            {
+                // Only add non-blocking entities if position is not occupied
                 tilesInViewport[point] = (rend, isExplored);
             }
         });
