@@ -3,22 +3,100 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="using:PigeonPea.Windows"
+        xmlns:vm="using:PigeonPea.Shared.ViewModels"
         mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
         x:Class="PigeonPea.Windows.MainWindow"
+        x:DataType="vm:GameViewModel"
         Title="Pigeon Pea - Dungeon Crawler"
         Width="1280" Height="720">
 
-    <Grid RowDefinitions="*,Auto">
+    <Grid RowDefinitions="*,Auto,200">
         <!-- Game Render Area (SkiaSharp Canvas) -->
         <local:GameCanvas Name="GameCanvas" Grid.Row="0" />
 
         <!-- HUD Panel -->
         <Border Grid.Row="1" Background="#222" Padding="10">
-            <StackPanel Orientation="Horizontal" Spacing="20">
-                <TextBlock Name="HealthText" Text="HP: 100/100" Foreground="Red" FontSize="16" />
-                <TextBlock Name="PositionText" Text="Pos: (0, 0)" Foreground="White" FontSize="16" />
-                <TextBlock Name="FpsText" Text="FPS: 0" Foreground="LightGreen" FontSize="16" />
-            </StackPanel>
+            <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                <!-- Player Health and Level -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="20">
+                    <TextBlock Text="{Binding Player.HealthDisplay, FallbackValue='HP: 0/0'}" 
+                               Foreground="Red" 
+                               FontSize="16" />
+                    <TextBlock Text="{Binding Player.LevelDisplay, FallbackValue='Level 1'}" 
+                               Foreground="Gold" 
+                               FontSize="16" />
+                    <TextBlock Text="{Binding Player.PositionDisplay, FallbackValue='Pos: (0, 0)'}" 
+                               Foreground="White" 
+                               FontSize="16" />
+                </StackPanel>
+                
+                <!-- FPS Counter (kept for performance monitoring) -->
+                <TextBlock Grid.Column="3" 
+                           Name="FpsText" 
+                           Text="FPS: 0" 
+                           Foreground="LightGreen" 
+                           FontSize="16" />
+            </Grid>
         </Border>
+
+        <!-- Bottom Panel: Inventory and Message Log -->
+        <Grid Grid.Row="2" ColumnDefinitions="300,*" Background="#111">
+            <!-- Inventory Panel -->
+            <Border Grid.Column="0" 
+                    BorderBrush="#444" 
+                    BorderThickness="0,1,1,0" 
+                    Padding="10">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" 
+                               Text="Inventory" 
+                               Foreground="White" 
+                               FontSize="14" 
+                               FontWeight="Bold" 
+                               Margin="0,0,0,5" />
+                    <ListBox ItemsSource="{Binding Inventory.Items}"
+                             SelectedIndex="{Binding Inventory.SelectedIndex}"
+                             Background="Transparent"
+                             BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="vm:ItemViewModel">
+                                <TextBlock>
+                                    <Run Text="{Binding Name}" Foreground="Cyan" />
+                                    <Run Text=" (" Foreground="Gray" />
+                                    <Run Text="{Binding Type}" Foreground="Gray" />
+                                    <Run Text=")" Foreground="Gray" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+
+            <!-- Message Log Panel -->
+            <Border Grid.Column="1" 
+                    BorderBrush="#444" 
+                    BorderThickness="0,1,0,0" 
+                    Padding="10">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" 
+                               Text="Message Log" 
+                               Foreground="White" 
+                               FontSize="14" 
+                               FontWeight="Bold" 
+                               Margin="0,0,0,5" />
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding MessageLog.Messages}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:MessageViewModel">
+                                    <TextBlock Text="{Binding Text}" 
+                                               Foreground="LightGray" 
+                                               TextWrapping="Wrap"
+                                               Margin="0,2" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
