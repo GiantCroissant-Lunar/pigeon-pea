@@ -176,11 +176,13 @@ dotnet test --logger "trx;LogFileName=test-results.trx" --logger "console;verbos
 **Solutions:**
 
 1. Ensure test project has tests:
+
    ```bash
    ls -la console-app.Tests/*.cs
    ```
 
 2. Build solution:
+
    ```bash
    dotnet build PigeonPea.sln
    ```
@@ -197,11 +199,13 @@ dotnet test --logger "trx;LogFileName=test-results.trx" --logger "console;verbos
 **Solutions:**
 
 1. Run with detailed verbosity:
+
    ```bash
    dotnet test --verbosity detailed
    ```
 
 2. Run tests individually to isolate problem:
+
    ```bash
    dotnet test --filter "FullyQualifiedName~FrameTests.ShouldCreateFrame"
    ```
@@ -215,6 +219,7 @@ dotnet test --logger "trx;LogFileName=test-results.trx" --logger "console;verbos
 **Solutions:**
 
 1. Increase timeout in test:
+
    ```csharp
    [Fact(Timeout = 30000)] // 30 seconds
    public void MyTest() { }

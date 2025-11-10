@@ -8,8 +8,8 @@ inputs:
   project_path: string
   severity_filter: [error, warning, suggestion, all]
 contracts:
-  success: "Analysis completes with findings report; exit code 0"
-  failure: "Non-zero exit code or tool execution errors"
+  success: 'Analysis completes with findings report; exit code 0'
+  failure: 'Non-zero exit code or tool execution errors'
 ---
 
 # Code Analysis Skill (Entry Map)
@@ -43,12 +43,15 @@ contracts:
 ## Navigation
 
 **1. Static Code Analysis** → [`references/static-analysis.md`](references/static-analysis.md)
+
 - Roslyn analyzers, StyleCop, code quality rules, best practices
 
 **2. Security Scanning** → [`references/security-scan.md`](references/security-scan.md)
+
 - Secret detection (gitleaks, detect-secrets), security analyzers, vulnerability patterns
 
 **3. Dependency Vulnerability Check** → [`references/dependency-check.md`](references/dependency-check.md)
+
 - NuGet package vulnerabilities, outdated dependencies, CVE detection
 
 ## Common Patterns
@@ -116,6 +119,7 @@ dotnet build PigeonPea.sln /p:TreatWarningsAsErrors=true
 ## Success Indicators
 
 **Static Analysis:**
+
 ```
 Build succeeded.
     0 Warning(s)
@@ -123,12 +127,14 @@ Build succeeded.
 ```
 
 **Security Scan:**
+
 ```
 gitleaks................Passed
 detect-secrets...........Passed
 ```
 
 **Dependency Check:**
+
 ```
 No vulnerable packages found.
 ```
