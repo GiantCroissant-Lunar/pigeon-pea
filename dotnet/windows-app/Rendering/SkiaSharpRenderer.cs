@@ -18,13 +18,17 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
     private SKTypeface? _typeface;
     private readonly Dictionary<int, long> _frameTimes = new();
     private int _frameCount;
+    private SpriteAtlasManager? _spriteAtlasManager;
+    private SKPaint? _spritePaint;
+    private SKSamplingOptions _spriteSamplingOptions;
 
     /// <summary>
     /// Gets the capabilities of this renderer.
     /// </summary>
     public RendererCapabilities Capabilities =>
         RendererCapabilities.TrueColor |
-        RendererCapabilities.CharacterBased;
+        RendererCapabilities.CharacterBased |
+        RendererCapabilities.Sprites;
 
     /// <summary>
     /// Initializes the renderer with a render target.
@@ -47,6 +51,22 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
         _typeface = SKTypeface.FromFamilyName("Consolas", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
             ?? SKTypeface.FromFamilyName("Courier New")
             ?? SKTypeface.Default;
+
+        // Initialize sprite rendering objects
+        _spritePaint = new SKPaint
+        {
+            IsAntialias = true
+        };
+        _spriteSamplingOptions = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
+    }
+
+    /// <summary>
+    /// Sets the sprite atlas manager for sprite rendering.
+    /// </summary>
+    /// <param name="spriteAtlasManager">The sprite atlas manager to use.</param>
+    public void SetSpriteAtlasManager(SpriteAtlasManager? spriteAtlasManager)
+    {
+        _spriteAtlasManager = spriteAtlasManager;
     }
 
     /// <summary>
@@ -119,8 +139,22 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
             _canvas.DrawRect(pixelX, pixelY, _tileSize, _tileSize, paint);
         }
 
-        // Draw character glyph
-        if (tile.Glyph != '\0')
+        // Try to draw sprite if available
+        bool spriteDrawn = false;
+        if (tile.SpriteId.HasValue && _spriteAtlasManager != null && _spritePaint != null)
+        {
+            var sprite = _spriteAtlasManager.GetSprite(tile.SpriteId.Value);
+            if (sprite != null)
+            {
+                // Draw sprite scaled to tile size
+                var destRect = new SKRect(pixelX, pixelY, pixelX + _tileSize, pixelY + _tileSize);
+                _canvas.DrawImage(sprite, destRect, _spriteSamplingOptions, _spritePaint);
+                spriteDrawn = true;
+            }
+        }
+
+        // Fall back to character glyph if sprite not drawn
+        if (!spriteDrawn && tile.Glyph != '\0')
         {
             using var font = new SKFont(_typeface, _tileSize);
             using var paint = new SKPaint
@@ -235,6 +269,7 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
         if (disposing)
         {
             _typeface?.Dispose();
+            _spritePaint?.Dispose();
         }
 
         _disposed = true;

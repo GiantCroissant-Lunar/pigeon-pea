@@ -38,7 +38,7 @@ public class SkiaSharpRendererTests : IDisposable
         // Assert
         Assert.True(_renderer.Capabilities.Supports(RendererCapabilities.TrueColor));
         Assert.True(_renderer.Capabilities.Supports(RendererCapabilities.CharacterBased));
-        Assert.False(_renderer.Capabilities.Supports(RendererCapabilities.Sprites));
+        Assert.True(_renderer.Capabilities.Supports(RendererCapabilities.Sprites));
     }
 
     [Fact]
@@ -365,6 +365,112 @@ public class SkiaSharpRendererTests : IDisposable
         // Cleanup
         canvas.Dispose();
         bitmap.Dispose();
+    }
+
+    [Fact]
+    public void DrawTile_WithSpriteId_DrawsSprite()
+    {
+        // Arrange
+        using var spriteManager = CreateTestSpriteAtlasManager();
+        _renderer.SetSpriteAtlasManager(spriteManager);
+
+        _renderer.BeginFrame();
+        var tile = new Tile('@', Color.White, Color.Black, spriteId: 1);
+
+        // Act
+        _renderer.DrawTile(5, 5, tile);
+        _renderer.EndFrame();
+
+        // Assert - verify that sprite was drawn (pixel should be red from sprite 1)
+        var pixelColor = _bitmap.GetPixel(88, 88); // Center of tile at (5,5) with size 16
+        Assert.True(pixelColor.Red > 200, $"Expected predominantly red sprite. Got R:{pixelColor.Red}");
+    }
+
+    [Fact]
+    public void DrawTile_WithNonexistentSpriteId_FallsBackToGlyph()
+    {
+        // Arrange
+        using var spriteManager = CreateTestSpriteAtlasManager();
+        _renderer.SetSpriteAtlasManager(spriteManager);
+
+        _renderer.BeginFrame();
+        var tile = new Tile('#', Color.Yellow, Color.Black, spriteId: 999); // Nonexistent sprite
+
+        // Act
+        _renderer.DrawTile(2, 2, tile);
+        _renderer.EndFrame();
+
+        // Assert - verify background was drawn (fallback to glyph rendering)
+        var bgPixel = _bitmap.GetPixel(32, 32); // Top-left corner of tile
+        Assert.True(bgPixel.Red < 50 && bgPixel.Green < 50 && bgPixel.Blue < 50, "Background should be black");
+    }
+
+    [Fact]
+    public void DrawTile_WithSpriteId_ScalesToTileSize()
+    {
+        // Arrange
+        using var spriteManager = CreateTestSpriteAtlasManager();
+        _renderer.SetSpriteAtlasManager(spriteManager);
+
+        _renderer.BeginFrame();
+        var tile = new Tile('@', Color.White, Color.Black, spriteId: 2); // Green sprite
+
+        // Act
+        _renderer.DrawTile(3, 3, tile);
+        _renderer.EndFrame();
+
+        // Assert - verify sprite was scaled to tile size by checking multiple pixels
+        // Sprite should fill the entire tile area (48-63 pixels in both X and Y)
+        var centerPixel = _bitmap.GetPixel(56, 56); // Center of tile
+        Assert.True(centerPixel.Green > 100, $"Center pixel should be predominantly green. Got G:{centerPixel.Green}");
+    }
+
+    [Fact]
+    public void DrawTile_WithoutSpriteManager_DrawsGlyphOnly()
+    {
+        // Arrange
+        _renderer.BeginFrame();
+        var tile = new Tile('X', Color.Cyan, Color.DarkBlue, spriteId: 1);
+
+        // Act
+        _renderer.DrawTile(1, 1, tile);
+        _renderer.EndFrame();
+
+        // Assert - verify background was drawn
+        var bgPixel = _bitmap.GetPixel(16, 16);
+        Assert.True(bgPixel.Blue > 50, "Background should be dark blue");
+    }
+
+    [Fact]
+    public void SetSpriteAtlasManager_WithValidManager_SetsSuccessfully()
+    {
+        // Arrange
+        using var spriteManager = CreateTestSpriteAtlasManager();
+
+        // Act & Assert - should not throw
+        _renderer.SetSpriteAtlasManager(spriteManager);
+    }
+
+    [Fact]
+    public void SetSpriteAtlasManager_WithNull_AllowsNullValue()
+    {
+        // Act & Assert - should not throw
+        _renderer.SetSpriteAtlasManager(null);
+    }
+
+    /// <summary>
+    /// Creates and configures a SpriteAtlasManager with test data.
+    /// </summary>
+    /// <returns>A configured SpriteAtlasManager instance.</returns>
+    private SpriteAtlasManager CreateTestSpriteAtlasManager()
+    {
+        var testDataDir = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "TestData");
+        var atlasPath = Path.Combine(testDataDir, "test-atlas.png");
+        var definitionPath = Path.Combine(testDataDir, "test-atlas.json");
+
+        var spriteManager = new SpriteAtlasManager();
+        spriteManager.LoadAtlas(atlasPath, definitionPath);
+        return spriteManager;
     }
 
     /// <summary>
