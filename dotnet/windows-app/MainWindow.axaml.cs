@@ -5,6 +5,7 @@ using Arch.Core;
 using Arch.Core.Extensions;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
+using PigeonPea.Windows.Rendering;
 using SadRogue.Primitives;
 using System;
 
@@ -13,19 +14,33 @@ namespace PigeonPea.Windows;
 public partial class MainWindow : Window
 {
     private readonly GameWorld _gameWorld;
+    private readonly SkiaSharpRenderer _renderer;
+    private readonly ParticleSystem _particleSystem;
+    private readonly AnimationSystem _animationSystem;
     private readonly DispatcherTimer _gameTimer;
     private DateTime _lastUpdate = DateTime.UtcNow;
     private int _frameCount;
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
 
-    public MainWindow()
+    public MainWindow(SpriteAtlasManager? spriteAtlasManager = null)
     {
         InitializeComponent();
 
         _gameWorld = new GameWorld(80, 50);
 
-        // Initialize game canvas
-        GameCanvas.Initialize(_gameWorld);
+        // Initialize rendering systems
+        _renderer = new SkiaSharpRenderer();
+        _particleSystem = new ParticleSystem(1000);
+        _animationSystem = new AnimationSystem();
+
+        // Set sprite atlas manager on renderer if provided
+        if (spriteAtlasManager != null)
+        {
+            _renderer.SetSpriteAtlasManager(spriteAtlasManager);
+        }
+
+        // Initialize game canvas with renderer and systems
+        GameCanvas.Initialize(_gameWorld, _renderer, _particleSystem, _animationSystem);
 
         // Setup game loop
         _gameTimer = new DispatcherTimer
@@ -51,8 +66,12 @@ public partial class MainWindow : Window
         // Update game logic
         _gameWorld.Update(deltaTime);
 
+        // Update rendering systems
+        _particleSystem.Update((float)deltaTime);
+        _animationSystem.Update((float)deltaTime);
+
         // Render
-        GameCanvas.InvalidateVisual();
+        GameCanvas.RenderFrame();
 
         // Update FPS counter
         _frameCount++;
@@ -95,5 +114,13 @@ public partial class MainWindow : Window
             PositionText.Text = $"Pos: ({pos.Point.X}, {pos.Point.Y})";
             HealthText.Text = $"HP: {health.Current}/{health.Maximum}";
         }
+    }
+
+    protected override void OnClosed(EventArgs e)
+    {
+        base.OnClosed(e);
+        
+        // Dispose renderer on window close
+        _renderer?.Dispose();
     }
 }
