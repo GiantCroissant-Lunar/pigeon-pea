@@ -324,15 +324,6 @@ jobs:
         run: |
           cd ./dotnet
           dotnet list package --vulnerable --include-transitive
-
-      - name: Fail on vulnerabilities
-        run: |
-          cd ./dotnet
-          VULN=$(dotnet list package --vulnerable --include-transitive)
-          if echo "$VULN" | grep -q "Severity"; then
-            echo "Vulnerable packages detected!"
-            exit 1
-          fi
 ```
 
 ### Pre-commit Hook (Optional)
@@ -344,7 +335,7 @@ Add to `.pre-commit-config.yaml`:
   hooks:
     - id: check-vulnerabilities
       name: Check NuGet vulnerabilities
-      entry: bash -c 'cd dotnet && dotnet list package --vulnerable | grep -q "has no vulnerable packages"'
+      entry: bash -c 'cd dotnet && dotnet list package --vulnerable --include-transitive | grep -q "has no vulnerable packages"'
       language: system
       pass_filenames: false
       always_run: true

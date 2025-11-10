@@ -55,7 +55,6 @@ Built-in Roslyn analyzers that detect security vulnerabilities in C# code.
 ### Step 1: Run Pre-commit Secret Detection
 
 ```bash
-cd /home/runner/work/pigeon-pea/pigeon-pea
 pre-commit run gitleaks --all-files
 pre-commit run detect-secrets --all-files
 ```
@@ -409,10 +408,10 @@ If a secret is accidentally committed:
 1. **Rotate the secret immediately** (revoke/regenerate credentials)
 2. **Remove from Git history**:
    ```bash
-   # Use BFG Repo Cleaner or git filter-branch
-   git filter-branch --force --index-filter \
-     "git rm --cached --ignore-unmatch path/to/file" \
-     --prune-empty --tag-name-filter cat -- --all
+   # Use a tool like git-filter-repo (recommended) or BFG Repo-Cleaner.
+   # git filter-branch is not recommended.
+   # Example with git-filter-repo:
+   git-filter-repo --invert-paths --path path/to/file
    ```
 3. **Force push** (if safe): `git push --force`
 4. **Notify team** about credential rotation

@@ -145,7 +145,6 @@ run_security_scan() {
     local security_passed=true
 
     # Run gitleaks
-    print_info "Running gitleaks secret detection..."
     if run_check "gitleaks" pre-commit run gitleaks --all-files --verbose; then
         :
     else
@@ -153,7 +152,6 @@ run_security_scan() {
     fi
 
     # Run detect-secrets
-    print_info "Running detect-secrets..."
     if run_check "detect-secrets" pre-commit run detect-secrets --all-files --verbose; then
         :
     else
@@ -195,19 +193,21 @@ run_dependency_check() {
 
     # Run vulnerability check and capture output
     VULN_OUTPUT=$(dotnet list package --vulnerable --include-transitive 2>&1)
+    local exit_code=$?
 
-    # Check if vulnerabilities were found
-    if echo "$VULN_OUTPUT" | grep -q "has the following vulnerable packages"; then
-        print_error "Vulnerable packages detected!"
-        echo "$VULN_OUTPUT" | grep -A 50 "vulnerable packages" || echo "$VULN_OUTPUT"
-        return 1
-    elif echo "$VULN_OUTPUT" | grep -q "has no vulnerable packages"; then
+    if [ $exit_code -ne 0 ]; then
+        if echo "$VULN_OUTPUT" | grep -q "Severity"; then # Vulnerability tables have a "Severity" header
+            print_error "Vulnerable packages detected!"
+            echo "$VULN_OUTPUT"
+            return 1
+        else
+            print_warning "Dependency check failed with an unexpected error."
+            echo "$VULN_OUTPUT"
+            return 1
+        fi
+    else
         print_success "No vulnerable packages found"
         return 0
-    else
-        print_warning "Could not determine vulnerability status"
-        echo "$VULN_OUTPUT"
-        return 1
     fi
 }
 
