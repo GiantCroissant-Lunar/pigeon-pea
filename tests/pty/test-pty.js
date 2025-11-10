@@ -16,6 +16,7 @@
 const pty = require('node-pty');
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { spawn } = require('child_process');
 
 /**
@@ -45,17 +46,21 @@ function sleep(ms) {
 
 /**
  * Check if asciinema is available
- * @returns {boolean} True if asciinema is available
+ * @returns {Promise<boolean>} True if asciinema is available
  */
 function isAsciinemaAvailable() {
-  try {
-    const result = spawn('which', ['asciinema']);
-    return new Promise((resolve) => {
-      result.on('exit', (code) => resolve(code === 0));
+  return new Promise((resolve) => {
+    // Use 'where' on Windows and 'which' on other platforms to find the command.
+    const command = os.platform() === 'win32' ? 'where' : 'which';
+    const checkProcess = spawn(command, ['asciinema']);
+
+    // Handle cases where the check command (e.g., 'which') is not on the system PATH.
+    checkProcess.on('error', () => resolve(false));
+
+    checkProcess.on('exit', (code) => {
+      resolve(code === 0);
     });
-  } catch (error) {
-    return Promise.resolve(false);
-  }
+  });
 }
 
 /**
@@ -117,7 +122,7 @@ async function runGameInPTY(scenario, options = {}) {
       timestamp: Math.floor(recordingStartTime / 1000),
       env: {
         TERM: 'xterm-256color',
-        SHELL: '/bin/bash',
+        SHELL: process.env.SHELL || (os.platform() === 'win32' ? 'powershell.exe' : '/bin/bash'),
       },
     };
     castFileStream.write(JSON.stringify(header) + '\n');
@@ -169,6 +174,9 @@ async function runGameInPTY(scenario, options = {}) {
   }
 
   // Wait a bit more for the last action to complete
+  // Note: Using a fixed delay can lead to flaky tests if the application takes longer
+  // to process commands under high system load. A more robust approach would be to
+  // wait for specific output from the application signaling completion.
   console.log('\nWaiting for test to complete...');
   await sleep(1000);
 
@@ -208,6 +216,11 @@ async function main() {
   const record = !args.includes('--no-record');
   const outputDirArg = args.find((arg) => arg.startsWith('--output-dir='));
   const outputDir = outputDirArg ? outputDirArg.split('=')[1] : 'recordings';
+
+  // Validate output directory argument
+  if (outputDirArg && !outputDir) {
+    throw new Error('--output-dir cannot be empty. Please provide a valid directory path.');
+  }
 
   try {
     // Load test scenario
