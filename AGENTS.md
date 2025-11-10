@@ -148,5 +148,7 @@ Adapters enable agents to interact with:
 
 | Name | Kind | Description | Version |
 |------|------|-------------|---------|
+| code-analyze | cli | Run static analysis, security scans, and dependency checks on .NET code. Use when task involves code quality, security audits, or vulnerability detection. | 0.1.0 |
+| code-format | cli | Format code using dotnet format, prettier, and other formatting tools. Use when task involves code style fixes, formatting consistency, or preparing code for commit. | 0.1.0 |
 | dotnet-build | cli | Build .NET solution/projects using dotnet CLI. Use when task involves compiling, restoring dependencies, or building artifacts. | 0.2.0 |
 | dotnet-test | cli | Run .NET tests using dotnet CLI. Use when task involves executing unit tests, generating code coverage reports, or running benchmarks. | 0.1.0 |
