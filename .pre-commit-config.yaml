@@ -66,6 +66,8 @@ repos:
             rules: {line-length: {max: 120},
             document-start: disable,
             truthy: {check-keys: false}}}
+        exclude: >-
+          ^dotnet/_lib/modern-satsuma/|^ref-projects/hyacinth-bean-base/
 
   # .NET formatting (using dotnet format)
   # Note: This requires .NET SDK to be installed
@@ -73,11 +75,8 @@ repos:
     hooks:
       - id: dotnet-format
         name: dotnet format
-        entry: >-
-          bash -c 'if command -v dotnet &> /dev/null; then
-          cd dotnet && dotnet format PigeonPea.sln --no-restore --verify-no-changes ||
-          dotnet format PigeonPea.sln --no-restore;
-          fi'
+        entry: dotnet
+        args: ["format", "dotnet/PigeonPea.sln", "--no-restore"]
         language: system
         types: [c#]
         pass_filenames: false
