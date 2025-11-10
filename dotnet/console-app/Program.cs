@@ -87,9 +87,12 @@ class Program
 
         // Parse renderer argument and create renderer using factory
         var rendererType = ParseRendererType(renderer);
-        var gameRenderer = rendererType == TerminalRendererFactory.RendererType.Auto
-            ? TerminalRendererFactory.CreateRenderer(terminalInfo, rendererType)
-            : TerminalRendererFactory.CreateRenderer(rendererType);
+        var underlyingRenderer = TerminalRendererFactory.CreateRenderer(terminalInfo, rendererType);
+        
+        // Wrap the factory-created renderer in a Terminal.Gui-compatible renderer.
+        // The underlying renderer provides capabilities detection and rendering logic,
+        // while TerminalGuiRenderer adapts it to use Terminal.Gui's Driver API.
+        var gameRenderer = new TerminalGuiRenderer(underlyingRenderer);
 
         // Initialize Terminal.Gui application
         Application.Init();

@@ -42,10 +42,13 @@ public class TerminalGuiRenderTarget : IRenderTarget
 
     /// <summary>
     /// Presents the rendered content to the screen.
-    /// For Terminal.Gui, this triggers a redraw of the view.
+    /// For Terminal.Gui, this is a no-op as the main loop handles presentation.
+    /// Calling SetNeedsDraw() here would cause infinite recursion.
     /// </summary>
     public void Present()
     {
-        _view.SetNeedsDraw();
+        // No-op: Terminal.Gui's main loop handles presenting the drawn content.
+        // Calling _view.SetNeedsDraw() here would trigger OnDrawingContent again,
+        // leading to infinite recursion and StackOverflowException.
     }
 }
