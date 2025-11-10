@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using Arch.Core;
 using Arch.Core.Extensions;

@@ -407,7 +407,7 @@ public class AsciiRendererTests
         var renderer = new AsciiRenderer();
         var target = new MockRenderTarget(80, 24);
         renderer.Initialize(target);
-        
+
         // Set a viewport that's smaller than the target
         var viewport = new Viewport(5, 5, 10, 10);
         renderer.SetViewport(viewport);
@@ -416,14 +416,14 @@ public class AsciiRendererTests
         {
             // Act
             renderer.BeginFrame();
-            
+
             // Draw inside viewport - should appear
             renderer.DrawTile(7, 7, new Tile('@', Color.White, Color.Black));
-            
+
             // Draw outside viewport - should be clipped
             renderer.DrawTile(0, 0, new Tile('#', Color.White, Color.Black));
             renderer.DrawTile(20, 20, new Tile('$', Color.White, Color.Black));
-            
+
             renderer.EndFrame();
 
             var output = capture.GetOutput();
@@ -442,7 +442,7 @@ public class AsciiRendererTests
         var renderer = new AsciiRenderer();
         var target = new MockRenderTarget(80, 24);
         renderer.Initialize(target);
-        
+
         // Set a viewport offset from origin
         var viewport = new Viewport(10, 5, 20, 15);
         renderer.SetViewport(viewport);

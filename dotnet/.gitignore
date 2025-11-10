@@ -76,3 +76,5 @@ TestResults/
 
 # Benchmark results
 BenchmarkDotNet.Artifacts/
+
+_lib/

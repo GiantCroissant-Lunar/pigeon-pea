@@ -44,7 +44,7 @@ public class SixelRendererTests : IDisposable
 
         // Act & Assert - should not throw
         renderer.Initialize(target);
-        
+
         // Cleanup
         renderer.Dispose();
     }
@@ -57,7 +57,7 @@ public class SixelRendererTests : IDisposable
 
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() => renderer.Initialize(null!));
-        
+
         // Cleanup
         renderer.Dispose();
     }
@@ -70,7 +70,7 @@ public class SixelRendererTests : IDisposable
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => uninitializedRenderer.BeginFrame());
-        
+
         // Cleanup
         uninitializedRenderer.Dispose();
     }
@@ -83,7 +83,7 @@ public class SixelRendererTests : IDisposable
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => uninitializedRenderer.EndFrame());
-        
+
         // Cleanup
         uninitializedRenderer.Dispose();
     }
@@ -97,7 +97,7 @@ public class SixelRendererTests : IDisposable
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => uninitializedRenderer.DrawTile(0, 0, tile));
-        
+
         // Cleanup
         uninitializedRenderer.Dispose();
     }
@@ -110,7 +110,7 @@ public class SixelRendererTests : IDisposable
 
         // Act & Assert
         Assert.Throws<InvalidOperationException>(() => uninitializedRenderer.Clear(Color.Black));
-        
+
         // Cleanup
         uninitializedRenderer.Dispose();
     }
@@ -130,7 +130,7 @@ public class SixelRendererTests : IDisposable
 
         // Act & Assert - should not throw
         _renderer.EndFrame();
-        
+
         // Verify Present was called
         Assert.True(_target.PresentCalled);
     }
@@ -225,7 +225,7 @@ public class SixelRendererTests : IDisposable
         int width = 8;
         int height = 8;
         var imageData = new byte[width * height * 3];
-        
+
         // Fill with red color
         for (int i = 0; i < imageData.Length; i += 3)
         {
@@ -247,7 +247,7 @@ public class SixelRendererTests : IDisposable
         int width = 8;
         int height = 8;
         var pixels = new Color[width * height];
-        
+
         // Fill with blue color
         for (int i = 0; i < pixels.Length; i++)
         {
@@ -312,7 +312,7 @@ public class SixelRendererTests : IDisposable
         // Assert - shouldn't throw, tile size should be calculated internally
         renderer.BeginFrame();
         renderer.EndFrame();
-        
+
         // Cleanup
         renderer.Dispose();
     }
