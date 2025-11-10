@@ -19,6 +19,8 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
     private readonly Dictionary<int, long> _frameTimes = new();
     private int _frameCount;
     private SpriteAtlasManager? _spriteAtlasManager;
+    private SKPaint? _spritePaint;
+    private SKSamplingOptions _spriteSamplingOptions;
 
     /// <summary>
     /// Gets the capabilities of this renderer.
@@ -49,6 +51,13 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
         _typeface = SKTypeface.FromFamilyName("Consolas", SKFontStyleWeight.Normal, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright)
             ?? SKTypeface.FromFamilyName("Courier New")
             ?? SKTypeface.Default;
+
+        // Initialize sprite rendering objects
+        _spritePaint = new SKPaint
+        {
+            IsAntialias = true
+        };
+        _spriteSamplingOptions = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
     }
 
     /// <summary>
@@ -132,19 +141,14 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
 
         // Try to draw sprite if available
         bool spriteDrawn = false;
-        if (tile.SpriteId.HasValue && _spriteAtlasManager != null)
+        if (tile.SpriteId.HasValue && _spriteAtlasManager != null && _spritePaint != null)
         {
             var sprite = _spriteAtlasManager.GetSprite(tile.SpriteId.Value);
             if (sprite != null)
             {
                 // Draw sprite scaled to tile size
                 var destRect = new SKRect(pixelX, pixelY, pixelX + _tileSize, pixelY + _tileSize);
-                using var spritePaint = new SKPaint
-                {
-                    IsAntialias = true
-                };
-                var samplingOptions = new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear);
-                _canvas.DrawImage(sprite, destRect, samplingOptions, spritePaint);
+                _canvas.DrawImage(sprite, destRect, _spriteSamplingOptions, _spritePaint);
                 spriteDrawn = true;
             }
         }
@@ -265,6 +269,7 @@ public class SkiaSharpRenderer : IRenderer, IDisposable
         if (disposing)
         {
             _typeface?.Dispose();
+            _spritePaint?.Dispose();
         }
 
         _disposed = true;
