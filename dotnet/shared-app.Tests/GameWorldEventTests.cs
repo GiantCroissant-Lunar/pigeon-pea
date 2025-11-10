@@ -13,15 +13,39 @@ namespace PigeonPea.Shared.Tests;
 /// </summary>
 public class GameWorldEventTests
 {
+    /// <summary>
+    /// Creates a GameWorld with the specified publisher and mock publishers for all other events.
+    /// </summary>
+    private GameWorld CreateGameWorldWithPublisher<T>(MockPublisher<T> publisher)
+    {
+        var playerDamagedPublisher = publisher as MockPublisher<PlayerDamagedEvent> ?? new MockPublisher<PlayerDamagedEvent>();
+        var enemyDefeatedPublisher = publisher as MockPublisher<EnemyDefeatedEvent> ?? new MockPublisher<EnemyDefeatedEvent>();
+        var itemPickedUpPublisher = publisher as MockPublisher<ItemPickedUpEvent> ?? new MockPublisher<ItemPickedUpEvent>();
+        var itemUsedPublisher = publisher as MockPublisher<ItemUsedEvent> ?? new MockPublisher<ItemUsedEvent>();
+        var itemDroppedPublisher = publisher as MockPublisher<ItemDroppedEvent> ?? new MockPublisher<ItemDroppedEvent>();
+        var playerLevelUpPublisher = publisher as MockPublisher<PlayerLevelUpEvent> ?? new MockPublisher<PlayerLevelUpEvent>();
+        var doorOpenedPublisher = publisher as MockPublisher<DoorOpenedEvent> ?? new MockPublisher<DoorOpenedEvent>();
+        var stairsDescendedPublisher = publisher as MockPublisher<StairsDescendedEvent> ?? new MockPublisher<StairsDescendedEvent>();
+
+        return new GameWorld(
+            width: 80,
+            height: 50,
+            playerDamagedPublisher: playerDamagedPublisher,
+            enemyDefeatedPublisher: enemyDefeatedPublisher,
+            itemPickedUpPublisher: itemPickedUpPublisher,
+            itemUsedPublisher: itemUsedPublisher,
+            itemDroppedPublisher: itemDroppedPublisher,
+            playerLevelUpPublisher: playerLevelUpPublisher,
+            doorOpenedPublisher: doorOpenedPublisher,
+            stairsDescendedPublisher: stairsDescendedPublisher);
+    }
+
     [Fact]
     public void ResolveMeleeAttack_PlayerDamaged_PublishesPlayerDamagedEvent()
     {
         // Arrange
         var playerDamagedPublisher = new MockPublisher<PlayerDamagedEvent>();
-        var gameWorld = new GameWorld(
-            width: 80,
-            height: 50,
-            playerDamagedPublisher: playerDamagedPublisher);
+        var gameWorld = CreateGameWorldWithPublisher(playerDamagedPublisher);
 
         // Create an enemy entity manually
         var enemyEntity = gameWorld.EcsWorld.Create(
@@ -50,10 +74,7 @@ public class GameWorldEventTests
     {
         // Arrange
         var enemyDefeatedPublisher = new MockPublisher<EnemyDefeatedEvent>();
-        var gameWorld = new GameWorld(
-            width: 80,
-            height: 50,
-            enemyDefeatedPublisher: enemyDefeatedPublisher);
+        var gameWorld = CreateGameWorldWithPublisher(enemyDefeatedPublisher);
 
         // Create a weak enemy entity that can be killed in one hit
         var weakEnemyEntity = gameWorld.EcsWorld.Create(
@@ -81,10 +102,7 @@ public class GameWorldEventTests
     {
         // Arrange
         var itemPickedUpPublisher = new MockPublisher<ItemPickedUpEvent>();
-        var gameWorld = new GameWorld(
-            width: 80,
-            height: 50,
-            itemPickedUpPublisher: itemPickedUpPublisher);
+        var gameWorld = CreateGameWorldWithPublisher(itemPickedUpPublisher);
 
         // Get player position
         var playerPos = gameWorld.PlayerEntity.Get<Position>();
@@ -114,10 +132,7 @@ public class GameWorldEventTests
     {
         // Arrange
         var itemUsedPublisher = new MockPublisher<ItemUsedEvent>();
-        var gameWorld = new GameWorld(
-            width: 80,
-            height: 50,
-            itemUsedPublisher: itemUsedPublisher);
+        var gameWorld = CreateGameWorldWithPublisher(itemUsedPublisher);
 
         // Create and add item to player's inventory
         var itemEntity = gameWorld.EcsWorld.Create(
@@ -144,10 +159,7 @@ public class GameWorldEventTests
     {
         // Arrange
         var itemDroppedPublisher = new MockPublisher<ItemDroppedEvent>();
-        var gameWorld = new GameWorld(
-            width: 80,
-            height: 50,
-            itemDroppedPublisher: itemDroppedPublisher);
+        var gameWorld = CreateGameWorldWithPublisher(itemDroppedPublisher);
 
         // Create and add item to player's inventory
         var itemEntity = gameWorld.EcsWorld.Create(
@@ -173,10 +185,7 @@ public class GameWorldEventTests
     {
         // Arrange
         var playerLevelUpPublisher = new MockPublisher<PlayerLevelUpEvent>();
-        var gameWorld = new GameWorld(
-            width: 80,
-            height: 50,
-            playerLevelUpPublisher: playerLevelUpPublisher);
+        var gameWorld = CreateGameWorldWithPublisher(playerLevelUpPublisher);
 
         // Get initial player level
         var initialLevel = gameWorld.PlayerEntity.Get<Experience>().Level;
@@ -219,10 +228,7 @@ public class GameWorldEventTests
     {
         // Arrange
         var playerDamagedPublisher = new MockPublisher<PlayerDamagedEvent>();
-        var gameWorld = new GameWorld(
-            width: 80,
-            height: 50,
-            playerDamagedPublisher: playerDamagedPublisher);
+        var gameWorld = CreateGameWorldWithPublisher(playerDamagedPublisher);
 
         // Create two enemy entities
         var enemy1 = gameWorld.EcsWorld.Create(
