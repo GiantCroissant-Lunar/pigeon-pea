@@ -119,7 +119,7 @@ public partial class MainWindow : Window
     protected override void OnClosed(EventArgs e)
     {
         base.OnClosed(e);
-        
+
         // Dispose renderer on window close
         _renderer?.Dispose();
     }

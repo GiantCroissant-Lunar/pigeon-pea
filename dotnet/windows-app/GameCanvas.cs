@@ -34,8 +34,8 @@ public class GameCanvas : Image
     /// <param name="renderer">The renderer to use for drawing.</param>
     /// <param name="particleSystem">Optional particle system for visual effects.</param>
     /// <param name="animationSystem">Optional animation system for sprite animations.</param>
-    public void Initialize(GameWorld gameWorld, SkiaSharpRenderer renderer, 
-                          ParticleSystem? particleSystem = null, 
+    public void Initialize(GameWorld gameWorld, SkiaSharpRenderer renderer,
+                          ParticleSystem? particleSystem = null,
                           AnimationSystem? animationSystem = null)
     {
         _gameWorld = gameWorld ?? throw new ArgumentNullException(nameof(gameWorld));
@@ -64,7 +64,7 @@ public class GameCanvas : Image
             return;
 
         using var canvas = new SKCanvas(_bitmap);
-        
+
         // Create render target for this frame
         var width = CanvasWidth / TileSize;
         var height = CanvasHeight / TileSize;
@@ -114,7 +114,7 @@ public class GameCanvas : Image
                 renderable.Glyph,
                 renderable.Foreground,
                 renderable.Background);
-            
+
             _renderer.DrawTile(pos.Point.X, pos.Point.Y, tile);
         });
     }
