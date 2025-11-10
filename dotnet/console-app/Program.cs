@@ -1,5 +1,6 @@
 using Terminal.Gui;
 using PigeonPea.Shared;
+using PigeonPea.Shared.Rendering;
 using PigeonPea.Console.Rendering;
 using System;
 using System.CommandLine;
@@ -84,17 +85,36 @@ class Program
         System.Console.WriteLine("\nPress any key to start...");
         System.Console.ReadKey(true);
 
+        // Parse renderer argument and create renderer using factory
+        var rendererType = ParseRendererType(renderer);
+        var gameRenderer = rendererType == TerminalRendererFactory.RendererType.Auto
+            ? TerminalRendererFactory.CreateRenderer(terminalInfo, rendererType)
+            : TerminalRendererFactory.CreateRenderer(rendererType);
+
         // Initialize Terminal.Gui application
         Application.Init();
 
         try
         {
-            var gameApp = new GameApplication(terminalInfo);
+            var gameApp = new GameApplication(terminalInfo, gameRenderer);
             Application.Run(gameApp);
         }
         finally
         {
             Application.Shutdown();
         }
+    }
+
+    static TerminalRendererFactory.RendererType ParseRendererType(string renderer)
+    {
+        return renderer.ToLowerInvariant() switch
+        {
+            "auto" => TerminalRendererFactory.RendererType.Auto,
+            "kitty" => TerminalRendererFactory.RendererType.Kitty,
+            "sixel" => TerminalRendererFactory.RendererType.Sixel,
+            "braille" => TerminalRendererFactory.RendererType.Braille,
+            "ascii" => TerminalRendererFactory.RendererType.Ascii,
+            _ => TerminalRendererFactory.RendererType.Auto
+        };
     }
 }
