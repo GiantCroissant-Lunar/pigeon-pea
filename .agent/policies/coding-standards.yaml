@@ -34,9 +34,17 @@ formatting:
 
 code_quality:
   metrics:
-    - 'Cyclomatic complexity < 15 per method'
-    - 'Method length < 50 lines (prefer < 20)'
-    - 'Class length < 300 lines (prefer < 200)'
+    cyclomatic_complexity:
+      max: 15
+      description: 'Maximum cyclomatic complexity per method'
+    method_length:
+      max: 50
+      preferred: 20
+      description: 'Maximum lines per method (prefer shorter)'
+    class_length:
+      max: 300
+      preferred: 200
+      description: 'Maximum lines per class (prefer shorter)'
 
   analysis:
     - 'Enable all Roslyn analyzers'
