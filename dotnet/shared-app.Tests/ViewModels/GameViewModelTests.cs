@@ -260,4 +260,37 @@ public class GameViewModelTests : IDisposable
         viewModel.Inventory.Should().NotBeSameAs(viewModel.Map);
         viewModel.MessageLog.Should().NotBeSameAs(viewModel.Map);
     }
+
+    [Fact]
+    public void Fps_PropertyChanges_RaiseNotifications()
+    {
+        // Arrange
+        using var viewModel = new GameViewModel(_world, _services);
+        bool propertyChanged = false;
+        
+        viewModel.PropertyChanged += (sender, args) =>
+        {
+            if (args.PropertyName == nameof(GameViewModel.Fps))
+            {
+                propertyChanged = true;
+            }
+        };
+
+        // Act
+        viewModel.Fps = 60;
+
+        // Assert
+        propertyChanged.Should().BeTrue("Fps property change should trigger notification");
+        viewModel.Fps.Should().Be(60);
+    }
+
+    [Fact]
+    public void Fps_DefaultValue_IsZero()
+    {
+        // Arrange & Act
+        using var viewModel = new GameViewModel(_world, _services);
+
+        // Assert
+        viewModel.Fps.Should().Be(0, "Fps should default to 0");
+    }
 }
