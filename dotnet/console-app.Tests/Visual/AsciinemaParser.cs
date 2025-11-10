@@ -111,25 +111,32 @@ public class AsciinemaParser
             return null;
         }
 
-        // Find the frame with the closest timestamp that is <= target timestamp
-        Frame? closestFrame = null;
-        double closestDiff = double.MaxValue;
+        // Binary search for the frame with the largest timestamp <= target timestamp
+        int low = 0;
+        int high = _frames.Count - 1;
+        int resultIndex = -1;
 
-        foreach (var frame in _frames)
+        while (low <= high)
         {
-            if (frame.Timestamp <= timestamp)
+            int mid = low + (high - low) / 2;
+            if (_frames[mid].Timestamp <= timestamp)
             {
-                double diff = timestamp - frame.Timestamp;
-                if (diff < closestDiff)
-                {
-                    closestDiff = diff;
-                    closestFrame = frame;
-                }
+                resultIndex = mid;
+                low = mid + 1;
+            }
+            else
+            {
+                high = mid - 1;
             }
         }
 
-        // If no frame before timestamp, return the first frame
-        return closestFrame ?? _frames[0];
+        if (resultIndex == -1)
+        {
+            // Timestamp is before the first frame, return the first frame as per existing logic
+            return _frames[0];
+        }
+
+        return _frames[resultIndex];
     }
 
     /// <summary>
@@ -140,7 +147,8 @@ public class AsciinemaParser
     /// <returns>A collection of frames within the specified time range.</returns>
     public IEnumerable<Frame> GetFramesInRange(double startTime, double endTime)
     {
-        return _frames.Where(f => f.Timestamp >= startTime && f.Timestamp <= endTime);
+        return _frames.SkipWhile(f => f.Timestamp < startTime)
+                      .TakeWhile(f => f.Timestamp <= endTime);
     }
 
     /// <summary>
@@ -151,14 +159,11 @@ public class AsciinemaParser
     /// <returns>The accumulated content up to the specified timestamp.</returns>
     public string GetAccumulatedContentAtTimestamp(double timestamp)
     {
-        var relevantFrames = _frames.Where(f => f.Timestamp <= timestamp).ToList();
-        if (relevantFrames.Count == 0)
-        {
-            return string.Empty;
-        }
+        var contentToJoin = _frames
+            .TakeWhile(f => f.Timestamp <= timestamp)
+            .Select(f => f.Content);
 
-        // Concatenate all frame content
-        return string.Join(string.Empty, relevantFrames.Select(f => f.Content));
+        return string.Join(string.Empty, contentToJoin);
     }
 
     private static Header ParseHeader(string line)
