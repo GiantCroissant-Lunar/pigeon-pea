@@ -44,17 +44,16 @@ fi
 
 echo -e "${GREEN}Generating HTML coverage report...${NC}"
 
-# Generate HTML report
+# Generate HTML report and XML summary for accurate, merged coverage
 reportgenerator \
   -reports:"./TestResults/*/coverage.cobertura.xml" \
   -targetdir:"./TestResults/CoverageReport" \
-  -reporttypes:"Html;Badges"
+  -reporttypes:"Html;Badges;XmlSummary"
 
 echo -e "${GREEN}Coverage report generated at: ./TestResults/CoverageReport/index.html${NC}"
 
-# Extract coverage percentage
-LINE_COVERAGE=$(grep -oP 'line-rate="\K[^"]+' "$COVERAGE_FILE" | head -1)
-COVERAGE_PERCENT=$(echo "$LINE_COVERAGE * 100" | bc -l | xargs printf "%.2f")
+# Extract coverage percentage from the merged summary report for accuracy and portability
+COVERAGE_PERCENT=$(awk -F'[<>]' '/<Linecoverage>/ {print $3}' "./TestResults/CoverageReport/Summary.xml")
 
 echo -e "${GREEN}Line Coverage: ${COVERAGE_PERCENT}%${NC}"
 

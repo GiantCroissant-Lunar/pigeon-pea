@@ -220,7 +220,7 @@ Set minimum coverage thresholds in CI/CD:
 ```bash
 # Example: Fail if coverage < 70%
 threshold=70
-coverage=$(grep -oP 'line-rate="\K[^"]+' ./TestResults/*/coverage.cobertura.xml | head -1)
+coverage=$(awk -F'"' '/<coverage line-rate=/ {print $2; exit}' ./TestResults/*/coverage.cobertura.xml)
 coverage_percent=$(echo "$coverage * 100" | bc | cut -d. -f1)
 if [ "$coverage_percent" -lt "$threshold" ]; then
   echo "Coverage $coverage_percent% is below threshold $threshold%"
