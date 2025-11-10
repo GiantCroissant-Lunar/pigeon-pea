@@ -7,6 +7,7 @@ capabilities:
   supports_mcp: false
   supports_tools: true
   max_tool_calls: 30
+  max_output_tokens: 4096
 
 preferences:
   verbosity: concise
