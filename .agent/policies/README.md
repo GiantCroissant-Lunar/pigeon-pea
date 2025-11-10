@@ -31,12 +31,12 @@ rate_limits:
 
 safety:
   never_commit:
-    - "bin/"
-    - "obj/"
+    - 'bin/'
+    - 'obj/'
 
 repository_boundaries:
   allowed_directories:
-    - "./dotnet"
+    - './dotnet'
 ```
 
 ## Default Policies (defaults.yaml)
@@ -61,20 +61,20 @@ Prevent accidental damage:
 ```yaml
 safety:
   never_commit:
-    - "bin/"
-    - "obj/"
-    - "*.exe"
-    - "*.dll"
-    - "node_modules/"
-    - ".vs/"
+    - 'bin/'
+    - 'obj/'
+    - '*.exe'
+    - '*.dll'
+    - 'node_modules/'
+    - '.vs/'
 
   never_delete:
-    - ".git/"
-    - ".agent/"
-    - "*.sln"
-    - "*.csproj"
-    - "README.md"
-    - "LICENSE"
+    - '.git/'
+    - '.agent/'
+    - '*.sln'
+    - '*.csproj'
+    - 'README.md'
+    - 'LICENSE'
 
   never_expose:
     - secrets
@@ -91,18 +91,18 @@ Define allowed and forbidden directories:
 ```yaml
 repository_boundaries:
   allowed_directories:
-    - "./dotnet"
-    - "./tests"
-    - "./docs"
-    - "./.agent"
-    - "./.github"
+    - './dotnet'
+    - './tests'
+    - './docs'
+    - './.agent'
+    - './.github'
 
   forbidden_directories:
-    - "./bin"
-    - "./obj"
-    - "./packages"
-    - "./.vs"
-    - "./node_modules"
+    - './bin'
+    - './obj'
+    - './packages'
+    - './.vs'
+    - './node_modules'
 ```
 
 ## Coding Standards (coding-standards.yaml)
@@ -114,17 +114,17 @@ Development-specific policies for maintaining code quality:
 ```yaml
 dotnet:
   style:
-    - "Follow .editorconfig rules strictly"
-    - "Use dotnet-format before every commit"
-    - "PascalCase for public members"
-    - "camelCase for private fields (_camelCase for backing fields)"
-    - "Use explicit access modifiers"
+    - 'Follow .editorconfig rules strictly'
+    - 'Use dotnet-format before every commit'
+    - 'PascalCase for public members'
+    - 'camelCase for private fields (_camelCase for backing fields)'
+    - 'Use explicit access modifiers'
 
   testing:
-    - "All public APIs must have unit tests"
-    - "Test projects follow naming: {ProjectName}.Tests"
-    - "Use xUnit/NUnit patterns consistently"
-    - "Aim for >70% code coverage on new code"
+    - 'All public APIs must have unit tests'
+    - 'Test projects follow naming: {ProjectName}.Tests'
+    - 'Use xUnit/NUnit patterns consistently'
+    - 'Aim for >70% code coverage on new code'
 ```
 
 ### Formatting
@@ -132,13 +132,13 @@ dotnet:
 ```yaml
 formatting:
   tools:
-    - "dotnet-format (C#)"
-    - "prettier (JSON, YAML, Markdown)"
+    - 'dotnet-format (C#)'
+    - 'prettier (JSON, YAML, Markdown)'
 
   enforcement:
-    - "Run pre-commit hooks before every commit"
-    - "CI must validate formatting on every PR"
-    - "Zero tolerance for formatting violations in main"
+    - 'Run pre-commit hooks before every commit'
+    - 'CI must validate formatting on every PR'
+    - 'Zero tolerance for formatting violations in main'
 ```
 
 ### Code Quality
@@ -146,14 +146,14 @@ formatting:
 ```yaml
 code_quality:
   metrics:
-    - "Cyclomatic complexity < 15 per method"
-    - "Method length < 50 lines (prefer < 20)"
-    - "Class length < 300 lines (prefer < 200)"
+    - 'Cyclomatic complexity < 15 per method'
+    - 'Method length < 50 lines (prefer < 20)'
+    - 'Class length < 300 lines (prefer < 200)'
 
   analysis:
-    - "Enable all Roslyn analyzers"
-    - "Treat warnings as errors in Release builds"
-    - "Fix all critical/high severity issues before merge"
+    - 'Enable all Roslyn analyzers'
+    - 'Treat warnings as errors in Release builds'
+    - 'Fix all critical/high severity issues before merge'
 ```
 
 ## Policy Enforcement

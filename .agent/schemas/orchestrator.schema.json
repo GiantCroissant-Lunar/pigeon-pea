@@ -40,9 +40,7 @@
       },
       "minItems": 1,
       "uniqueItems": true,
-      "examples": [
-        ["DotNetBuildAgent", "CodeReviewAgent", "TestingAgent"]
-      ]
+      "examples": [["DotNetBuildAgent", "CodeReviewAgent", "TestingAgent"]]
     },
     "routing": {
       "type": "object",
@@ -167,11 +165,7 @@
       "name": "Orchestrator",
       "description": "Top-level router that delegates to sub-agents based on task intent",
       "version": "0.1.0",
-      "subagents": [
-        "DotNetBuildAgent",
-        "CodeReviewAgent",
-        "TestingAgent"
-      ],
+      "subagents": ["DotNetBuildAgent", "CodeReviewAgent", "TestingAgent"],
       "routing": {
         "rules": [
           {

@@ -9,9 +9,9 @@ version: 0.1.0
 # Sub-agents available for delegation
 # Each sub-agent specializes in a specific domain of work
 subagents:
-  - DotNetBuildAgent    # Handles .NET build, restore, compile, and packaging
-  - CodeReviewAgent     # Handles code formatting, analysis, and quality checks
-  - TestingAgent        # Handles test execution, coverage, and benchmarks
+  - DotNetBuildAgent # Handles .NET build, restore, compile, and packaging
+  - CodeReviewAgent # Handles code formatting, analysis, and quality checks
+  - TestingAgent # Handles test execution, coverage, and benchmarks
 
 # Routing rules for delegating tasks to appropriate sub-agents
 # Rules are evaluated in order; first match wins
@@ -39,5 +39,5 @@ fallback: CodeReviewAgent
 # Policies enforced across all sub-agents
 # These policies ensure consistent behavior and safety guardrails
 policies:
-  - enforce: .agent/policies/defaults.yaml           # General rate limits, safety, and boundaries
-  - enforce: .agent/policies/coding-standards.yaml   # .NET coding standards and quality metrics
+  - enforce: .agent/policies/defaults.yaml # General rate limits, safety, and boundaries
+  - enforce: .agent/policies/coding-standards.yaml # .NET coding standards and quality metrics

@@ -8,8 +8,8 @@ inputs:
   configuration: [Debug, Release]
   project_path: string
 contracts:
-  success: "Build completes with zero errors; artifacts in bin/"
-  failure: "Non-zero exit code or compilation errors"
+  success: 'Build completes with zero errors; artifacts in bin/'
+  failure: 'Non-zero exit code or compilation errors'
 ---
 
 # .NET Build Skill (Entry Map)
@@ -41,9 +41,11 @@ contracts:
 ## Navigation
 
 **1. Build Entire Solution** → [`references/build-solution.md`](references/build-solution.md)
+
 - First build after cloning, building before tests, creating release artifacts
 
 **2. Restore Dependencies Only** → [`references/restore-deps.md`](references/restore-deps.md)
+
 - Setup dev environment, fix missing packages, troubleshoot NuGet
 
 ## Common Patterns

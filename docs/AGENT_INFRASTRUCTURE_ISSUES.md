@@ -69,6 +69,7 @@ This directory contains sub-agent definitions that specialize in specific develo
 ## Format
 
 Each agent is defined in YAML with:
+
 - `name`: Agent name (PascalCase)
 - `description`: Clear description of responsibilities
 - `version`: Semantic version
@@ -132,7 +133,7 @@ routing:
       to: CodeReviewAgent
 
     - if: "task contains 'refactor' or 'code' or 'implement' or 'fix'"
-      to: CodeReviewAgent  # Default for coding tasks
+      to: CodeReviewAgent # Default for coding tasks
 
 fallback: CodeReviewAgent
 
@@ -193,10 +194,10 @@ constraints:
   - Ensure builds are idempotent
 
 success_criteria:
-  - "Build succeeds with zero errors"
-  - "Artifacts generated in expected output path"
-  - "Build logs attached with full context"
-  - "Dependencies restored successfully"
+  - 'Build succeeds with zero errors'
+  - 'Artifacts generated in expected output path'
+  - 'Build logs attached with full context'
+  - 'Dependencies restored successfully'
 ```
 
 ---
@@ -243,43 +244,51 @@ description: Build .NET solution/projects using dotnet CLI. Use when task involv
 inputs:
   target: [solution, project, all]
   configuration: [Debug, Release]
-  project_path: string  # Optional, defaults to ./dotnet/PigeonPea.sln
+  project_path: string # Optional, defaults to ./dotnet/PigeonPea.sln
 contracts:
-  success: "Build completes with zero errors; artifacts in bin/"
-  failure: "Non-zero exit code or compilation errors"
+  success: 'Build completes with zero errors; artifacts in bin/'
+  failure: 'Non-zero exit code or compilation errors'
 ---
 
 # .NET Build Skill (Entry Map)
+
 > **Goal:** Guide agent to the exact build procedure needed.
 
 ## Quick Start (Pick One)
+
 - **Build entire solution** → `references/build-solution.md`
 - **Restore dependencies only** → `references/restore-deps.md`
 
 ## When to Use
+
 - Compiling .NET code (.csproj, .sln)
 - Restoring NuGet packages
 - Building specific configurations (Debug/Release)
 
 **Do NOT use for:**
+
 - Running tests (use `dotnet-test` skill)
 - Code formatting (use `code-format` skill)
 
 ## Inputs & Outputs
+
 - `target`: solution | project | all
 - `configuration`: Debug | Release
 - **Output**: `artifact_path`, `build_log`
 
 ## Guardrails
+
 - Operate within `./dotnet` directory
 - Never commit `bin/`, `obj/`
 - Idempotent: safe to re-run
 
 ## Navigation
+
 1. **Build entire solution** → `references/build-solution.md`
 2. **Restore dependencies** → `references/restore-deps.md`
 
 ## Common Patterns
+
 ```bash
 # Build solution (Debug)
 dotnet build ./dotnet/PigeonPea.sln
@@ -289,6 +298,7 @@ dotnet build ./dotnet/PigeonPea.sln -c Release
 ```
 
 ## Troubleshooting
+
 - **Build fails**: Read `references/build-solution.md`
 - **Missing deps**: Read `references/restore-deps.md`
 ````
@@ -358,10 +368,7 @@ Create JSON Schema files to validate skill front-matter and sub-agent YAML manif
     "inputs": {
       "type": "object",
       "additionalProperties": {
-        "oneOf": [
-          { "type": "array", "items": { "type": "string" } },
-          { "type": "string" }
-        ]
+        "oneOf": [{ "type": "array", "items": { "type": "string" } }, { "type": "string" }]
       }
     },
     "contracts": {
@@ -421,18 +428,18 @@ rate_limits:
 
 safety:
   never_commit:
-    - "bin/"
-    - "obj/"
-    - "*.exe"
-    - "*.dll"
-    - "*.user"
-    - "*.suo"
+    - 'bin/'
+    - 'obj/'
+    - '*.exe'
+    - '*.dll'
+    - '*.user'
+    - '*.suo'
 
   never_delete:
-    - ".git/"
-    - ".agent/"
-    - "*.sln"
-    - "*.csproj"
+    - '.git/'
+    - '.agent/'
+    - '*.sln'
+    - '*.csproj'
 
   never_expose:
     - secrets
@@ -441,14 +448,14 @@ safety:
 
 repository_boundaries:
   allowed_directories:
-    - "./dotnet"
-    - "./tests"
-    - "./docs"
-    - "./.agent"
+    - './dotnet'
+    - './tests'
+    - './docs'
+    - './.agent'
 
   forbidden_directories:
-    - "./bin"
-    - "./obj"
+    - './bin'
+    - './obj'
 ```
 
 ---
@@ -503,9 +510,9 @@ constraints:
   - Flag security issues with HIGH priority
 
 success_criteria:
-  - "All formatting checks pass"
-  - "No critical security issues found"
-  - "Analysis report generated"
+  - 'All formatting checks pass'
+  - 'No critical security issues found'
+  - 'Analysis report generated'
 ```
 
 ---
@@ -558,9 +565,9 @@ constraints:
   - Report test results in readable format
 
 success_criteria:
-  - "All tests pass or failures clearly reported"
-  - "Coverage data generated (if requested)"
-  - "Benchmark results available (if requested)"
+  - 'All tests pass or failures clearly reported'
+  - 'Coverage data generated (if requested)'
+  - 'Benchmark results available (if requested)'
 ```
 
 ---
@@ -607,31 +614,35 @@ description: Run .NET tests (unit, integration), generate coverage, execute benc
 inputs:
   test_type: [unit, integration, all, benchmark]
   coverage: [true, false]
-  project_path: string  # Optional
+  project_path: string # Optional
 contracts:
-  success: "All tests pass; coverage/benchmark data generated if requested"
-  failure: "Test failures or execution errors"
+  success: 'All tests pass; coverage/benchmark data generated if requested'
+  failure: 'Test failures or execution errors'
 ---
 
 # .NET Test Skill (Entry Map)
 
 ## Quick Start
+
 - **Run all unit tests** → `references/run-unit-tests.md`
 - **Generate coverage report** → `references/generate-coverage.md`
 - **Run benchmarks** → `references/run-benchmarks.md`
 
 ## When to Use
+
 - Running xUnit/NUnit tests
 - Generating code coverage
 - Executing BenchmarkDotNet benchmarks
 - Verifying code quality
 
 ## Navigation
+
 1. `references/run-unit-tests.md`
 2. `references/generate-coverage.md`
 3. `references/run-benchmarks.md`
 
 ## Common Patterns
+
 ```bash
 # Run all tests
 dotnet test ./dotnet/PigeonPea.sln
@@ -679,34 +690,41 @@ Create the code-format skill for running dotnet-format, prettier, and other form
 # .NET Code Formatting - Detailed Procedure
 
 ## Overview
+
 Formats C# code using dotnet-format according to .editorconfig rules.
 
 ## Prerequisites
+
 - .NET SDK installed
 - .editorconfig present in ./dotnet
 
 ## Standard Format Flow
 
 ### 1. Check Formatting
+
 ```bash
 cd ./dotnet
 dotnet format --verify-no-changes
 ```
 
 ### 2. Fix Formatting
+
 ```bash
 dotnet format
 ```
 
 ### 3. Fix Specific Project
+
 ```bash
 dotnet format ./console-app/PigeonPea.Console.csproj
 ```
 
 ## Integration with Pre-commit
+
 Formatting runs automatically on commit via pre-commit hooks.
 
 ## Common Issues
+
 - **Multiple .editorconfig files**: Ensure hierarchy is correct
 - **Conflicting rules**: Check .editorconfig for conflicts
 ````
@@ -748,34 +766,41 @@ Create the code-analyze skill for running static analysis tools, security scans,
 # Static Analysis - Detailed Procedure
 
 ## Overview
+
 Runs Roslyn analyzers and code quality checks on .NET code.
 
 ## Prerequisites
+
 - .NET SDK with analyzers enabled in .csproj
 
 ## Analysis Flow
 
 ### 1. Run Build with Analyzers
+
 ```bash
 dotnet build /p:RunAnalyzers=true
 ```
 
 ### 2. Treat Warnings as Errors (Release)
+
 ```bash
 dotnet build -c Release /p:TreatWarningsAsErrors=true
 ```
 
 ### 3. Generate Analysis Report
+
 ```bash
 dotnet build /p:RunAnalyzers=true > analysis.log
 ```
 
 ## Common Analyzers
+
 - **Microsoft.CodeAnalysis.NetAnalyzers**: Built-in analyzers
 - **StyleCop.Analyzers**: Code style enforcement
 - **SonarAnalyzer.CSharp**: Advanced code quality
 
 ## Severity Levels
+
 - **Error**: Must fix before merge
 - **Warning**: Should fix
 - **Info**: Optional improvement
@@ -1289,16 +1314,16 @@ context:
 
 tools:
   prefer:
-    - Read  # Prefer Read over Bash cat
-    - Edit  # Prefer Edit over sed/awk
-    - Glob  # Prefer Glob over find
+    - Read # Prefer Read over Bash cat
+    - Edit # Prefer Edit over sed/awk
+    - Glob # Prefer Glob over find
 
 skills:
-  loading_strategy: progressive  # Load entry first, then references
-  max_initial_load: 500  # lines
+  loading_strategy: progressive # Load entry first, then references
+  max_initial_load: 500 # lines
 
 sub_agents:
-  delegation_preference: specialized  # Prefer specialized sub-agents
+  delegation_preference: specialized # Prefer specialized sub-agents
 ```
 
 ---
@@ -1375,9 +1400,10 @@ The `.agent` directory contains a hierarchical agent system:
 - **Policies**: Guardrails and standards
 
 ## Architecture
-
 ```
+
 User Request → Orchestrator → Sub-Agent → Skill → Action
+
 ```
 
 ## How It Works
