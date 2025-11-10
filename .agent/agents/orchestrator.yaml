@@ -27,14 +27,9 @@ routing:
     - if: "task contains 'test' or 'coverage' or 'benchmark'"
       to: TestingAgent
 
-    # Code quality tasks → CodeReviewAgent
-    # Triggered by keywords: review, format, lint, analyze, quality
-    - if: "task contains 'review' or 'format' or 'lint' or 'analyze' or 'quality'"
-      to: CodeReviewAgent
-
-    # General coding tasks → CodeReviewAgent (default for code work)
-    # Triggered by keywords: refactor, code, implement, fix
-    - if: "task contains 'refactor' or 'code' or 'implement' or 'fix'"
+    # Code quality and general coding tasks → CodeReviewAgent
+    # Triggered by keywords: review, format, lint, analyze, quality, refactor, code, implement, fix
+    - if: "task contains 'review' or 'format' or 'lint' or 'analyze' or 'quality' or 'refactor' or 'code' or 'implement' or 'fix'"
       to: CodeReviewAgent
 
 # Fallback agent when no routing rule matches
