@@ -75,6 +75,7 @@ public class InventoryViewModel : ReactiveObject, IDisposable
 
     /// <summary>
     /// Updates the ViewModel properties from an ECS player entity's inventory.
+    /// Uses efficient diffing to synchronize items without recreating the entire list.
     /// </summary>
     /// <param name="world">The ECS world containing the entity.</param>
     /// <param name="playerEntity">The player entity to sync from.</param>
@@ -91,17 +92,59 @@ public class InventoryViewModel : ReactiveObject, IDisposable
             return;
         }
 
-        // Clear and rebuild the items list from ECS
-        Items.Clear();
+        // Build a set of current ECS item entities for efficient lookup
+        var ecsItemEntities = new HashSet<Entity>();
         foreach (var itemEntity in inventory.Items)
         {
-            if (world.IsAlive(itemEntity) && world.TryGet<Item>(itemEntity, out var item))
+            if (world.IsAlive(itemEntity))
             {
+                ecsItemEntities.Add(itemEntity);
+            }
+        }
+
+        // Remove items from the view model that no longer exist in ECS
+        for (int i = Items.Count - 1; i >= 0; i--)
+        {
+            if (!ecsItemEntities.Contains(Items[i].SourceEntity))
+            {
+                Items.RemoveAt(i);
+            }
+        }
+
+        // Build a set of existing view model entities for quick lookup
+        var existingViewModelEntities = new HashSet<Entity>(
+            Items.Select(item => item.SourceEntity)
+        );
+
+        // Add new items and update existing ones
+        foreach (var itemEntity in inventory.Items)
+        {
+            if (!world.IsAlive(itemEntity))
+            {
+                continue;
+            }
+
+            if (!world.TryGet<Item>(itemEntity, out var item))
+            {
+                continue;
+            }
+
+            if (!existingViewModelEntities.Contains(itemEntity))
+            {
+                // Add new item
                 Items.Add(new ItemViewModel
                 {
+                    SourceEntity = itemEntity,
                     Name = item.Name,
                     Type = item.Type
                 });
+            }
+            else
+            {
+                // Update existing item
+                var existingViewModel = Items.First(vm => vm.SourceEntity == itemEntity);
+                existingViewModel.Name = item.Name;
+                existingViewModel.Type = item.Type;
             }
         }
     }

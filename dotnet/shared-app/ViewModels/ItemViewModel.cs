@@ -1,3 +1,4 @@
+using Arch.Core;
 using ReactiveUI;
 using PigeonPea.Shared.Components;
 
@@ -11,6 +12,12 @@ public class ItemViewModel : ReactiveObject
 {
     private string _name = string.Empty;
     private ItemType _type;
+
+    /// <summary>
+    /// Reference to the source Entity in the ECS world.
+    /// Used for efficient synchronization and uniquely identifying items.
+    /// </summary>
+    public required Entity SourceEntity { get; init; }
 
     /// <summary>
     /// The name of the item.
