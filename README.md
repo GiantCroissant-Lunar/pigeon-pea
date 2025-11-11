@@ -1,5 +1,11 @@
 # pigeon-pea
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Pre-Commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![Pre-commit CI](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/pre-commit.yml)
+[![Benchmarks](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/benchmarks.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/benchmarks.yml)
+[![Console Visual Tests](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/console-visual-tests.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/console-visual-tests.yml)
+
 A multi-language project with pre-commit hooks for code quality and security.
 
 ## Pre-commit Hooks
