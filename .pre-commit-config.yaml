@@ -67,7 +67,7 @@ repos:
             document-start: disable,
             truthy: {check-keys: false}}}
         exclude: >-
-          ^dotnet/_lib/modern-satsuma/|^ref-projects/hyacinth-bean-base/
+          ^\.agent/agents/|^dotnet/_lib/modern-satsuma/|^ref-projects/hyacinth-bean-base/
 
   # .NET formatting (using dotnet format)
   # Note: This requires .NET SDK to be installed

@@ -79,36 +79,36 @@ EOF
 
 check_prerequisites() {
     local missing_tools=()
-    
+
     if [[ "$SKIP_DOTNET" == "false" ]]; then
         if ! command -v dotnet &> /dev/null; then
             missing_tools+=(".NET SDK")
         fi
     fi
-    
+
     if [[ "$SKIP_PRETTIER" == "false" ]]; then
         if ! command -v node &> /dev/null; then
             missing_tools+=("Node.js")
         fi
     fi
-    
+
     if [[ ${#missing_tools[@]} -gt 0 ]]; then
         print_error "Missing required tools: ${missing_tools[*]}"
         print_error "Please install the missing tools and try again."
         exit 1
     fi
-    
+
     if [[ "$SKIP_DOTNET" == "false" ]]; then
         if [[ ! -f "$SOLUTION_FILE" ]]; then
             print_error "Solution file not found: $SOLUTION_FILE"
             exit 1
         fi
-        
+
         if [[ "$VERBOSE" == "true" ]]; then
             print_info ".NET SDK version: $(dotnet --version)"
         fi
     fi
-    
+
     if [[ "$SKIP_PRETTIER" == "false" && "$VERBOSE" == "true" ]]; then
         print_info "Node.js version: $(node --version)"
     fi
@@ -119,24 +119,24 @@ format_dotnet() {
         print_warning "Skipping .NET code formatting"
         return 0
     fi
-    
+
     print_step "Formatting .NET code (C# files)..."
-    
+
     cd "$DOTNET_DIR"
-    
+
     local format_args=("$SOLUTION_FILE")
-    
+
     if [[ "$VERIFY_MODE" == "true" ]]; then
         format_args+=("--verify-no-changes")
         print_info "Running dotnet format in verify mode..."
     else
         print_info "Running dotnet format..."
     fi
-    
+
     if [[ "$VERBOSE" == "true" ]]; then
         format_args+=("--verbosity" "detailed")
     fi
-    
+
     if dotnet format "${format_args[@]}"; then
         if [[ "$VERIFY_MODE" == "true" ]]; then
             print_info "✓ .NET code formatting verified (no violations)"
@@ -162,18 +162,18 @@ format_prettier() {
         print_warning "Skipping Prettier formatting"
         return 0
     fi
-    
+
     print_step "Formatting non-.NET files (JSON, YAML, Markdown)..."
-    
+
     cd "$REPO_ROOT"
-    
+
     local prettier_patterns=(
         "**/*.json"
         "**/*.yml"
         "**/*.yaml"
         "**/*.md"
     )
-    
+
     # Add JavaScript/TypeScript if present
     if find . -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" \) | grep -q .; then
         prettier_patterns+=(
@@ -183,9 +183,9 @@ format_prettier() {
             "**/*.tsx"
         )
     fi
-    
+
     local prettier_args=()
-    
+
     if [[ "$VERIFY_MODE" == "true" ]]; then
         prettier_args+=("--check")
         print_info "Running prettier in check mode..."
@@ -193,22 +193,22 @@ format_prettier() {
         prettier_args+=("--write")
         print_info "Running prettier..."
     fi
-    
+
     if [[ "$VERBOSE" == "true" ]]; then
         prettier_args+=("--loglevel" "debug")
     fi
-    
+
     local all_success=true
-    
+
     if [[ "$VERBOSE" == "true" ]]; then
         print_info "Formatting patterns: ${prettier_patterns[*]}"
     fi
-    
+
     # Run prettier on all patterns at once for better performance
     if ! npx prettier "${prettier_args[@]}" "${prettier_patterns[@]}" --no-error-on-unmatched-pattern; then
         all_success=false
     fi
-    
+
     if [[ "$all_success" == "true" ]]; then
         if [[ "$VERIFY_MODE" == "true" ]]; then
             print_info "✓ Prettier formatting verified (no violations)"
@@ -276,27 +276,27 @@ main() {
         print_info "Mode: Format (will modify files)"
     fi
     print_info "========================================="
-    
+
     check_prerequisites
-    
+
     local dotnet_result=0
     local prettier_result=0
-    
+
     # Format .NET code
     if ! format_dotnet; then
         dotnet_result=1
     fi
-    
+
     # Format non-.NET files
     if ! format_prettier; then
         prettier_result=1
     fi
-    
+
     # Summary
     print_info "========================================="
     print_info "Summary"
     print_info "========================================="
-    
+
     if [[ "$SKIP_DOTNET" == "false" ]]; then
         if [[ $dotnet_result -eq 0 ]]; then
             print_info ".NET formatting: ✓ Success"
@@ -304,7 +304,7 @@ main() {
             print_error ".NET formatting: ✗ Failed"
         fi
     fi
-    
+
     if [[ "$SKIP_PRETTIER" == "false" ]]; then
         if [[ $prettier_result -eq 0 ]]; then
             print_info "Prettier formatting: ✓ Success"
@@ -312,9 +312,9 @@ main() {
             print_error "Prettier formatting: ✗ Failed"
         fi
     fi
-    
+
     local total_result=$((dotnet_result + prettier_result))
-    
+
     if [[ $total_result -eq 0 ]]; then
         print_info "========================================="
         if [[ "$VERIFY_MODE" == "true" ]]; then

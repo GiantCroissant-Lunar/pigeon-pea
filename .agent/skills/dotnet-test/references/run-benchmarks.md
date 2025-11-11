@@ -7,6 +7,7 @@ This guide covers running performance benchmarks for the PigeonPea solution usin
 ## What are Benchmarks?
 
 Benchmarks measure code performance (execution time, memory allocation, throughput) to:
+
 - Identify performance bottlenecks
 - Compare alternative implementations
 - Track performance over time
@@ -200,7 +201,7 @@ public class MyBenchmarks
                 .WithRuntime(CoreRuntime.Core90)
                 .WithPlatform(Platform.X64)
                 .WithJit(Jit.RyuJit));
-            
+
             AddDiagnoser(MemoryDiagnoser.Default);
             AddColumn(StatisticColumn.P95);
         }
@@ -236,6 +237,7 @@ public class MyBenchmarks
 ### Statistical Significance
 
 BenchmarkDotNet performs statistical analysis:
+
 - **Outliers:** Identified and can be removed
 - **Multimodal distribution:** Indicates interference (antivirus, background tasks)
 - **Confidence intervals:** 95% by default
@@ -279,6 +281,7 @@ dotnet run -c Release
 **Solutions:**
 
 1. Run with detailed output:
+
    ```bash
    dotnet run -c Release -- --verbosity Detailed
    ```

@@ -18,6 +18,7 @@ This guide provides step-by-step instructions for running security scans on the 
 Scans Git history and files for hardcoded secrets, API keys, passwords, tokens.
 
 **What it detects:**
+
 - API keys (AWS, Azure, GitHub, etc.)
 - Private keys and certificates
 - Database connection strings
@@ -31,6 +32,7 @@ Scans Git history and files for hardcoded secrets, API keys, passwords, tokens.
 Scans files for potential secrets using heuristics and maintains a baseline of known false positives.
 
 **What it detects:**
+
 - High entropy strings (potential passwords/keys)
 - Base64-encoded secrets
 - Hex-encoded secrets
@@ -43,6 +45,7 @@ Scans files for potential secrets using heuristics and maintains a baseline of k
 Built-in Roslyn analyzers that detect security vulnerabilities in C# code.
 
 **What it detects:**
+
 - Insecure cryptography usage
 - SQL injection vulnerabilities
 - Path traversal issues
@@ -73,6 +76,7 @@ Security rules (CA5xxx) are enabled by default and run during build.
 ### Step 3: Review Findings
 
 **Gitleaks output:**
+
 ```
 INFO[0000] 7 commits scanned.
 INFO[0000] scan completed in 142ms
@@ -80,11 +84,13 @@ INFO[0000] No leaks found
 ```
 
 **Detect-secrets output:**
+
 ```
 detect-secrets...........Passed
 ```
 
 **Security analyzer output:**
+
 ```
 console-app/Program.cs(42,15): warning CA5351: Do Not Use Broken Cryptographic Algorithms
 ```
@@ -185,6 +191,7 @@ detect-secrets scan dotnet/
 **CA5xxx Series** - Cryptography and Security
 
 **CA5350/CA5351**: Do not use weak/broken cryptographic algorithms
+
 ```csharp
 // Bad
 using (var md5 = MD5.Create()) { }  // CA5351
@@ -194,6 +201,7 @@ using (var sha256 = SHA256.Create()) { }
 ```
 
 **CA5359**: Do not disable certificate validation
+
 ```csharp
 // Bad
 ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, errors) => true;  // CA5359
@@ -203,6 +211,7 @@ ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, 
 ```
 
 **CA5363**: Do not disable request validation
+
 ```csharp
 // Bad
 [ValidateInput(false)]  // CA5363
@@ -213,6 +222,7 @@ public ActionResult Submit(string input) { }  // Validation enabled
 ```
 
 **CA5364**: Do not use deprecated security protocols
+
 ```csharp
 // Bad
 ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3;  // CA5364
@@ -222,6 +232,7 @@ ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProt
 ```
 
 **CA5379/CA5380**: Ensure key derivation function algorithm is strong
+
 ```csharp
 // Bad
 using (var rfc2898 = new Rfc2898DeriveBytes(password, salt, 1000)) { }  // CA5379 (iterations too low)
@@ -231,6 +242,7 @@ using (var rfc2898 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorith
 ```
 
 **CA5384**: Do not use DSA
+
 ```csharp
 // Bad
 using (var dsa = DSA.Create()) { }  // CA5384
