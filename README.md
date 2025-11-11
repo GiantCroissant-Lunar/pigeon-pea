@@ -152,6 +152,7 @@ task check
 ```
 
 For detailed documentation, see:
+
 - [AGENTS.md](AGENTS.md) - Complete agent infrastructure overview
 - [CLAUDE.md](CLAUDE.md) - Claude-specific agent configuration
 - [`.agent/`](.agent/) - Agent manifests, skills, schemas, and policies
