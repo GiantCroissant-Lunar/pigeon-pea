@@ -41,7 +41,15 @@ dotnet/
 ## Building & Running
 
 ### Prerequisites
-{{ ... }}
+
+- .NET SDK 9.0.x
+- macOS, Windows, or Linux with a compatible terminal
+- dotnet CLI in PATH (verify with `dotnet --info`)
+- Optional for Windows app:
+  - .NET Desktop Runtime 9.0
+  - A GPU driver compatible with SkiaSharp via Avalonia
+- Recommended IDEs: VS Code with C# Dev Kit or JetBrains Rider
+
 
 ### Run Windows App
 
@@ -64,7 +72,11 @@ dotnet run
 
 **Controls**:
 
-{{ ... }}
+- Arrow keys / WASD: Move
+- ESC/Q: Exit
+- Space/Enter: Interact
+- H: Toggle help
+
 
 ## Development
 
@@ -76,9 +88,28 @@ dotnet run
 
 ### Adding New Systems
 
-Create system methods in `GameWorld.cs` and call them in `Update()`:
+Create a system method in `game-essential/core/PigeonPea.Shared/GameWorld.cs` and call it from `Update()`:
 
-{{ ... }}
+```csharp
+public partial class GameWorld
+{
+    // Example: apply regen to all entities with Health
+    private void HealthRegenSystem(float dt)
+    {
+        foreach (ref var health in _healthQuery)
+        {
+            health.Value = Math.Min(health.Max, health.Value + health.RegenRate * dt);
+        }
+    }
+
+    public void Update(float dt)
+    {
+        // Existing systems...
+        MovementSystem(dt);
+        CombatSystem(dt);
+        // New system
+        HealthRegenSystem(dt);
+    }
 }
 ```
 

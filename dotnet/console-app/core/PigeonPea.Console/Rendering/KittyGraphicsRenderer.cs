@@ -1,6 +1,7 @@
 using PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 
@@ -67,13 +68,27 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
             {
                 System.Console.Write(_commandBuffer.ToString());
             }
-            catch (System.IO.IOException)
+            catch (System.IO.IOException ex)
             {
-                // Console output unavailable; ignore during tests
+                if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+                {
+                    Debug.WriteLine($"Console write failed in test/redirected environment: {ex.Message}");
+                }
+                else
+                {
+                    throw;
+                }
             }
-            catch (System.ObjectDisposedException)
+            catch (System.ObjectDisposedException ex)
             {
-                // Console.Out may be disposed by test harness
+                if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+                {
+                    Debug.WriteLine($"Console output disposed in test/redirected environment: {ex.Message}");
+                }
+                else
+                {
+                    throw;
+                }
             }
             _commandBuffer.Clear();
         }
@@ -269,13 +284,13 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
             {
                 System.Console.Write("?");
             }
-            catch (System.IO.IOException)
+            catch (System.IO.IOException ex) when (IsTestEnvironment())
             {
-                // Ignore in test environments without a console
+                Debug.WriteLine($"Console write failed in test environment: {ex.Message}");
             }
-            catch (System.ObjectDisposedException)
+            catch (System.ObjectDisposedException ex) when (IsTestEnvironment())
             {
-                // Console.Out may be disposed by test harness
+                Debug.WriteLine($"Console output disposed in test environment: {ex.Message}");
             }
         }
     }
@@ -340,13 +355,27 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
                 {
                     System.Console.Write(_commandBuffer.ToString());
                 }
-                catch (System.IO.IOException)
+                catch (System.IO.IOException ex)
                 {
-                    // Console output unavailable; ignore during tests
+                    if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+                    {
+                        Debug.WriteLine($"Console write failed in test/redirected environment: {ex.Message}");
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
-                catch (System.ObjectDisposedException)
+                catch (System.ObjectDisposedException ex)
                 {
-                    // Console.Out may be disposed by test harness
+                    if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+                    {
+                        Debug.WriteLine($"Console output disposed in test/redirected environment: {ex.Message}");
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
                 _commandBuffer.Clear();
             }
@@ -372,5 +401,11 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
             Width = width;
             Height = height;
         }
+    }
+
+    private static bool IsTestEnvironment()
+    {
+        return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOTNET_RUNNING_TESTS"))
+               || Debugger.IsAttached;
     }
 }

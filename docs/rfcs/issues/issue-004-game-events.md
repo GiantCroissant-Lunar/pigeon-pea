@@ -58,23 +58,17 @@ Issue #3 (plugin system must exist)
   - [ ] Event data is correct
   - [ ] Multiple subscribers work correctly
 - [ ] No functional regressions
-- [ ] Performance acceptable (events don't slow down game loop)
-
 ### Documentation
 - [ ] XML documentation for all event classes
 - [ ] README in EventLogger plugin explaining purpose
 - [ ] Updated ARCHITECTURE.md with event flow diagram
+ ## Implementation Notes
+ - Use C# records for immutable events
+ - Consider synchronous vs asynchronous event publishing (perf implications)
+ - Ensure events are published *after* state changes (not before)
+ ## Event Examples
 
-## Implementation Notes
-- Use C# records for immutable events
-- Consider synchronous vs asynchronous event publishing (perf implications)
-- Ensure events are published *after* state changes (not before)
-- EventLogger is a development/debugging plugin (can be disabled in production)
-- Events should be fire-and-forget (don't block game logic)
-
-## Event Examples
-
-### EntitySpawnedEvent
+ ### EntitySpawnedEvent
 ```csharp
 namespace PigeonPea.Game.Contracts.Events;
 
@@ -86,7 +80,6 @@ public record EntitySpawnedEvent
     public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 }
 ```
-
 ### EntityMovedEvent
 ```csharp
 public record EntityMovedEvent
@@ -97,7 +90,6 @@ public record EntityMovedEvent
     public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 }
 ```
-
 ### CombatEvent
 ```csharp
 public record CombatEvent
@@ -110,48 +102,50 @@ public record CombatEvent
     public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 }
 ```
-
 ## GameWorld Integration Example
 
 ```csharp
-public class GameWorld
-{
-    private readonly IEventBus _eventBus;
-
-    public GameWorld(IEventBus eventBus)
+    public class GameWorld
     {
-        _eventBus = eventBus;
-    }
+        private readonly IEventBus _eventBus;
 
-    public void SpawnEntity(Entity entity)
-    {
-        // ... ECS entity creation ...
-
-        // Publish event for plugins
-        _eventBus.PublishAsync(new EntitySpawnedEvent
+        public GameWorld(IEventBus eventBus)
         {
-            EntityId = entity.Id,
-            EntityType = GetEntityType(entity),
-            Position = entity.Get<Position>().Point
-        }).Wait();  // Or await in async context
-    }
+            _eventBus = eventBus;
+        }
 
-    public void MoveEntity(Entity entity, Point newPosition)
-    {
-        var oldPosition = entity.Get<Position>().Point;
-        entity.Get<Position>().Point = newPosition;
-
-        // Publish event
-        _eventBus.PublishAsync(new EntityMovedEvent
+        public async Task SpawnEntityAsync(Entity entity, CancellationToken ct = default)
         {
-            EntityId = entity.Id,
-            OldPosition = oldPosition,
-            NewPosition = newPosition
-        }).Wait();
+            // ... ECS entity creation ...
+
+            // Publish event for plugins
+            await _eventBus.PublishAsync(
+                new EntitySpawnedEvent
+                {
+                    EntityId = entity.Id,
+                    EntityType = GetEntityType(entity),
+                    Position = entity.Get<Position>().Point
+                },
+                ct);
+        }
+
+        public async Task MoveEntityAsync(Entity entity, Point newPosition, CancellationToken ct = default)
+        {
+            var oldPosition = entity.Get<Position>().Point;
+            entity.Get<Position>().Point = newPosition;
+
+            // Publish event
+            await _eventBus.PublishAsync(
+                new EntityMovedEvent
+                {
+                    EntityId = entity.Id,
+                    OldPosition = oldPosition,
+                    NewPosition = newPosition
+                },
+                ct);
+        }
     }
-}
 ```
-
 ## EventLogger Plugin Example
 
 ```csharp
@@ -186,12 +180,23 @@ public class EventLoggerPlugin : IPlugin
         return Task.CompletedTask;
     }
 
-    // ... other handlers ...
+    private Task OnEntityMoved(EntityMovedEvent evt)
+    {
+        _logger?.LogInformation(
+            "Entity moved: {Id} from ({OX},{OY}) to ({NX},{NY})",
+            evt.EntityId, evt.OldPosition.X, evt.OldPosition.Y, evt.NewPosition.X, evt.NewPosition.Y);
+        return Task.CompletedTask;
+    }
+
+    private Task OnCombat(CombatEvent evt)
+    {
+        _logger?.LogInformation(
+            "Combat: {A} -> {T} dmg={D} hit={H} kill={K}",
+            evt.AttackerId, evt.TargetId, evt.DamageDealt, evt.IsHit, evt.IsKill);
+        return Task.CompletedTask;
+    }
 }
 ```
-
-## Estimated Effort
-2-3 days
 
 ## Dependencies
 - Issue #3 must be completed (plugin system must exist)
