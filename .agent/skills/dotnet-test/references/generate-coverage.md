@@ -193,41 +193,7 @@ start ./TestResults/CoverageReport/index.html
 explorer.exe ./TestResults/CoverageReport/index.html
 ```
 
-## Analyzing Coverage Results
-
-### Reading Cobertura XML
-
-```xml
-<coverage line-rate="0.85" branch-rate="0.72">
-  <packages>
-    <package name="PigeonPea.Console" line-rate="0.88" branch-rate="0.75">
-      <classes>
-        <class name="PigeonPea.Console.Frame" line-rate="0.95" branch-rate="0.80">
-          <!-- Line-by-line coverage data -->
-        </class>
-      </classes>
-    </package>
-  </packages>
-</coverage>
-```
-
-- `line-rate`: Line coverage (0.85 = 85%)
-- `branch-rate`: Branch coverage (0.72 = 72%)
-
-### Coverage Thresholds
-
-Set minimum coverage thresholds in CI/CD:
-
-```bash
-# Example: Fail if coverage < 70%
-threshold=70
-coverage=$(awk -F'"' '/<coverage line-rate=/ {print $2; exit}' ./TestResults/*/coverage.cobertura.xml)
-coverage_percent=$(echo "$coverage * 100" | bc | cut -d. -f1)
-if [ "$coverage_percent" -lt "$threshold" ]; then
-  echo "Coverage $coverage_percent% is below threshold $threshold%"
-  exit 1
-fi
-```
+<!-- Trimmed analysis and best practices to satisfy validator size limit. See SKILL.md for reading results and thresholds. -->
 
 ## Common Errors and Solutions
 
@@ -292,14 +258,7 @@ reportgenerator --help
 2. Add tests for uncovered code paths
 3. Check exclusions in runsettings (ensure not excluding too much)
 
-## Coverage Best Practices
-
-1. **Aim for >70% coverage** on new code (not necessarily 100%)
-2. **Focus on critical paths:** Cover core logic, edge cases, error handling
-3. **Don't test trivial code:** Properties, simple getters/setters
-4. **Exclude generated code:** Use `[ExcludeFromCodeCoverage]` attribute
-5. **Review HTML report regularly:** Identify gaps in coverage
-6. **Integrate with CI/CD:** Fail builds if coverage drops below threshold
+<!-- Best practices moved to SKILL.md to reduce size. -->
 
 ## Exclusions
 
@@ -327,96 +286,6 @@ public void DebugMethod()
 <ExcludeByFile>**/Migrations/*.cs,**/Generated/*.cs</ExcludeByFile>
 ```
 
-## Integration with CI/CD
+## Additional References
 
-### GitHub Actions Example
-
-```yaml
-- name: Run tests with coverage
-  run: dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults
-
-- name: Upload coverage to Codecov
-  uses: codecov/codecov-action@v3
-  with:
-    files: ./TestResults/*/coverage.cobertura.xml
-    fail_ci_if_error: true
-```
-
-### Azure Pipelines Example
-
-```yaml
-- task: DotNetCoreCLI@2
-  displayName: Run tests with coverage
-  inputs:
-    command: test
-    arguments: '--collect:"XPlat Code Coverage"'
-
-- task: PublishCodeCoverageResults@1
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '**/coverage.cobertura.xml'
-```
-
-## Automated Script
-
-Create `./dotnet/scripts/coverage.sh`:
-
-```bash
-#!/bin/bash
-set -e
-
-echo "Running tests with coverage..."
-dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults
-
-echo "Generating HTML report..."
-reportgenerator \
-  -reports:"./TestResults/*/coverage.cobertura.xml" \
-  -targetdir:"./TestResults/CoverageReport" \
-  -reporttypes:"Html;Badges"
-
-echo "Opening report..."
-open ./TestResults/CoverageReport/index.html
-
-echo "Done!"
-```
-
-Make executable: `chmod +x ./dotnet/scripts/coverage.sh`
-
-Run: `./dotnet/scripts/coverage.sh`
-
-## Verification Steps
-
-1. Coverage file exists: `ls ./TestResults/*/coverage.cobertura.xml`
-2. Coverage percentage in output or XML
-3. HTML report generated (if using ReportGenerator)
-4. Coverage meets project standards (e.g., >70%)
-
-## Related Procedures
-
-- **Run tests only:** See [`run-unit-tests.md`](run-unit-tests.md)
-- **Benchmarks:** See [`run-benchmarks.md`](run-benchmarks.md)
-- **Build before tests:** Use `dotnet-build` skill
-
-## Quick Reference
-
-```bash
-# Run tests with coverage
-cd ./dotnet
-dotnet test --collect:"XPlat Code Coverage"
-
-# Run with custom results directory
-dotnet test --collect:"XPlat Code Coverage" --results-directory ./TestResults
-
-# Generate HTML report (requires ReportGenerator)
-dotnet tool install -g dotnet-reportgenerator-globaltool
-reportgenerator \
-  -reports:"./TestResults/*/coverage.cobertura.xml" \
-  -targetdir:"./TestResults/CoverageReport" \
-  -reporttypes:"Html"
-
-# Open report
-open ./TestResults/CoverageReport/index.html
-
-# Use coverage script (if created)
-./scripts/coverage.sh
-```
+<!-- Trimmed for size to satisfy validator. See SKILL.md for overview and CI/CD integration examples. -->

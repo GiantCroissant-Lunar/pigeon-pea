@@ -310,19 +310,3 @@ dotnet format PigeonPea.sln --verify-no-changes
 
 # Format specific project
 dotnet format console-app/PigeonPea.Console.csproj
-
-# Format specific files
-dotnet format --include ./console-app/Program.cs
-
-# Verbose output
-dotnet format PigeonPea.sln --verbosity detailed
-```
-
-## Summary
-
-- **Command**: `dotnet format PigeonPea.sln`
-- **Location**: `./dotnet` directory
-- **Modifies**: C# files (.cs) in-place
-- **Rules**: Defined in `.editorconfig`
-- **Verify**: Use `--verify-no-changes` for check-only
-- **Integration**: Pre-commit hooks auto-format on commit
