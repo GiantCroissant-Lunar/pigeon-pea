@@ -6,6 +6,7 @@ from pathlib import Path
 
 import yaml
 from jsonschema import ValidationError, validate
+from jsonschema.exceptions import SchemaError
 
 
 def validate_agent(agent_path, schema, agent_type):
@@ -27,8 +28,8 @@ def validate_agent(agent_path, schema, agent_type):
     except yaml.YAMLError as e:
         print(f"ERR {agent_path.name}: Invalid YAML: {e}")
         return False
-    except Exception as e:
-        print(f"ERR {agent_path.name}: Unexpected error: {e}")
+    except SchemaError as e:
+        print(f"ERR {agent_path.name}: Invalid JSON schema: {e}")
         return False
 
 
@@ -91,11 +92,25 @@ def main():
 
     # Separate orchestrator and sub-agent files for two-phase validation
     orchestrator_files = [
-        f for f in files_to_validate if Path(f).name.lower() == "orchestrator.yaml"
+        Path(f)
+        for f in files_to_validate
+        if Path(f).name.lower() == "orchestrator.yaml"
     ]
     subagent_files = [
-        f for f in files_to_validate if Path(f).name.lower() != "orchestrator.yaml"
+        Path(f)
+        for f in files_to_validate
+        if Path(f).name.lower() != "orchestrator.yaml"
     ]
+
+    # If we're validating an orchestrator (e.g., pre-commit passes only that file),
+    # make sure we also consider all existing sub-agent manifests in the repo so
+    # cross-checks don't falsely fail due to an empty valid_subagent_names set.
+    if orchestrator_files:
+        for agent_manifest in sorted(agents_dir.glob("*.yaml")):
+            if agent_manifest.name.lower() == "orchestrator.yaml":
+                continue
+            if agent_manifest not in subagent_files:
+                subagent_files.append(agent_manifest)
 
     # Phase 1: validate sub-agents and collect valid names
     valid_subagent_names = set()
@@ -125,7 +140,7 @@ def main():
         try:
             with open(agent_path, encoding="utf-8") as f:
                 agent_data = yaml.safe_load(f) or {}
-        except Exception as e:
+        except (OSError, IOError, yaml.YAMLError) as e:
             print(f"ERR {agent_path.name}: Unable to parse YAML for cross-checks: {e}")
             all_valid = False
             continue
@@ -172,7 +187,7 @@ def main():
         try:
             with open(agent_path, encoding="utf-8") as f:
                 orch = yaml.safe_load(f) or {}
-        except Exception as e:
+        except (OSError, IOError, yaml.YAMLError) as e:
             print(f"ERR {agent_path.name}: Unable to parse YAML for cross-checks: {e}")
             all_valid = False
             continue
