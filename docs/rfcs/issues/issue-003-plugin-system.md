@@ -3,15 +3,19 @@
 **Labels:** `plugin-system`, `rfc-006`, `phase-1`, `infrastructure`
 
 ## Related RFC
+
 RFC-006 Phase 1: Plugin System Architecture
 
 ## Summary
+
 Implement the core plugin system: PluginLoader, ServiceRegistry, EventBus, and DI integration.
 
 ## Depends On
+
 Issue #2 (contracts must exist)
 
 ## Scope
+
 - Create `PigeonPea.PluginSystem` project
 - Implement `PluginLoader` with ALC isolation
 - Implement `ServiceRegistry` with priority support
@@ -22,6 +26,7 @@ Issue #2 (contracts must exist)
 ## Acceptance Criteria
 
 ### Project Setup
+
 - [ ] `app-essential/core/PigeonPea.PluginSystem/` project created
 - [ ] Project added to `PigeonPea.sln`
 - [ ] References `PigeonPea.Contracts`
@@ -32,6 +37,7 @@ Issue #2 (contracts must exist)
   - `System.Text.Json` (for manifest parsing)
 
 ### PluginLoader Implementation
+
 - [ ] `PluginLoader.cs` implemented with:
   - [ ] `DiscoverAndLoadAsync()` discovers plugins from directories
   - [ ] Parses `plugin.json` manifests
@@ -45,6 +51,7 @@ Issue #2 (contracts must exist)
   - [ ] `ReloadPluginAsync()` supports hot reload
 
 ### ServiceRegistry Implementation
+
 - [ ] `ServiceRegistry.cs` implemented with:
   - [ ] `Register<T>()` with priority support
   - [ ] `Get<T>()` with `SelectionMode` (One, HighestPriority, All)
@@ -55,6 +62,7 @@ Issue #2 (contracts must exist)
   - [ ] Priority-based sorting
 
 ### EventBus Implementation
+
 - [ ] `EventBus.cs` implemented with:
   - [ ] `Subscribe<TEvent>()` registers handlers
   - [ ] `PublishAsync<TEvent>()` invokes all subscribers
@@ -63,6 +71,7 @@ Issue #2 (contracts must exist)
   - [ ] Async handler support
 
 ### Supporting Classes
+
 - [ ] `PluginHost.cs` implemented (host services for plugins)
 - [ ] `PluginContext.cs` implemented (context passed to plugins)
 - [ ] `PluginRegistry.cs` implemented (tracks plugin states)
@@ -71,12 +80,14 @@ Issue #2 (contracts must exist)
 - [ ] `PluginLoadContext.cs` implemented (custom AssemblyLoadContext)
 
 ### DI Integration
+
 - [ ] `ServiceCollectionExtensions.cs` implemented with:
   - [ ] `AddPluginSystem()` registers all services
   - [ ] `PluginLoaderHostedService` for background loading
   - [ ] Proper service lifetimes (singleton for registries)
 
 ### Unit Tests
+
 - [ ] PluginLoader discovery tests
 - [ ] PluginLoader loading tests
 - [ ] ServiceRegistry tests (register/get/priority)
@@ -88,11 +99,13 @@ Issue #2 (contracts must exist)
 - [ ] All tests pass
 
 ### Documentation
+
 - [ ] XML documentation complete for all public APIs
 - [ ] README in project explaining architecture
 - [ ] Code comments for complex logic (ALC, reflection)
 
 ## Implementation Notes
+
 - Reference hyacinth-bean-base implementation in PLUGIN_SYSTEM_ANALYSIS.md
 - Use `System.Runtime.Loader.AssemblyLoadContext` for ALC isolation
 - Use `System.Text.Json` for manifest parsing
@@ -102,6 +115,7 @@ Issue #2 (contracts must exist)
 ## Key Implementation Details
 
 ### AssemblyLoadContext Isolation
+
 ```csharp
 public class PluginLoadContext : AssemblyLoadContext
 {
@@ -127,6 +141,7 @@ public class PluginLoadContext : AssemblyLoadContext
 ```
 
 ### Cross-ALC Type Matching
+
 ```csharp
 // Check by name, not by reference equality
 var implementsIPlugin = pluginType.GetInterfaces()
@@ -134,6 +149,7 @@ var implementsIPlugin = pluginType.GetInterfaces()
 ```
 
 ### Dependency Resolution
+
 ```csharp
 public class DependencyResolver
 {
@@ -148,12 +164,15 @@ public class DependencyResolver
 ```
 
 ## Estimated Effort
+
 3-5 days
 
 ## Dependencies
+
 - Issue #2 must be completed (contracts must exist)
 
 ## See Also
+
 - [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)
 - [Assembly Load Context Documentation](https://learn.microsoft.com/en-us/dotnet/core/dependency-loading/understanding-assemblyloadcontext)
