@@ -17,6 +17,7 @@ This guide provides step-by-step instructions for running static code analysis o
 Roslyn analyzers are included with the .NET SDK and analyze code during build.
 
 **Categories:**
+
 - **Code Quality (CAxxxx)**: Best practices, performance, maintainability
 - **Design (CA1xxx)**: API design guidelines
 - **Reliability (CA2xxx)**: Reliability and correctness
@@ -111,6 +112,7 @@ Path/To/File.cs(42,15): warning CA1001: Type 'MyClass' owns disposable field(s) 
 ```
 
 **Breakdown:**
+
 - `Path/To/File.cs`: File path
 - `(42,15)`: Line 42, column 15
 - `warning CA1001`: Rule ID and severity
@@ -129,6 +131,7 @@ Path/To/File.cs(42,15): warning CA1001: Type 'MyClass' owns disposable field(s) 
 ### Code Quality (CAxxxx)
 
 **CA1001**: Types that own disposable fields should be disposable
+
 ```csharp
 // Bad
 class MyClass { FileStream _stream; }
@@ -138,6 +141,7 @@ class MyClass : IDisposable { FileStream _stream; public void Dispose() => _stre
 ```
 
 **CA1031**: Do not catch general exception types
+
 ```csharp
 // Bad
 try { } catch (Exception) { }
@@ -147,6 +151,7 @@ try { } catch (InvalidOperationException ex) { }
 ```
 
 **CA1062**: Validate arguments of public methods
+
 ```csharp
 // Bad
 public void Process(string input) { var len = input.Length; }
@@ -156,6 +161,7 @@ public void Process(string input) { ArgumentNullException.ThrowIfNull(input); }
 ```
 
 **CA1303**: Do not pass literals as localized parameters
+
 ```csharp
 // Bad
 Console.WriteLine("Hello, World!");
@@ -165,6 +171,7 @@ Console.WriteLine(Resources.HelloWorld);
 ```
 
 **CA1848**: Use the LoggerMessage delegates
+
 ```csharp
 // Bad
 _logger.LogInformation($"Processing {item}");
@@ -314,11 +321,13 @@ Build FAILED.
 ### Issue: Too Many Warnings
 
 **Solution 1:** Adjust severity in `.editorconfig`
+
 ```ini
 dotnet_diagnostic.CA1303.severity = none
 ```
 
 **Solution 2:** Suppress non-critical rules
+
 ```bash
 dotnet build /p:NoWarn=CA1014,CA1303
 ```
@@ -328,6 +337,7 @@ dotnet build /p:NoWarn=CA1014,CA1303
 ### Issue: False Positives
 
 **Solution:** Suppress with justification
+
 ```csharp
 // Justification: Input is validated by calling method
 [SuppressMessage("Design", "CA1062")]
@@ -337,6 +347,7 @@ public void Process(string input) { }
 ### Issue: Analyzer Slows Build
 
 **Solution:** Disable during development, enable in CI
+
 ```bash
 # Development
 dotnet build /p:RunAnalyzers=false
