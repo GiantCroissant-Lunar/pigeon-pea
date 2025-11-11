@@ -11,6 +11,7 @@ pip install -r requirements-dev.txt
 ```
 
 Required packages:
+
 - `pyyaml>=6.0` - YAML parsing for agent/skill manifests
 - `jsonschema>=4.0` - Schema validation for agent/skill schemas
 
@@ -23,11 +24,13 @@ Required packages:
 Validates skill manifests against schemas and size limits.
 
 **Usage**:
+
 ```bash
 python3 scripts/validate_skills.py
 ```
 
 **What it validates**:
+
 - YAML front-matter against `skill.schema.json`
 - Entry file size ≤ 220 lines
 - Reference file sizes ≤ 320 lines each
@@ -40,11 +43,13 @@ python3 scripts/validate_skills.py
 Validates agent manifests with two-phase cross-validation.
 
 **Usage**:
+
 ```bash
 python3 scripts/validate_agents.py
 ```
 
 **What it validates**:
+
 - Agent YAML against schemas (orchestrator.schema.json, subagent.schema.json)
 - Sub-agents reference existing skills (checks `.agent/skills/{skill}/SKILL.md`)
 - Orchestrator references existing sub-agents

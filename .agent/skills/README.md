@@ -59,7 +59,7 @@ skills/
 
 Each `SKILL.md` must include YAML front-matter:
 
-```markdown
+````markdown
 ---
 name: dotnet-build
 version: 0.2.0
@@ -109,6 +109,7 @@ dotnet build ./dotnet/PigeonPea.sln
 
 dotnet build ./dotnet/PigeonPea.sln -c Release
 ```
+````
 
 ## Progressive Disclosure Pattern
 
@@ -160,7 +161,7 @@ Skills are validated against `.agent/schemas/skill.schema.json` to ensure:
 
 ## Example Reference File
 
-```markdown
+````markdown
 # Build .NET Solution - Detailed Procedure
 
 ## Overview
@@ -181,6 +182,7 @@ Builds the entire PigeonPea.sln solution, including all projects and test projec
 cd ./dotnet
 dotnet restore PigeonPea.sln
 ```
+````
 
 ### 2. Build Solution (Debug)
 

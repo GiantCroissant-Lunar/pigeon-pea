@@ -14,6 +14,7 @@ The agent infrastructure implementation is **excellent** with **minor issues**. 
 **Overall Grade: A (95%)**
 
 ### Key Achievements ✅
+
 - ✅ Full sub-agent architecture (orchestrator + 3 specialized sub-agents)
 - ✅ 4 skills with progressive disclosure (~128-164 line entries, 100-319 line references)
 - ✅ Comprehensive JSON schemas with excellent documentation
@@ -23,6 +24,7 @@ The agent infrastructure implementation is **excellent** with **minor issues**. 
 - ✅ Auto-generated registry
 
 ### Minor Issues ⚠️
+
 - ⚠️ Python dependencies not in `requirements-dev.txt` (causes validation to fail without manual install)
 - ⚠️ One reference file slightly over size budget (315 lines vs 320 max - acceptable)
 - ⚠️ Generated `AGENTS.md` could have more structure
@@ -54,6 +56,7 @@ routing:
 ```
 
 **Strengths**:
+
 - Clean routing rules with clear intent matching
 - Good coverage of keywords for each domain
 - Proper fallback to CodeReviewAgent
@@ -67,6 +70,7 @@ routing:
 ### 1.2 Sub-Agents ✅ Excellent
 
 #### DotNetBuildAgent
+
 **File**: `.agent/agents/dotnet-build.yaml`
 
 ```yaml
@@ -96,12 +100,14 @@ success_criteria:
 ```
 
 **Strengths**:
+
 - Goals are clear and measurable
 - Constraints prevent common mistakes (committing artifacts)
 - Success criteria are observable
 - Idempotency explicitly mentioned
 
 **Similar Quality** for:
+
 - CodeReviewAgent (`code-review.yaml`)
 - TestingAgent (`testing.yaml`)
 
@@ -115,12 +121,14 @@ success_criteria:
 ### 2.1 Skill: `dotnet-build` ✅ Excellent
 
 **Files**:
+
 - Entry: `.agent/skills/dotnet-build/SKILL.md` (128 lines)
 - References:
   - `build-solution.md` (191 lines)
   - `restore-deps.md` (193 lines)
 
 **Front-matter**:
+
 ```yaml
 name: dotnet-build
 version: 0.2.0
@@ -136,22 +144,30 @@ contracts:
 ```
 
 **Entry File Structure**:
+
 ```markdown
 # .NET Build Skill (Entry Map)
 
 ## Quick Start (Pick One)
+
 - **Build entire solution** → `references/build-solution.md`
 - **Restore dependencies only** → `references/restore-deps.md`
 
 ## When to Use
+
 ## Inputs & Outputs
+
 ## Navigation
+
 ## Common Patterns
+
 ## Troubleshooting
+
 ## Integration
 ```
 
 **Strengths**:
+
 - ✅ Entry file is **128 lines** (well under 200-line budget)
 - ✅ Front-matter validates against schema
 - ✅ Clear "router/map" structure with navigation to references
@@ -160,6 +176,7 @@ contracts:
 - ✅ Cold-start budget: **128 + 191 = 319 lines** (well under 500-line target) ✅
 
 **Code Example Quality**:
+
 ```bash
 # Quick Build (Debug)
 cd ./dotnet
@@ -180,6 +197,7 @@ Clear, copy-paste ready, well-commented.
 ### 2.2 Skill: `dotnet-test` ✅ Excellent
 
 **Files**:
+
 - Entry: `.agent/skills/dotnet-test/SKILL.md` (164 lines)
 - References:
   - `run-unit-tests.md` (278 lines)
@@ -189,6 +207,7 @@ Clear, copy-paste ready, well-commented.
 **Cold-start budget**: 164 + 291 = **455 lines** ✅ (under 500)
 
 **Front-matter**:
+
 ```yaml
 name: dotnet-test
 version: 0.2.0
@@ -204,11 +223,13 @@ contracts:
 ```
 
 **Strengths**:
+
 - Covers unit tests, coverage, AND benchmarks
 - References are focused (one per concern)
 - Good size management (291 lines is acceptable for coverage docs)
 
 **Minor Issue**:
+
 - ⚠️ `run-benchmarks.md` at **315 lines** slightly exceeds 300-line reference budget
 - **Impact**: Low - still well within cold-start budget when combined with entry
 - **Recommendation**: Can stay as-is, or split into "setup benchmarks" + "run benchmarks"
@@ -221,6 +242,7 @@ contracts:
 ### 2.3 Skill: `code-format` ✅ Excellent
 
 **Files**:
+
 - Entry: `SKILL.md` (150 lines)
 - References:
   - `dotnet-format.md` (312 lines ⚠️)
@@ -230,11 +252,13 @@ contracts:
 **Cold-start budget**: 150 + 312 = **462 lines** ✅ (under 500)
 
 **Strengths**:
+
 - Covers both .NET (`dotnet-format`) and JS/TS/Markdown (`prettier`)
 - `fix-all.md` is a composite reference (runs both formatters)
 - Good separation of concerns
 
 **Minor Issue**:
+
 - ⚠️ `dotnet-format.md` at **312 lines** slightly over 300-line budget
 - **Impact**: Low - comprehensive formatting guide is valuable
 - **Verdict**: Acceptable
@@ -247,6 +271,7 @@ contracts:
 ### 2.4 Skill: `code-analyze` ✅ Excellent
 
 **Files**:
+
 - Entry: `SKILL.md` (155 lines)
 - References:
   - `static-analysis.md` (319 lines ⚠️)
@@ -256,11 +281,13 @@ contracts:
 **Cold-start budget**: 155 + 319 = **474 lines** ✅ (under 500)
 
 **Strengths**:
+
 - Comprehensive coverage: static analysis, security, dependencies
 - `security-scan.md` is very concise (100 lines) - good!
 - Clear separation of analysis types
 
 **Minor Issue**:
+
 - ⚠️ `static-analysis.md` at **319 lines** slightly over 300-line budget
 - **Impact**: Low - Roslyn analyzers have many options to document
 - **Verdict**: Acceptable
@@ -277,6 +304,7 @@ contracts:
 **File**: `.agent/schemas/skill.schema.json` (152 lines)
 
 **Strengths**:
+
 - ✅ Excellent documentation in `description` fields
 - ✅ Comprehensive examples in `examples` fields
 - ✅ Strict patterns (kebab-case for names, semver for versions)
@@ -285,6 +313,7 @@ contracts:
 - ✅ Clear $id and $schema references
 
 **Example of quality**:
+
 ```json
 {
   "name": {
@@ -307,6 +336,7 @@ This is **exemplary** - self-documenting, validates structure AND semantics.
 ### 3.2 `subagent.schema.json` ✅ Excellent
 
 **Strengths**:
+
 - All required fields enforced
 - Good documentation
 - Flexible constraints/success_criteria arrays
@@ -318,6 +348,7 @@ This is **exemplary** - self-documenting, validates structure AND semantics.
 ### 3.3 `orchestrator.schema.json` ✅ Excellent
 
 **Strengths**:
+
 - Validates routing rules structure
 - Enforces fallback presence
 - Good coverage of orchestrator-specific fields
@@ -331,6 +362,7 @@ This is **exemplary** - self-documenting, validates structure AND semantics.
 ### 4.1 `scripts/validate_skills.py` ✅ Excellent
 
 **Strengths**:
+
 - ✅ UTF-8 encoding everywhere (Windows-safe)
 - ✅ Validates front-matter against schema
 - ✅ Checks entry file size ≤ 220 lines
@@ -340,6 +372,7 @@ This is **exemplary** - self-documenting, validates structure AND semantics.
 - ✅ Exit codes (0 = success, 1 = failure) for CI integration
 
 **Code Quality**:
+
 ```python
 def extract_frontmatter(skill_md_path):
     """Extract YAML front-matter from SKILL.md"""
@@ -359,6 +392,7 @@ def extract_frontmatter(skill_md_path):
 Good: Defensive programming, clear error messages, proper encoding.
 
 **Test Results**:
+
 ```
 Validating dotnet-build...
 OK .agent/skills/dotnet-build/SKILL.md: Schema valid
@@ -373,6 +407,7 @@ OK Cold-start budget OK: 319 lines
 ### 4.2 `scripts/validate_agents.py` ✅ Exceptional
 
 **Strengths**:
+
 - ✅ Two-phase validation (sub-agents first, then orchestrator)
 - ✅ Cross-validation:
   - Sub-agents reference real skills (checks `.agent/skills/{name}/SKILL.md` exists)
@@ -384,6 +419,7 @@ OK Cold-start budget OK: 319 lines
 - ✅ Clear error messages with file context
 
 **Code Quality**:
+
 ```python
 # Phase 1: validate sub-agents and collect valid names
 valid_subagent_names = set()
@@ -405,6 +441,7 @@ if missing_agents:
 ```
 
 This is **exceptional** - it prevents:
+
 - Sub-agents referencing non-existent skills
 - Orchestrator referencing non-existent sub-agents
 - Routing rules targeting agents not in the subagents list
@@ -462,6 +499,7 @@ Assumed to exist based on pre-commit config and `AGENTS.md` content.
 ```
 
 **Strengths**:
+
 - ✅ Runs on file changes (skills on `*.md`, agents on `*.yaml`)
 - ✅ Auto-installs dependencies (`additional_dependencies`)
 - ✅ Registry regenerated automatically on any agent/skill change
@@ -502,6 +540,7 @@ tasks:
 ```
 
 **Strengths**:
+
 - Clean, simple task definitions
 - `check` task runs all validations (good for CI)
 - dotnet tasks included for convenience
@@ -518,11 +557,13 @@ tasks:
 **File**: `.agent/policies/defaults.yaml`
 
 **Strengths**:
+
 - Good safety rules (never commit bin/, obj/, etc.)
 - Repository boundaries defined
 - Never expose secrets
 
 **Potential Enhancement**:
+
 - Could add rate limits (max_tool_calls_per_session, etc.)
 - **Verdict**: Good, can be enhanced later
 
@@ -533,6 +574,7 @@ tasks:
 **File**: `.agent/policies/coding-standards.yaml`
 
 **Strengths**:
+
 - .NET-specific standards
 - Testing requirements clear
 - Documentation requirements clear
@@ -553,10 +595,12 @@ No blocking issues found.
 ### 7.2 Minor Issues ⚠️
 
 #### Issue #1: Missing `requirements-dev.txt`
+
 **Severity**: Low
 **Impact**: Validation scripts fail without manual `pip install`
 
 **Current behavior**:
+
 ```bash
 $ python3 scripts/validate_skills.py
 ModuleNotFoundError: No module named 'jsonschema'
@@ -564,12 +608,14 @@ ModuleNotFoundError: No module named 'jsonschema'
 
 **Fix**:
 Create `requirements-dev.txt`:
+
 ```
 pyyaml>=6.0
 jsonschema>=4.0
 ```
 
 Add to README:
+
 ```bash
 pip install -r requirements-dev.txt
 ```
@@ -579,10 +625,12 @@ pip install -r requirements-dev.txt
 ---
 
 #### Issue #2: Reference Files Slightly Over Size Budget
+
 **Severity**: Very Low
 **Impact**: Minimal - still well within cold-start budget
 
 **Files**:
+
 - `run-benchmarks.md`: 315 lines (vs 300 max)
 - `dotnet-format.md`: 312 lines
 - `static-analysis.md`: 319 lines
@@ -594,12 +642,14 @@ pip install -r requirements-dev.txt
 ---
 
 #### Issue #3: `AGENTS.md` Could Have More Structure
+
 **Severity**: Very Low
 **Impact**: Minor - registry is functional but could be prettier
 
 **Current**: Tables are generated but lack visual hierarchy.
 
 **Potential enhancement**:
+
 - Add emoji indicators for skill types
 - Group skills by category
 - Add "last updated" timestamps
@@ -611,6 +661,7 @@ pip install -r requirements-dev.txt
 ### 7.3 Recommendations for Future Enhancements
 
 #### Recommendation #1: Add Skill Usage Examples
+
 Add actual invocation examples in AGENTS.md showing how agents use skills:
 
 ```markdown
@@ -632,6 +683,7 @@ When you ask: "Build the solution in Release mode"
 ---
 
 #### Recommendation #2: Add Skill Tests
+
 Create tests for skills (smoke tests):
 
 ```python
@@ -650,9 +702,11 @@ def test_dotnet_build_smoke():
 ---
 
 #### Recommendation #3: Add Provider-Specific Optimizations
+
 The `.agent/providers/` directory exists with `claude.yaml` and `copilot.yaml`.
 
 Consider adding provider-specific hints like:
+
 - Preferred skill loading strategies
 - Context window limits
 - Tool call budgets
@@ -665,12 +719,12 @@ Consider adding provider-specific hints like:
 
 ### RFC-004 Phase Completion
 
-| Phase | Tasks | Status | Completion |
-|-------|-------|--------|------------|
-| **Phase 1: Core Structure** | Directory structure, orchestrator, first sub-agent, first skill, schemas, policies | ✅ Complete | 100% |
-| **Phase 2: Skills & Sub-Agents** | All 3 sub-agents, all 4 skills | ✅ Complete | 100% |
-| **Phase 3: Validation & Automation** | Validation scripts, pre-commit, Taskfile, registry | ✅ Complete | 100% |
-| **Phase 4: Optional** | Provider hints | ✅ Complete | 100% |
+| Phase                                | Tasks                                                                              | Status      | Completion |
+| ------------------------------------ | ---------------------------------------------------------------------------------- | ----------- | ---------- |
+| **Phase 1: Core Structure**          | Directory structure, orchestrator, first sub-agent, first skill, schemas, policies | ✅ Complete | 100%       |
+| **Phase 2: Skills & Sub-Agents**     | All 3 sub-agents, all 4 skills                                                     | ✅ Complete | 100%       |
+| **Phase 3: Validation & Automation** | Validation scripts, pre-commit, Taskfile, registry                                 | ✅ Complete | 100%       |
+| **Phase 4: Optional**                | Provider hints                                                                     | ✅ Complete | 100%       |
 
 **Overall RFC-004 Completion: 100%** ✅
 
@@ -680,12 +734,12 @@ Consider adding provider-specific hints like:
 
 ### Size Compliance
 
-| Skill | Entry Lines | Reference Lines | Cold-Start Budget | Status |
-|-------|-------------|-----------------|-------------------|--------|
-| dotnet-build | 128 | 191 | 319 | ✅ Excellent |
-| dotnet-test | 164 | 291 | 455 | ✅ Excellent |
-| code-format | 150 | 312 | 462 | ✅ Good (ref slightly over) |
-| code-analyze | 155 | 319 | 474 | ✅ Good (ref slightly over) |
+| Skill        | Entry Lines | Reference Lines | Cold-Start Budget | Status                      |
+| ------------ | ----------- | --------------- | ----------------- | --------------------------- |
+| dotnet-build | 128         | 191             | 319               | ✅ Excellent                |
+| dotnet-test  | 164         | 291             | 455               | ✅ Excellent                |
+| code-format  | 150         | 312             | 462               | ✅ Good (ref slightly over) |
+| code-analyze | 155         | 319             | 474               | ✅ Good (ref slightly over) |
 
 **All entries**: ≤ 200 lines ✅
 **All cold-start budgets**: ≤ 500 lines ✅
@@ -726,11 +780,13 @@ The agent infrastructure implementation is **production-ready** and demonstrates
 5. **Clear separation of concerns** (orchestrator → sub-agents → skills)
 
 ### Minor Issues Summary:
+
 - ⚠️ Missing `requirements-dev.txt` (easy fix, low impact)
 - ⚠️ 3 references slightly over 300 lines (acceptable, still under cold-start budget)
 - ⚠️ Registry could be prettier (cosmetic)
 
 ### Recommendations:
+
 1. Add `requirements-dev.txt` with Python dependencies
 2. Consider adding skill smoke tests for CI
 3. Optionally enhance `AGENTS.md` with usage examples
@@ -739,18 +795,18 @@ The agent infrastructure implementation is **production-ready** and demonstrates
 
 ## 11. Comparison to Plan
 
-| Planned (RFC-004) | Implemented | Status |
-|-------------------|-------------|--------|
-| Orchestrator agent | ✅ orchestrator.yaml | Complete |
-| 3 sub-agents | ✅ dotnet-build, code-review, testing | Complete |
-| 4 skills with progressive disclosure | ✅ All 4 skills, proper structure | Complete |
-| JSON schemas | ✅ 3 schemas, exceptional quality | Complete |
-| Validation scripts | ✅ 2 scripts + cross-validation | Complete |
-| Pre-commit integration | ✅ Hooks + auto-install deps | Complete |
-| Taskfile | ✅ All tasks defined | Complete |
-| Policies | ✅ defaults.yaml + coding-standards.yaml | Complete |
-| Provider hints | ✅ claude.yaml + copilot.yaml | Complete |
-| Registry generation | ✅ Auto-generated AGENTS.md | Complete |
+| Planned (RFC-004)                    | Implemented                              | Status   |
+| ------------------------------------ | ---------------------------------------- | -------- |
+| Orchestrator agent                   | ✅ orchestrator.yaml                     | Complete |
+| 3 sub-agents                         | ✅ dotnet-build, code-review, testing    | Complete |
+| 4 skills with progressive disclosure | ✅ All 4 skills, proper structure        | Complete |
+| JSON schemas                         | ✅ 3 schemas, exceptional quality        | Complete |
+| Validation scripts                   | ✅ 2 scripts + cross-validation          | Complete |
+| Pre-commit integration               | ✅ Hooks + auto-install deps             | Complete |
+| Taskfile                             | ✅ All tasks defined                     | Complete |
+| Policies                             | ✅ defaults.yaml + coding-standards.yaml | Complete |
+| Provider hints                       | ✅ claude.yaml + copilot.yaml            | Complete |
+| Registry generation                  | ✅ Auto-generated AGENTS.md              | Complete |
 
 **Implementation vs Plan: 100% complete**
 
