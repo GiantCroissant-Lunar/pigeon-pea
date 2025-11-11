@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
 
@@ -89,15 +90,27 @@ public class BrailleRenderer : IRenderer
             sb.Append("\x1b[0m"); // Reset colors at the very end
             System.Console.Write(sb.ToString());
         }
-        catch (System.IO.IOException)
+        catch (System.IO.IOException ex)
         {
-            // Console output was redirected or is unavailable
-            // Skip rendering and continue
+            if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+            {
+                Debug.WriteLine($"Console write failed in test/redirected environment: {ex.Message}");
+            }
+            else
+            {
+                throw;
+            }
         }
-        catch (System.ObjectDisposedException)
+        catch (System.ObjectDisposedException ex)
         {
-            // In unit tests, Console.Out may be disposed by the test harness
-            // Skip writing and continue
+            if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+            {
+                Debug.WriteLine($"Console output disposed in test/redirected environment: {ex.Message}");
+            }
+            else
+            {
+                throw;
+            }
         }
 
         _target.Present();
@@ -258,5 +271,11 @@ public class BrailleRenderer : IRenderer
     {
         return x >= _viewport.X && x < _viewport.X + _viewport.Width &&
                y >= _viewport.Y && y < _viewport.Y + _viewport.Height;
+    }
+
+    private static bool IsTestEnvironment()
+    {
+        return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOTNET_RUNNING_TESTS"))
+               || Debugger.IsAttached;
     }
 }
