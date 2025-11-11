@@ -1,0 +1,5 @@
+_artifacts/
+bin/
+obj/
+*.nupkg
+.nuget/
