@@ -10,7 +10,7 @@ from jsonschema import ValidationError, validate
 
 def extract_frontmatter(skill_md_path):
     """Extract YAML front-matter from SKILL.md"""
-    with open(skill_md_path) as f:
+    with open(skill_md_path, encoding="utf-8") as f:
         content = f.read()
 
     if not content.startswith("---"):
@@ -33,20 +33,20 @@ def validate_skill(skill_path, schema):
 
         try:
             validate(instance=front_matter, schema=schema)
-            print(f"✓ {skill_md}: Schema valid")
+            print(f"OK {skill_md}: Schema valid")
         except ValidationError as e:
-            print(f"✗ {skill_md}: {e.message}")
+            print(f"ERR {skill_md}: {e.message}")
             return False
 
         # Check size limits
-        with open(skill_md) as f:
+        with open(skill_md, encoding="utf-8") as f:
             entry_lines = len(f.readlines())
 
         if entry_lines > 220:
-            print(f"✗ {skill_md}: Entry too large ({entry_lines} lines, max 220)")
+            print(f"ERR {skill_md}: Entry too large ({entry_lines} lines, max 220)")
             return False
 
-        print(f"✓ {skill_md}: Size OK ({entry_lines} lines)")
+        print(f"OK {skill_md}: Size OK ({entry_lines} lines)")
 
         # Check references (sorted for deterministic order)
         ref_dir = skill_path / "references"
@@ -54,48 +54,50 @@ def validate_skill(skill_path, schema):
             refs = sorted(ref_dir.glob("*.md"))
             if refs:
                 # Check first reference for cold-start budget
-                with open(refs[0]) as f:
+                with open(refs[0], encoding="utf-8") as f:
                     ref_lines = len(f.readlines())
 
                 if ref_lines > 320:
                     print(
-                        f"✗ {refs[0]}: Reference too large ({ref_lines} lines, max 320)"
+                        f"ERR {refs[0]}: Reference too large ({ref_lines} lines, max 320)"
                     )
                     return False
 
                 total = entry_lines + ref_lines
                 if total > 550:
-                    print(f"✗ Cold-start budget exceeded: {total} lines (max 550)")
+                    print(f"ERR Cold-start budget exceeded: {total} lines (max 550)")
                     return False
 
-                print(f"✓ Cold-start budget OK: {total} lines")
+                print(f"OK Cold-start budget OK: {total} lines")
 
                 # Check all other references
                 for ref in refs[1:]:
-                    with open(ref) as f:
+                    with open(ref, encoding="utf-8") as f:
                         ref_lines = len(f.readlines())
 
                     if ref_lines > 320:
                         print(
-                            f"✗ {ref}: Reference too large ({ref_lines} lines, max 320)"
+                            f"ERR {ref}: Reference too large ({ref_lines} lines, max 320)"
                         )
                         return False
 
-                    print(f"✓ {ref}: Size OK ({ref_lines} lines)")
+                    print(f"OK {ref}: Size OK ({ref_lines} lines)")
 
     except OSError as e:
-        print(f"✗ {skill_md}: Error reading file: {e}")
+        print(f"ERR {skill_md}: Error reading file: {e}")
         return False
     except Exception as e:
-        print(f"✗ {skill_md}: Unexpected error: {e}")
+        print(f"ERR {skill_md}: Unexpected error: {e}")
         return False
 
     return True
 
 
 def main():
-    skills_dir = Path(".agent/skills")
-    schema_path = Path(".agent/schemas/skill.schema.json")
+    # Resolve paths relative to repo root to support execution from any CWD
+    repo_root = Path(__file__).parent.parent
+    skills_dir = repo_root / ".agent" / "skills"
+    schema_path = repo_root / ".agent" / "schemas" / "skill.schema.json"
 
     if not skills_dir.exists():
         print("Error: .agent/skills directory not found")
@@ -106,7 +108,7 @@ def main():
         return 1
 
     # Pre-load schema
-    with open(schema_path) as f:
+    with open(schema_path, encoding="utf-8") as f:
         schema = json.load(f)
 
     # Determine which skill directories to validate

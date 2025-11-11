@@ -6,7 +6,7 @@ description: Run .NET tests using dotnet CLI. Use when task involves executing u
 inputs:
   target: [all, project, specific]
   configuration: [Debug, Release]
-  coverage: [true, false]
+  coverage: ["true", "false"]
   project_path: string
 contracts:
   success: 'Tests pass with zero failures; coverage data generated if requested'
