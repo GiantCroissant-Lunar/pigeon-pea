@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Text;
 using PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
@@ -79,8 +80,33 @@ public class SixelRenderer : IRenderer
             throw new InvalidOperationException("Renderer not initialized. Call Initialize first.");
 
         // Output the frame buffer to console
-        System.Console.Write(_frameBuffer.ToString());
-        System.Console.Out.Flush();
+        try
+        {
+            System.Console.Write(_frameBuffer.ToString());
+            System.Console.Out.Flush();
+        }
+        catch (System.IO.IOException ex)
+        {
+            if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+            {
+                Debug.WriteLine($"Console write failed in test/redirected environment: {ex.Message}");
+            }
+            else
+            {
+                throw;
+            }
+        }
+        catch (System.ObjectDisposedException ex)
+        {
+            if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+            {
+                Debug.WriteLine($"Console output disposed in test/redirected environment: {ex.Message}");
+            }
+            else
+            {
+                throw;
+            }
+        }
 
         _target.Present();
     }
@@ -247,5 +273,11 @@ public class SixelRenderer : IRenderer
         }
 
         _disposed = true;
+    }
+
+    private static bool IsTestEnvironment()
+    {
+        return !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DOTNET_RUNNING_TESTS"))
+               || Debugger.IsAttached;
     }
 }

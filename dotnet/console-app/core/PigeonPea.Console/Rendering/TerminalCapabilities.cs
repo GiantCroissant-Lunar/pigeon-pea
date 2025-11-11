@@ -85,7 +85,19 @@ public class TerminalCapabilities
         var termProgram = Environment.GetEnvironmentVariable("TERM_PROGRAM") ?? "";
         var colorTerm = Environment.GetEnvironmentVariable("COLORTERM") ?? "";
 
-        caps.TerminalType = !string.IsNullOrEmpty(termProgram) ? termProgram : term;
+        // Prefer TERM_PROGRAM, then TERM, else sensible default (xterm-256color)
+        if (!string.IsNullOrEmpty(termProgram))
+        {
+            caps.TerminalType = termProgram;
+        }
+        else if (!string.IsNullOrEmpty(term))
+        {
+            caps.TerminalType = term;
+        }
+        else
+        {
+            caps.TerminalType = "xterm-256color";
+        }
 
         // Parse TERM environment variable for capabilities
         caps.ParseTermVariable(term);
@@ -119,6 +131,10 @@ public class TerminalCapabilities
 
         // Get terminal dimensions
         caps.GetTerminalDimensions();
+
+        // Guard: ensure positive dimensions even if Console returns 0
+        if (caps.Width <= 0) caps.Width = 80;
+        if (caps.Height <= 0) caps.Height = 24;
 
         return caps;
     }
@@ -168,6 +184,12 @@ public class TerminalCapabilities
         {
             // Fallback to common default dimensions if detection fails
             // (e.g., during output redirection)
+            Width = 80;
+            Height = 24;
+        }
+        catch (System.ObjectDisposedException)
+        {
+            // In rare cases, Console may be disposed in test harness
             Width = 80;
             Height = 24;
         }

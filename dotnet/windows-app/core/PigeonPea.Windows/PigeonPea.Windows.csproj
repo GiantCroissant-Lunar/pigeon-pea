@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <!-- Reference to Shared Game Logic -->
-    <ProjectReference Include="..\shared-app\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="..\..\..\game-essential\core\PigeonPea.Shared\PigeonPea.Shared.csproj" />
   </ItemGroup>
 
 </Project>
