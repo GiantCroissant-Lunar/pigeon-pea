@@ -2,6 +2,56 @@
 
 This directory contains automation scripts for the pigeon-pea project.
 
+## Prerequisites
+
+Install development dependencies before running scripts:
+
+```bash
+pip install -r requirements-dev.txt
+```
+
+Required packages:
+- `pyyaml>=6.0` - YAML parsing for agent/skill manifests
+- `jsonschema>=4.0` - Schema validation for agent/skill schemas
+
+**Note**: Pre-commit hooks automatically install these dependencies when needed.
+
+## Scripts
+
+### validate_skills.py
+
+Validates skill manifests against schemas and size limits.
+
+**Usage**:
+```bash
+python3 scripts/validate_skills.py
+```
+
+**What it validates**:
+- YAML front-matter against `skill.schema.json`
+- Entry file size ≤ 220 lines
+- Reference file sizes ≤ 320 lines each
+- Cold-start budget (entry + first reference) ≤ 550 lines
+
+**Exit codes**: `0` = success, `1` = validation errors
+
+### validate_agents.py
+
+Validates agent manifests with two-phase cross-validation.
+
+**Usage**:
+```bash
+python3 scripts/validate_agents.py
+```
+
+**What it validates**:
+- Agent YAML against schemas (orchestrator.schema.json, subagent.schema.json)
+- Sub-agents reference existing skills (checks `.agent/skills/{skill}/SKILL.md`)
+- Orchestrator references existing sub-agents
+- Routing rules target declared sub-agents
+
+**Exit codes**: `0` = success, `1` = validation errors
+
 ## generate_registry.py
 
 Auto-generates the AGENTS.md registry from agent and skill manifests.
