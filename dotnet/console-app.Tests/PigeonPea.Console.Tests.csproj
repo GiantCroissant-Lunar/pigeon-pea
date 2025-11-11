@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../console-app/PigeonPea.Console.csproj" />
+    <ProjectReference Include="../console-app/core/PigeonPea.Console/PigeonPea.Console.csproj" />
   </ItemGroup>
 
 </Project>
