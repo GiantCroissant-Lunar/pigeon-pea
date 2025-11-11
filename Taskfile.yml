@@ -1,0 +1,52 @@
+# Taskfile.yml
+# Task runner configuration for pigeon-pea project
+# Install Task: https://taskfile.dev/installation/
+# Usage: task <task-name> or just `task` to see available tasks
+
+version: '3'
+
+tasks:
+  skills:validate:
+    desc: Validate all agent skills
+    cmds:
+      - python3 scripts/validate_skills.py
+
+  agents:validate:
+    desc: Validate all agent manifests
+    cmds:
+      - python3 scripts/validate_agents.py
+
+  registry:generate:
+    desc: Generate AGENTS.md registry from manifests
+    cmds:
+      - python3 scripts/generate_registry.py
+
+  check:
+    desc: Run all validations
+    deps:
+      - skills:validate
+      - agents:validate
+      - registry:generate
+
+  dotnet:build:
+    desc: Build .NET solution
+    dir: ./dotnet
+    cmds:
+      - dotnet build PigeonPea.sln
+
+  dotnet:test:
+    desc: Run .NET tests
+    dir: ./dotnet
+    cmds:
+      - dotnet test PigeonPea.sln
+
+  dotnet:format:
+    desc: Format .NET code
+    dir: ./dotnet
+    cmds:
+      - dotnet format
+
+  default:
+    desc: Show available tasks
+    cmds:
+      - task --list
