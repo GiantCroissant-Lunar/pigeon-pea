@@ -157,6 +157,23 @@
         }
       },
       "additionalProperties": true
+    },
+    "fallback": {
+      "type": "string",
+      "pattern": "^[A-Z][a-zA-Z0-9]*$",
+      "description": "Optional default sub-agent to use if no routing rules match."
+    },
+    "policies": {
+      "type": "array",
+      "description": "Optional list of policies to enforce across sub-agents.",
+      "items": {
+        "type": "object",
+        "required": ["enforce"],
+        "properties": {
+          "enforce": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "additionalProperties": false,
