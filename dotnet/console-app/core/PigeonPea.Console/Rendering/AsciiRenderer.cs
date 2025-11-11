@@ -57,7 +57,18 @@ public class AsciiRenderer : IRenderer
     {
         if (_buffer.Length > 0)
         {
-            System.Console.Write(_buffer.ToString());
+            try
+            {
+                System.Console.Write(_buffer.ToString());
+            }
+            catch (System.IO.IOException)
+            {
+                // Ignore in headless/test environments
+            }
+            catch (System.ObjectDisposedException)
+            {
+                // Console.Out disposed by test harness
+            }
         }
         _target?.Present();
     }
