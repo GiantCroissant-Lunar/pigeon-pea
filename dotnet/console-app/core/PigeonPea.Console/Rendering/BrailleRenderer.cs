@@ -94,6 +94,11 @@ public class BrailleRenderer : IRenderer
             // Console output was redirected or is unavailable
             // Skip rendering and continue
         }
+        catch (System.ObjectDisposedException)
+        {
+            // In unit tests, Console.Out may be disposed by the test harness
+            // Skip writing and continue
+        }
 
         _target.Present();
     }
