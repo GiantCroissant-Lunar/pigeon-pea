@@ -10,7 +10,7 @@ By participating in this project, you agree to abide by our [Code of Conduct](CO
 
 ### Reporting Bugs
 
-If you find a bug, please create an issue on GitHub with:
+If you find a bug, please [create a bug report](https://github.com/GiantCroissant-Lunar/pigeon-pea/issues/new?template=bug_report.yml) with:
 
 - A clear, descriptive title
 - Steps to reproduce the issue
@@ -20,7 +20,7 @@ If you find a bug, please create an issue on GitHub with:
 
 ### Suggesting Enhancements
 
-We welcome suggestions for enhancements! Please create an issue with:
+We welcome suggestions for enhancements! Please [create a feature request](https://github.com/GiantCroissant-Lunar/pigeon-pea/issues/new?template=feature_request.yml) with:
 
 - A clear, descriptive title
 - Detailed description of the proposed enhancement

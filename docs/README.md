@@ -141,7 +141,7 @@ We welcome contributions! Please:
 1. Review existing RFCs before proposing new features
 2. Open discussions for major changes
 3. Follow the RFC process for architectural decisions
-4. Keep documentation up to date with implementation
+4. Keep documentation up-to-date with implementation
 
 ## Questions and Discussion
 

@@ -18,10 +18,10 @@
 
 ## Related Issues
 
-<!-- Link to related issues using #issue_number -->
+<!-- Link to related issues using #<issue_number>, e.g., Fixes #123 -->
 
-Fixes #
-Related to #
+Fixes #<issue_number>
+Related to #<issue_number>
 
 ## Changes Made
 
@@ -89,7 +89,7 @@ Related to #
 
 - [ ] Agent manifests are valid (`task agents:validate`)
 - [ ] Skills are valid (`task skills:validate`)
-- [ ] JSON schemas are up to date
+- [ ] JSON schemas are up-to-date
 - [ ] AGENTS.md is regenerated if needed
 
 ## Breaking Changes
