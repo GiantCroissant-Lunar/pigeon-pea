@@ -3,15 +3,19 @@
 **Labels:** `plugin-system`, `rfc-006`, `phase-3`, `rendering`
 
 ## Related RFC
+
 RFC-006 Phase 3: Plugin System Architecture
 
 ## Summary
+
 Convert console app rendering to plugin-based architecture. Create a simple ANSI renderer plugin as proof of concept.
 
 ## Depends On
+
 Issue #4 (event integration complete)
 
 ## Scope
+
 - Define `IRenderer` contract (if not already done in Issue #2)
 - Create ANSI renderer plugin
 - Update console app to load renderer as plugin
@@ -21,6 +25,7 @@ Issue #4 (event integration complete)
 ## Acceptance Criteria
 
 ### IRenderer Contract
+
 - [ ] `IRenderer` interface finalized in `PigeonPea.Game.Contracts/Rendering/`
   - [ ] `Initialize(RenderContext)` method
   - [ ] `Render(GameState)` method
@@ -31,6 +36,7 @@ Issue #4 (event integration complete)
 - [ ] XML documentation complete
 
 ### ANSI Renderer Plugin
+
 - [ ] ANSI renderer plugin created:
   - [ ] `console-app/plugins/PigeonPea.Plugins.Rendering.Terminal.ANSI/`
   - [ ] `ANSIRendererPlugin.cs` implements `IPlugin`
@@ -41,6 +47,7 @@ Issue #4 (event integration complete)
   - [ ] Clears and redraws efficiently
 
 ### Plugin Manifest
+
 - [ ] `plugin.json` manifest created with:
   - `id: "rendering-terminal-ansi"`
   - `name: "ANSI Terminal Renderer"`
@@ -50,6 +57,7 @@ Issue #4 (event integration complete)
   - `entryPoint: {"dotnet.console": "PigeonPea.Plugins.Rendering.Terminal.ANSI.dll,PigeonPea.Plugins.Rendering.Terminal.ANSI.ANSIRendererPlugin"}`
 
 ### Console App Integration
+
 - [ ] `PigeonPea.Console` updated:
   - [ ] References `PigeonPea.PluginSystem`
   - [ ] Startup configures plugin system via `AddPluginSystem()`
@@ -59,6 +67,7 @@ Issue #4 (event integration complete)
   - [ ] Calls `Initialize()`, `Render()`, `Shutdown()` at appropriate times
 
 ### Plugin Configuration
+
 - [ ] Plugin manifest created:
   - [ ] `console-app/configs/plugin-manifest.json`
   - [ ] Specifies ANSI renderer to load
@@ -67,11 +76,7 @@ Issue #4 (event integration complete)
     ```json
     {
       "profile": "dotnet.console",
-      "pluginPaths": [
-        "../../app-essential/plugins",
-        "../../game-essential/plugins",
-        "./plugins"
-      ],
+      "pluginPaths": ["../../app-essential/plugins", "../../game-essential/plugins", "./plugins"],
       "plugins": [
         {
           "id": "rendering-terminal-ansi",
@@ -83,6 +88,7 @@ Issue #4 (event integration complete)
     ```
 
 ### Testing and Verification
+
 - [ ] Console app runs with plugin-based rendering
 - [ ] Visual output identical to before migration
 - [ ] No performance regressions (measure FPS if applicable)
@@ -90,6 +96,7 @@ Issue #4 (event integration complete)
 - [ ] Integration test verifies renderer loading
 
 ### Documentation
+
 - [ ] README in ANSI renderer plugin explaining implementation
 - [ ] How to create a renderer plugin guide
 - [ ] How to configure plugins in apps guide
@@ -97,6 +104,7 @@ Issue #4 (event integration complete)
 - [ ] ARCHITECTURE.md updated with renderer plugin flow
 
 ## Implementation Notes
+
 - Start with ANSI as it's simplest (no external dependencies)
 - Future: Create Kitty, Sixel, SkiaSharp renderer plugins
 - Consider renderer capability detection (auto-select best renderer)
@@ -231,19 +239,23 @@ renderer.Shutdown();
 ```
 
 ## Future Enhancements
+
 - Auto-detection of best renderer for current terminal
 - Fallback chain: Kitty → Sixel → ANSI
 - Hot reload of renderers during development
 - Renderer configuration options (color scheme, font size, etc.)
 
 ## Estimated Effort
+
 3-4 days
 
 ## Dependencies
+
 - Issue #4 must be completed (event integration complete)
 - Issue #3 must be completed (plugin system must exist)
 - Issue #2 must be completed (contracts must exist)
 
 ## See Also
+
 - [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)

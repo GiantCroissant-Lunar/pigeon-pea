@@ -16,6 +16,7 @@ Implement a plugin system for PigeonPea based on the hyacinth-bean-base architec
 ### Current State
 
 PigeonPea currently has monolithic applications with tightly coupled features:
+
 - Rendering is hardcoded into each application
 - Game features (AI, inventory, combat) are embedded in `PigeonPea.Shared`
 - No way to add features without modifying core code
@@ -88,6 +89,7 @@ public interface IPlugin
 ```
 
 **Lifecycle:**
+
 1. **InitializeAsync** - Register services, subscribe to events
 2. **StartAsync** - Start background tasks, activate systems
 3. **StopAsync** - Cleanup, unsubscribe, flush data
@@ -142,6 +144,7 @@ public class ServiceMetadata
 ```
 
 **Priority Guidelines:**
+
 - Framework services: 1000+
 - Game plugins: 100-500
 - Utility plugins: 50-99
@@ -236,6 +239,7 @@ public class PluginLoader : IDisposable
 ```
 
 **Key Features:**
+
 - **ALC Isolation** - Each plugin loads in its own `AssemblyLoadContext`
 - **Dependency Resolution** - Topological sort for load order
 - **Hot Reload** - Unload and reload plugins without restart (development mode)
@@ -276,6 +280,7 @@ public class ServiceRegistry : IRegistry
 ```
 
 **Cross-ALC Type Matching:**
+
 - Uses runtime type name matching, not reference equality
 - Works across plugin assembly boundaries
 
@@ -313,6 +318,7 @@ public class EventBus : IEventBus
 ```
 
 **Features:**
+
 - Pub/sub messaging between plugins
 - Type-safe event handling
 - Async event handlers
@@ -613,11 +619,7 @@ await host.RunAsync();
 // console-app/configs/plugin-manifest.json
 {
   "profile": "dotnet.console",
-  "pluginPaths": [
-    "../../app-essential/plugins",
-    "../../game-essential/plugins",
-    "./plugins"
-  ],
+  "pluginPaths": ["../../app-essential/plugins", "../../game-essential/plugins", "./plugins"],
   "plugins": [
     {
       "id": "rendering-terminal-kitty",
@@ -638,6 +640,7 @@ await host.RunAsync();
 ### Phase 1: Core Plugin Infrastructure
 
 **Tasks:**
+
 1. Create `PigeonPea.Contracts/Plugin/`
    - `IPlugin.cs`, `IPluginContext.cs`, `IRegistry.cs`
    - `PluginManifest.cs`, `ServiceMetadata.cs`
@@ -647,6 +650,7 @@ await host.RunAsync();
 3. Unit tests for plugin system
 
 **Deliverables:**
+
 - Plugin contracts compile
 - Plugin loader can discover and load simple test plugin
 - Service registry works with priority selection
@@ -655,12 +659,14 @@ await host.RunAsync();
 ### Phase 2: Game Event Integration
 
 **Tasks:**
+
 1. Create `PigeonPea.Game.Contracts/Events/`
 2. Add events: `EntitySpawnedEvent`, `EntityMovedEvent`, `CombatEvent`
 3. Integrate `IEventBus` into `GameWorld`
 4. Publish events from game actions
 
 **Deliverables:**
+
 - Events published from `GameWorld`
 - Plugins can subscribe to game events
 - No impact on existing functionality
@@ -668,12 +674,14 @@ await host.RunAsync();
 ### Phase 3: Rendering Plugin (Proof of Concept)
 
 **Tasks:**
+
 1. Create `PigeonPea.Game.Contracts/Rendering/IRenderer.cs`
 2. Create `PigeonPea.Plugins.Rendering.Terminal.ANSI/` (simple fallback)
 3. Update `PigeonPea.Console` to use plugin-based renderer
 4. Test plugin loading and rendering
 
 **Deliverables:**
+
 - Console app loads renderer as plugin
 - Rendering works identically to before
 - Can swap renderers by changing config
@@ -681,11 +689,13 @@ await host.RunAsync();
 ### Phase 4: Additional Plugins (Optional)
 
 **Tasks:**
+
 1. Convert AI system to plugin
 2. Convert inventory system to plugin
 3. Create SkiaSharp renderer plugin for Windows
 
 **Deliverables:**
+
 - Multiple game system plugins working
 - Platform-specific rendering plugins
 
@@ -735,6 +745,7 @@ await host.RunAsync();
 4. **Cross-ALC Calls** - Minimal overhead for service access
 
 **Mitigation:**
+
 - Cache registry lookups
 - Batch event publishing for high-frequency events
 - Profile hot paths and optimize as needed
@@ -742,12 +753,14 @@ await host.RunAsync();
 ## Security Considerations
 
 **Out of Scope for Initial Implementation:**
+
 - Plugin sandboxing
 - Permission system
 - Code signing
 - Malicious plugin protection
 
 **Future Enhancement:**
+
 - Add security layer from hyacinth-bean-base
 - Implement permission profiles
 - Add audit logging
@@ -757,10 +770,12 @@ await host.RunAsync();
 ### Alternative 1: MEF (Managed Extensibility Framework)
 
 **Pros:**
+
 - Built into .NET
 - Mature and stable
 
 **Cons:**
+
 - Less control over loading
 - No ALC isolation
 - More complex attribute-based discovery
@@ -770,10 +785,12 @@ await host.RunAsync();
 ### Alternative 2: Simple Factory Pattern
 
 **Pros:**
+
 - Simpler implementation
 - No plugin loading complexity
 
 **Cons:**
+
 - No runtime extensibility
 - No community mods
 - Features still coupled to core

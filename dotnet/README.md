@@ -50,7 +50,6 @@ dotnet/
   - A GPU driver compatible with SkiaSharp via Avalonia
 - Recommended IDEs: VS Code with C# Dev Kit or JetBrains Rider
 
-
 ### Run Windows App
 
 ```bash
@@ -76,7 +75,6 @@ dotnet run
 - ESC/Q: Exit
 - Space/Enter: Interact
 - H: Toggle help
-
 
 ## Development
 

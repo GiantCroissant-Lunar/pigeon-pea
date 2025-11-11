@@ -87,6 +87,7 @@ public interface IPlugin
 ```
 
 **Lifecycle phases:**
+
 1. **InitializeAsync** - Register services, subscribe to events, load resources
 2. **StartAsync** - Start background tasks, activate systems
 3. **StopAsync** - Cleanup, unsubscribe, flush data
@@ -126,6 +127,7 @@ public interface IRegistry
 ```
 
 **Key features:**
+
 - **Runtime type matching** (not compile-time references)
 - **Priority-based selection** (framework: 1000+, plugins: 100-500)
 - **Multiple implementations** support
@@ -156,6 +158,7 @@ public interface IRegistry
 ```
 
 **Key fields:**
+
 - **entryPoint** - Multi-profile entry points (console, GUI, Unity, etc.)
 - **capabilities** - Feature declarations for discovery/filtering
 - **dependencies** - Hard/soft plugin dependencies
@@ -197,12 +200,14 @@ public interface IRegistry
 ### Key Implementation Details
 
 **Assembly Load Context Isolation:**
+
 ```csharp
 var loadContext = new PluginLoadContext(assemblyPath, enableHotReload);
 var assembly = loadContext.LoadFromAssemblyPath(assemblyPath);
 ```
 
 **Cross-ALC Type Matching:**
+
 ```csharp
 // Check by name, not by reference equality
 var implementsIPlugin = pluginType.GetInterfaces()
@@ -210,6 +215,7 @@ var implementsIPlugin = pluginType.GetInterfaces()
 ```
 
 **Profile-Based Entry Points:**
+
 ```csharp
 if (manifest.EntryPoint.TryGetValue("dotnet.console", out var entryPoint))
 {
@@ -407,6 +413,7 @@ public class AnalyticsPlugin : IPlugin
 ### Current Pigeon-Pea Architecture
 
 **Structure:**
+
 ```
 dotnet/
 ├── shared-app/    # PigeonPea.Shared - Core game logic (Arch ECS + GoRogue)
@@ -415,6 +422,7 @@ dotnet/
 ```
 
 **Key characteristics:**
+
 - **ECS-based** (Arch ECS)
 - **Multi-platform** (Windows GUI + Terminal)
 - **Shared game logic** in `shared-app`
@@ -422,14 +430,14 @@ dotnet/
 
 ### Perfect Fit: Why the Plugin System Works for Pigeon-Pea
 
-| Hyacinth-Bean Feature | Pigeon-Pea Benefit |
-|----------------------|-------------------|
+| Hyacinth-Bean Feature          | Pigeon-Pea Benefit                                           |
+| ------------------------------ | ------------------------------------------------------------ |
 | **Multi-profile entry points** | Supports both `dotnet.console` and `dotnet.windows` profiles |
-| **Capability system** | Can enforce single renderer per profile |
-| **Service registry** | Plugins can provide AI, inventory, quest systems |
-| **Event bus** | Perfect for ECS events (combat, movement, spawning) |
-| **Hot reload** | Rapid game development iteration |
-| **Dependency resolution** | Complex mod dependencies (NPC → Dialogue → Quest) |
+| **Capability system**          | Can enforce single renderer per profile                      |
+| **Service registry**           | Plugins can provide AI, inventory, quest systems             |
+| **Event bus**                  | Perfect for ECS events (combat, movement, spawning)          |
+| **Hot reload**                 | Rapid game development iteration                             |
+| **Dependency resolution**      | Complex mod dependencies (NPC → Dialogue → Quest)            |
 
 ---
 
@@ -493,6 +501,7 @@ public class GameWorld
 **Modularize existing systems:**
 
 1. **AI System → Plugin**
+
    ```
    plugins/PigeonPea.Plugins.AI/
    ├── AIPlugin.cs
@@ -503,6 +512,7 @@ public class GameWorld
    ```
 
 2. **Rendering → Plugins**
+
    ```
    plugins/PigeonPea.Plugins.Rendering.SkiaSharp/
    └── plugin.json (capabilities: ["renderer", "renderer:windows"])
@@ -538,10 +548,7 @@ public class GameWorld
 ```json
 {
   "PluginSystem": {
-    "PluginPaths": [
-      "./plugins",
-      "~/.config/pigeon-pea/plugins"
-    ],
+    "PluginPaths": ["./plugins", "~/.config/pigeon-pea/plugins"],
     "Profile": "dotnet.console",
     "HotReload": true
   }
@@ -598,6 +605,7 @@ world.OnEntityCreated += entity =>
 
 **Challenge:** Plugins need access to ECS components/systems
 **Solution:**
+
 - Create contract interfaces for common ECS operations
 - Plugins register systems via service registry
 - Event bus bridges plugin → ECS communication
@@ -606,6 +614,7 @@ world.OnEntityCreated += entity =>
 
 **Challenge:** Plugin indirection overhead
 **Solution:**
+
 - Service registry caching
 - Direct component queries in hot paths
 - Event bus batching for high-frequency events
@@ -614,6 +623,7 @@ world.OnEntityCreated += entity =>
 
 **Challenge:** Plugin API stability
 **Solution:**
+
 - Semantic versioning for contracts
 - Compatibility validation during load
 - Deprecation warnings
@@ -622,6 +632,7 @@ world.OnEntityCreated += entity =>
 
 **Challenge:** User-created plugins could be malicious
 **Solution:**
+
 - Permission system from hyacinth-bean
 - Sandboxing for untrusted plugins
 - Code signing for official plugins
@@ -696,12 +707,15 @@ The hyacinth-bean-base plugin system is **well-architected, battle-tested, and p
 ### Source Code Locations
 
 **Contracts:**
+
 - `/home/user/hyacinth-bean-base/dotnet/app-essential/core/src/HyacinthBean.Plugins.Contracts/`
 
 **Core Implementation:**
+
 - `/home/user/hyacinth-bean-base/dotnet/app-essential/core/src/HyacinthBean.Plugins.Core/`
 
 **Example Plugins:**
+
 - `/home/user/hyacinth-bean-base/dotnet/app-essential/extend/src/HyacinthBean.Plugins.Analytics/`
 - `/home/user/hyacinth-bean-base/dotnet/game-general/extend/src/HyacinthBean.Plugins.NPC/`
 - `/home/user/hyacinth-bean-base/dotnet/game-general/extend/src/HyacinthBean.Plugins.Rendering.Terminal/`

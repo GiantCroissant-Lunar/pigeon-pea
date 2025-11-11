@@ -7,16 +7,16 @@ using Xunit;
 
 namespace PigeonPea.Console.Tests.Rendering;
 
+/// <summary>
+/// Unit tests for <see cref="AsciiRenderer"/>.
+/// </summary>
+public class AsciiRendererTests
+{
     /// <summary>
-    /// Unit tests for <see cref="AsciiRenderer"/>.
+    /// Mock render target for testing.
     /// </summary>
-    public class AsciiRendererTests
+    private class MockRenderTarget : IRenderTarget
     {
-        /// <summary>
-        /// Mock render target for testing.
-        /// </summary>
-        private class MockRenderTarget : IRenderTarget
-        {
         public int Width { get; }
         public int Height { get; }
         public int? PixelWidth => null;
