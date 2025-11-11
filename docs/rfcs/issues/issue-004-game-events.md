@@ -3,15 +3,19 @@
 **Labels:** `plugin-system`, `rfc-006`, `phase-2`, `game-logic`
 
 ## Related RFC
+
 RFC-006 Phase 2: Plugin System Architecture
 
 ## Summary
+
 Define game events in contracts and integrate EventBus into GameWorld to publish events for plugins.
 
 ## Depends On
+
 Issue #3 (plugin system must exist)
 
 ## Scope
+
 - Define game event contracts
 - Integrate `IEventBus` into `GameWorld`
 - Publish events from game actions
@@ -21,6 +25,7 @@ Issue #3 (plugin system must exist)
 ## Acceptance Criteria
 
 ### Game Events Defined
+
 - [ ] Game events defined in `PigeonPea.Game.Contracts/Events/`:
   - [ ] `EntitySpawnedEvent.cs`
   - [ ] `EntityMovedEvent.cs`
@@ -30,6 +35,7 @@ Issue #3 (plugin system must exist)
 - [ ] Events contain all relevant data (no database/state lookups needed)
 
 ### GameWorld Integration
+
 - [ ] `GameWorld.cs` updated:
   - [ ] Constructor accepts `IEventBus` parameter
   - [ ] `SpawnEntity()` publishes `EntitySpawnedEvent`
@@ -38,6 +44,7 @@ Issue #3 (plugin system must exist)
   - [ ] Events published after state changes (not before)
 
 ### Example Plugin
+
 - [ ] Example plugin created: `PigeonPea.Plugins.EventLogger`
   - [ ] Located in `game-essential/plugins/PigeonPea.Plugins.EventLogger/`
   - [ ] Subscribes to all game events
@@ -46,29 +53,37 @@ Issue #3 (plugin system must exist)
   - [ ] Can be enabled/disabled via config
 
 ### Application Integration
+
 - [ ] Both console and Windows apps updated:
   - [ ] Add `IEventBus` to dependency injection
   - [ ] Pass `IEventBus` to `GameWorld` constructor
   - [ ] Verify events are published during gameplay
 
 ### Testing
+
 - [ ] Integration test verifies event flow:
   - [ ] GameWorld publishes event
   - [ ] EventLogger plugin receives event
   - [ ] Event data is correct
   - [ ] Multiple subscribers work correctly
 - [ ] No functional regressions
+
 ### Documentation
+
 - [ ] XML documentation for all event classes
 - [ ] README in EventLogger plugin explaining purpose
 - [ ] Updated ARCHITECTURE.md with event flow diagram
- ## Implementation Notes
- - Use C# records for immutable events
- - Consider synchronous vs asynchronous event publishing (perf implications)
- - Ensure events are published *after* state changes (not before)
- ## Event Examples
 
- ### EntitySpawnedEvent
+## Implementation Notes
+
+- Use C# records for immutable events
+- Consider synchronous vs asynchronous event publishing (perf implications)
+- Ensure events are published _after_ state changes (not before)
+
+## Event Examples
+
+### EntitySpawnedEvent
+
 ```csharp
 namespace PigeonPea.Game.Contracts.Events;
 
@@ -80,7 +95,9 @@ public record EntitySpawnedEvent
     public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 }
 ```
+
 ### EntityMovedEvent
+
 ```csharp
 public record EntityMovedEvent
 {
@@ -90,7 +107,9 @@ public record EntityMovedEvent
     public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 }
 ```
+
 ### CombatEvent
+
 ```csharp
 public record CombatEvent
 {
@@ -102,6 +121,7 @@ public record CombatEvent
     public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 }
 ```
+
 ## GameWorld Integration Example
 
 ```csharp
@@ -146,6 +166,7 @@ public record CombatEvent
         }
     }
 ```
+
 ## EventLogger Plugin Example
 
 ```csharp
@@ -199,8 +220,10 @@ public class EventLoggerPlugin : IPlugin
 ```
 
 ## Dependencies
+
 - Issue #3 must be completed (plugin system must exist)
 
 ## See Also
+
 - [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)

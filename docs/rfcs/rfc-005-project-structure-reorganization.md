@@ -29,6 +29,7 @@ dotnet/
 ```
 
 **Limitations:**
+
 1. No clear distinction between framework code and application code
 2. No support for plugin architecture
 3. Difficult to add new platforms or features
@@ -126,6 +127,7 @@ dotnet/
 ### Phase 1: Create New Structure (Non-Breaking)
 
 **Tasks:**
+
 1. Create new folder structure (all `core/`, `plugins/`, `configs/` directories)
 2. Move existing projects to new locations:
    - `shared-app/` → `game-essential/core/PigeonPea.Shared/`
@@ -138,6 +140,7 @@ dotnet/
 6. Run build and tests to verify
 
 **Verification:**
+
 - `dotnet build` succeeds
 - All tests pass
 - No breaking changes to existing functionality
@@ -145,6 +148,7 @@ dotnet/
 ### Phase 2: Create Contract Projects (Foundation)
 
 **Tasks:**
+
 1. Create `app-essential/core/PigeonPea.Contracts/`
    - Add `Plugin/` folder with `IPlugin.cs`, `IPluginContext.cs`, `IRegistry.cs`
    - Add `DependencyInjection/` folder
@@ -158,6 +162,7 @@ dotnet/
 4. Update project references
 
 **Verification:**
+
 - Contract projects compile
 - No circular dependencies
 - Clean separation: `game-essential` can reference `app-essential`, but not vice versa
@@ -171,11 +176,13 @@ Deferred to RFC-006: Plugin System Architecture
 ### Breaking Changes
 
 **File Paths:**
+
 - All project paths change
 - Solution file updated
 - CI/CD pipelines must update paths
 
 **Mitigation:**
+
 - Update all documentation with new paths
 - Update CI/CD configuration
 - Update any scripts that reference old paths
@@ -183,39 +190,44 @@ Deferred to RFC-006: Plugin System Architecture
 ### Non-Breaking Changes
 
 **Code:**
+
 - No changes to public APIs (Phase 1)
 - No changes to namespaces (Phase 1)
 - No changes to functionality (Phase 1)
 
 **Developer Experience:**
+
 - More intuitive project organization
 - Easier to find projects (consistent `core/` pattern)
 - Clear plugin extensibility
 
 ## Project Mapping
 
-| Old Path | New Path | Notes |
-|----------|----------|-------|
-| `shared-app/` | `game-essential/core/PigeonPea.Shared/` | Renamed directory |
-| `shared-app.Tests/` | `game-essential/core/PigeonPea.Shared.Tests/` | Renamed directory |
-| `console-app/` | `console-app/core/PigeonPea.Console/` | Moved into `core/` |
-| `console-app.Tests/` | *(Merged into PigeonPea.Console.Tests or removed)* | TBD |
-| `windows-app/` | `windows-app/core/PigeonPea.Windows/` | Moved into `core/` |
-| `windows-app.Tests/` | *(Merged into PigeonPea.Windows.Tests or removed)* | TBD |
-| `benchmarks/` | *(Keep at root or move to tests/)* | TBD |
+| Old Path             | New Path                                           | Notes              |
+| -------------------- | -------------------------------------------------- | ------------------ |
+| `shared-app/`        | `game-essential/core/PigeonPea.Shared/`            | Renamed directory  |
+| `shared-app.Tests/`  | `game-essential/core/PigeonPea.Shared.Tests/`      | Renamed directory  |
+| `console-app/`       | `console-app/core/PigeonPea.Console/`              | Moved into `core/` |
+| `console-app.Tests/` | _(Merged into PigeonPea.Console.Tests or removed)_ | TBD                |
+| `windows-app/`       | `windows-app/core/PigeonPea.Windows/`              | Moved into `core/` |
+| `windows-app.Tests/` | _(Merged into PigeonPea.Windows.Tests or removed)_ | TBD                |
+| `benchmarks/`        | _(Keep at root or move to tests/)_                 | TBD                |
 
 ## Dependencies
 
 ### New Projects
 
 **Phase 1:** (Migration only)
+
 - No new projects
 
 **Phase 2:** (Contracts)
+
 - `app-essential/core/PigeonPea.Contracts/`
 - `game-essential/core/PigeonPea.Game.Contracts/`
 
 **Phase 3:** (Plugin System - see RFC-006)
+
 - `app-essential/core/PigeonPea.PluginSystem/`
 
 ### Dependency Flow
@@ -269,10 +281,12 @@ Clean, one-way dependency flow with no circular references.
 ### Alternative 1: Keep Current Structure
 
 **Pros:**
+
 - No migration effort
 - No breaking changes
 
 **Cons:**
+
 - Cannot support plugin architecture
 - Poor separation of concerns
 - Difficult to scale
@@ -282,10 +296,12 @@ Clean, one-way dependency flow with no circular references.
 ### Alternative 2: Exact Hyacinth-Bean-Base Structure
 
 **Pros:**
+
 - Battle-tested structure
 - Known to work well
 
 **Cons:**
+
 - Over-engineered for pigeon-pea (50+ projects)
 - Excessive nesting (`app-essential/core/src/`, `app-essential/extend/src/`)
 - Complex for small team
@@ -295,10 +311,12 @@ Clean, one-way dependency flow with no circular references.
 ### Alternative 3: Minimal Two-Tier (app + game)
 
 **Pros:**
+
 - Simpler than proposed
 - Fewer directories
 
 **Cons:**
+
 - Apps not at top level (harder to discover)
 - No clear place for platform-specific plugins
 - Less intuitive structure
@@ -308,18 +326,21 @@ Clean, one-way dependency flow with no circular references.
 ## Timeline
 
 ### Phase 1: Migration (1-2 days)
+
 - Create folder structure
 - Move projects
 - Update solution and references
 - Verify builds and tests
 
 ### Phase 2: Contracts (2-3 days)
+
 - Create contract projects
 - Extract interfaces
 - Update references
 - Documentation
 
 ### Phase 3: Plugin System (See RFC-006)
+
 - Estimated 1-2 weeks
 
 **Total for RFC-005:** 3-5 days
@@ -370,11 +391,13 @@ git mv windows-app windows-app/core/PigeonPea.Windows
 ## Appendix B: Solution File Changes
 
 Update `PigeonPea.sln` project paths from:
+
 ```
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared", "shared-app\PigeonPea.Shared.csproj", "{...}"
 ```
 
 To:
+
 ```
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared", "game-essential\core\PigeonPea.Shared\PigeonPea.Shared.csproj", "{...}"
 ```

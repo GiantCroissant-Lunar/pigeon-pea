@@ -3,15 +3,19 @@
 **Labels:** `contracts`, `rfc-005`, `phase-2`, `infrastructure`
 
 ## Related RFC
+
 RFC-005 Phase 2: Project Structure Reorganization
 
 ## Summary
+
 Create contract projects to establish interfaces for plugin system and game events.
 
 ## Depends On
+
 Issue #1 (project structure must exist)
 
 ## Scope
+
 - Create `PigeonPea.Contracts` project
 - Create `PigeonPea.Game.Contracts` project
 - Define plugin system contracts
@@ -21,6 +25,7 @@ Issue #1 (project structure must exist)
 ## Acceptance Criteria
 
 ### PigeonPea.Contracts Project
+
 - [ ] `app-essential/core/PigeonPea.Contracts/` project created
 - [ ] `Plugin/IPlugin.cs` interface defined
 - [ ] `Plugin/IPluginContext.cs` interface defined
@@ -33,6 +38,7 @@ Issue #1 (project structure must exist)
 - [ ] `Services/` folder for service contracts
 
 ### PigeonPea.Game.Contracts Project
+
 - [ ] `game-essential/core/PigeonPea.Game.Contracts/` project created
 - [ ] `Events/` folder created (empty for now, populated in Issue #4)
 - [ ] `Services/` folder for game services
@@ -41,16 +47,19 @@ Issue #1 (project structure must exist)
 - [ ] `Rendering/RenderingCapabilities.cs` enum defined
 
 ### Integration
+
 - [ ] Projects added to `PigeonPea.sln`
 - [ ] `PigeonPea.Shared` references `PigeonPea.Game.Contracts`
 - [ ] `PigeonPea.Game.Contracts` references `PigeonPea.Contracts`
 - [ ] All projects build successfully
 
 ### Documentation
+
 - [ ] XML documentation comments added to all public interfaces
 - [ ] README created in each contract project explaining purpose
 
 ## Implementation Notes
+
 - Use `netstandard2.1` for maximum compatibility
 - Keep contracts minimal and stable (they're the API surface)
 - Follow hyacinth-bean-base patterns from PLUGIN_SYSTEM_ANALYSIS.md
@@ -59,6 +68,7 @@ Issue #1 (project structure must exist)
 ## Interface Examples
 
 ### IPlugin
+
 ```csharp
 public interface IPlugin
 {
@@ -73,6 +83,7 @@ public interface IPlugin
 ```
 
 ### IRegistry
+
 ```csharp
 public interface IRegistry
 {
@@ -85,6 +96,7 @@ public interface IRegistry
 ```
 
 ### IRenderer
+
 ```csharp
 public interface IRenderer
 {
@@ -98,12 +110,15 @@ public interface IRenderer
 ```
 
 ## Estimated Effort
+
 2-3 days
 
 ## Dependencies
+
 - Issue #1 must be completed (folder structure must exist)
 
 ## See Also
+
 - [RFC-005: Project Structure Reorganization](../rfc-005-project-structure-reorganization.md)
 - [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)

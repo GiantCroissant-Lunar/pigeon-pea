@@ -23,6 +23,7 @@ Issue #5: Create Rendering Plugin PoC (RFC-006 Phase 3)
 ```
 
 **Parallel Execution:**
+
 - Issues #1 and #2 can potentially run in parallel if careful
 - Issues #3, #4, #5 must be sequential (each depends on previous)
 
@@ -41,6 +42,7 @@ Migrate existing projects from flat structure to new tiered organization as defi
 **Related RFC:** RFC-005 Phase 1
 
 **Scope:**
+
 - Create new folder structure (`app-essential/`, `game-essential/`, etc.)
 - Move existing projects to new locations
 - Update `PigeonPea.sln` with new paths
@@ -48,6 +50,7 @@ Migrate existing projects from flat structure to new tiered organization as defi
 - Verify builds and tests pass
 
 **Acceptance Criteria:**
+
 - [ ] New folder structure created:
   - `app-essential/core/`
   - `app-essential/plugins/`
@@ -73,6 +76,7 @@ Migrate existing projects from flat structure to new tiered organization as defi
 - [ ] `README.md` updated with new paths
 
 **Implementation Notes:**
+
 - Use `git mv` to preserve history
 - Update solution file GUIDs if needed
 - Test builds incrementally after each move
@@ -97,6 +101,7 @@ Create contract projects to establish interfaces for plugin system and game even
 **Depends On:** Issue #1 (project structure must exist)
 
 **Scope:**
+
 - Create `PigeonPea.Contracts` project
 - Create `PigeonPea.Game.Contracts` project
 - Define plugin system contracts
@@ -104,6 +109,7 @@ Create contract projects to establish interfaces for plugin system and game even
 - Update project dependencies
 
 **Acceptance Criteria:**
+
 - [ ] `app-essential/core/PigeonPea.Contracts/` project created
   - [ ] `Plugin/IPlugin.cs` interface defined
   - [ ] `Plugin/IPluginContext.cs` interface defined
@@ -128,6 +134,7 @@ Create contract projects to establish interfaces for plugin system and game even
 - [ ] README created in each contract project explaining purpose
 
 **Implementation Notes:**
+
 - Use `netstandard2.1` for maximum compatibility
 - Keep contracts minimal and stable (they're the API surface)
 - Follow hyacinth-bean-base patterns from PLUGIN_SYSTEM_ANALYSIS.md
@@ -152,6 +159,7 @@ Implement the core plugin system: PluginLoader, ServiceRegistry, EventBus, and D
 **Depends On:** Issue #2 (contracts must exist)
 
 **Scope:**
+
 - Create `PigeonPea.PluginSystem` project
 - Implement `PluginLoader` with ALC isolation
 - Implement `ServiceRegistry` with priority support
@@ -160,6 +168,7 @@ Implement the core plugin system: PluginLoader, ServiceRegistry, EventBus, and D
 - Write comprehensive unit tests
 
 **Acceptance Criteria:**
+
 - [ ] `app-essential/core/PigeonPea.PluginSystem/` project created
 - [ ] `PluginLoader.cs` implemented:
   - [ ] `DiscoverAndLoadAsync()` discovers plugins from directories
@@ -207,6 +216,7 @@ Implement the core plugin system: PluginLoader, ServiceRegistry, EventBus, and D
 - [ ] XML documentation complete
 
 **Implementation Notes:**
+
 - Reference hyacinth-bean-base implementation in PLUGIN_SYSTEM_ANALYSIS.md
 - Use `System.Runtime.Loader.AssemblyLoadContext` for ALC isolation
 - Use `System.Text.Json` for manifest parsing
@@ -232,6 +242,7 @@ Define game events in contracts and integrate EventBus into GameWorld to publish
 **Depends On:** Issue #3 (plugin system must exist)
 
 **Scope:**
+
 - Define game event contracts
 - Integrate `IEventBus` into `GameWorld`
 - Publish events from game actions
@@ -239,6 +250,7 @@ Define game events in contracts and integrate EventBus into GameWorld to publish
 - Verify events flow correctly
 
 **Acceptance Criteria:**
+
 - [ ] Game events defined in `PigeonPea.Game.Contracts/Events/`:
   - [ ] `EntitySpawnedEvent.cs`
   - [ ] `EntityMovedEvent.cs`
@@ -264,9 +276,10 @@ Define game events in contracts and integrate EventBus into GameWorld to publish
 - [ ] Documentation updated
 
 **Implementation Notes:**
+
 - Use C# records for immutable events
 - Consider synchronous vs asynchronous event publishing (perf implications)
-- Ensure events are published *after* state changes (not before)
+- Ensure events are published _after_ state changes (not before)
 - EventLogger is a development/debugging plugin (can be disabled in production)
 
 **Estimated Effort:** 2-3 days
@@ -288,6 +301,7 @@ Convert console app rendering to plugin-based architecture. Create a simple ANSI
 **Depends On:** Issue #4 (event integration complete)
 
 **Scope:**
+
 - Define `IRenderer` contract
 - Create ANSI renderer plugin
 - Update console app to load renderer as plugin
@@ -295,6 +309,7 @@ Convert console app rendering to plugin-based architecture. Create a simple ANSI
 - Create plugin manifest config
 
 **Acceptance Criteria:**
+
 - [ ] `IRenderer` interface finalized in `PigeonPea.Game.Contracts/Rendering/`
   - [ ] `Initialize(RenderContext)` method
   - [ ] `Render(GameState)` method
@@ -329,6 +344,7 @@ Convert console app rendering to plugin-based architecture. Create a simple ANSI
   - [ ] Example plugin walkthrough
 
 **Implementation Notes:**
+
 - Start with ANSI as it's simplest (no external dependencies)
 - Future: Create Kitty, Sixel, SkiaSharp renderer plugins
 - Consider renderer capability detection (auto-select best renderer)
@@ -386,11 +402,13 @@ Or manually create issues on GitHub using the descriptions above.
 ## Agent Assignment
 
 **Option 1: Single Agent Sequential**
+
 - One agent handles all issues in order
 - Simplest coordination
 - Longest timeline
 
 **Option 2: Multiple Agents Parallel (with coordination)**
+
 - Agent A: Issue #1 (structure migration)
 - Agent B: Issue #2 (contracts) - starts after #1 completes
 - Agent C: Issues #3, #4, #5 (plugin system) - starts after #2 completes
@@ -398,6 +416,7 @@ Or manually create issues on GitHub using the descriptions above.
 - Requires coordination
 
 **Option 3: Phased Assignment**
+
 - Phase 1: Agent handles Issues #1-#2
 - Phase 2: Agent handles Issues #3-#5
 - Balanced approach
