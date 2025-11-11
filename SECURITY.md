@@ -21,7 +21,7 @@ We take security vulnerabilities seriously. If you discover a security issue, pl
    - Click "Report a vulnerability"
    - Fill in the details of the vulnerability
 
-2. **Or send an email** to the repository maintainers with:
+2. **Or send an email** to security@giantcroissant-lunar.dev (or contact repository maintainers directly) with:
    - Description of the vulnerability
    - Steps to reproduce
    - Potential impact
