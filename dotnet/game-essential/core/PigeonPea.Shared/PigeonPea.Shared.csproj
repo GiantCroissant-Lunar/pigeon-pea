@@ -27,4 +27,8 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="../PigeonPea.Game.Contracts/PigeonPea.Game.Contracts.csproj" />
+  </ItemGroup>
+
 </Project>

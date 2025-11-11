@@ -4,13 +4,13 @@ This directory contains detailed issue descriptions for implementing the plugin 
 
 ## Issues Overview
 
-| Issue | Title | Labels | Effort | Dependencies |
-|-------|-------|--------|--------|--------------|
-| #1 | [RFC-005] Phase 1: Migrate project structure | `restructure`, `rfc-005`, `phase-1`, `breaking-change` | 1-2 days | None |
-| #2 | [RFC-005] Phase 2: Create contract projects | `contracts`, `rfc-005`, `phase-2`, `infrastructure` | 2-3 days | Issue #1 |
-| #3 | [RFC-006] Phase 1: Implement core plugin system | `plugin-system`, `rfc-006`, `phase-1`, `infrastructure` | 3-5 days | Issue #2 |
-| #4 | [RFC-006] Phase 2: Integrate game events | `plugin-system`, `rfc-006`, `phase-2`, `game-logic` | 2-3 days | Issue #3 |
-| #5 | [RFC-006] Phase 3: Create rendering plugin PoC | `plugin-system`, `rfc-006`, `phase-3`, `rendering` | 3-4 days | Issue #4 |
+| Issue | Title                                           | Labels                                                  | Effort   | Dependencies |
+| ----- | ----------------------------------------------- | ------------------------------------------------------- | -------- | ------------ |
+| #1    | [RFC-005] Phase 1: Migrate project structure    | `restructure`, `rfc-005`, `phase-1`, `breaking-change`  | 1-2 days | None         |
+| #2    | [RFC-005] Phase 2: Create contract projects     | `contracts`, `rfc-005`, `phase-2`, `infrastructure`     | 2-3 days | Issue #1     |
+| #3    | [RFC-006] Phase 1: Implement core plugin system | `plugin-system`, `rfc-006`, `phase-1`, `infrastructure` | 3-5 days | Issue #2     |
+| #4    | [RFC-006] Phase 2: Integrate game events        | `plugin-system`, `rfc-006`, `phase-2`, `game-logic`     | 2-3 days | Issue #3     |
+| #5    | [RFC-006] Phase 3: Create rendering plugin PoC  | `plugin-system`, `rfc-006`, `phase-3`, `rendering`      | 3-4 days | Issue #4     |
 
 **Total Estimated Effort:** 11-17 days (2.2-3.4 weeks) sequential, 9-14 days (1.8-2.8 weeks) with parallelization
 
@@ -105,6 +105,7 @@ echo "All issues created!"
 ```
 
 Then run:
+
 ```bash
 chmod +x create-issues.sh
 ./create-issues.sh
@@ -121,17 +122,20 @@ chmod +x create-issues.sh
 ## Assignment Strategy
 
 ### Sequential Execution
+
 - Assign one agent to handle all issues in order
 - Simplest coordination
 - Timeline: 11-17 days
 
 ### Parallel Execution
+
 - Agent A: Issue #1
 - Agent B: Issue #2 (starts after #1)
 - Agent C: Issues #3, #4, #5 (starts after #2)
 - Timeline: 9-14 days
 
 ### Phased Execution
+
 - Phase 1: Issues #1-#2 (one agent)
 - Phase 2: Issues #3-#5 (same or different agent)
 - Balanced approach
@@ -139,6 +143,7 @@ chmod +x create-issues.sh
 ## Tracking Progress
 
 After creating issues:
+
 1. Create a project board or milestone
 2. Link issues to the milestone
 3. Track progress via GitHub project management
@@ -154,6 +159,7 @@ After creating issues:
 ## Questions?
 
 If you have questions about any issue:
+
 1. Check the related RFC for detailed context
 2. Review the PLUGIN_SYSTEM_ANALYSIS.md for architecture details
 3. Ask in the issue comments after creation
