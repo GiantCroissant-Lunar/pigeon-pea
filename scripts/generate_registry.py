@@ -195,8 +195,20 @@ def update_agents_md(agents_md_path: Path, registry_section: str) -> None:
         # No existing file, create with just the registry
         final_content = registry_section
 
-    with open(agents_md_path, "w", encoding="utf-8") as f:
-        f.write(final_content)
+    # Normalize newlines to LF and ensure single trailing newline for idempotency
+    normalized = final_content.replace("\r\n", "\n").rstrip("\n") + "\n"
+
+    # If existing content (normalized) is identical,
+    # avoid rewriting to keep hook idempotent
+    if agents_md_path.exists():
+        with open(agents_md_path, encoding="utf-8") as f:
+            current = f.read()
+        current_norm = current.replace("\r\n", "\n").rstrip("\n") + "\n"
+        if current_norm == normalized:
+            return
+
+    with open(agents_md_path, "w", encoding="utf-8", newline="\n") as f:
+        f.write(normalized)
 
 
 def main() -> int:
@@ -234,9 +246,9 @@ def main() -> int:
     # Update AGENTS.md
     try:
         update_agents_md(agents_md, registry_section)
-        print(f"✓ Successfully updated {agents_md}")
-        print(f"  - {len(agents)} agents")
-        print(f"  - {len(skills)} skills")
+        print(f"Updated {agents_md}")
+        print(f"  Agents: {len(agents)}")
+        print(f"  Skills: {len(skills)}")
     except Exception as e:
         print(f"Error updating AGENTS.md: {e}", file=sys.stderr)
         return 1
