@@ -137,18 +137,18 @@ Adapters enable agents to interact with:
 
 ### Agents
 
-| Name             | Description                                                        | Version | Skills                    |
-| ---------------- | ------------------------------------------------------------------ | ------- | ------------------------- |
-| CodeReviewAgent  | Reviews code quality, formatting, and enforces coding standards    | 0.1.0   | code-format, code-analyze |
-| DotNetBuildAgent | Handles .NET build, restore, compile, and packaging tasks          | 0.1.0   | dotnet-build              |
-| Orchestrator     | Top-level router that delegates to sub-agents based on task intent | 0.1.0   | None                      |
-| TestingAgent     | Executes tests, generates coverage, runs benchmarks                | 0.1.0   | dotnet-test               |
+| Name | Description | Version | Skills |
+|------|-------------|---------|--------|
+| CodeReviewAgent | Reviews code quality, formatting, and enforces coding standards | 0.1.0 | code-format, code-analyze |
+| DotNetBuildAgent | Handles .NET build, restore, compile, and packaging tasks | 0.1.0 | dotnet-build |
+| Orchestrator | Top-level router that delegates to sub-agents based on task intent | 0.1.0 | None |
+| TestingAgent | Executes tests, generates coverage, runs benchmarks | 0.1.0 | dotnet-test |
 
 ### Skills
 
-| Name         | Kind | Description                                                                                                                                                           | Version |
-| ------------ | ---- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
-| code-analyze | cli  | Run static analysis, security scans, and dependency checks on .NET code. Use when task involves code quality, security audits, or vulnerability detection.            | 0.1.0   |
-| code-format  | cli  | Format code using dotnet format, prettier, and other formatting tools. Use when task involves code style fixes, formatting consistency, or preparing code for commit. | 0.1.0   |
-| dotnet-build | cli  | Build .NET solution/projects using dotnet CLI. Use when task involves compiling, restoring dependencies, or building artifacts.                                       | 0.2.0   |
-| dotnet-test  | cli  | Run .NET tests using dotnet CLI. Use when task involves executing unit tests, generating code coverage reports, or running benchmarks.                                | 0.1.0   |
+| Name | Kind | Description | Version |
+|------|------|-------------|---------|
+| code-analyze | cli | Run static analysis, security scans, and dependency checks on .NET code. Use when task involves code quality, security audits, or vulnerability detection. | 0.1.0 |
+| code-format | cli | Format code using dotnet format, prettier, and other formatting tools. Use when task involves code style fixes, formatting consistency, or preparing code for commit. | 0.1.0 |
+| dotnet-build | cli | Build .NET solution/projects using dotnet CLI. Use when task involves compiling, restoring dependencies, or building artifacts. | 0.2.0 |
+| dotnet-test | cli | Run .NET tests using dotnet CLI. Use when task involves executing unit tests, generating code coverage reports, or running benchmarks. | 0.1.0 |
