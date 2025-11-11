@@ -99,7 +99,7 @@ contracts:
 
 ## Common Patterns
 
-\`\`\`bash
+```bash
 
 # Build solution (Debug)
 
@@ -108,7 +108,6 @@ dotnet build ./dotnet/PigeonPea.sln
 # Build solution (Release)
 
 dotnet build ./dotnet/PigeonPea.sln -c Release
-\`\`\`
 ```
 
 ## Progressive Disclosure Pattern
@@ -178,22 +177,22 @@ Builds the entire PigeonPea.sln solution, including all projects and test projec
 
 ### 1. Restore Dependencies
 
-\`\`\`bash
+```bash
 cd ./dotnet
 dotnet restore PigeonPea.sln
-\`\`\`
+```
 
 ### 2. Build Solution (Debug)
 
-\`\`\`bash
+```bash
 dotnet build PigeonPea.sln --configuration Debug
-\`\`\`
+```
 
 ### 3. Build Solution (Release)
 
-\`\`\`bash
+```bash
 dotnet build PigeonPea.sln --configuration Release --no-restore
-\`\`\`
+```
 
 ## Common Errors
 
@@ -203,10 +202,9 @@ dotnet build PigeonPea.sln --configuration Release --no-restore
 
 **Fix:**
 
-\`\`\`bash
+```bash
 dotnet nuget list source
 dotnet restore --source https://api.nuget.org/v3/index.json
-\`\`\`
 ```
 
 ## Best Practices
