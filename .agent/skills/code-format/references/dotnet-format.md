@@ -310,3 +310,4 @@ dotnet format PigeonPea.sln --verify-no-changes
 
 # Format specific project
 dotnet format console-app/PigeonPea.Console.csproj
+```

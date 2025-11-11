@@ -58,9 +58,11 @@ def validate_skill(skill_path, schema):
                     ref_lines = len(f.readlines())
 
                 if ref_lines > 320:
-                    print(
-                        f"ERR {refs[0]}: Reference too large ({ref_lines} lines, max 320)"
+                    msg = (
+                        f"ERR {refs[0]}: Reference too large "
+                        f"({ref_lines} lines, max 320)"
                     )
+                    print(msg)
                     return False
 
                 total = entry_lines + ref_lines
@@ -76,9 +78,11 @@ def validate_skill(skill_path, schema):
                         ref_lines = len(f.readlines())
 
                     if ref_lines > 320:
-                        print(
-                            f"ERR {ref}: Reference too large ({ref_lines} lines, max 320)"
+                        msg = (
+                            f"ERR {ref}: Reference too large "
+                            f"({ref_lines} lines, max 320)"
                         )
+                        print(msg)
                         return False
 
                     print(f"OK {ref}: Size OK ({ref_lines} lines)")
