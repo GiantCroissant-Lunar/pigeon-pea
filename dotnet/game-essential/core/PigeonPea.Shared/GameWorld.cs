@@ -8,6 +8,7 @@ using GoRogue.Pathing;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using MessagePipe;
+using PigeonPea.Contracts.Plugin;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Events;
 using PigeonPea.Shared.Rendering;
@@ -51,12 +52,14 @@ public class GameWorld
     private readonly IPublisher<PlayerLevelUpEvent>? _playerLevelUpPublisher;
     private readonly IPublisher<DoorOpenedEvent>? _doorOpenedPublisher;
     private readonly IPublisher<StairsDescendedEvent>? _stairsDescendedPublisher;
+    // Plugin system event bus (optional)
+    private readonly IEventBus? _eventBus;
 
     /// <summary>
     /// Creates a new GameWorld with the specified dimensions.
     /// For use without dependency injection.
     /// </summary>
-    public GameWorld(int width = 80, int height = 50)
+    public GameWorld(int width = 80, int height = 50, IEventBus? eventBus = null)
     {
         Width = width;
         Height = height;
@@ -76,6 +79,7 @@ public class GameWorld
         _playerLevelUpPublisher = null;
         _doorOpenedPublisher = null;
         _stairsDescendedPublisher = null;
+        _eventBus = eventBus;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -100,7 +104,8 @@ public class GameWorld
         IPublisher<ItemDroppedEvent> itemDroppedPublisher,
         IPublisher<PlayerLevelUpEvent> playerLevelUpPublisher,
         IPublisher<DoorOpenedEvent> doorOpenedPublisher,
-        IPublisher<StairsDescendedEvent> stairsDescendedPublisher)
+        IPublisher<StairsDescendedEvent> stairsDescendedPublisher,
+        IEventBus? eventBus = null)
     {
         Width = width;
         Height = height;
@@ -120,6 +125,7 @@ public class GameWorld
         _playerLevelUpPublisher = playerLevelUpPublisher;
         _doorOpenedPublisher = doorOpenedPublisher;
         _stairsDescendedPublisher = stairsDescendedPublisher;
+        _eventBus = eventBus;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -491,6 +497,15 @@ public class GameWorld
                 HealthIncrease = healthIncrease
             });
         }
+        // Publish plugin-facing event via IEventBus
+        if (entity.Has<PlayerComponent>() && _eventBus != null)
+        {
+            _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.PlayerLevelUpEvent
+            {
+                NewLevel = newLevel,
+                HealthIncrease = healthIncrease
+            });
+        }
     }
 
     /// <summary>
@@ -539,6 +554,17 @@ public class GameWorld
                 Source = sourceName
             });
         }
+        // Publish plugin-facing PlayerDamagedEvent
+        if (defender.Has<PlayerComponent>() && _eventBus != null)
+        {
+            string sourceName = attacker.Has<AIComponent>() ? "Enemy" : "Unknown";
+            _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.PlayerDamagedEvent
+            {
+                Damage = damage,
+                RemainingHealth = defenderHealth.Current,
+                Source = sourceName
+            });
+        }
 
         // Mark as dead if health reaches 0
         if (!defenderHealth.IsAlive && !defender.Has<Dead>())
@@ -557,6 +583,16 @@ public class GameWorld
                 _enemyDefeatedPublisher.Publish(new EnemyDefeatedEvent
                 {
                     EnemyName = "Enemy", // Could be enhanced with enemy name component
+                    ExperienceGained = xpGained
+                });
+            }
+            // Publish plugin-facing EnemyDefeatedEvent
+            if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>() && _eventBus != null)
+            {
+                int xpGained = defender.Has<ExperienceValue>() ? defender.Get<ExperienceValue>().XP : 0;
+                _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.EnemyDefeatedEvent
+                {
+                    EnemyName = "Enemy",
                     ExperienceGained = xpGained
                 });
             }
@@ -711,6 +747,15 @@ public class GameWorld
                 ItemType = itemType
             });
         }
+        // Publish plugin-facing ItemPickedUpEvent
+        if (_eventBus != null)
+        {
+            _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.ItemPickedUpEvent
+            {
+                ItemName = itemName,
+                ItemType = itemType
+            });
+        }
 
         return true;
     }
@@ -760,6 +805,15 @@ public class GameWorld
                     ItemType = itemType
                 });
             }
+            // Publish plugin-facing ItemUsedEvent
+            if (_eventBus != null)
+            {
+                _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.ItemUsedEvent
+                {
+                    ItemName = itemName,
+                    ItemType = itemType
+                });
+            }
 
             return true;
         }
@@ -801,6 +855,14 @@ public class GameWorld
         if (_itemDroppedPublisher != null)
         {
             _itemDroppedPublisher.Publish(new ItemDroppedEvent
+            {
+                ItemName = itemName
+            });
+        }
+        // Publish plugin-facing ItemDroppedEvent
+        if (_eventBus != null)
+        {
+            _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.ItemDroppedEvent
             {
                 ItemName = itemName
             });
