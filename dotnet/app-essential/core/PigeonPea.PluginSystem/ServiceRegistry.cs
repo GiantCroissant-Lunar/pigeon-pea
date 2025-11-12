@@ -59,17 +59,21 @@ public class ServiceRegistry : IRegistry
     public IEnumerable<TService> GetAll<TService>() where TService : class
     {
         var t = typeof(TService);
+        (object impl, ServiceMetadata meta)[]? snapshot;
         lock (_lock)
         {
-            if (_services.TryGetValue(t, out var list))
-            {
-                // list already sorted by priority desc
-                foreach (var (impl, _) in list)
-                {
-                    if (impl is TService svc)
-                        yield return svc;
-                }
-            }
+            snapshot = _services.TryGetValue(t, out var list)
+                ? list.ToArray()
+                : null;
+        }
+
+        if (snapshot is null)
+            yield break;
+
+        foreach (var (impl, _) in snapshot)
+        {
+            if (impl is TService svc)
+                yield return svc;
         }
     }
 

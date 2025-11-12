@@ -10,6 +10,7 @@ namespace PigeonPea.Console.Tests.Rendering;
 /// <summary>
 /// Unit tests for <see cref="AsciiRenderer"/>.
 /// </summary>
+[Collection("Rendering Tests")]
 public class AsciiRendererTests
 {
     /// <summary>

@@ -33,4 +33,14 @@ public class PluginLoadContext : AssemblyLoadContext
         // Use default context for shared assemblies
         return null;
     }
+
+    protected override System.IntPtr LoadUnmanagedDll(string unmanagedDllName)
+    {
+        var path = _resolver.ResolveUnmanagedDllToPath(unmanagedDllName);
+        if (path is not null)
+        {
+            return LoadUnmanagedDllFromPath(path);
+        }
+        return base.LoadUnmanagedDll(unmanagedDllName);
+    }
 }

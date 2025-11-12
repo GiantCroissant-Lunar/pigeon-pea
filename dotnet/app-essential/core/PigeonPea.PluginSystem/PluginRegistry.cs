@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using PigeonPea.Contracts.Plugin;
 
 namespace PigeonPea.PluginSystem;
@@ -30,7 +31,7 @@ public class PluginRegistry
     private readonly ConcurrentDictionary<string, PluginRecord> _byId = new();
 
     public bool TryAdd(PluginRecord record) => _byId.TryAdd(record.Id, record);
-    public bool TryGet(string id, out PluginRecord record) => _byId.TryGetValue(id, out record!);
+    public bool TryGet(string id, [NotNullWhen(true)] out PluginRecord? record) => _byId.TryGetValue(id, out record);
     public bool Remove(string id) => _byId.TryRemove(id, out _);
     public IEnumerable<PluginRecord> All() => _byId.Values;
 }
