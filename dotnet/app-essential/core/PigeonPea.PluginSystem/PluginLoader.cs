@@ -95,6 +95,10 @@ public class PluginLoader
         {
             if (ct.IsCancellationRequested) break;
 
+            PluginLoadContext? alc = null;
+            IPlugin? instance = null;
+            var added = false;
+
             try
             {
                 if (!manifest.EntryPoint.TryGetValue(profile, out var entry))
@@ -121,7 +125,7 @@ public class PluginLoader
                     continue;
                 }
 
-                var alc = new PluginLoadContext(assemblyPath, isCollectible: true);
+                alc = new PluginLoadContext(assemblyPath, isCollectible: true);
                 var asm = alc.LoadFromAssemblyPath(assemblyPath);
                 var pluginType = asm.GetType(typeName, throwOnError: true)!;
 
@@ -133,7 +137,7 @@ public class PluginLoader
                     continue;
                 }
 
-                var instance = Activator.CreateInstance(pluginType) as IPlugin;
+                instance = Activator.CreateInstance(pluginType) as IPlugin;
                 if (instance is null)
                 {
                     _logger.LogWarning("Failed to instantiate plugin type {Type} for {Id}", typeName, manifest.Id);
@@ -146,20 +150,45 @@ public class PluginLoader
                 await instance.InitializeAsync(context, ct).ConfigureAwait(false);
                 await instance.StartAsync(ct).ConfigureAwait(false);
 
-                _pluginRegistry.TryAdd(new PluginRegistry.PluginRecord(
+                var record = new PluginRegistry.PluginRecord(
                     manifest.Id,
                     dir,
                     manifest,
                     alc,
                     instance
-                ));
+                );
 
+                if (!_pluginRegistry.TryAdd(record))
+                {
+                    // Duplicate ID; clean up this instance and ALC
+                    _logger.LogWarning("Plugin with id {Id} already loaded; unloading duplicate instance.", manifest.Id);
+                    try { await instance.StopAsync(ct).ConfigureAwait(false); } catch { }
+                    alc.Unload();
+                    continue;
+                }
+
+                added = true;
                 loaded++;
                 _logger.LogInformation("Loaded plugin {Id} ({Name} {Version})", manifest.Id, manifest.Name, manifest.Version);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to load plugin {Id}", manifest.Id);
+            }
+            finally
+            {
+                if (!added)
+                {
+                    // Ensure cleanup of partially loaded plugin/context
+                    if (instance is not null)
+                    {
+                        try { instance.StopAsync(ct).GetAwaiter().GetResult(); } catch { }
+                    }
+                    if (alc is not null)
+                    {
+                        try { alc.Unload(); } catch { }
+                    }
+                }
             }
         }
 

@@ -34,6 +34,9 @@ public class EventBus : IEventBus
 
     public async Task PublishAsync<TEvent>(TEvent evt, CancellationToken ct = default)
     {
+        if (evt is null)
+            throw new ArgumentNullException(nameof(evt));
+
         var key = typeof(TEvent);
         if (!_handlers.TryGetValue(key, out var list)) return;
 
@@ -43,7 +46,8 @@ public class EventBus : IEventBus
             copy = list.ToArray();
         }
 
-        var tasks = copy.Select(h => h(evt!));
+        var payload = evt!;
+        var tasks = copy.Select(h => h(payload));
         foreach (var task in tasks)
         {
             if (ct.IsCancellationRequested) break;

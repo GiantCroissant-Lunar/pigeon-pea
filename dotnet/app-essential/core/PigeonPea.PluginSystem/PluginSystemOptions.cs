@@ -7,7 +7,7 @@ namespace PigeonPea.PluginSystem;
 /// </summary>
 public class PluginSystemOptions
 {
-    public List<string> PluginPaths { get; set; } = new();
-    public string Profile { get; set; } = "dotnet.console";
+    public ICollection<string> PluginPaths { get; init; } = new List<string>();
+    public required string Profile { get; init; } = "dotnet.console";
     public bool HotReload { get; set; } = false;
 }
