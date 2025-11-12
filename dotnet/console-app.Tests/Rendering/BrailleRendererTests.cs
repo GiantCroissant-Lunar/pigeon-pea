@@ -8,6 +8,7 @@ namespace PigeonPea.Console.Tests.Rendering;
 /// <summary>
 /// Unit tests for <see cref="BrailleRenderer"/> and <see cref="BraillePattern"/>.
 /// </summary>
+[Collection("Rendering Tests")]
 public class BrailleRendererTests
 {
     /// <summary>

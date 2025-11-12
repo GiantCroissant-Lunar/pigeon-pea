@@ -61,6 +61,13 @@ public class AsciiRenderer : IRenderer
             try
             {
                 System.Console.Write(_buffer.ToString());
+                // Ensure content is flushed for redirected/test outputs
+                if (IsTestEnvironment() || System.Console.IsOutputRedirected)
+                {
+                    try { System.Console.Out.Flush(); }
+                    catch (System.IO.IOException) { }
+                    catch (System.ObjectDisposedException) { }
+                }
             }
             catch (System.IO.IOException ex)
             {
