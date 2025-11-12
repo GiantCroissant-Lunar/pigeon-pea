@@ -25,6 +25,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="xunit.runner.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="../console-app/core/PigeonPea.Console/PigeonPea.Console.csproj" />
   </ItemGroup>
 
