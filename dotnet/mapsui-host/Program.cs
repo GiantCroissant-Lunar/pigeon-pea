@@ -3,8 +3,8 @@ using System.IO;
 using FantasyMapGenerator.Core.Generators;
 using FantasyMapGenerator.Core.Models;
 using PigeonPea.Shared.Rendering;
-using PigeonPea.SharedApp.Rendering;
-using PigeonPea.SharedApp.Rendering.Tiles;
+using PigeonPea.Map.Rendering;
+using PigeonPea.Map.Rendering.Tiles;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 

@@ -52,15 +52,8 @@ public class MapViewModel : ReactiveObject
     /// </summary>
     public ObservableList<TileViewModel> VisibleTiles { get; }
 
-    private readonly Camera _camera;
-
-    public MapViewModel() : this(new Camera())
+    public MapViewModel()
     {
-    }
-
-    public MapViewModel(Camera camera)
-    {
-        _camera = camera;
         VisibleTiles = new ObservableList<TileViewModel>();
         _cameraPosition = Point.None;
     }
@@ -78,12 +71,10 @@ public class MapViewModel : ReactiveObject
             Width = gameWorld.Width;
             Height = gameWorld.Height;
 
-            // Update camera to follow player
-            if (gameWorld.PlayerEntity.IsAlive())
+            // Update camera position to follow player (simple center)
+            if (gameWorld.PlayerEntity.IsAlive() && gameWorld.EcsWorld.TryGet<Position>(gameWorld.PlayerEntity, out var playerPos))
             {
-                _camera.Follow(gameWorld.PlayerEntity);
-                _camera.Update(gameWorld.EcsWorld, new Rectangle(0, 0, gameWorld.Width, gameWorld.Height));
-                CameraPosition = _camera.Position;
+                CameraPosition = playerPos.Point;
             }
 
             // Update visible tiles
@@ -95,7 +86,7 @@ public class MapViewModel : ReactiveObject
     {
         VisibleTiles.Clear();
 
-        var viewport = _camera.GetViewport();
+        var viewport = new Viewport(0, 0, Width, Height);
 
         // Get player's field of view if available
         HashSet<Point>? playerFov = null;
