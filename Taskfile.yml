@@ -46,6 +46,57 @@ tasks:
     cmds:
       - dotnet format
 
+  fonts:generate-svgs:
+    desc: Generate 36 angle SVGs for font import
+    dir: .
+    cmds:
+      - python3 fonts/scripts/generate_angle_svgs.py
+
+  fonts:build:regular:
+    desc: Patch Regular font with PUA angles (requires FontForge)
+    dir: .
+    cmds:
+      - |
+        if [ -z "${BASE_FONT_REGULAR}" ]; then \
+          echo "Set BASE_FONT_REGULAR to Sarasa Fixed CL Regular TTF path" && exit 1; fi
+      - fontforge -script fonts/scripts/patch_sarasa.py --base "${BASE_FONT_REGULAR}" --output fonts/dist/LunarSarasaMono-Regular.ttf --svg-dir fonts/src/svg/lines
+
+  fonts:build:bold:
+    desc: Patch Bold font with PUA angles (requires FontForge)
+    dir: .
+    cmds:
+      - |
+        if [ -z "${BASE_FONT_BOLD}" ]; then \
+          echo "Set BASE_FONT_BOLD to Sarasa Fixed CL Bold TTF path" && exit 1; fi
+      - fontforge -script fonts/scripts/patch_sarasa.py --base "${BASE_FONT_BOLD}" --output fonts/dist/LunarSarasaMono-Bold.ttf --svg-dir fonts/src/svg/lines
+
+  fonts:build:
+    desc: Build Regular and Bold patched fonts
+    deps:
+      - fonts:generate-svgs
+    cmds:
+      - task fonts:build:regular
+      - task fonts:build:bold
+
+  fonts:test:
+    desc: Basic check for generated fonts
+    dir: .
+    cmds:
+      - bash -lc "ls -l fonts/dist/*.ttf || true"
+
+  bundle:rio:dev:
+    desc: Create a dev bundle skeleton (no Rio binaries)
+    dir: .
+    cmds:
+      - mkdir -p bundle/fonts bundle/config bundle/app
+      - bash -lc "cp -f fonts/dist/*.ttf bundle/fonts/ 2>/dev/null || true"
+      - bash -lc 'cat > bundle/config/rio.toml <<EOF
+[fonts]
+normal = { family = "Lunar Sarasa Mono" }
+bold   = { family = "Lunar Sarasa Mono" }
+italic = { family = "Lunar Sarasa Mono" }
+EOF'
+
   default:
     desc: Show available tasks
     cmds:
