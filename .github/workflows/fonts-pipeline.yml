@@ -1,0 +1,70 @@
+name: Fonts Pipeline
+
+on:
+  push:
+    branches:
+      - codex/font-rfcs-20251113
+      - main
+    paths:
+      - 'fonts/**'
+      - 'docs/fonts/**'
+      - 'docs/rfcs/RFC-020-*'
+      - 'Taskfile.yml'
+  pull_request:
+    paths:
+      - 'fonts/**'
+      - 'docs/fonts/**'
+      - 'docs/rfcs/RFC-020-*'
+      - 'Taskfile.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install FontForge
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fontforge
+
+      - name: Generate angle SVGs
+        run: |
+          python3 fonts/scripts/generate_angle_svgs.py
+
+      - name: Optionally download base fonts (if URLs are set)
+        env:
+          REG_URL: ${{ secrets.BASE_FONT_REGULAR_URL }}
+          BLD_URL: ${{ secrets.BASE_FONT_BOLD_URL }}
+        run: |
+          mkdir -p base
+          if [ -n "$REG_URL" ]; then curl -L "$REG_URL" -o base/Regular.ttf; fi
+          if [ -n "$BLD_URL" ]; then curl -L "$BLD_URL" -o base/Bold.ttf; fi
+          ls -l base || true
+
+      - name: Patch Regular (if base present)
+        run: |
+          if [ -f base/Regular.ttf ]; then \
+            fontforge -script fonts/scripts/patch_sarasa.py --base base/Regular.ttf --output fonts/dist/LunarSarasaMono-Regular.ttf --svg-dir fonts/src/svg/lines; \
+          else \
+            echo "Regular base font not provided; skipping"; \
+          fi
+
+      - name: Patch Bold (if base present)
+        run: |
+          if [ -f base/Bold.ttf ]; then \
+            fontforge -script fonts/scripts/patch_sarasa.py --base base/Bold.ttf --output fonts/dist/LunarSarasaMono-Bold.ttf --svg-dir fonts/src/svg/lines; \
+          else \
+            echo "Bold base font not provided; skipping"; \
+          fi
+
+      - name: List outputs
+        run: |
+          ls -l fonts/dist || true
+

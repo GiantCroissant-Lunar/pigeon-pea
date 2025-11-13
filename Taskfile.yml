@@ -97,6 +97,12 @@ bold   = { family = "Lunar Sarasa Mono" }
 italic = { family = "Lunar Sarasa Mono" }
 EOF'
 
+  ci:should-run-fonts:
+    desc: Check if font-related files changed vs base (BASE_REF=origin/main by default)
+    dir: .
+    cmds:
+      - bash -lc 'BASE_REF="${BASE_REF:-origin/main}"; echo "Base ref: $BASE_REF"; git fetch origin --quiet || true; CHANGED=$(git diff --name-only "$BASE_REF"...HEAD | grep -E "^(fonts/|docs/fonts/|docs/rfcs/RFC-020-)" || true); if [ -z "$CHANGED" ]; then echo "No font-related changes detected."; else echo "Font-related changes detected:"; echo "$CHANGED"; fi'
+
   default:
     desc: Show available tasks
     cmds:
