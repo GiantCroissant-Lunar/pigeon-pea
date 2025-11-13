@@ -26,6 +26,11 @@ public class GameApplication : Toplevel
     private int _frameCount;
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
 
+    /// <summary>
+    /// Gets the game world instance for external access (e.g., DevTools).
+    /// </summary>
+    public GameWorld GameWorld => _gameWorld;
+
     public GameApplication(TerminalCapabilities terminalCaps, PigeonPea.Shared.Rendering.IRenderer renderer)
     {
         _terminalCaps = terminalCaps;

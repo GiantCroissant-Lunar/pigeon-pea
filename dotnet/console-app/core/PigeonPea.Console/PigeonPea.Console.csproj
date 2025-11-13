@@ -42,6 +42,9 @@
 
     <!-- Game Contracts for IRenderer -->
     <ProjectReference Include="..\..\..\game-essential\core\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+
+    <!-- DevTools -->
+    <ProjectReference Include="..\..\..\dev-tools\core\PigeonPea.DevTools\PigeonPea.DevTools.csproj" />
   </ItemGroup>
 
 </Project>

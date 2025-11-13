@@ -2,6 +2,7 @@ using Terminal.Gui;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Rendering;
 using PigeonPea.Console.Rendering;
+using PigeonPea.DevTools.Server;
 using System;
 using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
@@ -40,11 +41,24 @@ class Program
             Description = "Window height in characters"
         };
 
+        var enableDevToolsOption = new Option<bool>("--enable-dev-tools")
+        {
+            Description = "Enable DevTools WebSocket server for external control"
+        };
+
+        var devToolsPortOption = new Option<int>("--dev-tools-port")
+        {
+            Description = "Port for DevTools WebSocket server",
+            DefaultValueFactory = _ => 5007
+        };
+
         var rootCommand = new RootCommand("Pigeon Pea - Roguelike Dungeon Crawler");
         rootCommand.Add(rendererOption);
         rootCommand.Add(debugOption);
         rootCommand.Add(widthOption);
         rootCommand.Add(heightOption);
+        rootCommand.Add(enableDevToolsOption);
+        rootCommand.Add(devToolsPortOption);
 
         rootCommand.SetAction((parseResult) =>
         {
@@ -52,19 +66,21 @@ class Program
             var debug = parseResult.GetValue(debugOption);
             var width = parseResult.GetValue(widthOption);
             var height = parseResult.GetValue(heightOption);
+            var enableDevTools = parseResult.GetValue(enableDevToolsOption);
+            var devToolsPort = parseResult.GetValue(devToolsPortOption);
 
-            RunGame(renderer!, debug, width, height);
+            RunGame(renderer!, debug, width, height, enableDevTools, devToolsPort);
         });
 
         return rootCommand.Parse(args).Invoke();
     }
 
-    static void RunGame(string renderer, bool debug, int? width, int? height)
+    static void RunGame(string renderer, bool debug, int? width, int? height, bool enableDevTools, int devToolsPort)
     {
         // Use plugin-based renderer if requested
         if (renderer.ToLowerInvariant() == "plugin")
         {
-            RunGameWithPlugins(debug, width, height);
+            RunGameWithPlugins(debug, width, height, enableDevTools, devToolsPort);
             return;
         }
 
@@ -114,18 +130,37 @@ class Program
         // Initialize Terminal.Gui application
         Application.Init();
 
+        DevToolsServer? devToolsServer = null;
+
         try
         {
             var gameApp = new GameApplication(terminalInfo, gameRenderer);
+
+            // Start DevTools server if enabled
+            if (enableDevTools)
+            {
+                devToolsServer = new DevToolsServer(gameApp.GameWorld, devToolsPort);
+                _ = devToolsServer.StartAsync();
+                System.Console.WriteLine($"DevTools server started on ws://127.0.0.1:{devToolsPort}");
+                System.Console.WriteLine("Press any key to continue...");
+                System.Console.ReadKey(true);
+            }
+
             Application.Run(gameApp);
         }
         finally
         {
+            if (devToolsServer != null)
+            {
+                devToolsServer.StopAsync().Wait();
+                devToolsServer.Dispose();
+            }
+
             Application.Shutdown();
         }
     }
 
-    static void RunGameWithPlugins(bool debug, int? width, int? height)
+    static void RunGameWithPlugins(bool debug, int? width, int? height, bool enableDevTools, int devToolsPort)
     {
         // Build host with plugin system
         var builder = Host.CreateApplicationBuilder();

@@ -9,6 +9,7 @@ using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.ViewModels;
 using PigeonPea.Windows.Rendering;
+using PigeonPea.DevTools.Server;
 using System;
 
 namespace PigeonPea.Windows;
@@ -21,10 +22,16 @@ public partial class MainWindow : Window, IDisposable
     private readonly AnimationSystem _animationSystem;
     private readonly GameViewModel _gameViewModel;
     private readonly DispatcherTimer _gameTimer;
+    private readonly DevToolsServer? _devToolsServer;
     private DateTime _lastUpdate = DateTime.UtcNow;
     private int _frameCount;
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
     private bool _disposed;
+
+    /// <summary>
+    /// Gets the game world instance for external access (e.g., DevTools).
+    /// </summary>
+    public GameWorld GameWorld => _gameWorld;
 
     // Parameterless constructor for Avalonia XAML loader (AVLN3001)
     public MainWindow() : this(null)
@@ -72,6 +79,19 @@ public partial class MainWindow : Window, IDisposable
 
         // Focus for keyboard input
         Loaded += (s, e) => Focus();
+
+        // Start DevTools server (optional, can be controlled via environment variable)
+        var enableDevTools = Environment.GetEnvironmentVariable("PIGEONPEA_DEV_TOOLS") == "1";
+        if (enableDevTools)
+        {
+            var devToolsPort = int.TryParse(Environment.GetEnvironmentVariable("PIGEONPEA_DEV_TOOLS_PORT"), out var port)
+                ? port : 5007;
+
+            _devToolsServer = new DevToolsServer(_gameWorld, devToolsPort);
+            _ = _devToolsServer.StartAsync();
+
+            Console.WriteLine($"DevTools server started on ws://127.0.0.1:{devToolsPort}");
+        }
     }
 
     private void OnGameTick(object? sender, EventArgs e)
@@ -132,6 +152,8 @@ public partial class MainWindow : Window, IDisposable
 
         _gameTimer?.Stop();
         _gameViewModel?.Dispose();
+        _devToolsServer?.StopAsync().Wait();
+        _devToolsServer?.Dispose();
         _disposed = true;
         GC.SuppressFinalize(this);
     }

@@ -6,11 +6,20 @@ Pigeon Pea is designed with **platform-agnostic game logic** at its core, with p
 
 ```text
 ┌─────────────────────────────────────────────────────┐
+│              DevTools Clients                       │
+│  ┌──────────────┐                                   │
+│  │  Rust CLI    │ (pp-dev - external control)       │
+│  └──────────────┘                                   │
+└───────────────┬─────────────────────────────────────┘
+                │ WebSocket (ws://localhost:5007)
+                ▼
+┌─────────────────────────────────────────────────────┐
 │                  Platform Layer                     │
 │  ┌──────────────────┐      ┌───────────────────┐  │
 │  │  Windows App     │      │   Console App     │  │
 │  │  (Avalonia +     │      │   (Terminal.Gui + │  │
 │  │   SkiaSharp)     │      │    Kitty/Sixel)   │  │
+│  │  + DevTools      │      │   + DevTools      │  │
 │  └──────────────────┘      └───────────────────┘  │
 └─────────────────────────────────────────────────────┘
                         │
@@ -192,11 +201,105 @@ To add a new platform (e.g., mobile, web):
 ```text
 PigeonPea.Windows ──┐
                     ├──→ PigeonPea.Shared ──→ Arch + GoRogue
-PigeonPea.Console ──┘
+PigeonPea.Console ──┤
+                    ├──→ PigeonPea.DevTools (WebSocket server)
                     │
                     └──→ PigeonPea.PluginSystem ──→ PigeonPea.Contracts
                                                  └──→ PigeonPea.Game.Contracts
+
+DevTools Rust CLI ──────→ WebSocket Client ──→ PigeonPea.DevTools
 ```
+
+## DevTools System
+
+### Purpose
+
+DevTools provides **runtime inspection and control** of the game for development and debugging. It enables external tools to connect to a running game instance via WebSocket and execute commands.
+
+### Architecture
+
+**Server (C#):**
+- `PigeonPea.DevTools` library (shared by both Console and Windows apps)
+- WebSocket server listening on `ws://127.0.0.1:5007` (default)
+- Command handler executes operations on `GameWorld` (Arch ECS)
+- Event broadcaster sends game state updates to clients
+
+**Client (Rust):**
+- `pp-dev` CLI tool (`dotnet/dev-tools/clients/rust-cli/`)
+- Connects via WebSocket to running game
+- REPL mode for interactive commands
+- Single-command mode for scripting
+
+### Usage
+
+**Console App:**
+```bash
+dotnet run --project console-app -- --enable-dev-tools
+```
+
+**Windows App (via environment variable):**
+```bash
+PIGEONPEA_DEV_TOOLS=1 dotnet run --project windows-app
+```
+
+**DevTools CLI:**
+```bash
+# REPL mode
+pp-dev
+
+# Single commands
+pp-dev spawn goblin 10 5
+pp-dev tp 20 10
+pp-dev heal 100
+```
+
+### Supported Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `spawn <entity> <x> <y>` | Spawn entity at position | `spawn goblin 10 5` |
+| `tp <x> <y>` | Teleport player | `tp 20 10` |
+| `query` | List all entities | `query` |
+| `give <item>` | Give item to player | `give potion` |
+| `heal [amount]` | Heal player | `heal 100` |
+| `kill [target]` | Kill enemies | `kill all` |
+
+### WebSocket Protocol
+
+**Command (Client → Server):**
+```json
+{
+  "type": "command",
+  "cmd": "spawn",
+  "args": {
+    "entity": "goblin",
+    "x": 10,
+    "y": 5
+  }
+}
+```
+
+**Response (Server → Client):**
+```json
+{
+  "type": "event",
+  "event": "command_result",
+  "success": true,
+  "message": "Spawned goblin at (10, 5)",
+  "result": { "entityId": 42 },
+  "timestamp": 1234567890
+}
+```
+
+### Security
+
+⚠️ **DevTools binds to `127.0.0.1` only** (localhost). It should never be exposed to external networks.
+
+- Only enabled via explicit flag/environment variable
+- No authentication (designed for local development only)
+- Should never be used in production builds
+
+For full documentation, see [`dev-tools/README.md`](dev-tools/README.md).
 
 No circular dependencies, clean separation of concerns.
 
