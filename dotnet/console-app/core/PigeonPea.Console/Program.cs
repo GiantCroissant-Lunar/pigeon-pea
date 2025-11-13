@@ -5,6 +5,13 @@ using PigeonPea.Console.Rendering;
 using System;
 using System.CommandLine;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using PigeonPea.PluginSystem;
+using PigeonPea.Contracts.Plugin;
+using PigeonPea.Game.Contracts.Rendering;
+using PigeonPea.Game.Contracts;
 
 namespace PigeonPea.Console;
 
@@ -14,8 +21,8 @@ class Program
     {
         var rendererOption = new Option<string>("--renderer")
         {
-            Description = "Renderer to use (auto, kitty, sixel, braille, ascii)",
-            DefaultValueFactory = _ => "auto"
+            Description = "Renderer to use (auto, kitty, sixel, braille, ascii, plugin)",
+            DefaultValueFactory = _ => "plugin"
         };
 
         var debugOption = new Option<bool>("--debug")
@@ -54,6 +61,14 @@ class Program
 
     static void RunGame(string renderer, bool debug, int? width, int? height)
     {
+        // Use plugin-based renderer if requested
+        if (renderer.ToLowerInvariant() == "plugin")
+        {
+            RunGameWithPlugins(debug, width, height);
+            return;
+        }
+
+        // Legacy mode: Use existing renderer factory
         // Set up dependency injection container
         var services = new ServiceCollection();
 
@@ -107,6 +122,98 @@ class Program
         finally
         {
             Application.Shutdown();
+        }
+    }
+
+    static void RunGameWithPlugins(bool debug, int? width, int? height)
+    {
+        // Build host with plugin system
+        var builder = Host.CreateApplicationBuilder();
+
+        // Configure logging
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
+        if (debug)
+        {
+            builder.Logging.SetMinimumLevel(LogLevel.Debug);
+        }
+
+        // Add plugin system
+        builder.Services.AddPluginSystem(builder.Configuration);
+
+        // Add Pigeon Pea services
+        builder.Services.AddPigeonPeaServices();
+
+        var host = builder.Build();
+
+        // Start the host and wait for plugin system to complete loading
+        host.StartAsync().Wait();
+
+        try
+        {
+            // Get renderer from plugin system
+            var registry = host.Services.GetRequiredService<IRegistry>();
+
+            PigeonPea.Game.Contracts.Rendering.IRenderer? pluginRenderer = null;
+            
+            if (registry.IsRegistered<PigeonPea.Game.Contracts.Rendering.IRenderer>())
+            {
+                pluginRenderer = registry.Get<PigeonPea.Game.Contracts.Rendering.IRenderer>();
+                System.Console.WriteLine($"Loaded renderer plugin: {pluginRenderer.Id}");
+            }
+            else
+            {
+                System.Console.WriteLine("Error: No renderer plugin loaded!");
+                System.Console.WriteLine("Make sure the ANSI renderer plugin is built and in the plugins directory.");
+                return;
+            }
+
+            // Determine window dimensions
+            var renderWidth = width ?? 80;
+            var renderHeight = height ?? 24;
+
+            if (debug)
+            {
+                System.Console.WriteLine($"Debug mode: ENABLED");
+                System.Console.WriteLine($"Render dimensions: {renderWidth}x{renderHeight}");
+            }
+
+            System.Console.WriteLine("\nPress any key to start...");
+            System.Console.ReadKey(true);
+
+            // Initialize renderer
+            var renderContext = new RenderContext
+            {
+                Width = renderWidth,
+                Height = renderHeight,
+                Services = host.Services
+            };
+
+            pluginRenderer.Initialize(renderContext);
+
+            // Simple render loop (for demonstration)
+            var gameState = new GameState();
+            
+            System.Console.WriteLine("Rendering with plugin-based renderer...");
+            System.Threading.Thread.Sleep(1000);
+
+            // Render a few frames
+            for (int i = 0; i < 3; i++)
+            {
+                pluginRenderer.Render(gameState);
+                System.Threading.Thread.Sleep(2000);
+            }
+
+            // Cleanup
+            pluginRenderer.Shutdown();
+            
+            System.Console.WriteLine("\nPlugin-based rendering complete. Press any key to exit...");
+            System.Console.ReadKey(true);
+        }
+        finally
+        {
+            host.StopAsync().Wait();
+            host.Dispose();
         }
     }
 

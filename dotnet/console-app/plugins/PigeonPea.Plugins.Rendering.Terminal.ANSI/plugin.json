@@ -1,0 +1,21 @@
+{
+  "id": "rendering-terminal-ansi",
+  "name": "ANSI Terminal Renderer",
+  "version": "1.0.0",
+  "description": "ANSI escape code based terminal renderer for console applications",
+  "author": "Pigeon Pea Team",
+  "capabilities": [
+    "renderer",
+    "renderer:terminal",
+    "ansi"
+  ],
+  "supportedProfiles": [
+    "dotnet.console"
+  ],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Rendering.Terminal.ANSI.dll,PigeonPea.Plugins.Rendering.Terminal.ANSI.ANSIRendererPlugin"
+  },
+  "dependencies": [],
+  "priority": 100,
+  "loadStrategy": "eager"
+}
