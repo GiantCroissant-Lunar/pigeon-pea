@@ -1,0 +1,96 @@
+name: Align FMG Port With Original
+description: Bring dotnet/_lib/fantasy-map-generator-port closer to ref-projects/Fantasy-Map-Generator outputs
+
+stages:
+  - name: Audit & Baseline
+    steps:
+      - type: manual
+        description: Verify current generation pipeline and collect baselines for seeds/templates
+        details:
+          - Compare ref-projects/Fantasy-Map-Generator/main.js:616 and pipeline order
+          - Capture land % and height histograms for fixed seeds
+
+  - name: Voronoi & Grid Parity
+    steps:
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Generators/MapGenerator.cs
+        description: Replace Poisson disk sites with jittered square grid + boundary points
+        notes:
+          - Match spacing = sqrt(width*height/cellsDesired) as in utils/graphUtils.js:29
+          - Implement getJitteredGrid and getBoundaryPoints (utils/graphUtils.js:58-97)
+          - Keep original point count ordering to preserve determinism
+
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Geometry/Voronoi.cs
+        description: Build neighbors for NTS-based Voronoi cells
+        notes:
+          - Fill Cells.Neighbors per shared edge adjacency
+          - Preserve Cells.IsBorder consistent with clip rectangle
+
+  - name: RNG Consistency
+    steps:
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Random
+        description: Add Alea-compatible RNG and single-stream option
+        notes:
+          - Implement Alea PRNG seeded by string to match main.js:714
+          - Optionally expose reseed-before-phase toggles to mimic JS behavior
+
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Generators/MapGenerator.cs
+        description: Provide generation settings to switch RNG mode (PCG vs Alea, single vs substreams)
+
+  - name: Heightmap Template Parity
+    steps:
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Generators/HeightmapGenerator.cs
+        description: Implement original DSL operations (Hill, Pit, Range, Trough, Strait, Mask, Invert, Add, Multiply, Smooth)
+        notes:
+          - Port logic from ref-projects/Fantasy-Map-Generator/modules/heightmap-generator.js
+          - Use blobPower/linePower tables (getBlobPower/getLinePower) exactly
+          - Use grid-based BFS growth and decay factors
+
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Models
+        description: Ensure grid metadata exists (CellsX, CellsY, Spacing) for findGridCell equivalence
+
+  - name: Hydrology Thresholds
+    steps:
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Generators/HydrologyGenerator.cs
+        description: Align river formation threshold with FMG flux model
+        notes:
+          - Base threshold on precipitation and cell-count modifier (MIN_FLUX_TO_FORM_RIVER=30)
+
+  - name: Validation Harness
+    steps:
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/TestMapComparison.cs
+        description: Add side-by-side metrics (land %, height histogram, river count) for seeds/templates
+
+      - type: manual
+        description: Compare outputs for fixed seeds with original templates (e.g., continents, archipelago)
+
+  - name: Feature Flags & Docs
+    steps:
+      - type: code
+        path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Models/MapGenerationSettings.cs
+        description: Add flags for GridMode (Jittered|Poisson), RNGMode (Alea|PCG), HeightmapMode (Template|Noise)
+
+      - type: docs
+        path: dotnet/_lib/fantasy-map-generator-port/docs/library-adoption-roadmap.md
+        description: Document migration path and toggles for parity vs modernized mode
+
+success_criteria:
+  - Neighbor graph populated and stable for same seed
+  - Height distribution matches JS within tolerance (KS-test or bin deltas < 5%)
+  - Land percentage within ±3% of original for same seed/template
+  - River count and average length within ±20% of original
+
+notes:
+  - Reference JS files: 
+      - ref-projects/Fantasy-Map-Generator/utils/graphUtils.js
+      - ref-projects/Fantasy-Map-Generator/modules/heightmap-generator.js
+      - ref-projects/Fantasy-Map-Generator/main.js:616-671
+  - Keep changes behind settings flags to avoid breaking current consumers
+

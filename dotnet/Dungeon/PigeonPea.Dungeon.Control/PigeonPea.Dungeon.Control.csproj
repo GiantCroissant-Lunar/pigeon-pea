@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="GoRogue" Version="3.0.0-beta10" />
+    <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
+    <PackageReference Include="Arch" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
+    <ProjectReference Include="..\..\Shared\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
+  </ItemGroup>
+</Project>
