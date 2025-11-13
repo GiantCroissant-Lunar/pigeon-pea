@@ -156,7 +156,7 @@ This will display the effective configuration before executing the command.
 
 ## RFC Reference
 
-This tool is implemented according to [RFC-013: Yazi-integrated Rust CLI](../../docs/rfcs/RFC-013.md).
+This tool is implemented according to RFC-013: Yazi-integrated Rust CLI.
 
 ## Future Enhancements
 

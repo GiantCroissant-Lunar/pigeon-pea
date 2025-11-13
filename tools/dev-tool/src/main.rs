@@ -3,6 +3,8 @@ use clap::{Parser, Subcommand, ValueEnum};
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
+const DEFAULT_SERVER: &str = "ws://127.0.0.1:5007/gm";
+
 /// Yazi-integrated Rust CLI for pigeon-pea development
 #[derive(Parser, Debug)]
 #[command(name = "dev-tool")]
@@ -12,7 +14,7 @@ struct Cli {
     #[arg(
         long,
         env = "DEV_TOOL_SERVER",
-        default_value = "ws://127.0.0.1:5007/gm"
+        default_value = DEFAULT_SERVER
     )]
     server: String,
 
@@ -87,16 +89,9 @@ impl Config {
 }
 
 fn get_config_path() -> Result<PathBuf> {
-    let config_dir = if cfg!(windows) {
-        dirs::config_dir()
-            .ok_or_else(|| anyhow::anyhow!("Could not determine config directory"))?
-            .join("dev-tool")
-    } else {
-        dirs::home_dir()
-            .ok_or_else(|| anyhow::anyhow!("Could not determine home directory"))?
-            .join(".config")
-            .join("dev-tool")
-    };
+    let config_dir = dirs::config_dir()
+        .ok_or_else(|| anyhow::anyhow!("Could not determine config directory"))?
+        .join("dev-tool");
     Ok(config_dir.join("config.toml"))
 }
 
@@ -106,7 +101,7 @@ fn merge_config(cli: &mut Cli, file_config: Option<Config>) {
         // Only apply config file values if CLI/ENV didn't provide them
 
         // Server: Check if it's still the default value from clap
-        if cli.server == "ws://127.0.0.1:5007/gm" && std::env::var("DEV_TOOL_SERVER").is_err() {
+        if cli.server == DEFAULT_SERVER && std::env::var("DEV_TOOL_SERVER").is_err() {
             if let Some(server) = config.server {
                 cli.server = server;
             }
@@ -143,6 +138,14 @@ fn merge_config(cli: &mut Cli, file_config: Option<Config>) {
     }
 }
 
+fn mask_token(token: &str) -> String {
+    if token.len() > 4 {
+        format!("{}...", &token[..4])
+    } else {
+        "***".to_string()
+    }
+}
+
 fn print_config(cli: &Cli) {
     if cli.verbose {
         eprintln!("=== Effective Configuration ===");
@@ -151,7 +154,7 @@ fn print_config(cli: &Cli) {
             "Token:   {}",
             cli.token
                 .as_ref()
-                .map(|t| format!("{}...", &t[..t.len().min(8)]))
+                .map(|t| mask_token(t))
                 .unwrap_or_else(|| "None".to_string())
         );
         eprintln!("Output:  {:?}", cli.output.as_ref().unwrap());
@@ -161,12 +164,19 @@ fn print_config(cli: &Cli) {
     }
 }
 
-#[tokio::main]
-async fn main() -> Result<()> {
+fn main() -> Result<()> {
     let mut cli = Cli::parse();
 
     // Load configuration file
-    let file_config = Config::load().ok().flatten();
+    let file_config = match Config::load() {
+        Ok(config) => config,
+        Err(e) => {
+            if cli.verbose {
+                eprintln!("Warning: Failed to load config file: {}", e);
+            }
+            None
+        }
+    };
 
     // Merge configurations (CLI > ENV > config file)
     merge_config(&mut cli, file_config);
@@ -199,10 +209,15 @@ async fn main() -> Result<()> {
             let output_fmt = cli.output.as_ref().unwrap();
             let timeout_val = cli.timeout.unwrap();
             if matches!(output_fmt, OutputFormat::Json) {
+                let output_str = match output_fmt {
+                    OutputFormat::Text => "text",
+                    OutputFormat::Json => "json",
+                };
+                let masked_token = cli.token.as_ref().map(|t| mask_token(t));
                 let config = serde_json::json!({
                     "server": cli.server,
-                    "token": cli.token,
-                    "output": format!("{:?}", output_fmt).to_lowercase(),
+                    "token": masked_token,
+                    "output": output_str,
                     "timeout": timeout_val,
                     "config_file": get_config_path()?.display().to_string(),
                 });
@@ -214,7 +229,7 @@ async fn main() -> Result<()> {
                     "Token:       {}",
                     cli.token
                         .as_ref()
-                        .map(|t| format!("{}...", &t[..t.len().min(8)]))
+                        .map(|t| mask_token(t))
                         .unwrap_or_else(|| "None".to_string())
                 );
                 println!("Output:      {:?}", output_fmt);
