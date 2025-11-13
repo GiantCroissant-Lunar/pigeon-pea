@@ -78,6 +78,13 @@ tasks:
       - task fonts:build:regular
       - task fonts:build:bold
 
+  fonts:build:if-changed:
+    desc: Build fonts only if font-related files changed vs BASE_REF (default origin/main)
+    dir: .
+    cmds:
+      - bash -lc 'BASE_REF="${BASE_REF:-origin/main}"; echo "Base ref: $BASE_REF"; git fetch origin --quiet || true; CHANGED=$(git diff --name-only "$BASE_REF"...HEAD | grep -E "^(fonts/|docs/fonts/|docs/rfcs/RFC-020-)" || true); if [ -z "$CHANGED" ]; then echo "No font-related changes detected; skipping fonts:build"; exit 0; else echo "Changes detected:\n$CHANGED"; fi'
+      - task fonts:build
+
   fonts:test:
     desc: Basic check for generated fonts
     dir: .
