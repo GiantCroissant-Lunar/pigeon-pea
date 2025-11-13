@@ -1,3 +1,6 @@
+mod protocol;
+mod ws;
+
 use anyhow::Result;
 use clap::{Parser, Subcommand, ValueEnum};
 use serde::{Deserialize, Serialize};
@@ -47,7 +50,7 @@ enum OutputFormat {
 
 #[derive(Debug, Subcommand)]
 enum Commands {
-    /// Connect to the WebSocket server (stub)
+    /// Connect to the WebSocket server and send a noop command
     Connect {
         /// Optional custom server URL
         #[arg(long)]
@@ -164,7 +167,8 @@ fn print_config(cli: &Cli) {
     }
 }
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let mut cli = Cli::parse();
 
     // Load configuration file
@@ -187,9 +191,8 @@ fn main() -> Result<()> {
     match cli.command {
         Some(Commands::Connect { url }) => {
             let server_url = url.unwrap_or_else(|| cli.server.clone());
-            println!("Connecting to: {}", server_url);
-            println!("(Connection functionality not yet implemented)");
-            Ok(())
+            let client = ws::WsClient::new(server_url, cli.token.clone());
+            client.connect().await
         }
         Some(Commands::Send { message }) => {
             println!("Sending message: {}", message);
