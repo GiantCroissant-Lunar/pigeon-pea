@@ -118,3 +118,15 @@ repos:
         pass_filenames: false
         additional_dependencies:
           - pyyaml
+
+      - id: validate-docs
+        name: Validate documentation
+        entry: python scripts/validate-docs.py --pre-commit
+        language: python
+        files: '^docs/.*\.md$'
+        exclude: '^docs/(_inbox|index)/'
+        pass_filenames: false
+        additional_dependencies:
+          - pyyaml>=6.0.1
+          - simhash>=2.1.2
+          - rapidfuzz>=3.5.2
