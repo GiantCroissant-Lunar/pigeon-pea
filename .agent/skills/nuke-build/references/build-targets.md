@@ -13,6 +13,7 @@ Execute Nuke build targets in pigeon-pea: Clean, Restore, Compile. Located at `b
 ## Available Targets
 
 ### Clean
+
 Removes build artifacts, prepares for fresh build.
 
 ```bash
@@ -21,6 +22,7 @@ cd ./build/nuke
 ```
 
 ### Restore
+
 Restores NuGet packages and dependencies. Runs after Clean (if specified).
 
 ```bash
@@ -29,6 +31,7 @@ cd ./build/nuke
 ```
 
 ### Compile (Default)
+
 Compiles solution, requires Restore first.
 
 ```bash
@@ -40,12 +43,14 @@ cd ./build/nuke
 ## Execution Patterns
 
 ### Single Target
+
 ```bash
 cd ./build/nuke
 ./build.sh Clean
 ```
 
 ### Multiple Targets
+
 ```bash
 cd ./build/nuke
 ./build.sh Clean Restore Compile
@@ -54,6 +59,7 @@ cd ./build/nuke
 **Dependency resolution:** `Compile` runs `Restore` automatically. `Clean Compile` runs: Clean → Restore → Compile.
 
 ### Default Target
+
 ```bash
 ./build.sh    # Runs Compile (+ Restore dependency)
 ```
@@ -67,6 +73,7 @@ cd ./build/nuke
 ## Build Parameters
 
 ### Configuration
+
 ```bash
 ./build.sh Compile                        # Debug (local) or Release (CI/CD)
 ./build.sh Compile --configuration Release
@@ -74,6 +81,7 @@ cd ./build/nuke
 ```
 
 ### Custom Parameters
+
 Syntax: `--parameter-name value`
 
 Boolean: `--skip-tests` (true) or `--skip-tests false`
@@ -95,6 +103,7 @@ Boolean: `--skip-tests` (true) or `--skip-tests false`
 **Order:** Clean → Restore → Compile
 
 **Examples:**
+
 - `Compile` → Restore → Compile
 - `Clean Compile` → Clean → Restore → Compile
 - `Restore` → Restore only
@@ -121,24 +130,31 @@ Levels: `quiet`, `minimal` (default), `normal`, `detailed`, `diagnostic`
 ## Troubleshooting
 
 ### Target not found
+
 **Fix:** `./build.sh --help` to list targets. Names are case-sensitive.
 
 ### Build failed (exit code 1)
+
 **Fix:** Check error output, run `--verbosity detailed`
 
 ### Cannot execute binary file
+
 **Fix:** `chmod +x build.sh` or `dos2unix build.sh` (line endings)
 
 ### Wrong script on Windows
+
 **Fix:** Use `./build.ps1` (PowerShell) or `build.cmd` (cmd), not `.sh`
 
 ### .NET SDK not found
+
 **Fix:** Install .NET SDK 8.0+ or let script auto-download
 
 ### NuGet restore failed (NU1301)
+
 **Fix:** Check network, verify sources: `dotnet nuget list source`
 
 ### Compilation failed (CS####)
+
 **Fix:** Review error messages, fix syntax errors, ensure deps restored
 
 ## Integration with Other Skills
