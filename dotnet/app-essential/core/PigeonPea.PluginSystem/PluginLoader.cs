@@ -243,8 +243,15 @@ public class PluginLoader
         if (path.StartsWith("~"))
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return Path.Combine(home, path.TrimStart('~', '/', '\\'));
+            return Path.GetFullPath(Path.Combine(home, path.TrimStart('~', '/', '\\')));
         }
+        
+        // Convert relative paths to absolute paths based on current directory
+        if (!Path.IsPathRooted(path))
+        {
+            return Path.GetFullPath(path);
+        }
+        
         return path;
     }
 }

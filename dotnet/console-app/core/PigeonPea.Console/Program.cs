@@ -146,8 +146,8 @@ class Program
 
         var host = builder.Build();
 
-        // Start the host (this will load plugins)
-        host.Start();
+        // Start the host and wait for plugin system to complete loading
+        host.StartAsync().Wait();
 
         try
         {
