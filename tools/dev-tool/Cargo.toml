@@ -1,0 +1,20 @@
+[package]
+name = "dev-tool"
+version = "0.1.0"
+edition = "2021"
+authors = ["pigeon-pea contributors"]
+description = "Yazi-integrated Rust CLI for pigeon-pea development"
+license = "MIT"
+
+[[bin]]
+name = "dev-tool"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive", "env"] }
+tokio = { version = "1.40", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+dirs = "5.0"
+anyhow = "1.0"

@@ -1,1 +1,7 @@
 /PR*.json
+
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+*.pdb

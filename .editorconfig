@@ -52,3 +52,13 @@ indent_style = space
 # Makefiles
 [Makefile]
 indent_style = tab
+
+# Rust files
+[*.rs]
+indent_size = 4
+indent_style = space
+
+# Rust config files
+[Cargo.toml]
+indent_size = 2
+indent_style = space
