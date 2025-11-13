@@ -1,1 +1,8 @@
 /PR*.json
+
+# Generated documentation registry
+/docs/index/registry.json
+
+# Python cache
+__pycache__/
+*.pyc
