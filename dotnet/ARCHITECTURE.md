@@ -4,7 +4,7 @@
 
 Pigeon Pea is designed with **platform-agnostic game logic** at its core, with platform-specific rendering layers on top.
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                  Platform Layer                     │
 │  ┌──────────────────┐      ┌───────────────────┐  │
@@ -69,7 +69,7 @@ var goblin = world.Create(
 
 ### Windows App (SkiaSharp)
 
-```
+```text
 MainWindow.axaml
     ↓
 GameCanvas (SKCanvas)
@@ -88,7 +88,7 @@ SKCanvas.DrawText(glyph, x*tileSize, y*tileSize)
 
 ### Console App (Terminal Graphics)
 
-```
+```text
 GameApplication (Terminal.Gui)
     ↓
 GameView (Custom View)
@@ -143,7 +143,7 @@ var map = mapGen.Context.GetFirst<ISettableGridView<bool>>("WallFloor");
 
 ### Input → Update → Render Loop
 
-```
+```text
 User Input (Keyboard/Mouse)
     ↓
 Platform App (MainWindow / GameApplication)
@@ -189,10 +189,130 @@ To add a new platform (e.g., mobile, web):
 
 ## Dependencies Graph
 
-```
+```text
 PigeonPea.Windows ──┐
                     ├──→ PigeonPea.Shared ──→ Arch + GoRogue
 PigeonPea.Console ──┘
+                    │
+                    └──→ PigeonPea.PluginSystem ──→ PigeonPea.Contracts
+                                                 └──→ PigeonPea.Game.Contracts
 ```
 
 No circular dependencies, clean separation of concerns.
+
+## Plugin System Architecture
+
+### Overview
+
+The plugin system enables dynamic loading of functionality at runtime through Assembly Load Contexts (ALCs). This allows for modular architecture where features like renderers, input handlers, and game systems can be loaded as plugins.
+
+### Key Components
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                    Host Application                      │
+│  ┌────────────────────────────────────────────────────┐ │
+│  │              Plugin System                         │ │
+│  │  - PluginLoader (discovery & loading)              │ │
+│  │  - ServiceRegistry (cross-ALC service sharing)     │ │
+│  │  - PluginLoadContext (isolation)                   │ │
+│  └────────────────────────────────────────────────────┘ │
+└──────────────────────────────────────────────────────────┘
+                         │
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│                      Plugins                             │
+│  ┌────────────────┐  ┌────────────────┐                │
+│  │ ANSI Renderer  │  │  Future Plugin │                │
+│  │ implements     │  │  implements    │                │
+│  │  IRenderer     │  │  IXxx          │                │
+│  └────────────────┘  └────────────────┘                │
+└──────────────────────────────────────────────────────────┘
+```
+
+### Renderer Plugin Flow
+
+1. **Plugin Discovery**
+   - PluginLoader scans configured plugin paths
+   - Reads `plugin.json` manifest from each plugin directory
+   - Filters plugins by profile (`dotnet.console`, etc.)
+
+2. **Plugin Loading**
+   - Creates isolated PluginLoadContext for each plugin
+   - Loads plugin assembly into separate ALC
+   - **Critical**: Shared contracts (PigeonPea.Contracts, PigeonPea.Game.Contracts) are resolved from host's ALC to ensure type identity
+
+3. **Service Registration**
+   - Plugin's `InitializeAsync()` method registers services
+   - Services stored in ServiceRegistry with priority
+   - Cross-ALC type matching works because shared types come from same ALC
+
+4. **Service Resolution**
+   - Host retrieves services via `IRegistry.Get<T>()`
+   - ServiceRegistry returns highest-priority implementation
+   - Type casting works because interface types match across ALCs
+
+### Example: ANSI Renderer Plugin
+
+**Directory Structure:**
+```
+console-app/plugins/PigeonPea.Plugins.Rendering.Terminal.ANSI/
+├── plugin.json                                    # Manifest
+├── PigeonPea.Plugins.Rendering.Terminal.ANSI.dll # Plugin assembly
+├── ANSIRendererPlugin.cs                         # IPlugin implementation
+└── ANSIRenderer.cs                               # IRenderer implementation
+```
+
+**plugin.json:**
+```json
+{
+  "id": "rendering-terminal-ansi",
+  "name": "ANSI Terminal Renderer",
+  "version": "1.0.0",
+  "capabilities": ["renderer", "renderer:terminal", "ansi"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Rendering.Terminal.ANSI.dll,PigeonPea.Plugins.Rendering.Terminal.ANSI.ANSIRendererPlugin"
+  }
+}
+```
+
+**Usage in Console App:**
+```csharp
+// Configure plugin system
+builder.Services.AddPluginSystem(builder.Configuration);
+
+// Build and start host (loads plugins)
+var host = builder.Build();
+await host.StartAsync();
+
+// Get renderer from registry
+var registry = host.Services.GetRequiredService<IRegistry>();
+var renderer = registry.Get<IRenderer>();
+
+// Use renderer
+renderer.Initialize(new RenderContext { Width = 80, Height = 24 });
+renderer.Render(gameState);
+renderer.Shutdown();
+```
+
+### ALC Type Identity Solution
+
+**Problem:** Plugin's `IRenderer` type loaded in separate ALC doesn't match host's `IRenderer` type, causing registration/lookup failures.
+
+**Solution:** PluginLoadContext checks assembly names and returns `null` for shared contracts, forcing .NET to use the Default ALC's version:
+
+```csharp
+protected override Assembly? Load(AssemblyName assemblyName)
+{
+    // Force shared contracts to load from host's ALC
+    if (assemblyName.Name == "PigeonPea.Contracts" || 
+        assemblyName.Name == "PigeonPea.Game.Contracts")
+    {
+        return null; // Use Default ALC
+    }
+    // ... plugin-specific assemblies load in plugin ALC
+}
+```
+
+This ensures type identity across ALCs for interface types while maintaining plugin isolation for implementation.

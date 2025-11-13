@@ -15,6 +15,7 @@ using PigeonPea.Shared.Rendering;
 using PluginEvents = PigeonPea.Game.Contracts.Events;
 using CTile = PigeonPea.Shared.Components.Tile;
 using RTile = PigeonPea.Shared.Rendering.Tile;
+using Serilog;
 
 /// <summary>
 /// Core game world managing ECS entities, map, and game state.
@@ -62,8 +63,15 @@ public class GameWorld
         if (_eventBus == null) return;
         _ = System.Threading.Tasks.Task.Run(async () =>
         {
-            try { await _eventBus.PublishAsync(evt).ConfigureAwait(false); }
-            catch { /* Swallow plugin exceptions to avoid impacting core game loop */ }
+            try
+            {
+                await _eventBus.PublishAsync(evt).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                // Log and swallow to avoid impacting core game loop
+                Log.Error(ex, "Plugin event publish failed for {EventType}", typeof(TEvent).FullName);
+            }
         });
     }
 

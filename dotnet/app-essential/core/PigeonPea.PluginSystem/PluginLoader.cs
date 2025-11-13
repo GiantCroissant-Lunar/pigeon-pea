@@ -243,7 +243,12 @@ public class PluginLoader
         if (path.StartsWith("~"))
         {
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-            return Path.Combine(home, path.TrimStart('~', '/', '\\'));
+            return Path.GetFullPath(Path.Combine(home, path.TrimStart('~', '/', '\\')));
+        }
+        if (!Path.IsPathRooted(path))
+        {
+            // Anchor relative paths to the app content root to avoid dependence on Environment.CurrentDirectory
+            return Path.GetFullPath(path, AppContext.BaseDirectory);
         }
         return path;
     }
