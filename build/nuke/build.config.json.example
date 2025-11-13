@@ -1,0 +1,15 @@
+{
+  "sourceDir": "dotnet",
+  "websiteDir": "website",
+  "frameworkDirs": ["framework"],
+  "pluginDirs": ["plugins"],
+  "packPlugins": true,
+  "packFramework": true,
+  "excludePluginNames": [],
+  "includePluginNames": [],
+  "syncLocalNugetFeed": false,
+  "localNugetFeedRoot": null,
+  "localNugetFeedFlatSubdir": "flat",
+  "localNugetFeedHierarchicalSubdir": "hierarchical",
+  "localNugetFeedBaseUrl": null
+}
