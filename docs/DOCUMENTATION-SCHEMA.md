@@ -55,6 +55,8 @@ All documentation (except `_inbox/` drafts) must include YAML front-matter.
 | `PLAN-` | Planning Document | `PLAN-2025-00001` |
 | `FIND-` | Finding/Analysis | `FIND-2025-00001` |
 | `SPEC-` | Specification | `SPEC-2025-00001` |
+| `GLOSSARY-` | Glossary/Terminology | `GLOSSARY-2025-00001` |
+| `REFERENCE-` | Reference Documentation | `REFERENCE-2025-00001` |
 
 ## Example
 

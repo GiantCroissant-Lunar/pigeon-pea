@@ -43,8 +43,10 @@ This directory is for **draft documentation** that is not yet ready for publicat
 | Guide | `docs/guides/` |
 | ADR | `docs/architecture/` |
 | Plan | `docs/planning/` |
-| Finding | `docs/planning/` or `docs/` |
+| Finding | `docs/planning/` (internal) or `docs/` (public) |
 | Spec | `docs/` |
+| Glossary | `docs/` |
+| Reference | `docs/` |
 
 ## See Also
 
