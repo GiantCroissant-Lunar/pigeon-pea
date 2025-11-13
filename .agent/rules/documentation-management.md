@@ -70,12 +70,12 @@ This creates a file in `docs/_inbox/` with minimal front-matter:
 
 ```yaml
 ---
-title: "Your Title"
-doc_type: "rfc"
-status: "draft"
-created: "YYYY-MM-DD"
+title: 'Your Title'
+doc_type: 'rfc'
+status: 'draft'
+created: 'YYYY-MM-DD'
 tags: []
-summary: ""
+summary: ''
 ---
 ```
 
@@ -94,6 +94,7 @@ python scripts/validate-docs.py
 ```
 
 The validation script will:
+
 - ✅ Allow minimal front-matter in inbox
 - ⚠️ Warn if similar documents exist
 - ⚠️ Suggest related documents
@@ -105,17 +106,17 @@ Before moving out of inbox, add all required fields:
 
 ```yaml
 ---
-doc_id: "RFC-2025-00012"        # Format: PREFIX-YYYY-NNNNN
-title: "Plugin System Architecture"
-doc_type: "rfc"
-status: "draft"
-canonical: true                  # Is this the authoritative version?
-created: "2025-11-13"
-updated: "2025-11-14"           # Optional
-tags: ["plugin", "architecture", "extensibility"]
-summary: "Design proposal for extensible plugin system with hot-reloading support"
-supersedes: []                   # Optional: docs this replaces
-related: ["RFC-2025-00006"]     # Optional: related docs
+doc_id: 'RFC-2025-00012' # Format: PREFIX-YYYY-NNNNN
+title: 'Plugin System Architecture'
+doc_type: 'rfc'
+status: 'draft'
+canonical: true # Is this the authoritative version?
+created: '2025-11-13'
+updated: '2025-11-14' # Optional
+tags: ['plugin', 'architecture', 'extensibility']
+summary: 'Design proposal for extensible plugin system with hot-reloading support'
+supersedes: [] # Optional: docs this replaces
+related: ['RFC-2025-00006'] # Optional: related docs
 ---
 ```
 
@@ -123,14 +124,14 @@ related: ["RFC-2025-00006"]     # Optional: related docs
 
 Generate doc_id following this pattern: `PREFIX-YYYY-NNNNN`
 
-| Prefix | Document Type | Example |
-|--------|--------------|---------|
-| `RFC-` | Request for Comments | `RFC-2025-00012` |
-| `ADR-` | Architecture Decision Record | `ADR-2025-00001` |
-| `GUIDE-` | How-to Guide | `GUIDE-2025-00001` |
-| `PLAN-` | Planning Document | `PLAN-2025-00001` |
-| `FIND-` | Finding/Analysis | `FIND-2025-00001` |
-| `SPEC-` | Specification | `SPEC-2025-00001` |
+| Prefix   | Document Type                | Example            |
+| -------- | ---------------------------- | ------------------ |
+| `RFC-`   | Request for Comments         | `RFC-2025-00012`   |
+| `ADR-`   | Architecture Decision Record | `ADR-2025-00001`   |
+| `GUIDE-` | How-to Guide                 | `GUIDE-2025-00001` |
+| `PLAN-`  | Planning Document            | `PLAN-2025-00001`  |
+| `FIND-`  | Finding/Analysis             | `FIND-2025-00001`  |
+| `SPEC-`  | Specification                | `SPEC-2025-00001`  |
 
 **Finding the next number**: Check existing docs in the target directory:
 
@@ -147,14 +148,14 @@ ls docs/guides/ | grep -oP 'GUIDE-\d+-\d+' | sort -V | tail -1
 
 Move completed docs to their final location based on type:
 
-| Doc Type | Final Location | Command Example |
-|----------|----------------|-----------------|
-| RFC | `docs/rfcs/` | `mv docs/_inbox/draft.md docs/rfcs/013-plugin-system.md` |
-| Guide | `docs/guides/` | `mv docs/_inbox/draft.md docs/guides/setup-dev.md` |
-| ADR | `docs/architecture/` | `mv docs/_inbox/draft.md docs/architecture/adr-001-database.md` |
-| Plan | `docs/planning/` | `mv docs/_inbox/draft.md docs/planning/q1-2025-roadmap.md` |
-| Finding | `docs/planning/` or `docs/` | `mv docs/_inbox/draft.md docs/planning/performance-analysis.md` |
-| Spec | `docs/` | `mv docs/_inbox/draft.md docs/terminal-format-spec.md` |
+| Doc Type | Final Location              | Command Example                                                 |
+| -------- | --------------------------- | --------------------------------------------------------------- |
+| RFC      | `docs/rfcs/`                | `mv docs/_inbox/draft.md docs/rfcs/013-plugin-system.md`        |
+| Guide    | `docs/guides/`              | `mv docs/_inbox/draft.md docs/guides/setup-dev.md`              |
+| ADR      | `docs/architecture/`        | `mv docs/_inbox/draft.md docs/architecture/adr-001-database.md` |
+| Plan     | `docs/planning/`            | `mv docs/_inbox/draft.md docs/planning/q1-2025-roadmap.md`      |
+| Finding  | `docs/planning/` or `docs/` | `mv docs/_inbox/draft.md docs/planning/performance-analysis.md` |
+| Spec     | `docs/`                     | `mv docs/_inbox/draft.md docs/terminal-format-spec.md`          |
 
 ### Step 6: Commit with Validation
 
@@ -166,6 +167,7 @@ git commit -m "docs: add RFC-013 for plugin system architecture"
 ```
 
 The pre-commit hook will automatically:
+
 - ✅ Validate front-matter completeness
 - ✅ Check canonical uniqueness
 - ✅ Detect near-duplicates
@@ -179,22 +181,23 @@ If validation fails, fix the issues and commit again.
 
 All documentation outside `docs/_inbox/` must have:
 
-| Field | Type | Description | Example |
-|-------|------|-------------|---------|
-| `doc_id` | string | Unique ID | `RFC-2025-00012` |
-| `title` | string | Document title | `"Plugin System"` |
-| `doc_type` | enum | Type of document | `rfc` |
-| `status` | enum | Lifecycle status | `active` |
-| `canonical` | boolean | Is authoritative? | `true` |
-| `created` | date | Creation date (ISO) | `2025-11-13` |
-| `tags` | array | Topic tags | `["plugin", "architecture"]` |
-| `summary` | string | One-sentence summary | `"Design for plugin system"` |
+| Field       | Type    | Description          | Example                      |
+| ----------- | ------- | -------------------- | ---------------------------- |
+| `doc_id`    | string  | Unique ID            | `RFC-2025-00012`             |
+| `title`     | string  | Document title       | `"Plugin System"`            |
+| `doc_type`  | enum    | Type of document     | `rfc`                        |
+| `status`    | enum    | Lifecycle status     | `active`                     |
+| `canonical` | boolean | Is authoritative?    | `true`                       |
+| `created`   | date    | Creation date (ISO)  | `2025-11-13`                 |
+| `tags`      | array   | Topic tags           | `["plugin", "architecture"]` |
+| `summary`   | string  | One-sentence summary | `"Design for plugin system"` |
 
 ### Valid Values
 
 **doc_type**: `spec`, `rfc`, `adr`, `plan`, `finding`, `guide`, `glossary`, `reference`
 
 **status**:
+
 - `draft` - Work in progress, not yet reviewed
 - `active` - Reviewed and currently relevant
 - `superseded` - Replaced by a newer document
@@ -232,20 +235,19 @@ The canonical system ensures only ONE authoritative source of truth per concept.
 ```yaml
 # docs/rfcs/012-documentation-organization-management.md
 ---
-doc_id: "RFC-2025-00012"
-title: "Documentation Organization Management"
-canonical: true          # ← This is the authoritative version
-status: "active"
-related: ["PLAN-2025-00005"]
+doc_id: 'RFC-2025-00012'
+title: 'Documentation Organization Management'
+canonical: true # ← This is the authoritative version
+status: 'active'
+related: ['PLAN-2025-00005']
 ---
-
 # docs/planning/documentation-system-plan.md
 ---
-doc_id: "PLAN-2025-00005"
-title: "Documentation System Implementation Plan"
-canonical: false         # ← This is a supporting document
-status: "active"
-related: ["RFC-2025-00012"]
+doc_id: 'PLAN-2025-00005'
+title: 'Documentation System Implementation Plan'
+canonical: false # ← This is a supporting document
+status: 'active'
+related: ['RFC-2025-00012']
 ---
 ```
 
@@ -281,8 +283,8 @@ When document is reviewed and approved:
 
 ```yaml
 # Update front-matter
-status: "active"
-updated: "2025-11-15"
+status: 'active'
+updated: '2025-11-15'
 ```
 
 #### Active → Superseded
@@ -290,17 +292,19 @@ updated: "2025-11-15"
 When creating a replacement document:
 
 **New document**:
+
 ```yaml
 ---
-doc_id: "RFC-2025-00020"
-title: "Enhanced Plugin System v2"
-status: "active"
+doc_id: 'RFC-2025-00020'
+title: 'Enhanced Plugin System v2'
+status: 'active'
 canonical: true
-supersedes: ["RFC-2025-00012"]
+supersedes: ['RFC-2025-00012']
 ---
 ```
 
 **Old document**:
+
 ```yaml
 ---
 doc_id: "RFC-2025-00012"
@@ -314,6 +318,7 @@ updated: "2025-11-20"
 ```
 
 Then move to archive:
+
 ```bash
 git mv docs/rfcs/012-plugin-system.md docs/archive/012-plugin-system.md
 ```
@@ -344,16 +349,16 @@ When document is no longer relevant:
 
 ```yaml
 ---
-status: "archived"
-updated: "2025-11-15"
+status: 'archived'
+updated: '2025-11-15'
 ---
-
 ## Archive Notice
 
 This document has been archived as of 2025-11-15. The information is kept for historical reference but is no longer maintained.
 ```
 
 Move to archive:
+
 ```bash
 git mv docs/guides/old-setup.md docs/archive/old-setup.md
 ```
@@ -576,14 +581,14 @@ ls docs/rfcs/ | grep -oP 'RFC-\d+-\d+' | sort -V | tail -1
 
 ### File Locations
 
-| Doc Type | Draft Location | Final Location |
-|----------|----------------|----------------|
-| RFC | `docs/_inbox/` | `docs/rfcs/` |
-| Guide | `docs/_inbox/` | `docs/guides/` |
-| ADR | `docs/_inbox/` | `docs/architecture/` |
-| Plan | `docs/_inbox/` | `docs/planning/` |
-| Finding | `docs/_inbox/` | `docs/planning/` or `docs/` |
-| Spec | `docs/_inbox/` | `docs/` |
+| Doc Type | Draft Location | Final Location              |
+| -------- | -------------- | --------------------------- |
+| RFC      | `docs/_inbox/` | `docs/rfcs/`                |
+| Guide    | `docs/_inbox/` | `docs/guides/`              |
+| ADR      | `docs/_inbox/` | `docs/architecture/`        |
+| Plan     | `docs/_inbox/` | `docs/planning/`            |
+| Finding  | `docs/_inbox/` | `docs/planning/` or `docs/` |
+| Spec     | `docs/_inbox/` | `docs/`                     |
 
 ### Status Values
 
@@ -597,5 +602,5 @@ ls docs/rfcs/ | grep -oP 'RFC-\d+-\d+' | sort -V | tail -1
 
 - [RFC-012: Documentation Organization Management](../../docs/rfcs/012-documentation-organization-management.md) - Full system design
 - [DOCUMENTATION-SCHEMA.md](../../docs/DOCUMENTATION-SCHEMA.md) - Front-matter specification
-- [docs/_inbox/README.md](../../docs/_inbox/README.md) - Inbox workflow guide
-- [/task command](./.claude/commands/task.md) - Task creation command reference
+- [docs/\_inbox/README.md](../../docs/_inbox/README.md) - Inbox workflow guide
+- [/task command](../../.claude/commands/task.md) - Task creation command reference
