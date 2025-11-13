@@ -161,14 +161,14 @@ run_security_scan() {
     # Run .NET security analyzers
     print_info "Running .NET security analyzers..."
     cd "$DOTNET_DIR"
-    if dotnet build PigeonPea.sln \
+    if run_check ".NET security analyzers" \
+        dotnet build PigeonPea.sln \
         /p:RunAnalyzers=true \
         /warnaserror:CA5350,CA5351,CA5359,CA5364,CA5379,CA5384 \
         --verbosity quiet \
         --nologo; then
-        print_success ".NET security analyzers passed"
+        :
     else
-        print_error ".NET security analyzers found critical issues"
         security_passed=false
     fi
 
@@ -216,7 +216,7 @@ run_all_checks() {
 
     local all_passed=true
 
-    if ! run_static_analysis; then
+    if ! run_check "Static analysis" run_static_analysis; then
         all_passed=false
     fi
 
@@ -224,7 +224,7 @@ run_all_checks() {
         all_passed=false
     fi
 
-    if ! run_dependency_check; then
+    if ! run_check "Dependency vulnerability check" run_dependency_check; then
         all_passed=false
     fi
 
@@ -299,13 +299,13 @@ main() {
             exit 0
             ;;
         --static)
-            run_static_analysis
+            run_check "Static analysis" run_static_analysis
             ;;
         --security)
             run_security_scan
             ;;
         --dependencies|--deps)
-            run_dependency_check
+            run_check "Dependency vulnerability check" run_dependency_check
             ;;
         --all|"")
             run_all_checks

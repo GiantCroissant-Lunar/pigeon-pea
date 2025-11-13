@@ -1,5 +1,11 @@
 # pigeon-pea
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Pre-Commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit)
+[![Pre-commit CI](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/pre-commit.yml)
+[![Benchmarks](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/benchmarks.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/benchmarks.yml)
+[![Console Visual Tests](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/console-visual-tests.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/console-visual-tests.yml)
+
 A multi-language project with pre-commit hooks for code quality and security.
 
 ## Pre-commit Hooks
@@ -25,6 +31,9 @@ Install the required tools based on the languages you're using:
 ```bash
 # Python (required for pre-commit framework)
 pip install pre-commit
+
+# Development dependencies (required for agent validation scripts)
+pip install -r requirements-dev.txt
 
 # .NET SDK (for C# formatting)
 # Download from: https://dotnet.microsoft.com/download
@@ -108,4 +117,49 @@ pre-commit autoupdate
 - Ensure Node.js is installed
 - Check `.prettierrc.json` for configuration
 
+**Agent validation fails:**
+
+- Ensure development dependencies are installed: `pip install -r requirements-dev.txt`
+- Check `.agent/schemas/` for schema definitions
+- See `scripts/README.md` for validation details
+
 For more information, visit: https://pre-commit.com/
+
+## Agent Infrastructure
+
+This project uses an agent infrastructure for autonomous coding agents (GitHub Copilot, Claude Code, etc.) to perform development tasks.
+
+### Architecture
+
+- **Orchestrator**: Routes tasks to specialized sub-agents based on intent
+- **Sub-Agents**: Specialized agents for build, testing, code review
+- **Skills**: Atomic capabilities with progressive disclosure (entry ~200 lines + references)
+- **Schemas**: JSON Schema validation for all manifests
+- **Policies**: Guardrails and coding standards
+
+### Key Features
+
+- **Progressive Disclosure**: Skills have compact entry files (~128-164 lines) that route to detailed references (200-320 lines each)
+- **Cold-Start Optimization**: Entry + first reference ≤ 500 lines for optimal LLM token usage
+- **Cross-Validation**: Agents reference real skills, orchestrator references real sub-agents
+- **Automated Registry**: `AGENTS.md` auto-generated from manifests
+
+### Usage
+
+```bash
+# Validate all agent manifests
+task agents:validate
+
+# Validate all skills
+task skills:validate
+
+# Run all validations and regenerate registry
+task check
+```
+
+For detailed documentation, see:
+
+- [AGENTS.md](AGENTS.md) - Complete agent infrastructure overview
+- [CLAUDE.md](CLAUDE.md) - Claude-specific agent configuration
+- [`.agent/`](.agent/) - Agent manifests, skills, schemas, and policies
+- [`scripts/README.md`](scripts/README.md) - Validation script documentation

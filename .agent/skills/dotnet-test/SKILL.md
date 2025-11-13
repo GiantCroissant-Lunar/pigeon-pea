@@ -6,11 +6,11 @@ description: Run .NET tests using dotnet CLI. Use when task involves executing u
 inputs:
   target: [all, project, specific]
   configuration: [Debug, Release]
-  coverage: [true, false]
+  coverage: ['true', 'false']
   project_path: string
 contracts:
-  success: "Tests pass with zero failures; coverage data generated if requested"
-  failure: "Non-zero exit code, test failures, or coverage generation errors"
+  success: 'Tests pass with zero failures; coverage data generated if requested'
+  failure: 'Non-zero exit code, test failures, or coverage generation errors'
 ---
 
 # .NET Test Skill (Entry Map)
@@ -44,12 +44,15 @@ contracts:
 ## Navigation
 
 **1. Run Unit Tests** → [`references/run-unit-tests.md`](references/run-unit-tests.md)
+
 - Run all tests, run specific project tests, troubleshoot test failures
 
 **2. Generate Coverage Report** → [`references/generate-coverage.md`](references/generate-coverage.md)
+
 - Collect coverage data, generate reports (HTML/Cobertura), analyze coverage metrics
 
 **3. Run Benchmarks** → [`references/run-benchmarks.md`](references/run-benchmarks.md)
+
 - Execute performance benchmarks, compare results, optimize based on data
 
 ## Common Patterns
@@ -148,6 +151,7 @@ Coverage report in: `./dotnet/TestResults/coverage.cobertura.xml`
 ## Test Frameworks
 
 This repository uses:
+
 - **xUnit** for unit tests (console-app.Tests, shared-app.Tests, windows-app.Tests)
 - **coverlet.collector** for code coverage
 - **BenchmarkDotNet** for performance benchmarks

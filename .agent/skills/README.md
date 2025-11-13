@@ -59,7 +59,7 @@ skills/
 
 Each `SKILL.md` must include YAML front-matter:
 
-```markdown
+````markdown
 ---
 name: dotnet-build
 version: 0.2.0
@@ -99,7 +99,7 @@ contracts:
 
 ## Common Patterns
 
-\`\`\`bash
+```bash
 
 # Build solution (Debug)
 
@@ -108,8 +108,8 @@ dotnet build ./dotnet/PigeonPea.sln
 # Build solution (Release)
 
 dotnet build ./dotnet/PigeonPea.sln -c Release
-\`\`\`
 ```
+````
 
 ## Progressive Disclosure Pattern
 
@@ -161,7 +161,7 @@ Skills are validated against `.agent/schemas/skill.schema.json` to ensure:
 
 ## Example Reference File
 
-```markdown
+````markdown
 # Build .NET Solution - Detailed Procedure
 
 ## Overview
@@ -178,22 +178,23 @@ Builds the entire PigeonPea.sln solution, including all projects and test projec
 
 ### 1. Restore Dependencies
 
-\`\`\`bash
+```bash
 cd ./dotnet
 dotnet restore PigeonPea.sln
-\`\`\`
+```
+````
 
 ### 2. Build Solution (Debug)
 
-\`\`\`bash
+```bash
 dotnet build PigeonPea.sln --configuration Debug
-\`\`\`
+```
 
 ### 3. Build Solution (Release)
 
-\`\`\`bash
+```bash
 dotnet build PigeonPea.sln --configuration Release --no-restore
-\`\`\`
+```
 
 ## Common Errors
 
@@ -203,10 +204,9 @@ dotnet build PigeonPea.sln --configuration Release --no-restore
 
 **Fix:**
 
-\`\`\`bash
+```bash
 dotnet nuget list source
 dotnet restore --source https://api.nuget.org/v3/index.json
-\`\`\`
 ```
 
 ## Best Practices
