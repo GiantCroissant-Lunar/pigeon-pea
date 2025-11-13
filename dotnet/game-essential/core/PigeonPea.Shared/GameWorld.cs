@@ -57,22 +57,39 @@ public class GameWorld
     // Plugin system event bus (optional)
     private readonly IEventBus? _eventBus;
 
-    // Fire-and-forget helper to safely publish plugin events without surfacing exceptions
+    /// <summary>
+    /// Publishes an event to the plugin system synchronously.
+    /// Plugin exceptions are logged but do not crash the game loop.
+    /// </summary>
+    /// <remarks>
+    /// Synchronous execution ensures events are processed in order with game state.
+    /// Individual plugin handler failures are isolated - one plugin's exception
+    /// won't prevent other plugins from receiving the event.
+    /// </remarks>
     private void TryPublishPluginEvent<TEvent>(TEvent evt)
     {
         if (_eventBus == null) return;
-        _ = System.Threading.Tasks.Task.Run(async () =>
+
+        try
         {
-            try
+            // Synchronous publish to maintain event ordering with game state
+            _eventBus.PublishAsync(evt).GetAwaiter().GetResult();
+        }
+        catch (AggregateException agEx)
+        {
+            // Log each plugin handler failure individually for visibility
+            foreach (var ex in agEx.InnerExceptions)
             {
-                await _eventBus.PublishAsync(evt).ConfigureAwait(false);
+                Log.Error(ex, "Plugin handler failed for event {EventType}: {Message}",
+                    typeof(TEvent).FullName, ex.Message);
             }
-            catch (Exception ex)
-            {
-                // Log and swallow to avoid impacting core game loop
-                Log.Error(ex, "Plugin event publish failed for {EventType}", typeof(TEvent).FullName);
-            }
-        });
+        }
+        catch (Exception ex)
+        {
+            // Log single exceptions (shouldn't happen with EventBus, but handle defensively)
+            Log.Error(ex, "Plugin event publish failed for {EventType}: {Message}",
+                typeof(TEvent).FullName, ex.Message);
+        }
     }
 
     /// <summary>
