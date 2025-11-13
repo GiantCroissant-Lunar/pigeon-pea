@@ -7,12 +7,14 @@ on:
       - main
     paths:
       - 'fonts/**'
+      - 'fonts/scripts/*'
       - 'docs/fonts/**'
       - 'docs/rfcs/RFC-020-*'
       - 'Taskfile.yml'
   pull_request:
     paths:
       - 'fonts/**'
+      - 'fonts/scripts/*'
       - 'docs/fonts/**'
       - 'docs/rfcs/RFC-020-*'
       - 'Taskfile.yml'
@@ -67,4 +69,3 @@ jobs:
       - name: List outputs
         run: |
           ls -l fonts/dist || true
-
