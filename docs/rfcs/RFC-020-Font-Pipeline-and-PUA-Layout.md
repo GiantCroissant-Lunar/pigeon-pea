@@ -34,27 +34,27 @@ Define a font pipeline to produce a unified, terminal-friendly CJK monospace fon
 
 ## Angle Resolution
 
-- Initial bucket: 10° per glyph → 36 glyphs (0°..350°).
-- Future: optional 5° set if terminals demonstrate enough pixel density advantage.
+- Initial bucket: 10 degrees per glyph -> 36 glyphs (0..350).
+- Future: optional 5-degree set if terminals demonstrate enough pixel density advantage.
 
 ## PUA Allocation
 
-BMP PUA only for now (6,400 slots in U+E000–U+F8FF).
+BMP PUA only for now (6,400 slots in U+E000-U+F8FF).
 
-```
-U+E000–U+E0FF  (256)  → Angle glyphs & line variants
-  E000–E023 (36)  → Angles 0°,10°, …, 350°  (basic)
-  E030–E053 (36)  → Angles 0°..350°        (thick)
-  E060–E083 (36)  → Angles 0°..350°        (dashed)
+```text
+U+E000-U+E0FF  (256)  Angle glyphs & line variants
+  E000-E023 (36)  Angles 0,10, ..., 350  (basic)
+  E030-E053 (36)  Angles 0..350          (thick)
+  E060-E083 (36)  Angles 0..350          (dashed)
 
-U+E100–U+E1FF  (256) → Junctions / connectors (future)
-  E100–E13F → L-corners
-  E140–E17F → T-junctions
-  E180–E1BF → Crossroads
-  E1C0–E1FF → Specials
+U+E100-U+E1FF  (256)  Junctions / connectors (future)
+  E100-E13F  L-corners
+  E140-E17F  T-junctions
+  E180-E1BF  Crossroads
+  E1C0-E1FF  Specials
 
-U+E200–U+E2FF  (256) → Terrain tiles (future)
-U+E300–U+E3FF  (256) → POIs/icons (future)
+U+E200-U+E2FF  (256)  Terrain tiles (future)
+U+E300-U+E3FF  (256)  POIs/icons (future)
 ```
 
 ## Glyph Metrics and Style
@@ -67,7 +67,7 @@ U+E300–U+E3FF  (256) → POIs/icons (future)
 
 ## File/Folder Layout (sources and outputs)
 
-```
+```text
 fonts/
   src/
     svg/
@@ -90,20 +90,20 @@ Prereqs: FontForge (with Python), ttfautohint, Node.js (for Sarasa build if rebu
 
 1) Obtain base font:
    - Option A: Start from Nerd-patched Sarasa Gothic; then import our PUA glyphs.
-   - Option B: Build Sarasa from source → patch Nerd symbols → import PUA glyphs.
+   - Option B: Build Sarasa from source -> patch Nerd symbols -> import PUA glyphs.
 2) Import SVGs via FontForge script for both Regular and Bold faces.
 3) Generate TTFs into `fonts/dist/` and verify metrics/connectivity in terminal.
 
-## Angle → Glyph Mapping (example)
+## Angle -> Glyph Mapping (example)
 
-```
+```text
 bucket = round(angle / 10) mod 36
 codepoint = 0xE000 + bucket
 ```
 
 ## Acceptance Criteria
 
-- Regular/Bold TTFs exist with PUA glyphs E000–E023 populated and visibly connecting across cells in Rio/WezTerm at common sizes.
+- Regular/Bold TTFs exist with PUA glyphs E000-E023 populated and visibly connecting across cells in Rio/WezTerm at common sizes.
 - PUA layout documented and stable.
 - Scripted generation is repeatable.
 
@@ -115,6 +115,6 @@ codepoint = 0xE000 + bucket
 ## Future Work
 
 - Expand junctions/terrain/POIs.
-- Optional 5° set; smoothing heuristics in renderer.
+- Optional 5-degree set; smoothing heuristics in renderer.
 - CI/CD artifacts per platform and versioned releases (RFC-022).
 
