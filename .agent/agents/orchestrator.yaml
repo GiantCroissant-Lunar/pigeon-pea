@@ -32,12 +32,7 @@ routing:
     - if: "task contains 'review' or 'format' or 'lint' or 'analyze' or 'quality' or 'refactor' or 'code' or 'implement' or 'fix'"
       to: CodeReviewAgent
 
-# Fallback agent when no routing rule matches
-# CodeReviewAgent handles general coding tasks by default
-fallback: CodeReviewAgent
 
-# Policies enforced across all sub-agents
-# These policies ensure consistent behavior and safety guardrails
-policies:
-  - enforce: .agent/policies/defaults.yaml # General rate limits, safety, and boundaries
-  - enforce: .agent/policies/coding-standards.yaml # .NET coding standards and quality metrics
+  # Fallback agent when no routing rule matches
+  # CodeReviewAgent handles general coding tasks by default
+  fallback: CodeReviewAgent

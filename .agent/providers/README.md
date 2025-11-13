@@ -166,6 +166,8 @@ Agents can detect which platform they're running on and load appropriate hints:
 ```python
 # Example: Auto-detect provider
 import os
+from pathlib import Path
+import yaml
 
 def detect_provider():
     if os.getenv('ANTHROPIC_API_KEY'):
@@ -178,7 +180,7 @@ def detect_provider():
 def load_provider_hints(provider_name):
     hints_path = f".agent/providers/{provider_name}.yaml"
     if Path(hints_path).exists():
-        with open(hints_path) as f:
+        with open(hints_path, encoding='utf-8') as f:
             return yaml.safe_load(f)
     return {}
 ```

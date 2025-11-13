@@ -18,11 +18,13 @@ This guide provides step-by-step instructions for checking NuGet package depende
 Built-in .NET CLI command that checks NuGet packages against known vulnerability databases.
 
 **Data Sources:**
+
 - GitHub Advisory Database
 - National Vulnerability Database (NVD)
 - NuGet Advisory Database
 
 **What it detects:**
+
 - Known CVEs (Common Vulnerabilities and Exposures)
 - Security advisories for NuGet packages
 - Vulnerable transitive dependencies
@@ -131,6 +133,7 @@ Project `PigeonPea.Console` has the following vulnerable packages
 ### Vulnerability Details
 
 **Fields:**
+
 - **Package**: Name of vulnerable package
 - **Requested**: Version specified in `.csproj`
 - **Resolved**: Version actually used
@@ -175,11 +178,13 @@ Or edit `.csproj` directly:
 For indirect (transitive) dependencies:
 
 **Option A:** Update parent package that depends on it
+
 ```bash
 dotnet add package ParentPackage --version <newer-version>
 ```
 
 **Option B:** Add explicit reference to fixed version
+
 ```xml
 <ItemGroup>
   <!-- Force specific version of transitive dependency -->
@@ -188,6 +193,7 @@ dotnet add package ParentPackage --version <newer-version>
 ```
 
 **Option C:** Use PackageReference with VersionOverride (Central Package Management)
+
 ```xml
 <ItemGroup>
   <PackageVersion Include="System.Text.Json" Version="8.0.0" />
@@ -242,209 +248,23 @@ Project `PigeonPea.Console` has the following updates to its packages
 ### Selective Updates
 
 **Update only patch versions** (safest):
+
 ```bash
 dotnet add package Terminal.Gui --version 2.0.3
 ```
 
 **Update to minor version** (review breaking changes):
+
 ```bash
 dotnet add package Terminal.Gui --version 2.1.3
 ```
 
 **Update to major version** (expect breaking changes):
+
 ```bash
 dotnet add package Terminal.Gui --version 3.0.0
 ```
 
 ## Advanced Scenarios
 
-### Generate JSON Report
-
-```bash
-# Vulnerability report
-dotnet list package --vulnerable --include-transitive --format json > vulnerabilities.json
-
-# Outdated packages report
-dotnet list package --outdated --format json > outdated.json
-```
-
-### Check Specific Framework
-
-```bash
-dotnet list package --vulnerable --framework net9.0
-```
-
-### Use Custom NuGet Source
-
-```bash
-dotnet list package --vulnerable --source https://api.nuget.org/v3/index.json
-```
-
-### Automate with Script
-
-```bash
-#!/bin/bash
-# check-dependencies.sh
-
-echo "Checking for vulnerable packages..."
-VULN_OUTPUT=$(dotnet list package --vulnerable --include-transitive)
-
-if echo "$VULN_OUTPUT" | grep -q "has the following vulnerable packages"; then
-    echo "❌ Vulnerable packages found!"
-    echo "$VULN_OUTPUT"
-    exit 1
-else
-    echo "✅ No vulnerable packages found"
-    exit 0
-fi
-```
-
-## CI/CD Integration
-
-### GitHub Actions Example
-
-```yaml
-name: Dependency Vulnerability Check
-
-on: [push, pull_request]
-
-jobs:
-  check-dependencies:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '9.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore ./dotnet/PigeonPea.sln
-
-      - name: Check for vulnerable packages
-        run: |
-          cd ./dotnet
-          dotnet list package --vulnerable --include-transitive
-```
-
-### Pre-commit Hook (Optional)
-
-Add to `.pre-commit-config.yaml`:
-
-```yaml
-- repo: local
-  hooks:
-    - id: check-vulnerabilities
-      name: Check NuGet vulnerabilities
-      entry: bash -c 'cd dotnet && dotnet list package --vulnerable --include-transitive | grep -q "has no vulnerable packages"'
-      language: system
-      pass_filenames: false
-      always_run: true
-```
-
-## Best Practices
-
-1. **Check regularly**: Run vulnerability scans weekly or before releases
-2. **Monitor advisories**: Subscribe to security advisories for packages you use
-3. **Update promptly**: Patch critical and high vulnerabilities immediately
-4. **Test updates**: Always test after updating packages (run tests, verify functionality)
-5. **Use latest LTS**: Prefer latest Long-Term Support versions of packages
-6. **Minimize dependencies**: Fewer dependencies = smaller attack surface
-7. **Pin versions**: Use explicit versions in `.csproj` to control updates
-8. **Document decisions**: If you can't update, document why in code comments or ADR
-9. **Enable in CI/CD**: Fail builds on critical/high vulnerabilities
-10. **Review transitive**: Don't ignore transitive dependencies
-
-## Handling Unfixable Vulnerabilities
-
-If a vulnerability cannot be patched:
-
-1. **Assess risk**: Review CVE details, determine if it affects your usage
-2. **Mitigate**: Implement compensating controls (input validation, network restrictions)
-3. **Document**: Create ADR or security doc explaining the risk and mitigation
-4. **Monitor**: Watch for patches, plan migration if necessary
-5. **Consider alternatives**: Evaluate switching to different package
-
-## Common Issues and Solutions
-
-### Issue: No vulnerabilities shown but advisory exists
-
-**Cause:** Vulnerability database not yet updated or scan cache stale
-
-**Solution:**
-```bash
-# Clear NuGet cache
-dotnet nuget locals all --clear
-
-# Re-restore and re-scan
-dotnet restore --force
-dotnet list package --vulnerable --include-transitive
-```
-
-### Issue: Transitive dependency vulnerable but can't update
-
-**Cause:** Parent package doesn't support newer version
-
-**Solution 1:** Add explicit reference to fixed version
-```xml
-<PackageReference Include="VulnerablePackage" Version="1.2.3" />
-```
-
-**Solution 2:** Update or replace parent package
-
-**Solution 3:** Contact maintainer of parent package
-
-### Issue: Package update breaks build
-
-**Cause:** Breaking changes in new version
-
-**Solution:**
-```bash
-# Revert to working version
-dotnet add package PackageName --version <previous-version>
-
-# Review changelog for breaking changes
-# Update code to accommodate changes
-# Test thoroughly before redeploying
-```
-
-## Vulnerability Response Workflow
-
-1. **Detect**: Run `dotnet list package --vulnerable --include-transitive`
-2. **Assess**: Check severity and advisory URL for details
-3. **Prioritize**: Critical/High → immediate, Moderate/Low → next sprint
-4. **Update**: Use `dotnet add package` or edit `.csproj`
-5. **Test**: Run `dotnet build && dotnet test`
-6. **Verify**: Re-run vulnerability scan
-7. **Deploy**: Push changes through CI/CD pipeline
-8. **Document**: Log actions in security log or ADR
-
-## Related Procedures
-
-- **Static analysis:** See [`static-analysis.md`](static-analysis.md)
-- **Security scanning:** See [`security-scan.md`](security-scan.md)
-- **Build procedures:** See `dotnet-build` skill
-
-## Quick Reference
-
-```bash
-# Check for vulnerable packages
-cd ./dotnet
-dotnet list package --vulnerable --include-transitive
-
-# Check for outdated packages
-dotnet list package --outdated
-
-# Update package to latest
-dotnet add console-app/PigeonPea.Console.csproj package Newtonsoft.Json
-
-# Update to specific version
-dotnet add console-app/PigeonPea.Console.csproj package Newtonsoft.Json --version 13.0.3
-
-# Generate JSON report
-dotnet list package --vulnerable --include-transitive --format json > vuln-report.json
-
-# Verify fix
-dotnet restore PigeonPea.sln
-dotnet list package --vulnerable --include-transitive
-dotnet build PigeonPea.sln
-```
+<!-- Trimmed for size: See SKILL.md for overview and common commands. -->
