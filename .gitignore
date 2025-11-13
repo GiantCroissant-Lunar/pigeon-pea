@@ -1,1 +1,12 @@
 /PR*.json
+
+# Node.js
+node_modules/
+
+# Rust
+target/
+# Ignore Cargo.lock for libraries, but keep it for binaries
+**/*/Cargo.lock
+!tools/dev-tool/Cargo.lock
+**/*.rs.bk
+*.pdb
