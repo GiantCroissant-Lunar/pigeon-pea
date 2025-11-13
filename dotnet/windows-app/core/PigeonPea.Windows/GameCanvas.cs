@@ -5,6 +5,7 @@ using Avalonia.Platform;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
 using PigeonPea.Windows.Rendering;
+using Plate.SCG.General.DisposePattern.Attributes;
 using SkiaSharp;
 using System;
 using RTile = PigeonPea.Shared.Rendering.Tile;
@@ -15,12 +16,14 @@ namespace PigeonPea.Windows;
 /// Custom SkiaSharp-based canvas for rendering the game world.
 /// Uses SkiaSharpRenderer for all drawing operations.
 /// </summary>
-public class GameCanvas : Image
+[DisposePattern]
+public partial class GameCanvas : Image
 {
     private GameWorld? _gameWorld;
     private SkiaSharpRenderer? _renderer;
     private ParticleSystem? _particleSystem;
     private AnimationSystem? _animationSystem;
+    [ToBeDisposed]
     private SKBitmap? _bitmap;
     private WriteableBitmap? _writeableBitmap;
     private bool _isInitialized;
@@ -62,8 +65,10 @@ public class GameCanvas : Image
     private void OnDetachedFromVisualTree(object? sender, Avalonia.VisualTreeAttachmentEventArgs e)
     {
         // Dispose resources when control is removed from visual tree
-        _bitmap?.Dispose();
-        _bitmap = null;
+        Dispose();
+
+        // Unsubscribe from event to prevent memory leaks
+        DetachedFromVisualTree -= OnDetachedFromVisualTree;
     }
 
     /// <summary>
