@@ -156,6 +156,64 @@ tasks:
               echo "$CHANGED";
             fi'
 
+  # PTY test helpers (Node.js)
+  pty:install:
+    desc: Install Node.js deps for PTY tests
+    dir: ./tests/pty
+    cmds:
+      - npm ci
+
+  pty:test:
+    desc: Run PTY basic movement test
+    dir: ./tests/pty
+    cmds:
+      - npm test
+
+  # Developer environment helpers
+  env:check-terminal:
+    desc: Check terminal environment and WezTerm info (Windows)
+    cmds:
+      - scripts\\check-terminal.bat
+
+  env:which-wezterm:
+    desc: Locate wezterm and test imgcat (Windows)
+    cmds:
+      - scripts\\which-wezterm.bat
+
+  env:test-with-env:
+    desc: Run console app with kitty env vars (Windows)
+    cmds:
+      - scripts\\test-with-env.bat
+
+  wezterm:launch:
+    desc: Launch pinned WezTerm instance (Windows)
+    cmds:
+      - scripts\\launch-new-wezterm.bat
+
+  dev:setup-pre-commit:win:
+    desc: Setup pre-commit hooks (Windows PowerShell)
+    cmds:
+      - pwsh -File scripts/setup-pre-commit.ps1
+
+  dev:setup-pre-commit:unix:
+    desc: Setup pre-commit hooks (bash)
+    cmds:
+      - bash scripts/setup-pre-commit.sh
+
+  images:create-battle:
+    desc: Generate sample battle image (Pillow)
+    cmds:
+      - python3 scripts/create_battle_image.py
+
+  images:create-test:
+    desc: Generate 32x32 red test image (Pillow)
+    cmds:
+      - python3 scripts/create_test_image.py
+
+  python:install-dev:
+    desc: Install Python dev dependencies
+    cmds:
+      - python -m pip install -r requirements/dev.txt
   default:
     desc: Show available tasks
     cmds:

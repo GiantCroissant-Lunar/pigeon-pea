@@ -1,0 +1,21 @@
+{
+  "map": {
+    "Width": 800,
+    "Height": 600,
+    "Seed": 123456,
+    "NumPoints": 8000,
+    "GridMode": "Jittered",
+    "HeightmapMode": "Template",
+    "HeightmapTemplate": "archipelago",
+    "RNGMode": "Alea",
+    "ReseedAtPhaseStart": true,
+
+    "HydrologyPrecipScale": 60.0,
+    "HydrologyMinFlux": 30,
+    "HydrologyMinRiverLength": 3,
+    "HydrologyAutoAdjust": true,
+    "HydrologyTargetRivers": 20,
+    "HydrologyMinThreshold": 6
+  }
+}
+

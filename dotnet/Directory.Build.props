@@ -1,0 +1,4 @@
+<Project>
+  <!-- Shared .NET configuration for projects under dotnet/.
+       Intentionally minimal to keep root clean. Add common properties here when needed. -->
+</Project>

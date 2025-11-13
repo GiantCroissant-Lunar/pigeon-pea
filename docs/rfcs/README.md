@@ -230,8 +230,8 @@ Related docs/links
 
 ## Related Documentation
 
-- [ARCHITECTURE_MAP_RENDERING.md](../../ARCHITECTURE_MAP_RENDERING.md) - Overall rendering architecture
-- [ARCHITECTURE_PLAN.md](../../ARCHITECTURE_PLAN.md) - General project architecture
+- [ARCHITECTURE_MAP_RENDERING.md](../architecture/ARCHITECTURE_MAP_RENDERING.md) - Overall rendering architecture
+- [ARCHITECTURE_PLAN.md](../architecture/ARCHITECTURE_PLAN.md) - General project architecture
 - [docs/testing-guide.md](../testing-guide.md) - Testing conventions (if exists)
 
 ## Questions or Feedback

@@ -457,8 +457,8 @@ Shared/
    - Verify no references remain
    - Archive to `dotnet/archive/SharedApp.Rendering.old/`
 3. Update all documentation:
-   - `ARCHITECTURE_MAP_RENDERING.md`
-   - `ARCHITECTURE_PLAN.md`
+   - `docs/architecture/ARCHITECTURE_MAP_RENDERING.md`
+   - `docs/architecture/ARCHITECTURE_PLAN.md`
    - `README.md` in each project
 4. Update `CLAUDE.md` with new structure
 
@@ -751,7 +751,7 @@ Create thin wrapper around Mapsui.Navigator instead of direct exposure.
 
 ## References
 
-- [ARCHITECTURE_MAP_RENDERING.md](../../ARCHITECTURE_MAP_RENDERING.md)
+- [ARCHITECTURE_MAP_RENDERING.md](../architecture/ARCHITECTURE_MAP_RENDERING.md)
 - [FantasyMapGenerator.Core](../../dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/)
 - Mapsui: https://github.com/Mapsui/Mapsui
 - GoRogue: https://github.com/Chris3606/GoRogue

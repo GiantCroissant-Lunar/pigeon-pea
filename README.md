@@ -35,7 +35,10 @@ Install the required tools based on the languages you're using:
 pip install pre-commit
 
 # Development dependencies (required for agent validation scripts)
-pip install -r requirements-dev.txt
+pip install -r requirements/dev.txt
+
+# Or use Taskfile
+task python:install-dev
 
 # .NET SDK (for C# formatting)
 # Download from: https://dotnet.microsoft.com/download
@@ -121,7 +124,7 @@ pre-commit autoupdate
 
 **Agent validation fails:**
 
-- Ensure development dependencies are installed: `pip install -r requirements-dev.txt`
+- Ensure development dependencies are installed: `pip install -r requirements/dev.txt`
 - Check `.agent/schemas/` for schema definitions
 - See `scripts/README.md` for validation details
 

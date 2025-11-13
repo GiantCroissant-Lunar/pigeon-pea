@@ -4,6 +4,14 @@ Welcome to the Pigeon Pea documentation! This directory contains planning docume
 
 ## Contents
 
+### Directory Index
+
+- [architecture/](architecture) – Architecture plans, rendering design, protocol notes
+- [rfcs/](rfcs) – Formal proposals and technical specs
+- [handovers/](handovers) – Handover summaries and session notes
+- [notes/](notes) – Scratch notes, snapshots, and fragments
+- [assets/](assets) – Images and static assets used by docs
+
 ### Enhancement Planning
 
 - **[ENHANCEMENT_PLAN.md](planning/ENHANCEMENT_PLAN.md)**: Comprehensive plan for platform-specific enhancements after completing core game logic features
