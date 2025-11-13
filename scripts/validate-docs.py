@@ -11,7 +11,7 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import yaml
 
@@ -75,7 +75,7 @@ class ValidationError:
 
     def __str__(self):
         level = "WARNING" if self.is_warning else "ERROR"
-        return f"[{level}] {self.path}: {message}"
+        return f"[{level}] {self.path}: {self.message}"
 
 
 class DocumentInfo:
@@ -212,9 +212,7 @@ def validate_front_matter_fields(
     tags = front_matter.get("tags")
     if tags is not None and not isinstance(tags, list):
         errors.append(
-            ValidationError(
-                doc_path, f"Field 'tags' must be a list, got: {type(tags)}"
-            )
+            ValidationError(doc_path, f"Field 'tags' must be a list, got: {type(tags)}")
         )
 
     return errors
@@ -259,7 +257,9 @@ def check_canonical_uniqueness(
 
 
 def detect_near_duplicates(
-    documents: List[DocumentInfo], hamming_threshold: int = 8, title_similarity: int = 80
+    documents: List[DocumentInfo],
+    hamming_threshold: int = 8,
+    title_similarity: int = 80,
 ) -> List[ValidationError]:
     """
     Detect near-duplicate documents using SimHash and fuzzy title matching.
@@ -378,9 +378,7 @@ def generate_registry(documents: List[DocumentInfo], output_path: Path) -> None:
     from datetime import timezone
 
     registry = {
-        "generated_at": datetime.now(timezone.utc)
-        .isoformat()
-        .replace("+00:00", "Z"),
+        "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "total_docs": len(documents),
         "by_type": {},
         "by_status": {},
@@ -459,9 +457,7 @@ def main():
 
     print(f"Validating documentation in {docs_dir}...")
     if not SIMHASH_AVAILABLE:
-        print(
-            "Note: simhash not installed. Install with: pip install simhash>=2.1.2"
-        )
+        print("Note: simhash not installed. Install with: pip install simhash>=2.1.2")
     if not RAPIDFUZZ_AVAILABLE:
         print(
             "Note: rapidfuzz not installed. Install with: pip install rapidfuzz>=3.5.2"
