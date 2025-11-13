@@ -4,7 +4,7 @@ version: 0.1.0
 kind: cli
 description: Build and orchestrate tasks using Nuke build system. Use when task involves running Nuke build targets, orchestrating complex build workflows, or managing build pipelines.
 inputs:
-  target: [Clean, Restore, Compile, all]
+  target: [Clean, Restore, Compile]
   configuration: [Debug, Release]
   parameters: object
 contracts:
@@ -33,7 +33,7 @@ contracts:
 
 ## Inputs & Outputs
 
-**Inputs:** `target` (Clean/Restore/Compile/all), `configuration` (Debug/Release), `parameters` (custom build parameters)
+**Inputs:** `target` (Clean/Restore/Compile), `configuration` (Debug/Release), `parameters` (custom build parameters)
 
 **Outputs:** Build artifacts, target execution logs, exit code (0=success)
 
