@@ -27,4 +27,3 @@ Install the TTFs in your OS and select the family in Rio settings, using the sam
 
 - If PUA glyphs show as tofu boxes, the custom font is not active; verify family name and that no fallback is overriding.
 - On Windows, confirm no WPF/DirectWrite font cache issues; try clearing font cache if necessary during development.
-

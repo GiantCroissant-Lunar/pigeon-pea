@@ -56,4 +56,3 @@ Nuke equivalents may wrap these where appropriate.
 
 - Use Nerd-patched Sarasa as base (faster) vs. patch Nerd symbols ourselves.
 - Whether to include 5° angle set by default or behind a feature flag.
-

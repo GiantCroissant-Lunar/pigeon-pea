@@ -25,4 +25,3 @@ bold   = { family = "Lunar Sarasa Mono" }
 ```
 
 Add LICENSE files for fonts you distribute.
-

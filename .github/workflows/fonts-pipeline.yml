@@ -52,18 +52,24 @@ jobs:
 
       - name: Patch Regular (if base present)
         run: |
-          if [ -f base/Regular.ttf ]; then \
-            fontforge -script fonts/scripts/patch_sarasa.py --base base/Regular.ttf --output fonts/dist/LunarSarasaMono-Regular.ttf --svg-dir fonts/src/svg/lines; \
-          else \
-            echo "Regular base font not provided; skipping"; \
+          if [ -f base/Regular.ttf ]; then
+            fontforge -script fonts/scripts/patch_sarasa.py \
+              --base base/Regular.ttf \
+              --output fonts/dist/LunarSarasaMono-Regular.ttf \
+              --svg-dir fonts/src/svg/lines; \
+          else
+            echo "Regular base font not provided; skipping";
           fi
 
       - name: Patch Bold (if base present)
         run: |
-          if [ -f base/Bold.ttf ]; then \
-            fontforge -script fonts/scripts/patch_sarasa.py --base base/Bold.ttf --output fonts/dist/LunarSarasaMono-Bold.ttf --svg-dir fonts/src/svg/lines; \
-          else \
-            echo "Bold base font not provided; skipping"; \
+          if [ -f base/Bold.ttf ]; then
+            fontforge -script fonts/scripts/patch_sarasa.py \
+              --base base/Bold.ttf \
+              --output fonts/dist/LunarSarasaMono-Bold.ttf \
+              --svg-dir fonts/src/svg/lines; \
+          else
+            echo "Bold base font not provided; skipping";
           fi
 
       - name: List outputs

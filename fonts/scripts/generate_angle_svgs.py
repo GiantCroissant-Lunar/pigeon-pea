@@ -11,7 +11,6 @@ Stroke width (regular): 80 units (adjust as needed)
 Outputs: fonts/src/svg/lines/angle_XXX.svg
 """
 import math
-import os
 from pathlib import Path
 
 OUT_DIR = Path(__file__).resolve().parents[1] / "src" / "svg" / "lines"
@@ -77,11 +76,18 @@ def line_intersections_through_center(angle_degrees: float, size: float):
 
 def svg_for_angle(angle: int) -> str:
     x1, y1, x2, y2 = line_intersections_through_center(angle, CANVAS)
-    svg = f"""<?xml version=\"1.0\" encoding=\"UTF-8\"?>
-<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{CANVAS}\" height=\"{CANVAS}\" viewBox=\"0 0 {CANVAS} {CANVAS}\">
-  <line x1=\"{x1:.3f}\" y1=\"{y1:.3f}\" x2=\"{x2:.3f}\" y2=\"{y2:.3f}\" stroke=\"black\" stroke-width=\"{STROKE}\" stroke-linecap=\"square\"/>
-</svg>
-"""
+    svg_lines = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<svg xmlns="http://www.w3.org/2000/svg"',
+        f'     width="{CANVAS}" height="{CANVAS}"',
+        f'     viewBox="0 0 {CANVAS} {CANVAS}">',
+        f'  <line x1="{x1:.3f}" y1="{y1:.3f}"',
+        f'        x2="{x2:.3f}" y2="{y2:.3f}"',
+        f'        stroke="black" stroke-width="{STROKE}"',
+        '        stroke-linecap="square"/>',
+        "</svg>",
+    ]
+    svg = "\n".join(svg_lines) + "\n"
     return svg
 
 
@@ -96,4 +102,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
