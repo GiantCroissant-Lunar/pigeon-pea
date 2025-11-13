@@ -11,52 +11,49 @@ A multiplatform roguelike dungeon crawler built with modern C# technologies.
 - **Windows Renderer**: SkiaSharp via Avalonia
 - **Console Renderer**: Terminal graphics (Kitty/Sixel/Braille) + ASCII fallback
 - **Windows HUD**: Avalonia UI
-- **Console HUD**: Terminal.Gui v2
 
 ### Project Structure
 
 ```
 dotnet/
-├── shared-app/          # PigeonPea.Shared - Core game logic
-│   ├── GameWorld.cs     # Main game world with ECS
-│   ├── Components.cs    # ECS components (Position, Renderable, Health, etc.)
-│   ├── Player.cs        # Player entity
-│   └── IRenderer.cs     # Platform-agnostic renderer interface
+├── app-essential/
+│   ├── core/                  # App framework core (future)
+│   └── plugins/               # App-level plugins (future)
 │
-├── windows-app/         # PigeonPea.Windows - Windows desktop app
-│   ├── Program.cs       # Entry point
-│   ├── App.axaml        # Avalonia app definition
-│   ├── MainWindow.axaml # Main window with HUD
-│   └── GameCanvas.cs    # SkiaSharp-based game renderer
+├── game-essential/
+│   ├── core/
+│   │   └── PigeonPea.Shared/  # Core game logic (ECS + GoRogue)
+│   └── plugins/               # Game feature plugins (future)
 │
-└── console-app/         # PigeonPea.Console - Terminal app
-    ├── Program.cs       # Entry point
-    ├── GameApplication.cs         # Terminal.Gui main app
-    ├── GameView.cs               # Game rendering view
-    ├── TerminalCapabilities.cs   # Terminal feature detection
-    └── ITerminalRenderer.cs      # Terminal graphics renderers
+├── windows-app/
+│   ├── core/
+│   │   └── PigeonPea.Windows/ # Windows desktop app
+│   ├── plugins/               # Windows-specific plugins (future)
+│   └── configs/               # Plugin manifests and configs (future)
+│
+└── console-app/
+    ├── core/
+    │   └── PigeonPea.Console/ # Terminal app
+    ├── plugins/               # Terminal renderers/plugins (future)
+    └── configs/               # Plugin manifests and configs (future)
 ```
 
 ## Building & Running
 
 ### Prerequisites
 
-- .NET 9.0 SDK
-- Windows 10+ (for windows-app)
-- Any terminal (for console-app; best with Kitty, WezTerm, or Sixel support)
-
-### Build
-
-```bash
-cd dotnet
-dotnet restore
-dotnet build
-```
+- .NET SDK 9.0.x
+- macOS, Windows, or Linux with a compatible terminal
+- dotnet CLI in PATH (verify with `dotnet --info`)
+- Optional for Windows app:
+  - .NET Desktop Runtime 9.0
+  - A GPU driver compatible with SkiaSharp via Avalonia
+- Recommended IDEs: VS Code with C# Dev Kit or JetBrains Rider
 
 ### Run Windows App
 
 ```bash
-cd dotnet/windows-app
+cd dotnet/windows-app/core/PigeonPea.Windows
 dotnet run
 ```
 
@@ -68,73 +65,57 @@ dotnet run
 ### Run Console App
 
 ```bash
-cd dotnet/console-app
+cd dotnet/console-app/core/PigeonPea.Console
 dotnet run
 ```
 
 **Controls**:
 
-- Arrow keys / wasd: Move
-- q: Quit
-
-## Features (Planned)
-
-### Shared (Core Game Logic)
-
-- [x] Arch ECS integration
-- [x] GoRogue integration
-- [x] Procedural dungeon generation (GoRogue)
-- [x] Field of View (FOV) system
-- [x] Pathfinding for enemies
-- [x] Turn-based combat
-- [x] Inventory system
-- [x] Character progression
-
-### Windows App
-
-- [x] SkiaSharp tile renderer
-- [x] Avalonia HUD
-- [ ] Sprite/texture atlases
-- [ ] Particle effects
-- [ ] Animated tiles
-- [ ] Mouse controls
-
-### Console App
-
-- [x] Terminal.Gui HUD
-- [x] Terminal capability detection
-- [ ] Kitty Graphics Protocol renderer
-- [ ] Sixel graphics renderer
-- [ ] Unicode Braille high-res renderer
-- [ ] ASCII fallback renderer
-- [ ] Color gradient effects
+- Arrow keys / WASD: Move
+- ESC/Q: Exit
+- Space/Enter: Interact
+- H: Toggle help
 
 ## Development
 
 ### Adding New Components
 
-1. Define component struct in `shared-app/Components.cs`
+1. Define component struct in `game-essential/core/PigeonPea.Shared/Components.cs`
 2. Create entities with components in `GameWorld.cs`
-3. Query components in rendering logic (Windows: `GameCanvas.cs`, Console: `GameView.cs`)
+3. Query components in rendering logic (Windows: `windows-app/core/PigeonPea.Windows/GameCanvas.cs`, Console: `console-app/core/PigeonPea.Console/GameView.cs`)
 
 ### Adding New Systems
 
-Create system methods in `GameWorld.cs` and call them in `Update()`:
+Create a system method in `game-essential/core/PigeonPea.Shared/GameWorld.cs` and call it from `Update()`:
 
 ```csharp
-public void Update(double deltaTime)
+public partial class GameWorld
 {
-    UpdateMovement();
-    UpdateFieldOfView();
-    UpdateCombat();
+    // Example: apply regen to all entities with Health
+    private void HealthRegenSystem(float dt)
+    {
+        foreach (ref var health in _healthQuery)
+        {
+            health.Value = Math.Min(health.Max, health.Value + health.RegenRate * dt);
+        }
+    }
+
+    public void Update(float dt)
+    {
+        // Existing systems...
+        MovementSystem(dt);
+        CombatSystem(dt);
+        // New system
+        HealthRegenSystem(dt);
+    }
 }
 ```
 
 ### Implementing Renderers
 
-**Windows (SkiaSharp)**: Modify `GameCanvas.cs` `RenderGame()` method.
+**Windows (SkiaSharp)**: Modify `windows-app/core/PigeonPea.Windows/GameCanvas.cs` `RenderGame()` method.
 
-**Console (Terminal)**: Implement `ITerminalRenderer` interface in `ITerminalRenderer.cs`.
+**Console (Terminal)**: Implement `ITerminalRenderer` interface in `console-app/core/PigeonPea.Console/ITerminalRenderer.cs`.
 
 ## References
 
