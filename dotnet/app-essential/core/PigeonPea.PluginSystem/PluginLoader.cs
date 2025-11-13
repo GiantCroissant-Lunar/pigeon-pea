@@ -245,13 +245,11 @@ public class PluginLoader
             var home = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
             return Path.GetFullPath(Path.Combine(home, path.TrimStart('~', '/', '\\')));
         }
-        
-        // Convert relative paths to absolute paths based on current directory
         if (!Path.IsPathRooted(path))
         {
-            return Path.GetFullPath(path);
+            // Anchor relative paths to the app content root to avoid dependence on Environment.CurrentDirectory
+            return Path.GetFullPath(path, AppContext.BaseDirectory);
         }
-        
         return path;
     }
 }
