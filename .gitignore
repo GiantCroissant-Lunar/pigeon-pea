@@ -1,5 +1,8 @@
 /PR*.json
 
+# Node.js
+node_modules/
+
 # Rust
 target/
 Cargo.lock
