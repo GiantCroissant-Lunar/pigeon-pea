@@ -269,7 +269,7 @@ related: ['RFC-2025-00012']
 
 ### Lifecycle States
 
-```
+```text
 draft → active → superseded/archived
   ↓       ↓          ↓
 inbox  final loc  archive/
@@ -424,7 +424,7 @@ The pre-commit hook runs `python scripts/validate-docs.py --pre-commit` automati
 
 #### Missing Required Fields
 
-```
+```text
 [ERROR] docs/rfcs/test.md: Missing required fields: doc_id, tags, summary
 ```
 
@@ -432,7 +432,7 @@ The pre-commit hook runs `python scripts/validate-docs.py --pre-commit` automati
 
 #### Invalid doc_type
 
-```
+```text
 [ERROR] docs/guides/test.md: Invalid doc_type 'tutorial'. Must be one of: spec, rfc, adr, plan, finding, guide, glossary, reference
 ```
 
@@ -440,7 +440,7 @@ The pre-commit hook runs `python scripts/validate-docs.py --pre-commit` automati
 
 #### Multiple Canonical Documents
 
-```
+```text
 [ERROR] Multiple canonical docs for concept 'plugin system':
   docs/rfcs/012-plugin-system.md
   docs/rfcs/020-plugin-system-v2.md
@@ -450,7 +450,7 @@ The pre-commit hook runs `python scripts/validate-docs.py --pre-commit` automati
 
 #### Invalid Doc ID Format
 
-```
+```text
 [ERROR] docs/rfcs/test.md: Invalid doc_id format 'RFC-012'. Expected format: PREFIX-YYYY-NNNNN
 ```
 

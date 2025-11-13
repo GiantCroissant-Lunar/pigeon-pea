@@ -4,7 +4,7 @@ Creates a structured documentation task in `docs/_inbox/` with proper front-matt
 
 ## Usage
 
-```
+```bash
 /task <doc-type> <title>
 ```
 
@@ -19,7 +19,7 @@ Creates a structured documentation task in `docs/_inbox/` with proper front-matt
 
 ## Examples
 
-```
+```bash
 /task rfc "Plugin System Architecture"
 /task guide "Setting Up Development Environment"
 /task adr "Use PostgreSQL for Primary Database"
