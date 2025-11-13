@@ -19,7 +19,8 @@ public class PluginLoadContext : AssemblyLoadContext
     protected override Assembly? Load(AssemblyName assemblyName)
     {
         // Important: ensure shared contracts resolve from Default ALC
-        if (assemblyName.Name == "PigeonPea.Contracts")
+        if (assemblyName.Name == "PigeonPea.Contracts" || 
+            assemblyName.Name == "PigeonPea.Game.Contracts")
         {
             return null; // use Default ALC binding for contracts
         }
