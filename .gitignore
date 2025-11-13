@@ -1,1 +1,4 @@
 /PR*.json
+
+# Generated documentation registry
+/docs/index/registry.json

@@ -1,0 +1,11 @@
+# Documentation validation dependencies for RFC-012
+# These packages are required for the validate-docs.py script
+
+# YAML parsing for front-matter extraction
+pyyaml>=6.0.1
+
+# Content similarity detection (optional, graceful degradation if missing)
+simhash>=2.1.2
+
+# Fuzzy string matching for title comparison (optional, graceful degradation if missing)
+rapidfuzz>=3.5.2
