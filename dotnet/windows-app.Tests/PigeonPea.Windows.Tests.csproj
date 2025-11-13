@@ -28,21 +28,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../shared-app/PigeonPea.Shared.csproj" />
+    <ProjectReference Include="../game-essential/core/PigeonPea.Shared/PigeonPea.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Include only the Rendering files we need for testing -->
-    <Compile Include="../windows-app/Rendering/SkiaRenderTarget.cs" Link="Rendering/SkiaRenderTarget.cs" />
-    <Compile Include="../windows-app/Rendering/SkiaSharpRenderer.cs" Link="Rendering/SkiaSharpRenderer.cs" />
-    <Compile Include="../windows-app/Rendering/SpriteAtlasManager.cs" Link="Rendering/SpriteAtlasManager.cs" />
-    <Compile Include="../windows-app/Rendering/SpriteDefinition.cs" Link="Rendering/SpriteDefinition.cs" />
-    <Compile Include="../windows-app/Rendering/Particle.cs" Link="Rendering/Particle.cs" />
-    <Compile Include="../windows-app/Rendering/ParticleEmitter.cs" Link="Rendering/ParticleEmitter.cs" />
-    <Compile Include="../windows-app/Rendering/ParticleSystem.cs" Link="Rendering/ParticleSystem.cs" />
-    <Compile Include="../windows-app/Rendering/Animation.cs" Link="Rendering/Animation.cs" />
-    <Compile Include="../windows-app/Rendering/AnimationSystem.cs" Link="Rendering/AnimationSystem.cs" />
-    <Compile Include="../windows-app/StubRenderer.cs" Link="StubRenderer.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/SkiaRenderTarget.cs" Link="Rendering/SkiaRenderTarget.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/SkiaSharpRenderer.cs" Link="Rendering/SkiaSharpRenderer.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/SpriteAtlasManager.cs" Link="Rendering/SpriteAtlasManager.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/SpriteDefinition.cs" Link="Rendering/SpriteDefinition.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/Particle.cs" Link="Rendering/Particle.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/ParticleEmitter.cs" Link="Rendering/ParticleEmitter.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/ParticleSystem.cs" Link="Rendering/ParticleSystem.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/Animation.cs" Link="Rendering/Animation.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/Rendering/AnimationSystem.cs" Link="Rendering/AnimationSystem.cs" />
+    <Compile Include="../windows-app/core/PigeonPea.Windows/StubRenderer.cs" Link="StubRenderer.cs" />
   </ItemGroup>
 
   <ItemGroup>

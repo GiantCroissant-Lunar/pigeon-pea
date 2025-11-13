@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Terminal.Gui v2 for Console HUD -->
+    <PackageReference Include="Terminal.Gui" Version="2.0.0" />
+
+    <!-- System.CommandLine for CLI argument parsing -->
+    <PackageReference Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
+
+    <!-- Configuration support -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+
+    <!-- Terminal Graphics Support -->
+    <!-- Note: For Sixel/Kitty/Braille, we'll implement custom renderers -->
+    <!-- using ANSI escape sequences and terminal capabilities -->
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy configuration files to output -->
+    <None Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reference to Shared Game Logic -->
+    <ProjectReference Include="..\..\..\game-essential\core\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+
+    <!-- Plugin System -->
+    <ProjectReference Include="..\..\..\app-essential\core\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
+
+    <!-- Game Contracts for IRenderer -->
+    <ProjectReference Include="..\..\..\game-essential\core\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
