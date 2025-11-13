@@ -41,12 +41,12 @@ All documents created in the inbox start with minimal front-matter:
 
 ```yaml
 ---
-title: "<your-title>"
-doc_type: "<rfc|guide|adr|plan|finding|spec>"
-status: "draft"
-created: "<YYYY-MM-DD>"
+title: '<your-title>'
+doc_type: '<rfc|guide|adr|plan|finding|spec>'
+status: 'draft'
+created: '<YYYY-MM-DD>'
 tags: []
-summary: ""
+summary: ''
 # TODO: Add doc_id before moving out of inbox (format: PREFIX-YYYY-NNNNN)
 # TODO: Set canonical: true/false
 # TODO: Complete tags and summary
@@ -59,12 +59,12 @@ summary: ""
 
 ```markdown
 ---
-title: "RFC Title"
-doc_type: "rfc"
-status: "draft"
-created: "YYYY-MM-DD"
+title: 'RFC Title'
+doc_type: 'rfc'
+status: 'draft'
+created: 'YYYY-MM-DD'
 tags: []
-summary: ""
+summary: ''
 ---
 
 # RFC-XXX: RFC Title
@@ -135,14 +135,14 @@ Why is this needed? What problem does it solve?
 
 ### Guide (How-to)
 
-```markdown
+````markdown
 ---
-title: "Guide Title"
-doc_type: "guide"
-status: "draft"
-created: "YYYY-MM-DD"
+title: 'Guide Title'
+doc_type: 'guide'
+status: 'draft'
+created: 'YYYY-MM-DD'
 tags: []
-summary: ""
+summary: ''
 ---
 
 # Guide: Guide Title
@@ -165,6 +165,7 @@ Brief description of what this guide covers.
 ```bash
 # Example commands
 ```
+````
 
 ### Step 2: [Name]
 
@@ -181,7 +182,8 @@ Brief description of what this guide covers.
 
 - [Related Guide 1](path)
 - [Related Guide 2](path)
-```
+
+````
 
 ### ADR (Architecture Decision Record)
 
@@ -242,18 +244,18 @@ What is the change that we're proposing/doing?
 ## References
 
 - [Reference 1](url)
-```
+````
 
 ### Plan (Planning Document)
 
 ```markdown
 ---
-title: "Plan Title"
-doc_type: "plan"
-status: "draft"
-created: "YYYY-MM-DD"
+title: 'Plan Title'
+doc_type: 'plan'
+status: 'draft'
+created: 'YYYY-MM-DD'
 tags: []
-summary: ""
+summary: ''
 ---
 
 # Plan: Plan Title
@@ -269,10 +271,10 @@ High-level summary of the plan.
 
 ## Timeline
 
-| Phase | Duration | Deliverables |
-|-------|----------|--------------|
-| Phase 1 | [Dates] | [List] |
-| Phase 2 | [Dates] | [List] |
+| Phase   | Duration | Deliverables |
+| ------- | -------- | ------------ |
+| Phase 1 | [Dates]  | [List]       |
+| Phase 2 | [Dates]  | [List]       |
 
 ## Resources
 
@@ -281,9 +283,9 @@ High-level summary of the plan.
 
 ## Risks
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Risk 1 | High | [Strategy] |
+| Risk   | Impact | Mitigation |
+| ------ | ------ | ---------- |
+| Risk 1 | High   | [Strategy] |
 
 ## Success Metrics
 
@@ -295,12 +297,12 @@ High-level summary of the plan.
 
 ```markdown
 ---
-title: "Finding Title"
-doc_type: "finding"
-status: "draft"
-created: "YYYY-MM-DD"
+title: 'Finding Title'
+doc_type: 'finding'
+status: 'draft'
+created: 'YYYY-MM-DD'
 tags: []
-summary: ""
+summary: ''
 ---
 
 # Finding: Finding Title
@@ -345,12 +347,12 @@ What do these findings mean for the project?
 
 ```markdown
 ---
-title: "Spec Title"
-doc_type: "spec"
-status: "draft"
-created: "YYYY-MM-DD"
+title: 'Spec Title'
+doc_type: 'spec'
+status: 'draft'
+created: 'YYYY-MM-DD'
 tags: []
-summary: ""
+summary: ''
 ---
 
 # Specification: Spec Title
@@ -420,14 +422,14 @@ How to validate implementations against this spec.
 
 ## Doc ID Prefixes
 
-| Prefix | Document Type | Example |
-|--------|--------------|---------|
-| `RFC-` | Request for Comments | `RFC-2025-00012` |
-| `ADR-` | Architecture Decision Record | `ADR-2025-00001` |
-| `GUIDE-` | How-to Guide | `GUIDE-2025-00001` |
-| `PLAN-` | Planning Document | `PLAN-2025-00001` |
-| `FIND-` | Finding/Analysis | `FIND-2025-00001` |
-| `SPEC-` | Specification | `SPEC-2025-00001` |
+| Prefix   | Document Type                | Example            |
+| -------- | ---------------------------- | ------------------ |
+| `RFC-`   | Request for Comments         | `RFC-2025-00012`   |
+| `ADR-`   | Architecture Decision Record | `ADR-2025-00001`   |
+| `GUIDE-` | How-to Guide                 | `GUIDE-2025-00001` |
+| `PLAN-`  | Planning Document            | `PLAN-2025-00001`  |
+| `FIND-`  | Finding/Analysis             | `FIND-2025-00001`  |
+| `SPEC-`  | Specification                | `SPEC-2025-00001`  |
 
 ## Notes
 
