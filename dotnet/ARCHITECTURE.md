@@ -4,7 +4,7 @@
 
 Pigeon Pea is designed with **platform-agnostic game logic** at its core, with platform-specific rendering layers on top.
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │                  Platform Layer                     │
 │  ┌──────────────────┐      ┌───────────────────┐  │
@@ -69,7 +69,7 @@ var goblin = world.Create(
 
 ### Windows App (SkiaSharp)
 
-```
+```text
 MainWindow.axaml
     ↓
 GameCanvas (SKCanvas)
@@ -88,7 +88,7 @@ SKCanvas.DrawText(glyph, x*tileSize, y*tileSize)
 
 ### Console App (Terminal Graphics)
 
-```
+```text
 GameApplication (Terminal.Gui)
     ↓
 GameView (Custom View)
@@ -143,7 +143,7 @@ var map = mapGen.Context.GetFirst<ISettableGridView<bool>>("WallFloor");
 
 ### Input → Update → Render Loop
 
-```
+```text
 User Input (Keyboard/Mouse)
     ↓
 Platform App (MainWindow / GameApplication)
@@ -189,7 +189,7 @@ To add a new platform (e.g., mobile, web):
 
 ## Dependencies Graph
 
-```
+```text
 PigeonPea.Windows ──┐
                     ├──→ PigeonPea.Shared ──→ Arch + GoRogue
 PigeonPea.Console ──┘
