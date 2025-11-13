@@ -96,9 +96,10 @@ public partial class GameCanvas : Image
 The DisposePattern generator packages are sourced from the [eco-shared repository](https://github.com/GiantCroissant-Lunar/eco-shared) and stored locally in `../.local-packages/`:
 - `Plate.SCG.General.DisposePattern.0.1.0.nupkg` - The source generator
 - `Plate.SCG.Shared.Attributes.0.1.0.nupkg` - Required attributes
-- `Plate.SCG.Shared.Abstractions.0.1.0.nupkg` - Transitive dependency (not directly referenced)
+- `Plate.SCG.Shared.Abstractions.0.1.0.nupkg` - Transitive dependency
+- `Plate.Shared.Abstractions.0.1.0.nupkg` - Transitive dependency
 
-**Note**: Only the first two packages are directly referenced in project files. The Abstractions package is included as a dependency but doesn't require explicit project references.
+**Note**: Only the first two packages are directly referenced in project files. The remaining packages are transitive dependencies required by the generator but don't need explicit project references.
 
 ### NuGet Configuration
 
