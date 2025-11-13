@@ -155,7 +155,7 @@ class Program
             var registry = host.Services.GetRequiredService<IRegistry>();
 
             PigeonPea.Game.Contracts.Rendering.IRenderer? pluginRenderer = null;
-            
+
             if (registry.IsRegistered<PigeonPea.Game.Contracts.Rendering.IRenderer>())
             {
                 pluginRenderer = registry.Get<PigeonPea.Game.Contracts.Rendering.IRenderer>();
@@ -193,7 +193,7 @@ class Program
 
             // Simple render loop (for demonstration)
             var gameState = new GameState();
-            
+
             System.Console.WriteLine("Rendering with plugin-based renderer...");
             System.Threading.Thread.Sleep(1000);
 
@@ -206,7 +206,7 @@ class Program
 
             // Cleanup
             pluginRenderer.Shutdown();
-            
+
             System.Console.WriteLine("\nPlugin-based rendering complete. Press any key to exit...");
             System.Console.ReadKey(true);
         }

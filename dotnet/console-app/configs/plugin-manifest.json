@@ -1,10 +1,6 @@
 {
   "profile": "dotnet.console",
-  "pluginPaths": [
-    "../../app-essential/plugins",
-    "../../game-essential/plugins",
-    "./plugins"
-  ],
+  "pluginPaths": ["../../app-essential/plugins", "../../game-essential/plugins", "./plugins"],
   "plugins": [
     {
       "id": "rendering-terminal-ansi",

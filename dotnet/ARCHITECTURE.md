@@ -255,6 +255,7 @@ The plugin system enables dynamic loading of functionality at runtime through As
 ### Example: ANSI Renderer Plugin
 
 **Directory Structure:**
+
 ```
 console-app/plugins/PigeonPea.Plugins.Rendering.Terminal.ANSI/
 ├── plugin.json                                    # Manifest
@@ -264,6 +265,7 @@ console-app/plugins/PigeonPea.Plugins.Rendering.Terminal.ANSI/
 ```
 
 **plugin.json:**
+
 ```json
 {
   "id": "rendering-terminal-ansi",
@@ -278,6 +280,7 @@ console-app/plugins/PigeonPea.Plugins.Rendering.Terminal.ANSI/
 ```
 
 **Usage in Console App:**
+
 ```csharp
 // Configure plugin system
 builder.Services.AddPluginSystem(builder.Configuration);
@@ -306,7 +309,7 @@ renderer.Shutdown();
 protected override Assembly? Load(AssemblyName assemblyName)
 {
     // Force shared contracts to load from host's ALC
-    if (assemblyName.Name == "PigeonPea.Contracts" || 
+    if (assemblyName.Name == "PigeonPea.Contracts" ||
         assemblyName.Name == "PigeonPea.Game.Contracts")
     {
         return null; // Use Default ALC

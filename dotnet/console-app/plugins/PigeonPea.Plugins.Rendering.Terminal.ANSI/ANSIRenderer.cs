@@ -36,13 +36,13 @@ public class ANSIRenderer : IRenderer
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _initialized = true;
-        
+
         _logger.LogInformation("ANSI renderer initialized: {Width}x{Height}", context.Width, context.Height);
-        
+
         // Setup console for ANSI rendering
         Console.OutputEncoding = Encoding.UTF8;
         Console.CursorVisible = false;
-        
+
         // Clear screen and move to home position
         Console.Write("\x1b[2J\x1b[H");
     }
@@ -67,11 +67,11 @@ public class ANSIRenderer : IRenderer
 
         // For now, render a simple placeholder since GameState is minimal
         // In a real implementation, this would iterate through game entities and render them
-        
+
         // Render a test message at the center
         var centerX = _context.Width / 2 - 10;
         var centerY = _context.Height / 2;
-        
+
         MoveCursor(centerX, centerY);
         _buffer.Append("\x1b[32m"); // Green foreground
         _buffer.Append("ANSI Renderer Active");
@@ -102,7 +102,7 @@ public class ANSIRenderer : IRenderer
         Console.Write("\x1b[0m"); // Reset all attributes
         Console.Write("\x1b[2J\x1b[H"); // Clear screen
         Console.CursorVisible = true;
-        
+
         _initialized = false;
     }
 
