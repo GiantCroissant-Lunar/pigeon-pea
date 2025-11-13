@@ -8,9 +8,11 @@ using GoRogue.Pathing;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using MessagePipe;
+using PigeonPea.Contracts.Plugin;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Events;
 using PigeonPea.Shared.Rendering;
+using PluginEvents = PigeonPea.Game.Contracts.Events;
 using CTile = PigeonPea.Shared.Components.Tile;
 using RTile = PigeonPea.Shared.Rendering.Tile;
 
@@ -51,12 +53,25 @@ public class GameWorld
     private readonly IPublisher<PlayerLevelUpEvent>? _playerLevelUpPublisher;
     private readonly IPublisher<DoorOpenedEvent>? _doorOpenedPublisher;
     private readonly IPublisher<StairsDescendedEvent>? _stairsDescendedPublisher;
+    // Plugin system event bus (optional)
+    private readonly IEventBus? _eventBus;
+
+    // Fire-and-forget helper to safely publish plugin events without surfacing exceptions
+    private void TryPublishPluginEvent<TEvent>(TEvent evt)
+    {
+        if (_eventBus == null) return;
+        _ = System.Threading.Tasks.Task.Run(async () =>
+        {
+            try { await _eventBus.PublishAsync(evt).ConfigureAwait(false); }
+            catch { /* Swallow plugin exceptions to avoid impacting core game loop */ }
+        });
+    }
 
     /// <summary>
     /// Creates a new GameWorld with the specified dimensions.
     /// For use without dependency injection.
     /// </summary>
-    public GameWorld(int width = 80, int height = 50)
+    public GameWorld(int width = 80, int height = 50, IEventBus? eventBus = null)
     {
         Width = width;
         Height = height;
@@ -76,6 +91,7 @@ public class GameWorld
         _playerLevelUpPublisher = null;
         _doorOpenedPublisher = null;
         _stairsDescendedPublisher = null;
+        _eventBus = eventBus;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -100,7 +116,8 @@ public class GameWorld
         IPublisher<ItemDroppedEvent> itemDroppedPublisher,
         IPublisher<PlayerLevelUpEvent> playerLevelUpPublisher,
         IPublisher<DoorOpenedEvent> doorOpenedPublisher,
-        IPublisher<StairsDescendedEvent> stairsDescendedPublisher)
+        IPublisher<StairsDescendedEvent> stairsDescendedPublisher,
+        IEventBus? eventBus = null)
     {
         Width = width;
         Height = height;
@@ -120,6 +137,7 @@ public class GameWorld
         _playerLevelUpPublisher = playerLevelUpPublisher;
         _doorOpenedPublisher = doorOpenedPublisher;
         _stairsDescendedPublisher = stairsDescendedPublisher;
+        _eventBus = eventBus;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -491,6 +509,15 @@ public class GameWorld
                 HealthIncrease = healthIncrease
             });
         }
+        // Publish plugin-facing event via IEventBus
+        if (entity.Has<PlayerComponent>())
+        {
+            TryPublishPluginEvent(new PluginEvents.PlayerLevelUpEvent
+            {
+                NewLevel = newLevel,
+                HealthIncrease = healthIncrease
+            });
+        }
     }
 
     /// <summary>
@@ -539,6 +566,17 @@ public class GameWorld
                 Source = sourceName
             });
         }
+        // Publish plugin-facing PlayerDamagedEvent
+        if (defender.Has<PlayerComponent>())
+        {
+            string sourceName = attacker.Has<AIComponent>() ? "Enemy" : "Unknown";
+            TryPublishPluginEvent(new PluginEvents.PlayerDamagedEvent
+            {
+                Damage = damage,
+                RemainingHealth = defenderHealth.Current,
+                Source = sourceName
+            });
+        }
 
         // Mark as dead if health reaches 0
         if (!defenderHealth.IsAlive && !defender.Has<Dead>())
@@ -557,6 +595,16 @@ public class GameWorld
                 _enemyDefeatedPublisher.Publish(new EnemyDefeatedEvent
                 {
                     EnemyName = "Enemy", // Could be enhanced with enemy name component
+                    ExperienceGained = xpGained
+                });
+            }
+            // Publish plugin-facing EnemyDefeatedEvent
+            if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>())
+            {
+                int xpGained = defender.Has<ExperienceValue>() ? defender.Get<ExperienceValue>().XP : 0;
+                TryPublishPluginEvent(new PluginEvents.EnemyDefeatedEvent
+                {
+                    EnemyName = "Enemy",
                     ExperienceGained = xpGained
                 });
             }
@@ -711,6 +759,12 @@ public class GameWorld
                 ItemType = itemType
             });
         }
+        // Publish plugin-facing ItemPickedUpEvent
+        TryPublishPluginEvent(new PluginEvents.ItemPickedUpEvent
+        {
+            ItemName = itemName,
+            ItemType = itemType
+        });
 
         return true;
     }
@@ -760,6 +814,12 @@ public class GameWorld
                     ItemType = itemType
                 });
             }
+            // Publish plugin-facing ItemUsedEvent
+            TryPublishPluginEvent(new PluginEvents.ItemUsedEvent
+            {
+                ItemName = itemName,
+                ItemType = itemType
+            });
 
             return true;
         }
@@ -805,6 +865,11 @@ public class GameWorld
                 ItemName = itemName
             });
         }
+        // Publish plugin-facing ItemDroppedEvent
+        TryPublishPluginEvent(new PluginEvents.ItemDroppedEvent
+        {
+            ItemName = itemName
+        });
         return true;
     }
 

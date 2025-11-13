@@ -29,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../PigeonPea.Game.Contracts/PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="../../../app-essential/core/PigeonPea.Contracts/PigeonPea.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
