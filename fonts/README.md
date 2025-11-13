@@ -4,7 +4,7 @@ This folder contains the assets and scripts to build the project’s custom CJK 
 
 ## Layout
 
-```
+```text
 fonts/
   src/
     svg/
@@ -26,13 +26,13 @@ fonts/
 
 1) Generate SVGs
 
-```
+```bash
 task fonts:generate-svgs
 ```
 
 2) Build fonts (set env vars to base TTFs)
 
-```
+```bash
 export BASE_FONT_REGULAR="/path/to/SarasaFixedCL-Regular.ttf"
 export BASE_FONT_BOLD="/path/to/SarasaFixedCL-Bold.ttf"
 task fonts:build
@@ -42,9 +42,8 @@ Outputs: `fonts/dist/LunarSarasaMono-Regular.ttf`, `fonts/dist/LunarSarasaMono-B
 
 3) Create dev bundle skeleton
 
-```
+```bash
 task bundle:rio:dev
 ```
 
 See also: docs/rfcs/RFC-020-Font-Pipeline-and-PUA-Layout.md and docs/fonts/PUA-LAYOUT.md.
-
