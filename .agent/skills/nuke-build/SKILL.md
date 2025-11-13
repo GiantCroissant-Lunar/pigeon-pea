@@ -144,14 +144,14 @@ Build artifacts in: `./build/nuke/build/bin/`
 
 ## Nuke vs. dotnet CLI
 
-| Aspect               | Nuke Build                      | dotnet CLI                    |
-| -------------------- | ------------------------------- | ----------------------------- |
-| **Purpose**          | Build orchestration & pipelines | Direct .NET compilation       |
-| **Complexity**       | Complex multi-step workflows    | Simple build/test tasks       |
-| **Cross-platform**   | Unified scripts (sh/ps1/cmd)    | dotnet command (all platforms)|
-| **Customization**    | C# code for build logic         | MSBuild properties            |
-| **CI/CD**            | First-class support             | Requires scripting            |
-| **Learning curve**   | Moderate (requires C# knowledge)| Low (CLI commands)            |
+| Aspect             | Nuke Build                       | dotnet CLI                     |
+| ------------------ | -------------------------------- | ------------------------------ |
+| **Purpose**        | Build orchestration & pipelines  | Direct .NET compilation        |
+| **Complexity**     | Complex multi-step workflows     | Simple build/test tasks        |
+| **Cross-platform** | Unified scripts (sh/ps1/cmd)     | dotnet command (all platforms) |
+| **Customization**  | C# code for build logic          | MSBuild properties             |
+| **CI/CD**          | First-class support              | Requires scripting             |
+| **Learning curve** | Moderate (requires C# knowledge) | Low (CLI commands)             |
 
 **When to use Nuke:** Complex builds, CI/CD pipelines, multi-project orchestration
 **When to use dotnet:** Simple builds, quick compilation, local development
@@ -172,5 +172,6 @@ Current project targets (see `Build.cs`):
 - **Compile**: Compiles the solution (default target)
 
 Target dependencies:
+
 - Compile → Restore
 - Clean → (runs before Restore)
