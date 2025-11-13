@@ -94,9 +94,11 @@ public partial class GameCanvas : Image
 ### Package Source
 
 The DisposePattern generator packages are sourced from the [eco-shared repository](https://github.com/GiantCroissant-Lunar/eco-shared) and stored locally in `../.local-packages/`:
-- `Plate.SCG.General.DisposePattern.0.1.0.nupkg`
-- `Plate.SCG.Shared.Attributes.0.1.0.nupkg`
-- `Plate.SCG.Shared.Abstractions.0.1.0.nupkg`
+- `Plate.SCG.General.DisposePattern.0.1.0.nupkg` - The source generator
+- `Plate.SCG.Shared.Attributes.0.1.0.nupkg` - Required attributes
+- `Plate.SCG.Shared.Abstractions.0.1.0.nupkg` - Transitive dependency (not directly referenced)
+
+**Note**: Only the first two packages are directly referenced in project files. The Abstractions package is included as a dependency but doesn't require explicit project references.
 
 ### NuGet Configuration
 
@@ -110,7 +112,9 @@ The local package source is configured in `dotnet/NuGet.Config`:
 ### Current Usage in Codebase
 
 The DisposePattern is currently applied to:
-- **GameCanvas** (`PigeonPea.Windows`): Disposes `SKBitmap` resources properly
+- **GameCanvas** (`PigeonPea.Windows`): Disposes `SKBitmap` and `WriteableBitmap` graphics resources properly
+
+**Important**: Dispose must be called explicitly when the control is no longer needed (e.g., when the parent window closes). Do not call Dispose() in `OnDetachedFromVisualTree` as Avalonia controls can be detached and reattached to the visual tree.
 
 ### Future Considerations
 

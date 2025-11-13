@@ -25,6 +25,7 @@ public partial class GameCanvas : Image
     private AnimationSystem? _animationSystem;
     [ToBeDisposed]
     private SKBitmap? _bitmap;
+    [ToBeDisposed]
     private WriteableBitmap? _writeableBitmap;
     private bool _isInitialized;
     private const int TileSize = 16;
@@ -47,6 +48,10 @@ public partial class GameCanvas : Image
         _particleSystem = particleSystem;
         _animationSystem = animationSystem;
 
+        // Dispose existing resources if Initialize is called multiple times
+        _bitmap?.Dispose();
+        _writeableBitmap?.Dispose();
+
         // Create bitmap for rendering
         _bitmap = new SKBitmap(CanvasWidth, CanvasHeight, SKColorType.Bgra8888, SKAlphaType.Premul);
         _writeableBitmap = new WriteableBitmap(
@@ -57,18 +62,6 @@ public partial class GameCanvas : Image
 
         Source = _writeableBitmap;
         Stretch = Avalonia.Media.Stretch.Uniform;
-
-        // Subscribe to cleanup event
-        DetachedFromVisualTree += OnDetachedFromVisualTree;
-    }
-
-    private void OnDetachedFromVisualTree(object? sender, Avalonia.VisualTreeAttachmentEventArgs e)
-    {
-        // Dispose resources when control is removed from visual tree
-        Dispose();
-
-        // Unsubscribe from event to prevent memory leaks
-        DetachedFromVisualTree -= OnDetachedFromVisualTree;
     }
 
     /// <summary>
