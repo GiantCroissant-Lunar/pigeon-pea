@@ -18,6 +18,11 @@ public static class TerminalRendererFactory
         Auto,
 
         /// <summary>
+        /// iTerm2 Inline Images Protocol renderer (used by WezTerm).
+        /// </summary>
+        ITerm2,
+
+        /// <summary>
         /// Kitty Graphics Protocol renderer.
         /// </summary>
         Kitty,
@@ -82,6 +87,12 @@ public static class TerminalRendererFactory
     /// <returns>An IRenderer instance for the best available terminal graphics mode.</returns>
     private static IRenderer SelectRendererByCapabilities(TerminalCapabilities capabilities)
     {
+        // iTerm2 has highest priority (works on WezTerm)
+        if (capabilities.SupportsiTerm2Graphics)
+        {
+            return new ITerm2GraphicsRenderer();
+        }
+
         if (capabilities.SupportsKittyGraphics)
         {
             return new KittyGraphicsRenderer();
@@ -110,6 +121,7 @@ public static class TerminalRendererFactory
     {
         return rendererType switch
         {
+            RendererType.ITerm2 => new ITerm2GraphicsRenderer(),
             RendererType.Kitty => new KittyGraphicsRenderer(),
             RendererType.Sixel => new SixelRenderer(),
             RendererType.Braille => new BrailleRenderer(),

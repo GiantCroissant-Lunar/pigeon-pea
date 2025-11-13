@@ -1,5 +1,5 @@
 using PigeonPea.Console.Rendering;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Shared.Rendering; // for IRenderer
 using Xunit;
 
 namespace PigeonPea.Console.Tests.Rendering;

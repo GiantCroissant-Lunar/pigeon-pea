@@ -23,6 +23,12 @@ public class TerminalCapabilities
     public bool SupportsKittyGraphics { get; private set; }
 
     /// <summary>
+    /// Gets whether iTerm2 Inline Images Protocol is supported.
+    /// WezTerm uses this instead of Kitty graphics on Windows.
+    /// </summary>
+    public bool SupportsiTerm2Graphics { get; private set; }
+
+    /// <summary>
     /// Gets whether Unicode Braille characters are supported.
     /// </summary>
     public bool SupportsBraille { get; private set; } = true; // Unicode is widely supported
@@ -58,6 +64,7 @@ public class TerminalCapabilities
         TerminalType = source.TerminalType;
         SupportsSixel = source.SupportsSixel;
         SupportsKittyGraphics = source.SupportsKittyGraphics;
+        SupportsiTerm2Graphics = source.SupportsiTerm2Graphics;
         SupportsBraille = source.SupportsBraille;
         SupportsTrueColor = source.SupportsTrueColor;
         Supports256Color = source.Supports256Color;
@@ -102,10 +109,30 @@ public class TerminalCapabilities
         // Parse TERM environment variable for capabilities
         caps.ParseTermVariable(term);
 
-        // Check for Kitty terminal
-        if (termProgram.Contains("kitty", StringComparison.OrdinalIgnoreCase) ||
-            Environment.GetEnvironmentVariable("KITTY_WINDOW_ID") != null)
+        // Check for iTerm2 inline images (WezTerm on Windows)
+        // WezTerm claims to support Kitty but actually uses iTerm2 protocol
+        bool isWezterm = termProgram.Contains("wezterm", StringComparison.OrdinalIgnoreCase) ||
+                         (Environment.GetEnvironmentVariable("WEZTERM_EXECUTABLE") ?? "").Length > 0 ||
+                         (Environment.GetEnvironmentVariable("WEZTERM") ?? "").Length > 0;
+
+        if (isWezterm)
         {
+            // WezTerm uses iTerm2 inline images protocol, not Kitty graphics
+            caps.SupportsiTerm2Graphics = true;
+        }
+
+        // Check for actual Kitty terminal and allow explicit override
+        var forceKitty = (Environment.GetEnvironmentVariable("PIGEONPEA_FORCE_KITTY") ?? "").Trim();
+        if (!string.IsNullOrEmpty(forceKitty) &&
+            (forceKitty.Equals("1") || forceKitty.Equals("true", StringComparison.OrdinalIgnoreCase)))
+        {
+            // Force iTerm2 protocol (works on WezTerm)
+            caps.SupportsiTerm2Graphics = true;
+        }
+        else if (termProgram.Contains("kitty", StringComparison.OrdinalIgnoreCase) ||
+                 Environment.GetEnvironmentVariable("KITTY_WINDOW_ID") != null)
+        {
+            // Actual Kitty terminal
             caps.SupportsKittyGraphics = true;
         }
 

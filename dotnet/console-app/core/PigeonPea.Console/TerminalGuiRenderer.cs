@@ -122,7 +122,15 @@ public class TerminalGuiRenderer : IRenderer
             return;
 
         var bg = ConvertColor(color);
+        // Set attribute and paint the entire viewport area with spaces to ensure background is visible
         _driver.SetAttribute(new GuiAttribute(GuiColor.White, bg));
+        for (int y = 0; y < _viewport.Height; y++)
+        {
+            _driver.Move(0, y);
+            // Draw a line of spaces across the viewport width
+            _driver.AddStr(new string(' ', Math.Max(0, _viewport.Width)));
+        }
+        _driver.Move(0, 0);
     }
 
     /// <summary>

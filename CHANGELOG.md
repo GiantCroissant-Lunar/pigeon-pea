@@ -51,10 +51,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `.gitignore` for version control
   - `.gitleaksignore` and `.secrets.baseline` for secret detection
   - `Taskfile.yml` for task automation
-  - `requirements-dev.txt` for Python development dependencies
+  - `requirements/dev.txt` for Python development dependencies
 - Setup scripts
-  - `setup-pre-commit.sh` for Unix/Linux/macOS
-  - `setup-pre-commit.ps1` for Windows PowerShell
+  - `scripts/setup-pre-commit.sh` for Unix/Linux/macOS
+  - `scripts/setup-pre-commit.ps1` for Windows PowerShell
 - MIT License
 
 [Unreleased]: https://github.com/GiantCroissant-Lunar/pigeon-pea/compare/v0.1.0...HEAD

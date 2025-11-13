@@ -1,5 +1,7 @@
+extern alias SR;
 using PigeonPea.Console.Rendering;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Shared.Rendering; // legacy types: Tile, Viewport, IRenderTarget
+using SRVP = SR::PigeonPea.Shared.Rendering; // SR alias only when needed
 using SadRogue.Primitives;
 using Xunit;
 
@@ -320,7 +322,7 @@ public class SixelRendererTests : IDisposable
     /// <summary>
     /// Mock render target for testing.
     /// </summary>
-    private class MockRenderTarget : IRenderTarget
+    private class MockRenderTarget : PigeonPea.Shared.Rendering.IRenderTarget
     {
         public int Width { get; }
         public int Height { get; }
