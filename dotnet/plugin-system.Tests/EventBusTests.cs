@@ -52,17 +52,30 @@ public class EventBusTests
     }
 
     [Fact]
-    public async Task Publish_HandlerThrows_BubblesException()
+    public async Task Publish_HandlerThrows_CollectsExceptionsAndRunsAll()
     {
         var bus = new EventBus();
-        var ran = false;
+        var ran1 = false;
+        var ran2 = false;
+        var ran3 = false;
 
-        bus.Subscribe<string>(s => { ran = true; return Task.CompletedTask; });
-        bus.Subscribe<string>(s => throw new InvalidOperationException("boom"));
+        bus.Subscribe<string>(s => { ran1 = true; return Task.CompletedTask; });
+        bus.Subscribe<string>(s => { throw new InvalidOperationException("boom"); });
+        bus.Subscribe<string>(s => { ran2 = true; throw new ArgumentException("crash"); });
+        bus.Subscribe<string>(s => { ran3 = true; return Task.CompletedTask; });
 
         Func<Task> act = () => bus.PublishAsync("x");
-        await act.Should().ThrowAsync<InvalidOperationException>();
-        ran.Should().BeTrue();
+
+        // Should throw AggregateException containing all handler exceptions
+        var exception = await act.Should().ThrowAsync<AggregateException>();
+        exception.Which.InnerExceptions.Should().HaveCount(2);
+        exception.Which.InnerExceptions.Should().Contain(ex => ex is InvalidOperationException);
+        exception.Which.InnerExceptions.Should().Contain(ex => ex is ArgumentException);
+
+        // All handlers should have run despite exceptions in some
+        ran1.Should().BeTrue();
+        ran2.Should().BeTrue();
+        ran3.Should().BeTrue();
     }
 
     [Fact]

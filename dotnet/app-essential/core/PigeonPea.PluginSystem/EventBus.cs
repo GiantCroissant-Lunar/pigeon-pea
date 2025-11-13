@@ -47,11 +47,30 @@ public class EventBus : IEventBus
         }
 
         var payload = evt!;
-        var tasks = copy.Select(h => h(payload));
-        foreach (var task in tasks)
+        var exceptions = new List<Exception>();
+
+        // Execute all handlers, collecting any exceptions
+        foreach (var handler in copy)
         {
             if (ct.IsCancellationRequested) break;
-            await task.ConfigureAwait(false);
+
+            try
+            {
+                await handler(payload).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                // Collect exception but continue executing other handlers
+                exceptions.Add(ex);
+            }
+        }
+
+        // If any handlers failed, throw AggregateException with all failures
+        if (exceptions.Count > 0)
+        {
+            throw new AggregateException(
+                $"One or more event handlers failed for {typeof(TEvent).FullName}",
+                exceptions);
         }
     }
 }
