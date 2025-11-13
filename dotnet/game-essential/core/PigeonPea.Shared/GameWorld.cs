@@ -12,6 +12,7 @@ using PigeonPea.Contracts.Plugin;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Events;
 using PigeonPea.Shared.Rendering;
+using PluginEvents = PigeonPea.Game.Contracts.Events;
 using CTile = PigeonPea.Shared.Components.Tile;
 using RTile = PigeonPea.Shared.Rendering.Tile;
 
@@ -54,6 +55,17 @@ public class GameWorld
     private readonly IPublisher<StairsDescendedEvent>? _stairsDescendedPublisher;
     // Plugin system event bus (optional)
     private readonly IEventBus? _eventBus;
+
+    // Fire-and-forget helper to safely publish plugin events without surfacing exceptions
+    private void TryPublishPluginEvent<TEvent>(TEvent evt)
+    {
+        if (_eventBus == null) return;
+        _ = System.Threading.Tasks.Task.Run(async () =>
+        {
+            try { await _eventBus.PublishAsync(evt).ConfigureAwait(false); }
+            catch { /* Swallow plugin exceptions to avoid impacting core game loop */ }
+        });
+    }
 
     /// <summary>
     /// Creates a new GameWorld with the specified dimensions.
@@ -498,9 +510,9 @@ public class GameWorld
             });
         }
         // Publish plugin-facing event via IEventBus
-        if (entity.Has<PlayerComponent>() && _eventBus != null)
+        if (entity.Has<PlayerComponent>())
         {
-            _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.PlayerLevelUpEvent
+            TryPublishPluginEvent(new PluginEvents.PlayerLevelUpEvent
             {
                 NewLevel = newLevel,
                 HealthIncrease = healthIncrease
@@ -555,10 +567,10 @@ public class GameWorld
             });
         }
         // Publish plugin-facing PlayerDamagedEvent
-        if (defender.Has<PlayerComponent>() && _eventBus != null)
+        if (defender.Has<PlayerComponent>())
         {
             string sourceName = attacker.Has<AIComponent>() ? "Enemy" : "Unknown";
-            _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.PlayerDamagedEvent
+            TryPublishPluginEvent(new PluginEvents.PlayerDamagedEvent
             {
                 Damage = damage,
                 RemainingHealth = defenderHealth.Current,
@@ -587,10 +599,10 @@ public class GameWorld
                 });
             }
             // Publish plugin-facing EnemyDefeatedEvent
-            if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>() && _eventBus != null)
+            if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>())
             {
                 int xpGained = defender.Has<ExperienceValue>() ? defender.Get<ExperienceValue>().XP : 0;
-                _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.EnemyDefeatedEvent
+                TryPublishPluginEvent(new PluginEvents.EnemyDefeatedEvent
                 {
                     EnemyName = "Enemy",
                     ExperienceGained = xpGained
@@ -748,14 +760,11 @@ public class GameWorld
             });
         }
         // Publish plugin-facing ItemPickedUpEvent
-        if (_eventBus != null)
+        TryPublishPluginEvent(new PluginEvents.ItemPickedUpEvent
         {
-            _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.ItemPickedUpEvent
-            {
-                ItemName = itemName,
-                ItemType = itemType
-            });
-        }
+            ItemName = itemName,
+            ItemType = itemType
+        });
 
         return true;
     }
@@ -806,14 +815,11 @@ public class GameWorld
                 });
             }
             // Publish plugin-facing ItemUsedEvent
-            if (_eventBus != null)
+            TryPublishPluginEvent(new PluginEvents.ItemUsedEvent
             {
-                _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.ItemUsedEvent
-                {
-                    ItemName = itemName,
-                    ItemType = itemType
-                });
-            }
+                ItemName = itemName,
+                ItemType = itemType
+            });
 
             return true;
         }
@@ -860,13 +866,10 @@ public class GameWorld
             });
         }
         // Publish plugin-facing ItemDroppedEvent
-        if (_eventBus != null)
+        TryPublishPluginEvent(new PluginEvents.ItemDroppedEvent
         {
-            _ = _eventBus.PublishAsync(new PigeonPea.Game.Contracts.Events.ItemDroppedEvent
-            {
-                ItemName = itemName
-            });
-        }
+            ItemName = itemName
+        });
         return true;
     }
 
