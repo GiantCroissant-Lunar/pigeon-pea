@@ -30,7 +30,10 @@ def parse_args(argv):
     i = 0
     while i < len(argv):
         a = argv[i]
-        if a == "--base":
+        if a in ("-h", "--help"):
+            print("Usage: --base <ttf> --output <ttf> [--svg-dir <dir>] [--start-cp 0xE000] [--angles a,b,c]")
+            sys.exit(0)
+        elif a == "--base":
             i += 1; base = argv[i]
         elif a == "--output":
             i += 1; output = argv[i]
@@ -40,6 +43,9 @@ def parse_args(argv):
             i += 1; start_cp = int(argv[i], 0)
         elif a == "--angles":
             i += 1; angles = [int(x) for x in argv[i].split(',')]
+        else:
+            print(f"Unknown argument: {a}")
+            sys.exit(1)
         i += 1
     if not base or not output:
         print("Usage: --base <ttf> --output <ttf> [--svg-dir <dir>] [--start-cp 0xE000]")
@@ -62,6 +68,7 @@ def main():
         # Fallback: use space width
         default_width = font["space"].width
 
+    imported = 0
     # Import angle glyphs
     for idx, angle in enumerate(angles):
         cp = start_cp + idx
@@ -81,6 +88,7 @@ def main():
             g.right_side_bearing = 0
         except Exception:
             pass
+        imported += 1
 
     # Update names for output family
     # If the base is already Nerd-patched, we retain glyph sets.
@@ -88,15 +96,22 @@ def main():
     font.fullname = font.fullname.replace("Sarasa", "Lunar Sarasa Mono") if font.fullname else "Lunar Sarasa Mono"
     font.familyname = "Lunar Sarasa Mono"
 
+    if imported == 0:
+        print("ERROR: No glyphs were imported. Aborting.")
+        sys.exit(1)
+
     # Generate TTF
     out_dir = os.path.dirname(output)
     if out_dir and not os.path.exists(out_dir):
         os.makedirs(out_dir, exist_ok=True)
-    font.generate(output)
+    try:
+        font.generate(output)
+    except Exception as e:
+        print("ERROR: Failed to generate font:", e)
+        sys.exit(1)
     font.close()
     print("Generated:", output)
 
 
 if __name__ == "__main__":
     main()
-

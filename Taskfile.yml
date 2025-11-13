@@ -82,7 +82,7 @@ tasks:
     desc: Build fonts only if font-related files changed vs BASE_REF (default origin/main)
     dir: .
     cmds:
-      - bash -lc 'BASE_REF="${BASE_REF:-origin/main}"; echo "Base ref: $BASE_REF"; git fetch origin --quiet || true; CHANGED=$(git diff --name-only "$BASE_REF"...HEAD | grep -E "^(fonts/|docs/fonts/|docs/rfcs/RFC-020-)" || true); if [ -z "$CHANGED" ]; then echo "No font-related changes detected; skipping fonts:build"; exit 0; else echo "Changes detected:\n$CHANGED"; fi'
+      - bash -lc 'BASE_REF="${BASE_REF:-origin/main}"; echo "Base ref: $BASE_REF"; git fetch origin --quiet || true; CHANGED=$(git diff --name-only "$BASE_REF"...HEAD | grep -E "^(fonts/|docs/fonts/|docs/rfcs/RFC-020-|Taskfile.yml$|\.github/workflows/fonts-pipeline\.yml$)" || true); if [ -z "$CHANGED" ]; then echo "No font-related changes detected; skipping fonts:build"; exit 0; else echo "Changes detected:\n$CHANGED"; fi'
       - task fonts:build
 
   fonts:test:
@@ -108,7 +108,7 @@ EOF'
     desc: Check if font-related files changed vs base (BASE_REF=origin/main by default)
     dir: .
     cmds:
-      - bash -lc 'BASE_REF="${BASE_REF:-origin/main}"; echo "Base ref: $BASE_REF"; git fetch origin --quiet || true; CHANGED=$(git diff --name-only "$BASE_REF"...HEAD | grep -E "^(fonts/|docs/fonts/|docs/rfcs/RFC-020-)" || true); if [ -z "$CHANGED" ]; then echo "No font-related changes detected."; else echo "Font-related changes detected:"; echo "$CHANGED"; fi'
+      - bash -lc 'BASE_REF="${BASE_REF:-origin/main}"; echo "Base ref: $BASE_REF"; git fetch origin --quiet || true; CHANGED=$(git diff --name-only "$BASE_REF"...HEAD | grep -E "^(fonts/|docs/fonts/|docs/rfcs/RFC-020-|Taskfile.yml$|\.github/workflows/fonts-pipeline\.yml$)" || true); if [ -z "$CHANGED" ]; then echo "No font-related changes detected."; else echo "Font-related changes detected:"; echo "$CHANGED"; fi'
 
   default:
     desc: Show available tasks
