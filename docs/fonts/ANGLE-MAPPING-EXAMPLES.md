@@ -24,4 +24,3 @@ public static class MapGlyphs
 bucket = round(angle / 10) mod 36
 codepoint = 0xE000 + bucket
 ```
-

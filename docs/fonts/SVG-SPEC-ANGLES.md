@@ -34,4 +34,3 @@ fonts/src/svg/lines/angle_350.svg
 - Render a 5×5 grid of the same angle; confirm continuous lines with no gaps.
 - Render alternating angles to validate junction appearance.
 - Check at common terminal sizes (11–14 pt) on Windows and macOS.
-

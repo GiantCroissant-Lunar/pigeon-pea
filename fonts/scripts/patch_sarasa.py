@@ -31,24 +31,34 @@ def parse_args(argv):
     while i < len(argv):
         a = argv[i]
         if a in ("-h", "--help"):
-            print("Usage: --base <ttf> --output <ttf> [--svg-dir <dir>] [--start-cp 0xE000] [--angles a,b,c]")
+            print(
+                "Usage: --base <ttf> --output <ttf> "
+                "[--svg-dir <dir>] [--start-cp 0xE000] [--angles a,b,c]"
+            )
             sys.exit(0)
         elif a == "--base":
-            i += 1; base = argv[i]
+            i += 1
+            base = argv[i]
         elif a == "--output":
-            i += 1; output = argv[i]
+            i += 1
+            output = argv[i]
         elif a == "--svg-dir":
-            i += 1; svg_dir = argv[i]
+            i += 1
+            svg_dir = argv[i]
         elif a == "--start-cp":
-            i += 1; start_cp = int(argv[i], 0)
+            i += 1
+            start_cp = int(argv[i], 0)
         elif a == "--angles":
-            i += 1; angles = [int(x) for x in argv[i].split(',')]
+            i += 1
+            angles = [int(x) for x in argv[i].split(",")]
         else:
             print(f"Unknown argument: {a}")
             sys.exit(1)
         i += 1
     if not base or not output:
-        print("Usage: --base <ttf> --output <ttf> [--svg-dir <dir>] [--start-cp 0xE000]")
+        print(
+            "Usage: --base <ttf> --output <ttf> [--svg-dir <dir>] [--start-cp 0xE000]"
+        )
         sys.exit(1)
     return base, output, svg_dir, start_cp, angles
 
@@ -77,7 +87,7 @@ def main():
         if not os.path.exists(svg_path):
             print(f"WARN: Missing SVG {svg_path}; skipping CP U+{cp:04X}")
             continue
-        print(f"Importing {angle:03d}° -> U+{cp:04X}")
+        print(f"Importing {angle:03d} deg -> U+{cp:04X}")
         g = font.createChar(cp, name)
         g.clear()
         g.importOutlines(svg_path)
@@ -92,8 +102,16 @@ def main():
 
     # Update names for output family
     # If the base is already Nerd-patched, we retain glyph sets.
-    font.fontname = font.fontname.replace("Sarasa", "LunarSarasaMono") if font.fontname else "LunarSarasaMono"
-    font.fullname = font.fullname.replace("Sarasa", "Lunar Sarasa Mono") if font.fullname else "Lunar Sarasa Mono"
+    font.fontname = (
+        font.fontname.replace("Sarasa", "LunarSarasaMono")
+        if font.fontname
+        else "LunarSarasaMono"
+    )
+    font.fullname = (
+        font.fullname.replace("Sarasa", "Lunar Sarasa Mono")
+        if font.fullname
+        else "Lunar Sarasa Mono"
+    )
     font.familyname = "Lunar Sarasa Mono"
 
     if imported == 0:

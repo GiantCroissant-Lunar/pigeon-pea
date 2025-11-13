@@ -70,4 +70,3 @@ Notes:
 
 - A sample `bundle/` tree exists (sans binaries) and a working `rio.toml` template is provided.
 - Rio renders PUA glyphs when the font is installed or referenced by family.
-

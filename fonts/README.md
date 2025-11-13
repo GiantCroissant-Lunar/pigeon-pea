@@ -24,13 +24,13 @@ fonts/
 
 ## Steps
 
-1) Generate SVGs
+1. Generate SVGs
 
 ```bash
 task fonts:generate-svgs
 ```
 
-2) Build fonts (set env vars to base TTFs)
+2. Build fonts (set env vars to base TTFs)
 
 ```bash
 export BASE_FONT_REGULAR="/path/to/SarasaFixedCL-Regular.ttf"
@@ -40,7 +40,7 @@ task fonts:build
 
 Outputs: `fonts/dist/LunarSarasaMono-Regular.ttf`, `fonts/dist/LunarSarasaMono-Bold.ttf`.
 
-3) Create dev bundle skeleton
+3. Create dev bundle skeleton
 
 ```bash
 task bundle:rio:dev

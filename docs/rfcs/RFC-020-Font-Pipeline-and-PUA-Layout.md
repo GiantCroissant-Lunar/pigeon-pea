@@ -88,11 +88,11 @@ fonts/
 
 Prereqs: FontForge (with Python), ttfautohint, Node.js (for Sarasa build if rebuilding base), Nerd Fonts patch pipeline (if starting from plain Sarasa).
 
-1) Obtain base font:
+1. Obtain base font:
    - Option A: Start from Nerd-patched Sarasa Gothic; then import our PUA glyphs.
    - Option B: Build Sarasa from source -> patch Nerd symbols -> import PUA glyphs.
-2) Import SVGs via FontForge script for both Regular and Bold faces.
-3) Generate TTFs into `fonts/dist/` and verify metrics/connectivity in terminal.
+2. Import SVGs via FontForge script for both Regular and Bold faces.
+3. Generate TTFs into `fonts/dist/` and verify metrics/connectivity in terminal.
 
 ## Angle -> Glyph Mapping (example)
 
@@ -117,4 +117,3 @@ codepoint = 0xE000 + bucket
 - Expand junctions/terrain/POIs.
 - Optional 5-degree set; smoothing heuristics in renderer.
 - CI/CD artifacts per platform and versioned releases (RFC-022).
-
