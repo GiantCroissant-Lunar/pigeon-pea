@@ -22,6 +22,7 @@ impl Envelope {
         }
     }
 
+    #[allow(dead_code)]
     pub fn error(cmd: String, message: String) -> Self {
         Self {
             cmd,

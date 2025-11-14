@@ -6,7 +6,9 @@ use serde_json::Value;
 fn test_spawn_json_format() {
     let mut cmd = Command::cargo_bin("dev-tool").unwrap();
     let output = cmd
-        .args(&["spawn", "--mob", "goblin", "--x", "10", "--y", "20", "--output", "json"])
+        .args(&[
+            "spawn", "--mob", "goblin", "--x", "10", "--y", "20", "--output", "json",
+        ])
         .output()
         .unwrap();
 
@@ -26,7 +28,9 @@ fn test_spawn_text_format() {
     cmd.args(&["spawn", "--mob", "goblin", "--x", "10", "--y", "20"])
         .assert()
         .success()
-        .stdout(predicate::str::contains("Spawning mob 'goblin' at coordinates (10, 20)"));
+        .stdout(predicate::str::contains(
+            "Spawning mob 'goblin' at coordinates (10, 20)",
+        ));
 }
 
 #[test]
@@ -58,10 +62,7 @@ fn test_tp_json_format() {
 #[test]
 fn test_reload_json_format() {
     let mut cmd = Command::cargo_bin("dev-tool").unwrap();
-    let output = cmd
-        .args(&["reload", "--output", "json"])
-        .output()
-        .unwrap();
+    let output = cmd.args(&["reload", "--output", "json"]).output().unwrap();
 
     assert!(output.status.success());
 
@@ -108,10 +109,7 @@ fn test_regen_map_without_seed_json_format() {
 #[test]
 fn test_exit_code_success() {
     let mut cmd = Command::cargo_bin("dev-tool").unwrap();
-    cmd.args(&["reload"])
-        .assert()
-        .success()
-        .code(0);
+    cmd.args(&["reload"]).assert().success().code(0);
 }
 
 #[test]
