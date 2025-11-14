@@ -21,21 +21,21 @@ pub enum Commands {
         mob: String,
 
         /// X coordinate
-        #[arg(long)]
+        #[arg(long, allow_hyphen_values = true)]
         x: i32,
 
         /// Y coordinate
-        #[arg(long)]
+        #[arg(long, allow_hyphen_values = true)]
         y: i32,
     },
     /// Teleport to specified coordinates
     Tp {
         /// X coordinate
-        #[arg(long)]
+        #[arg(long, allow_hyphen_values = true)]
         x: i32,
 
         /// Y coordinate
-        #[arg(long)]
+        #[arg(long, allow_hyphen_values = true)]
         y: i32,
     },
     /// Reload the game configuration
