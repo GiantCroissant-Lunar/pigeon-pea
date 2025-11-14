@@ -1,0 +1,20 @@
+---
+# Pre-commit hooks setup playbook
+# Standalone playbook for setting up pre-commit hooks only
+
+- name: Setup pre-commit hooks
+  hosts: localhost
+  connection: local
+  gather_facts: true
+
+  roles:
+    - role: precommit
+      tags: [precommit]
+
+  post_tasks:
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: |
+          ✅ Pre-commit hooks installed!
+
+          Test with: pre-commit run --all-files

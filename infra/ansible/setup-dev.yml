@@ -1,0 +1,44 @@
+---
+# Main development environment setup playbook for pigeon-pea project
+# Installs all necessary development tools and dependencies
+
+- name: Setup pigeon-pea development environment
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars_files:
+    - vars/dev_tools.yml
+
+  pre_tasks:
+    - name: Display setup information
+      ansible.builtin.debug:
+        msg: "Setting up pigeon-pea development environment on {{ ansible_os_family }}"
+
+  roles:
+    - role: python
+      tags: [python, dev]
+
+    - role: dotnet
+      tags: [dotnet, dev]
+
+    - role: nodejs
+      tags: [nodejs, dev]
+
+    - role: docker
+      tags: [docker, infra]
+      when: ansible_os_family != "Windows"
+
+    - role: precommit
+      tags: [precommit, dev]
+
+  post_tasks:
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: |
+          ✅ Development environment setup complete!
+
+          Next steps:
+          1. Verify installations: python --version, dotnet --version, node --version
+          2. Setup memory infrastructure: ansible-playbook setup-memory.yml
+          3. Run pre-commit: pre-commit run --all-files
+          4. Start developing!

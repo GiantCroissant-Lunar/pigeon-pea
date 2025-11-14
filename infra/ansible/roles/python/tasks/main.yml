@@ -1,0 +1,59 @@
+---
+# Python development environment setup
+
+- name: Check if Python {{ python_version }} is installed
+  ansible.builtin.command: python{{ python_version }} --version
+  register: python_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Python {{ python_version }} (Debian/Ubuntu)
+  become: true
+  ansible.builtin.apt:
+    name:
+      - "python{{ python_version }}"
+      - "python{{ python_version }}-dev"
+      - "python{{ python_version }}-venv"
+      - python3-pip
+    state: present
+    update_cache: yes
+  when:
+    - ansible_os_family == "Debian"
+    - python_check.rc != 0
+
+- name: Install Python {{ python_version }} (macOS)
+  community.general.homebrew:
+    name: "python@{{ python_version }}"
+    state: present
+  when:
+    - ansible_os_family == "Darwin"
+    - python_check.rc != 0
+
+- name: Upgrade pip
+  ansible.builtin.pip:
+    name: pip
+    state: latest
+    executable: "pip{{ python_version }}"
+  changed_when: false
+
+- name: Install Python development packages
+  ansible.builtin.pip:
+    name: "{{ python_packages }}"
+    state: present
+    executable: "pip{{ python_version }}"
+
+- name: Install project-specific Python packages
+  ansible.builtin.pip:
+    name: "{{ project_python_packages }}"
+    state: present
+    executable: "pip{{ python_version }}"
+  when: project_python_packages is defined
+
+- name: Verify Python installation
+  ansible.builtin.command: python{{ python_version }} --version
+  register: python_version_check
+  changed_when: false
+
+- name: Display Python version
+  ansible.builtin.debug:
+    msg: "Python installed: {{ python_version_check.stdout }}"

@@ -1,0 +1,82 @@
+---
+# Docker and Docker Compose setup
+
+- name: Check if Docker is installed
+  ansible.builtin.command: docker --version
+  register: docker_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Docker (Debian/Ubuntu)
+  when:
+    - ansible_os_family == "Debian"
+    - docker_check.rc != 0
+  block:
+    - name: Install Docker dependencies
+      become: true
+      ansible.builtin.apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg
+          - lsb-release
+        state: present
+        update_cache: yes
+
+    - name: Add Docker GPG key
+      become: true
+      ansible.builtin.apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      become: true
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Install Docker
+      become: true
+      ansible.builtin.apt:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: present
+        update_cache: yes
+
+    - name: Add user to docker group
+      become: true
+      ansible.builtin.user:
+        name: "{{ dev_user }}"
+        groups: docker
+        append: yes
+
+- name: Install Docker (macOS)
+  community.general.homebrew_cask:
+    name: docker
+    state: present
+  when:
+    - ansible_os_family == "Darwin"
+    - docker_check.rc != 0
+
+- name: Check if Docker Compose is installed
+  ansible.builtin.command: docker compose version
+  register: compose_check
+  changed_when: false
+  failed_when: false
+
+- name: Verify Docker installation
+  ansible.builtin.command: docker --version
+  register: docker_version_check
+  changed_when: false
+
+- name: Display Docker version
+  ansible.builtin.debug:
+    msg: "Docker installed: {{ docker_version_check.stdout }}"
+
+- name: Remind about Docker group (Linux)
+  ansible.builtin.debug:
+    msg: "⚠️  You may need to log out and back in for Docker group membership to take effect."
+  when: ansible_os_family == "Debian"

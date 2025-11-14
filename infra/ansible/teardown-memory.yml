@@ -1,0 +1,29 @@
+---
+# Memory infrastructure teardown playbook
+# Removes Qdrant and cleans up memory infrastructure
+
+- name: Teardown pigeon-pea memory infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Stop and remove Qdrant containers
+      community.docker.docker_compose:
+        project_src: "{{ playbook_dir }}/../memory"
+        state: absent
+      tags: [memory, cleanup]
+
+    - name: Remove Qdrant data (optional)
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/../memory/data"
+        state: absent
+      when: remove_data | default(false) | bool
+      tags: [memory, cleanup, dangerous]
+
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: |
+          ✅ Memory infrastructure removed!
+
+          To remove data as well, run with: -e remove_data=true

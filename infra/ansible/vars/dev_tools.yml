@@ -1,0 +1,39 @@
+---
+# Development tool versions and configurations
+
+# Python
+python_version: "3.11"
+python_packages:
+  - pip
+  - virtualenv
+  - black
+  - isort
+  - flake8
+  - pytest
+  - pre-commit
+
+# .NET
+dotnet_version: "8.0"
+dotnet_channel: "LTS"
+
+# Node.js
+nodejs_version: "18"  # LTS
+nodejs_packages:
+  - prettier
+
+# Docker
+docker_edition: "ce"  # Community Edition
+docker_install_compose: true
+
+# Project-specific Python packages (from requirements if they exist)
+project_python_packages:
+  - anthropic  # For Claude Code integration
+  - openai     # For embeddings (if using OpenAI)
+  - qdrant-client  # For vector database
+  - pyyaml     # For config files
+  - jsonlines  # For memory storage
+
+# Platform-specific settings
+linux_package_manager: apt  # Options: apt, yum, dnf, pacman
+macos_package_manager: brew
+windows_package_manager: choco  # Chocolatey

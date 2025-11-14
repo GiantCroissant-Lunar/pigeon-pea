@@ -1,0 +1,21 @@
+---
+# Memory infrastructure configuration
+
+# Qdrant settings
+qdrant_version: "latest"
+qdrant_http_port: 6333
+qdrant_grpc_port: 6334
+qdrant_data_path: "{{ playbook_dir }}/../memory/data"
+qdrant_logs_path: "{{ playbook_dir }}/../memory/logs"
+
+# Docker Compose settings
+memory_docker_compose_file: "{{ playbook_dir }}/../memory/docker-compose.yml"
+memory_project_name: "pigeon-pea-memory"
+
+# Embedding settings (for future use)
+embedding_provider: "openai"  # Options: openai, local
+embedding_model: "text-embedding-3-small"
+
+# MCP server settings
+mcp_server_script: "{{ playbook_dir }}/../memory/scripts/mcp-server.py"
+mcp_log_level: "INFO"

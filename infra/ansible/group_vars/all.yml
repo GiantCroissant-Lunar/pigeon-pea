@@ -1,0 +1,24 @@
+---
+# Global variables for all hosts
+# These apply to all playbooks and roles
+
+# Project information
+project_name: pigeon-pea
+project_description: "A roguelike game with map generation and dungeon crawling"
+
+# Development environment
+dev_user: "{{ lookup('env', 'USER') | default(lookup('env', 'USERNAME'), true) }}"
+
+# Tool installation preferences
+install_method: system  # Options: system, userspace, homebrew (macOS)
+
+# Pre-commit settings
+precommit_autoupdate: false  # Set to true to auto-update hooks
+
+# Docker settings
+docker_compose_version: "2.23.0"
+
+# Memory infrastructure
+memory_enabled: true
+qdrant_port: 6333
+qdrant_grpc_port: 6334

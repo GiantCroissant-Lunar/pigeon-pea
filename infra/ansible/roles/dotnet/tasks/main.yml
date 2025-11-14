@@ -1,0 +1,49 @@
+---
+# .NET SDK setup
+
+- name: Check if .NET SDK is installed
+  ansible.builtin.command: dotnet --version
+  register: dotnet_check
+  changed_when: false
+  failed_when: false
+
+- name: Install .NET SDK (Debian/Ubuntu)
+  when:
+    - ansible_os_family == "Debian"
+    - dotnet_check.rc != 0
+  block:
+    - name: Add Microsoft package repository key
+      become: true
+      ansible.builtin.apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    - name: Add Microsoft package repository
+      become: true
+      ansible.builtin.apt_repository:
+        repo: "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-{{ ansible_distribution_release }}-prod {{ ansible_distribution_release }} main"
+        state: present
+
+    - name: Install .NET SDK
+      become: true
+      ansible.builtin.apt:
+        name: "dotnet-sdk-{{ dotnet_version }}"
+        state: present
+        update_cache: yes
+
+- name: Install .NET SDK (macOS)
+  community.general.homebrew_cask:
+    name: dotnet-sdk
+    state: present
+  when:
+    - ansible_os_family == "Darwin"
+    - dotnet_check.rc != 0
+
+- name: Verify .NET SDK installation
+  ansible.builtin.command: dotnet --version
+  register: dotnet_version_check
+  changed_when: false
+
+- name: Display .NET version
+  ansible.builtin.debug:
+    msg: ".NET SDK installed: {{ dotnet_version_check.stdout }}"
