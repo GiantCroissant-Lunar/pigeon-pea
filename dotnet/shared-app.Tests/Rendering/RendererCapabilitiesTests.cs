@@ -9,7 +9,7 @@ namespace PigeonPea.Shared.Tests.Rendering;
 public class RendererCapabilitiesTests
 {
     [Fact]
-    public void RendererCapabilities_None_HasNoFlags()
+    public void RendererCapabilitiesNoneHasNoFlags()
     {
         // Arrange
         var caps = RendererCapabilities.None;
@@ -19,7 +19,7 @@ public class RendererCapabilitiesTests
     }
 
     [Fact]
-    public void Supports_SingleCapability_ReturnsTrueWhenSupported()
+    public void SupportsSingleCapabilityReturnsTrueWhenSupported()
     {
         // Arrange
         var caps = RendererCapabilities.TrueColor;
@@ -32,7 +32,7 @@ public class RendererCapabilitiesTests
     }
 
     [Fact]
-    public void Supports_SingleCapability_ReturnsFalseWhenNotSupported()
+    public void SupportsSingleCapabilityReturnsFalseWhenNotSupported()
     {
         // Arrange
         var caps = RendererCapabilities.TrueColor;
@@ -45,7 +45,7 @@ public class RendererCapabilitiesTests
     }
 
     [Fact]
-    public void Supports_MultipleCapabilities_ReturnsTrueWhenAllSupported()
+    public void SupportsMultipleCapabilitiesReturnsTrueWhenAllSupported()
     {
         // Arrange
         var caps = RendererCapabilities.TrueColor | RendererCapabilities.Sprites | RendererCapabilities.Animation;
@@ -58,7 +58,7 @@ public class RendererCapabilitiesTests
     }
 
     [Fact]
-    public void Supports_MultipleCapabilities_ReturnsFalseWhenPartiallySupported()
+    public void SupportsMultipleCapabilitiesReturnsFalseWhenPartiallySupported()
     {
         // Arrange
         var caps = RendererCapabilities.TrueColor | RendererCapabilities.Sprites;
@@ -71,7 +71,7 @@ public class RendererCapabilitiesTests
     }
 
     [Fact]
-    public void Supports_None_AlwaysReturnsTrue()
+    public void SupportsNoneAlwaysReturnsTrue()
     {
         // Arrange
         var caps = RendererCapabilities.TrueColor | RendererCapabilities.Sprites;
@@ -84,7 +84,7 @@ public class RendererCapabilitiesTests
     }
 
     [Fact]
-    public void RendererCapabilities_AllFlags_CanBeCombined()
+    public void RendererCapabilitiesAllFlagsCanBeCombined()
     {
         // Arrange & Act
         var caps = RendererCapabilities.TrueColor |
@@ -113,7 +113,7 @@ public class RendererCapabilitiesTests
     [InlineData(RendererCapabilities.PixelGraphics)]
     [InlineData(RendererCapabilities.CharacterBased)]
     [InlineData(RendererCapabilities.MouseInput)]
-    public void Supports_IndividualCapability_WorksForEachFlag(RendererCapabilities capability)
+    public void SupportsIndividualCapabilityWorksForEachFlag(RendererCapabilities capability)
     {
         // Arrange
         var caps = capability;
@@ -126,7 +126,7 @@ public class RendererCapabilitiesTests
     }
 
     [Fact]
-    public void RendererCapabilities_TypicalWindowsRenderer_HasExpectedCapabilities()
+    public void RendererCapabilitiesTypicalWindowsRendererHasExpectedCapabilities()
     {
         // Arrange - typical Windows renderer with SkiaSharp
         var caps = RendererCapabilities.TrueColor |
@@ -143,7 +143,7 @@ public class RendererCapabilitiesTests
     }
 
     [Fact]
-    public void RendererCapabilities_TypicalConsoleRenderer_HasExpectedCapabilities()
+    public void RendererCapabilitiesTypicalConsoleRendererHasExpectedCapabilities()
     {
         // Arrange - typical Console renderer (ASCII fallback)
         var caps = RendererCapabilities.CharacterBased;

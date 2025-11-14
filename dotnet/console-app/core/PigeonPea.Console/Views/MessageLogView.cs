@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using ObservableCollections;
-using Terminal.Gui;
 using PigeonPea.Shared.ViewModels;
+using Terminal.Gui;
 
 namespace PigeonPea.Console.Views;
 
@@ -27,7 +27,7 @@ public class MessageLogView : FrameView
         X = 30;
         Y = 0;
         Width = Dim.Fill();
-        Height = Dim.Fill() - 3;
+        Height = Dim.Fill(3);
 
         // Create list view
         _listView = new ListView

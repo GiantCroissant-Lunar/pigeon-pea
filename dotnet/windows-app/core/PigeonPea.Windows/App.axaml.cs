@@ -1,11 +1,11 @@
+using System;
+using System.IO;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using PigeonPea.Shared;
 using PigeonPea.Windows.Rendering;
-using System;
-using System.IO;
 
 namespace PigeonPea.Windows;
 

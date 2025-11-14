@@ -8,6 +8,42 @@
 
 A multi-language project with pre-commit hooks for code quality and security.
 
+## Architecture
+
+PigeonPea uses a **domain-driven architecture** with two primary domains:
+
+- **Map Domain** (`dotnet/Map/`): World map generation, navigation, rendering
+- **Dungeon Domain** (`dotnet/Dungeon/`): Dungeon exploration, FOV, pathfinding, rendering
+
+Each domain follows a **Core / Control / Rendering** pattern:
+
+- **Core** – Domain models, generators, adapters (pure .NET logic)
+- **Control** – Navigation, ECS world managers, ReactiveUI ViewModels
+- **Rendering** – Visualization pipelines (Skia/Braille/Sixel/etc.) built atop `Shared.Rendering`
+
+Shared infrastructure lives under `dotnet/Shared/`:
+
+- `PigeonPea.Shared.ECS` – Arch components (Position, Renderable, Health, etc.)
+- `PigeonPea.Shared.Rendering` – Rendering contracts (`IRenderer`, tiles, primitives, converters)
+
+Archived/legacy code remains for reference only:
+
+- `_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Rendering/` (deprecated – see README-DEPRECATED)
+- `dotnet/archive/SharedApp.Rendering.archived-*/` (old shared renderer)
+
+**Start here for details:** [docs/architecture/domain-organization.md](docs/architecture/domain-organization.md).
+
+### Technology Stack
+
+- **.NET 9.0** – Core runtime for all projects
+- **Arch ECS** – Entity Component System powering map/dungeon worlds
+- **FantasyMapGenerator Core** – Procedural world map generation (wrapped in Map.Core)
+- **GoRogue** – Dungeon layout, FOV, and pathfinding primitives (wrapped in Dungeon.Core/Control)
+- **Mapsui** – Map navigation UI integration in Map.Control
+- **SkiaSharp** – Rendering backend for rasterization
+- **Terminal.Gui** – Console application UI
+- **Avalonia** – Desktop application UI
+
 ## Pre-commit Hooks
 
 This project uses [pre-commit](https://pre-commit.com/) to maintain code quality and prevent secrets from being committed. The hooks automatically check and format code in multiple languages.
@@ -35,7 +71,10 @@ Install the required tools based on the languages you're using:
 pip install pre-commit
 
 # Development dependencies (required for agent validation scripts)
-pip install -r requirements-dev.txt
+pip install -r requirements/dev.txt
+
+# Or use Taskfile
+task python:install-dev
 
 # .NET SDK (for C# formatting)
 # Download from: https://dotnet.microsoft.com/download
@@ -121,7 +160,7 @@ pre-commit autoupdate
 
 **Agent validation fails:**
 
-- Ensure development dependencies are installed: `pip install -r requirements-dev.txt`
+- Ensure development dependencies are installed: `pip install -r requirements/dev.txt`
 - Check `.agent/schemas/` for schema definitions
 - See `scripts/README.md` for validation details
 

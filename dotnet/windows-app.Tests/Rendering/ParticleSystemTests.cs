@@ -29,7 +29,7 @@ public class ParticleSystemTests : IDisposable
     #region Particle Tests
 
     [Fact]
-    public void Particle_InitialState_IsInactive()
+    public void ParticleInitialStateIsInactive()
     {
         // Arrange & Act
         var particle = new Particle();
@@ -40,7 +40,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void Particle_WithPositiveLifetime_IsActive()
+    public void ParticleWithPositiveLifetimeIsActive()
     {
         // Arrange
         var particle = new Particle
@@ -54,7 +54,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void Particle_Update_ReducesLifetime()
+    public void ParticleUpdateReducesLifetime()
     {
         // Arrange
         var particle = new Particle
@@ -72,7 +72,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void Particle_Update_UpdatesPosition()
+    public void ParticleUpdateUpdatesPosition()
     {
         // Arrange
         var particle = new Particle
@@ -92,7 +92,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void Particle_Update_WhenExpired_StaysInactive()
+    public void ParticleUpdateWhenExpiredStaysInactive()
     {
         // Arrange
         var particle = new Particle
@@ -112,7 +112,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void Particle_Age_ReturnsNormalizedValue()
+    public void ParticleAgeReturnsNormalizedValue()
     {
         // Arrange
         var particle = new Particle
@@ -126,7 +126,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void Particle_Age_WhenJustBorn_ReturnsZero()
+    public void ParticleAgeWhenJustBornReturnsZero()
     {
         // Arrange
         var particle = new Particle
@@ -140,7 +140,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void Particle_Age_WhenExpired_ReturnsOne()
+    public void ParticleAgeWhenExpiredReturnsOne()
     {
         // Arrange
         var particle = new Particle
@@ -154,7 +154,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void Particle_Reset_ClearsAllProperties()
+    public void ParticleResetClearsAllProperties()
     {
         // Arrange
         var particle = new Particle
@@ -182,7 +182,7 @@ public class ParticleSystemTests : IDisposable
     #region ParticleEmitter Tests
 
     [Fact]
-    public void ParticleEmitter_DefaultState_IsActive()
+    public void ParticleEmitterDefaultStateIsActive()
     {
         // Arrange & Act
         var emitter = new ParticleEmitter();
@@ -192,7 +192,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleEmitter_DefaultValues_AreReasonable()
+    public void ParticleEmitterDefaultValuesAreReasonable()
     {
         // Arrange & Act
         var emitter = new ParticleEmitter();
@@ -208,7 +208,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleEmitter_CanSetPosition()
+    public void ParticleEmitterCanSetPosition()
     {
         // Arrange
         var emitter = new ParticleEmitter();
@@ -222,7 +222,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleEmitter_CanSetDirection()
+    public void ParticleEmitterCanSetDirection()
     {
         // Arrange
         var emitter = new ParticleEmitter();
@@ -239,7 +239,7 @@ public class ParticleSystemTests : IDisposable
     #region ParticleSystem Tests
 
     [Fact]
-    public void ParticleSystem_InitialState_HasNoActiveParticles()
+    public void ParticleSystemInitialStateHasNoActiveParticles()
     {
         // Arrange & Act
         var system = new ParticleSystem(100);
@@ -249,7 +249,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_MaxParticles_MatchesConstructorParameter()
+    public void ParticleSystemMaxParticlesMatchesConstructorParameter()
     {
         // Arrange & Act
         var system = new ParticleSystem(500);
@@ -259,7 +259,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Emit_CreatesParticles()
+    public void ParticleSystemEmitCreatesParticles()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -277,7 +277,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Emit_WithNullEmitter_ThrowsArgumentNullException()
+    public void ParticleSystemEmitWithNullEmitterThrowsArgumentNullException()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -287,7 +287,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Emit_WhenInactive_DoesNotCreateParticles()
+    public void ParticleSystemEmitWhenInactiveDoesNotCreateParticles()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -305,7 +305,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Emit_WithZeroRate_DoesNotCreateParticles()
+    public void ParticleSystemEmitWithZeroRateDoesNotCreateParticles()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -322,7 +322,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Emit_RespectsMaxParticleLimit()
+    public void ParticleSystemEmitRespectsMaxParticleLimit()
     {
         // Arrange
         var maxParticles = 10;
@@ -341,7 +341,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Update_ReducesParticleLifetime()
+    public void ParticleSystemUpdateReducesParticleLifetime()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -364,7 +364,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Update_RemovesExpiredParticles()
+    public void ParticleSystemUpdateRemovesExpiredParticles()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -386,7 +386,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Update_RecyclesParticlesToPool()
+    public void ParticleSystemUpdateRecyclesParticlesToPool()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -408,7 +408,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Render_WithNullCanvas_ThrowsArgumentNullException()
+    public void ParticleSystemRenderWithNullCanvasThrowsArgumentNullException()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -418,7 +418,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Render_WithActiveParticles_DrawsToCanvas()
+    public void ParticleSystemRenderWithActiveParticlesDrawsToCanvas()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -440,7 +440,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Render_WithNoParticles_DoesNotThrow()
+    public void ParticleSystemRenderWithNoParticlesDoesNotThrow()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -450,7 +450,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Clear_RemovesAllActiveParticles()
+    public void ParticleSystemClearRemovesAllActiveParticles()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -471,7 +471,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_Clear_ReturnsParticlesToPool()
+    public void ParticleSystemClearReturnsParticlesToPool()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -491,7 +491,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_EmittedParticles_HaveCorrectColor()
+    public void ParticleSystemEmittedParticlesHaveCorrectColor()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -517,7 +517,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_EmittedParticles_HaveVariedVelocities()
+    public void ParticleSystemEmittedParticlesHaveVariedVelocities()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -539,7 +539,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_EmittedParticles_RespectDirectionAndSpread()
+    public void ParticleSystemEmittedParticlesRespectDirectionAndSpread()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -560,7 +560,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_EmitMultipleTimes_AccumulatesParticles()
+    public void ParticleSystemEmitMultipleTimesAccumulatesParticles()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -585,7 +585,7 @@ public class ParticleSystemTests : IDisposable
     #region Integration Tests
 
     [Fact]
-    public void ParticleSystem_FullLifecycle_EmitUpdateRenderClear()
+    public void ParticleSystemFullLifecycleEmitUpdateRenderClear()
     {
         // Arrange
         var system = new ParticleSystem(100);
@@ -613,7 +613,7 @@ public class ParticleSystemTests : IDisposable
     }
 
     [Fact]
-    public void ParticleSystem_MultipleEmitters_CanCoexist()
+    public void ParticleSystemMultipleEmittersCanCoexist()
     {
         // Arrange
         var system = new ParticleSystem(100);

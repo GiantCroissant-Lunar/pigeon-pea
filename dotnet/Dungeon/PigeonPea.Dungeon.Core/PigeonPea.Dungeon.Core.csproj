@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="GoRogue" Version="3.0.0-beta10" />
+    <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
+  </ItemGroup>
+</Project>

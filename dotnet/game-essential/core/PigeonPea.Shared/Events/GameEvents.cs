@@ -18,4 +18,24 @@ public readonly struct GameStateChangedEvent
     /// Gets the previous game state before the transition.
     /// </summary>
     public required string PreviousState { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(GameStateChangedEvent left, GameStateChangedEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(GameStateChangedEvent left, GameStateChangedEvent right)
+    {
+        return !(left == right);
+    }
 }

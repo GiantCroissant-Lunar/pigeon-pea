@@ -17,7 +17,7 @@ if ! command -v python3 &> /dev/null; then
     exit 1
 fi
 
-echo "✓ Python 3 is installed ($(python3 --version))"
+echo "? Python 3 is installed ($(python3 --version))"
 
 # Check if pip is installed
 if ! command -v pip3 &> /dev/null; then
@@ -26,7 +26,7 @@ if ! command -v pip3 &> /dev/null; then
     exit 1
 fi
 
-echo "✓ pip3 is installed"
+echo "? pip3 is installed"
 
 # Install pre-commit
 echo ""
@@ -36,7 +36,7 @@ pip3 install pre-commit || {
     pip3 install --user pre-commit
 }
 
-echo "✓ pre-commit installed"
+echo "? pre-commit installed"
 
 # Install pre-commit hooks
 echo ""
@@ -46,7 +46,7 @@ pre-commit install || {
     exit 1
 }
 
-echo "✓ Pre-commit hooks installed"
+echo "? Pre-commit hooks installed"
 
 # Optional checks for language-specific tools
 echo ""
@@ -54,17 +54,17 @@ echo "Checking optional dependencies..."
 
 # Check .NET
 if command -v dotnet &> /dev/null; then
-    echo "✓ .NET SDK is installed ($(dotnet --version))"
+    echo "? .NET SDK is installed ($(dotnet --version))"
 else
-    echo "⚠ .NET SDK is not installed (optional for C# formatting)"
+    echo "? .NET SDK is not installed (optional for C# formatting)"
     echo "  Download from: https://dotnet.microsoft.com/download"
 fi
 
 # Check Node.js
 if command -v node &> /dev/null; then
-    echo "✓ Node.js is installed ($(node --version))"
+    echo "? Node.js is installed ($(node --version))"
 else
-    echo "⚠ Node.js is not installed (optional for JavaScript/TypeScript formatting)"
+    echo "? Node.js is not installed (optional for JavaScript/TypeScript formatting)"
     echo "  Download from: https://nodejs.org/"
 fi
 
@@ -76,7 +76,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
     echo "Running pre-commit on all files..."
     pre-commit run --all-files || {
         echo ""
-        echo "⚠ Some hooks failed. This is normal for a new setup."
+        echo "? Some hooks failed. This is normal for a new setup."
         echo "  Please review the output above and fix any issues."
     }
 fi

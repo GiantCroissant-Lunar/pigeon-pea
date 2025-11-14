@@ -30,7 +30,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_ReturnsNonNullInstance()
+    public void DetectReturnsNonNullInstance()
     {
         // Act
         var caps = TerminalCapabilities.Detect();
@@ -40,7 +40,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_SetsTerminalType()
+    public void DetectSetsTerminalType()
     {
         // Act
         var caps = TerminalCapabilities.Detect();
@@ -51,7 +51,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_SetsTerminalDimensions()
+    public void DetectSetsTerminalDimensions()
     {
         // Act
         var caps = TerminalCapabilities.Detect();
@@ -62,7 +62,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsKittyGraphics_WhenKittyWindowIdSet()
+    public void DetectDetectsKittyGraphicsWhenKittyWindowIdSet()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
@@ -76,7 +76,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsKittyGraphics_WhenTermProgramIsKitty()
+    public void DetectDetectsKittyGraphicsWhenTermProgramIsKitty()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM_PROGRAM", "kitty"))
@@ -90,7 +90,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsSixel_WhenTermContainsSixel()
+    public void DetectDetectsSixelWhenTermContainsSixel()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM", "xterm-256color-sixel"))
@@ -104,7 +104,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsSixel_WhenTermProgramIsMLTerm()
+    public void DetectDetectsSixelWhenTermProgramIsMLTerm()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM_PROGRAM", "mlterm"))
@@ -118,7 +118,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsSixel_WhenTermProgramIsWezTerm()
+    public void DetectDetectsSixelWhenTermProgramIsWezTerm()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM_PROGRAM", "WezTerm"))
@@ -132,7 +132,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_SupportsBraille_DefaultsToTrue()
+    public void DetectSupportsBrailleDefaultsToTrue()
     {
         // Act
         var caps = TerminalCapabilities.Detect();
@@ -142,7 +142,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsTrueColor_WhenColorTermIsTruecolor()
+    public void DetectDetectsTrueColorWhenColorTermIsTruecolor()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("COLORTERM", "truecolor"))
@@ -156,7 +156,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsTrueColor_WhenColorTermIs24bit()
+    public void DetectDetectsTrueColorWhenColorTermIs24bit()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("COLORTERM", "24bit"))
@@ -170,7 +170,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_Detects256Color_WhenTermContains256color()
+    public void DetectDetects256ColorWhenTermContains256color()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM", "xterm-256color"))
@@ -184,7 +184,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsTrueColor_WhenXterm256color()
+    public void DetectDetectsTrueColorWhenXterm256color()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM", "xterm-256color"))
@@ -199,7 +199,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsTrueColor_WhenScreen256color()
+    public void DetectDetectsTrueColorWhenScreen256color()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM", "screen-256color"))
@@ -214,7 +214,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_DetectsTrueColor_WhenTmux256color()
+    public void DetectDetectsTrueColorWhenTmux256color()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM", "tmux-256color"))
@@ -229,7 +229,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_UsesTermProgram_WhenAvailable()
+    public void DetectUsesTermProgramWhenAvailable()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM_PROGRAM", "iTerm.app"))
@@ -244,7 +244,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_UsesTerm_WhenTermProgramNotAvailable()
+    public void DetectUsesTermWhenTermProgramNotAvailable()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM_PROGRAM", ""))
@@ -259,7 +259,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_HandlesMinimalEnvironment()
+    public void DetectHandlesMinimalEnvironment()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM_PROGRAM", ""))
@@ -279,7 +279,7 @@ public class TerminalCapabilitiesTests
     }
 
     [Fact]
-    public void Detect_FallsBackToDefaultDimensions_WhenConsoleNotAvailable()
+    public void DetectFallsBackToDefaultDimensionsWhenConsoleNotAvailable()
     {
         // This test just verifies the method doesn't crash when Console is unavailable
         // In actual execution, Console should be available, so dimensions should be detected

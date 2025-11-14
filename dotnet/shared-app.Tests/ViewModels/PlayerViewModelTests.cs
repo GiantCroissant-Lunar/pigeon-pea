@@ -33,7 +33,7 @@ public class PlayerViewModelTests : IDisposable
 
     [Theory]
     [MemberData(nameof(GetPropertyChangeNotificationData))]
-    public void Property_WhenChanged_RaisesNotification(string propertyName, object newValue)
+    public void PropertyWhenChangedRaisesNotification(string propertyName, object newValue)
     {
         // Arrange
         var viewModel = new PlayerViewModel();
@@ -66,7 +66,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void HealthDisplay_ReturnsFormattedString()
+    public void HealthDisplayReturnsFormattedString()
     {
         // Arrange
         var viewModel = new PlayerViewModel
@@ -83,7 +83,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void HealthPercentage_CalculatesCorrectly()
+    public void HealthPercentageCalculatesCorrectly()
     {
         // Arrange
         var viewModel = new PlayerViewModel
@@ -100,7 +100,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void HealthPercentage_WithZeroMaxHealth_ReturnsZero()
+    public void HealthPercentageWithZeroMaxHealthReturnsZero()
     {
         // Arrange
         var viewModel = new PlayerViewModel
@@ -117,7 +117,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void LevelDisplay_ReturnsFormattedString()
+    public void LevelDisplayReturnsFormattedString()
     {
         // Arrange
         var viewModel = new PlayerViewModel
@@ -133,7 +133,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void PositionDisplay_ReturnsFormattedString()
+    public void PositionDisplayReturnsFormattedString()
     {
         // Arrange
         var viewModel = new PlayerViewModel
@@ -149,7 +149,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_SyncsHealthFromECS()
+    public void UpdateSyncsHealthFromECS()
     {
         // Arrange
         var viewModel = new PlayerViewModel();
@@ -163,7 +163,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_SyncsExperienceFromECS()
+    public void UpdateSyncsExperienceFromECS()
     {
         // Arrange
         var viewModel = new PlayerViewModel();
@@ -177,7 +177,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_SyncsNameFromECS()
+    public void UpdateSyncsNameFromECS()
     {
         // Arrange
         var viewModel = new PlayerViewModel();
@@ -190,7 +190,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_SyncsPositionFromECS()
+    public void UpdateSyncsPositionFromECS()
     {
         // Arrange
         var viewModel = new PlayerViewModel();
@@ -203,7 +203,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_WithDeadEntity_DoesNotThrow()
+    public void UpdateWithDeadEntityDoesNotThrow()
     {
         // Arrange
         var viewModel = new PlayerViewModel();
@@ -221,7 +221,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_WithMissingComponents_DoesNotThrow()
+    public void UpdateWithMissingComponentsDoesNotThrow()
     {
         // Arrange
         var viewModel = new PlayerViewModel
@@ -250,7 +250,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_MultipleUpdates_SyncsCorrectly()
+    public void UpdateMultipleUpdatesSyncsCorrectly()
     {
         // Arrange
         var viewModel = new PlayerViewModel();
@@ -272,7 +272,7 @@ public class PlayerViewModelTests : IDisposable
     }
 
     [Fact]
-    public void PropertyChanged_DoesNotFireWhenValueUnchanged()
+    public void PropertyChangedDoesNotFireWhenValueUnchanged()
     {
         // Arrange
         var viewModel = new PlayerViewModel { Health = 100 };
@@ -294,7 +294,7 @@ public class PlayerViewModelTests : IDisposable
 
     [Theory]
     [MemberData(nameof(GetComputedPropertyData))]
-    public void ComputedProperty_ReflectsSourcePropertyChanges(Action<PlayerViewModel> arrange, Action<PlayerViewModel> act, Func<PlayerViewModel, object> getValue, object expectedValue, string description)
+    public void ComputedPropertyReflectsSourcePropertyChanges(Action<PlayerViewModel> arrange, Action<PlayerViewModel> act, Func<PlayerViewModel, object> getValue, object expectedValue, string description)
     {
         // Arrange
         var viewModel = new PlayerViewModel();

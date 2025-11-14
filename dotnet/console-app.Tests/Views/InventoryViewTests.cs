@@ -1,13 +1,13 @@
-using Xunit;
+using System.Threading.Tasks;
+using Arch.Core;
 using FluentAssertions;
 using MessagePipe;
 using Microsoft.Extensions.DependencyInjection;
 using PigeonPea.Console.Views;
-using PigeonPea.Shared.ViewModels;
-using PigeonPea.Shared.Events;
 using PigeonPea.Shared.Components;
-using Arch.Core;
-using System.Threading.Tasks;
+using PigeonPea.Shared.Events;
+using PigeonPea.Shared.ViewModels;
+using Xunit;
 
 namespace PigeonPea.Console.Tests.Views;
 
@@ -37,7 +37,7 @@ public class InventoryViewTests : IDisposable
     }
 
     [Fact]
-    public void InventoryView_Constructor_InitializesWithViewModel()
+    public void InventoryViewConstructorInitializesWithViewModel()
     {
         // Assert
         _view.Should().NotBeNull();
@@ -45,7 +45,7 @@ public class InventoryViewTests : IDisposable
     }
 
     [Fact]
-    public void InventoryView_SubscribesToItemsAdded()
+    public void InventoryViewSubscribesToItemsAdded()
     {
         // Arrange
         var world = World.Create();
@@ -68,7 +68,7 @@ public class InventoryViewTests : IDisposable
     }
 
     [Fact]
-    public void InventoryView_SubscribesToItemsRemoved()
+    public void InventoryViewSubscribesToItemsRemoved()
     {
         // Arrange
         var world = World.Create();
@@ -92,7 +92,7 @@ public class InventoryViewTests : IDisposable
     }
 
     [Fact]
-    public void InventoryView_SubscribesToSelectedIndexChanges()
+    public void InventoryViewSubscribesToSelectedIndexChanges()
     {
         // Arrange
         var world = World.Create();
@@ -116,14 +116,14 @@ public class InventoryViewTests : IDisposable
     }
 
     [Fact]
-    public void InventoryView_SelectedItem_IsNullWhenNoSelection()
+    public void InventoryViewSelectedItemIsNullWhenNoSelection()
     {
         // Act & Assert
         _viewModel.SelectedItem.Should().BeNull();
     }
 
     [Fact]
-    public void InventoryView_SelectedItem_IsNullWhenIndexOutOfRange()
+    public void InventoryViewSelectedItemIsNullWhenIndexOutOfRange()
     {
         // Arrange
         var world = World.Create();
@@ -146,7 +146,7 @@ public class InventoryViewTests : IDisposable
     }
 
     [Fact]
-    public void InventoryView_HandlesMultipleItems()
+    public void InventoryViewHandlesMultipleItems()
     {
         // Arrange
         var world = World.Create();
@@ -170,7 +170,7 @@ public class InventoryViewTests : IDisposable
     }
 
     [Fact]
-    public void InventoryView_DisposesSubscriptionsOnDispose()
+    public void InventoryViewDisposesSubscriptionsOnDispose()
     {
         // Arrange
         var services = new ServiceCollection();

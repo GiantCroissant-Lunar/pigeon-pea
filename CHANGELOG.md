@@ -7,12 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Added
+### Added (RFC-007 Implementation)
 
-- Public repository files (CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md, CHANGELOG.md)
-- GitHub issue templates
-- GitHub pull request template
-- Badges to README.md (License, Pre-commit, CI workflows)
+- Domain-driven architecture with independent Map and Dungeon domains (Core / Control / Rendering trinity)
+- Arch ECS integration with separate worlds for cities/markers and player/monsters/items
+- World managers (`MapWorldManager`, `DungeonWorldManager`) with clean APIs over Arch queries
+- Complete dungeon rendering pipeline with FOV-aware entity visibility (ASCII + RGBA)
+- Map entity rendering overlays (cities, quest markers, dungeon entrances)
+- Comprehensive ECS usage guide (`docs/examples/ecs-usage.md`)
+- Performance baseline documentation for Phase 2 benchmarks
+
+### Changed
+
+- Consolidated rendering assets from `SharedApp.Rendering` into `Map.Rendering`, `Dungeon.Rendering`, and `Shared.Rendering`
+- Updated README.md, architecture docs, CLAUDE.md, and migration guides to reflect the new domain-driven structure
+- Refined pathfinding weights and FOV behavior to satisfy regression tests
+
+### Deprecated
+
+- `FantasyMapGenerator.Rendering` (superseded by `PigeonPea.Map.Rendering`)
+
+### Removed
+
+- Old `SharedApp.Rendering` implementation (archived under `dotnet/archive/`)
+- Legacy placeholder `Class1.cs` files from new domain projects
 
 ## [0.1.0] - 2025-01-01
 
@@ -51,10 +69,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `.gitignore` for version control
   - `.gitleaksignore` and `.secrets.baseline` for secret detection
   - `Taskfile.yml` for task automation
-  - `requirements-dev.txt` for Python development dependencies
+  - `requirements/dev.txt` for Python development dependencies
 - Setup scripts
-  - `setup-pre-commit.sh` for Unix/Linux/macOS
-  - `setup-pre-commit.ps1` for Windows PowerShell
+  - `scripts/setup-pre-commit.sh` for Unix/Linux/macOS
+  - `scripts/setup-pre-commit.ps1` for Windows PowerShell
 - MIT License
 
 [Unreleased]: https://github.com/GiantCroissant-Lunar/pigeon-pea/compare/v0.1.0...HEAD

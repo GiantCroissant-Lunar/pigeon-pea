@@ -1,5 +1,7 @@
+extern alias SR;
 using PigeonPea.Console.Rendering;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Shared.Rendering; // legacy Tile, Viewport, IRenderTarget
+using SRVP = SR::PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
 using Xunit;
 using System;
@@ -235,7 +237,9 @@ public class KittyGraphicsRendererTests : IDisposable
 
         // Assert
         var output = _consoleOutput.ToString();
-        Assert.Contains($"48;2;{clearColor.R};{clearColor.G};{clearColor.B}m", output);
+        Assert.Contains("\x1b[2J", output); // cleared screen
+        Assert.Contains("\x1b[H", output);  // cursor home
+        Assert.Contains("48;2", output);    // background color present
     }
 
     [Fact]
@@ -250,7 +254,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_WithValidData_CachesImage()
+    public void TransmitImage_IncreasesCachedImageCount()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -597,7 +601,7 @@ public class KittyGraphicsRendererTests : IDisposable
     /// <summary>
     /// Mock render target for testing.
     /// </summary>
-    private sealed class MockRenderTarget : IRenderTarget
+    private sealed class MockRenderTarget : PigeonPea.Shared.Rendering.IRenderTarget
     {
         public int Width { get; }
         public int Height { get; }

@@ -1,12 +1,12 @@
-using Terminal.Gui;
+using System;
+using Arch.Core;
+using Arch.Core.Extensions;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Rendering;
-using System;
+using Terminal.Gui;
 using GuiAttribute = Terminal.Gui.Attribute;
 using SRColor = SadRogue.Primitives.Color;
-using Arch.Core;
-using Arch.Core.Extensions;
 
 namespace PigeonPea.Console;
 

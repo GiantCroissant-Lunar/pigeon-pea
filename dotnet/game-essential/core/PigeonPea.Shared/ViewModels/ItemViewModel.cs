@@ -1,6 +1,6 @@
 using Arch.Core;
-using ReactiveUI;
 using PigeonPea.Shared.Components;
+using ReactiveUI;
 
 namespace PigeonPea.Shared.ViewModels;
 

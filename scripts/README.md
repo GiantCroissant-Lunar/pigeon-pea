@@ -7,7 +7,7 @@ This directory contains automation scripts for the pigeon-pea project.
 Install development dependencies before running scripts:
 
 ```bash
-pip install -r requirements-dev.txt
+pip install -r requirements/dev.txt
 ```
 
 Required packages:

@@ -1,0 +1,127 @@
+                    {
+                        if (!mapView.Visible) mapView.Visible = true;
+                        mapView.SetNeedsDraw();
+                        if (pixelView.Visible)
+                        {
+                            pixelView.Visible = false;
+                            pixelView.Cleanup(); // Clean up Sixel resources when switching away
+                        }
+                        if (_brailleView.Visible) _brailleView.Visible = false;
+                    }
+                    else if (_renderMode == RenderMode.Braille)
+                    {
+                        if (mapView.Visible) mapView.Visible = false;
+                        if (pixelView.Visible)
+                        {
+                            pixelView.Visible = false;
+                            pixelView.Cleanup(); // Clean up Sixel resources when switching away
+                        }
+                        if (!_brailleView.Visible) _brailleView.Visible = true;
+                        _brailleView.SetNeedsDraw();
+                    }
+                    else // ITerm2/Sixel
+                    {
+                        if (mapView.Visible) mapView.Visible = false;
+                        if (_brailleView.Visible) _brailleView.Visible = false;
+                        if (!pixelView.Visible) { pixelView.Visible = true; needsRedraw = true; }
+                        pixelView.SetNeedsDraw();
+
+                        // Use Terminal.Gui's Application.Sixel API - only render when something changed
+                        if (needsRedraw)
+                        {
+                            pixelView.RenderImage();
+                        }
+                    }
+                }
+                catch { }
+                return true;
+            });
+
+            // Pan keys
+            top.KeyDown += (sender, e) =>
+            {
+                bool changed = false;
+                switch (e.KeyCode)
+                {
+                    case KeyCode.CursorUp: _nav?.Pan(0, -5 * (_navCore?.ZoomX ?? _zoom)); changed = true; break;
+                    case KeyCode.CursorDown: _nav?.Pan(0, +5 * (_navCore?.ZoomX ?? _zoom)); changed = true; break;
+                    case KeyCode.CursorLeft: _nav?.Pan(-10 * (_navCore?.ZoomX ?? _zoom), 0); changed = true; break;
+                    case KeyCode.CursorRight: _nav?.Pan(+10 * (_navCore?.ZoomX ?? _zoom), 0); changed = true; break;
+                }
+                if (changed)
+                {
+                    mapView.SetNeedsDraw();
+                    pixelView.MarkDirty();
+                    _brailleView.MarkDirty();
+                }
+            };
+
+            AppendLog(logView, "HUD started (Terminal.Gui v2)");
+            AppendMapSummary(logView, _map);
+            Application.Run(top);
+        }
+        finally
+        {
+            Application.Shutdown();
+        }
+    }
+
+    private static void AppendLog(TextView log, string text)
+    {
+        log.Text = (log.Text?.ToString() ?? string.Empty) + text + Environment.NewLine;
+    }
+
+    private static void AppendMapSummary(TextView log, MapData map)
+    {
+        try
+        {
+            int cellCount = map.Cells?.Count ?? 0;
+            int rivers = map.Rivers?.Count ?? 0;
+            int riverCells = 0;
+            if (map.Rivers != null)
+            {
+                var seen = new System.Collections.Generic.HashSet<int>();
+                foreach (var r in map.Rivers)
+                {
+                    if (r?.Cells == null) continue;
+                    foreach (var cid in r.Cells) seen.Add(cid);
+                }
+                riverCells = seen.Count;
+            }
+            int biomes = map.Biomes?.Count ?? 0;
+            var biomeCounts = new System.Collections.Generic.Dictionary<int, int>();
+            if (map.Cells != null)
+            {
+                foreach (var c in map.Cells)
+                {
+                    int b = c.Biome;
+                    if (!biomeCounts.ContainsKey(b)) biomeCounts[b] = 0;
+                    biomeCounts[b]++;
+                }
+            }
+            AppendLog(log, $"[HUD] Cells={cellCount}, Rivers={rivers}, RiverCells={riverCells}, Biomes={biomes}");
+            if (map.Biomes != null && map.Biomes.Count > 0)
+            {
+                int shown = 0;
+                foreach (var kv in biomeCounts)
+                {
+                    if (kv.Key < 0 || kv.Key >= map.Biomes.Count) continue;
+                    var name = map.Biomes[kv.Key].Name;
+                    AppendLog(log, $"  {name}: {kv.Value}");
+                    if (++shown >= 8) { AppendLog(log, "  ..."); break; }
+                }
+            }
+        }
+        catch { }
+    }
+
+    private static void EnsurePixelRenderer()
+    {
+        if (_pixelRenderer == null)
+        {
+            _pixelRenderer = new ITerm2GraphicsRenderer();
+            _pixelTarget = new ConsoleRenderTarget(System.Console.WindowWidth, System.Console.WindowHeight);
+            _pixelRenderer.Initialize(_pixelTarget);
+        }
+    }
+}

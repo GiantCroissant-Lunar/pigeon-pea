@@ -10,7 +10,7 @@ public class AsciinemaParserTests
     private const string SampleHeader = @"{""version"": 2, ""width"": 80, ""height"": 24, ""timestamp"": 1234567890}";
 
     [Fact]
-    public void Parse_EmptyInput_ReturnsParserWithNoFrames()
+    public void ParseEmptyInputReturnsParserWithNoFrames()
     {
         // Arrange
         var lines = Array.Empty<string>();
@@ -24,7 +24,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void Parse_OnlyHeader_ReturnsParserWithHeaderAndNoFrames()
+    public void ParseOnlyHeaderReturnsParserWithHeaderAndNoFrames()
     {
         // Arrange
         var lines = new[] { SampleHeader };
@@ -42,7 +42,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void Parse_HeaderWithoutTimestamp_ParsesSuccessfully()
+    public void ParseHeaderWithoutTimestampParsesSuccessfully()
     {
         // Arrange
         var lines = new[] { @"{""version"": 2, ""width"": 80, ""height"": 24}" };
@@ -59,7 +59,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void Parse_SingleOutputFrame_ParsesTimestampAndContent()
+    public void ParseSingleOutputFrameParsesTimestampAndContent()
     {
         // Arrange
         var lines = new[]
@@ -78,7 +78,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void Parse_MultipleFrames_ParsesAllFrames()
+    public void ParseMultipleFramesParsesAllFrames()
     {
         // Arrange
         var lines = new[]
@@ -103,7 +103,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void Parse_NonOutputEvents_IgnoresNonOutputEvents()
+    public void ParseNonOutputEventsIgnoresNonOutputEvents()
     {
         // Arrange
         var lines = new[]
@@ -124,7 +124,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void Parse_EmptyLines_SkipsEmptyLines()
+    public void ParseEmptyLinesSkipsEmptyLines()
     {
         // Arrange
         var lines = new[]
@@ -146,7 +146,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetFrameAtTimestamp_NoFrames_ReturnsNull()
+    public void GetFrameAtTimestampNoFramesReturnsNull()
     {
         // Arrange
         var parser = AsciinemaParser.Parse(new[] { SampleHeader });
@@ -159,7 +159,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetFrameAtTimestamp_ExactMatch_ReturnsMatchingFrame()
+    public void GetFrameAtTimestampExactMatchReturnsMatchingFrame()
     {
         // Arrange
         var lines = new[]
@@ -181,7 +181,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetFrameAtTimestamp_BetweenFrames_ReturnsClosestPreviousFrame()
+    public void GetFrameAtTimestampBetweenFramesReturnsClosestPreviousFrame()
     {
         // Arrange
         var lines = new[]
@@ -203,7 +203,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetFrameAtTimestamp_BeforeFirstFrame_ReturnsFirstFrame()
+    public void GetFrameAtTimestampBeforeFirstFrameReturnsFirstFrame()
     {
         // Arrange
         var lines = new[]
@@ -224,7 +224,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetFrameAtTimestamp_AfterLastFrame_ReturnsLastFrame()
+    public void GetFrameAtTimestampAfterLastFrameReturnsLastFrame()
     {
         // Arrange
         var lines = new[]
@@ -245,7 +245,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetFramesInRange_ReturnsFramesWithinRange()
+    public void GetFramesInRangeReturnsFramesWithinRange()
     {
         // Arrange
         var lines = new[]
@@ -270,7 +270,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetFramesInRange_NoFramesInRange_ReturnsEmpty()
+    public void GetFramesInRangeNoFramesInRangeReturnsEmpty()
     {
         // Arrange
         var lines = new[]
@@ -289,7 +289,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetAccumulatedContentAtTimestamp_AccumulatesAllContentUpToTimestamp()
+    public void GetAccumulatedContentAtTimestampAccumulatesAllContentUpToTimestamp()
     {
         // Arrange
         var lines = new[]
@@ -310,7 +310,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetAccumulatedContentAtTimestamp_NoFrames_ReturnsEmptyString()
+    public void GetAccumulatedContentAtTimestampNoFramesReturnsEmptyString()
     {
         // Arrange
         var parser = AsciinemaParser.Parse(new[] { SampleHeader });
@@ -323,7 +323,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void GetAccumulatedContentAtTimestamp_BeforeFirstFrame_ReturnsEmptyString()
+    public void GetAccumulatedContentAtTimestampBeforeFirstFrameReturnsEmptyString()
     {
         // Arrange
         var lines = new[]
@@ -341,7 +341,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void ParseFile_ValidFile_ParsesSuccessfully()
+    public void ParseFileValidFileParsesSuccessfully()
     {
         // Arrange
         var tempFile = Path.GetTempFileName();
@@ -368,7 +368,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void Parse_FrameWithAnsiEscapeCodes_PreservesRawContent()
+    public void ParseFrameWithAnsiEscapeCodesPreservesRawContent()
     {
         // Arrange
         var lines = new[]
@@ -387,7 +387,7 @@ public class AsciinemaParserTests
     }
 
     [Fact]
-    public void Parse_FrameWithEscapedCharacters_ParsesCorrectly()
+    public void ParseFrameWithEscapedCharactersParsesCorrectly()
     {
         // Arrange
         var lines = new[]

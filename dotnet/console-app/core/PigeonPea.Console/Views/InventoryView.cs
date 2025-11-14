@@ -2,9 +2,9 @@ using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using ObservableCollections;
+using PigeonPea.Shared.ViewModels;
 using ReactiveUI;
 using Terminal.Gui;
-using PigeonPea.Shared.ViewModels;
 
 namespace PigeonPea.Console.Views;
 

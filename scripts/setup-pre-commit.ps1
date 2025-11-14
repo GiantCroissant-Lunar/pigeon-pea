@@ -9,7 +9,7 @@ Write-Host ""
 # Check if Python is installed
 try {
     $pythonVersion = python --version 2>&1
-    Write-Host "✓ Python is installed ($pythonVersion)" -ForegroundColor Green
+    Write-Host "? Python is installed ($pythonVersion)" -ForegroundColor Green
 }
 catch {
     Write-Host "ERROR: Python is not installed." -ForegroundColor Red
@@ -20,7 +20,7 @@ catch {
 # Check if pip is installed
 try {
     $pipVersion = pip --version 2>&1
-    Write-Host "✓ pip is installed" -ForegroundColor Green
+    Write-Host "? pip is installed" -ForegroundColor Green
 }
 catch {
     Write-Host "ERROR: pip is not installed." -ForegroundColor Red
@@ -33,7 +33,7 @@ Write-Host ""
 Write-Host "Installing pre-commit..." -ForegroundColor Yellow
 try {
     pip install pre-commit
-    Write-Host "✓ pre-commit installed" -ForegroundColor Green
+    Write-Host "? pre-commit installed" -ForegroundColor Green
 }
 catch {
     Write-Host "ERROR: Failed to install pre-commit" -ForegroundColor Red
@@ -45,7 +45,7 @@ Write-Host ""
 Write-Host "Installing pre-commit hooks..." -ForegroundColor Yellow
 try {
     pre-commit install
-    Write-Host "✓ Pre-commit hooks installed" -ForegroundColor Green
+    Write-Host "? Pre-commit hooks installed" -ForegroundColor Green
 }
 catch {
     Write-Host "ERROR: Failed to install pre-commit hooks" -ForegroundColor Red
@@ -59,20 +59,20 @@ Write-Host "Checking optional dependencies..." -ForegroundColor Yellow
 # Check .NET
 try {
     $dotnetVersion = dotnet --version 2>&1
-    Write-Host "✓ .NET SDK is installed ($dotnetVersion)" -ForegroundColor Green
+    Write-Host "? .NET SDK is installed ($dotnetVersion)" -ForegroundColor Green
 }
 catch {
-    Write-Host "⚠ .NET SDK is not installed (optional for C# formatting)" -ForegroundColor Yellow
+    Write-Host "? .NET SDK is not installed (optional for C# formatting)" -ForegroundColor Yellow
     Write-Host "  Download from: https://dotnet.microsoft.com/download" -ForegroundColor Gray
 }
 
 # Check Node.js
 try {
     $nodeVersion = node --version 2>&1
-    Write-Host "✓ Node.js is installed ($nodeVersion)" -ForegroundColor Green
+    Write-Host "? Node.js is installed ($nodeVersion)" -ForegroundColor Green
 }
 catch {
-    Write-Host "⚠ Node.js is not installed (optional for JavaScript/TypeScript formatting)" -ForegroundColor Yellow
+    Write-Host "? Node.js is not installed (optional for JavaScript/TypeScript formatting)" -ForegroundColor Yellow
     Write-Host "  Download from: https://nodejs.org/" -ForegroundColor Gray
 }
 
@@ -86,7 +86,7 @@ if ($runAllFiles -eq "y" -or $runAllFiles -eq "Y") {
     }
     catch {
         Write-Host ""
-        Write-Host "⚠ Some hooks failed. This is normal for a new setup." -ForegroundColor Yellow
+        Write-Host "? Some hooks failed. This is normal for a new setup." -ForegroundColor Yellow
         Write-Host "  Please review the output above and fix any issues." -ForegroundColor Gray
     }
 }

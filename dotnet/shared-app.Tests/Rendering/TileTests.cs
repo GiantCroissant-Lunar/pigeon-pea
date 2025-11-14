@@ -10,7 +10,7 @@ namespace PigeonPea.Shared.Tests.Rendering;
 public class TileTests
 {
     [Fact]
-    public void Tile_Constructor_WithGlyphAndColors_InitializesCorrectly()
+    public void TileConstructorWithGlyphAndColorsInitializesCorrectly()
     {
         // Arrange & Act
         var tile = new Tile('@', Color.Yellow, Color.Black);
@@ -25,7 +25,7 @@ public class TileTests
     }
 
     [Fact]
-    public void Tile_Constructor_WithSprite_InitializesCorrectly()
+    public void TileConstructorWithSpriteInitializesCorrectly()
     {
         // Arrange & Act
         var tile = new Tile('@', Color.Yellow, Color.Black, spriteId: 42, spriteFrame: 3);
@@ -40,7 +40,7 @@ public class TileTests
     }
 
     [Fact]
-    public void Tile_Constructor_WithSpriteIdOnly_InitializesCorrectly()
+    public void TileConstructorWithSpriteIdOnlyInitializesCorrectly()
     {
         // Arrange & Act
         var tile = new Tile('#', Color.White, Color.Gray, spriteId: 10);
@@ -54,7 +54,7 @@ public class TileTests
     }
 
     [Fact]
-    public void Tile_SetFlags_AnimatedFlag_SetsCorrectly()
+    public void TileSetFlagsAnimatedFlagSetsCorrectly()
     {
         // Arrange
         var tile = new Tile('~', Color.Blue, Color.Black);
@@ -67,7 +67,7 @@ public class TileTests
     }
 
     [Fact]
-    public void Tile_SetFlags_MultipleFlags_SetsCorrectly()
+    public void TileSetFlagsMultipleFlagsSetsCorrectly()
     {
         // Arrange
         var tile = new Tile('*', Color.Red, Color.Black);
@@ -82,7 +82,7 @@ public class TileTests
     }
 
     [Fact]
-    public void Tile_DefaultValue_HasExpectedDefaults()
+    public void TileDefaultValueHasExpectedDefaults()
     {
         // Arrange & Act
         var tile = default(Tile);
@@ -97,7 +97,7 @@ public class TileTests
     }
 
     [Fact]
-    public void Tile_SetProperties_ModifiesCorrectly()
+    public void TileSetPropertiesModifiesCorrectly()
     {
         // Arrange
         var tile = new Tile('@', Color.Yellow, Color.Black);

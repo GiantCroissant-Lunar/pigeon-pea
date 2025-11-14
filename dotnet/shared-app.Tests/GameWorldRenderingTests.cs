@@ -13,7 +13,7 @@ namespace PigeonPea.Shared.Tests;
 public class GameWorldRenderingTests
 {
     [Fact]
-    public void GameWorld_Constructor_AcceptsIRenderer()
+    public void GameWorldConstructorAcceptsIRenderer()
     {
         // Arrange
         var mockRenderer = new MockRenderer();
@@ -26,7 +26,7 @@ public class GameWorldRenderingTests
     }
 
     [Fact]
-    public void Render_CallsBeginFrameAndEndFrame()
+    public void RenderCallsBeginFrameAndEndFrame()
     {
         // Arrange
         var mockRenderer = new MockRenderer();
@@ -42,7 +42,7 @@ public class GameWorldRenderingTests
     }
 
     [Fact]
-    public void Render_CallsClearWithBlackColor()
+    public void RenderCallsClearWithBlackColor()
     {
         // Arrange
         var mockRenderer = new MockRenderer();
@@ -57,7 +57,7 @@ public class GameWorldRenderingTests
     }
 
     [Fact]
-    public void Render_DrawsEntitiesWithPositionAndRenderable()
+    public void RenderDrawsEntitiesWithPositionAndRenderable()
     {
         // Arrange
         var mockRenderer = new MockRenderer();
@@ -72,7 +72,7 @@ public class GameWorldRenderingTests
     }
 
     [Fact]
-    public void Render_WithViewportCulling_OnlyDrawsVisibleEntities()
+    public void RenderWithViewportCullingOnlyDrawsVisibleEntities()
     {
         // Arrange
         var mockRenderer = new MockRenderer();
@@ -92,7 +92,7 @@ public class GameWorldRenderingTests
     }
 
     [Fact]
-    public void Render_WithOffsetViewport_OnlyDrawsVisibleEntities()
+    public void RenderWithOffsetViewportOnlyDrawsVisibleEntities()
     {
         // Arrange
         var mockRenderer = new MockRenderer();
@@ -112,7 +112,7 @@ public class GameWorldRenderingTests
     }
 
     [Fact]
-    public void Render_DrawsCorrectGlyphsAndColors()
+    public void RenderDrawsCorrectGlyphsAndColors()
     {
         // Arrange
         var mockRenderer = new MockRenderer();
@@ -132,7 +132,7 @@ public class GameWorldRenderingTests
     }
 
     [Fact]
-    public void Render_PlayerEntity_IsDrawnWithCorrectGlyph()
+    public void RenderPlayerEntityIsDrawnWithCorrectGlyph()
     {
         // Arrange
         var mockRenderer = new MockRenderer();
@@ -158,7 +158,7 @@ public class GameWorldRenderingTests
     }
 
     [Fact]
-    public void Render_MultipleFrames_ClearsStateCorrectly()
+    public void RenderMultipleFramesClearsStateCorrectly()
     {
         // Arrange
         var mockRenderer = new MockRenderer();

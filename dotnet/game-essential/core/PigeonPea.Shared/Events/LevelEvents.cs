@@ -18,4 +18,24 @@ public readonly struct PlayerLevelUpEvent
     /// Gets the amount of maximum health increased from leveling up.
     /// </summary>
     public int HealthIncrease { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(PlayerLevelUpEvent left, PlayerLevelUpEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(PlayerLevelUpEvent left, PlayerLevelUpEvent right)
+    {
+        return !(left == right);
+    }
 }

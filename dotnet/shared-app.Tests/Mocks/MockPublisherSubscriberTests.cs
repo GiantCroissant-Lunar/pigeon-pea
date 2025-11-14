@@ -10,7 +10,7 @@ namespace PigeonPea.Shared.Tests.Mocks;
 public class MockPublisherSubscriberTests
 {
     [Fact]
-    public void MockPublisher_Publish_AddsToPublishedEvents()
+    public void MockPublisherPublishAddsToPublishedEvents()
     {
         // Arrange
         var publisher = new MockPublisher<PlayerDamagedEvent>();
@@ -31,7 +31,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockPublisher_PublishCallCount_IncrementsCorrectly()
+    public void MockPublisherPublishCallCountIncrementsCorrectly()
     {
         // Arrange
         var publisher = new MockPublisher<PlayerDamagedEvent>();
@@ -47,7 +47,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockPublisher_GetLastPublishedEvent_ReturnsLastEvent()
+    public void MockPublisherGetLastPublishedEventReturnsLastEvent()
     {
         // Arrange
         var publisher = new MockPublisher<ItemPickedUpEvent>();
@@ -63,7 +63,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockPublisher_GetLastPublishedEvent_ReturnsDefaultWhenEmpty()
+    public void MockPublisherGetLastPublishedEventReturnsDefaultWhenEmpty()
     {
         // Arrange
         var publisher = new MockPublisher<ItemPickedUpEvent>();
@@ -76,7 +76,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockPublisher_Reset_ClearsPublishedEvents()
+    public void MockPublisherResetClearsPublishedEvents()
     {
         // Arrange
         var publisher = new MockPublisher<PlayerDamagedEvent>();
@@ -94,7 +94,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockSubscriber_Subscribe_IncrementsSubscriptionCount()
+    public void MockSubscriberSubscribeIncrementsSubscriptionCount()
     {
         // Arrange
         var subscriber = new MockSubscriber<PlayerDamagedEvent>();
@@ -111,7 +111,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockSubscriber_TriggerEvent_CallsSubscribedHandlers()
+    public void MockSubscriberTriggerEventCallsSubscribedHandlers()
     {
         // Arrange
         var subscriber = new MockSubscriber<PlayerDamagedEvent>();
@@ -144,7 +144,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockSubscriber_TriggerEvent_CallsAllSubscribers()
+    public void MockSubscriberTriggerEventCallsAllSubscribers()
     {
         // Arrange
         var subscriber = new MockSubscriber<GameStateChangedEvent>();
@@ -172,7 +172,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockSubscription_Dispose_UnsubscribesHandler()
+    public void MockSubscriptionDisposeUnsubscribesHandler()
     {
         // Arrange
         var subscriber = new MockSubscriber<PlayerDamagedEvent>();
@@ -192,7 +192,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockSubscription_DisposeMultipleTimes_IsSafe()
+    public void MockSubscriptionDisposeMultipleTimesIsSafe()
     {
         // Arrange
         var subscriber = new MockSubscriber<PlayerDamagedEvent>();
@@ -207,7 +207,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockSubscriber_Reset_ClearsAllSubscriptions()
+    public void MockSubscriberResetClearsAllSubscriptions()
     {
         // Arrange
         var subscriber = new MockSubscriber<PlayerDamagedEvent>();
@@ -229,7 +229,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockPublisherSubscriber_WorkTogetherForTesting()
+    public void MockPublisherSubscriberWorkTogetherForTesting()
     {
         // Arrange
         var publisher = new MockPublisher<ItemPickedUpEvent>();
@@ -261,7 +261,7 @@ public class MockPublisherSubscriberTests
     }
 
     [Fact]
-    public void MockSubscriber_MultipleEvents_EachHandlerReceivesAll()
+    public void MockSubscriberMultipleEventsEachHandlerReceivesAll()
     {
         // Arrange
         var subscriber = new MockSubscriber<PlayerDamagedEvent>();

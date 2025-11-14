@@ -30,9 +30,11 @@ public class FrameRateMetrics
     {
         get
         {
-            if (_frameTimes.Count == 0 || _stopwatch.Elapsed.TotalSeconds == 0)
+            if (_frameTimes.Count == 0)
                 return 0;
-            return _frameTimes.Count / _stopwatch.Elapsed.TotalSeconds;
+            return _sumFrameTimes > 0
+                ? (_frameTimes.Count / (_sumFrameTimes / 1000.0))
+                : 0;
         }
     }
 
@@ -117,18 +119,35 @@ public class FrameRateMetrics
 
         var currentTime = _stopwatch.Elapsed.TotalMilliseconds;
         var frameTime = currentTime - _lastFrameTime;
-        _frameTimes.Add(frameTime);
+        RecordFrame(TimeSpan.FromMilliseconds(frameTime));
         _lastFrameTime = currentTime;
+    }
+
+    /// <summary>
+    /// Records a frame using a supplied frame duration. Useful for deterministic testing scenarios.
+    /// </summary>
+    /// <param name="frameDuration">Duration of the frame (time between frames).</param>
+    public void RecordFrame(TimeSpan frameDuration)
+    {
+        if (frameDuration < TimeSpan.Zero)
+            throw new ArgumentOutOfRangeException(nameof(frameDuration));
+
+        if (!_stopwatch.IsRunning)
+            _stopwatch.Start();
+
+        var frameTime = frameDuration.TotalMilliseconds;
+        if (frameTime == 0)
+            frameTime = double.Epsilon;
+
+        _frameTimes.Add(frameTime);
         _frameCount++;
 
-        // Update cached values incrementally
         _sumFrameTimes += frameTime;
         if (frameTime < _minFrameTime)
             _minFrameTime = frameTime;
         if (frameTime > _maxFrameTime)
             _maxFrameTime = frameTime;
 
-        // Invalidate sorted cache
         _sortedFrameTimes = null;
     }
 

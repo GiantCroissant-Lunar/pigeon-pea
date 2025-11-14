@@ -1,5 +1,5 @@
 using PigeonPea.Console.Rendering;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Shared.Rendering; // legacy types: Tile, Viewport, IRenderTarget
 using SadRogue.Primitives;
 using Xunit;
 
@@ -26,7 +26,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void Capabilities_ReportsTrueColorAndPixelGraphics()
+    public void CapabilitiesReportsTrueColorAndPixelGraphics()
     {
         // Assert
         Assert.True(_renderer.Capabilities.Supports(RendererCapabilities.TrueColor));
@@ -36,7 +36,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void Initialize_WithValidTarget_Succeeds()
+    public void InitializeWithValidTargetSucceeds()
     {
         // Arrange
         var renderer = new SixelRenderer();
@@ -50,7 +50,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void Initialize_WithNullTarget_ThrowsArgumentNullException()
+    public void InitializeWithNullTargetThrowsArgumentNullException()
     {
         // Arrange
         var renderer = new SixelRenderer();
@@ -63,7 +63,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_BeforeInitialize_ThrowsInvalidOperationException()
+    public void BeginFrameBeforeInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var uninitializedRenderer = new SixelRenderer();
@@ -76,7 +76,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void EndFrame_BeforeInitialize_ThrowsInvalidOperationException()
+    public void EndFrameBeforeInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var uninitializedRenderer = new SixelRenderer();
@@ -89,7 +89,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_BeforeInitialize_ThrowsInvalidOperationException()
+    public void DrawTileBeforeInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var uninitializedRenderer = new SixelRenderer();
@@ -103,7 +103,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void Clear_BeforeInitialize_ThrowsInvalidOperationException()
+    public void ClearBeforeInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var uninitializedRenderer = new SixelRenderer();
@@ -116,14 +116,14 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_AfterInitialize_DoesNotThrow()
+    public void BeginFrameAfterInitializeDoesNotThrow()
     {
         // Act & Assert - should not throw
         _renderer.BeginFrame();
     }
 
     [Fact]
-    public void EndFrame_AfterBeginFrame_DoesNotThrow()
+    public void EndFrameAfterBeginFrameDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -136,7 +136,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithValidTile_DoesNotThrow()
+    public void DrawTileWithValidTileDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -148,7 +148,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithEmptyGlyph_DoesNotThrow()
+    public void DrawTileWithEmptyGlyphDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -160,7 +160,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithValidString_DoesNotThrow()
+    public void DrawTextWithValidStringDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -174,7 +174,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithEmptyString_DoesNotThrow()
+    public void DrawTextWithEmptyStringDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -185,7 +185,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithNullString_DoesNotThrow()
+    public void DrawTextWithNullStringDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -196,7 +196,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void Clear_WithColor_DoesNotThrow()
+    public void ClearWithColorDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -208,7 +208,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void SetViewport_WithValidViewport_DoesNotThrow()
+    public void SetViewportWithValidViewportDoesNotThrow()
     {
         // Arrange
         var viewport = new Viewport(0, 0, 10, 10);
@@ -218,7 +218,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawImage_WithValidByteArray_DoesNotThrow()
+    public void DrawImageWithValidByteArrayDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -240,7 +240,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawImage_WithColorArray_DoesNotThrow()
+    public void DrawImageWithColorArrayDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -260,7 +260,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void Dispose_CanBeCalledMultipleTimes()
+    public void DisposeCanBeCalledMultipleTimes()
     {
         // Arrange
         var target = new MockRenderTarget(80, 24);
@@ -273,7 +273,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_AfterDispose_ThrowsObjectDisposedException()
+    public void BeginFrameAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         var target = new MockRenderTarget(80, 24);
@@ -286,7 +286,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_AfterDispose_ThrowsObjectDisposedException()
+    public void DrawTileAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         var target = new MockRenderTarget(80, 24);
@@ -300,7 +300,7 @@ public class SixelRendererTests : IDisposable
     }
 
     [Fact]
-    public void Initialize_WithPixelDimensions_CalculatesTileSize()
+    public void InitializeWithPixelDimensionsCalculatesTileSize()
     {
         // Arrange
         var renderer = new SixelRenderer();
@@ -320,7 +320,7 @@ public class SixelRendererTests : IDisposable
     /// <summary>
     /// Mock render target for testing.
     /// </summary>
-    private class MockRenderTarget : IRenderTarget
+    private class MockRenderTarget : PigeonPea.Shared.Rendering.IRenderTarget
     {
         public int Width { get; }
         public int Height { get; }

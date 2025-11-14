@@ -11,7 +11,7 @@ namespace PigeonPea.Shared.Tests.Mocks;
 public class MockRendererTests
 {
     [Fact]
-    public void BeginFrame_SetsBeginFrameCalled()
+    public void BeginFrameSetsBeginFrameCalled()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -25,7 +25,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void BeginFrame_ClearsDrawnTilesAndText()
+    public void BeginFrameClearsDrawnTilesAndText()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -43,7 +43,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void EndFrame_SetsEndFrameCalled()
+    public void EndFrameSetsEndFrameCalled()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -57,7 +57,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void DrawTile_AddsToDrawnTiles()
+    public void DrawTileAddsToDrawnTiles()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -77,7 +77,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void DrawText_AddsToDrawnText()
+    public void DrawTextAddsToDrawnText()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -97,7 +97,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void Clear_SetsLastClearColor()
+    public void ClearSetsLastClearColor()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -111,7 +111,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void SetViewport_UpdatesCurrentViewport()
+    public void SetViewportUpdatesCurrentViewport()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -128,7 +128,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void Initialize_StoresRenderTarget()
+    public void InitializeStoresRenderTarget()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -143,7 +143,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void Reset_ClearsAllState()
+    public void ResetClearsAllState()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -169,7 +169,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void EndFrame_CapturesFrame()
+    public void EndFrameCapturesFrame()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -196,7 +196,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void GetLastCapturedFrame_ReturnsLastFrame()
+    public void GetLastCapturedFrameReturnsLastFrame()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -218,7 +218,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void GetLastCapturedFrame_ReturnsNullWhenNoFrames()
+    public void GetLastCapturedFrameReturnsNullWhenNoFrames()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -231,7 +231,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void CapturedFrames_AccumulatesMultipleFrames()
+    public void CapturedFramesAccumulatesMultipleFrames()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -254,7 +254,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void CapturedFrame_IsSnapshotNotReference()
+    public void CapturedFrameIsSnapshotNotReference()
     {
         // Arrange
         var renderer = new MockRenderer();
@@ -273,7 +273,7 @@ public class MockRendererTests
     }
 
     [Fact]
-    public void Capabilities_IncludesTrueColorAndCharacterBased()
+    public void CapabilitiesIncludesTrueColorAndCharacterBased()
     {
         // Arrange
         var renderer = new MockRenderer();

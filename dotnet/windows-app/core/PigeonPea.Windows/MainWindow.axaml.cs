@@ -1,15 +1,15 @@
+using System;
+using Arch.Core;
+using Arch.Core.Extensions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Threading;
-using Arch.Core;
-using Arch.Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.ViewModels;
 using PigeonPea.Windows.Rendering;
-using System;
 
 namespace PigeonPea.Windows;
 

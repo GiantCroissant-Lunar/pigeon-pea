@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn);CA1814;CA1034;CA1819</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.7" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
+    <ProjectReference Include="..\..\Shared\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    <ProjectReference Include="..\..\Shared\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
+  </ItemGroup>
+</Project>

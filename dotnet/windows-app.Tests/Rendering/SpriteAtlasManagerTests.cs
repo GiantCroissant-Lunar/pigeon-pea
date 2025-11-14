@@ -29,7 +29,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void LoadAtlas_WithValidFiles_LoadsSuccessfully()
+    public void LoadAtlasWithValidFilesLoadsSuccessfully()
     {
         // Act
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -40,7 +40,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void LoadAtlas_WithMissingAtlasFile_ThrowsFileNotFoundException()
+    public void LoadAtlasWithMissingAtlasFileThrowsFileNotFoundException()
     {
         // Arrange
         var invalidPath = "nonexistent.png";
@@ -52,7 +52,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void LoadAtlas_WithMissingDefinitionFile_ThrowsFileNotFoundException()
+    public void LoadAtlasWithMissingDefinitionFileThrowsFileNotFoundException()
     {
         // Arrange
         var invalidPath = "nonexistent.json";
@@ -64,7 +64,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void HasSprite_WithLoadedSprite_ReturnsTrue()
+    public void HasSpriteWithLoadedSpriteReturnsTrue()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -77,7 +77,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void HasSprite_WithNonexistentSprite_ReturnsFalse()
+    public void HasSpriteWithNonexistentSpriteReturnsFalse()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -89,7 +89,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void GetSprite_WithLoadedSprite_ReturnsNonNullImage()
+    public void GetSpriteWithLoadedSpriteReturnsNonNullImage()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -108,7 +108,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void GetSprite_WithNonexistentSprite_ReturnsNull()
+    public void GetSpriteWithNonexistentSpriteReturnsNull()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -121,7 +121,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void GetSprite_ReturnsCorrectDimensions()
+    public void GetSpriteReturnsCorrectDimensions()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -136,7 +136,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void GetLoadedSpriteIds_WithLoadedAtlas_ReturnsAllIds()
+    public void GetLoadedSpriteIdsWithLoadedAtlasReturnsAllIds()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -153,7 +153,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void GetLoadedSpriteIds_WithNoAtlas_ReturnsEmptyCollection()
+    public void GetLoadedSpriteIdsWithNoAtlasReturnsEmptyCollection()
     {
         // Act
         var ids = _manager.GetLoadedSpriteIds();
@@ -163,21 +163,21 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void AtlasCount_WithNoAtlas_ReturnsZero()
+    public void AtlasCountWithNoAtlasReturnsZero()
     {
         // Act & Assert
         Assert.Equal(0, _manager.AtlasCount);
     }
 
     [Fact]
-    public void SpriteCount_WithNoSprites_ReturnsZero()
+    public void SpriteCountWithNoSpritesReturnsZero()
     {
         // Act & Assert
         Assert.Equal(0, _manager.SpriteCount);
     }
 
     [Fact]
-    public void LoadAtlas_WithMultipleAtlases_LoadsAll()
+    public void LoadAtlasWithMultipleAtlasesLoadsAll()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -210,7 +210,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void LoadAtlas_WithInvalidJson_ThrowsJsonException()
+    public void LoadAtlasWithInvalidJsonThrowsJsonException()
     {
         // Arrange
         var invalidJsonPath = Path.Combine(Path.GetTempPath(), "invalid.json");
@@ -231,7 +231,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void LoadAtlas_WithSpriteBeyondAtlasBounds_ThrowsInvalidOperationException()
+    public void LoadAtlasWithSpriteBeyondAtlasBoundsThrowsInvalidOperationException()
     {
         // Arrange
         var invalidDefinitionPath = Path.Combine(Path.GetTempPath(), "invalid-bounds.json");
@@ -265,7 +265,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void Dispose_CanBeCalledMultipleTimes()
+    public void DisposeCanBeCalledMultipleTimes()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -276,7 +276,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void HasSprite_AfterDispose_ThrowsObjectDisposedException()
+    public void HasSpriteAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -287,7 +287,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void GetSprite_AfterDispose_ThrowsObjectDisposedException()
+    public void GetSpriteAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -298,7 +298,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void LoadAtlas_AfterDispose_ThrowsObjectDisposedException()
+    public void LoadAtlasAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         _manager.Dispose();
@@ -309,7 +309,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void GetLoadedSpriteIds_AfterDispose_ThrowsObjectDisposedException()
+    public void GetLoadedSpriteIdsAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -320,7 +320,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void AtlasCount_AfterDispose_ThrowsObjectDisposedException()
+    public void AtlasCountAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -331,7 +331,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void SpriteCount_AfterDispose_ThrowsObjectDisposedException()
+    public void SpriteCountAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);
@@ -342,7 +342,7 @@ public class SpriteAtlasManagerTests : IDisposable
     }
 
     [Fact]
-    public void GetSprite_VerifySpriteColorsAreCorrect()
+    public void GetSpriteVerifySpriteColorsAreCorrect()
     {
         // Arrange
         _manager.LoadAtlas(_testAtlasPath, _testDefinitionPath);

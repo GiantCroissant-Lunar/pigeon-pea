@@ -10,7 +10,7 @@ namespace PigeonPea.Shared.Tests.Rendering;
 public class ViewportTests
 {
     [Fact]
-    public void Viewport_Constructor_InitializesCorrectly()
+    public void ViewportConstructorInitializesCorrectly()
     {
         // Arrange & Act
         var viewport = new Viewport(10, 20, 80, 24);
@@ -23,7 +23,7 @@ public class ViewportTests
     }
 
     [Fact]
-    public void Viewport_Bounds_ReturnsCorrectRectangle()
+    public void ViewportBoundsReturnsCorrectRectangle()
     {
         // Arrange
         var viewport = new Viewport(5, 10, 100, 50);
@@ -39,7 +39,7 @@ public class ViewportTests
     }
 
     [Fact]
-    public void Viewport_Contains_PointInside_ReturnsTrue()
+    public void ViewportContainsPointInsideReturnsTrue()
     {
         // Arrange
         var viewport = new Viewport(10, 20, 80, 24);
@@ -51,7 +51,7 @@ public class ViewportTests
     }
 
     [Fact]
-    public void Viewport_Contains_PointOutside_ReturnsFalse()
+    public void ViewportContainsPointOutsideReturnsFalse()
     {
         // Arrange
         var viewport = new Viewport(10, 20, 80, 24);
@@ -66,7 +66,7 @@ public class ViewportTests
     }
 
     [Fact]
-    public void Viewport_Contains_BoundaryConditions_WorksCorrectly()
+    public void ViewportContainsBoundaryConditionsWorksCorrectly()
     {
         // Arrange
         var viewport = new Viewport(0, 0, 10, 10);
@@ -82,7 +82,7 @@ public class ViewportTests
     }
 
     [Fact]
-    public void Viewport_Contains_NegativeCoordinates_WorksCorrectly()
+    public void ViewportContainsNegativeCoordinatesWorksCorrectly()
     {
         // Arrange
         var viewport = new Viewport(-10, -10, 20, 20);
@@ -98,7 +98,7 @@ public class ViewportTests
     }
 
     [Fact]
-    public void Viewport_DefaultValue_HasExpectedDefaults()
+    public void ViewportDefaultValueHasExpectedDefaults()
     {
         // Arrange & Act
         var viewport = default(Viewport);
@@ -111,7 +111,7 @@ public class ViewportTests
     }
 
     [Fact]
-    public void Viewport_SetProperties_ModifiesCorrectly()
+    public void ViewportSetPropertiesModifiesCorrectly()
     {
         // Arrange
         var viewport = new Viewport(10, 20, 80, 24);
@@ -130,7 +130,7 @@ public class ViewportTests
     }
 
     [Fact]
-    public void Viewport_Contains_SingleCellViewport_WorksCorrectly()
+    public void ViewportContainsSingleCellViewportWorksCorrectly()
     {
         // Arrange
         var viewport = new Viewport(5, 5, 1, 1);

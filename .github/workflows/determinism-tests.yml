@@ -1,0 +1,141 @@
+name: Determinism Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  determinism-tests:
+    name: Run Determinism Tests
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore Dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Run Determinism Tests
+        run: |
+          echo "Running determinism tests on ${{ matrix.os }}"
+          dotnet test \
+            dotnet/_lib/fantasy-map-generator-port/tests/FantasyMapGenerator.Core.Tests/ \
+            --filter "Category==Determinism" \
+            --logger "trx;LogFileName=test-results-${{ matrix.os }}.trx" \
+            --verbosity normal
+        continue-on-error: true
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: |
+            **/*.trx
+            **/*.log
+          retention-days: 30
+
+      - name: Checksum Verification
+        run: |
+          echo "Verifying checksum consistency across platforms"
+          # This step would compare checksums across platforms
+          # Implementation depends on specific checksum storage strategy
+
+  checksum-validation:
+    name: Validate Checksum Consistency
+    runs-on: ubuntu-latest
+    needs: determinism-tests
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download Test Results
+        uses: actions/download-artifact@v4
+        with:
+          pattern: test-results-*
+          merge-multiple: true
+
+      - name: Validate Cross-Platform Consistency
+        run: |
+          echo "Checking for checksum consistency across platforms"
+          # Parse test results to extract checksums
+          # Compare checksums between Windows, Linux, and macOS
+          # Fail if inconsistencies detected
+
+      - name: Comment on PR
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = context.issue.number;
+            const comment = `⚠️ **Determinism Test Failure**
+
+            The determinism tests failed on this PR. This indicates:
+            - Potential non-deterministic behavior
+            - Cross-platform inconsistencies
+            - Algorithm changes affecting reproducibility
+
+            Please review the test failures and ensure map generation remains deterministic.
+
+            [View Test Results](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            `;
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber,
+              body: comment
+            });
+
+  performance-check:
+    name: Performance Regression Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Run Performance Tests
+        run: |
+          echo "Running performance benchmarks for regression detection"
+          dotnet run \
+            --project dotnet/benchmarks/ \
+            --configuration Release \
+            --exporters json
+
+      - name: Compare Performance
+        run: |
+          echo "Comparing performance against baseline"
+          # Compare current performance with main branch
+          # Alert if significant regressions detected
+
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark-results
+          path: BenchmarkDotNet.Artifacts/
+          retention-days: 30

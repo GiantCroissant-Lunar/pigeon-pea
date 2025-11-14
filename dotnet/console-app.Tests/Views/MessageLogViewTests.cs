@@ -1,11 +1,11 @@
-using Xunit;
+using System.Threading.Tasks;
 using FluentAssertions;
 using MessagePipe;
 using Microsoft.Extensions.DependencyInjection;
 using PigeonPea.Console.Views;
-using PigeonPea.Shared.ViewModels;
 using PigeonPea.Shared.Events;
-using System.Threading.Tasks;
+using PigeonPea.Shared.ViewModels;
+using Xunit;
 
 namespace PigeonPea.Console.Tests.Views;
 
@@ -35,7 +35,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public void MessageLogView_Constructor_InitializesWithViewModel()
+    public void MessageLogViewConstructorInitializesWithViewModel()
     {
         // Assert
         _view.Should().NotBeNull();
@@ -43,7 +43,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public void MessageLogView_SubscribesToMessagesAdded()
+    public void MessageLogViewSubscribesToMessagesAdded()
     {
         // Act
         _viewModel.AddMessage("Test message", MessageType.Combat);
@@ -55,7 +55,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public void MessageLogView_HandlesMultipleMessages()
+    public void MessageLogViewHandlesMultipleMessages()
     {
         // Act
         _viewModel.AddMessage("First message", MessageType.Combat);
@@ -70,7 +70,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public void MessageLogView_HandlesMessageTypes()
+    public void MessageLogViewHandlesMessageTypes()
     {
         // Act
         _viewModel.AddMessage("Combat message", MessageType.Combat);
@@ -89,7 +89,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public void MessageLogView_LimitsMessagesToMaximum()
+    public void MessageLogViewLimitsMessagesToMaximum()
     {
         // Act - Add more than 100 messages (MaxMessages constant)
         for (int i = 0; i < 150; i++)
@@ -104,7 +104,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public void MessageLogView_TimestampsMessages()
+    public void MessageLogViewTimestampsMessages()
     {
         // Arrange
         var beforeTime = DateTime.UtcNow;
@@ -119,7 +119,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public async Task MessageLogView_HandlesPlayerDamagedEvents()
+    public async Task MessageLogViewHandlesPlayerDamagedEvents()
     {
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
@@ -134,7 +134,7 @@ public class MessageLogViewTests : IDisposable
         });
 
         // Give time for event to be processed
-        await Task.Delay(100);
+        await Task.Delay(100).ConfigureAwait(false);
 
         // Assert
         _viewModel.Messages.Count.Should().BeGreaterThan(initialCount);
@@ -142,7 +142,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public async Task MessageLogView_HandlesItemPickedUpEvents()
+    public async Task MessageLogViewHandlesItemPickedUpEvents()
     {
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<ItemPickedUpEvent>>();
@@ -156,7 +156,7 @@ public class MessageLogViewTests : IDisposable
         });
 
         // Give time for event to be processed
-        await Task.Delay(100);
+        await Task.Delay(100).ConfigureAwait(false);
 
         // Assert
         _viewModel.Messages.Count.Should().BeGreaterThan(initialCount);
@@ -164,7 +164,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public async Task MessageLogView_HandlesGameStateChangedEvents()
+    public async Task MessageLogViewHandlesGameStateChangedEvents()
     {
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<GameStateChangedEvent>>();
@@ -178,7 +178,7 @@ public class MessageLogViewTests : IDisposable
         });
 
         // Give time for event to be processed
-        await Task.Delay(100);
+        await Task.Delay(100).ConfigureAwait(false);
 
         // Assert
         _viewModel.Messages.Count.Should().BeGreaterThan(initialCount);
@@ -186,7 +186,7 @@ public class MessageLogViewTests : IDisposable
     }
 
     [Fact]
-    public void MessageLogView_DisposesSubscriptionsOnDispose()
+    public void MessageLogViewDisposesSubscriptionsOnDispose()
     {
         // Arrange
         var services = new ServiceCollection();

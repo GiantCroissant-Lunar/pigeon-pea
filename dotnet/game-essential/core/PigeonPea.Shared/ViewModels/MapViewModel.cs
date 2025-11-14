@@ -3,10 +3,10 @@ using System.Reactive.Linq;
 using Arch.Core;
 using Arch.Core.Extensions;
 using ObservableCollections;
-using ReactiveUI;
-using SadRogue.Primitives;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Rendering;
+using ReactiveUI;
+using SadRogue.Primitives;
 
 namespace PigeonPea.Shared.ViewModels;
 

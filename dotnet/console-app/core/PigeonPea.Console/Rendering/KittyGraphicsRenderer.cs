@@ -1,9 +1,9 @@
-using PigeonPea.Shared.Rendering;
-using SadRogue.Primitives;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
+using PigeonPea.Shared.Rendering;
+using SadRogue.Primitives;
 
 namespace PigeonPea.Console.Rendering;
 
@@ -20,6 +20,8 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     private IRenderTarget? _target;
     private readonly Dictionary<int, CachedImage> _imageCache = new();
     private readonly StringBuilder _commandBuffer = new();
+    // Always use ST (ESC \) terminator - this is what imgcat and most tools use
+    private static readonly string KittyTerminator = "\x1b\\";
 
     /// <summary>
     /// Gets the capabilities of this renderer.
@@ -203,15 +205,29 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
         if (_imageCache.ContainsKey(imageId))
             return;
 
-        // Encode image data to Base64
+        // Encode image data to Base64 and send in chunks to avoid terminal limits.
         string base64Data = Convert.ToBase64String(imageData);
-
-        // Transmit using Kitty protocol: ESC_Ga=T,f=32,s=<w>,v=<h>,i=<id>;<base64>ESC\
-        // a=T: transmit and display
-        // f=32: RGBA format
-        // s,v: dimensions
-        // i: image ID
-        _commandBuffer.Append($"\x1b_Ga=T,f=32,t=d,s={width},v={height},i={imageId};{base64Data}\x1b\\");
+        const int MaxChunk = 2048; // base64 bytes per OSC packet (more conservative)
+        int offset = 0;
+        bool first = true;
+        while (offset < base64Data.Length)
+        {
+            int len = Math.Min(MaxChunk, base64Data.Length - offset);
+            string chunk = base64Data.Substring(offset, len);
+            offset += len;
+            bool more = offset < base64Data.Length;
+            if (first)
+            {
+                // First chunk: include format and dimensions; use a=t (transmit only, don't display yet)
+                _commandBuffer.Append($"\x1b_Ga=t,f=32,s={width},v={height},i={imageId},m={(more ? 1 : 0)};{chunk}{KittyTerminator}");
+                first = false;
+            }
+            else
+            {
+                // Subsequent chunks: same image id; continue transmit
+                _commandBuffer.Append($"\x1b_Ga=t,i={imageId},m={(more ? 1 : 0)};{chunk}{KittyTerminator}");
+            }
+        }
 
         // Cache the image
         _imageCache[imageId] = new CachedImage(imageId, width, height);
@@ -230,13 +246,48 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
         if (!_imageCache.ContainsKey(imageId))
             throw new InvalidOperationException($"Image {imageId} has not been transmitted. Call TransmitImage first.");
 
-        // Position cursor at grid position
+        // Position cursor at grid position (not strictly required, but harmless)
         PositionCursor(x, y);
 
-        // Display using Kitty protocol: ESC_Ga=p,i=<id>ESC\
-        // a=p: put (display) image
-        // i: image ID
-        _commandBuffer.Append($"\x1b_Ga=p,i={imageId}\x1b\\");
+        // Display using Kitty protocol: ESC_Ga=p,i=<id>,x=<x>,y=<y>;TERMINATOR
+        // a=p: put (display) image at cell coordinates
+        // i: image ID, x/y: cell coordinates
+        // Semicolon is required even with no payload
+        _commandBuffer.Append($"\x1b_Ga=p,i={imageId},x={x},y={y};{KittyTerminator}");
+    }
+
+    /// <summary>
+    /// Displays an image at a specific grid position scaled to the given columns/rows.
+    /// </summary>
+    public void DisplayImage(int x, int y, int imageId, int columns, int rows)
+    {
+        ObjectDisposedException.ThrowIf(_disposed, this);
+        if (!_imageCache.ContainsKey(imageId))
+            throw new InvalidOperationException($"Image {imageId} has not been transmitted. Call TransmitImage first.");
+        PositionCursor(x, y);
+        // x/y: cell position; c/r: placement size in grid cells
+        // Semicolon is required even with no payload
+        _commandBuffer.Append($"\x1b_Ga=p,i={imageId},x={x},y={y},c={columns},r={rows};{KittyTerminator}");
+    }
+
+    /// <summary>
+    /// Replace (or create) an image with the specified RGBA data and display it at grid position.
+    /// This is handy for per-frame pixel rendering.
+    /// </summary>
+    public void ReplaceAndDisplayImage(int imageId, byte[] rgba, int width, int height, int gridX, int gridY, int gridCols, int gridRows)
+    {
+        if (_imageCache.ContainsKey(imageId))
+        {
+            DeleteImage(imageId);
+        }
+        TransmitImage(imageId, rgba, width, height);
+        // Flush transmit immediately to reduce chance of terminal buffering issues
+        if (_commandBuffer.Length > 0)
+        {
+            System.Console.Write(_commandBuffer.ToString());
+            _commandBuffer.Clear();
+        }
+        DisplayImage(gridX, gridY, imageId, gridCols, gridRows);
     }
 
     /// <summary>
@@ -250,8 +301,8 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
         if (!_imageCache.ContainsKey(imageId))
             return;
 
-        // Delete using Kitty protocol: ESC_Ga=d,i=<id>ESC\
-        _commandBuffer.Append($"\x1b_Ga=d,i={imageId}\x1b\\");
+        // Delete using Kitty protocol - semicolon required
+        _commandBuffer.Append($"\x1b_Ga=d,i={imageId};{KittyTerminator}");
 
         _imageCache.Remove(imageId);
     }
@@ -346,7 +397,7 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
             // Clear all cached images
             foreach (var imageId in _imageCache.Keys)
             {
-                _commandBuffer.Append($"\x1b_Ga=d,i={imageId}\x1b\\");
+                _commandBuffer.Append($"\x1b_Ga=d,i={imageId};{KittyTerminator}");
             }
 
             if (_commandBuffer.Length > 0)

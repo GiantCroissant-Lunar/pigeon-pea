@@ -1,0 +1,36 @@
+            var biomeCounts = new System.Collections.Generic.Dictionary<int, int>();
+            if (map.Cells != null)
+            {
+                foreach (var c in map.Cells)
+                {
+                    int b = c.Biome;
+                    if (!biomeCounts.ContainsKey(b)) biomeCounts[b] = 0;
+                    biomeCounts[b]++;
+                }
+            }
+            AppendLog(log, $"[HUD] Cells={cellCount}, Rivers={rivers}, RiverCells={riverCells}, Biomes={biomes}");
+            if (map.Biomes != null && map.Biomes.Count > 0)
+            {
+                int shown = 0;
+                foreach (var kv in biomeCounts)
+                {
+                    if (kv.Key < 0 || kv.Key >= map.Biomes.Count) continue;
+                    var name = map.Biomes[kv.Key].Name;
+                    AppendLog(log, $"  {name}: {kv.Value}");
+                    if (++shown >= 8) { AppendLog(log, "  ..."); break; }
+                }
+            }
+        }
+        catch { }
+    }
+
+    private static void EnsurePixelRenderer()
+    {
+        if (_pixelRenderer == null)
+        {
+            _pixelRenderer = new ITerm2GraphicsRenderer();
+            _pixelTarget = new ConsoleRenderTarget(System.Console.WindowWidth, System.Console.WindowHeight);
+            _pixelRenderer.Initialize(_pixelTarget);
+        }
+    }
+}

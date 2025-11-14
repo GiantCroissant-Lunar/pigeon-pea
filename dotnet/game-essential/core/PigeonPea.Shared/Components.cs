@@ -19,6 +19,26 @@ public struct Position
     {
         Point = point;
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Position left, Position right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Position left, Position right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -36,6 +56,26 @@ public struct Renderable
         Foreground = foreground;
         Background = background ?? Color.Black;
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Renderable left, Renderable right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Renderable left, Renderable right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -44,6 +84,26 @@ public struct Renderable
 public struct PlayerComponent
 {
     public string Name { get; set; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(PlayerComponent left, PlayerComponent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(PlayerComponent left, PlayerComponent right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -55,6 +115,26 @@ public struct Health
     public int Maximum { get; set; }
 
     public bool IsAlive => Current > 0;
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Health left, Health right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Health left, Health right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -70,6 +150,26 @@ public struct FieldOfView
         Radius = radius;
         VisibleTiles = new HashSet<Point>();
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(FieldOfView left, FieldOfView right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(FieldOfView left, FieldOfView right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -82,6 +182,26 @@ public struct Tile
     public Tile(TileType type)
     {
         Type = type;
+    }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Tile left, Tile right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Tile left, Tile right)
+    {
+        return !(left == right);
     }
 }
 
@@ -122,6 +242,26 @@ public struct AIComponent
         Behavior = behavior;
         CurrentPath = new List<Point>();
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(AIComponent left, AIComponent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(AIComponent left, AIComponent right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -153,6 +293,26 @@ public struct CombatStats
         Attack = attack;
         Defense = defense;
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(CombatStats left, CombatStats right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(CombatStats left, CombatStats right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -174,6 +334,26 @@ public struct Item
     {
         Name = name;
         Type = type;
+    }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Item left, Item right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Item left, Item right)
+    {
+        return !(left == right);
     }
 }
 
@@ -202,6 +382,26 @@ public struct Inventory
     }
 
     public bool IsFull => Items.Count >= MaxCapacity;
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Inventory left, Inventory right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Inventory left, Inventory right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -214,6 +414,26 @@ public struct Consumable
     public Consumable(int healthRestore)
     {
         HealthRestore = healthRestore;
+    }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Consumable left, Consumable right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Consumable left, Consumable right)
+    {
+        return !(left == right);
     }
 }
 
@@ -248,6 +468,26 @@ public struct Experience
     {
         return (int)(100 * Math.Pow(level, 1.5));
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Experience left, Experience right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Experience left, Experience right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -260,5 +500,25 @@ public struct ExperienceValue
     public ExperienceValue(int xp)
     {
         XP = xp;
+    }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(ExperienceValue left, ExperienceValue right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(ExperienceValue left, ExperienceValue right)
+    {
+        return !(left == right);
     }
 }

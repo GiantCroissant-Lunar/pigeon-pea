@@ -9,7 +9,7 @@ namespace PigeonPea.Shared.Tests.Performance;
 public class FrameRateMetricsTests
 {
     [Fact]
-    public void Constructor_InitializesWithZeroValues()
+    public void ConstructorInitializesWithZeroValues()
     {
         // Arrange & Act
         var metrics = new FrameRateMetrics();
@@ -28,7 +28,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void RecordFrame_FirstFrame_IncrementsFrameCount()
+    public void RecordFrameFirstFrameIncrementsFrameCount()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -41,7 +41,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void RecordFrame_MultipleFrames_IncrementsFrameCount()
+    public void RecordFrameMultipleFramesIncrementsFrameCount()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -58,7 +58,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void AverageFPS_WithFrames_CalculatesCorrectly()
+    public void AverageFPSWithFramesCalculatesCorrectly()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -66,55 +66,46 @@ public class FrameRateMetricsTests
         // Act - Simulate ~60 FPS for 5 frames (4 intervals)
         for (int i = 0; i < 5; i++)
         {
-            metrics.RecordFrame();
-            Thread.Sleep(16); // ~16ms per frame = ~60 FPS
+            metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
         }
 
         // Assert - Should be approximately 60 FPS (with some tolerance for timing)
         // Note: 5 frames = 4 intervals, so actual FPS will be slightly lower
-        Assert.InRange(metrics.AverageFPS, 45, 65);
+        Assert.InRange(metrics.AverageFPS, 58, 65);
     }
 
     [Fact]
-    public void MinFPS_WithFrames_ReturnsLowestFPS()
+    public void MinFPSWithFramesReturnsLowestFPS()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
 
         // Act - Record frames with varying times
-        metrics.RecordFrame();
-        Thread.Sleep(10); // Fast frame
-        metrics.RecordFrame();
-        Thread.Sleep(50); // Slow frame (lowest FPS)
-        metrics.RecordFrame();
-        Thread.Sleep(10); // Fast frame
-        metrics.RecordFrame();
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(10));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(50));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(10));
 
         // Assert - MinFPS should correspond to the longest frame time (50ms = ~20 FPS)
         Assert.True(metrics.MinFPS < 25, $"MinFPS was {metrics.MinFPS}, expected < 25");
     }
 
     [Fact]
-    public void MaxFPS_WithFrames_ReturnsHighestFPS()
+    public void MaxFPSWithFramesReturnsHighestFPS()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
 
         // Act - Record frames with varying times
-        metrics.RecordFrame();
-        Thread.Sleep(50); // Slow frame
-        metrics.RecordFrame();
-        Thread.Sleep(10); // Fast frame (highest FPS)
-        metrics.RecordFrame();
-        Thread.Sleep(50); // Slow frame
-        metrics.RecordFrame();
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(50));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(10));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(50));
 
         // Assert - MaxFPS should correspond to the shortest frame time (10ms = ~100 FPS)
         Assert.True(metrics.MaxFPS > 80, $"MaxFPS was {metrics.MaxFPS}, expected > 80");
     }
 
     [Fact]
-    public void AverageFrameTime_WithFrames_CalculatesCorrectly()
+    public void AverageFrameTimeWithFramesCalculatesCorrectly()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -122,54 +113,45 @@ public class FrameRateMetricsTests
         // Act - Record frames with consistent timing
         for (int i = 0; i < 5; i++)
         {
-            metrics.RecordFrame();
-            Thread.Sleep(20); // 20ms per frame
+            metrics.RecordFrame(TimeSpan.FromMilliseconds(20));
         }
 
         // Assert - Average should be around 20ms (with some tolerance)
-        Assert.InRange(metrics.AverageFrameTime, 15, 25);
+        Assert.InRange(metrics.AverageFrameTime, 19, 21);
     }
 
     [Fact]
-    public void MinFrameTime_WithFrames_ReturnsShortestTime()
+    public void MinFrameTimeWithFramesReturnsShortestTime()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
 
         // Act - Record frames with varying times
-        metrics.RecordFrame();
-        Thread.Sleep(50); // Long frame
-        metrics.RecordFrame();
-        Thread.Sleep(5);  // Short frame
-        metrics.RecordFrame();
-        Thread.Sleep(30); // Medium frame
-        metrics.RecordFrame();
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(50));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(5));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(30));
 
         // Assert
         Assert.True(metrics.MinFrameTime < 10, $"MinFrameTime was {metrics.MinFrameTime}, expected < 10");
     }
 
     [Fact]
-    public void MaxFrameTime_WithFrames_ReturnsLongestTime()
+    public void MaxFrameTimeWithFramesReturnsLongestTime()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
 
         // Act - Record frames with varying times
-        metrics.RecordFrame();
-        Thread.Sleep(10); // Short frame
-        metrics.RecordFrame();
-        Thread.Sleep(60); // Long frame
-        metrics.RecordFrame();
-        Thread.Sleep(20); // Medium frame
-        metrics.RecordFrame();
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(10));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(60));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(20));
 
         // Assert
         Assert.True(metrics.MaxFrameTime > 50, $"MaxFrameTime was {metrics.MaxFrameTime}, expected > 50");
     }
 
     [Fact]
-    public void GetPercentile_WithInvalidPercentile_ThrowsArgumentOutOfRangeException()
+    public void GetPercentileWithInvalidPercentileThrowsArgumentOutOfRangeException()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -180,7 +162,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void GetPercentile_WithNoFrames_ReturnsZero()
+    public void GetPercentileWithNoFramesReturnsZero()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -192,23 +174,17 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void GetPercentile_WithFrames_CalculatesCorrectly()
+    public void GetPercentileWithFramesCalculatesCorrectly()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
 
         // Act - Record frames with predictable times
-        metrics.RecordFrame();
-        Thread.Sleep(10);
-        metrics.RecordFrame();
-        Thread.Sleep(20);
-        metrics.RecordFrame();
-        Thread.Sleep(30);
-        metrics.RecordFrame();
-        Thread.Sleep(40);
-        metrics.RecordFrame();
-        Thread.Sleep(50);
-        metrics.RecordFrame();
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(10));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(20));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(30));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(40));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(50));
 
         // Assert - With times roughly 10, 20, 30, 40, 50ms
         // P50 should be around 30ms
@@ -218,7 +194,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void P50_ReturnsMedianFrameTime()
+    public void P50ReturnsMedianFrameTime()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -226,8 +202,7 @@ public class FrameRateMetricsTests
         // Act
         for (int i = 0; i < 10; i++)
         {
-            metrics.RecordFrame();
-            Thread.Sleep(16);
+            metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
         }
 
         // Assert
@@ -237,7 +212,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void P95_Returns95thPercentileFrameTime()
+    public void P95Returns95thPercentileFrameTime()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -245,8 +220,7 @@ public class FrameRateMetricsTests
         // Act
         for (int i = 0; i < 10; i++)
         {
-            metrics.RecordFrame();
-            Thread.Sleep(16);
+            metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
         }
 
         // Assert
@@ -256,7 +230,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void P99_Returns99thPercentileFrameTime()
+    public void P99Returns99thPercentileFrameTime()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -264,8 +238,7 @@ public class FrameRateMetricsTests
         // Act
         for (int i = 0; i < 10; i++)
         {
-            metrics.RecordFrame();
-            Thread.Sleep(16);
+            metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
         }
 
         // Assert
@@ -275,7 +248,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void Reset_ClearsAllMetrics()
+    public void ResetClearsAllMetrics()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -283,8 +256,7 @@ public class FrameRateMetricsTests
         // Record some frames
         for (int i = 0; i < 5; i++)
         {
-            metrics.RecordFrame();
-            Thread.Sleep(16);
+            metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
         }
 
         // Verify we have data
@@ -308,21 +280,19 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void Reset_AllowsNewMeasurementsAfterReset()
+    public void ResetAllowsNewMeasurementsAfterReset()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
 
         // Record and reset
-        metrics.RecordFrame();
-        Thread.Sleep(16);
-        metrics.RecordFrame();
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
         metrics.Reset();
 
         // Act - Record new frames
-        metrics.RecordFrame();
-        Thread.Sleep(16);
-        metrics.RecordFrame();
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
 
         // Assert
         Assert.Equal(2, metrics.FrameCount);
@@ -330,7 +300,7 @@ public class FrameRateMetricsTests
     }
 
     [Fact]
-    public void RecordFrame_WithManyFrames_CalculatesAccurateMetrics()
+    public void RecordFrameWithManyFramesCalculatesAccurateMetrics()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
@@ -338,42 +308,35 @@ public class FrameRateMetricsTests
         // Act - Simulate 100 frames at ~60 FPS
         for (int i = 0; i < 100; i++)
         {
-            metrics.RecordFrame();
-            Thread.Sleep(16);
+            metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
         }
 
         // Assert
         Assert.Equal(100, metrics.FrameCount);
-        Assert.InRange(metrics.AverageFPS, 50, 70);
+        Assert.InRange(metrics.AverageFPS, 58, 65);
         Assert.True(metrics.MinFPS > 0);
-        Assert.True(metrics.MaxFPS > metrics.MinFPS);
+        Assert.True(metrics.MaxFPS >= metrics.MinFPS);
         Assert.True(metrics.P50 > 0);
-        Assert.True(metrics.P95 > metrics.P50);
+        Assert.True(metrics.P95 >= metrics.P50);
         Assert.True(metrics.P99 >= metrics.P95);
     }
 
     [Fact]
-    public void FrameRateMetrics_HandlesVariableFrameRates()
+    public void FrameRateMetricsHandlesVariableFrameRates()
     {
         // Arrange
         var metrics = new FrameRateMetrics();
 
         // Act - Simulate variable frame rates
-        metrics.RecordFrame();
-        Thread.Sleep(8);   // 125 FPS
-        metrics.RecordFrame();
-        Thread.Sleep(16);  // 62.5 FPS
-        metrics.RecordFrame();
-        Thread.Sleep(33);  // 30 FPS
-        metrics.RecordFrame();
-        Thread.Sleep(16);  // 62.5 FPS
-        metrics.RecordFrame();
-        Thread.Sleep(8);   // 125 FPS
-        metrics.RecordFrame();
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(8));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(33));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(16));
+        metrics.RecordFrame(TimeSpan.FromMilliseconds(8));
 
         // Assert
-        Assert.Equal(6, metrics.FrameCount);
-        Assert.True(metrics.MaxFPS > metrics.MinFPS);
+        Assert.Equal(5, metrics.FrameCount);
+        Assert.True(metrics.MaxFPS >= metrics.MinFPS);
         Assert.True(metrics.MinFPS > 0);
         Assert.InRange(metrics.AverageFrameTime, 5, 35);
     }

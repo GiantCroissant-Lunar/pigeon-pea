@@ -18,6 +18,26 @@ public readonly struct ItemPickedUpEvent
     /// Gets the type of the item that was picked up (e.g., "Consumable", "Equipment", "QuestItem").
     /// </summary>
     public required string ItemType { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(ItemPickedUpEvent left, ItemPickedUpEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(ItemPickedUpEvent left, ItemPickedUpEvent right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -38,6 +58,26 @@ public readonly struct ItemUsedEvent
     /// Gets the type of the item that was used (e.g., "Consumable", "Equipment", "QuestItem").
     /// </summary>
     public required string ItemType { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(ItemUsedEvent left, ItemUsedEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(ItemUsedEvent left, ItemUsedEvent right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -53,4 +93,24 @@ public readonly struct ItemDroppedEvent
     /// Gets the name of the item that was dropped.
     /// </summary>
     public required string ItemName { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(ItemDroppedEvent left, ItemDroppedEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(ItemDroppedEvent left, ItemDroppedEvent right)
+    {
+        return !(left == right);
+    }
 }

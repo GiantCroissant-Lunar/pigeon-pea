@@ -15,6 +15,11 @@ public class BrailleRenderer : IRenderer
     private readonly Dictionary<(int x, int y), (char glyph, Color fg, Color bg)> _buffer = new();
 
     /// <summary>
+    /// Gets or sets the writer used for console output. Defaults to <see cref="System.Console.Out" />.
+    /// </summary>
+    public TextWriter Output { get; set; } = System.Console.Out;
+
+    /// <summary>
     /// Gets the renderer capabilities.
     /// </summary>
     public RendererCapabilities Capabilities =>
@@ -88,7 +93,7 @@ public class BrailleRenderer : IRenderer
             }
 
             sb.Append("\x1b[0m"); // Reset colors at the very end
-            System.Console.Write(sb.ToString());
+            (Output ?? System.Console.Out).Write(sb.ToString());
         }
         catch (System.IO.IOException ex)
         {
@@ -111,6 +116,10 @@ public class BrailleRenderer : IRenderer
             {
                 throw;
             }
+        }
+        catch (ObjectDisposedException)
+        {
+            // Tests or hosts may dispose the writer; ignore output in that case.
         }
 
         _target.Present();

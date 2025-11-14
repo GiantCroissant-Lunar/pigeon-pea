@@ -23,6 +23,26 @@ public readonly struct PlayerDamagedEvent
     /// Gets the source of the damage (e.g., enemy name, trap type).
     /// </summary>
     public required string Source { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(PlayerDamagedEvent left, PlayerDamagedEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(PlayerDamagedEvent left, PlayerDamagedEvent right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -43,4 +63,24 @@ public readonly struct EnemyDefeatedEvent
     /// Gets the amount of experience points awarded for defeating the enemy.
     /// </summary>
     public int ExperienceGained { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(EnemyDefeatedEvent left, EnemyDefeatedEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(EnemyDefeatedEvent left, EnemyDefeatedEvent right)
+    {
+        return !(left == right);
+    }
 }
