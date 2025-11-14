@@ -52,9 +52,9 @@ jobs:
         id: check-warnings
         run: |
           if python scripts/validate-docs.py 2>&1 | grep -q "Near-duplicate detected"; then
-            echo "has_duplicates=true" >> $GITHUB_OUTPUT
+            echo "has_duplicates=true" >> "$GITHUB_OUTPUT"
           else
-            echo "has_duplicates=false" >> $GITHUB_OUTPUT
+            echo "has_duplicates=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Comment on PR with warnings
@@ -129,33 +129,33 @@ jobs:
       - name: Verify registry structure
         run: |
           echo "Checking registry structure..."
-          if [ ! -f ./artifacts/registry.json ]; then
+          if [ ! -f ./artifacts/docs/index/registry.json ]; then
             echo "❌ Registry file not found!"
             exit 1
           fi
 
           # Check required fields in registry
-          if ! grep -q '"generated_at"' ./artifacts/registry.json; then
+          if ! grep -q '"generated_at"' ./artifacts/docs/index/registry.json; then
             echo "❌ Missing 'generated_at' field"
             exit 1
           fi
 
-          if ! grep -q '"total_docs"' ./artifacts/registry.json; then
+          if ! grep -q '"total_docs"' ./artifacts/docs/index/registry.json; then
             echo "❌ Missing 'total_docs' field"
             exit 1
           fi
 
-          if ! grep -q '"by_type"' ./artifacts/registry.json; then
+          if ! grep -q '"by_type"' ./artifacts/docs/index/registry.json; then
             echo "❌ Missing 'by_type' field"
             exit 1
           fi
 
-          if ! grep -q '"by_status"' ./artifacts/registry.json; then
+          if ! grep -q '"by_status"' ./artifacts/docs/index/registry.json; then
             echo "❌ Missing 'by_status' field"
             exit 1
           fi
 
-          if ! grep -q '"docs"' ./artifacts/registry.json; then
+          if ! grep -q '"docs"' ./artifacts/docs/index/registry.json; then
             echo "❌ Missing 'docs' field"
             exit 1
           fi
@@ -167,7 +167,7 @@ jobs:
           echo "## Documentation Registry Summary"
           python3 -c "
           import json
-          with open('./artifacts/registry.json') as f:
+          with open('./artifacts/docs/index/registry.json') as f:
               registry = json.load(f)
           print(f'Total documents: {registry[\"total_docs\"]}')
           print(f'By type: {registry[\"by_type\"]}')
