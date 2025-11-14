@@ -170,11 +170,10 @@ internal static class TerminalHudApplication
                 {
                     if (mapView.Visible) mapView.Visible = false;
                     if (_brailleView != null && _brailleView.Visible) _brailleView.Visible = false;
-                    // Pixel view is handled by TerminalGuiRenderer’s pixel path in MapDataRenderer; force a redraw
+                    // Pixel view is handled by TerminalGuiRenderer's pixel path in MapDataRenderer; force a redraw
                     mapView.SetNeedsDraw();
                 }
             }
-
 
             // Helper to invalidate only the active view (for animation ticks)
             void InvalidateActiveView()
