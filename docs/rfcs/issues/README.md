@@ -1,3 +1,16 @@
+---
+doc_id: "PLAN-2025-00002"
+title: "GitHub Issues for Plugin System Implementation"
+doc_type: "plan"
+status: "active"
+canonical: true
+created: "2025-11-10"
+tags: ["planning", "issues", "plugin-system", "github"]
+summary: "Detailed issue descriptions for implementing the plugin system and project restructure as defined in RFC-005 and RFC-006"
+supersedes: []
+related: ["RFC-2025-00005", "RFC-2025-00006", "PLAN-2025-00001"]
+---
+
 # GitHub Issues for Plugin System Implementation
 
 This directory contains detailed issue descriptions for implementing the plugin system and project restructure as defined in RFC-005 and RFC-006.
