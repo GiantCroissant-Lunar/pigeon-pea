@@ -106,20 +106,20 @@ def extract_front_matter(file_path: Path) -> Tuple[Optional[Dict[str, Any]], str
     try:
         with open(file_path, encoding="utf-8") as f:
             content = f.read()
-
-        if not content.startswith("---"):
-            return None, content
-
-        parts = content.split("---", 2)
-        if len(parts) < 3:
-            return None, content
-
-        front_matter = yaml.safe_load(parts[1])
-        return front_matter, content
-
-    except Exception as e:
+    except OSError as e:
         print(f"Error reading {file_path}: {e}")
         return None, ""
+
+    if not content.startswith("---"):
+        return None, content
+
+    parts = content.split("---", 2)
+    if len(parts) < 3:
+        return None, content
+
+    # Let YAML errors surface instead of silently skipping invalid docs
+    front_matter = yaml.safe_load(parts[1])
+    return front_matter, content
 
 
 def validate_front_matter_fields(

@@ -135,7 +135,7 @@ Why is this needed? What problem does it solve?
 
 ### Guide (How-to)
 
-```markdown
+````markdown
 ---
 title: 'Guide Title'
 doc_type: 'guide'
@@ -165,6 +165,8 @@ Brief description of what this guide covers.
 ```bash
 # Example commands
 ```
+````
+
 ```
 
 ### Step 2: [Name]
@@ -189,12 +191,12 @@ Brief description of what this guide covers.
 
 ```markdown
 ---
-title: "ADR Title"
-doc_type: "adr"
-status: "draft"
-created: "YYYY-MM-DD"
+title: 'ADR Title'
+doc_type: 'adr'
+status: 'draft'
+created: 'YYYY-MM-DD'
 tags: []
-summary: ""
+summary: ''
 ---
 
 # ADR-XXX: ADR Title

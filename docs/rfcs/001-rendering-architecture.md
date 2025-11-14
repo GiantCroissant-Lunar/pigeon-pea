@@ -1,12 +1,12 @@
 ---
-doc_id: "RFC-2025-00001"
-title: "Rendering Architecture"
-doc_type: "rfc"
-status: "draft"
+doc_id: 'RFC-2025-00001'
+title: 'Rendering Architecture'
+doc_type: 'rfc'
+status: 'draft'
 canonical: true
-created: "2025-11-08"
-tags: ["rendering", "architecture", "graphics", "terminal", "skiasharp"]
-summary: "Unified rendering architecture supporting both high-fidelity desktop graphics (Windows/SkiaSharp) and multi-tier terminal graphics (Console/Kitty/Sixel/Braille/ASCII) with a shared abstraction layer"
+created: '2025-11-08'
+tags: ['rendering', 'architecture', 'graphics', 'terminal', 'skiasharp']
+summary: 'Unified rendering architecture supporting both high-fidelity desktop graphics (Windows/SkiaSharp) and multi-tier terminal graphics (Console/Kitty/Sixel/Braille/ASCII) with a shared abstraction layer'
 supersedes: []
 related: []
 ---
