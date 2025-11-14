@@ -1,5 +1,5 @@
 ---
-doc_id: "SPEC-2025-00002"
+doc_id: "REFERENCE-2025-00002"
 title: "Angle → Glyph Mapping Examples"
 doc_type: "reference"
 status: "active"

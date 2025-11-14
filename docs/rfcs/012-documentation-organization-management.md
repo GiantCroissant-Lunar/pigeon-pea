@@ -155,7 +155,7 @@ All documentation (except `_inbox/`) must include YAML front-matter:
 
 ```yaml
 ---
-doc_id: "DOC-2025-00042"        # Format: PREFIX-YYYY-NNNNN
+doc_id: "RFC-2025-00042"        # Format: PREFIX-YYYY-NNNNN
 title: "Documentation Title"
 doc_type: "rfc"                 # spec|rfc|adr|plan|finding|guide|glossary|reference
 status: "active"                # draft|active|superseded|rejected|archived
@@ -179,6 +179,8 @@ related: []                     # Optional: list of related doc_ids
 | `PLAN-` | Planning Document | `PLAN-2025-00001` |
 | `FIND-` | Finding/Analysis | `FIND-2025-00001` |
 | `SPEC-` | Specification | `SPEC-2025-00001` |
+| `GLOSSARY-` | Glossary/Terminology | `GLOSSARY-2025-00001` |
+| `REFERENCE-` | Reference Documentation | `REFERENCE-2025-00001` |
 
 #### Valid Values
 
@@ -444,7 +446,7 @@ rapidfuzz>=3.5.2
       - id: validate-docs
         name: Validate Documentation
         entry: python scripts/validate-docs.py --pre-commit
-        language: system
+        language: python
         files: ^docs/.*\.md$
         exclude: ^docs/(_inbox|index)/
         pass_filenames: false

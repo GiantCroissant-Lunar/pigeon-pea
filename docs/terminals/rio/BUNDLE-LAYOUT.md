@@ -1,5 +1,5 @@
 ---
-doc_id: "GUIDE-2025-00003"
+doc_id: "REFERENCE-2025-00003"
 title: "Rio Bundle Layout (Template)"
 doc_type: "reference"
 status: "active"
