@@ -1,3 +1,16 @@
+---
+doc_id: "REFERENCE-2025-00001"
+title: "Documentation Front-Matter Schema"
+doc_type: "reference"
+status: "active"
+canonical: true
+created: "2025-11-13"
+tags: ["documentation", "schema", "front-matter", "reference", "validation"]
+summary: "Reference documentation for YAML front-matter schema required for all documentation files (except inbox drafts)"
+supersedes: []
+related: ["RFC-2025-00012"]
+---
+
 # Documentation Front-Matter Schema
 
 All documentation (except `_inbox/` drafts) must include YAML front-matter.

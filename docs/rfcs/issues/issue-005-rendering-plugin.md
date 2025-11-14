@@ -1,3 +1,16 @@
+---
+doc_id: "PLAN-2025-00007"
+title: "Issue #5: [RFC-006] Phase 3: Create rendering plugin proof of concept"
+doc_type: "plan"
+status: "active"
+canonical: true
+created: "2025-11-10"
+tags: ["issue", "plugin-system", "rfc-006", "phase-3", "rendering"]
+summary: "Create rendering plugin proof of concept as defined in RFC-006 Phase 3"
+supersedes: []
+related: ["RFC-2025-00006", "PLAN-2025-00001", "PLAN-2025-00006"]
+---
+
 # Issue #5: [RFC-006] Phase 3: Create rendering plugin proof of concept
 
 **Labels:** `plugin-system`, `rfc-006`, `phase-3`, `rendering`
@@ -257,5 +270,5 @@ renderer.Shutdown();
 
 ## See Also
 
-- [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
+- [RFC-006: Plugin System Architecture](../006-plugin-system-architecture.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)

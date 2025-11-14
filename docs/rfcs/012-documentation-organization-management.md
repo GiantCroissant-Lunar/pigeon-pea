@@ -1,3 +1,16 @@
+---
+doc_id: "RFC-2025-00012"
+title: "Documentation Organization Management"
+doc_type: "rfc"
+status: "draft"
+canonical: true
+created: "2025-11-13"
+tags: ["documentation", "infrastructure", "validation", "registry", "agent-tools"]
+summary: "Structured documentation management system with validation, registry generation, and inbox workflow to enable autonomous agents to discover, create, and maintain high-quality documentation"
+supersedes: []
+related: ["RFC-2025-00004"]
+---
+
 # RFC-012: Documentation Organization Management
 
 ## Status
