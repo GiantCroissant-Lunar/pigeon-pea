@@ -86,16 +86,19 @@ fn test_cli_override_server() {
 }
 
 #[test]
-fn test_connect_stub() {
+fn test_connect_without_server() {
     let output = Command::new("cargo")
         .args(["run", "--", "connect"])
         .output()
         .expect("Failed to execute command");
 
-    assert!(output.status.success());
+    // Connection will fail without a server running
+    assert!(!output.status.success());
+    let stderr = String::from_utf8_lossy(&output.stderr);
     let stdout = String::from_utf8_lossy(&output.stdout);
-    assert!(stdout.contains("Connecting to:"));
-    assert!(stdout.contains("not yet implemented"));
+
+    // Should show connection attempt
+    assert!(stdout.contains("Connecting to:") || stderr.contains("Failed to connect"));
 }
 
 #[test]

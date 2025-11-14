@@ -36,7 +36,7 @@ dev-tool config
 # Show configuration in JSON format
 dev-tool --output json config
 
-# Connect to server (stub)
+# Connect to server
 dev-tool connect
 
 # Send a message (stub)
@@ -98,14 +98,22 @@ Configuration values are resolved in the following order (highest to lowest prio
 
 ### `connect`
 
-Connect to the WebSocket server.
+Connect to the WebSocket server and send a noop command.
+
+This command:
+- Establishes a WebSocket connection to the server
+- Sends authentication token if provided (via `--token` or `DEV_TOOL_TOKEN`)
+- Sends a noop command and waits for the reply
+- Validates protocol version compatibility
+- Prints the server response
 
 ```bash
 dev-tool connect
 dev-tool connect --url ws://custom-server:9000
+dev-tool --token mytoken connect
 ```
 
-**Status**: Stub implementation
+**Status**: Fully implemented
 
 ### `send`
 
@@ -158,14 +166,56 @@ This will display the effective configuration before executing the command.
 
 This tool is implemented according to RFC-013: Yazi-integrated Rust CLI.
 
+## WebSocket Protocol
+
+The tool uses a versioned JSON envelope protocol for communication:
+
+### Envelope Structure
+
+```json
+{
+  "version": 1,
+  "type": "gm.command|gm.reply|event.state|event.log",
+  "id": "unique-message-id",
+  "correlationId": "optional-correlation-id",
+  "payload": { }
+}
+```
+
+### Message Types
+
+- `gm.command`: Commands sent to the game server
+- `gm.reply`: Replies from the game server
+- `event.state`: State change events
+- `event.log`: Log events
+
+### Authentication
+
+If a token is provided (via `--token` or `DEV_TOOL_TOKEN`), it is included in the first message payload:
+
+```json
+{
+  "auth": {
+    "token": "your-token-here"
+  }
+}
+```
+
+### Protocol Versioning
+
+- Current version: 1
+- The client checks server protocol version compatibility
+- Clear error messages are displayed for version mismatches
+- Backward-compatible changes do not bump the major version
+
 ## Future Enhancements
 
 The following features are planned for future releases:
 
-- WebSocket client implementation
-- Message protocol handlers
 - Yazi integration
-- Additional subcommands for development workflows
+- Additional game management commands
+- Interactive command mode
+- Event streaming and filtering
 
 ## License
 
