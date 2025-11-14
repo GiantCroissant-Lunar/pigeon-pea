@@ -346,7 +346,7 @@ def collect_documents(
     for md_file in docs_dir.rglob("*.md"):
         # Skip excluded patterns
         rel_path = md_file.relative_to(docs_dir)
-        if any(pattern in str(rel_path) for pattern in exclude_patterns):
+        if any(str(rel_path).startswith(pattern) for pattern in exclude_patterns):
             continue
 
         front_matter, content = extract_front_matter(md_file)
