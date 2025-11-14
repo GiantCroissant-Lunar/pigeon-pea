@@ -3,6 +3,9 @@
 # Generated documentation registry
 /docs/index/registry.json
 
+# Node.js dependencies
+node_modules/
+
 # Python cache
 __pycache__/
 *.pyc

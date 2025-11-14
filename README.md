@@ -19,6 +19,8 @@ This project uses [pre-commit](https://pre-commit.com/) to maintain code quality
 - **JavaScript/TypeScript/Node.js**: Code formatting (prettier)
 - **YAML**: Validation and linting (yamllint)
 - **JSON**: Validation and formatting (prettier)
+- **Documentation**: Front-matter validation, duplicate detection (docs/\*.md)
+- **Agent Infrastructure**: Validation of agent manifests and skills
 - **Security**: Secret detection (gitleaks, detect-secrets)
 - **General**: Trailing whitespace, EOF fixes, large file detection, merge conflict detection
 
