@@ -1,0 +1,103 @@
+# Example Terraform Variables for pigeon-pea
+# Copy this file to terraform.tfvars and fill in your values
+# DO NOT commit terraform.tfvars (it contains secrets)
+
+# ==============================================================================
+# GitHub Provider Configuration
+# ==============================================================================
+
+# GitHub Personal Access Token
+# Create at: https://github.com/settings/tokens
+# Required scopes: repo, admin:repo_hook, workflow
+github_token = "ghp_YOUR_TOKEN_HERE"
+
+# GitHub username or organization name
+github_owner = "your-username"
+
+# ==============================================================================
+# Repository Configuration
+# ==============================================================================
+
+repository_name        = "pigeon-pea"
+repository_description = "A roguelike game with procedural map generation and dungeon crawling"
+repository_visibility  = "private"  # or "public"
+
+# Repository topics/tags
+repository_topics = [
+  "roguelike",
+  "game-development",
+  "procedural-generation",
+  "dotnet",
+  "csharp",
+  "terminal-ui",
+  "goRogue",
+  "ecs",
+  "dungeon-crawler"
+]
+
+# ==============================================================================
+# Repository Features
+# ==============================================================================
+
+enable_issues      = true
+enable_projects    = true
+enable_wiki        = false
+enable_discussions = true
+
+# ==============================================================================
+# Branch Protection
+# ==============================================================================
+
+enable_branch_protection       = true
+protected_branches             = ["main"]
+require_pull_request_reviews   = false  # Set to true for team collaboration
+required_approving_review_count = 1
+require_status_checks          = true
+required_status_checks = [
+  "pre-commit",
+  "build",
+  "test"
+]
+
+# ==============================================================================
+# GitHub Actions Secrets (Sensitive)
+# ==============================================================================
+
+# IMPORTANT: These are sensitive values
+# For production, use Terraform Cloud variables or environment variables
+
+github_actions_secrets = {
+  # OpenAI API key for embeddings (memory system)
+  "OPENAI_API_KEY" = "sk-..."
+
+  # Anthropic API key for Claude (if using)
+  # "ANTHROPIC_API_KEY" = "sk-ant-..."
+
+  # GCP Service Account Key (for Unity builds)
+  # "GCP_SA_KEY" = "{...json...}"
+
+  # Firebase App Distribution Token (if using)
+  # "FIREBASE_TOKEN" = "..."
+}
+
+# ==============================================================================
+# GitHub Actions Variables (Non-sensitive)
+# ==============================================================================
+
+github_actions_variables = {
+  "DOTNET_VERSION"   = "8.0"
+  "PYTHON_VERSION"   = "3.11"
+  "NODE_VERSION"     = "18"
+  "QDRANT_VERSION"   = "latest"
+}
+
+# ==============================================================================
+# Advanced Settings
+# ==============================================================================
+
+allow_merge_commit     = true
+allow_squash_merge     = true
+allow_rebase_merge     = false
+delete_branch_on_merge = true
+enable_auto_merge      = true
+vulnerability_alerts   = true
