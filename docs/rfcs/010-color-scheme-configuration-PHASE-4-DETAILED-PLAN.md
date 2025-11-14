@@ -9,11 +9,13 @@
 ## Prerequisites
 
 **Must be completed first**:
+
 - ✅ Phase 1: Core Color Scheme System (`ColorScheme` enum, `ColorSchemes` class)
 - ✅ Phase 2: Renderer Integration (`SkiaMapRasterizer` uses `ColorSchemes`)
 - ✅ Phase 3: ViewModel Integration (`MapViewModel.ColorScheme` property exists)
 
 **Verify before starting**:
+
 ```bash
 # Verify ColorScheme enum exists
 grep -r "enum ColorScheme" dotnet/Map/
@@ -46,11 +48,13 @@ Phase 4 adds **user-facing controls** to select color schemes in both console (T
 **UI Framework**: Terminal.Gui
 
 **Current State**:
+
 - HUD displays map with various controls (navigation, zoom, layers)
 - Settings are managed through `MapViewModel`
 - No color scheme selector exists yet
 
 **Target State**:
+
 - Add `ComboBox` or `RadioGroup` control for color scheme selection
 - Position control in HUD layout (likely in settings panel or toolbar)
 - Bind control to `MapViewModel.ColorScheme` property
@@ -63,11 +67,13 @@ Phase 4 adds **user-facing controls** to select color schemes in both console (T
 **UI Framework**: Avalonia
 
 **Possible Integration Points**:
+
 1. Main map view settings panel
 2. Preferences/Settings window
 3. Map parameters panel (if exists)
 
 **Target State**:
+
 - Add `ComboBox` control with XAML data binding
 - Bind to `MapViewModel.AvailableColorSchemes` and `MapViewModel.ColorScheme`
 - Ensure ReactiveUI triggers re-render on change
@@ -87,6 +93,7 @@ Phase 4 adds **user-facing controls** to select color schemes in both console (T
    - Determine best location for color scheme selector
 
 2. **Add ComboBox control** (1 hour)
+
    ```csharp
    // Pseudocode - actual implementation depends on Terminal.Gui version
    var colorSchemeLabel = new Label("Color Scheme:")
@@ -112,6 +119,7 @@ Phase 4 adds **user-facing controls** to select color schemes in both console (T
    ```
 
 3. **Wire to ViewModel** (1 hour)
+
    ```csharp
    colorSchemeCombo.SelectedItemChanged += (args) =>
    {
@@ -176,6 +184,7 @@ dotnet run
 #### Subtasks
 
 1. **Locate Avalonia UI files** (30 min)
+
    ```bash
    # Search for Avalonia view files
    find dotnet/ -name "*.axaml" -o -name "*.xaml"
@@ -220,6 +229,7 @@ Document findings in this section:
 #### Subtasks
 
 1. **Add ComboBox to XAML** (1 hour)
+
    ```xaml
    <!-- Example XAML - adjust based on actual layout -->
    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
@@ -300,6 +310,7 @@ dotnet run
 #### Problem Statement
 
 Changing `MapViewModel.ColorScheme` must trigger map re-render. This may require:
+
 - ReactiveUI subscriptions
 - Manual `InvalidateVisual()` calls
 - Updating render pipelines to pass `colorScheme` parameter
@@ -415,6 +426,7 @@ Changing `MapViewModel.ColorScheme` must trigger map re-render. This may require
      ```
 
 2. **Add ColorScheme to config** (1 hour)
+
    ```json
    // appsettings.json
    {
@@ -427,6 +439,7 @@ Changing `MapViewModel.ColorScheme` must trigger map re-render. This may require
    ```
 
 3. **Load on startup** (30 min)
+
    ```csharp
    // In app initialization
    var config = Configuration.GetSection("MapSettings");
@@ -466,6 +479,7 @@ Changing `MapViewModel.ColorScheme` must trigger map re-render. This may require
 ### Manual Testing
 
 **Console App**:
+
 1. Run `dotnet run --project dotnet/console-app/`
 2. Find color scheme dropdown in HUD
 3. Test all schemes:
@@ -482,6 +496,7 @@ Changing `MapViewModel.ColorScheme` must trigger map re-render. This may require
    - Switch multiple times rapidly
 
 **Desktop App**:
+
 1. Run desktop application
 2. Find color scheme control
 3. Test all schemes (same as console)
@@ -491,6 +506,7 @@ Changing `MapViewModel.ColorScheme` must trigger map re-render. This may require
 ### Automated Testing (Optional)
 
 If UI testing framework exists:
+
 ```csharp
 [Fact]
 public void ColorSchemeSelector_ChangesViewModel()
@@ -507,6 +523,7 @@ public void ColorSchemeSelector_ChangesViewModel()
 ### Visual Regression Testing
 
 Capture screenshots of each color scheme for comparison:
+
 ```bash
 # Generate reference images (manual or automated)
 dotnet run --project dotnet/console-app/ -- --screenshot --scheme Original
@@ -531,24 +548,26 @@ dotnet run --project dotnet/console-app/ -- --screenshot --scheme Realistic
 
 ## Critical Files to Modify
 
-| File                                   | Purpose                              | Estimated Lines Changed |
-| -------------------------------------- | ------------------------------------ | ----------------------- |
-| `console-app/TerminalHudApplication.cs` | Add ComboBox control                 | +30-50                  |
+| File                                       | Purpose                             | Estimated Lines Changed |
+| ------------------------------------------ | ----------------------------------- | ----------------------- |
+| `console-app/TerminalHudApplication.cs`    | Add ComboBox control                | +30-50                  |
 | `console-app/Views/BrailleMapPanelView.cs` | Ensure re-render on scheme change   | +5-10                   |
 | `console-app/Views/PixelMapPanelView.cs`   | Ensure re-render on scheme change   | +5-10                   |
-| `<desktop-view>.axaml`                 | Add XAML ComboBox                    | +10-20                  |
-| `<desktop-view>.axaml.cs`              | ReactiveUI subscription (if needed)  | +10-20                  |
+| `<desktop-view>.axaml`                     | Add XAML ComboBox                   | +10-20                  |
+| `<desktop-view>.axaml.cs`                  | ReactiveUI subscription (if needed) | +10-20                  |
 
 ---
 
 ## Dependencies and Blockers
 
 **Dependencies**:
+
 - ✅ Phase 3 completed (`MapViewModel.ColorScheme` property exists)
 - ✅ `ColorScheme` enum defined
 - ✅ `ColorSchemes` class implemented
 
 **Potential Blockers**:
+
 1. **Terminal.Gui version compatibility**: ComboBox API may differ in older versions
    - Mitigation: Check Terminal.Gui documentation for correct API
 2. **Avalonia view files don't exist**: Desktop app may not be fully implemented yet
@@ -578,25 +597,27 @@ dotnet run --project dotnet/console-app/ -- --screenshot --scheme Realistic
 
 ## Risks and Mitigations
 
-| Risk                                      | Impact | Mitigation                                                  |
-| ----------------------------------------- | ------ | ----------------------------------------------------------- |
-| Terminal.Gui API changed                  | Medium | Check documentation; use reflection if needed               |
-| Desktop app not ready for integration     | Low    | Focus on console app; defer desktop to Phase 5              |
-| Re-render performance issues              | Medium | Profile rendering; optimize if needed (unlikely)            |
-| Users confused by multiple schemes        | Low    | Add tooltips; document schemes in user guide (Phase 5)      |
-| ViewModel binding broken                  | High   | Add unit tests for ViewModel; verify ReactiveUI setup       |
+| Risk                                  | Impact | Mitigation                                             |
+| ------------------------------------- | ------ | ------------------------------------------------------ |
+| Terminal.Gui API changed              | Medium | Check documentation; use reflection if needed          |
+| Desktop app not ready for integration | Low    | Focus on console app; defer desktop to Phase 5         |
+| Re-render performance issues          | Medium | Profile rendering; optimize if needed (unlikely)       |
+| Users confused by multiple schemes    | Low    | Add tooltips; document schemes in user guide (Phase 5) |
+| ViewModel binding broken              | High   | Add unit tests for ViewModel; verify ReactiveUI setup  |
 
 ---
 
 ## Next Steps After Phase 4
 
 **Phase 5: Persistence and Documentation**
+
 - Save/load color scheme preference
 - Write user guide with screenshots
 - Add scheme comparison images to docs
 - Publish release notes
 
 **Future Enhancements** (not in this RFC):
+
 - Custom user-defined schemes (JSON/YAML)
 - Per-biome color overrides
 - Animation support (day/night cycles)

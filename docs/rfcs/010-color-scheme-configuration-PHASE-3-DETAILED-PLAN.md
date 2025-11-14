@@ -42,6 +42,7 @@ Phase 3 integrates the color scheme selection capability into the ViewModel laye
 **Question**: Should we move `MapRenderViewModel` to `Map.Control`, or keep it in `Shared`?
 
 **Options**:
+
 - **Option A**: Move to `dotnet/Map/PigeonPea.Map.Control/ViewModels/MapRenderViewModel.cs`
   - **Pros**: Aligns with domain-driven organization; Map.Control owns map-specific ViewModels
   - **Cons**: Breaking change; requires updating all references
@@ -53,6 +54,7 @@ Phase 3 integrates the color scheme selection capability into the ViewModel laye
 **Recommendation**: **Option A** - Move to Map.Control
 
 **Rationale**:
+
 - RFC-007 established domain-driven organization
 - `MapRenderViewModel` is map-specific (not dungeon, not generic rendering)
 - Map.Control already exists and is the correct home for map ViewModels
@@ -63,6 +65,7 @@ Phase 3 integrates the color scheme selection capability into the ViewModel laye
 **Question**: Should ColorScheme be in MapRenderViewModel or a separate MapSettingsViewModel?
 
 **Options**:
+
 - **Option A**: Add to existing `MapRenderViewModel`
   - **Pros**: Simple; all map rendering settings in one place
   - **Cons**: ViewModel might grow too large over time
@@ -74,6 +77,7 @@ Phase 3 integrates the color scheme selection capability into the ViewModel laye
 **Recommendation**: **Option A** - Add to MapRenderViewModel
 
 **Rationale**:
+
 - Color scheme is fundamentally a rendering setting
 - MapRenderViewModel is not yet too large
 - Can refactor later if needed (YAGNI principle)
@@ -85,14 +89,17 @@ Phase 3 integrates the color scheme selection capability into the ViewModel laye
 **Task**: Set up the directory structure for Map-specific ViewModels.
 
 **Actions**:
+
 ```bash
 mkdir -p dotnet/Map/PigeonPea.Map.Control/ViewModels
 ```
 
 **Files Created**:
+
 - `dotnet/Map/PigeonPea.Map.Control/ViewModels/` (directory)
 
 **Success Criteria**:
+
 - Directory exists
 - Ready to receive ViewModel files
 
@@ -110,6 +117,7 @@ mkdir -p dotnet/Map/PigeonPea.Map.Control/ViewModels
 1. **Copy file to new location** (don't delete source yet - we'll verify references first)
 
 2. **Update namespace**:
+
    ```csharp
    // OLD:
    namespace PigeonPea.Shared.ViewModels;
@@ -119,6 +127,7 @@ mkdir -p dotnet/Map/PigeonPea.Map.Control/ViewModels
    ```
 
 3. **Add XML documentation** (improve existing docs):
+
    ```csharp
    /// <summary>
    /// Reactive ViewModel for map rendering state, including camera position, zoom,
@@ -139,9 +148,11 @@ mkdir -p dotnet/Map/PigeonPea.Map.Control/ViewModels
    ```
 
 **Files Modified**:
+
 - `dotnet/Map/PigeonPea.Map.Control/ViewModels/MapRenderViewModel.cs` (created)
 
 **Success Criteria**:
+
 - File exists in new location
 - Namespace is `PigeonPea.Map.Control.ViewModels`
 - File compiles successfully
@@ -157,16 +168,19 @@ mkdir -p dotnet/Map/PigeonPea.Map.Control/ViewModels
 **Actions**:
 
 1. **Add using directive** (at top of file):
+
    ```csharp
    using PigeonPea.Map.Core.Domain;
    ```
 
 2. **Add private backing field** (after existing fields):
+
    ```csharp
    private ColorScheme _colorScheme = ColorScheme.Original;
    ```
 
 3. **Add public property** (after existing properties):
+
    ```csharp
    /// <summary>
    /// Currently selected color scheme for map rendering.
@@ -197,6 +211,7 @@ mkdir -p dotnet/Map/PigeonPea.Map.Control/ViewModels
    ```
 
 **Code Example** (full updated class):
+
 ```csharp
 using ReactiveUI;
 using PigeonPea.Map.Core.Domain;
@@ -256,9 +271,11 @@ public class MapRenderViewModel : ReactiveObject
 ```
 
 **Files Modified**:
+
 - `dotnet/Map/PigeonPea.Map.Control/ViewModels/MapRenderViewModel.cs`
 
 **Success Criteria**:
+
 - ColorScheme property exists and uses ReactiveUI
 - AvailableColorSchemes returns all enum values
 - File compiles successfully
@@ -277,6 +294,7 @@ public class MapRenderViewModel : ReactiveObject
 1. **Read current project file** to check existing references
 
 2. **Add missing references** (if needed):
+
    ```xml
    <ItemGroup>
      <!-- Domain reference for ColorScheme enum -->
@@ -293,9 +311,11 @@ public class MapRenderViewModel : ReactiveObject
    ```
 
 **Files Modified**:
+
 - `dotnet/Map/PigeonPea.Map.Control/PigeonPea.Map.Control.csproj`
 
 **Success Criteria**:
+
 - Project references Map.Core (for ColorScheme enum)
 - Project references ReactiveUI (for ReactiveObject)
 - Project builds successfully
@@ -307,6 +327,7 @@ public class MapRenderViewModel : ReactiveObject
 **Task**: Update all code that references the old Shared.ViewModels.MapRenderViewModel.
 
 **Search Strategy**:
+
 ```bash
 # Search for old namespace usage
 grep -r "PigeonPea.Shared.ViewModels" dotnet/
@@ -318,6 +339,7 @@ grep -r "MapRenderViewModel" dotnet/console-app/
 ```
 
 **Expected Files to Update**:
+
 - `dotnet/console-app/Views/BrailleMapPanelView.cs` (likely)
 - `dotnet/console-app/Views/PixelMapPanelView.cs` (likely)
 - `dotnet/console-app/TerminalHudApplication.cs` (likely)
@@ -326,6 +348,7 @@ grep -r "MapRenderViewModel" dotnet/console-app/
 **Actions for Each File**:
 
 1. **Replace using directive**:
+
    ```csharp
    // OLD:
    using PigeonPea.Shared.ViewModels;
@@ -335,6 +358,7 @@ grep -r "MapRenderViewModel" dotnet/console-app/
    ```
 
 2. **Update project reference** (in .csproj files):
+
    ```xml
    <!-- Add reference to Map.Control instead of or in addition to shared-app -->
    <ProjectReference Include="..\Map\PigeonPea.Map.Control\PigeonPea.Map.Control.csproj" />
@@ -346,11 +370,13 @@ grep -r "MapRenderViewModel" dotnet/console-app/
    ```
 
 **Files Modified**:
+
 - All files that reference `MapRenderViewModel` (TBD based on search results)
 - Console app project file (likely)
 - Any UI project files (likely)
 
 **Success Criteria**:
+
 - All references updated to new namespace
 - All projects compile successfully
 - No warnings about missing types
@@ -364,11 +390,13 @@ grep -r "MapRenderViewModel" dotnet/console-app/
 **Note**: This step prepares for Phase 4 (UI integration) by ensuring the ViewModel's ColorScheme property is passed through to the renderer.
 
 **Expected Files to Update**:
+
 - `dotnet/console-app/Views/BrailleMapPanelView.cs` (if it uses SkiaMapRasterizer)
 - `dotnet/console-app/Views/PixelMapPanelView.cs` (if it uses SkiaMapRasterizer)
 - Any other view that renders maps
 
 **Example Update**:
+
 ```csharp
 // OLD (Phase 2):
 var raster = SkiaMapRasterizer.Render(
@@ -400,6 +428,7 @@ var raster = SkiaMapRasterizer.Render(
 **Actions**:
 
 1. **Find all calls to SkiaMapRasterizer.Render()**:
+
    ```bash
    grep -r "SkiaMapRasterizer.Render" dotnet/
    ```
@@ -419,9 +448,11 @@ var raster = SkiaMapRasterizer.Render(
    ```
 
 **Files Modified**:
+
 - View files that call SkiaMapRasterizer.Render() (TBD based on search results)
 
 **Success Criteria**:
+
 - All render calls use ViewModel's ColorScheme property
 - Changing ColorScheme triggers re-render
 - No hardcoded ColorScheme values remain
@@ -435,12 +466,14 @@ var raster = SkiaMapRasterizer.Render(
 **Actions**:
 
 1. **Verify no remaining references**:
+
    ```bash
    grep -r "PigeonPea.Shared.ViewModels" dotnet/
    # Should return no results (except maybe in this plan document)
    ```
 
 2. **Delete old file**:
+
    ```bash
    rm dotnet/shared-app/ViewModels/MapRenderViewModel.cs
    ```
@@ -451,9 +484,11 @@ var raster = SkiaMapRasterizer.Render(
    ```
 
 **Files Deleted**:
+
 - `dotnet/shared-app/ViewModels/MapRenderViewModel.cs`
 
 **Success Criteria**:
+
 - Old file is deleted
 - No compilation errors
 - All tests pass
@@ -465,6 +500,7 @@ var raster = SkiaMapRasterizer.Render(
 **Task**: Update any unit tests that reference MapRenderViewModel.
 
 **Search Strategy**:
+
 ```bash
 grep -r "MapRenderViewModel" dotnet/**/*.Tests/
 ```
@@ -472,11 +508,13 @@ grep -r "MapRenderViewModel" dotnet/**/*.Tests/
 **Actions**:
 
 1. **Update using directives** in test files:
+
    ```csharp
    using PigeonPea.Map.Control.ViewModels;
    ```
 
 2. **Add tests for ColorScheme property**:
+
    ```csharp
    [Fact]
    public void ColorScheme_DefaultsToOriginal()
@@ -518,9 +556,11 @@ grep -r "MapRenderViewModel" dotnet/**/*.Tests/
    ```
 
 **Files Modified**:
+
 - Test files that reference MapRenderViewModel (TBD based on search results)
 
 **Success Criteria**:
+
 - All tests pass
 - New tests verify ColorScheme property behavior
 
@@ -547,16 +587,19 @@ After completing all steps, verify:
 ### Manual Testing
 
 1. **Instantiate ViewModel**:
+
    ```csharp
    var vm = new PigeonPea.Map.Control.ViewModels.MapRenderViewModel();
    ```
 
 2. **Verify default value**:
+
    ```csharp
    Assert.Equal(ColorScheme.Original, vm.ColorScheme);
    ```
 
 3. **Change color scheme**:
+
    ```csharp
    vm.ColorScheme = ColorScheme.Fantasy;
    // Should trigger PropertyChanged event
@@ -656,6 +699,7 @@ public class MapRenderViewModelTests
 **Symptom**: `The type or namespace 'Map' does not exist in the namespace 'PigeonPea'`
 
 **Solution**:
+
 - Ensure Map.Control project is built: `dotnet build dotnet/Map/PigeonPea.Map.Control`
 - Add project reference in consuming projects
 - Clean and rebuild solution
@@ -665,6 +709,7 @@ public class MapRenderViewModelTests
 **Symptom**: `The type or namespace name 'ColorScheme' could not be found`
 
 **Solution**:
+
 - Ensure Map.Core is referenced in Map.Control
 - Verify ColorScheme.cs exists in Map.Core
 - Add `using PigeonPea.Map.Core.Domain;` in ViewModel
@@ -674,6 +719,7 @@ public class MapRenderViewModelTests
 **Symptom**: `The type or namespace name 'ReactiveObject' could not be found`
 
 **Solution**:
+
 - Add ReactiveUI package reference to Map.Control.csproj
 - Run `dotnet restore`
 - Verify package version compatibility
@@ -683,6 +729,7 @@ public class MapRenderViewModelTests
 **Symptom**: Changing ColorScheme doesn't trigger re-render
 
 **Solution**:
+
 - Ensure using `this.RaiseAndSetIfChanged()` (not manual field set)
 - Verify subscription to `PropertyChanged` event in view
 - Check that view's `InvalidateView()` or equivalent is called
@@ -706,6 +753,7 @@ Phase 3 is complete when:
 After Phase 3 completion, proceed to:
 
 **Phase 4: UI Controls Integration**
+
 - Add color scheme selector to console HUD (Terminal.Gui)
 - Add color scheme selector to desktop settings (Avalonia)
 - Wire up to MapRenderViewModel.ColorScheme property
@@ -724,6 +772,7 @@ After Phase 3 completion, proceed to:
 **Estimated Time**: 2-3 hours
 
 **Breakdown**:
+
 - Step 1-2: Create directory + move file (15 min)
 - Step 3: Add ColorScheme properties (15 min)
 - Step 4: Update project references (10 min)

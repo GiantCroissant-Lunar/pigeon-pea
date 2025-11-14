@@ -19,19 +19,22 @@ from pigeonpea_devtools import DevToolsClient
 async with DevToolsClient("ws://127.0.0.1:5007") as client:
     result = await client.spawn("goblin", x=10, y=5)
     print(f"Spawned entity {result.entity_id}")
-    
+
     entities = await client.query()
     print(f"Found {len(entities)} entities")
 ```
 
 ## Location
+
 `dotnet/dev-tools/clients/python/`
 
 ## Labels
+
 - `enhancement`
 - `dev-tools`
 - `python`
 - `good first issue`
 
 ## Milestone
+
 DevTools v2.0

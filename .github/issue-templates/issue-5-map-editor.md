@@ -24,9 +24,11 @@ pp-dev regen-map 12345
 ```
 
 ## Labels
+
 - `enhancement`
 - `dev-tools`
 - `map-editor`
 
 ## Milestone
+
 DevTools v2.0

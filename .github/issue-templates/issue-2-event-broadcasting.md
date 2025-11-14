@@ -34,9 +34,11 @@ private void OnPlayerMoved(Point oldPos, Point newPos)
 ```
 
 ## Labels
+
 - `enhancement`
 - `dev-tools`
 - `real-time`
 
 ## Milestone
+
 DevTools v1.1

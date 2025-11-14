@@ -1,7 +1,7 @@
 using PigeonPea.Console.Rendering;
+using PigeonPea.Map.Control.ViewModels;
 using PigeonPea.Map.Core;
 using PigeonPea.Map.Core.Adapters;
-using PigeonPea.Map.Control.ViewModels;
 using PigeonPea.Map.Rendering;
 using PigeonPea.Shared.Rendering;
 using Terminal.Gui;
@@ -75,14 +75,15 @@ internal static class TerminalHudApplication
             // Overlays removed for Phase 3 migration; to be reintroduced via Map.Rendering overlays in a follow-up
 
             // Settings panel for color scheme selector
-            var settingsPanel = new FrameView { 
-                Title = "Settings", 
-                X = 0, 
-                Y = 0, 
-                Width = Dim.Fill(), 
-                Height = 1 
+            var settingsPanel = new FrameView
+            {
+                Title = "Settings",
+                X = 0,
+                Y = 0,
+                Width = Dim.Fill(),
+                Height = 1
             };
-            
+
             var colorSchemeLabel = new Label()
             {
                 Text = "Color Scheme:",
@@ -101,25 +102,25 @@ internal static class TerminalHudApplication
 
             // Populate with available color schemes
             var colorSchemeList = _viewModel!.AvailableColorSchemes.Select(s => s.ToString()).ToList();
-            colorSchemeCombo.SetSource(colorSchemeList);
-            colorSchemeCombo.SelectedItem = _viewModel.ColorScheme.ToString();
+            colorSchemeCombo.SetSource(new System.Collections.ObjectModel.ObservableCollection<string>(colorSchemeList));
+            colorSchemeCombo.SelectedItem = colorSchemeList.IndexOf(_viewModel.ColorScheme.ToString());
 
             // Handle color scheme changes
-            colorSchemeCombo.SelectedItemChanged += (args) =>
+            colorSchemeCombo.SelectedItemChanged += (sender, args) =>
             {
                 if (args.Item >= 0 && _viewModel != null)
                 {
                     var selectedText = colorSchemeList[args.Item];
-                    if (Enum.TryParse<ColorScheme>(selectedText, out var selectedScheme))
+                    if (Enum.TryParse<PigeonPea.Map.Rendering.ColorScheme>(selectedText, out var selectedScheme))
                     {
                         _viewModel.ColorScheme = selectedScheme;
-                        
+
                         // Update tile source color scheme
                         if (_brailleView != null)
                         {
                             _brailleView.TileSource.ColorScheme = selectedScheme;
                         }
-                        
+
                         // Trigger re-render
                         InvalidateActiveView();
                     }

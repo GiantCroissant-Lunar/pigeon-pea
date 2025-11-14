@@ -7,6 +7,7 @@
 **Estimated Time**: 1.5-2 hours
 
 **Prerequisites**:
+
 - ✅ Phase 1 completed (ColorScheme enum and ColorSchemes class exist)
 - ✅ All Phase 1 tests passing
 - ✅ `dotnet/Map/PigeonPea.Map.Rendering/ColorScheme.cs` exists
@@ -29,6 +30,7 @@ SkiaMapRasterizer.Render()
 ```
 
 **Files Involved**:
+
 - `dotnet/Map/PigeonPea.Map.Rendering/SkiaMapRasterizer.cs` (calls MapColor)
 - `dotnet/Map/PigeonPea.Map.Core/Domain/MapColor.cs` (contains hardcoded colors)
 
@@ -50,6 +52,7 @@ SkiaMapRasterizer.Render(colorScheme: ColorScheme.Fantasy)
 **File**: `dotnet/Map/PigeonPea.Map.Core/Domain/MapColor.cs`
 
 **Current Code** (lines 8-19):
+
 ```csharp
 public static (byte r, byte g, byte b) ColorForCell(MapData map, Cell cell, bool biomeColors)
 {
@@ -68,19 +71,24 @@ public static (byte r, byte g, byte b) ColorForCell(MapData map, Cell cell, bool
 **Changes Required**:
 
 #### 1.1: Add Using Directives
+
 Add to top of file (after line 2):
+
 ```csharp
 using PigeonPea.Map.Rendering; // For ColorScheme enum and ColorSchemes class
 using SkiaSharp;                // For SKColor type
 ```
 
 #### 1.2: Update Method Signature
+
 **OLD**:
+
 ```csharp
 public static (byte r, byte g, byte b) ColorForCell(MapData map, Cell cell, bool biomeColors)
 ```
 
 **NEW**:
+
 ```csharp
 public static (byte r, byte g, byte b) ColorForCell(
     MapData map,
@@ -90,6 +98,7 @@ public static (byte r, byte g, byte b) ColorForCell(
 ```
 
 **Rationale**:
+
 - Add `colorScheme` parameter with default value `ColorScheme.Original`
 - Default preserves backward compatibility (existing callers don't break)
 - Keep return type as tuple for now (minimal API change)
@@ -139,6 +148,7 @@ public static (byte r, byte g, byte b) ColorForCell(
 ```
 
 **Key Design Decisions**:
+
 1. **Preserve biome hex colors**: If `map.Biomes[].Color` has a valid hex, use it (respects user-provided colors)
 2. **Fallback to schemes**: If no hex or invalid hex, use `ColorSchemes.GetBiomeColor()` for consistency
 3. **Height-based rendering**: When `biomeColors=false`, uses `ColorSchemes.GetHeightColor()` with height-based logic
@@ -147,6 +157,7 @@ public static (byte r, byte g, byte b) ColorForCell(
 #### 1.4: Update ParseHex Fallback (Optional Improvement)
 
 **Current** (line 14):
+
 ```csharp
 return ParseHex(hex, 46, 160, 60); // Fallback to hardcoded green
 ```
@@ -162,6 +173,7 @@ return ParseHex(hex, 46, 160, 60); // Fallback to hardcoded green
 **File**: `dotnet/Map/PigeonPea.Map.Rendering/SkiaMapRasterizer.cs`
 
 **Current Method Signature** (line 10):
+
 ```csharp
 public static Raster Render(
     MapData map,
@@ -178,6 +190,7 @@ public static Raster Render(
 #### 2.1: Add ColorScheme Parameter
 
 **NEW SIGNATURE**:
+
 ```csharp
 public static Raster Render(
     MapData map,
@@ -191,6 +204,7 @@ public static Raster Render(
 ```
 
 **Rationale**:
+
 - Add as last parameter with default value
 - Default to `ColorScheme.Original` for backward compatibility
 - Existing callers continue to work without changes
@@ -198,11 +212,13 @@ public static Raster Render(
 #### 2.2: Pass ColorScheme to MapColor
 
 **FIND** (line 29):
+
 ```csharp
 (r, g, b) = MapColor.ColorForCell(map, cell, biomeColors);
 ```
 
 **REPLACE WITH**:
+
 ```csharp
 (r, g, b) = MapColor.ColorForCell(map, cell, biomeColors, colorScheme);
 ```
@@ -357,6 +373,7 @@ public class MapColorIntegrationTests
 ```
 
 **Test Coverage**:
+
 - ✅ Water colors use scheme
 - ✅ Mountain colors use scheme
 - ✅ Default parameter works
@@ -370,6 +387,7 @@ public class MapColorIntegrationTests
 **IMPORTANT**: The test code above assumes `MapData`, `Cell`, and `Biome` classes have appropriate constructors/initializers. If they don't, you'll need to adjust the `CreateMinimalMap()` helper.
 
 **Check**:
+
 ```csharp
 // Does this compile?
 var cell = new Cell(id: 0, center: new Point(0, 0), height: 50, biome: 0);
@@ -397,6 +415,7 @@ dotnet test Map/PigeonPea.Map.Rendering.Tests/
 ```
 
 **Expected Output**:
+
 ```
 Passed! - Failed: 0, Passed: 16+, Skipped: 0
 ```
@@ -455,11 +474,13 @@ public class ManualColorSchemeTest
 ```
 
 **Run manually** by uncommenting `[Fact]` and running:
+
 ```bash
 dotnet test --filter "FullyQualifiedName~ManualColorSchemeTest"
 ```
 
 **Expected Output Example**:
+
 ```
 --- Original Scheme ---
      Water ( 10): RGB(  0, 119, 190)
@@ -492,6 +513,7 @@ cat dotnet/Map/PigeonPea.Map.Core/PigeonPea.Map.Core.csproj
 ```
 
 **Check for**:
+
 ```xml
 <ProjectReference Include="..\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
 ```
@@ -507,6 +529,7 @@ cat dotnet/Map/PigeonPea.Map.Core/PigeonPea.Map.Core.csproj
 ```
 
 **HOWEVER**: This creates a **potential circular dependency**:
+
 - `Map.Rendering` depends on `Map.Core` (for MapData, Cell types)
 - `Map.Core` would depend on `Map.Rendering` (for ColorScheme enum)
 
@@ -515,12 +538,14 @@ cat dotnet/Map/PigeonPea.Map.Core/PigeonPea.Map.Core.csproj
 **To avoid circular dependency**, consider moving `ColorScheme.cs` to `Map.Core`:
 
 **Option A: Move ColorScheme Enum Only**
+
 ```
 FROM: dotnet/Map/PigeonPea.Map.Rendering/ColorScheme.cs
   TO: dotnet/Map/PigeonPea.Map.Core/Domain/ColorScheme.cs
 ```
 
 Update namespace:
+
 ```csharp
 namespace PigeonPea.Map.Core; // Changed from PigeonPea.Map.Rendering
 ```
@@ -528,6 +553,7 @@ namespace PigeonPea.Map.Core; // Changed from PigeonPea.Map.Rendering
 **Keep** `ColorSchemes.cs` in `Map.Rendering` (it has SkiaSharp dependency).
 
 **Update** `ColorSchemes.cs`:
+
 ```csharp
 using PigeonPea.Map.Core; // For ColorScheme enum
 ```
@@ -542,11 +568,13 @@ If `Map.Core` is truly domain-only and `Map.Rendering` is a higher-level layer, 
 ## Implementation Checklist
 
 ### Pre-Implementation Checks
+
 - [ ] Phase 1 complete (ColorScheme and ColorSchemes exist)
 - [ ] All Phase 1 tests passing
 - [ ] Git branch created: `claude/rfc-010-phase-2-integration-<session-id>`
 
 ### Implementation Steps
+
 - [ ] **Task 1**: Update `MapColor.ColorForCell()` method
   - [ ] Add using directives
   - [ ] Add `colorScheme` parameter with default
@@ -568,6 +596,7 @@ If `Map.Core` is truly domain-only and `Map.Rendering` is a higher-level layer, 
   - [ ] Rebuild and retest
 
 ### Post-Implementation Validation
+
 - [ ] No circular dependencies
 - [ ] All existing code still compiles (backward compatible)
 - [ ] No breaking changes to public APIs
@@ -579,6 +608,7 @@ If `Map.Core` is truly domain-only and `Map.Rendering` is a higher-level layer, 
 ## Success Criteria
 
 ### Functional
+
 - ✅ `SkiaMapRasterizer.Render()` accepts `colorScheme` parameter
 - ✅ Different schemes produce visually distinct outputs
 - ✅ Default scheme (Original) matches previous hardcoded colors
@@ -586,12 +616,14 @@ If `Map.Core` is truly domain-only and `Map.Rendering` is a higher-level layer, 
 - ✅ All 6 schemes render without errors
 
 ### Technical
+
 - ✅ No circular dependencies between projects
 - ✅ All unit tests pass (Phase 1 + Phase 2 integration tests)
 - ✅ No performance regression (color lookup is O(1))
 - ✅ Code follows project style (.editorconfig Allman style)
 
 ### Code Quality
+
 - ✅ XML documentation on modified public methods
 - ✅ No compiler warnings
 - ✅ Pre-commit hooks pass (formatting, linting, secrets)
@@ -602,6 +634,7 @@ If `Map.Core` is truly domain-only and `Map.Rendering` is a higher-level layer, 
 ## Troubleshooting
 
 ### Issue 1: Circular Dependency Error
+
 ```
 error CS0246: The type or namespace name 'ColorScheme' could not be found
 ```
@@ -609,6 +642,7 @@ error CS0246: The type or namespace name 'ColorScheme' could not be found
 **Solution**: Move `ColorScheme.cs` to `Map.Core` as described in Task 5.2.
 
 ### Issue 2: Cell/MapData Constructor Errors in Tests
+
 ```
 error CS7036: There is no argument given that corresponds to required parameter
 ```
@@ -616,6 +650,7 @@ error CS7036: There is no argument given that corresponds to required parameter
 **Solution**: Check actual `Cell` and `MapData` constructors in the codebase and adjust test helper methods accordingly.
 
 ### Issue 3: SkiaSharp Not Found in Map.Core
+
 ```
 error CS0246: The type or namespace name 'SKColor' could not be found
 ```
@@ -623,6 +658,7 @@ error CS0246: The type or namespace name 'SKColor' could not be found
 **Solution**: Don't use `SKColor` directly in `Map.Core`. Convert to tuple `(byte, byte, byte)` in `MapColor.ColorForCell()`.
 
 ### Issue 4: Tests Fail Due to Color Mismatch
+
 ```
 Assert.Equal() Failure: Expected: (34, 139, 34), Actual: (50, 255, 50)
 ```
@@ -634,6 +670,7 @@ Assert.Equal() Failure: Expected: (34, 139, 34), Actual: (50, 255, 50)
 ## Next Steps (Phase 3)
 
 After Phase 2 completes:
+
 1. **Phase 3**: Add `ColorScheme` property to `MapRenderViewModel` in `Map.Control`
 2. **Phase 4**: Add UI controls (Terminal.Gui + Avalonia) for scheme selection
 3. **Phase 5**: Add persistence and documentation
@@ -643,14 +680,16 @@ After Phase 2 completes:
 ## Appendix: Quick Reference
 
 ### Files Modified in Phase 2
-| File | Location | Changes |
-|------|----------|---------|
-| `MapColor.cs` | `Map.Core/Domain/` | Add colorScheme param, use ColorSchemes |
-| `SkiaMapRasterizer.cs` | `Map.Rendering/` | Add colorScheme param, pass to MapColor |
-| `ColorScheme.cs` | Move to `Map.Core/Domain/` | Change namespace (optional) |
-| `MapColorIntegrationTests.cs` | `Map.Rendering.Tests/` | NEW FILE - 7 tests |
+
+| File                          | Location                   | Changes                                 |
+| ----------------------------- | -------------------------- | --------------------------------------- |
+| `MapColor.cs`                 | `Map.Core/Domain/`         | Add colorScheme param, use ColorSchemes |
+| `SkiaMapRasterizer.cs`        | `Map.Rendering/`           | Add colorScheme param, pass to MapColor |
+| `ColorScheme.cs`              | Move to `Map.Core/Domain/` | Change namespace (optional)             |
+| `MapColorIntegrationTests.cs` | `Map.Rendering.Tests/`     | NEW FILE - 7 tests                      |
 
 ### Command Quick Reference
+
 ```bash
 # Build solution
 dotnet build
@@ -670,14 +709,15 @@ git commit -m "feat(map-rendering): integrate ColorScheme system with map raster
 ```
 
 ### Color Scheme Reference
-| Scheme | Water | Mountains | Aesthetic |
-|--------|-------|-----------|-----------|
-| Original | Blue | Gray/White | Balanced fantasy |
-| Realistic | Dark Blue | Brown/Gray | Satellite-like |
-| Fantasy | Bright Blue | Orange/Magenta | Vibrant/dramatic |
-| HighContrast | Dark Blue | Brown/White | Accessibility |
-| Monochrome | Dark Gray | Light Gray | Grayscale |
-| Parchment | Dark Brown | Cream | Antique map |
+
+| Scheme       | Water       | Mountains      | Aesthetic        |
+| ------------ | ----------- | -------------- | ---------------- |
+| Original     | Blue        | Gray/White     | Balanced fantasy |
+| Realistic    | Dark Blue   | Brown/Gray     | Satellite-like   |
+| Fantasy      | Bright Blue | Orange/Magenta | Vibrant/dramatic |
+| HighContrast | Dark Blue   | Brown/White    | Accessibility    |
+| Monochrome   | Dark Gray   | Light Gray     | Grayscale        |
+| Parchment    | Dark Brown  | Cream          | Antique map      |
 
 ---
 

@@ -3,9 +3,11 @@
 RFC Reference: [RFC-013: Yazi-integrated Rust CLI](../../rfcs/013-yazi-integrated-rust-cli.md)
 
 ## Summary
+
 Create a Rust CLI at `tools/dev-tool` with basic CLI parsing and global options.
 
 ## Description
+
 - Initialize new Rust crate using:
   - `clap` (CLI parsing)
   - `tokio` (async runtime)
@@ -19,6 +21,7 @@ Create a Rust CLI at `tools/dev-tool` with basic CLI parsing and global options.
   - Optional: support configuration file at `%APPDATA%/dev-tool/config.toml` (Windows) or `~/.config/dev-tool/config.toml` (Unix). Precedence: CLI flags > ENV (`DEV_TOOL_*`) > config file.
 
 ## Acceptance Criteria
+
 - [ ] Compiles on Windows, macOS, Linux
 - [ ] `dev-tool --help` lists global options and subcommand stubs
 - [ ] Env defaults (`DEV_TOOL_SERVER`, `DEV_TOOL_TOKEN`) honored when flags not provided
@@ -26,10 +29,12 @@ Create a Rust CLI at `tools/dev-tool` with basic CLI parsing and global options.
 - [ ] (Optional) Configuration file parsed when present; precedence respected
 
 ## Dependencies
+
 - Depends on: None
 - Blocks: #175
 
 ## Files to Create
+
 - `tools/dev-tool/Cargo.toml`
 - `tools/dev-tool/src/main.rs`
 - `tools/dev-tool/README.md`

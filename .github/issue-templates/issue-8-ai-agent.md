@@ -20,13 +20,16 @@ Create an example AI agent that can play the game or act as a GM using DevTools 
 - **Tutorial guide**: Agent helps new players learn the game
 
 ## Location
+
 `dotnet/dev-tools/examples/ai-agent/`
 
 ## Labels
+
 - `example`
 - `dev-tools`
 - `ai`
 - `experimental`
 
 ## Milestone
+
 DevTools v3.0

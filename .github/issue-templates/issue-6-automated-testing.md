@@ -29,12 +29,15 @@ async def test_spawn_goblin():
 ```
 
 ## Location
+
 `dotnet/dev-tools/tests/integration/`
 
 ## Labels
+
 - `testing`
 - `dev-tools`
 - `ci`
 
 ## Milestone
+
 DevTools v1.2

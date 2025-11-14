@@ -18,16 +18,18 @@ The determinism test suite ensures that the fantasy map generator produces consi
 **Purpose**: Verify that specific seed/parameter combinations produce identical checksums across runs.
 
 **Test Cases**:
+
 - `pcg-small-map`: Seed=12345, Points=1000
-- `pcg-medium-map`: Seed=67890, Points=8000  
+- `pcg-medium-map`: Seed=67890, Points=8000
 - `pcg-large-map`: Seed=11111, Points=16000
 - `pcg-different-params`: Seed=99999, Points=8000
 - `pcg-mid-map`: Seed=55555, Points=4000
 
 **Current Checksums (v1)**:
+
 ```csharp
 "pcg-small-map" => "bbd0e603dbc6fea7c0ab7faea42fa44ff9a9cd461",
-"pcg-medium-map" => "7a260558c1ba38c1b5b50b9d485b148579edc53d5", 
+"pcg-medium-map" => "7a260558c1ba38c1b5b50b9d485b148579edc53d5",
 "pcg-large-map" => "5151396682e2a7dfefc45076beb058e4da4f23daa",
 "pcg-different-params" => "e5efb8fb0d867ec9a86b111eccc904458f73b2ef0",
 "pcg-mid-map" => "a4979758d3c347ade1ce7116bf4839d6b92ea1abe"
@@ -38,6 +40,7 @@ The determinism test suite ensures that the fantasy map generator produces consi
 **Purpose**: Ensure that generated maps maintain valid topological properties.
 
 **Coverage**:
+
 - Rivers flow downhill monotonically
 - Coastlines border land and water correctly
 - Voronoi neighbor graphs are valid
@@ -51,6 +54,7 @@ The determinism test suite ensures that the fantasy map generator produces consi
 **Purpose**: Verify that generated maps have reasonable statistical properties.
 
 **Coverage**:
+
 - Land/water ratio (15-50%)
 - River distribution and lengths
 - Biome coverage and diversity
@@ -71,6 +75,7 @@ The `MapChecksumHelper` class provides deterministic checksum computation for ma
 ### Data Included
 
 Checksums cover all essential map data:
+
 - Cell heights and properties
 - River networks
 - State boundaries and capitals
@@ -83,16 +88,19 @@ All data is processed in deterministic order (sorted by ID) to ensure consistent
 ## Running Tests
 
 ### All Determinism Tests
+
 ```bash
 dotnet test --filter "Category==Determinism"
 ```
 
 ### Snapshot Tests Only
+
 ```bash
 dotnet test --filter "FullyQualifiedName~SnapshotTests"
 ```
 
 ### Specific Test Case
+
 ```bash
 dotnet test --filter "FullyQualifiedName~Seed_ProducesExpectedMapChecksum_PCG"
 ```
@@ -117,6 +125,7 @@ When map generation algorithms change, checksums will need to be updated:
 ## CI Integration
 
 The determinism tests should be integrated into CI pipelines to:
+
 - Run on every PR
 - Block merges if checksums change unexpectedly
 - Provide clear output for debugging
@@ -134,6 +143,7 @@ The determinism tests should be integrated into CI pipelines to:
 ### Non-Deterministic Behavior
 
 Currently, some checksums may vary between runs due to:
+
 - Floating-point precision differences
 - Thread scheduling variations
 - Random number implementation details

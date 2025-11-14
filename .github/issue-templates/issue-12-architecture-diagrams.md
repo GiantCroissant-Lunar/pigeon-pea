@@ -11,12 +11,15 @@ Create visual diagrams (Mermaid, PlantUML, or draw.io) showing DevTools architec
 - [ ] Embedded in RFCs or separate doc
 
 ## Location
+
 `docs/rfcs/diagrams/`
 
 ## Labels
+
 - `documentation`
 - `dev-tools`
 - `architecture`
 
 ## Milestone
+
 DevTools v1.1

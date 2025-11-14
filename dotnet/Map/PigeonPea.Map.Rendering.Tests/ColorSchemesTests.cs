@@ -217,17 +217,17 @@ public class ColorSchemesTests
         {
             byte heightByte = (byte)height;
             SKColor color = ColorSchemes.GetHeightColor(heightByte, scheme);
-            
+
             // Colors should be in the same general color family (same terrain type)
             // We check this by ensuring primary color channel doesn't change dramatically
             if (minHeight <= 20) // Water - blue dominant
             {
-                Assert.True(color.Blue > color.Red && color.Blue > color.Green, 
+                Assert.True(color.Blue > color.Red && color.Blue > color.Green,
                     $"Water height {heightByte} should have blue as dominant color");
             }
             else if (minHeight <= 29) // Beach - sandy colors
             {
-                Assert.True(color.Red > 150 && color.Green > 150, 
+                Assert.True(color.Red > 150 && color.Green > 150,
                     $"Beach height {heightByte} should have sandy colors");
             }
         }

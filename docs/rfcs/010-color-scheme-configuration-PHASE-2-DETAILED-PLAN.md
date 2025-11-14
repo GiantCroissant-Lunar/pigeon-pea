@@ -7,6 +7,7 @@
 **Estimated Time**: 2-3 hours
 
 **Status**: Phase 1 COMPLETED ✅
+
 - `ColorScheme.cs` exists in `Map.Core/Domain/`
 - `ColorSchemes.cs` exists in `Map.Rendering/`
 - `ColorSchemesTests.cs` complete with 15+ tests, all passing
@@ -15,13 +16,13 @@
 
 ## Phase 2 Tasks Overview
 
-| Task | File(s) | Priority | Est. Time | Dependencies |
-|------|---------|----------|-----------|--------------|
-| **Task 1** | `MapColor.cs` | P0 | 30 min | Phase 1 ✅ |
-| **Task 2** | `SkiaMapRasterizer.cs` | P0 | 20 min | Task 1 |
-| **Task 3** | `MapColorIntegrationTests.cs` (new) | P0 | 45 min | Task 1, 2 |
-| **Task 4** | Build/Test validation | P0 | 15 min | All above |
-| **Task 5** | Pre-commit hooks | P0 | 10 min | All above |
+| Task       | File(s)                             | Priority | Est. Time | Dependencies |
+| ---------- | ----------------------------------- | -------- | --------- | ------------ |
+| **Task 1** | `MapColor.cs`                       | P0       | 30 min    | Phase 1 ✅   |
+| **Task 2** | `SkiaMapRasterizer.cs`              | P0       | 20 min    | Task 1       |
+| **Task 3** | `MapColorIntegrationTests.cs` (new) | P0       | 45 min    | Task 1, 2    |
+| **Task 4** | Build/Test validation               | P0       | 15 min    | All above    |
+| **Task 5** | Pre-commit hooks                    | P0       | 10 min    | All above    |
 
 **Total**: ~2 hours
 
@@ -34,6 +35,7 @@
 **File**: `dotnet/Map/PigeonPea.Map.Core/Domain/MapColor.cs`
 
 **Current Implementation** (approximate):
+
 ```csharp
 namespace PigeonPea.Map.Core.Domain;
 
@@ -65,6 +67,7 @@ public static class MapColor
 #### Step 1.1: Add Using Directives
 
 **Add** at top of file (after namespace):
+
 ```csharp
 using PigeonPea.Map.Rendering; // For ColorScheme enum and ColorSchemes class
 using SkiaSharp;                // For SKColor type
@@ -73,11 +76,13 @@ using SkiaSharp;                // For SKColor type
 #### Step 1.2: Update Method Signature
 
 **Replace**:
+
 ```csharp
 public static (byte r, byte g, byte b) ColorForCell(MapData map, Cell cell, bool biomeColors)
 ```
 
 **With**:
+
 ```csharp
 public static (byte r, byte g, byte b) ColorForCell(
     MapData map,
@@ -132,6 +137,7 @@ public static (byte r, byte g, byte b) ColorForCell(
 ```
 
 **Key Logic**:
+
 1. **Preserve custom biome hex colors**: If user provided a hex color in `map.Biomes[].Color`, use it
 2. **Fallback to ColorSchemes**: If no hex or invalid, use scheme-based colors
 3. **Height-based rendering**: When `biomeColors=false`, pure height-based coloring
@@ -160,6 +166,7 @@ The `ParseHex()` helper method should remain unchanged. It's still needed for pa
 **File**: `dotnet/Map/PigeonPea.Map.Rendering/SkiaMapRasterizer.cs`
 
 **Current Method Signature** (approximate line 10):
+
 ```csharp
 public static Raster Render(
     MapData map,
@@ -198,6 +205,7 @@ public static Raster Render(
 ```
 
 **Rationale**:
+
 - Place at end to minimize breaking changes
 - Default value preserves backward compatibility
 - Matches parameter pattern from Task 1
@@ -205,11 +213,13 @@ public static Raster Render(
 #### Step 2.2: Pass ColorScheme to MapColor.ColorForCell
 
 **Find** (approximate line 29):
+
 ```csharp
 (r, g, b) = MapColor.ColorForCell(map, cell, biomeColors);
 ```
 
 **Replace with**:
+
 ```csharp
 (r, g, b) = MapColor.ColorForCell(map, cell, biomeColors, colorScheme);
 ```
@@ -519,6 +529,7 @@ dotnet test Map/PigeonPea.Map.Rendering.Tests/ --filter "FullyQualifiedName~MapC
 **Expected**: All 10 new tests pass.
 
 **Common Failures**:
+
 - **Constructor errors**: Adjust `CreateCell()` helper to match actual Cell API
 - **Color mismatches**: Verify ColorSchemes implementation matches expected values
 - **Biome property access**: May need to adjust how `cell.Biome` is set in tests
@@ -552,6 +563,7 @@ pre-commit run --all-files
 **Expected**: All hooks pass (formatting, linting, secrets detection).
 
 **Common Issues**:
+
 - **Formatting**: Run `dotnet format` if needed
 - **Line endings**: Ensure CRLF/LF matches .editorconfig
 - **Trailing whitespace**: Auto-fixed by pre-commit
@@ -625,6 +637,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 **Symptom**: Tests fail to compile due to constructor/property errors.
 
 **Mitigation**:
+
 1. Read actual `Cell.cs` and `Biome.cs` source files
 2. Adjust `CreateCell()` helper in tests to match actual API
 3. May need to use reflection or alternative construction pattern
@@ -634,6 +647,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 **Symptom**: Biome colors not working as expected.
 
 **Mitigation**:
+
 1. Verify `ParseHex()` returns `(0, 0, 0)` for invalid hex
 2. Test with both valid hex (`#FF0000`) and invalid hex
 3. Add test case for invalid hex fallback to scheme colors
@@ -643,6 +657,7 @@ Co-Authored-By: Claude <noreply@anthropic.com>"
 **Symptom**: Rendering is slower than before.
 
 **Mitigation**:
+
 1. `ColorSchemes.GetHeightColor()` uses switch expressions (O(1))
 2. No caching needed - lookup is fast
 3. If concerned, add benchmark test (not in scope for Phase 2)
@@ -697,14 +712,14 @@ git commit -m "feat(map-rendering): integrate ColorScheme system (RFC-010 Phase 
 
 ## Appendix: File Locations Reference
 
-| File | Path | Purpose |
-|------|------|---------|
-| `MapColor.cs` | `dotnet/Map/PigeonPea.Map.Core/Domain/` | Task 1: Add colorScheme param |
-| `SkiaMapRasterizer.cs` | `dotnet/Map/PigeonPea.Map.Rendering/` | Task 2: Add colorScheme param |
-| `MapColorIntegrationTests.cs` | `dotnet/Map/PigeonPea.Map.Rendering.Tests/` | Task 3: NEW FILE |
-| `ColorScheme.cs` | `dotnet/Map/PigeonPea.Map.Core/Domain/` | Phase 1 (existing) |
-| `ColorSchemes.cs` | `dotnet/Map/PigeonPea.Map.Rendering/` | Phase 1 (existing) |
-| `ColorSchemesTests.cs` | `dotnet/Map/PigeonPea.Map.Rendering.Tests/` | Phase 1 (existing) |
+| File                          | Path                                        | Purpose                       |
+| ----------------------------- | ------------------------------------------- | ----------------------------- |
+| `MapColor.cs`                 | `dotnet/Map/PigeonPea.Map.Core/Domain/`     | Task 1: Add colorScheme param |
+| `SkiaMapRasterizer.cs`        | `dotnet/Map/PigeonPea.Map.Rendering/`       | Task 2: Add colorScheme param |
+| `MapColorIntegrationTests.cs` | `dotnet/Map/PigeonPea.Map.Rendering.Tests/` | Task 3: NEW FILE              |
+| `ColorScheme.cs`              | `dotnet/Map/PigeonPea.Map.Core/Domain/`     | Phase 1 (existing)            |
+| `ColorSchemes.cs`             | `dotnet/Map/PigeonPea.Map.Rendering/`       | Phase 1 (existing)            |
+| `ColorSchemesTests.cs`        | `dotnet/Map/PigeonPea.Map.Rendering.Tests/` | Phase 1 (existing)            |
 
 ---
 

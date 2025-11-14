@@ -1,114 +1,135 @@
-# Pigeon Pea Performance Benchmarks
+# PigeonPea Performance Benchmarks
 
-This directory contains BenchmarkDotNet performance benchmarks for the Pigeon Pea game engine.
+This directory contains BenchmarkDotNet-based performance benchmarks for:
 
-## Overview
+- **Map Generation** (FantasyMapGenerator.Core)
+- **Rendering** (Map.Rendering)
+- **RNG Performance** (Random implementations)
 
-The benchmarks measure rendering performance across various scenarios:
-
-- **Full Screen Rendering**: Measures performance when rendering a complete screen of tiles
-- **Particle Rendering**: Benchmarks scattered particle rendering (100 particles)
-- **Sprite Rendering**: Tests sprite rendering in a grid pattern
-- **Viewport Culling**: Measures performance of viewport-based culling
-- **Screen Clear**: Benchmarks screen clearing operations
-- **Mixed Rendering**: Tests combined operations (clear, tiles, sprites, text)
-- **Text Rendering**: Measures text rendering performance
-
-## Running Benchmarks
+## Quick Start
 
 ### Run All Benchmarks
 
 ```bash
-cd dotnet/benchmarks
-dotnet run --configuration Release
+dotnet run -c Release --project benchmarks/FantasyMapGenerator.Benchmarks
+```
+
+### List Available Benchmarks
+
+```bash
+dotnet run -c Release --project benchmarks/FantasyMapGenerator.Benchmarks -- --list tree
 ```
 
 ### Run Specific Benchmark
 
-dotnet run --configuration Release -- --filter "_FullScreenRendering_"
-
-````
-
-### Run with Memory Diagnostics
-
 ```bash
-dotnet run --configuration Release -- --memory
-````
+# Run by class name
+dotnet run -c Release --project benchmarks/FantasyMapGenerator.Benchmarks -- --filter *MapGenerationBenchmarks*
 
-### Quick Dry Run (for testing)
-
-```bash
-dotnet run --configuration Release -- --job dry
+# Run by category
+dotnet run -c Release --project benchmarks/FantasyMapGenerator.Benchmarks -- --filter categories=Generation
 ```
 
-## Benchmark Parameters
+### Run Single Method
 
-The benchmarks test different screen sizes:
+```bash
+dotnet run -c Release --project benchmarks/FantasyMapGenerator.Benchmarks -- --filter *Generate_1000_Points*
+```
 
-- **ScreenWidth**: 80, 160, 320
-- **ScreenHeight**: 24, 48, 96
+## Important Notes
 
-This creates a matrix of test configurations covering:
+### Always Use Release Mode
 
-- Small terminal (80x24)
-- Medium terminal (160x48)
-- Large terminal (320x96)
+Never run benchmarks in Debug mode - results will be meaningless.
 
-## Output
+```bash
+# ✅ Correct
+dotnet run -c Release --project benchmarks/FantasyMapGenerator.Benchmarks
 
-Results are exported to:
+# ❌ Wrong
+dotnet run --project benchmarks/FantasyMapGenerator.Benchmarks
+```
 
-- `BenchmarkDotNet.Artifacts/results/*.csv` - CSV format
-- `BenchmarkDotNet.Artifacts/results/*.html` - HTML report
-- `BenchmarkDotNet.Artifacts/results/*.md` - Markdown format
+## Benchmark Results Location
+
+Results are saved to `benchmarks/FantasyMapGenerator.Benchmarks/BenchmarkDotNet.Artifacts/results/`:
+
+- Markdown reports: `*.md`
+- HTML reports: `*.html`
+- CSV data: `*.csv`
+
+These files are gitignored.
+
+## Available Benchmarks
+
+### Generation Benchmarks (Phase 2)
+
+- **MapGenerationBenchmarks** - End-to-end map generation (1k, 8k, 16k points)
+- **VoronoiBenchmarks** - Voronoi tessellation performance
+- **HeightmapBenchmarks** - Heightmap generation
+- **RiverBenchmarks** - River generation (hydrology)
+- **BiomeBenchmarks** - Biome assignment
+
+### Rendering Benchmarks (Phase 3)
+
+- **SkiaRasterizerBenchmarks** - Tile rasterization with Skia
+- **BrailleRendererBenchmarks** - Braille character conversion
+- **TileCacheBenchmarks** - Tile cache hit rates
+
+### RNG Benchmarks (Phase 4)
+
+- **RngBenchmarks** - Compare PCG vs System.Random vs Alea
+
+## Interpreting Results
+
+### Key Metrics
+
+- **Mean**: Average execution time (lower is better)
+- **StdDev**: Standard deviation (lower is more consistent)
+- **Median**: Middle value (less affected by outliers)
+- **Allocated**: Total memory allocated (lower is better)
+
+### Example Output
+
+```
+| Method              | Mean      | Error    | StdDev   | Gen0   | Allocated |
+|-------------------- |----------:|---------:|---------:|-------:|----------:|
+| Generate_1000_Points|  52.31 ms | 0.834 ms | 0.780 ms | 125.00 |   1.02 MB |
+| Generate_8000_Points| 421.67 ms | 8.123 ms | 7.599 ms | 500.00 |   8.14 MB |
+```
+
+### What to Look For
+
+- ✅ **Good**: Linear or sub-linear scaling (8k should be ~8x slower than 1k if O(n))
+- ⚠️ **Warning**: Super-linear scaling (8k is >8x slower suggests O(n²) or worse)
+- ❌ **Bad**: Excessive allocations (>100 MB for 8k map generation)
+
+## Troubleshooting
+
+### Benchmark Takes Too Long
+
+```bash
+# Run with shorter iteration count (faster but less accurate)
+dotnet run -c Release --project benchmarks/FantasyMapGenerator.Benchmarks -- --job short
+```
+
+### Need More Detail
+
+```bash
+# Add memory profiling
+dotnet run -c Release --project benchmarks/FantasyMapGenerator.Benchmarks -- --memory
+```
 
 ## CI Integration
 
-These benchmarks are designed to track performance over time. To integrate with CI:
-
-1. Run benchmarks on every pull request
-2. Compare results against baseline
-3. Fail if performance degrades beyond threshold
-
-Example GitHub Actions workflow:
+Benchmarks can be run on CI manually:
 
 ```yaml
-- name: Run Benchmarks
-  run: |
-    cd dotnet/benchmarks
-    dotnet run --configuration Release -- --exporters json
-
-- name: Compare with Baseline
-  run: |
-    # Compare results with stored baseline
-    # Fail if performance regression detected
+# .github/workflows/benchmarks.yml (manual trigger)
+workflow_dispatch: true
 ```
 
-## Adding New Benchmarks
-
-To add new benchmarks:
-
-1. Add a new `[Benchmark]` method to `RenderingBenchmarks.cs`
-2. Follow the existing pattern for setup and execution
-3. Use `[Params]` for parameterized benchmarks
-4. Document the benchmark purpose
-
-Example:
-
-```csharp
-/// <summary>
-/// Benchmark for new feature.
-/// </summary>
-[Benchmark]
-public void NewFeatureBenchmark()
-{
-    _renderer.BeginFrame();
-    // Your benchmark code here
-    _renderer.EndFrame();
-}
-```
-
-## Related Documentation
+## References
 
 - [BenchmarkDotNet Documentation](https://benchmarkdotnet.org/)
-- [RFC-003: Testing and Verification](../../docs/rfcs/003-testing-verification.md)
+- [RFC-009: Performance Benchmarking](../docs/rfcs/009-performance-benchmarking.md)

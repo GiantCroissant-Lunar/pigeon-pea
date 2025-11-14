@@ -24,13 +24,16 @@ Build a browser-based DevTools client with xterm.js for game visualization and c
 - Build: Vite
 
 ## Location
+
 `dotnet/dev-tools/clients/web-dashboard/`
 
 ## Labels
+
 - `enhancement`
 - `dev-tools`
 - `web`
 - `good first issue`
 
 ## Milestone
+
 DevTools v2.0

@@ -12,12 +12,15 @@ Create step-by-step tutorials showing how to use DevTools for common tasks.
 - [ ] Video recordings or animated GIFs (optional)
 
 ## Location
+
 `docs/dev-tools/tutorials/`
 
 ## Labels
+
 - `documentation`
 - `dev-tools`
 - `good first issue`
 
 ## Milestone
+
 DevTools v1.1

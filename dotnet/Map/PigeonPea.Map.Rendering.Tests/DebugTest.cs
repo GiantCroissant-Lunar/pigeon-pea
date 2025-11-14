@@ -30,7 +30,7 @@ public class DebugTest
         double calcR = black.Red + diffR * t;
         double calcG = black.Green + diffG * t;
         double calcB = black.Blue + diffB * t;
-        
+
         Console.WriteLine($"Diff: R={diffR}, G={diffG}, B={diffB}");
         Console.WriteLine($"Calc: R={calcR}, G={calcG}, B={calcB}");
         Console.WriteLine($"Cast: R={(byte)calcR}, G={(byte)calcG}, B={(byte)calcB}");

@@ -30,9 +30,11 @@ strings bin/Release/net9.0/PigeonPea.Console.dll | grep -i devtools
 ```
 
 ## Labels
+
 - `enhancement`
 - `dev-tools`
 - `security`
 
 ## Milestone
+
 DevTools v1.0 (before first release)

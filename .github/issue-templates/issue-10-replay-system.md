@@ -24,12 +24,15 @@ pp-dev replay boss-fight-test --speed 2x
 ```
 
 ## Location
+
 `dotnet/dev-tools/core/PigeonPea.DevTools/Recording/`
 
 ## Labels
+
 - `enhancement`
 - `dev-tools`
 - `testing`
 
 ## Milestone
+
 DevTools v2.0

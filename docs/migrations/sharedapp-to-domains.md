@@ -1,6 +1,6 @@
 # Migration: SharedApp.Rendering → Domain-Specific Projects
 
-**Audience**: Developers who previously used `dotnet/shared-app/Rendering/` or `SharedApp.Rendering` APIs.  
+**Audience**: Developers who previously used `dotnet/shared-app/Rendering/` or `SharedApp.Rendering` APIs.
 **Date**: 2025-11-13 (RFC-007 Phase 6)
 
 ## Summary
@@ -13,14 +13,14 @@
 
 ## Quick Reference
 
-| Old Location | Replacement | Notes |
-| --- | --- | --- |
-| `SharedApp.Rendering.SkiaMapRasterizer` | `Map.Rendering.SkiaMapRasterizer` | Map-specific logic only |
-| `SharedApp.Rendering.MapDataRenderer` | `Map.Rendering.BrailleMapRenderer` | Renamed + domain scoped |
-| `SharedApp.Rendering.Navigators` | `Map.Control` / Mapsui adapters | Navigation now lives in Control layer |
-| `SharedApp.Rendering.IRenderer / IRenderTarget` | `Shared.PigeonPea.Shared.Rendering` | Shared contracts, referenced by console/windows apps |
-| `SharedApp.Rendering.Tiles.*` | `Shared.Rendering.Tiles.*` | Generic tile interfaces & cache |
-| `SharedApp.Rendering.Camera` | `Shared.Rendering.Camera` + domain-specific ViewModels | Map & dungeon ViewModels own their camera state |
+| Old Location                                    | Replacement                                            | Notes                                                |
+| ----------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------- |
+| `SharedApp.Rendering.SkiaMapRasterizer`         | `Map.Rendering.SkiaMapRasterizer`                      | Map-specific logic only                              |
+| `SharedApp.Rendering.MapDataRenderer`           | `Map.Rendering.BrailleMapRenderer`                     | Renamed + domain scoped                              |
+| `SharedApp.Rendering.Navigators`                | `Map.Control` / Mapsui adapters                        | Navigation now lives in Control layer                |
+| `SharedApp.Rendering.IRenderer / IRenderTarget` | `Shared.PigeonPea.Shared.Rendering`                    | Shared contracts, referenced by console/windows apps |
+| `SharedApp.Rendering.Tiles.*`                   | `Shared.Rendering.Tiles.*`                             | Generic tile interfaces & cache                      |
+| `SharedApp.Rendering.Camera`                    | `Shared.Rendering.Camera` + domain-specific ViewModels | Map & dungeon ViewModels own their camera state      |
 
 ## Migration Steps
 
@@ -30,6 +30,7 @@
    - Apps/tests reference `PigeonPea.Shared.Rendering` for renderer contracts
 
 2. **Replace namespaces**
+
    ```csharp
    // Before
    using PigeonPea.SharedApp.Rendering;
@@ -39,6 +40,7 @@
    ```
 
 3. **Swap type names**
+
    ```csharp
    // Before
    var raster = SkiaMapRasterizer.Render(mapData);
@@ -58,9 +60,11 @@
 ## Archived Code
 
 Keep using the archived folder only for historical diffs:
+
 ```
 dotnet/archive/SharedApp.Rendering.archived-2025-11-13/
 ```
+
 Do **not** reference archived files from active code.
 
 ## See Also

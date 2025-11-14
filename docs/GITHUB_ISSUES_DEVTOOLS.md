@@ -7,6 +7,7 @@ Successfully created **12 GitHub issues** for the pigeon-pea DevTools system, or
 ## Created Labels
 
 The following labels were created:
+
 - `dev-tools` (#1d76db) - DevTools-related features and improvements
 - `security` (#d73a4a) - Security-related improvements
 - `architecture` (#fbca04) - Architectural changes and improvements

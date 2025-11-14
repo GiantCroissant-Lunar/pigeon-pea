@@ -20,6 +20,7 @@ Phase 3 implementation successfully integrates color scheme configuration into t
 **File**: `dotnet/Map/PigeonPea.Map.Control/ViewModels/MapRenderViewModel.cs`
 
 **Strengths**:
+
 - ✅ **Correct location**: Properly moved to `Map.Control.ViewModels` namespace (domain-driven architecture)
 - ✅ **ReactiveUI integration**: All properties use `RaiseAndSetIfChanged` pattern correctly
 - ✅ **Documentation**: Excellent XML documentation with `<summary>` and `<remarks>` tags
@@ -30,6 +31,7 @@ Phase 3 implementation successfully integrates color scheme configuration into t
 **Code Quality**: 10/10
 
 **Example of excellent documentation**:
+
 ```csharp
 /// <summary>
 /// Currently selected color scheme for map rendering.
@@ -53,6 +55,7 @@ public ColorScheme ColorScheme
 ### 2. ColorScheme Property Integration ✅ EXCELLENT
 
 **Strengths**:
+
 - ✅ **Type safety**: Uses enum instead of string/int
 - ✅ **ReactiveUI support**: Property change notifications work correctly
 - ✅ **Immutability**: Backing field is private, only accessible via property
@@ -63,12 +66,14 @@ public ColorScheme ColorScheme
 **Issues**: None
 
 **Recommendation**: Consider caching `AvailableColorSchemes` if performance becomes an issue:
+
 ```csharp
 private static readonly IEnumerable<ColorScheme> _availableColorSchemes =
     Enum.GetValues<ColorScheme>();
 
 public IEnumerable<ColorScheme> AvailableColorSchemes => _availableColorSchemes;
 ```
+
 **Priority**: Low (premature optimization)
 
 ---
@@ -76,10 +81,12 @@ public IEnumerable<ColorScheme> AvailableColorSchemes => _availableColorSchemes;
 ### 3. Rendering Pipeline Integration ✅ GOOD
 
 **Files Reviewed**:
+
 - `dotnet/Map/PigeonPea.Map.Rendering/SkiaMapRasterizer.cs`
 - `dotnet/Map/PigeonPea.Map.Core/Domain/MapColor.cs`
 
 **Strengths**:
+
 - ✅ **Parameter added**: `colorScheme` parameter in `SkiaMapRasterizer.Render()` (line 10)
 - ✅ **Default value**: Defaults to `ColorScheme.Original` (backward compatible)
 - ✅ **Delegation pattern**: Color logic delegated to `MapColor.ColorForCell()` (line 29)
@@ -89,6 +96,7 @@ public IEnumerable<ColorScheme> AvailableColorSchemes => _availableColorSchemes;
 **Code Quality**: 9/10
 
 **Architecture Review**:
+
 ```
 SkiaMapRasterizer (Rendering)
     └─> MapColor.ColorForCell (Core)
@@ -105,6 +113,7 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 ```
 
 **Why this is problematic**:
+
 - Core should not depend on Rendering (violates layered architecture)
 - Core contains domain models/logic, Rendering contains presentation logic
 - Circular dependency: Rendering → Core → Rendering
@@ -120,6 +129,7 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 **File**: `dotnet/Map/PigeonPea.Map.Control.Tests/ViewModels/MapRenderViewModelTests.cs`
 
 **Strengths**:
+
 - ✅ **Comprehensive coverage**: 9 tests covering all properties
 - ✅ **Multiple test patterns**: Uses both `[Fact]` and `[Theory]` appropriately
 - ✅ **ReactiveUI testing**: Verifies PropertyChanged events (lines 31-44, 76-158)
@@ -127,6 +137,7 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 - ✅ **Clarity**: Clear test names and assertions
 
 **Test Coverage Breakdown**:
+
 1. `Constructor_SetsDefaultValues` - Verifies all defaults including ColorScheme.Original ✅
 2. `ColorScheme_CanBeChanged` - Basic setter/getter ✅
 3. `ColorScheme_RaisesPropertyChanged` - ReactiveUI integration ✅
@@ -143,6 +154,7 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 **Test Quality Score**: 95/100
 
 **Missing Tests** (minor):
+
 - ❌ Test that changing ColorScheme doesn't affect other properties
 - ❌ Test that setting ColorScheme to current value doesn't raise PropertyChanged (ReactiveUI optimization)
 - ❌ Integration test verifying ColorScheme flows through to renderer
@@ -156,6 +168,7 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 **Map.Control.csproj Review**:
 
 **Strengths**:
+
 - ✅ **ReactiveUI**: Version 20.1.1 (latest stable) ✅
 - ✅ **Map.Core reference**: Correct domain dependency ✅
 - ✅ **Modern .NET**: Targets net9.0 ✅
@@ -179,6 +192,7 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 **Map.Core.csproj Review**:
 
 **Issue**: Map.Core references SkiaSharp directly (line 9)
+
 - Core domain shouldn't depend on rendering library
 - MapColor uses SKColor from SkiaSharp
 
@@ -191,14 +205,17 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 ### 6. Migration Completeness ✅ EXCELLENT
 
 **Old File Cleanup**: ✅
+
 - Verified `dotnet/shared-app/ViewModels/MapRenderViewModel.cs` is deleted
 - No lingering references to old namespace
 
 **Namespace Updates**: ✅
+
 - All references use `PigeonPea.Map.Control.ViewModels`
 - No references to `PigeonPea.Shared.ViewModels.MapRenderViewModel` found
 
 **Build Verification**: ✅
+
 - Entire solution builds successfully (0 errors)
 - Tests pass (15/15 tests)
 
@@ -209,6 +226,7 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 ## Summary of Findings
 
 ### Strengths
+
 1. ✅ **Excellent ViewModel implementation** with proper ReactiveUI patterns
 2. ✅ **Comprehensive test coverage** (9 tests, all passing)
 3. ✅ **Clean migration** from Shared to Map.Control domain
@@ -219,17 +237,20 @@ using PigeonPea.Map.Rendering; // ❌ Core depending on Rendering
 ### Issues Found
 
 #### Critical Issues
+
 None ✅
 
 #### Medium Priority Issues
 
 **Issue 1: Circular Dependency (Architecture)**
+
 - **Location**: `Map.Core.Domain.MapColor` → `Map.Rendering.ColorSchemes`
 - **Impact**: Violates layered architecture (Core should not depend on Rendering)
 - **Risk**: Low (code works, but maintainability concern)
 - **Recommendation**: Refactor (see detailed recommendations below)
 
 **Issue 2: Core Depends on SkiaSharp**
+
 - **Location**: `Map.Core.csproj` references SkiaSharp
 - **Impact**: Core domain coupled to rendering library
 - **Risk**: Low (SkiaSharp is stable, but principle violation)
@@ -238,11 +259,13 @@ None ✅
 #### Low Priority Issues
 
 **Issue 3: Missing Integration Tests**
+
 - **Impact**: No end-to-end test of ColorScheme → Renderer flow
 - **Risk**: Very Low (unit tests cover most scenarios)
 - **Recommendation**: Add in Phase 4 (UI integration)
 
 **Issue 4: AvailableColorSchemes Performance**
+
 - **Impact**: Enum.GetValues called on every property access
 - **Risk**: Negligible (enum enumeration is fast)
 - **Recommendation**: Cache if profiling shows issue (unlikely)
@@ -260,17 +283,20 @@ None ✅
 **Rationale**: MapColor is about presentation (converting domain data to RGB colors), not domain logic
 
 **Steps**:
+
 1. Move `MapColor.cs` from `Map.Core/Domain/` to `Map.Rendering/`
 2. Update namespace from `PigeonPea.Map.Core` to `PigeonPea.Map.Rendering`
 3. Update `SkiaMapRasterizer.cs` import (same namespace now)
 4. Remove SkiaSharp dependency from Map.Core.csproj
 
 **Pros**:
+
 - ✅ Fixes circular dependency
 - ✅ Removes SkiaSharp from Core
 - ✅ MapColor and ColorSchemes colocated (cohesion)
 
 **Cons**:
+
 - ⚠️ Breaking change for code using `PigeonPea.Map.Core.MapColor`
 - ⚠️ Need to search and update imports
 
@@ -313,10 +339,12 @@ public static class MapColor
 ```
 
 **Pros**:
+
 - ✅ Proper dependency inversion
 - ✅ Core doesn't depend on Rendering
 
 **Cons**:
+
 - ⚠️ More complex (interface + DI)
 - ⚠️ Overkill for this use case
 
@@ -364,12 +392,14 @@ public void ColorScheme_FlowsThroughRenderingPipeline()
 ### Recommendation 3: Cache AvailableColorSchemes (Very Low Priority)
 
 **Current**:
+
 ```csharp
 public IEnumerable<ColorScheme> AvailableColorSchemes =>
     Enum.GetValues<ColorScheme>();
 ```
 
 **Optimized**:
+
 ```csharp
 private static readonly IEnumerable<ColorScheme> _cachedSchemes =
     Enum.GetValues<ColorScheme>().ToArray();
@@ -406,19 +436,19 @@ public class MapRenderViewModelTests
 
 ### RFC-010 Phase 3 Requirements
 
-| Requirement | Status | Evidence |
-|-------------|--------|----------|
-| Add `ColorScheme` property to ViewModel | ✅ PASS | MapRenderViewModel.cs:40-44 |
-| Add `AvailableColorSchemes` for UI binding | ✅ PASS | MapRenderViewModel.cs:53-54 |
-| Ensure property change triggers re-render | ✅ PASS | ReactiveUI `RaiseAndSetIfChanged` used |
-| Move ViewModel to Map.Control domain | ✅ PASS | Namespace: `PigeonPea.Map.Control.ViewModels` |
-| Maintain ReactiveUI patterns | ✅ PASS | All properties use `RaiseAndSetIfChanged` |
-| Update all references | ✅ PASS | No references to old namespace |
-| Delete old file | ✅ PASS | `shared-app/ViewModels/MapRenderViewModel.cs` removed |
-| Add unit tests | ✅ PASS | 9 tests in MapRenderViewModelTests.cs |
-| Wire to rendering pipeline | ✅ PASS | SkiaMapRasterizer accepts colorScheme param |
-| Solution builds successfully | ✅ PASS | 0 errors, 1172 warnings (code analysis) |
-| All tests pass | ✅ PASS | 15/15 tests pass |
+| Requirement                                | Status  | Evidence                                              |
+| ------------------------------------------ | ------- | ----------------------------------------------------- |
+| Add `ColorScheme` property to ViewModel    | ✅ PASS | MapRenderViewModel.cs:40-44                           |
+| Add `AvailableColorSchemes` for UI binding | ✅ PASS | MapRenderViewModel.cs:53-54                           |
+| Ensure property change triggers re-render  | ✅ PASS | ReactiveUI `RaiseAndSetIfChanged` used                |
+| Move ViewModel to Map.Control domain       | ✅ PASS | Namespace: `PigeonPea.Map.Control.ViewModels`         |
+| Maintain ReactiveUI patterns               | ✅ PASS | All properties use `RaiseAndSetIfChanged`             |
+| Update all references                      | ✅ PASS | No references to old namespace                        |
+| Delete old file                            | ✅ PASS | `shared-app/ViewModels/MapRenderViewModel.cs` removed |
+| Add unit tests                             | ✅ PASS | 9 tests in MapRenderViewModelTests.cs                 |
+| Wire to rendering pipeline                 | ✅ PASS | SkiaMapRasterizer accepts colorScheme param           |
+| Solution builds successfully               | ✅ PASS | 0 errors, 1172 warnings (code analysis)               |
+| All tests pass                             | ✅ PASS | 15/15 tests pass                                      |
 
 **Compliance Score**: 11/11 (100%)
 
@@ -429,6 +459,7 @@ public class MapRenderViewModelTests
 ### Layered Architecture Assessment
 
 **Expected Structure**:
+
 ```
 Map.Control (ViewModels, Controllers)
     ↓ depends on
@@ -438,6 +469,7 @@ Map.Core (Domain models, logic)
 ```
 
 **Actual Structure** (with issue):
+
 ```
 Map.Control → Map.Core ✅
 Map.Rendering → Map.Core ❌ (MapColor creates reverse dependency)
@@ -457,6 +489,7 @@ Map.Core → Map.Rendering ⚠️ (circular dependency)
 ### Domain Organization
 
 **Map Domain**:
+
 - **Core**: MapData, Cell, Biome ✅
 - **Control**: MapRenderViewModel ✅
 - **Rendering**: SkiaMapRasterizer, ColorSchemes ✅
@@ -474,6 +507,7 @@ Map.Core → Map.Rendering ⚠️ (circular dependency)
 ### Maintainability Score: 92/100
 
 **Breakdown**:
+
 - Code clarity: 95/100 ✅
 - Documentation: 90/100 ✅
 - Test coverage: 95/100 ✅
@@ -483,6 +517,7 @@ Map.Core → Map.Rendering ⚠️ (circular dependency)
 ### Technical Debt
 
 **Current Debt**: Low
+
 - Circular dependency (medium priority fix)
 - Missing integration tests (low priority)
 
@@ -495,6 +530,7 @@ Map.Core → Map.Rendering ⚠️ (circular dependency)
 ### Performance Impact: ✅ NEGLIGIBLE
 
 **Analysis**:
+
 - `Enum.GetValues<ColorScheme>()`: O(1) cached by CLR ✅
 - `RaiseAndSetIfChanged`: Standard ReactiveUI overhead ✅
 - ColorScheme enum switch: O(1) ✅
@@ -508,6 +544,7 @@ Map.Core → Map.Rendering ⚠️ (circular dependency)
 ### Security Impact: ✅ NONE
 
 **Analysis**:
+
 - No user input handling in ViewModel
 - Enum prevents invalid values
 - No SQL/injection risks
@@ -521,6 +558,7 @@ Map.Core → Map.Rendering ⚠️ (circular dependency)
 ### Accessibility Impact: ✅ POSITIVE
 
 **Features**:
+
 - `HighContrast` color scheme for visually impaired users ✅
 - `Monochrome` for colorblind users ✅
 - Clear property names for screen readers ✅
@@ -532,14 +570,17 @@ Map.Core → Map.Rendering ⚠️ (circular dependency)
 ## Final Recommendations
 
 ### Must Do (Before Phase 4)
+
 1. ✅ None (implementation is production-ready)
 
 ### Should Do (Before Release)
+
 1. 🔧 **Fix circular dependency** - Move MapColor to Map.Rendering (Recommendation 1)
    - **Effort**: 1 hour
    - **Priority**: Medium
 
 ### Could Do (Future Enhancements)
+
 1. 📝 **Add integration test** - Verify ColorScheme flows through pipeline (Recommendation 2)
    - **Effort**: 30 minutes
    - **Priority**: Low
@@ -561,6 +602,7 @@ Map.Core → Map.Rendering ⚠️ (circular dependency)
 Phase 3 implementation is **production-ready** with excellent code quality, comprehensive testing, and proper ReactiveUI integration. The minor architectural issue (circular dependency) does not block Phase 4 but should be addressed before final release.
 
 ### Strengths
+
 - ✅ Clean, well-documented code
 - ✅ Proper domain-driven organization
 - ✅ Comprehensive test coverage
@@ -568,15 +610,18 @@ Phase 3 implementation is **production-ready** with excellent code quality, comp
 - ✅ ReactiveUI best practices followed
 
 ### Areas for Improvement
+
 - ⚠️ Circular dependency (Core ↔ Rendering)
 - 📝 Missing integration tests (minor)
 
 ### Next Steps
+
 1. **Proceed to Phase 4** (UI Controls Integration) ✅
 2. **Address Recommendation 1** (move MapColor) before Phase 5
 3. Monitor for any runtime issues during UI integration
 
 ### Grade Breakdown
+
 - **Implementation**: A (95/100)
 - **Testing**: A (95/100)
 - **Architecture**: B+ (87/100) - deducted for circular dependency

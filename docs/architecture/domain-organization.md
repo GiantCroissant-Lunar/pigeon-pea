@@ -1,6 +1,6 @@
 # Domain-Driven Architecture Organization
 
-**Last Updated**: 2025-11-13  
+**Last Updated**: 2025-11-13
 **Status**: Current (Post RFC-007 implementation)
 
 ## Overview
@@ -29,11 +29,11 @@ dotnet/
 
 ## Core / Control / Rendering Trinity
 
-| Layer | Purpose | Example (Map) | Example (Dungeon) |
-| --- | --- | --- | --- |
-| **Core** | Pure domain logic, data models, generation | `MapData`, `IMapGenerator`, `FantasyMapGeneratorAdapter` | `DungeonData`, `IDungeonGenerator`, `BasicDungeonGenerator` |
-| **Control** | ViewModels, navigation, interaction, orchestration | `MapControlViewModel`, `MapNavigator` | `DungeonControlViewModel`, `DungeonWorldManager` |
-| **Rendering** | Visualization targets (Skia, Braille, Sixel, etc.) | `SkiaMapRasterizer`, `BrailleMapRenderer`, map overlays | `BrailleDungeonRenderer`, `EntityRenderer`, lighting/FOV renderers |
+| Layer         | Purpose                                            | Example (Map)                                            | Example (Dungeon)                                                  |
+| ------------- | -------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Core**      | Pure domain logic, data models, generation         | `MapData`, `IMapGenerator`, `FantasyMapGeneratorAdapter` | `DungeonData`, `IDungeonGenerator`, `BasicDungeonGenerator`        |
+| **Control**   | ViewModels, navigation, interaction, orchestration | `MapControlViewModel`, `MapNavigator`                    | `DungeonControlViewModel`, `DungeonWorldManager`                   |
+| **Rendering** | Visualization targets (Skia, Braille, Sixel, etc.) | `SkiaMapRasterizer`, `BrailleMapRenderer`, map overlays  | `BrailleDungeonRenderer`, `EntityRenderer`, lighting/FOV renderers |
 
 ### Dependency flow
 
@@ -71,11 +71,11 @@ Shared Infrastructure (ECS, Rendering Utilities)
 
 ## Shared Infrastructure
 
-| Project | Purpose |
-| --- | --- |
-| `PigeonPea.Shared.ECS` | Arch components (Position, Renderable, Health, etc.), tags, helper systems |
-| `PigeonPea.Shared.Rendering` | Rendering contracts (`IRenderer`, `IRenderTarget`), primitives, tiles, converters |
-| `PigeonPea.Shared.ViewModels` *(optional)* | Common ViewModel helpers (layers, viewport state) |
+| Project                                    | Purpose                                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------------------- |
+| `PigeonPea.Shared.ECS`                     | Arch components (Position, Renderable, Health, etc.), tags, helper systems        |
+| `PigeonPea.Shared.Rendering`               | Rendering contracts (`IRenderer`, `IRenderTarget`), primitives, tiles, converters |
+| `PigeonPea.Shared.ViewModels` _(optional)_ | Common ViewModel helpers (layers, viewport state)                                 |
 
 ### Arch ECS integration
 
@@ -94,13 +94,13 @@ Reuse `QueryDescription`, limit scope via FOV, and clean up entities regularly (
 
 ## Library Encapsulation
 
-| Library | Wrapped By | Visible To |
-| --- | --- | --- |
-| FantasyMapGenerator.Core | `Map.Core` adapter | Map domain only |
-| GoRogue | Dungeon Core/Control services | Dungeon domain only |
-| Mapsui | `Map.Control` | Map Control/UI |
-| Arch | `Shared.ECS` | All domains via shared components |
-| SkiaSharp | Rendering projects | Rendering layers only |
+| Library                  | Wrapped By                    | Visible To                        |
+| ------------------------ | ----------------------------- | --------------------------------- |
+| FantasyMapGenerator.Core | `Map.Core` adapter            | Map domain only                   |
+| GoRogue                  | Dungeon Core/Control services | Dungeon domain only               |
+| Mapsui                   | `Map.Control`                 | Map Control/UI                    |
+| Arch                     | `Shared.ECS`                  | All domains via shared components |
+| SkiaSharp                | Rendering projects            | Rendering layers only             |
 
 ## Adding a New Domain
 
