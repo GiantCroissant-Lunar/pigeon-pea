@@ -191,7 +191,8 @@ async fn main() -> Result<()> {
     match cli.command {
         Some(Commands::Connect { url }) => {
             let server_url = url.unwrap_or_else(|| cli.server.clone());
-            let client = ws::WsClient::new(server_url, cli.token.clone());
+            let timeout_ms = cli.timeout.unwrap(); // Already set by merge_config
+            let client = ws::WsClient::new(server_url, cli.token.clone(), timeout_ms);
             client.connect().await
         }
         Some(Commands::Send { message }) => {

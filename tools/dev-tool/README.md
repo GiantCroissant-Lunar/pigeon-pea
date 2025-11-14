@@ -36,7 +36,7 @@ dev-tool config
 # Show configuration in JSON format
 dev-tool --output json config
 
-# Connect to server (stub)
+# Connect to server
 dev-tool connect
 
 # Send a message (stub)
@@ -206,7 +206,7 @@ If a token is provided (via `--token` or `DEV_TOOL_TOKEN`), it is included in th
 - Current version: 1
 - The client checks server protocol version compatibility
 - Clear error messages are displayed for version mismatches
-- Backwards compatible changes do not bump the major version
+- Backward-compatible changes do not bump the major version
 
 ## Future Enhancements
 

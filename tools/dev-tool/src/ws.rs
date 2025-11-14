@@ -1,5 +1,6 @@
 use anyhow::{Context, Result};
 use futures_util::{SinkExt, StreamExt};
+use std::time::Duration;
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 use url::Url;
 
@@ -9,12 +10,17 @@ use crate::protocol::{AuthPayload, Envelope, MessageType, NoopCommand, PROTOCOL_
 pub struct WsClient {
     url: String,
     token: Option<String>,
+    timeout: Duration,
 }
 
 impl WsClient {
     /// Create a new WebSocket client
-    pub fn new(url: String, token: Option<String>) -> Self {
-        Self { url, token }
+    pub fn new(url: String, token: Option<String>, timeout_ms: u64) -> Self {
+        Self {
+            url,
+            token,
+            timeout: Duration::from_millis(timeout_ms),
+        }
     }
 
     /// Connect to the WebSocket server and perform initial handshake
@@ -63,24 +69,33 @@ impl WsClient {
 
         println!("✓ Sent noop command (id: {})", noop_id);
 
-        // Wait for reply
-        if let Some(msg) = read.next().await {
-            match msg {
+        // Wait for reply with timeout
+        let reply_result = tokio::time::timeout(self.timeout, read.next()).await;
+
+        match reply_result {
+            Ok(Some(msg)) => match msg {
                 Ok(Message::Text(text)) => {
                     self.handle_reply(&text, &noop_id)?;
                 }
                 Ok(Message::Close(_)) => {
-                    println!("Server closed connection");
+                    anyhow::bail!("Server closed connection before sending reply");
                 }
                 Err(e) => {
                     anyhow::bail!("WebSocket error: {}", e);
                 }
                 _ => {
-                    println!("Received non-text message");
+                    anyhow::bail!("Received non-text message when expecting reply");
                 }
+            },
+            Ok(None) => {
+                anyhow::bail!("Connection closed without reply");
             }
-        } else {
-            println!("Connection closed without reply");
+            Err(_) => {
+                anyhow::bail!(
+                    "Timeout waiting for server reply ({}ms)",
+                    self.timeout.as_millis()
+                );
+            }
         }
 
         Ok(())
@@ -94,29 +109,33 @@ impl WsClient {
 
         // Check protocol version compatibility
         if envelope.version != PROTOCOL_VERSION {
-            println!(
-                "⚠ Warning: Server protocol version {} differs from client version {}",
+            anyhow::bail!(
+                "Protocol version mismatch: server version {} differs from client version {}. Protocol incompatibility detected.",
                 envelope.version, PROTOCOL_VERSION
             );
-            println!("  Protocol incompatibility detected. Some features may not work correctly.");
         }
 
         // Check if it's a reply message
         if envelope.message_type != MessageType::GmReply {
-            println!(
-                "⚠ Warning: Expected gm.reply but got {:?}",
-                envelope.message_type
-            );
+            anyhow::bail!("Expected gm.reply but got {:?}", envelope.message_type);
         }
 
         // Check correlation ID
-        if let Some(ref corr_id) = envelope.correlation_id {
-            if corr_id != expected_correlation_id {
-                println!(
-                    "⚠ Warning: Correlation ID mismatch. Expected: {}, Got: {}",
-                    expected_correlation_id, corr_id
+        match &envelope.correlation_id {
+            Some(corr_id) if corr_id != expected_correlation_id => {
+                anyhow::bail!(
+                    "Correlation ID mismatch. Expected: {}, Got: {}",
+                    expected_correlation_id,
+                    corr_id
                 );
             }
+            None => {
+                anyhow::bail!(
+                    "Missing correlation ID in reply. Expected: {}",
+                    expected_correlation_id
+                );
+            }
+            _ => {}
         }
 
         // Print the reply
@@ -139,7 +158,7 @@ fn generate_id() -> String {
     use std::time::{SystemTime, UNIX_EPOCH};
     let timestamp = SystemTime::now()
         .duration_since(UNIX_EPOCH)
-        .unwrap()
+        .unwrap_or_default()
         .as_millis();
     format!("msg-{}", timestamp)
 }
@@ -161,20 +180,23 @@ mod tests {
 
     #[test]
     fn test_ws_client_creation() {
-        let client = WsClient::new("ws://localhost:5007".to_string(), None);
+        let client = WsClient::new("ws://localhost:5007".to_string(), None, 5000);
         assert_eq!(client.url, "ws://localhost:5007");
         assert!(client.token.is_none());
+        assert_eq!(client.timeout.as_millis(), 5000);
 
         let client_with_token = WsClient::new(
             "ws://localhost:5007".to_string(),
             Some("test-token".to_string()),
+            10000,
         );
         assert_eq!(client_with_token.token, Some("test-token".to_string()));
+        assert_eq!(client_with_token.timeout.as_millis(), 10000);
     }
 
     #[test]
     fn test_handle_reply_valid() {
-        let client = WsClient::new("ws://localhost:5007".to_string(), None);
+        let client = WsClient::new("ws://localhost:5007".to_string(), None, 5000);
         let reply_json = r#"{
             "version": 1,
             "type": "gm.reply",
@@ -192,7 +214,7 @@ mod tests {
 
     #[test]
     fn test_handle_reply_version_mismatch() {
-        let client = WsClient::new("ws://localhost:5007".to_string(), None);
+        let client = WsClient::new("ws://localhost:5007".to_string(), None, 5000);
         let reply_json = r#"{
             "version": 2,
             "type": "gm.reply",
@@ -203,13 +225,13 @@ mod tests {
         }"#;
 
         let result = client.handle_reply(reply_json, "msg-123");
-        // Should still succeed but print a warning
-        assert!(result.is_ok());
+        // Now should fail due to version mismatch
+        assert!(result.is_err());
     }
 
     #[test]
     fn test_handle_reply_invalid_json() {
-        let client = WsClient::new("ws://localhost:5007".to_string(), None);
+        let client = WsClient::new("ws://localhost:5007".to_string(), None, 5000);
         let result = client.handle_reply("invalid json", "msg-123");
         assert!(result.is_err());
     }
