@@ -1,3 +1,16 @@
+---
+doc_id: "GUIDE-2025-00004"
+title: "Documentation Inbox"
+doc_type: "guide"
+status: "active"
+canonical: true
+created: "2025-11-13"
+tags: ["documentation", "inbox", "workflow", "drafts"]
+summary: "Guide for using the documentation inbox for draft documents that are not yet ready for publication"
+supersedes: []
+related: ["RFC-2025-00012", "REFERENCE-2025-00001"]
+---
+
 # Documentation Inbox
 
 This directory is for **draft documentation** that is not yet ready for publication.

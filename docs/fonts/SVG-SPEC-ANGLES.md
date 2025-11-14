@@ -1,3 +1,16 @@
+---
+doc_id: "SPEC-2025-00001"
+title: "SVG Specification — 36 Angle Glyphs"
+doc_type: "spec"
+status: "active"
+canonical: true
+created: "2025-11-13"
+tags: ["fonts", "svg", "specification", "pua", "glyphs"]
+summary: "SVG specification for 36 angle glyphs to be imported into font PUA (Private Use Area) for terminal rendering"
+supersedes: []
+related: ["RFC-2025-00020", "SPEC-2025-00002"]
+---
+
 # SVG Specification — 36 Angle Glyphs
 
 Purpose: provide consistent SVG sources for FontForge import into PUA.
