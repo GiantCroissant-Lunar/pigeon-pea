@@ -56,7 +56,7 @@ The current documentation structure lacks:
 
 ### Architecture Overview
 
-```
+`````text
 Documentation Lifecycle
 ======================
 
@@ -97,11 +97,11 @@ Documentation Lifecycle
    │  - Queryable by agents          │
    │  - SHA256 + SimHash for dedupe  │
    └─────────────────────────────────┘
-```
+```text
 
 ### Directory Structure
 
-```
+```text
 docs/
 ├── _inbox/                          # Staging area for drafts
 │   ├── README.md                    # Inbox workflow guide
@@ -147,7 +147,7 @@ scripts/
 .claude/
 └── commands/
     └── task.md                      # New /task command
-```
+```text
 
 ### Front-Matter Schema
 
@@ -167,7 +167,7 @@ summary: 'Brief one-sentence summary of the document'
 supersedes: [] # Optional: list of doc_ids this replaces
 related: [] # Optional: list of related doc_ids
 ---
-```
+```text
 
 #### Doc ID Prefixes
 
@@ -212,7 +212,7 @@ python scripts/validate-docs.py
 
 # Pre-commit mode (validation only, no registry regen)
 python scripts/validate-docs.py --pre-commit
-```
+```text
 
 Dependencies:
 
@@ -259,7 +259,7 @@ Dependencies:
     }
   ]
 }
-```
+```text
 
 ### Inbox Workflow
 
@@ -296,7 +296,7 @@ mv docs/_inbox/my-draft.md docs/rfcs/008-my-feature.md
 # 6. Commit (pre-commit hook validates)
 git add docs/rfcs/008-my-feature.md
 git commit -m "docs: add RFC-008 for my feature"
-```
+```text
 
 ### Task Command
 
@@ -310,22 +310,22 @@ Purpose: Help agents create structured documentation tasks
 Creates a structured documentation task in `docs/_inbox/` with proper front-matter template.
 
 ## Usage
-```
+```text
 
 /task <doc-type> <title>
 
-```
+```text
 
 ## Examples
 
-```
+```text
 
 /task rfc "Plugin System Architecture"
 /task guide "Setting Up Development Environment"
 /task adr "Use PostgreSQL for Primary Database"
 /task plan "Q1 2025 Feature Roadmap"
 
-````
+````text
 
 ## What It Does
 
@@ -348,9 +348,9 @@ summary: ""
 # TODO: Set canonical: true/false
 # TODO: Complete tags and summary
 ---
-````
+````text
 
-````
+````text
 
 ### Agent Rules
 
@@ -374,7 +374,7 @@ summary: ""
 3. **Run validation before finalizing**:
    ```bash
    python scripts/validate-docs.py
-````
+````text
 
 - Check for duplicate warnings
 - Ensure front-matter is valid
@@ -418,11 +418,11 @@ summary: ""
 
 ## Document Lifecycle
 
-```
+```text
 draft → active → superseded/archived
   ↓       ↓          ↓
 inbox  final loc  archive/
-```
+```text
 
 ## Pre-commit Hook
 
@@ -433,7 +433,7 @@ The pre-commit hook runs `python scripts/validate-docs.py --pre-commit` to:
 - Detect near-duplicates
 - Fail commit if errors found (warnings allowed)
 
-````
+````text
 
 ## Core Components
 
@@ -446,7 +446,7 @@ Add to project requirements:
 pyyaml>=6.0.1
 simhash>=2.1.2
 rapidfuzz>=3.5.2
-````
+````text
 
 ### 2. Pre-commit Hook Integration
 
@@ -462,7 +462,7 @@ rapidfuzz>=3.5.2
       files: ^docs/.*\.md$
       exclude: ^docs/(_inbox|index)/
       pass_filenames: false
-```
+```text
 
 ### 3. Inbox README
 
@@ -489,8 +489,9 @@ This directory is for **draft documentation** that is not yet ready for publicat
    status: 'draft'
    created: 'YYYY-MM-DD'
    ---
-   ```
-````
+`````
+
+`````text
 
 2. **No strict validation**: Inbox docs excluded from required field checks
 
@@ -523,7 +524,7 @@ This directory is for **draft documentation** that is not yet ready for publicat
 - [DOCUMENTATION-SCHEMA.md](../DOCUMENTATION-SCHEMA.md) - Front-matter specification
 - [RFC-012](../rfcs/012-documentation-organization-management.md) - This system's design
 
-````
+````text
 
 ### 4. Documentation Schema Reference
 
@@ -607,7 +608,7 @@ summary: "Structured documentation management system with validation, registry, 
 supersedes: []
 related: ["RFC-2025-00004"]
 ---
-````
+````text
 
 ## Validation
 
@@ -615,7 +616,7 @@ Run validation script:
 
 ```bash
 python scripts/validate-docs.py
-```
+```text
 
 Checks:
 
@@ -626,7 +627,7 @@ Checks:
 - Date format (ISO 8601: `YYYY-MM-DD`)
 - Near-duplicate detection
 
-## Pre-commit Hook
+### Pre-commit Hook Usage
 
 The pre-commit hook automatically validates documentation on commit:
 
@@ -634,9 +635,9 @@ The pre-commit hook automatically validates documentation on commit:
 git commit -m "docs: add new RFC"
 # → Runs: python scripts/validate-docs.py --pre-commit
 # → Fails commit if validation errors found
-```
+```text
 
-````
+````text
 
 ## Implementation Plan
 
@@ -767,7 +768,7 @@ def test_duplicate_detection():
     errors = detect_near_duplicates([inbox_doc, corpus_doc])
     assert len(errors) >= 1
     assert "Near-duplicate" in str(errors[0])
-````
+````text
 
 ### Integration Tests
 
@@ -792,7 +793,7 @@ python scripts/validate-docs.py
 
 # 6. Check registry
 cat docs/index/registry.json | jq '.docs[] | select(.doc_id == "RFC-2025-00999")'
-```
+```text
 
 ### Pre-commit Hook Tests
 
@@ -821,7 +822,7 @@ summary: Test doc
 git add docs/test.md
 git commit -m "test"
 # Should succeed
-```
+```text
 
 ## Success Criteria
 
@@ -989,13 +990,13 @@ After implementation, the system should:
 pyyaml>=6.0.1        # YAML front-matter parsing
 simhash>=2.1.2       # Content similarity detection (optional)
 rapidfuzz>=3.5.2     # Fuzzy string matching (optional)
-```
+```text
 
 Installation:
 
 ```bash
 pip install -r requirements.txt
-```
+```text
 
 ### Pre-commit Hook
 
@@ -1004,7 +1005,7 @@ Requires `pre-commit` to be installed:
 ```bash
 pip install pre-commit
 pre-commit install
-```
+```text
 
 ## References
 
@@ -1041,7 +1042,7 @@ related: ['RFC-2025-00004']
 # RFC-012: Documentation Organization Management
 
 [Document content...]
-```
+```text
 
 ### Example: Guide in Inbox (Minimal)
 
@@ -1062,7 +1063,7 @@ TODO:
 - Document IDE setup
 - Add troubleshooting
 - Complete front-matter before moving to docs/guides/
-```
+```text
 
 ### Example: Superseded Document
 
@@ -1084,43 +1085,44 @@ related: ["RFC-2025-00008"]
 **Note**: This RFC has been superseded by [RFC-008: Enhanced Rendering Architecture](../rfcs/008-enhanced-rendering-architecture.md).
 
 [Original content preserved for historical reference...]
-```
+```text
 
 ## Appendix B: Validation Error Examples
 
 ### Error: Missing Required Fields
 
-```
+```text
 [ERROR] docs/rfcs/test.md: Missing required fields: doc_id, tags, summary
-```
+```text
 
 Fix: Add missing fields to front-matter
 
 ### Error: Invalid doc_type
 
-```
+```text
 [ERROR] docs/guides/test.md: Invalid doc_type 'tutorial'. Must be one of: spec, rfc, adr, plan, finding, guide, glossary, reference
-```
+```text
 
 Fix: Change `doc_type: tutorial` to `doc_type: guide`
 
 ### Warning: Near-Duplicate Detected
 
-```
+```text
 [WARNING] Near-duplicate detected:
   Inbox:  docs/_inbox/plugin-architecture.md
   Corpus: docs/rfcs/006-plugin-system-architecture.md
   Title similarity: 85%, Content similarity: 92%
-```
+```text
 
 Action: Review existing doc, consider updating instead of creating new one
 
 ### Error: Multiple Canonical Documents
 
-```
+```text
 [ERROR] Multiple canonical docs for concept 'agent infrastructure':
   docs/rfcs/004-agent-infrastructure-enhancement.md
   docs/rfcs/012-documentation-organization-management.md
-```
+```text
 
 Fix: Set `canonical: false` on one of them
+`````
