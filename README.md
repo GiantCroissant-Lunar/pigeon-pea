@@ -165,3 +165,118 @@ For detailed documentation, see:
 - [CLAUDE.md](CLAUDE.md) - Claude-specific agent configuration
 - [`.agent/`](.agent/) - Agent manifests, skills, schemas, and policies
 - [`scripts/README.md`](scripts/README.md) - Validation script documentation
+
+## Documentation Management (RFC-012)
+
+This project uses a structured documentation management system with validation, registry generation, and quality assurance.
+
+### Documentation Workflow
+
+1. **Check for Existing Docs**
+
+   ```bash
+   # Search the registry for existing documentation
+   python scripts/validate-docs.py
+   cat docs/index/registry.json | jq '.docs[] | select(.title | contains("your topic"))'
+   ```
+
+2. **Create Draft in Inbox**
+
+   ```bash
+   # Create a draft with minimal front-matter
+   cat > docs/_inbox/my-feature.md << EOF
+   ---
+   title: "My Feature Documentation"
+   doc_type: "guide"
+   status: "draft"
+   created: "$(date +%Y-%m-%d)"
+   ---
+
+   # My Feature Documentation
+
+   Content here...
+   EOF
+   ```
+
+3. **Validate and Check for Duplicates**
+
+   ```bash
+   python scripts/validate-docs.py
+   ```
+
+4. **Complete Front-Matter**
+   - Add `doc_id` (e.g., `GUIDE-2025-00042`)
+   - Add `tags` array
+   - Add `summary` string
+   - Set `canonical` (true/false)
+   - Add optional fields: `author`, `updated`, `supersedes`, `related`
+
+5. **Move to Final Location**
+
+   ```bash
+   # Move to appropriate directory:
+   # - docs/rfcs/ for RFCs
+   # - docs/guides/ for guides
+   # - docs/architecture/ for ADRs
+   # - docs/planning/ for plans
+   mv docs/_inbox/my-feature.md docs/guides/setup-guide.md
+   ```
+
+6. **Commit (Pre-commit validates automatically)**
+   ```bash
+   git add docs/guides/setup-guide.md
+   git commit -m "docs: add feature setup guide"
+   ```
+
+### Documentation Validation
+
+The validation script (`scripts/validate-docs.py`) checks:
+
+- **Front-matter validation**: All required fields present and valid
+- **Canonical uniqueness**: Only one canonical doc per concept
+- **Duplicate detection**: Warns about similar titles/content using SimHash and fuzzy matching
+- **Registry generation**: Creates `docs/index/registry.json` for agent consumption
+
+#### Running Validation Manually
+
+```bash
+# Full validation with registry generation
+python scripts/validate-docs.py
+
+# Pre-commit mode (validation only, no registry regeneration)
+python scripts/validate-docs.py --pre-commit
+
+# Custom directories
+python scripts/validate-docs.py --docs-dir ./custom-docs --registry ./custom-registry.json
+```
+
+### Documentation Schema
+
+All documentation (except `docs/_inbox/` drafts) must include YAML front-matter with these required fields:
+
+```yaml
+---
+doc_id: 'PREFIX-YYYY-NNNNN' # e.g., RFC-2025-00042
+title: 'Document Title'
+doc_type: 'rfc' # spec, rfc, adr, plan, finding, guide, glossary, reference
+status: 'active' # draft, active, superseded, rejected, archived
+canonical: true # Is this the authoritative version?
+created: '2025-11-14' # ISO date (YYYY-MM-DD)
+tags: ['tag1', 'tag2'] # List of tags
+summary: 'Brief description' # One-sentence summary
+---
+```
+
+See [`docs/DOCUMENTATION-SCHEMA.md`](docs/DOCUMENTATION-SCHEMA.md) for complete schema reference.
+
+### Testing Documentation Validation
+
+```bash
+# Run unit tests
+pytest tests/test_validate_docs.py -v
+
+# Run integration tests
+bash tests/integration/test-doc-workflow.sh
+```
+
+For more details, see [RFC-012: Documentation Organization Management](docs/rfcs/012-documentation-organization-management.md).
