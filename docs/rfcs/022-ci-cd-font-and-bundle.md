@@ -1,14 +1,14 @@
 ---
-doc_id: "RFC-2025-00022"
-title: "CI/CD for Custom Font and Developer Bundle"
-doc_type: "rfc"
-status: "draft"
+doc_id: 'RFC-2025-00022'
+title: 'CI/CD for Custom Font and Developer Bundle'
+doc_type: 'rfc'
+status: 'draft'
 canonical: true
-created: "2025-11-13"
-tags: ["ci-cd", "fonts", "automation", "build", "deployment"]
-summary: "CI jobs to build patched fonts, validate outputs, and publish versioned artifacts suitable for local development and downstream packaging with Taskfile/Nuke hooks"
+created: '2025-11-13'
+tags: ['ci-cd', 'fonts', 'automation', 'build', 'deployment']
+summary: 'CI jobs to build patched fonts, validate outputs, and publish versioned artifacts suitable for local development and downstream packaging with Taskfile/Nuke hooks'
 supersedes: []
-related: ["RFC-2025-00020", "RFC-2025-00021"]
+related: ['RFC-2025-00020', 'RFC-2025-00021']
 ---
 
 # RFC-022: CI/CD for Custom Font and Developer Bundle

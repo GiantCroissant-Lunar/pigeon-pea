@@ -1,14 +1,14 @@
 ---
-doc_id: "PLAN-2025-00006"
-title: "Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system"
-doc_type: "plan"
-status: "active"
+doc_id: 'PLAN-2025-00006'
+title: 'Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system'
+doc_type: 'plan'
+status: 'active'
 canonical: true
-created: "2025-11-10"
-tags: ["issue", "plugin-system", "rfc-006", "phase-2", "game-logic"]
-summary: "Integrate game events with plugin system as defined in RFC-006 Phase 2"
+created: '2025-11-10'
+tags: ['issue', 'plugin-system', 'rfc-006', 'phase-2', 'game-logic']
+summary: 'Integrate game events with plugin system as defined in RFC-006 Phase 2'
 supersedes: []
-related: ["RFC-2025-00006", "PLAN-2025-00001", "PLAN-2025-00005"]
+related: ['RFC-2025-00006', 'PLAN-2025-00001', 'PLAN-2025-00005']
 ---
 
 # Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system

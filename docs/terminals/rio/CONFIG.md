@@ -1,14 +1,14 @@
 ---
-doc_id: "GUIDE-2025-00002"
-title: "Rio Terminal Configuration — Using the Custom Font"
-doc_type: "guide"
-status: "active"
+doc_id: 'GUIDE-2025-00002'
+title: 'Rio Terminal Configuration — Using the Custom Font'
+doc_type: 'guide'
+status: 'active'
 canonical: true
-created: "2025-11-13"
-tags: ["terminal", "rio", "configuration", "fonts", "setup"]
+created: '2025-11-13'
+tags: ['terminal', 'rio', 'configuration', 'fonts', 'setup']
 summary: "Guide for configuring Rio Terminal to use the project's custom font with PUA glyphs"
 supersedes: []
-related: ["RFC-2025-00021", "GUIDE-2025-00001", "GUIDE-2025-00003"]
+related: ['RFC-2025-00021', 'GUIDE-2025-00001', 'GUIDE-2025-00003']
 ---
 
 # Rio Terminal Configuration — Using the Custom Font

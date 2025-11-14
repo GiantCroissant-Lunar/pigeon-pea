@@ -1,14 +1,14 @@
 ---
-doc_id: "PLAN-2025-00001"
-title: "Implementation Plan: Project Restructure and Plugin System"
-doc_type: "plan"
-status: "active"
+doc_id: 'PLAN-2025-00001'
+title: 'Implementation Plan: Project Restructure and Plugin System'
+doc_type: 'plan'
+status: 'active'
 canonical: true
-created: "2025-11-10"
-tags: ["planning", "implementation", "project-structure", "plugins"]
-summary: "Implementation plan for restructuring the PigeonPea project and adding plugin system support, broken into 5 sequential issues"
+created: '2025-11-10'
+tags: ['planning', 'implementation', 'project-structure', 'plugins']
+summary: 'Implementation plan for restructuring the PigeonPea project and adding plugin system support, broken into 5 sequential issues'
 supersedes: []
-related: ["RFC-2025-00005", "RFC-2025-00006"]
+related: ['RFC-2025-00005', 'RFC-2025-00006']
 ---
 
 # Implementation Plan: Project Restructure and Plugin System

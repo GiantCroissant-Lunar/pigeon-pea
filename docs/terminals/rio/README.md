@@ -1,14 +1,14 @@
 ---
-doc_id: "GUIDE-2025-00001"
-title: "Rio on Windows — Using bundle/config/rio.toml"
-doc_type: "guide"
-status: "active"
+doc_id: 'GUIDE-2025-00001'
+title: 'Rio on Windows — Using bundle/config/rio.toml'
+doc_type: 'guide'
+status: 'active'
 canonical: true
-created: "2025-11-13"
-tags: ["terminal", "rio", "windows", "configuration", "setup"]
+created: '2025-11-13'
+tags: ['terminal', 'rio', 'windows', 'configuration', 'setup']
 summary: "Guide for pointing Rio Terminal to the repo's dev bundle config on Windows for development"
 supersedes: []
-related: ["RFC-2025-00021", "GUIDE-2025-00002", "GUIDE-2025-00003"]
+related: ['RFC-2025-00021', 'GUIDE-2025-00002', 'GUIDE-2025-00003']
 ---
 
 # Rio on Windows — Using bundle/config/rio.toml

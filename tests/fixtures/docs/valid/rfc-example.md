@@ -1,12 +1,12 @@
 ---
-doc_id: "RFC-2025-99999"
-title: "Test RFC Document"
-doc_type: "rfc"
-status: "draft"
+doc_id: 'RFC-2025-99999'
+title: 'Test RFC Document'
+doc_type: 'rfc'
+status: 'draft'
 canonical: true
-created: "2025-11-14"
-tags: ["test", "validation"]
-summary: "A test RFC document for validation testing"
+created: '2025-11-14'
+tags: ['test', 'validation']
+summary: 'A test RFC document for validation testing'
 supersedes: []
 related: []
 ---
