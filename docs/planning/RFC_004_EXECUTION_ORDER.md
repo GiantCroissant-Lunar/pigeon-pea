@@ -1,3 +1,15 @@
+---
+doc_id: 'PLAN-2025-00013'
+title: 'RFC-004 Implementation: Execution Order'
+doc_type: 'plan'
+status: 'active'
+canonical: true
+created: '2025-11-10'
+tags: ['rfc-004', 'agent-infrastructure', 'execution-order', 'parallelization']
+summary: 'Execution order for implementing RFC-004 issues showing parallel vs serial dependencies'
+related: ['RFC-2025-00004', 'PLAN-2025-00008']
+---
+
 # RFC-004 Implementation: Execution Order
 
 This document provides a clear execution order for implementing RFC-004 issues, showing which can be done in **parallel** vs **serial**.

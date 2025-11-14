@@ -1,3 +1,16 @@
+---
+doc_id: 'PLAN-2025-00004'
+title: 'Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system'
+doc_type: 'plan'
+status: 'active'
+canonical: true
+created: '2025-11-10'
+tags: ['issue', 'contracts', 'rfc-005', 'phase-2', 'infrastructure']
+summary: 'Create contract projects for plugin system as defined in RFC-005 Phase 2'
+supersedes: []
+related: ['RFC-2025-00005', 'PLAN-2025-00001', 'PLAN-2025-00003']
+---
+
 # Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system
 
 **Labels:** `contracts`, `rfc-005`, `phase-2`, `infrastructure`
@@ -119,6 +132,6 @@ public interface IRenderer
 
 ## See Also
 
-- [RFC-005: Project Structure Reorganization](../rfc-005-project-structure-reorganization.md)
-- [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
+- [RFC-005: Project Structure Reorganization](../005-project-structure-reorganization.md)
+- [RFC-006: Plugin System Architecture](../006-plugin-system-architecture.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)

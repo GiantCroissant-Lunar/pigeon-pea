@@ -1,3 +1,16 @@
+---
+doc_id: 'PLAN-2025-00006'
+title: 'Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system'
+doc_type: 'plan'
+status: 'active'
+canonical: true
+created: '2025-11-10'
+tags: ['issue', 'plugin-system', 'rfc-006', 'phase-2', 'game-logic']
+summary: 'Integrate game events with plugin system as defined in RFC-006 Phase 2'
+supersedes: []
+related: ['RFC-2025-00006', 'PLAN-2025-00001', 'PLAN-2025-00005']
+---
+
 # Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system
 
 **Labels:** `plugin-system`, `rfc-006`, `phase-2`, `game-logic`
@@ -225,5 +238,5 @@ public class EventLoggerPlugin : IPlugin
 
 ## See Also
 
-- [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
+- [RFC-006: Plugin System Architecture](../006-plugin-system-architecture.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)
