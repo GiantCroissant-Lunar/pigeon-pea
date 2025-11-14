@@ -1,14 +1,14 @@
 ---
-doc_id: "GUIDE-2025-00004"
-title: "Documentation Inbox"
-doc_type: "guide"
-status: "active"
+doc_id: 'GUIDE-2025-00004'
+title: 'Documentation Inbox'
+doc_type: 'guide'
+status: 'active'
 canonical: true
-created: "2025-11-13"
-tags: ["documentation", "inbox", "workflow", "drafts"]
-summary: "Guide for using the documentation inbox for draft documents that are not yet ready for publication"
+created: '2025-11-13'
+tags: ['documentation', 'inbox', 'workflow', 'drafts']
+summary: 'Guide for using the documentation inbox for draft documents that are not yet ready for publication'
 supersedes: []
-related: ["RFC-2025-00012", "REFERENCE-2025-00001"]
+related: ['RFC-2025-00012', 'REFERENCE-2025-00001']
 ---
 
 # Documentation Inbox
@@ -24,12 +24,13 @@ This directory is for **draft documentation** that is not yet ready for publicat
 ## Rules
 
 1. **Minimal front-matter required**:
+
    ```yaml
    ---
-   title: "Your Title"
-   doc_type: "rfc|guide|adr|plan|finding|spec"
-   status: "draft"
-   created: "YYYY-MM-DD"
+   title: 'Your Title'
+   doc_type: 'rfc|guide|adr|plan|finding|spec'
+   status: 'draft'
+   created: 'YYYY-MM-DD'
    ---
    ```
 
@@ -50,16 +51,16 @@ This directory is for **draft documentation** that is not yet ready for publicat
 
 ## Final Locations
 
-| Doc Type | Location |
-|----------|----------|
-| RFC | `docs/rfcs/` |
-| Guide | `docs/guides/` |
-| ADR | `docs/architecture/` |
-| Plan | `docs/planning/` |
-| Finding | `docs/planning/` (internal) or `docs/` (public) |
-| Spec | `docs/` |
-| Glossary | `docs/` |
-| Reference | `docs/` |
+| Doc Type  | Location                                        |
+| --------- | ----------------------------------------------- |
+| RFC       | `docs/rfcs/`                                    |
+| Guide     | `docs/guides/`                                  |
+| ADR       | `docs/architecture/`                            |
+| Plan      | `docs/planning/`                                |
+| Finding   | `docs/planning/` (internal) or `docs/` (public) |
+| Spec      | `docs/`                                         |
+| Glossary  | `docs/`                                         |
+| Reference | `docs/`                                         |
 
 ## See Also
 

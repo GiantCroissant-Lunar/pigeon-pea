@@ -148,14 +148,14 @@ ls docs/guides/ | grep -oE 'GUIDE-[0-9]+-[0-9]+' | sort -V | tail -1
 
 Move completed docs to their final location based on type:
 
-| Doc Type | Final Location              | Command Example                                                 |
-| -------- | --------------------------- | --------------------------------------------------------------- |
-| RFC      | `docs/rfcs/`                | `mv docs/_inbox/draft.md docs/rfcs/013-plugin-system.md`        |
-| Guide    | `docs/guides/`              | `mv docs/_inbox/draft.md docs/guides/setup-dev.md`              |
-| ADR      | `docs/architecture/`        | `mv docs/_inbox/draft.md docs/architecture/adr-001-database.md` |
-| Plan     | `docs/planning/`            | `mv docs/_inbox/draft.md docs/planning/q1-2025-roadmap.md`      |
+| Doc Type | Final Location                                                     | Command Example                                                 |
+| -------- | ------------------------------------------------------------------ | --------------------------------------------------------------- |
+| RFC      | `docs/rfcs/`                                                       | `mv docs/_inbox/draft.md docs/rfcs/013-plugin-system.md`        |
+| Guide    | `docs/guides/`                                                     | `mv docs/_inbox/draft.md docs/guides/setup-dev.md`              |
+| ADR      | `docs/architecture/`                                               | `mv docs/_inbox/draft.md docs/architecture/adr-001-database.md` |
+| Plan     | `docs/planning/`                                                   | `mv docs/_inbox/draft.md docs/planning/q1-2025-roadmap.md`      |
 | Finding  | `docs/planning/` (internal analyses) or `docs/` (broader audience) | `mv docs/_inbox/draft.md docs/planning/performance-analysis.md` |
-| Spec     | `docs/`                     | `mv docs/_inbox/draft.md docs/terminal-format-spec.md`          |
+| Spec     | `docs/`                                                            | `mv docs/_inbox/draft.md docs/terminal-format-spec.md`          |
 
 ### Step 6: Commit with Validation
 
@@ -581,14 +581,14 @@ ls docs/rfcs/ | grep -oE 'RFC-[0-9]+-[0-9]+' | sort -V | tail -1
 
 ### File Locations
 
-| Doc Type | Draft Location | Final Location              |
-| -------- | -------------- | --------------------------- |
-| RFC      | `docs/_inbox/` | `docs/rfcs/`                |
-| Guide    | `docs/_inbox/` | `docs/guides/`              |
-| ADR      | `docs/_inbox/` | `docs/architecture/`        |
-| Plan     | `docs/_inbox/` | `docs/planning/`            |
+| Doc Type | Draft Location | Final Location                                                     |
+| -------- | -------------- | ------------------------------------------------------------------ |
+| RFC      | `docs/_inbox/` | `docs/rfcs/`                                                       |
+| Guide    | `docs/_inbox/` | `docs/guides/`                                                     |
+| ADR      | `docs/_inbox/` | `docs/architecture/`                                               |
+| Plan     | `docs/_inbox/` | `docs/planning/`                                                   |
 | Finding  | `docs/_inbox/` | `docs/planning/` (internal analyses) or `docs/` (broader audience) |
-| Spec     | `docs/_inbox/` | `docs/`                     |
+| Spec     | `docs/_inbox/` | `docs/`                                                            |
 
 ### Status Values
 
