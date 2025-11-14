@@ -1,3 +1,15 @@
+---
+doc_id: 'PLAN-2025-00012'
+title: 'GitHub Label Strategy'
+doc_type: 'plan'
+status: 'active'
+canonical: true
+created: '2025-11-08'
+tags: ['github', 'labels', 'project-management', 'organization']
+summary: 'Scalable label strategy for organizing GitHub issues and pull requests in pigeon-pea project'
+related: ['PLAN-2025-00011']
+---
+
 # GitHub Label Strategy
 
 This document defines the scalable label strategy for the pigeon-pea project.
