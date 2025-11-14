@@ -1,0 +1,175 @@
+name: Documentation Validation
+
+on:
+  push:
+    branches: [main, master, develop]
+    paths:
+      - 'docs/**/*.md'
+      - 'scripts/validate-docs.py'
+      - 'tests/test_validate_docs.py'
+      - 'tests/integration/test-doc-workflow.sh'
+      - '.github/workflows/docs-validation.yml'
+  pull_request:
+    branches: [main, master, develop]
+    paths:
+      - 'docs/**/*.md'
+      - 'scripts/validate-docs.py'
+      - 'tests/test_validate_docs.py'
+      - 'tests/integration/test-doc-workflow.sh'
+      - '.github/workflows/docs-validation.yml'
+
+jobs:
+  validate-docs:
+    runs-on: ubuntu-latest
+    name: Validate documentation
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+
+      - name: Run documentation validation
+        run: |
+          python scripts/validate-docs.py
+
+      - name: Upload registry artifact
+        uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: docs-registry
+          path: docs/index/registry.json
+          retention-days: 30
+
+      - name: Check for duplicate warnings
+        id: check-warnings
+        run: |
+          if python scripts/validate-docs.py 2>&1 | grep -q "Near-duplicate detected"; then
+            echo "has_duplicates=true" >> $GITHUB_OUTPUT
+          else
+            echo "has_duplicates=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on PR with warnings
+        if: github.event_name == 'pull_request' && steps.check-warnings.outputs.has_duplicates == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const execModule = require('@actions/exec');
+            const output = await execModule.getExecOutput('python', ['scripts/validate-docs.py']);
+            const warnings = output.stdout.match(/\[WARNING\].*Near-duplicate detected:[\s\S]*?(?=\n\[|$)/g) || [];
+
+            if (warnings.length > 0) {
+              const comment = `## ⚠️ Documentation Validation Warnings
+
+            Found ${warnings.length} potential duplicate document(s):
+
+            \`\`\`
+            ${warnings.join('\n\n')}
+            \`\`\`
+
+            Please review these warnings to ensure you're not creating duplicate documentation.`;
+
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: comment
+              });
+            }
+
+  test-validation:
+    runs-on: ubuntu-latest
+    name: Run validation tests
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install test dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+          pip install pytest
+
+      - name: Run unit tests
+        run: |
+          pytest tests/test_validate_docs.py -v --tb=short
+
+      - name: Run integration tests
+        run: |
+          bash tests/integration/test-doc-workflow.sh
+
+  validate-registry:
+    runs-on: ubuntu-latest
+    name: Validate documentation registry
+    needs: validate-docs
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download registry artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-registry
+          path: ./artifacts
+
+      - name: Verify registry structure
+        run: |
+          echo "Checking registry structure..."
+          if [ ! -f ./artifacts/registry.json ]; then
+            echo "❌ Registry file not found!"
+            exit 1
+          fi
+
+          # Check required fields in registry
+          if ! grep -q '"generated_at"' ./artifacts/registry.json; then
+            echo "❌ Missing 'generated_at' field"
+            exit 1
+          fi
+
+          if ! grep -q '"total_docs"' ./artifacts/registry.json; then
+            echo "❌ Missing 'total_docs' field"
+            exit 1
+          fi
+
+          if ! grep -q '"by_type"' ./artifacts/registry.json; then
+            echo "❌ Missing 'by_type' field"
+            exit 1
+          fi
+
+          if ! grep -q '"by_status"' ./artifacts/registry.json; then
+            echo "❌ Missing 'by_status' field"
+            exit 1
+          fi
+
+          if ! grep -q '"docs"' ./artifacts/registry.json; then
+            echo "❌ Missing 'docs' field"
+            exit 1
+          fi
+
+          echo "✅ Registry structure is valid"
+
+      - name: Display registry summary
+        run: |
+          echo "## Documentation Registry Summary"
+          python3 -c "
+          import json
+          with open('./artifacts/registry.json') as f:
+              registry = json.load(f)
+          print(f'Total documents: {registry[\"total_docs\"]}')
+          print(f'By type: {registry[\"by_type\"]}')
+          print(f'By status: {registry[\"by_status\"]}')
+          "
