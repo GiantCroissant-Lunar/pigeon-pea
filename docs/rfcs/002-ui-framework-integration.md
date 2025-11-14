@@ -1,3 +1,16 @@
+---
+doc_id: "RFC-2025-00002"
+title: "UI Framework Integration"
+doc_type: "rfc"
+status: "draft"
+canonical: true
+created: "2025-11-08"
+tags: ["ui", "mvvm", "reactive", "framework", "architecture"]
+summary: "Integrate reactive programming frameworks (System.Reactive, ReactiveUI, MessagePipe, ObservableCollections) to create a clean MVVM architecture with automatic UI updates from game state changes"
+supersedes: []
+related: ["RFC-2025-00001"]
+---
+
 # RFC-002: UI Framework Integration
 
 ## Status
