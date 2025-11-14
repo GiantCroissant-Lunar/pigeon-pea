@@ -15,6 +15,7 @@ This document provides step-by-step instructions for implementing Phase 5 of RFC
 ### ✅ Already Implemented
 
 **Shared.ECS Components** (5 files, ~15 lines):
+
 - `Position.cs` - Simple position (X, Y)
 - `Sprite.cs` - Simple sprite (Id)
 - `Renderable.cs` - Visibility and layer
@@ -22,38 +23,46 @@ This document provides step-by-step instructions for implementing Phase 5 of RFC
 - `Tags/DungeonEntityTag.cs` - Tag for dungeon entities
 
 **Dungeon.Rendering EntityRenderer** (~85 lines):
+
 - `EntityRenderer.RenderEntities()` - RGBA rendering
 - `EntityRenderer.RenderEntitiesAscii()` - ASCII rendering
 - Both methods support FOV filtering
 
 **Arch Package**:
+
 - ✅ Referenced in `Shared.ECS.csproj` (v2.0.0)
 
 ### ❌ To Be Implemented
 
 **ECS Components** (gameplay):
+
 - `Health.cs`, `Name.cs`, `Description.cs`
 - `Inventory.cs`, `Item.cs`
 - `Monster.cs`, `Player.cs` (tag components)
 - `City.cs`, `Marker.cs` (map entity data)
 
 **Systems**:
+
 - `Systems/RenderingSystem.cs` - Helper for rendering queries
 - `Systems/MovementSystem.cs` - Entity movement logic (optional)
 
 **World Management**:
+
 - `Map.Control/WorldManager/MapWorldManager.cs` - Manage map ECS world
 - `Dungeon.Control/WorldManager/DungeonWorldManager.cs` - Manage dungeon ECS world
 
 **ECS-Aware Renderers**:
+
 - `Map.Rendering/MapEcsRenderer.cs` - Render map + entities
 - `Dungeon.Rendering/DungeonEcsRenderer.cs` - Render dungeon + entities
 
 **Application Integration**:
+
 - Console app: Dual world management (map + dungeon)
 - Windows app: ECS integration (optional)
 
 **Tests**:
+
 - ECS component tests
 - World manager tests
 - Integration tests (full pipeline with entities)
@@ -1437,7 +1446,7 @@ public class SpatialIndex
 
 **File**: `docs/examples/ecs-usage.md`
 
-```markdown
+````markdown
 # ECS Usage Examples
 
 ## Creating a Dungeon with Entities
@@ -1466,6 +1475,7 @@ worldManager.TryMoveEntity(player, newX: 11, newY: 10);
 var pos = worldManager.GetPlayerPosition();
 Console.WriteLine($"Player at ({pos?.X}, {pos?.Y})");
 ```
+````
 
 ## Rendering with ECS
 
@@ -1511,7 +1521,8 @@ worldManager.World.Query(in query, (Entity entity, ref Position pos) =>
     }
 });
 ```
-```
+
+````
 
 ---
 
@@ -1528,11 +1539,12 @@ Delete remaining `Class1.cs` files:
 rm dotnet/Dungeon/PigeonPea.Dungeon.Rendering/Class1.cs
 rm dotnet/Map/PigeonPea.Map.Core/Class1.cs
 rm dotnet/Map/PigeonPea.Map.Control/Class1.cs
-```
+````
 
 ### 10.2 Fix Failing Tests
 
 Fix the 2 failing tests from Phase 4:
+
 - `FovBlockingTests.ComputeVisible_WallsBlockLos`
 - `PathfindingWeightedCornerTests.WeightedCost_PrefersCheaperTiles`
 
@@ -1541,11 +1553,13 @@ Fix the 2 failing tests from Phase 4:
 ## Success Criteria
 
 ### Build & Test
+
 - [ ] `dotnet build dotnet/PigeonPea.sln` succeeds (0 errors, 0 warnings)
 - [ ] `dotnet test dotnet/Dungeon.Tests/` passes all tests (15+ tests)
 - [ ] All placeholder `Class1.cs` files removed
 
 ### Functionality
+
 - [ ] Can create dungeon ECS world with `DungeonWorldManager`
 - [ ] Can create map ECS world with `MapWorldManager`
 - [ ] Can spawn player, monsters, items in dungeon
@@ -1556,12 +1570,14 @@ Fix the 2 failing tests from Phase 4:
 - [ ] Console app runs with ECS entities: `dotnet run --project dotnet/console-app -- --dungeon-demo`
 
 ### Architecture
+
 - [ ] Separate ECS worlds for Map and Dungeon (no interference)
 - [ ] Entity rendering works in both domains
 - [ ] World managers properly encapsulate ECS logic
 - [ ] Renderers remain stateless (worlds passed as parameters)
 
 ### Performance
+
 - [ ] Rendering 100+ entities maintains >30 FPS (console)
 - [ ] No memory leaks (worlds properly disposed)
 - [ ] Query performance acceptable (<1ms for typical dungeon)
@@ -1598,13 +1614,13 @@ Expected: Clean build, all tests pass, demos run with entities visible.
 
 **Target performance** (for validation):
 
-| Scenario | Target | Measurement |
-|----------|--------|-------------|
-| Create 100 entities | <1ms | Time to spawn 100 monsters |
-| Query 100 entities | <0.5ms | Time to query all monsters in viewport |
-| Render 100 entities (RGBA) | <5ms | Time to render entities to 640x480 raster |
-| Render 100 entities (ASCII) | <2ms | Time to render entities to 80x40 console |
-| Move entity | <0.1ms | Time to move single entity with collision check |
+| Scenario                    | Target | Measurement                                     |
+| --------------------------- | ------ | ----------------------------------------------- |
+| Create 100 entities         | <1ms   | Time to spawn 100 monsters                      |
+| Query 100 entities          | <0.5ms | Time to query all monsters in viewport          |
+| Render 100 entities (RGBA)  | <5ms   | Time to render entities to 640x480 raster       |
+| Render 100 entities (ASCII) | <2ms   | Time to render entities to 80x40 console        |
+| Move entity                 | <0.1ms | Time to move single entity with collision check |
 
 **Benchmark code** (optional, in `dotnet/benchmarks/`):
 
@@ -1659,6 +1675,7 @@ new Sprite("goblin", 'g', 100, 200, 100)
 ```
 
 Or keep backward compatibility with overload:
+
 ```csharp
 public Sprite(string id) : this(id, '?', 255, 255, 255) { }
 ```
@@ -1692,11 +1709,13 @@ using var worldManager = new DungeonWorldManager(dungeon);
 ## Next Steps After Phase 5
 
 **Phase 6**: Deprecate Old Projects (RFC-007 lines 448-476)
+
 - Mark `FantasyMapGenerator.Rendering` as deprecated
 - Remove old `SharedApp.Rendering` code
 - Update documentation
 
 **Phase 7**: Documentation and Polish (RFC-007 lines 477-500)
+
 - Complete architecture documentation
 - Add usage examples
 - Update onboarding guide

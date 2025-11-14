@@ -13,6 +13,7 @@ This document outlines the plan to integrate **Mapsui** (map library) and **BruT
 ## Why Mapsui + BruTile?
 
 ### Mapsui Features
+
 - **Viewport Management**: Professional pan/zoom with smooth transitions
 - **Coordinate Systems**: Handles world coordinates, screen coordinates, tile coordinates
 - **LOD System**: Level-of-Detail management for multiple zoom levels
@@ -20,6 +21,7 @@ This document outlines the plan to integrate **Mapsui** (map library) and **BruT
 - **Battle-tested**: Used in production .NET mapping applications
 
 ### BruTile Features
+
 - **Tile Management**: Fetch, cache, and organize map tiles
 - **Tile Schemes**: Web Mercator, custom tile schemes
 - **Tile Cache**: In-memory and persistent caching
@@ -36,6 +38,7 @@ MapData �� SkiaTileSource �� RGBA buffer �� BrailleRenderer �� T
 ```
 
 **Limitations**:
+
 - No multi-zoom support (single resolution only)
 - Renders entire viewport every frame (no caching)
 - Manual camera/viewport management
@@ -75,6 +78,7 @@ Terminal.Gui View (AddRune)
 ### Phase 1: Install Dependencies ?
 
 **Packages to add**:
+
 ```bash
 dotnet add package Mapsui --version 5.0.0
 dotnet add package BruTile --version 5.0.0
@@ -181,16 +185,19 @@ Application.AddKeyHandler(key =>
 ## Performance Considerations
 
 ### Tile Cache Strategy
+
 - **Memory Cache**: Fast access, limited to 100-500 tiles (~6-30 MB)
 - **LRU Eviction**: Automatically removes least-recently-used tiles
 - **Pre-loading**: Load adjacent tiles in background for smooth panning
 
 ### Tile Generation Performance
+
 - **256x256 tiles**: Small enough for fast generation
 - **On-demand**: Only generate visible tiles
 - **Async loading**: Generate tiles in background thread (optional)
 
 ### Rendering Optimization
+
 - **Dirty regions**: Only redraw when viewport changes
 - **Braille caching**: Cache Braille conversion results (optional)
 - **Frame rate**: Maintain 20+ FPS for smooth interaction
@@ -201,17 +208,18 @@ Application.AddKeyHandler(key =>
 
 ### Recommended Zoom Levels
 
-| Zoom | Tiles (per axis) | Total Tiles | Use Case |
-|------|------------------|-------------|----------|
-| 0    | 1x1              | 1           | World overview |
-| 1    | 2x2              | 4           | Regional view |
-| 2    | 4x4              | 16          | Area detail |
-| 3    | 8x8              | 64          | Local detail |
-| 4    | 16x16            | 256         | High detail |
+| Zoom | Tiles (per axis) | Total Tiles | Use Case         |
+| ---- | ---------------- | ----------- | ---------------- |
+| 0    | 1x1              | 1           | World overview   |
+| 1    | 2x2              | 4           | Regional view    |
+| 2    | 4x4              | 16          | Area detail      |
+| 3    | 8x8              | 64          | Local detail     |
+| 4    | 16x16            | 256         | High detail      |
 | 5    | 32x32            | 1024        | Very high detail |
-| 6    | 64x64            | 4096        | Maximum detail |
+| 6    | 64x64            | 4096        | Maximum detail   |
 
 **Memory usage at max zoom (6)**:
+
 - 4096 tiles �� 256��256 pixels �� 4 bytes (RGBA) = ~1 GB
 - With cache limit of 500 tiles = ~125 MB
 
@@ -220,14 +228,17 @@ Application.AddKeyHandler(key =>
 ## Alternative Approaches
 
 ### Option A: Pre-generate Tiles (Faster Runtime)
+
 **Pros**: Instant tile loading, no generation overhead
 **Cons**: Disk storage required, regeneration needed when map changes
 
 ### Option B: On-Demand Generation (Current Plan)
+
 **Pros**: No storage overhead, always up-to-date
 **Cons**: Initial generation delay, CPU usage
 
 ### Option C: Hybrid (Best of Both)
+
 **Pros**: Pre-generate low zoom levels (0-2), on-demand for high zoom
 **Cons**: Moderate complexity
 
@@ -238,16 +249,19 @@ Application.AddKeyHandler(key =>
 ## Future Enhancements
 
 ### Vector Tiles (Advanced)
+
 - Store map as vector data (polygons, lines)
 - Render on-demand at any resolution
 - Smaller file size than raster tiles
 
 ### Nerd Font Icons
+
 - Use Nerd Font glyphs for terrain features
 - Mix with Braille for hybrid rendering
 - Better visual distinction for features
 
 ### Color Braille
+
 - Assign Terminal.Gui colors to Braille dots
 - Use background colors for biomes
 - Foreground colors for features (rivers, roads)

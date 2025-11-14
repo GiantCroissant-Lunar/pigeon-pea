@@ -30,7 +30,7 @@ npm run build ttc
 
 instead, the files would be in `out/ttc` directory.
 
-Please note that you will need *a lot of* memory to create TTCs, due to the huge quantity of subfamily-orthography combinations.
+Please note that you will need _a lot of_ memory to create TTCs, due to the huge quantity of subfamily-orthography combinations.
 
 ## What are the names?
 
@@ -50,4 +50,3 @@ Please note that you will need *a lot of* memory to create TTCs, due to the huge
 
 - TUNA (CN): https://mirrors.tuna.tsinghua.edu.cn/github-release/be5invis/Sarasa-Gothic
 - NJU (CN): https://mirror.nju.edu.cn/github-release/be5invis/Sarasa-Gothic
-

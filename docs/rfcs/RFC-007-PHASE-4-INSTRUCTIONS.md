@@ -15,24 +15,28 @@ This document provides step-by-step instructions for implementing Phase 4 of RFC
 ### ✅ Already Implemented
 
 **Dungeon.Core** (~250 lines):
+
 - `DungeonData.cs` - Complete grid model with walls, floors, doors
 - `IDungeonGenerator.cs` - Interface for dungeon generation
 - `BasicDungeonGenerator.cs` - Working dungeon generator (rooms + corridors + doors)
 - GoRogue package reference: ✅ v3.0.0-beta10
 
 **Dungeon.Control** (~140 lines):
+
 - `FovCalculator.cs` - Complete FOV calculation (Bresenham LOS)
-- `PathfindingService.cs` - Complete A* pathfinding with diagonal support
+- `PathfindingService.cs` - Complete A\* pathfinding with diagonal support
 - `DungeonNavigator.cs` - Facade combining pathfinding + FOV
 - GoRogue package reference: ✅ v3.0.0-beta10
 
 **Dungeon.Tests**:
+
 - Test project exists with xUnit, FluentAssertions
 - References to Dungeon.Core and Dungeon.Control
 
 ### ❌ To Be Implemented
 
 **Dungeon.Rendering** (currently only `Class1.cs` placeholder):
+
 - `TilesetRenderer.cs` - Render dungeon to pixel tiles
 - `BrailleDungeonRenderer.cs` - Render dungeon to Braille/ASCII
 - `FovRenderer.cs` - Apply lighting/shadows based on FOV
@@ -40,17 +44,21 @@ This document provides step-by-step instructions for implementing Phase 4 of RFC
 - `Tiles/DungeonTileSource.cs` - Implement `ITileSource` interface
 
 **Dungeon.Core Enhancements**:
+
 - `Adapters/GoRogueAdapter.cs` - Wrap GoRogue generation (if needed beyond BasicDungeonGenerator)
 
 **Dungeon.Control Enhancements**:
+
 - `ViewModels/DungeonControlViewModel.cs` - Player position, FOV state (ReactiveUI)
 
 **Console App Integration**:
+
 - `Views/DungeonPanelView.cs` - Terminal.Gui view for dungeon
 - Initialize dungeon ECS world
 - Demo dungeon rendering
 
 **Tests**:
+
 - Unit tests for rendering
 - Integration test for full pipeline
 
@@ -1181,12 +1189,14 @@ rm dotnet/Map/PigeonPea.Map.Rendering/Class1.cs
 Verify all project references are correct:
 
 **Dungeon.Rendering.csproj should reference**:
+
 - `Dungeon.Core`
 - `Shared.Rendering`
 - `Shared.ECS`
 - SkiaSharp (package)
 
 **Console app .csproj should reference**:
+
 - `Dungeon.Core`
 - `Dungeon.Control`
 - `Dungeon.Rendering`
@@ -1196,11 +1206,13 @@ Verify all project references are correct:
 ## Success Criteria
 
 ### Build & Test
+
 - [ ] `dotnet build dotnet/PigeonPea.sln` succeeds (0 errors, 0 warnings)
 - [ ] `dotnet test dotnet/Dungeon.Tests/` passes all tests
 - [ ] All placeholder `Class1.cs` files removed
 
 ### Functionality
+
 - [ ] Can generate dungeon using `BasicDungeonGenerator`
 - [ ] Can calculate FOV using `FovCalculator`
 - [ ] Can find path using `PathfindingService`
@@ -1210,11 +1222,13 @@ Verify all project references are correct:
 - [ ] Can run console dungeon demo: `dotnet run --project dotnet/console-app dungeon-demo`
 
 ### Architecture
+
 - [ ] Dungeon.Rendering uses ONLY `Dungeon.Core` types (no GoRogue types leak)
-- [ ] Console app references Dungeon.* but NOT GoRogue directly
+- [ ] Console app references Dungeon.\* but NOT GoRogue directly
 - [ ] Proper dependency flow: Console → Rendering → Control → Core → GoRogue (hidden)
 
 ### ECS Integration (Optional for Phase 4, Required for Phase 5)
+
 - [ ] Can create dungeon ECS world
 - [ ] Can add monster/item entities with Position + Sprite + DungeonEntityTag
 - [ ] Entities render correctly with `EntityRenderer`

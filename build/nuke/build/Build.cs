@@ -9,7 +9,7 @@ using Nuke.Common.Tooling;
 using Nuke.Common.Utilities.Collections;
 using static Nuke.Common.EnvironmentInfo;
 
-class Build : NukeBuild, 
+class Build : NukeBuild,
     IBuildConfig,
     IClean,
     IRestore,

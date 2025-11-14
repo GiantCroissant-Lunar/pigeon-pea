@@ -44,7 +44,8 @@ stages:
     steps:
       - type: code
         path: dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/Generators/HeightmapGenerator.cs
-        description: Implement original DSL operations (Hill, Pit, Range, Trough, Strait, Mask, Invert, Add, Multiply, Smooth)
+        description: >-
+          Implement original DSL operations (Hill, Pit, Range, Trough, Strait, Mask, Invert, Add, Multiply, Smooth)
         notes:
           - Port logic from ref-projects/Fantasy-Map-Generator/modules/heightmap-generator.js
           - Use blobPower/linePower tables (getBlobPower/getLinePower) exactly
@@ -88,9 +89,8 @@ success_criteria:
   - River count and average length within ±20% of original
 
 notes:
-  - Reference JS files: 
+  - Reference JS files:
       - ref-projects/Fantasy-Map-Generator/utils/graphUtils.js
       - ref-projects/Fantasy-Map-Generator/modules/heightmap-generator.js
       - ref-projects/Fantasy-Map-Generator/main.js:616-671
   - Keep changes behind settings flags to avoid breaking current consumers
-

@@ -15,6 +15,7 @@ This document provides step-by-step instructions for implementing Phase 6 of RFC
 ### ✅ Already Implemented (Phases 1-5)
 
 **New Architecture** (operational):
+
 - Map domain: Core, Control, Rendering (3 projects)
 - Dungeon domain: Core, Control, Rendering (3 projects)
 - Shared: ECS, Rendering (2 projects)
@@ -27,10 +28,12 @@ This document provides step-by-step instructions for implementing Phase 6 of RFC
 ### ❌ To Be Cleaned Up
 
 **Old Projects** (deprecated/duplicate):
+
 - `_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Rendering/` (~12 files)
 - `dotnet/shared-app/Rendering/` (~16 files)
 
 **Placeholder Files** (6 files):
+
 - `Dungeon/PigeonPea.Dungeon.Control/Class1.cs`
 - `Dungeon/PigeonPea.Dungeon.Core/Class1.cs`
 - `Dungeon/PigeonPea.Dungeon.Rendering/Class1.cs`
@@ -39,12 +42,14 @@ This document provides step-by-step instructions for implementing Phase 6 of RFC
 - `Map/PigeonPea.Map.Rendering/Class1.cs`
 
 **Documentation** (needs updates):
+
 - Architecture docs outdated
 - No domain organization guide
 - No ECS usage examples
 - CLAUDE.md needs architecture section update
 
 **Failing Tests** (2 edge cases from Phase 4):
+
 - `FovBlockingTests.ComputeVisible_WallsBlockLos`
 - `PathfindingWeightedCornerTests.WeightedCost_PrefersCheaperTiles`
 
@@ -64,7 +69,7 @@ This document provides step-by-step instructions for implementing Phase 6 of RFC
 
 **File**: `dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Rendering/README-DEPRECATED.md` (new)
 
-```markdown
+````markdown
 # ⚠️ DEPRECATED - FantasyMapGenerator.Rendering
 
 **Status**: Deprecated as of 2025-11-13 (RFC-007 Phase 6)
@@ -81,14 +86,17 @@ This project was part of the original FantasyMapGenerator port but has been supe
 If you were using `FantasyMapGenerator.Rendering`, migrate to:
 
 ### Old Code (Deprecated)
+
 ```csharp
 using FantasyMapGenerator.Rendering;
 
 var renderer = new TerrainRenderer();
 var image = renderer.RenderMap(mapData);
 ```
+````
 
 ### New Code (Current)
+
 ```csharp
 using PigeonPea.Map.Rendering;
 
@@ -104,16 +112,17 @@ var raster = SkiaMapRasterizer.Render(
 
 ## What Replaced What?
 
-| Old (Deprecated) | New (Current) |
-|-----------------|---------------|
-| `TerrainRenderer` | `SkiaMapRasterizer` |
-| `ColorSchemes` | `MapColor` (in Map.Core/Domain/) |
-| `SmoothTerrainRenderer` | Integrated into `SkiaMapRasterizer` |
-| `TileSource` | `Shared.Rendering/Tiles/ITileSource` |
+| Old (Deprecated)        | New (Current)                        |
+| ----------------------- | ------------------------------------ |
+| `TerrainRenderer`       | `SkiaMapRasterizer`                  |
+| `ColorSchemes`          | `MapColor` (in Map.Core/Domain/)     |
+| `SmoothTerrainRenderer` | Integrated into `SkiaMapRasterizer`  |
+| `TileSource`            | `Shared.Rendering/Tiles/ITileSource` |
 
 ## Files in This Directory
 
 This directory contains ~12 files that are **no longer used** in the PigeonPea project:
+
 - Rendering/TerrainRenderer.cs
 - Rendering/ColorSchemes.cs
 - Rendering/SmoothTerrainRenderer.cs
@@ -122,6 +131,7 @@ This directory contains ~12 files that are **no longer used** in the PigeonPea p
 ## Should I Delete This?
 
 **No, keep it for reference**. This is part of the FantasyMapGenerator library port and may be useful for:
+
 - Understanding original rendering algorithms
 - Reference implementation
 - Standalone FantasyMapGenerator usage (if someone uses it outside PigeonPea)
@@ -133,7 +143,8 @@ This directory contains ~12 files that are **no longer used** in the PigeonPea p
 - [RFC-007: Domain-Driven Architecture](../../../../../docs/rfcs/007-consolidate-rendering-projects.md)
 - [Map.Rendering Documentation](../../../../../docs/architecture/map-rendering.md)
 - [Migration Guide](../../../../../docs/migration/fmg-rendering-to-map-rendering.md)
-```
+
+````
 
 ### 1.2 Update .csproj (Mark as Non-Buildable)
 
@@ -149,7 +160,7 @@ Add this property to mark it as deprecated (optional, for clarity):
   <IsPackable>false</IsPackable>
   <Description>⚠️ DEPRECATED - Use PigeonPea.Map.Rendering instead. See README-DEPRECATED.md</Description>
 </PropertyGroup>
-```
+````
 
 ### 1.3 Exclude from Active Build (Optional)
 
@@ -177,6 +188,7 @@ Expected: No results (already verified - no active references).
 ### 2.1 Verify No Active References
 
 **Command**:
+
 ```bash
 cd dotnet
 grep -r "SharedApp.Rendering\|shared-app/Rendering" --include="*.cs" --include="*.csproj" \
@@ -188,6 +200,7 @@ grep -r "SharedApp.Rendering\|shared-app/Rendering" --include="*.cs" --include="
 **Expected**: No results (or only in comments/old files).
 
 If you find references, update them to use the new architecture:
+
 - `SharedApp.Rendering.SkiaMapRasterizer` → `PigeonPea.Map.Rendering.SkiaMapRasterizer`
 - `SharedApp.Rendering.MapDataRenderer` → `PigeonPea.Map.Rendering.BrailleMapRenderer`
 - `SharedApp.Rendering.Tiles.*` → `PigeonPea.Shared.Rendering.Tiles.*`
@@ -201,6 +214,7 @@ mkdir -p dotnet/archive/
 ### 2.3 Move to Archive
 
 **Command**:
+
 ```bash
 cd dotnet
 mv shared-app/Rendering archive/SharedApp.Rendering.archived-2025-11-13/
@@ -221,22 +235,26 @@ mv shared-app/Rendering archive/SharedApp.Rendering.archived-2025-11-13/
 This code was split into the new domain-driven architecture:
 
 ### Map-Specific Code → Map.Rendering
+
 - `SkiaMapRasterizer.cs` → `Map.Rendering/SkiaMapRasterizer.cs`
 - `MapDataRenderer.cs` → `Map.Rendering/BrailleMapRenderer.cs`
 - Map-specific rendering logic
 
 ### Shared Code → Shared.Rendering
+
 - `Tiles/ITileSource.cs` → `Shared.Rendering/Tiles/ITileSource.cs`
 - `Tiles/TileAssembler.cs` → `Shared.Rendering/Tiles/TileAssembler.cs`
 - `Tiles/TileCache.cs` → `Shared.Rendering/Tiles/TileCache.cs`
 - Generic rendering utilities
 
 ### Dungeon Code → Dungeon.Rendering
+
 - Dungeon-specific rendering is now in `Dungeon.Rendering/`
 
 ## Files Archived
 
 ~16 files from the old flat rendering structure:
+
 - SkiaMapRasterizer.cs
 - MapDataRenderer.cs
 - NavigatorAdapter.cs
@@ -250,6 +268,7 @@ This code was split into the new domain-driven architecture:
 ## Migration Completed
 
 All functionality has been migrated to the new architecture. This archive is kept for:
+
 - Historical reference
 - Understanding evolution of rendering architecture
 - Recovering any accidentally deleted utility code
@@ -283,6 +302,7 @@ dotnet/archive/SharedApp.Rendering.archived-*/
 ### 3.1 Delete Class1.cs Files
 
 **Command**:
+
 ```bash
 cd dotnet
 
@@ -328,25 +348,26 @@ Expected: 0 errors, 0 warnings.
 PigeonPea uses a domain-driven architecture with two primary domains: **Map** and **Dungeon**. Each domain follows a **Core/Control/Rendering** trinity pattern.
 
 ## Domain Structure
-
 ```
+
 dotnet/
-├── Map/                          ← World Map Domain
-│   ├── PigeonPea.Map.Core/       # Data models, generation, domain logic
-│   ├── PigeonPea.Map.Control/    # Navigation, interaction (Mapsui)
-│   └── PigeonPea.Map.Rendering/  # Visualization (Skia, entities)
+├── Map/ ← World Map Domain
+│ ├── PigeonPea.Map.Core/ # Data models, generation, domain logic
+│ ├── PigeonPea.Map.Control/ # Navigation, interaction (Mapsui)
+│ └── PigeonPea.Map.Rendering/ # Visualization (Skia, entities)
 │
-├── Dungeon/                      ← Dungeon Exploration Domain
-│   ├── PigeonPea.Dungeon.Core/   # Data models, generation (GoRogue)
-│   ├── PigeonPea.Dungeon.Control/# FOV, pathfinding, navigation
-│   └── PigeonPea.Dungeon.Rendering/  # Visualization (tiles, entities)
+├── Dungeon/ ← Dungeon Exploration Domain
+│ ├── PigeonPea.Dungeon.Core/ # Data models, generation (GoRogue)
+│ ├── PigeonPea.Dungeon.Control/# FOV, pathfinding, navigation
+│ └── PigeonPea.Dungeon.Rendering/ # Visualization (tiles, entities)
 │
-├── Shared/                       ← Shared Infrastructure
-│   ├── PigeonPea.Shared.ECS/     # Arch ECS components, systems
-│   └── PigeonPea.Shared.Rendering/   # Generic rendering utilities
+├── Shared/ ← Shared Infrastructure
+│ ├── PigeonPea.Shared.ECS/ # Arch ECS components, systems
+│ └── PigeonPea.Shared.Rendering/ # Generic rendering utilities
 │
-├── console-app/                  ← Terminal.Gui Console App
-└── windows-app/                  ← Avalonia Desktop App
+├── console-app/ ← Terminal.Gui Console App
+└── windows-app/ ← Avalonia Desktop App
+
 ```
 
 ## Core/Control/Rendering Trinity
@@ -377,17 +398,19 @@ Each domain follows the same layering pattern:
 ## Dependency Flow
 
 ```
+
 Console/Desktop Apps
-        ↓
-    Control Layer (ViewModels, Navigation)
-        ↓
-  Rendering Layer (Visualization)
-        ↓
-    Core Layer (Data, Logic)
-        ↓
+↓
+Control Layer (ViewModels, Navigation)
+↓
+Rendering Layer (Visualization)
+↓
+Core Layer (Data, Logic)
+↓
 External Libraries (FantasyMapGenerator, GoRogue, Arch)
-        ↓
-  Shared Infrastructure (ECS, Rendering Utilities)
+↓
+Shared Infrastructure (ECS, Rendering Utilities)
+
 ```
 
 **Key Principle**: Higher layers can depend on lower layers, but not vice versa.
@@ -432,34 +455,36 @@ External libraries are wrapped behind clean interfaces:
 To add a new domain (e.g., Battle, Overworld):
 
 1. **Create Projects**:
-   ```
-   dotnet/Battle/
-   ├── PigeonPea.Battle.Core/
-   ├── PigeonPea.Battle.Control/
-   └── PigeonPea.Battle.Rendering/
-   ```
+```
+
+dotnet/Battle/
+├── PigeonPea.Battle.Core/
+├── PigeonPea.Battle.Control/
+└── PigeonPea.Battle.Rendering/
+
+```
 
 2. **Define Core Types**:
-   - Data models (BattleData)
-   - Interfaces (IBattleGenerator)
-   - Domain logic
+- Data models (BattleData)
+- Interfaces (IBattleGenerator)
+- Domain logic
 
 3. **Implement Control**:
-   - Navigation/interaction logic
-   - ECS world manager (BattleWorldManager)
-   - ViewModels
+- Navigation/interaction logic
+- ECS world manager (BattleWorldManager)
+- ViewModels
 
 4. **Implement Rendering**:
-   - Visualization (SkiaBattleRasterizer)
-   - Entity rendering (BattleEntityRenderer)
+- Visualization (SkiaBattleRasterizer)
+- Entity rendering (BattleEntityRenderer)
 
 5. **Add ECS Components**:
-   - Shared components (reuse Position, Sprite, Health)
-   - Domain-specific (BattleEntityTag, BattleData)
+- Shared components (reuse Position, Sprite, Health)
+- Domain-specific (BattleEntityTag, BattleData)
 
 6. **Integrate in Apps**:
-   - Console: Add BattlePanelView
-   - Desktop: Add BattleView.axaml
+- Console: Add BattlePanelView
+- Desktop: Add BattleView.axaml
 
 ## Examples
 
@@ -486,6 +511,7 @@ Add a section at the top:
 # Architecture Plan
 
 > ⚠️ **Note**: This document is historical. Current architecture is documented in:
+>
 > - [Domain Organization](domain-organization.md) - **START HERE**
 > - [Map Rendering](ARCHITECTURE_MAP_RENDERING.md)
 > - [RFC-007: Domain-Driven Architecture](../rfcs/007-consolidate-rendering-projects.md)
@@ -503,6 +529,7 @@ Add note about current status:
 # Map Rendering Architecture
 
 > ✅ **Status**: Implemented as of RFC-007 Phase 3 (2025-11-13)
+>
 > - **Location**: `dotnet/Map/PigeonPea.Map.Rendering/`
 > - **Replaces**: Old `SharedApp.Rendering` (archived)
 
@@ -515,7 +542,7 @@ Add note about current status:
 
 **File**: `docs/migration/fmg-rendering-to-map-rendering.md` (new)
 
-```markdown
+````markdown
 # Migration Guide: FantasyMapGenerator.Rendering → Map.Rendering
 
 **Audience**: Developers using old FMG.Rendering APIs
@@ -527,26 +554,29 @@ This guide helps you migrate from deprecated `FantasyMapGenerator.Rendering` to 
 
 ## Quick Reference
 
-| Old (Deprecated) | New (Current) | Notes |
-|-----------------|---------------|-------|
-| `TerrainRenderer.Render()` | `SkiaMapRasterizer.Render()` | New API uses viewport parameters |
-| `ColorSchemes.GetBiomeColor()` | `MapColor.ColorForCell()` | Moved to Map.Core/Domain/ |
-| `SmoothTerrainRenderer` | Built into `SkiaMapRasterizer` | No separate class |
-| `TileSource` | `Shared.Rendering.Tiles.ITileSource` | Now generic interface |
+| Old (Deprecated)               | New (Current)                        | Notes                            |
+| ------------------------------ | ------------------------------------ | -------------------------------- |
+| `TerrainRenderer.Render()`     | `SkiaMapRasterizer.Render()`         | New API uses viewport parameters |
+| `ColorSchemes.GetBiomeColor()` | `MapColor.ColorForCell()`            | Moved to Map.Core/Domain/        |
+| `SmoothTerrainRenderer`        | Built into `SkiaMapRasterizer`       | No separate class                |
+| `TileSource`                   | `Shared.Rendering.Tiles.ITileSource` | Now generic interface            |
 
 ## Example Migrations
 
 ### Example 1: Basic Map Rendering
 
 **Before (Deprecated)**:
+
 ```csharp
 using FantasyMapGenerator.Rendering;
 
 var renderer = new TerrainRenderer();
 var bitmap = renderer.RenderMap(mapData, width: 800, height: 600);
 ```
+````
 
 **After (Current)**:
+
 ```csharp
 using PigeonPea.Map.Rendering;
 using PigeonPea.Map.Core;
@@ -570,6 +600,7 @@ var raster = SkiaMapRasterizer.Render(
 ### Example 2: Getting Cell Colors
 
 **Before**:
+
 ```csharp
 using FantasyMapGenerator.Rendering;
 
@@ -577,6 +608,7 @@ var color = ColorSchemes.GetBiomeColor(cell, biomes);
 ```
 
 **After**:
+
 ```csharp
 using PigeonPea.Map.Core.Domain;
 
@@ -586,6 +618,7 @@ var (r, g, b) = MapColor.ColorForCell(mapData, cell, biomeColors: true);
 ### Example 3: Tile-Based Rendering
 
 **Before**:
+
 ```csharp
 using FantasyMapGenerator.Rendering.Tiles;
 
@@ -594,6 +627,7 @@ var tile = tileSource.GetTile(tileX, tileY, zoom);
 ```
 
 **After**:
+
 ```csharp
 using PigeonPea.Shared.Rendering.Tiles;
 using PigeonPea.Map.Rendering;
@@ -606,7 +640,8 @@ using PigeonPea.Map.Rendering;
 
 - [Map.Rendering API Reference](../api/map-rendering.md)
 - [Domain Organization](../architecture/domain-organization.md)
-```
+
+````
 
 ### 4.4 Update CLAUDE.md
 
@@ -664,7 +699,7 @@ For detailed architecture documentation, see:
 - [RFC-007](docs/rfcs/007-consolidate-rendering-projects.md)
 
 [... rest of existing content ...]
-```
+````
 
 ---
 
@@ -684,7 +719,7 @@ mkdir -p docs/examples/
 
 **File**: `docs/examples/ecs-usage.md` (new)
 
-```markdown
+````markdown
 # ECS Usage Examples
 
 **Last Updated**: 2025-11-13
@@ -726,6 +761,7 @@ worldManager.SpawnRandomMonsters(count: 10, rng: new Random());
 worldManager.SpawnItem(x: 12, y: 12, itemType: "potion");
 worldManager.SpawnItem(x: 18, y: 18, itemType: "gold");
 ```
+````
 
 ### Map Domain: Cities, Markers
 
@@ -1050,7 +1086,8 @@ worldManager.CleanupDeadMonsters();
 - [Domain Organization](../architecture/domain-organization.md)
 - [DungeonWorldManager API](../api/dungeon-world-manager.md)
 - [MapWorldManager API](../api/map-world-manager.md)
-```
+
+````
 
 ---
 
@@ -1067,7 +1104,7 @@ Run tests with detailed output:
 ```bash
 cd dotnet
 dotnet test Dungeon.Tests/ --logger "console;verbosity=detailed" --filter "FovBlockingTests.ComputeVisible_WallsBlockLos"
-```
+````
 
 ### 6.2 Fix FOV Blocking Test
 
@@ -1078,6 +1115,7 @@ The test likely expects walls to block LOS, but the current implementation may h
 **Common issue**: Off-by-one error in Bresenham LOS or FOV calculation.
 
 **Investigation**:
+
 1. Check if the test setup creates walls correctly
 2. Verify FOV calculator respects opaque tiles
 3. Check Bresenham implementation for edge cases
@@ -1090,11 +1128,12 @@ The test likely expects walls to block LOS, but the current implementation may h
 
 The test likely expects pathfinding to prefer cheaper tiles when using weighted costs.
 
-**Common issue**: Weighted cost not properly integrated into A* algorithm.
+**Common issue**: Weighted cost not properly integrated into A\* algorithm.
 
 **Investigation**:
+
 1. Verify `PathfindingService` accepts and uses tileCost function
-2. Check if A* priority calculation includes tileCost
+2. Check if A\* priority calculation includes tileCost
 3. Ensure weighted cost affects path selection
 
 **Potential fix**: Update `PathfindingService.FindPath()` to properly weight costs.
@@ -1159,6 +1198,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added (RFC-007 Implementation)
+
 - Domain-driven architecture with Map and Dungeon domains
 - Arch ECS integration for entity management
 - Separate ECS worlds for Map (cities, markers) and Dungeon (player, monsters, items)
@@ -1168,6 +1208,7 @@ All notable changes to this project will be documented in this file.
 - Comprehensive test coverage (24 tests)
 
 ### Changed
+
 - Reorganized rendering from flat structure to domain-specific projects
 - Map rendering moved from `SharedApp.Rendering` to `Map.Rendering`
 - Dungeon rendering split from shared code into `Dungeon.Rendering`
@@ -1175,13 +1216,16 @@ All notable changes to this project will be documented in this file.
 - Updated architecture documentation
 
 ### Deprecated
+
 - `FantasyMapGenerator.Rendering` (use `Map.Rendering` instead)
 
 ### Removed
+
 - Old `SharedApp.Rendering` (archived to `dotnet/archive/`)
 - Placeholder `Class1.cs` files
 
 ## [Previous Versions]
+
 ...
 ```
 
@@ -1210,18 +1254,21 @@ Expected: All pass.
 ## Success Criteria
 
 ### Build & Test
+
 - [ ] `dotnet build dotnet/PigeonPea.sln` succeeds (0 errors, 0 warnings)
 - [ ] All tests pass (24/24 = 100%)
 - [ ] No placeholder `Class1.cs` files exist
 - [ ] No active references to deprecated projects
 
 ### Deprecation & Cleanup
+
 - [ ] `FantasyMapGenerator.Rendering` marked as deprecated (README-DEPRECATED.md exists)
 - [ ] `SharedApp.Rendering` archived to `dotnet/archive/`
 - [ ] Archive README explains what was moved where
 - [ ] No active code references old projects
 
 ### Documentation
+
 - [ ] `docs/architecture/domain-organization.md` created
 - [ ] `docs/examples/ecs-usage.md` created
 - [ ] Migration guides created
@@ -1231,6 +1278,7 @@ Expected: All pass.
 - [ ] `CHANGELOG.md` created/updated
 
 ### Code Quality
+
 - [ ] All failing tests fixed
 - [ ] Build produces 0 warnings
 - [ ] No deprecated code referenced in active projects
@@ -1293,17 +1341,20 @@ Expected: All checks pass, no errors, documentation files exist.
 ### What NOT to Delete
 
 **Keep these**:
+
 - `_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/` - Still used by Map.Core
 - `_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Rendering/` - Deprecated but kept for reference
 - `dotnet/archive/` - Historical reference
 
 **Only delete**:
+
 - Placeholder `Class1.cs` files
 - Active references to deprecated code (if any)
 
 ### Documentation Priority
 
 Focus documentation efforts on:
+
 1. **Domain organization guide** (high value for new developers)
 2. **ECS usage examples** (commonly needed)
 3. **Migration guides** (helps with transition)
@@ -1312,6 +1363,7 @@ Focus documentation efforts on:
 ### Test Fixes
 
 If test fixes are complex:
+
 - Document the issue in test comments
 - Consider skipping tests temporarily with `[Fact(Skip = "Known issue - investigating")]`
 - File issues for follow-up

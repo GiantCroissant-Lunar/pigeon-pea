@@ -4,8 +4,8 @@ This guide helps you move from the deprecated FMG rendering stack to the modern 
 
 ## Quick Reference
 
-| Deprecated (FMG.Rendering) | Replacement (Map Rendering) |
-|----------------------------|------------------------------|
+| Deprecated (FMG.Rendering) | Replacement (Map Rendering)  |
+| -------------------------- | ---------------------------- |
 | `MapRenderer`              | `SkiaMapRasterizer`          |
 | `MapLayer`                 | `Tiles` + `TileAssembler`    |
 | `TerrainColorSchemes`      | Palette utilities in Shared  |
@@ -57,6 +57,7 @@ var palette = Palettes.Terrain.Default;
 ```
 
 ## Notes
+
 - ECS integration: render systems should live under domain `*.Rendering` with ECS-friendly APIs.
 - Performance: prefer tile composition and cached sprites; avoid per-pixel loops where possible.
 - See `docs/examples/ecs-usage.md` for end-to-end rendering patterns.

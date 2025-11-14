@@ -32,4 +32,3 @@ U+E300–U+E3FF  POIs/icons (towns, ports, ruins, towers)
 ```
 
 Keep this file updated when allocating new glyphs.
-

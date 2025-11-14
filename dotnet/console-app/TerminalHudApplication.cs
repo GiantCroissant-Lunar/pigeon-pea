@@ -83,8 +83,9 @@ internal static class TerminalHudApplication
                 Height = 1 
             };
             
-            var colorSchemeLabel = new Label("Color Scheme:")
+            var colorSchemeLabel = new Label()
             {
+                Text = "Color Scheme:",
                 X = 1,
                 Y = 0,
                 Width = 15
@@ -99,15 +100,16 @@ internal static class TerminalHudApplication
             };
 
             // Populate with available color schemes
-            colorSchemeCombo.SetSource(_viewModel!.AvailableColorSchemes.Select(s => s.ToString()).ToList());
+            var colorSchemeList = _viewModel!.AvailableColorSchemes.Select(s => s.ToString()).ToList();
+            colorSchemeCombo.SetSource(colorSchemeList);
             colorSchemeCombo.SelectedItem = _viewModel.ColorScheme.ToString();
 
             // Handle color scheme changes
             colorSchemeCombo.SelectedItemChanged += (args) =>
             {
-                if (args.Value >= 0 && _viewModel != null)
+                if (args.Item >= 0 && _viewModel != null)
                 {
-                    var selectedText = colorSchemeCombo.Source.ToList()[args.Value];
+                    var selectedText = colorSchemeList[args.Item];
                     if (Enum.TryParse<ColorScheme>(selectedText, out var selectedScheme))
                     {
                         _viewModel.ColorScheme = selectedScheme;

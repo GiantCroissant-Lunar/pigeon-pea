@@ -3,6 +3,7 @@
 ## Problem Summary
 
 The Fantasy Map Generator C# port generates 0 rivers despite having complete river generation code. All other features work correctly:
+
 - ? Voronoi cells: 7931 cells generated correctly
 - ? Biomes: 13 biomes defined and assigned to cells
 - ? States: 20 states generated
@@ -11,6 +12,7 @@ The Fantasy Map Generator C# port generates 0 rivers despite having complete riv
 ## Current Status
 
 ### What Works
+
 1. **Map Generation**: 800x600 map with 8000 Voronoi sites generates correctly
 2. **Heightmap**: Land (height > 20) vs ocean (height <= 20) works correctly, 26.8% land
 3. **Biomes**: 13 biome types are created and assigned to all land cells
@@ -19,11 +21,13 @@ The Fantasy Map Generator C# port generates 0 rivers despite having complete riv
 6. **Rendering**: iTerm2 graphics render correctly with fixed nearest-neighbor spatial lookup
 
 ### What Doesn't Work
+
 - **River Generation**: `HydrologyGenerator.GenerateRivers()` finds 0 cells that meet the threshold criteria
 
 ## Code Location
 
 ### Key Files
+
 ```
 dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/
 �u�w�w Generators/
@@ -42,6 +46,7 @@ dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/
 ## River Generation Flow
 
 ### Expected Flow (from JavaScript original)
+
 1. ? Calculate flow directions (downhill from each cell)
 2. ? Calculate flow accumulation (count upstream cells)
 3. ? **Find cells with accumulation >= threshold**
@@ -50,6 +55,7 @@ dotnet/_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Core/
 6. Add River objects to `map.Rivers`
 
 ### Actual Behavior
+
 Steps 1-2 complete successfully, but step 3 finds **0 cells** that meet the threshold.
 
 ## The Problem Code
@@ -84,6 +90,7 @@ private void GenerateRivers()
 ```
 
 ### For 8000 cells:
+
 - `cellsNumberModifier` = (8000/10000)^0.25 = **0.946**
 - `threshold` = 30 �� 0.946 = **28.38** �� **28 cells**
 
@@ -92,6 +99,7 @@ private void GenerateRivers()
 ## Hypotheses (What Might Be Wrong)
 
 ### Hypothesis 1: Flow Accumulation Never Reaches 28
+
 **Most Likely - Check This First**
 
 The flow accumulation might not be accumulating correctly. Possible causes:
@@ -114,6 +122,7 @@ The flow accumulation might not be accumulating correctly. Possible causes:
    - Flow accumulation won't propagate
 
 ### Hypothesis 2: Threshold Is Too High
+
 **Less Likely**
 
 The threshold of 28 might be unreasonable for this map size/topology:

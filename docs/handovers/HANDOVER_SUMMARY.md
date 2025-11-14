@@ -38,7 +38,7 @@ We attempted to integrate pixel graphics (Kitty/iTerm2/Sixel) into Terminal.Gui 
 ### What Doesn't Work ❌
 
 1. **Pixel graphics in Terminal.Gui v2 on Windows**:
-   - Kitty: Doesn't work on Windows (confirmed with test_kitty*.py)
+   - Kitty: Doesn't work on Windows (confirmed with test_kitty\*.py)
    - iTerm2: Image appears as thin strip on right side
    - Sixel: Doesn't render (even Terminal.Gui's own example fails)
 
@@ -52,9 +52,11 @@ We attempted to integrate pixel graphics (Kitty/iTerm2/Sixel) into Terminal.Gui 
 ## What We Tried
 
 ### Attempt 1: Kitty Graphics Protocol
+
 **Location**: `dotnet/console-app/Rendering/KittyGraphicsRenderer.cs`
 
 **What we did**:
+
 - Implemented Kitty graphics protocol
 - Tried in `--map-demo` mode (works)
 - Tried in `--hud` mode with `PixelMapPanelView`
@@ -63,9 +65,11 @@ We attempted to integrate pixel graphics (Kitty/iTerm2/Sixel) into Terminal.Gui 
 **Evidence**: `test_kitty*.py` files show it doesn't render
 
 ### Attempt 2: iTerm2 Inline Images
+
 **Location**: `dotnet/console-app/Rendering/ITerm2GraphicsRenderer.cs`
 
 **What we did**:
+
 - Implemented iTerm2 inline image protocol
 - Tried rendering during `OnDrawingContent()`
 - Tried rendering after Terminal.Gui render cycle
@@ -74,14 +78,17 @@ We attempted to integrate pixel graphics (Kitty/iTerm2/Sixel) into Terminal.Gui 
 
 **Result**: ❌ Image appears as thin strip on right side
 **Symptoms**:
+
 - 2560x400px image sent correctly
 - Position calculated with `FrameToScreen()`
 - Still renders incorrectly
 
 ### Attempt 3: Sixel Graphics via Raw Escape Sequences
+
 **Location**: `dotnet/console-app/Rendering/SixelRenderer.cs`
 
 **What we did**:
+
 - Used our custom `SixelRenderer`
 - Rendered during `OnDrawingContent()`
 - Rendered after Terminal.Gui cycle with `Task.Delay(1)`
@@ -89,9 +96,11 @@ We attempted to integrate pixel graphics (Kitty/iTerm2/Sixel) into Terminal.Gui 
 **Result**: ❌ Same "thin strip" issue
 
 ### Attempt 4: Sixel via Terminal.Gui's Application.Sixel API
+
 **Location**: `dotnet/console-app/Views/PixelMapPanelView.cs` (current state)
 
 **What we did**:
+
 - Switched to Terminal.Gui's built-in Sixel support
 - Created `SixelToRender` objects
 - Added via `Application.Sixel.Add(_currentSixel)`
@@ -109,14 +118,17 @@ We attempted to integrate pixel graphics (Kitty/iTerm2/Sixel) into Terminal.Gui 
 ## Technical Analysis
 
 ### Coordinate System Issues
+
 Throughout attempts 2-4, we debugged coordinate issues:
 
 **Files modified**:
+
 - `PixelMapPanelView.cs`: Added coordinate calculation and debug logging
 - Tried: `Frame.X/Y`, walking up view hierarchy, `FrameToScreen()`
 - Debug log location: `logs/map-generator-diag.txt`
 
 **Sample debug output**:
+
 ```
 [Sixel TUI 10:14:09.091] Screen pos: (2,3), ViewSize: 160x25cells, ImageSize: 2560x400px
 ```
@@ -124,6 +136,7 @@ Throughout attempts 2-4, we debugged coordinate issues:
 **Finding**: Coordinates are correct, but rendering still fails.
 
 ### Rendering Timing Issues
+
 We tried multiple approaches:
 
 1. **During `OnDrawingContent()`**: Terminal.Gui overwrites it
@@ -133,7 +146,9 @@ We tried multiple approaches:
 **Finding**: Timing isn't the issue - it's fundamental platform incompatibility.
 
 ### Unit System Issues
+
 Tried multiple size specifications:
+
 - `width=160cell;height=25cell` (iTerm2 spec)
 - `width=2560px;height=400px` (explicit pixels)
 - Environment variable: `PIGEONPEA_ITERM2_UNIT`
@@ -145,6 +160,7 @@ Tried multiple size specifications:
 ## Key Files Reference
 
 ### Graphics Renderers (Current State)
+
 ```
 dotnet/console-app/Rendering/
 ├── KittyGraphicsRenderer.cs     ❌ Doesn't work on Windows
@@ -155,6 +171,7 @@ dotnet/console-app/Rendering/
 ```
 
 ### Views
+
 ```
 dotnet/console-app/Views/
 ├── MapPanelView.cs              ✅ ASCII rendering in Terminal.Gui v2
@@ -163,6 +180,7 @@ dotnet/console-app/Views/
 ```
 
 ### Applications
+
 ```
 dotnet/console-app/
 ├── TerminalHudApplication.cs    ✅ HUD mode (Terminal.Gui v2)
@@ -171,6 +189,7 @@ dotnet/console-app/
 ```
 
 ### Tile System (Existing)
+
 ```
 dotnet/shared-app/Rendering/Tiles/
 ├── TileAssembler.cs             ✅ Assembles pixels from tiles
@@ -179,6 +198,7 @@ dotnet/shared-app/Rendering/Tiles/
 ```
 
 ### Documentation (Created This Session)
+
 ```
 docs/architecture/GRAPHICS_PROTOCOL_NOTES.md  Detailed protocol testing results
 docs/architecture/ARCHITECTURE_PLAN.md        Complete architecture for next phases
@@ -186,6 +206,7 @@ docs/handovers/HANDOVER_SUMMARY.md            This document
 ```
 
 ### Test Files
+
 ```
 test_kitty*.py                   Python tests confirming Kitty doesn't work
 kitty_python_output.bin          Binary output for debugging
@@ -199,6 +220,7 @@ logs/map-generator-diag.txt      Runtime diagnostic logs
 ### Why Braille?
 
 **Advantages**:
+
 1. ✅ Works on ALL terminals (Windows, Mac, Linux)
 2. ✅ No graphics protocol dependencies
 3. ✅ Integrates perfectly with Terminal.Gui v2
@@ -207,6 +229,7 @@ logs/map-generator-diag.txt      Runtime diagnostic logs
 6. ✅ Uses `AddRune()` - standard Terminal.Gui rendering
 
 **Disadvantages**:
+
 1. Lower resolution than pixel graphics
 2. Limited to monochrome or Terminal.Gui's color palette
 
@@ -215,6 +238,7 @@ logs/map-generator-diag.txt      Runtime diagnostic logs
 **Character Range**: U+2800 - U+28FF (256 patterns)
 
 **Bit Pattern** (maps to pixel positions):
+
 ```
 Position in 2x4 block:      Bit value:
   [0,0]  [1,0]                1      8
@@ -226,6 +250,7 @@ Position in 2x4 block:      Bit value:
 **Formula**: `brailleChar = '\u2800' + bitPattern`
 
 **Example**:
+
 - All pixels off: U+2800 (⠀)
 - All pixels on: U+28FF (⣿)
 - Top-left pixel: U+2801 (⠁)
@@ -233,6 +258,7 @@ Position in 2x4 block:      Bit value:
 ### Implementation Approach
 
 **Step 1**: Create `BrailleRenderer.cs`
+
 ```csharp
 public class BrailleRenderer
 {
@@ -290,6 +316,7 @@ public class BrailleRenderer
 ```
 
 **Step 2**: Create `BrailleMapView.cs`
+
 ```csharp
 public class BrailleMapView : View
 {
@@ -324,6 +351,7 @@ public class BrailleMapView : View
 ```
 
 **Step 3**: Update `TerminalHudApplication.cs`
+
 ```csharp
 // Replace PixelMapPanelView with BrailleMapView
 var brailleView = new BrailleMapView(_map) { ... };
@@ -382,6 +410,7 @@ Terminal.Gui View (AddRune)
 **Tile Coordinates**: `/tiles/{z}/{x}/{y}.png`
 
 **Benefits**:
+
 - Only render/load visible tiles
 - Pre-computed, cached tiles
 - Smooth zoom transitions
@@ -392,16 +421,20 @@ Terminal.Gui View (AddRune)
 ## Terminal Configuration
 
 ### User's Setup
+
 - **OS**: Windows 11
 - **Terminal**: WezTerm (build 20240203-110809-5046fc22)
 - **Path**: `D:\lunar-snake\tools\WezTerm-windows-20240203-110809-5046fc22`
 
 ### Terminal.Gui Version
+
 - **Version**: 2.0.0
 - **Location**: `ref-projects/Terminal.Gui/` (local submodule)
 
 ### Working Examples in Terminal.Gui
+
 User confirmed these examples work well:
+
 1. **Text Effects** (`TextEffectsScenario.cs`): Shows gradient fills, LineCanvas
 2. **Animation** (couldn't find exact file, but user mentioned it): Uses ASCII/Braille-like animation
 3. **Snake** (`Snake.cs`): Character-based game using AddRune()
@@ -413,21 +446,25 @@ These examples all use **character-based rendering**, not pixel graphics.
 ## Build & Run Commands
 
 ### Build
+
 ```bash
 dotnet build dotnet/console-app/PigeonPea.Console.csproj
 ```
 
 ### Run HUD Mode (Terminal.Gui v2)
+
 ```bash
 dotnet run --project dotnet/console-app -- --hud
 ```
 
 ### Run Map Demo Mode (Direct Console)
+
 ```bash
 dotnet run --project dotnet/console-app -- --map-demo
 ```
 
 ### Menu Controls in HUD
+
 - **View → Renderer → ASCII**: ASCII map rendering (works)
 - **View → Renderer → Sixel**: Attempted Sixel (doesn't work)
 - **View → Zoom In/Out**: Adjust zoom level
@@ -440,6 +477,7 @@ dotnet run --project dotnet/console-app -- --map-demo
 ## Important Code Locations
 
 ### Entry Point
+
 ```csharp
 // dotnet/console-app/Program.cs
 if (args.Contains("--hud"))
@@ -449,6 +487,7 @@ else if (args.Contains("--map-demo"))
 ```
 
 ### HUD Application
+
 ```csharp
 // dotnet/console-app/TerminalHudApplication.cs
 public static void Run()
@@ -512,6 +551,7 @@ public static void Run()
 ### Near-Term (Mapsui Integration)
 
 5. **Install Mapsui NuGet Packages**
+
    ```bash
    dotnet add package Mapsui
    dotnet add package BruTile
@@ -542,6 +582,7 @@ public static void Run()
 ## Summary
 
 **What Happened This Session**:
+
 - Tried extensively to get pixel graphics working in Terminal.Gui v2
 - Discovered it's a platform limitation (Terminal.Gui's own example fails)
 - Identified Braille rendering as the correct solution
@@ -552,6 +593,7 @@ public static void Run()
 Don't fight Terminal.Gui v2 with pixel graphics. Use its character rendering capabilities (AddRune + Braille) which work reliably everywhere.
 
 **Path Forward**:
+
 1. Implement Braille rendering ✅ (best immediate solution)
 2. Integrate Mapsui for navigation ✅ (enables professional map UX)
 3. Build tile system ✅ (enables scalability)
