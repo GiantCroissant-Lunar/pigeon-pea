@@ -288,5 +288,5 @@ If any answer is no → consider alternatives (milestones, projects, comments).
 ## Related Documents
 
 - [RFC_004_EXECUTION_ORDER.md](RFC_004_EXECUTION_ORDER.md) - Issue execution order
-- [AGENTS.md](../AGENTS.md) - Agent infrastructure overview
-- [RFC-004](rfcs/004-agent-infrastructure-enhancement.md) - Full RFC specification
+- [AGENTS.md](../../AGENTS.md) - Agent infrastructure overview
+- [RFC-004](../rfcs/004-agent-infrastructure-enhancement.md) - Full RFC specification
