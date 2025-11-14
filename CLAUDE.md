@@ -162,6 +162,36 @@ When encountering errors:
 4. Consult documentation in `.agent/` directories
 5. Ask for clarification if needed
 
+## Architecture Overview
+
+### Domain-Driven Organization
+
+- **Map Domain (`dotnet/Map/`)**: World map generation, navigation, rendering
+- **Dungeon Domain (`dotnet/Dungeon/`)**: Dungeon generation, FOV, pathfinding, rendering
+- Each domain follows **Core / Control / Rendering** layers:
+  - **Core**: Domain models, generators (`Map.Core`, `Dungeon.Core`)
+  - **Control**: Navigation, world managers, ViewModels (`Map.Control`, `Dungeon.Control`)
+  - **Rendering**: Visualization (`Map.Rendering`, `Dungeon.Rendering`)
+
+### Shared Infrastructure
+
+- `Shared.ECS`: Arch components (Position, Renderable, Health, etc.) and helper systems
+- `Shared.Rendering`: Rendering contracts (`IRenderer`, `IRenderTarget`), primitives, tiles, converters
+- External libraries (FantasyMapGenerator, GoRogue, Mapsui, SkiaSharp) stay inside their domain wrappers
+
+### ECS Worlds
+
+- Each domain owns its own `World` (Map: cities/markers, Dungeon: player/monsters/items)
+- Shared components live in `Shared.ECS/Components`
+- Rendering layers query these worlds (see `DungeonWorldManager`, `MapWorldManager`)
+
+### Deprecated/Archived Code
+
+- `_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Rendering/` (reference only; see README-DEPRECATED)
+- `dotnet/archive/SharedApp.Rendering.archived-*` contains the retired shared renderer
+
+For deep dives see `docs/architecture/domain-organization.md` and `docs/rfcs/RFC-007-PHASE-6-INSTRUCTIONS.md`.
+
 ## Task Management
 
 When working on complex tasks:

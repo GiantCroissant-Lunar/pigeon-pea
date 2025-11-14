@@ -1,13 +1,23 @@
 # Pigeon Pea Architecture Plan
 
+> ⚠️ **Historical**: This plan captures early thinking. For the current architecture, start with:
+>
+> - [Domain Organization](domain-organization.md)
+> - [Architecture Map Rendering](ARCHITECTURE_MAP_RENDERING.md)
+> - [RFC-007 (Phase 6)](../rfcs/RFC-007-PHASE-6-INSTRUCTIONS.md)
+>
+> Use this file as background context only.
+
 ## Current Status Analysis
 
 ### What Works ?
+
 1. **--map-demo mode**: Kitty graphics work outside Terminal.Gui
 2. **--hud mode with ASCII**: Basic map rendering in Terminal.Gui v2 panels
 3. **Terminal.Gui v2 examples**: LineCanvas, AddRune(), character-based rendering
 
 ### What Doesn't Work ?
+
 1. **Pixel graphics in Terminal.Gui v2 on Windows**: Sixel example doesn't work even in Terminal.Gui's own demos
 2. **Platform limitation**: WezTerm on Windows 11 doesn't support Sixel in Terminal.Gui v2 context
 
@@ -18,6 +28,7 @@
 **Goal**: High-resolution character-based map rendering that works everywhere
 
 **Implementation**:
+
 ```
 MapData �� BrailleRenderer �� Terminal.Gui View (AddRune)
            ��
@@ -29,11 +40,13 @@ MapData �� BrailleRenderer �� Terminal.Gui View (AddRune)
 ```
 
 **Rendering Pipeline**:
+
 1. **Tile Assembly**: `TileAssembler` creates RGBA pixel buffer (existing)
 2. **Braille Conversion**: New `BrailleRenderer` converts pixels �� Braille patterns
 3. **Terminal.Gui Integration**: Override `OnDrawingContent()` and use `AddRune(x, y, brailleChar)`
 
 **Examples from Terminal.Gui v2**:
+
 - **Snake.cs**: Shows how to use `AddRune()` for character placement
 - **TextEffectsScenario.cs**: Shows `LineCanvas` for effects
 - Both use character-based rendering that works everywhere
@@ -43,12 +56,14 @@ MapData �� BrailleRenderer �� Terminal.Gui View (AddRune)
 **Goal**: Professional map library for navigation, zoom, pan
 
 **Why Mapsui**:
+
 - .NET map library designed for interactive maps
 - Handles viewport, zoom levels, coordinate transforms
 - Supports tile-based rendering
 - Works with BruTile for fetching/caching tiles
 
 **Architecture**:
+
 ```
 Mapsui Navigator �� User Input (pan/zoom)
     ��
@@ -62,6 +77,7 @@ Braille Renderer �� Terminal.Gui
 ```
 
 **Components**:
+
 1. **MapsUI Navigator**: Handles map state (center, zoom, bounds)
 2. **Custom Tile Source**: Implements `ITileSource` for our fantasy maps
 3. **Tile Generator**: Pre-renders fantasy map tiles at multiple zoom levels
@@ -72,6 +88,7 @@ Braille Renderer �� Terminal.Gui
 **Two Approaches**:
 
 #### Option A: Pre-rendered Raster Tiles (Simpler)
+
 ```
 FantasyMapGenerator �� Generate full map
     ��
@@ -88,6 +105,7 @@ BrailleRenderer �� Display in terminal
 **Cons**: Storage overhead, fixed map content
 
 #### Option B: Vector Tiles (Advanced)
+
 ```
 FantasyMapGenerator �� Vector data (cells, rivers, etc.)
     ��
@@ -106,13 +124,16 @@ Runtime rendering �� Braille
 ## Implementation Roadmap
 
 ### Step 1: Braille Renderer (Week 1)
+
 **Deliverables**:
+
 - [ ] `BrailleRenderer.cs` - Converts RGBA pixels to Braille Unicode
 - [ ] `BrailleMapView.cs` - Terminal.Gui View using Braille rendering
 - [ ] Update `--hud` to use Braille instead of ASCII
 - [ ] Test in Windows, verify it works everywhere
 
 **Technical Details**:
+
 ```csharp
 // Braille encoding: Each 2x4 block of pixels �� one Braille character
 // Unicode: U+2800 (blank) + bit pattern (0-255)
@@ -124,7 +145,9 @@ Runtime rendering �� Braille
 ```
 
 ### Step 2: Mapsui Integration (Week 2-3)
+
 **Deliverables**:
+
 - [ ] Install Mapsui NuGet packages
 - [ ] Create `FantasyMapTileSource : ITileSource`
 - [ ] Implement `MapsUI.Navigator` for pan/zoom handling
@@ -132,6 +155,7 @@ Runtime rendering �� Braille
 - [ ] Test viewport transforms, zoom levels
 
 **Code Structure**:
+
 ```
 dotnet/console-app/
   Mapping/
@@ -144,7 +168,9 @@ dotnet/console-app/
 ```
 
 ### Step 3: Tile System (Week 4+)
+
 **Deliverables**:
+
 - [ ] `TileGenerator.cs` - Pre-renders map at multiple zoom levels
 - [ ] Tile storage structure: `tiles/{z}/{x}/{y}.png`
 - [ ] BruTile integration for tile loading
@@ -152,12 +178,14 @@ dotnet/console-app/
 - [ ] Performance testing
 
 **Tile Zoom Levels**:
+
 - Z0: 1 tile (whole map overview)
 - Z1: 4 tiles (2x2)
 - Z2: 16 tiles (4x4)
 - Z3+: Progressively more detail
 
 ### Step 4: Polish & Optimization (Ongoing)
+
 - [ ] Color schemes for biomes (using Terminal.Gui colors)
 - [ ] River rendering with Braille
 - [ ] Mini-map overlay
@@ -167,6 +195,7 @@ dotnet/console-app/
 ## Key Decisions
 
 ### Why Braille over Pixel Graphics?
+
 1. **Cross-platform**: Works on all terminals (Windows, Mac, Linux)
 2. **No protocol issues**: No Sixel/Kitty/iTerm2 compatibility problems
 3. **Terminal.Gui friendly**: Uses standard character rendering
@@ -174,6 +203,7 @@ dotnet/console-app/
 5. **Proven**: Used in terminal apps like timg, viu
 
 ### Why Mapsui over Custom Navigation?
+
 1. **Battle-tested**: Used in production map applications
 2. **Coordinate transforms**: Handles complex viewport math
 3. **Zoom levels**: Proper LOD (Level of Detail) system
@@ -181,6 +211,7 @@ dotnet/console-app/
 5. **Community**: Active development, good docs
 
 ### Why Tiles over Full Map Rendering?
+
 1. **Performance**: Only render visible area + buffer
 2. **Scalability**: Support huge maps (10000x10000+)
 3. **Caching**: Render once, display many times
@@ -190,21 +221,25 @@ dotnet/console-app/
 ## Migration Path
 
 ### Current Code
+
 ```
 MapData �� SkiaTileSource �� RGBA buffer �� ASCII/Pixel renderer
 ```
 
 ### After Phase 1 (Braille)
+
 ```
 MapData �� SkiaTileSource �� RGBA buffer �� BrailleRenderer �� Terminal.Gui
 ```
 
 ### After Phase 2 (Mapsui)
+
 ```
 Mapsui.Navigator �� Viewport �� FantasyMapTileSource �� RGBA buffer �� BrailleRenderer
 ```
 
 ### After Phase 3 (Tiles)
+
 ```
 Mapsui.Navigator �� Tile Coords �� BruTile �� Cached Tiles �� BrailleRenderer
 ```

@@ -1,5 +1,7 @@
 # Map Rendering Architecture (Console + Desktop)
 
+> ✅ **Status**: Implemented via `dotnet/Map/PigeonPea.Map.Rendering/` (post RFC-007). For the big-picture structure see [Domain Organization](domain-organization.md). This document explains the map rendering pipeline in detail.
+
 This document defines how we render the fantasy map across the console HUD (Terminal.Gui) and the desktop app (Avalonia), while keeping a unified model for navigation, tiling, and overlays.
 
 ## Goals
@@ -68,4 +70,3 @@ This document defines how we render the fantasy map across the console HUD (Term
    - Back NavigatorService with Mapsui.Navigator in desktop without affecting console
 5. External basemap/MVT (reserved)
    - Keep flagged; do not enable by default
-
