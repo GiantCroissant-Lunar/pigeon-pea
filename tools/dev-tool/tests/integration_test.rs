@@ -96,7 +96,7 @@ fn test_connect_without_server() {
     assert!(!output.status.success());
     let stderr = String::from_utf8_lossy(&output.stderr);
     let stdout = String::from_utf8_lossy(&output.stdout);
-    
+
     // Should show connection attempt
     assert!(stdout.contains("Connecting to:") || stderr.contains("Failed to connect"));
 }

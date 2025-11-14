@@ -3,7 +3,7 @@ use futures_util::{SinkExt, StreamExt};
 use tokio_tungstenite::{connect_async, tungstenite::Message};
 use url::Url;
 
-use crate::protocol::{Envelope, MessageType, NoopCommand, AuthPayload, PROTOCOL_VERSION};
+use crate::protocol::{AuthPayload, Envelope, MessageType, NoopCommand, PROTOCOL_VERSION};
 
 /// WebSocket client for communicating with the game server
 pub struct WsClient {
@@ -24,9 +24,9 @@ impl WsClient {
 
         println!("Connecting to: {}", self.url);
 
-        let (ws_stream, _) = connect_async(url)
-            .await
-            .context("Failed to connect to WebSocket server. Ensure the server is running and accessible.")?;
+        let (ws_stream, _) = connect_async(url).await.context(
+            "Failed to connect to WebSocket server. Ensure the server is running and accessible.",
+        )?;
 
         println!("✓ Connected successfully");
 
@@ -35,11 +35,7 @@ impl WsClient {
         // Send authentication if token is provided
         if let Some(ref token) = self.token {
             let auth_payload = AuthPayload::new(token.clone());
-            let auth_envelope = Envelope::new(
-                MessageType::GmCommand,
-                generate_id(),
-                auth_payload,
-            );
+            let auth_envelope = Envelope::new(MessageType::GmCommand, generate_id(), auth_payload);
 
             let auth_json = serde_json::to_string(&auth_envelope)
                 .context("Failed to serialize authentication message")?;
@@ -55,14 +51,10 @@ impl WsClient {
         // Send noop command
         let noop_payload = NoopCommand::new();
         let noop_id = generate_id();
-        let noop_envelope = Envelope::new(
-            MessageType::GmCommand,
-            noop_id.clone(),
-            noop_payload,
-        );
+        let noop_envelope = Envelope::new(MessageType::GmCommand, noop_id.clone(), noop_payload);
 
-        let noop_json = serde_json::to_string(&noop_envelope)
-            .context("Failed to serialize noop command")?;
+        let noop_json =
+            serde_json::to_string(&noop_envelope).context("Failed to serialize noop command")?;
 
         write
             .send(Message::Text(noop_json))
@@ -97,8 +89,8 @@ impl WsClient {
     /// Handle a reply message from the server
     fn handle_reply(&self, text: &str, expected_correlation_id: &str) -> Result<()> {
         // Try to parse as a generic envelope first
-        let envelope: Envelope<serde_json::Value> = serde_json::from_str(text)
-            .context("Failed to parse reply envelope")?;
+        let envelope: Envelope<serde_json::Value> =
+            serde_json::from_str(text).context("Failed to parse reply envelope")?;
 
         // Check protocol version compatibility
         if envelope.version != PROTOCOL_VERSION {
@@ -111,7 +103,10 @@ impl WsClient {
 
         // Check if it's a reply message
         if envelope.message_type != MessageType::GmReply {
-            println!("⚠ Warning: Expected gm.reply but got {:?}", envelope.message_type);
+            println!(
+                "⚠ Warning: Expected gm.reply but got {:?}",
+                envelope.message_type
+            );
         }
 
         // Check correlation ID
@@ -157,7 +152,7 @@ mod tests {
     fn test_generate_id() {
         let id1 = generate_id();
         let id2 = generate_id();
-        
+
         assert!(id1.starts_with("msg-"));
         assert!(id2.starts_with("msg-"));
         // IDs should be different (assuming test runs fast enough)

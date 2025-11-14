@@ -22,18 +22,18 @@ pub enum MessageType {
 pub struct Envelope<T> {
     /// Protocol version
     pub version: u32,
-    
+
     /// Message type
     #[serde(rename = "type")]
     pub message_type: MessageType,
-    
+
     /// Unique message identifier
     pub id: String,
-    
+
     /// Correlation ID for request-response pairing
     #[serde(rename = "correlationId", skip_serializing_if = "Option::is_none")]
     pub correlation_id: Option<String>,
-    
+
     /// Message payload
     pub payload: T,
 }
@@ -125,11 +125,7 @@ mod tests {
     #[test]
     fn test_envelope_serialization() {
         let payload = NoopCommand::new();
-        let envelope = Envelope::new(
-            MessageType::GmCommand,
-            "test-id".to_string(),
-            payload,
-        );
+        let envelope = Envelope::new(MessageType::GmCommand, "test-id".to_string(), payload);
 
         let json = serde_json::to_string(&envelope).unwrap();
         assert!(json.contains("\"version\":1"));
