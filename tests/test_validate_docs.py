@@ -9,11 +9,11 @@ Tests cover:
 - Registry generation
 - Pre-commit mode
 """
+import importlib.util
 import json
 import shutil
 import sys
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
@@ -21,10 +21,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
 
 # Import with proper module name (underscore in filename)
-import importlib.util
 spec = importlib.util.spec_from_file_location(
-    "validate_docs",
-    str(Path(__file__).parent.parent / "scripts" / "validate-docs.py")
+    "validate_docs", str(Path(__file__).parent.parent / "scripts" / "validate-docs.py")
 )
 validate_docs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(validate_docs)
@@ -109,7 +107,9 @@ class TestFrontMatterValidation:
         missing_file = fixtures_dir / "invalid" / "missing-doc-id.md"
         front_matter, _ = extract_front_matter(missing_file)
 
-        errors = validate_front_matter_fields(missing_file, front_matter, is_inbox=False)
+        errors = validate_front_matter_fields(
+            missing_file, front_matter, is_inbox=False
+        )
 
         assert len(errors) > 0
         assert any("doc_id" in str(e) for e in errors)
@@ -119,7 +119,9 @@ class TestFrontMatterValidation:
         invalid_file = fixtures_dir / "invalid" / "invalid-doc-type.md"
         front_matter, _ = extract_front_matter(invalid_file)
 
-        errors = validate_front_matter_fields(invalid_file, front_matter, is_inbox=False)
+        errors = validate_front_matter_fields(
+            invalid_file, front_matter, is_inbox=False
+        )
 
         assert len(errors) > 0
         assert any("doc_type" in str(e) and "invalid-type" in str(e) for e in errors)
@@ -129,7 +131,9 @@ class TestFrontMatterValidation:
         invalid_file = fixtures_dir / "invalid" / "invalid-status.md"
         front_matter, _ = extract_front_matter(invalid_file)
 
-        errors = validate_front_matter_fields(invalid_file, front_matter, is_inbox=False)
+        errors = validate_front_matter_fields(
+            invalid_file, front_matter, is_inbox=False
+        )
 
         assert len(errors) > 0
         assert any("status" in str(e) and "invalid-status" in str(e) for e in errors)
@@ -139,7 +143,9 @@ class TestFrontMatterValidation:
         invalid_file = fixtures_dir / "invalid" / "invalid-doc-id-format.md"
         front_matter, _ = extract_front_matter(invalid_file)
 
-        errors = validate_front_matter_fields(invalid_file, front_matter, is_inbox=False)
+        errors = validate_front_matter_fields(
+            invalid_file, front_matter, is_inbox=False
+        )
 
         assert len(errors) > 0
         assert any("doc_id" in str(e) and "format" in str(e).lower() for e in errors)
@@ -149,7 +155,9 @@ class TestFrontMatterValidation:
         invalid_file = fixtures_dir / "invalid" / "invalid-date-format.md"
         front_matter, _ = extract_front_matter(invalid_file)
 
-        errors = validate_front_matter_fields(invalid_file, front_matter, is_inbox=False)
+        errors = validate_front_matter_fields(
+            invalid_file, front_matter, is_inbox=False
+        )
 
         assert len(errors) > 0
         assert any("created" in str(e) for e in errors)
@@ -239,7 +247,8 @@ class TestDuplicateDetection:
 
         # Create inbox document with similar title
         inbox_doc = inbox_dir / "test.md"
-        inbox_doc.write_text("""---
+        inbox_doc.write_text(
+            """---
 doc_id: "RFC-2025-77780"
 title: "Plugin System Architecture"
 doc_type: "rfc"
@@ -251,11 +260,13 @@ summary: "Test document"
 ---
 
 # Plugin System Architecture
-""")
+"""
+        )
 
         # Create corpus document with very similar title
         corpus_doc = corpus_dir / "original.md"
-        corpus_doc.write_text("""---
+        corpus_doc.write_text(
+            """---
 doc_id: "RFC-2025-77781"
 title: "Plugin System Architecture Design"
 doc_type: "rfc"
@@ -267,7 +278,8 @@ summary: "Original document"
 ---
 
 # Plugin System Architecture Design
-""")
+"""
+        )
 
         docs = collect_documents(temp_docs_dir)
         warnings = detect_near_duplicates(docs)
@@ -282,10 +294,18 @@ summary: "Original document"
 
         # Create documents with very similar content
         # Note: simhash needs actual content to compute similarity
-        from simhash import Simhash
-        
-        content1 = "---\ntitle: Test\n---\nThis is a test document about plugin architecture system and design patterns."
-        content2 = "---\ntitle: Test2\n---\nThis is a test document about plugin architecture system and design patterns."
+        from simhash import Simhash  # noqa: F401
+
+        content1 = (
+            "---\ntitle: Test\n---\n"
+            "This is a test document about plugin architecture "
+            "system and design patterns."
+        )
+        content2 = (
+            "---\ntitle: Test2\n---\n"
+            "This is a test document about plugin architecture "
+            "system and design patterns."
+        )
 
         simhash1 = Simhash(content1).value
         simhash2 = Simhash(content2).value
@@ -476,7 +496,16 @@ class TestValidationConstants:
 
     def test_valid_doc_types_complete(self):
         """Test that valid doc types includes expected values."""
-        expected = {"spec", "rfc", "adr", "plan", "finding", "guide", "glossary", "reference"}
+        expected = {
+            "spec",
+            "rfc",
+            "adr",
+            "plan",
+            "finding",
+            "guide",
+            "glossary",
+            "reference",
+        }
         assert VALID_DOC_TYPES == expected
 
     def test_valid_statuses_complete(self):
@@ -515,7 +544,9 @@ class TestValidationError:
 class TestPreCommitMode:
     """Tests for pre-commit mode functionality."""
 
-    def test_pre_commit_mode_skips_registry(self, fixtures_dir, temp_docs_dir, monkeypatch):
+    def test_pre_commit_mode_skips_registry(
+        self, fixtures_dir, temp_docs_dir, monkeypatch
+    ):
         """Test that pre-commit mode doesn't regenerate registry."""
         # This is more of an integration test with the main function
         # We'll test the logic indirectly

@@ -30,6 +30,21 @@ See [`.agent/rules/code-quality.md`](.agent/rules/code-quality.md) for detailed 
 - Testing expectations
 - Security guidelines
 
+### Documentation Management Rules
+
+**IMPORTANT:** Follow RFC-012 documentation management system for all documentation tasks.
+
+See [`docs/rfcs/012-documentation-organization-management.md`](docs/rfcs/012-documentation-organization-management.md) for complete documentation workflow.
+
+Key requirements:
+
+- Check [`docs/index/registry.json`](docs/index/registry.json) for existing docs before creating new ones
+- Start drafts in [`docs/_inbox/`](docs/_inbox/) with minimal front-matter
+- Run `python scripts/validate-docs.py` to validate and check for duplicates
+- Complete front-matter before moving to final location (docs/rfcs/, docs/guides/, etc.)
+- All documentation must have YAML front-matter (see [`docs/DOCUMENTATION-SCHEMA.md`](docs/DOCUMENTATION-SCHEMA.md))
+- Pre-commit hook automatically validates documentation on commit
+
 ## Available Commands
 
 Claude can execute commands defined in [`.agent/commands/`](.agent/commands/).
@@ -167,6 +182,97 @@ When working on complex tasks:
 6. **Document changes:** Update relevant documentation when making changes
 7. **Ask when uncertain:** Request clarification rather than making assumptions
 
+## Troubleshooting
+
+### Documentation Validation Errors
+
+Common documentation validation errors and their solutions:
+
+#### Missing Required Fields
+
+```
+[ERROR] docs/rfcs/test.md: Missing required fields: doc_id, tags, summary
+```
+
+**Solution:** Add all required fields to the front-matter:
+
+- `doc_id` (format: PREFIX-YYYY-NNNNN, e.g., RFC-2025-00042)
+- `title`
+- `doc_type` (spec, rfc, adr, plan, finding, guide, glossary, reference)
+- `status` (draft, active, superseded, rejected, archived)
+- `canonical` (true/false)
+- `created` (ISO date: YYYY-MM-DD)
+- `tags` (array)
+- `summary` (string)
+
+#### Invalid doc_type
+
+```
+[ERROR] docs/guides/test.md: Invalid doc_type 'tutorial'. Must be one of: spec, rfc, adr, plan, finding, guide, glossary, reference
+```
+
+**Solution:** Use one of the valid doc_type values. For tutorials, use `guide`.
+
+#### Invalid doc_id Format
+
+```
+[ERROR] docs/rfcs/test.md: Invalid doc_id format 'RFC-001'. Expected format: PREFIX-YYYY-NNNNN
+```
+
+**Solution:** Use the correct format: `RFC-2025-00001` (not `RFC-001`)
+
+#### Multiple Canonical Documents
+
+```
+[ERROR] Multiple canonical documents for concept 'plugin architecture':
+  docs/rfcs/006-plugin-system-architecture.md
+  docs/rfcs/042-plugin-architecture.md
+```
+
+**Solution:** Set `canonical: false` on one of the documents. Only one document per concept can be canonical.
+
+#### Near-Duplicate Warning
+
+```
+[WARNING] Near-duplicate detected:
+  Inbox:  docs/_inbox/new-doc.md
+  Corpus: docs/rfcs/existing-doc.md
+  Title similarity: 85%, Content similarity: ~90%
+```
+
+**Solution:** Review the existing document. Consider:
+
+- Updating the existing document instead of creating a new one
+- Making your document more distinct if it covers different aspects
+- Adding a reference to the existing document in `related` field
+
+### Pre-commit Hook Failures
+
+If pre-commit hooks fail on documentation:
+
+1. **Run validation manually:**
+
+   ```bash
+   python scripts/validate-docs.py
+   ```
+
+2. **Fix reported errors**
+
+3. **Run pre-commit again:**
+   ```bash
+   pre-commit run --all-files
+   ```
+
+### Missing Dependencies
+
+If you see warnings about missing dependencies (simhash, rapidfuzz):
+
+```bash
+pip install -r scripts/requirements.txt
+```
+
+These are optional but provide better duplicate detection.
+
 ## Resources
 
 - [AGENTS.md](AGENTS.md) - Complete agent infrastructure documentation
@@ -175,3 +281,5 @@ When working on complex tasks:
 - [`.agent/commands/`](.agent/commands/) - Available commands
 - [`.agent/workflows/`](.agent/workflows/) - Process workflows
 - [`.agent/adapters/`](.agent/adapters/) - External system adapters
+- [`docs/rfcs/012-documentation-organization-management.md`](docs/rfcs/012-documentation-organization-management.md) - Documentation management system (RFC-012)
+- [`docs/DOCUMENTATION-SCHEMA.md`](docs/DOCUMENTATION-SCHEMA.md) - Front-matter schema reference
