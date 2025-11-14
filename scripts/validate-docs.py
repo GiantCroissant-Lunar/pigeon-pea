@@ -359,12 +359,17 @@ def collect_documents(
         # Calculate SimHash if available
         simhash_value = None
         if SIMHASH_AVAILABLE:
-            # Extract text content (remove front-matter and markdown syntax)
-            text = content.split("---", 2)[-1] if "---" in content else content
-            text = re.sub(r"[#*`\[\]()]", " ", text)
-            text = re.sub(r"\s+", " ", text).strip()
-            if text:
-                simhash_value = Simhash(text).value
+            try:
+                # Extract text content (remove front-matter and markdown syntax)
+                text = content.split("---", 2)[-1] if "---" in content else content
+                text = re.sub(r"[#*`\[\]()]", " ", text)
+                text = re.sub(r"\s+", " ", text).strip()
+                if text:
+                    simhash_value = Simhash(text).value
+            except (OverflowError, ValueError) as e:
+                # Some versions of simhash have bugs with certain inputs
+                # Gracefully skip simhash for this document
+                print(f"Warning: Could not calculate simhash for {md_file}: {e}")
 
         documents.append(
             DocumentInfo(md_file, front_matter, content, content_hash, simhash_value)

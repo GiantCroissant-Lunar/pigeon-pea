@@ -1,3 +1,15 @@
+---
+doc_id: 'PLAN-2025-00008'
+title: 'GitHub Issues: Agent Infrastructure Enhancement'
+doc_type: 'plan'
+status: 'active'
+canonical: true
+created: '2025-11-10'
+tags: ['agent-infrastructure', 'rfc-004', 'github-issues', 'implementation']
+summary: 'Breakdown of RFC-004 into actionable GitHub issues suitable for automated coding agents'
+related: ['RFC-2025-00004']
+---
+
 # GitHub Issues: Agent Infrastructure Enhancement
 
 This document breaks down RFC-004 into actionable GitHub issues suitable for automated coding agents.
