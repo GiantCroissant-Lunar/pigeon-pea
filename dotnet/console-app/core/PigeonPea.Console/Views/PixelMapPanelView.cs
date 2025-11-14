@@ -1,8 +1,7 @@
-extern alias SR;
-using Terminal.Gui;
-using PigeonPea.Map.Rendering;
-using TilesNS = SR::PigeonPea.Shared.Rendering.Tiles;
 using PigeonPea.Map.Core;
+using PigeonPea.Map.Rendering;
+using Terminal.Gui;
+using TilesNS = PigeonPea.Shared.Rendering.Tiles;
 
 namespace PigeonPea.Console;
 
@@ -47,7 +46,7 @@ public class PixelMapPanelView : View
         int h = Viewport.Height;
         if (w <= 0 || h <= 0) return;
 
-        var vp = new SR::PigeonPea.Shared.Rendering.Viewport(CameraX, CameraY, w, h);
+        var vp = new PigeonPea.Shared.Rendering.Viewport(CameraX, CameraY, w, h);
         int maxPpc = 24;
         int ppc = System.Math.Max(4, System.Math.Min(maxPpc, (int)System.Math.Round(16 / System.Math.Max(Zoom, 0.5))));
 
@@ -115,4 +114,3 @@ public class PixelMapPanelView : View
         }
     }
 }
-

@@ -36,7 +36,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_IdenticalImages_ReturnsMatch()
+    public void CompareIdenticalImagesReturnsMatch()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -55,7 +55,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_DifferentDimensions_ReturnsNoMatch()
+    public void CompareDifferentDimensionsReturnsNoMatch()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -72,7 +72,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_CompletelyDifferentImages_ReturnsZeroSimilarity()
+    public void CompareCompletelyDifferentImagesReturnsZeroSimilarity()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -90,7 +90,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_WithinTolerance_ReturnsMatch()
+    public void CompareWithinToleranceReturnsMatch()
     {
         // Arrange
         var comparator = new ImageComparator { PixelTolerance = 10 };
@@ -107,7 +107,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_OutsideTolerance_ReturnsNoMatch()
+    public void CompareOutsideToleranceReturnsNoMatch()
     {
         // Arrange
         var comparator = new ImageComparator { PixelTolerance = 5 };
@@ -124,7 +124,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_PartiallyDifferentImages_ReturnsCorrectSimilarity()
+    public void ComparePartiallyDifferentImagesReturnsCorrectSimilarity()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -151,7 +151,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_WithCustomThreshold_RespectsThreshold()
+    public void CompareWithCustomThresholdRespectsThreshold()
     {
         // Arrange
         var comparator = new ImageComparator { Threshold = 0.95 };
@@ -176,7 +176,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_FromFilePaths_WorksCorrectly()
+    public void CompareFromFilePathsWorksCorrectly()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -192,7 +192,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void CompareWithDiff_GeneratesDiffImage()
+    public void CompareWithDiffGeneratesDiffImage()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -211,7 +211,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void GenerateDiffImage_HighlightsDifferences()
+    public void GenerateDiffImageHighlightsDifferences()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -250,7 +250,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void GenerateDiffImage_WithDifferentDimensions_ThrowsException()
+    public void GenerateDiffImageWithDifferentDimensionsThrowsException()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -264,7 +264,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Threshold_CanBeModified()
+    public void ThresholdCanBeModified()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -277,7 +277,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void PixelTolerance_CanBeModified()
+    public void PixelToleranceCanBeModified()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -290,7 +290,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_AlphaChannelDifferences_AreDetected()
+    public void CompareAlphaChannelDifferencesAreDetected()
     {
         // Arrange
         var comparator = new ImageComparator { PixelTolerance = 0 };
@@ -306,7 +306,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void Compare_SinglePixelImages_ReturnsMatch()
+    public void CompareSinglePixelImagesReturnsMatch()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -323,7 +323,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void CompareWithDiff_MatchingImages_DoesNotGenerateDiff()
+    public void CompareWithDiffMatchingImagesDoesNotGenerateDiff()
     {
         // Arrange
         var comparator = new ImageComparator();
@@ -341,7 +341,7 @@ public class ImageComparatorTests : IDisposable
     }
 
     [Fact]
-    public void CompareWithDiff_DimensionMismatch_DoesNotGenerateDiff()
+    public void CompareWithDiffDimensionMismatchDoesNotGenerateDiff()
     {
         // Arrange
         var comparator = new ImageComparator();

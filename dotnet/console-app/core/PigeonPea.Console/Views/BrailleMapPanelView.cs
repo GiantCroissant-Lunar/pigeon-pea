@@ -1,10 +1,9 @@
-extern alias SR;
 using System.Text;
-using Terminal.Gui;
-using PigeonPea.Map.Rendering;
-using TilesNS = SR::PigeonPea.Shared.Rendering.Tiles;
 using PigeonPea.Console.Rendering;
 using PigeonPea.Map.Core;
+using PigeonPea.Map.Rendering;
+using Terminal.Gui;
+using TilesNS = PigeonPea.Shared.Rendering.Tiles;
 
 namespace PigeonPea.Console;
 
@@ -19,7 +18,7 @@ namespace PigeonPea.Console;
 /// </summary>
 public class BrailleMapPanelView : View
 {
-    private readonly PigeonPea.Map.Rendering.Tiles.MapTileSource _tileSource = new();
+    public readonly PigeonPea.Map.Rendering.Tiles.MapTileSource TileSource = new();
     private int _brightnessThreshold = 180;  // Currently unused, kept for future enhancements
     private System.DateTime _lastColorLog = System.DateTime.MinValue;
 
@@ -56,14 +55,14 @@ public class BrailleMapPanelView : View
         if (w <= 0 || h <= 0) return true;
 
         // Calculate viewport and pixels-per-cell for rendering
-        var vp = new SR::PigeonPea.Shared.Rendering.Viewport(CameraX, CameraY, w, h);
+        var vp = new PigeonPea.Shared.Rendering.Viewport(CameraX, CameraY, w, h);
 
         // Use lower pixels-per-cell tuned for Braille (2x4 dots per cell)
         int ppc = System.Math.Clamp((int)System.Math.Round(4 / System.Math.Max(Zoom, 0.5)), 4, 8);
 
         // Assemble pixel buffer
         var frame = TilesNS.TileAssembler.Assemble(
-            _tileSource,
+            TileSource,
             Map,
             vp,
             w,
@@ -453,4 +452,3 @@ public class BrailleMapPanelView : View
         SetNeedsDraw();
     }
 }
-

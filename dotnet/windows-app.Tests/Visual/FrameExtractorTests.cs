@@ -1,7 +1,7 @@
-using Xunit;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
+using Xunit;
 
 namespace PigeonPea.Windows.Tests.Visual;
 
@@ -59,7 +59,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact]
-    public void FrameRate_DefaultsToOne()
+    public void FrameRateDefaultsToOne()
     {
         // Arrange & Act
         var extractor = new FrameExtractor();
@@ -69,7 +69,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact]
-    public void FrameRate_CanBeModified()
+    public void FrameRateCanBeModified()
     {
         // Arrange
         var extractor = new FrameExtractor();
@@ -82,7 +82,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact]
-    public void FFmpegPath_DefaultsToNull()
+    public void FFmpegPathDefaultsToNull()
     {
         // Arrange & Act
         var extractor = new FrameExtractor();
@@ -92,7 +92,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact]
-    public void FFmpegPath_CanBeSet()
+    public void FFmpegPathCanBeSet()
     {
         // Arrange
         var extractor = new FrameExtractor();
@@ -106,7 +106,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact]
-    public async Task ExtractFrames_WithNonExistentVideo_ThrowsArgumentException()
+    public async Task ExtractFramesWithNonExistentVideoThrowsArgumentException()
     {
         // Arrange
         var extractor = new FrameExtractor();
@@ -115,13 +115,13 @@ public class FrameExtractorTests : IDisposable
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<ArgumentException>(
-            () => extractor.ExtractFrames(nonExistentPath, outputDir));
+            () => extractor.ExtractFrames(nonExistentPath, outputDir)).ConfigureAwait(false);
 
         Assert.Contains("Video file not found", exception.Message);
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task ExtractFrames_WithValidVideo_ExtractsFrames()
+    public async Task ExtractFramesWithValidVideoExtractsFrames()
     {
         // Arrange
         var extractor = new FrameExtractor { FrameRate = 1 };
@@ -130,7 +130,7 @@ public class FrameExtractorTests : IDisposable
         _createdDirectories.Add(outputDir);
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir).ConfigureAwait(false);
 
         // Assert
         Assert.NotEmpty(frames);
@@ -142,7 +142,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task ExtractFrames_CreatesOutputDirectory_WhenItDoesNotExist()
+    public async Task ExtractFramesCreatesOutputDirectoryWhenItDoesNotExist()
     {
         // Arrange
         var extractor = new FrameExtractor();
@@ -151,7 +151,7 @@ public class FrameExtractorTests : IDisposable
         _createdDirectories.Add(outputDir);
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir).ConfigureAwait(false);
 
         // Assert
         Assert.True(Directory.Exists(outputDir));
@@ -159,7 +159,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task ExtractFrames_WithCustomPattern_UsesPattern()
+    public async Task ExtractFramesWithCustomPatternUsesPattern()
     {
         // Arrange
         var extractor = new FrameExtractor();
@@ -169,7 +169,7 @@ public class FrameExtractorTests : IDisposable
         var customPattern = "test-frame-%04d.png";
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir, customPattern);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir, customPattern).ConfigureAwait(false);
 
         // Assert
         Assert.NotEmpty(frames);
@@ -180,7 +180,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task ExtractFrames_WithDifferentFrameRates_ExtractsCorrectNumberOfFrames()
+    public async Task ExtractFramesWithDifferentFrameRatesExtractsCorrectNumberOfFrames()
     {
         // Arrange
         var videoPath = CreateTestVideo(duration: 3); // 3 second video
@@ -193,8 +193,8 @@ public class FrameExtractorTests : IDisposable
         var extractor2 = new FrameExtractor { FrameRate = 2 };
 
         // Act
-        var frames1 = await extractor1.ExtractFrames(videoPath, outputDir1, "frame1-%03d.png");
-        var frames2 = await extractor2.ExtractFrames(videoPath, outputDir2, "frame2-%03d.png");
+        var frames1 = await extractor1.ExtractFrames(videoPath, outputDir1, "frame1-%03d.png").ConfigureAwait(false);
+        var frames2 = await extractor2.ExtractFrames(videoPath, outputDir2, "frame2-%03d.png").ConfigureAwait(false);
 
         // Assert
         // For a 3s video, 1 FPS should be ~3 frames, 2 FPS should be ~6 frames.
@@ -205,7 +205,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task ExtractFrames_ReturnsFramesInOrder()
+    public async Task ExtractFramesReturnsFramesInOrder()
     {
         // Arrange
         var extractor = new FrameExtractor { FrameRate = 2 };
@@ -214,7 +214,7 @@ public class FrameExtractorTests : IDisposable
         _createdDirectories.Add(outputDir);
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir).ConfigureAwait(false);
 
         // Assert
         Assert.NotEmpty(frames);
@@ -224,7 +224,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task ExtractFrames_ProducesPngFiles()
+    public async Task ExtractFramesProducesPngFiles()
     {
         // Arrange
         var extractor = new FrameExtractor();
@@ -233,7 +233,7 @@ public class FrameExtractorTests : IDisposable
         _createdDirectories.Add(outputDir);
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir).ConfigureAwait(false);
 
         // Assert
         Assert.NotEmpty(frames);
@@ -249,13 +249,13 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact]
-    public async Task IsFFmpegAvailable_ReturnsBoolean()
+    public async Task IsFFmpegAvailableReturnsBoolean()
     {
         // Arrange
         var extractor = new FrameExtractor();
 
         // Act
-        var isAvailable = await extractor.IsFFmpegAvailable();
+        var isAvailable = await extractor.IsFFmpegAvailable().ConfigureAwait(false);
 
         // Assert
         // Should return either true or false, not throw
@@ -263,7 +263,7 @@ public class FrameExtractorTests : IDisposable
     }
 
     [Fact]
-    public async Task IsFFmpegAvailable_WithInvalidPath_ReturnsFalse()
+    public async Task IsFFmpegAvailableWithInvalidPathReturnsFalse()
     {
         // Arrange
         var extractor = new FrameExtractor
@@ -272,7 +272,7 @@ public class FrameExtractorTests : IDisposable
         };
 
         // Act
-        var isAvailable = await extractor.IsFFmpegAvailable();
+        var isAvailable = await extractor.IsFFmpegAvailable().ConfigureAwait(false);
 
         // Assert
         Assert.False(isAvailable);

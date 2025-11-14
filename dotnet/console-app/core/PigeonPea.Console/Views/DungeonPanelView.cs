@@ -1,10 +1,10 @@
-using Terminal.Gui;
 using Arch.Core;
-using PigeonPea.Dungeon.Core;
 using PigeonPea.Dungeon.Control;
 using PigeonPea.Dungeon.Control.WorldManager;
+using PigeonPea.Dungeon.Core;
 using PigeonPea.Dungeon.Rendering;
 using PigeonPea.Shared.ECS.Components;
+using Terminal.Gui;
 
 namespace PigeonPea.Console.Views;
 

@@ -1,12 +1,12 @@
-using Arch.Core;
-using MessagePipe;
-using ObservableCollections;
-using ReactiveUI;
-using PigeonPea.Shared.Components;
-using PigeonPea.Shared.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arch.Core;
+using MessagePipe;
+using ObservableCollections;
+using PigeonPea.Shared.Components;
+using PigeonPea.Shared.Events;
+using ReactiveUI;
 
 namespace PigeonPea.Shared.ViewModels;
 

@@ -65,7 +65,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Constructor_SubscribesToEvents()
+    public void ConstructorSubscribesToEvents()
     {
         // Arrange & Act
         var viewModel = new InventoryViewModel(
@@ -83,7 +83,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Items_IsObservableList()
+    public void ItemsIsObservableList()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -99,7 +99,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void SelectedIndex_WhenChanged_RaisesNotification()
+    public void SelectedIndexWhenChangedRaisesNotification()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -127,7 +127,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void SelectedItem_ReturnsNull_WhenNoItemSelected()
+    public void SelectedItemReturnsNullWhenNoItemSelected()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -148,7 +148,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void SelectedItem_ReturnsItem_WhenValidIndexSelected()
+    public void SelectedItemReturnsItemWhenValidIndexSelected()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -172,7 +172,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void SelectedItem_ReturnsNull_WhenIndexOutOfRange()
+    public void SelectedItemReturnsNullWhenIndexOutOfRange()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -194,7 +194,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_SyncsItemsFromECS()
+    public void UpdateSyncsItemsFromECS()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -217,7 +217,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_WithDeadEntity_DoesNotThrow()
+    public void UpdateWithDeadEntityDoesNotThrow()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -240,7 +240,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_WithMissingInventoryComponent_DoesNotThrow()
+    public void UpdateWithMissingInventoryComponentDoesNotThrow()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -266,7 +266,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_MultipleUpdates_SyncsCorrectly()
+    public void UpdateMultipleUpdatesSyncsCorrectly()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -296,7 +296,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void ItemPickedUpEvent_DoesNotModifyItems()
+    public void ItemPickedUpEventDoesNotModifyItems()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -321,7 +321,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void ItemUsedEvent_DoesNotModifyItems()
+    public void ItemUsedEventDoesNotModifyItems()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -347,7 +347,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void ItemDroppedEvent_DoesNotModifyItems()
+    public void ItemDroppedEventDoesNotModifyItems()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -372,7 +372,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Dispose_DisposesSubscriptions()
+    public void DisposeDisposesSubscriptions()
     {
         // Arrange
         var viewModel = new InventoryViewModel(
@@ -407,7 +407,7 @@ public class InventoryViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Update_WithDeadItemEntities_SkipsThem()
+    public void UpdateWithDeadItemEntitiesSkipsThem()
     {
         // Arrange
         var viewModel = new InventoryViewModel(

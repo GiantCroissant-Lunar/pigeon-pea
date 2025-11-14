@@ -98,7 +98,7 @@ public class WindowsVisualTests : IDisposable
         _createdFiles.Add(videoPath);
 
         // Check if FFmpeg is available
-        var isFFmpegAvailable = await _frameExtractor.IsFFmpegAvailable();
+        var isFFmpegAvailable = await _frameExtractor.IsFFmpegAvailable().ConfigureAwait(false);
         if (!isFFmpegAvailable)
         {
             throw new InvalidOperationException("FFmpeg is not available. Visual tests require FFmpeg.");
@@ -124,7 +124,7 @@ public class WindowsVisualTests : IDisposable
 
         using var process = new Process { StartInfo = processStartInfo };
         process.Start();
-        await process.WaitForExitAsync();
+        await process.WaitForExitAsync().ConfigureAwait(false);
 
         if (process.ExitCode != 0 || !File.Exists(videoPath))
         {
@@ -174,18 +174,18 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task BasicRendering_MatchesSnapshot()
+    public async Task BasicRenderingMatchesSnapshot()
     {
         // Arrange
         const string scenarioName = "basic-rendering";
 
         // Act - Record test scenario
-        var videoPath = await RecordTestScenario(scenarioName, duration: 3);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 3).ConfigureAwait(false);
 
         // Extract frames
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
 
         // Assert - Frames should be extracted
         frames.Should().NotBeEmpty("frames should be extracted from the video");
@@ -199,18 +199,18 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task ParticleEffect_RendersCorrectly()
+    public async Task ParticleEffectRendersCorrectly()
     {
         // Arrange
         const string scenarioName = "particle-effect";
 
         // Act - Record test scenario with particle effects
-        var videoPath = await RecordTestScenario(scenarioName, duration: 5);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 5).ConfigureAwait(false);
 
         // Extract frames at 1 FPS
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
 
         // Assert - Should have multiple frames
         frames.Should().NotBeEmpty();
@@ -226,18 +226,18 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task SpriteRendering_LoadsAndDisplays()
+    public async Task SpriteRenderingLoadsAndDisplays()
     {
         // Arrange
         const string scenarioName = "sprite-rendering";
 
         // Act - Record test scenario with sprites
-        var videoPath = await RecordTestScenario(scenarioName, duration: 3);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 3).ConfigureAwait(false);
 
         // Extract frames
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
 
         // Assert - Frames extracted successfully
         frames.Should().NotBeEmpty();
@@ -255,18 +255,18 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task AnimationSequence_CompletesSuccessfully()
+    public async Task AnimationSequenceCompletesSuccessfully()
     {
         // Arrange
         const string scenarioName = "animation-sequence";
 
         // Act - Record animation test scenario
-        var videoPath = await RecordTestScenario(scenarioName, duration: 4);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 4).ConfigureAwait(false);
 
         // Extract frames
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
 
         // Assert - Should have multiple frames showing animation progression
         frames.Should().NotBeEmpty();
@@ -285,18 +285,18 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact(Skip = "Requires FFmpeg to be installed")]
-    public async Task UserInterface_DisplaysCorrectly()
+    public async Task UserInterfaceDisplaysCorrectly()
     {
         // Arrange
         const string scenarioName = "ui-display";
 
         // Act - Record UI test scenario
-        var videoPath = await RecordTestScenario(scenarioName, duration: 3);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 3).ConfigureAwait(false);
 
         // Extract frames
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
 
         // Assert
         frames.Should().NotBeEmpty();
@@ -310,19 +310,19 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact]
-    public async Task FrameExtractor_IsConfiguredCorrectly()
+    public async Task FrameExtractorIsConfiguredCorrectly()
     {
         // Assert
         _frameExtractor.FrameRate.Should().Be(1, "should extract 1 frame per second");
 
         // Verify FFmpeg availability check returns a boolean (method works without throwing)
-        var isAvailable = await _frameExtractor.IsFFmpegAvailable();
+        var isAvailable = await _frameExtractor.IsFFmpegAvailable().ConfigureAwait(false);
         // The method should complete successfully and return a boolean value
         Assert.IsType<bool>(isAvailable);
     }
 
     [Fact]
-    public void ImageComparator_IsConfiguredCorrectly()
+    public void ImageComparatorIsConfiguredCorrectly()
     {
         // Assert
         _imageComparator.Threshold.Should().Be(0.99, "should require 99% similarity");
@@ -330,14 +330,14 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact]
-    public void SnapshotsDirectory_Exists()
+    public void SnapshotsDirectoryExists()
     {
         // Assert
         Directory.Exists(_snapshotsDir).Should().BeTrue("snapshots directory should exist");
     }
 
     [Fact]
-    public void SnapshotsDirectory_HasGitAttributes()
+    public void SnapshotsDirectoryHasGitAttributes()
     {
         // Assert
         var gitAttributesPath = Path.Combine(_snapshotsDir, ".gitattributes");
@@ -349,7 +349,7 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact]
-    public void CompareWithSnapshot_CreatesSnapshotIfMissing()
+    public void CompareWithSnapshotCreatesSnapshotIfMissing()
     {
         // Arrange
         var testImagePath = CreateTestImage(100, 100, new Rgba32(255, 0, 0, 255));
@@ -386,7 +386,7 @@ public class WindowsVisualTests : IDisposable
     }
 
     [Fact]
-    public void CompareWithSnapshot_FailsOnMismatch()
+    public void CompareWithSnapshotFailsOnMismatch()
     {
         // Arrange
         var snapshot1 = CreateTestImage(100, 100, new Rgba32(255, 0, 0, 255));

@@ -23,4 +23,24 @@ public struct Health
     public readonly bool IsDead => Current <= 0;
     public readonly bool IsFullHealth => Current >= Maximum;
     public readonly float HealthPercent => Maximum > 0 ? (float)Current / Maximum : 0f;
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Health left, Health right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Health left, Health right)
+    {
+        return !(left == right);
+    }
 }

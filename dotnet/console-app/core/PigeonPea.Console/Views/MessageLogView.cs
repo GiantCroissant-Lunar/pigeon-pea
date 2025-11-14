@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using ObservableCollections;
-using Terminal.Gui;
 using PigeonPea.Shared.ViewModels;
+using Terminal.Gui;
 
 namespace PigeonPea.Console.Views;
 

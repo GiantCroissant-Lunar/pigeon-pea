@@ -1,10 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
 using PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using SRColor = SadRogue.Primitives.Color;
 
 namespace PigeonPea.Console.Rendering;

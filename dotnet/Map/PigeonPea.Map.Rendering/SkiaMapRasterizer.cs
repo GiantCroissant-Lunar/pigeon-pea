@@ -7,7 +7,7 @@ public static class SkiaMapRasterizer
 {
     public sealed record Raster(byte[] Rgba, int WidthPx, int HeightPx);
 
-    public static Raster Render(MapData map, PigeonPea.Shared.Rendering.Viewport viewport, double zoom, int ppc, bool biomeColors, bool rivers, double timeSeconds = 0)
+    public static Raster Render(MapData map, PigeonPea.Shared.Rendering.Viewport viewport, double zoom, int ppc, bool biomeColors, bool rivers, double timeSeconds = 0, ColorScheme colorScheme = ColorScheme.Original)
     {
         int cols = viewport.Width;
         int rows = viewport.Height;
@@ -26,7 +26,7 @@ public static class SkiaMapRasterizer
                 if (cell == null) { r = 0; g = 0; b = 60; }
                 else
                 {
-                    (r, g, b) = MapColor.ColorForCell(map, cell, biomeColors);
+                    (r, g, b) = MapColor.ColorForCell(map, cell, biomeColors, colorScheme);
                 }
 
                 int startPxX = cx * ppc;

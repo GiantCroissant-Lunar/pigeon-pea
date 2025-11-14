@@ -1,24 +1,25 @@
 #!/usr/bin/env python3
 """Test Kitty graphics with PNG format (f=100) instead of RGBA (f=32)."""
-import sys
 import base64
-from PIL import Image
 import io
+import sys
+
+from PIL import Image
 
 # Create a PNG file in memory
-img = Image.new('RGBA', (32, 32), (255, 0, 0, 255))
+img = Image.new("RGBA", (32, 32), (255, 0, 0, 255))
 buf = io.BytesIO()
-img.save(buf, format='PNG')
+img.save(buf, format="PNG")
 png_data = buf.getvalue()
 
 # Encode to base64
-b64 = base64.b64encode(png_data).decode('ascii')
+b64 = base64.b64encode(png_data).decode("ascii")
 
 # Kitty protocol with PNG format (f=100) like the minimal example
 # ESC _G a=T,f=100; [base64] ESC \
-cmd = f'\x1b_Ga=T,f=100;{b64}\x1b\\'
+cmd = f"\x1b_Ga=T,f=100;{b64}\x1b\\"
 
-print(f"Testing Kitty graphics with PNG format (f=100)...", file=sys.stderr)
+print("Testing Kitty graphics with PNG format (f=100)...", file=sys.stderr)
 print(f"PNG size: {len(png_data)} bytes", file=sys.stderr)
 print(f"Base64 length: {len(b64)}", file=sys.stderr)
 print(f"Command length: {len(cmd)}", file=sys.stderr)
@@ -31,4 +32,3 @@ print("\n\nIf you see a red square above, Kitty with PNG works!", file=sys.stder
 print("(This uses f=100 for PNG instead of f=32 for RGBA)", file=sys.stderr)
 print("Press Enter to exit...", file=sys.stderr)
 input()
-

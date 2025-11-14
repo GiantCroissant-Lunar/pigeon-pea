@@ -15,6 +15,8 @@ public static class BrailleDungeonRenderer
         int? playerX = null,
         int? playerY = null)
     {
+        ArgumentNullException.ThrowIfNull(dungeon);
+
         var sb = new StringBuilder(viewportWidth * viewportHeight + viewportHeight);
 
         for (int cy = 0; cy < viewportHeight; cy++)

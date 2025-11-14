@@ -1,5 +1,5 @@
-using PigeonPea.Shared.Rendering;
 using System;
+using PigeonPea.Shared.Rendering;
 
 namespace PigeonPea.Console;
 

@@ -76,7 +76,7 @@ public class FrameExtractor
 
         process.Start();
         process.BeginErrorReadLine();
-        await process.WaitForExitAsync();
+        await process.WaitForExitAsync().ConfigureAwait(false);
 
         if (process.ExitCode != 0)
         {
@@ -135,7 +135,7 @@ public class FrameExtractor
 
             using var process = new Process { StartInfo = processStartInfo };
             process.Start();
-            await process.WaitForExitAsync();
+            await process.WaitForExitAsync().ConfigureAwait(false);
 
             return process.ExitCode == 0;
         }

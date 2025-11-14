@@ -1,11 +1,11 @@
-using Xunit;
-using FluentAssertions;
-using ReactiveUI;
-using PigeonPea.Console.Views;
-using PigeonPea.Shared.ViewModels;
-using SadRogue.Primitives;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
+using PigeonPea.Console.Views;
+using PigeonPea.Shared.ViewModels;
+using ReactiveUI;
+using SadRogue.Primitives;
+using Xunit;
 
 namespace PigeonPea.Console.Tests.Views;
 
@@ -24,7 +24,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_Constructor_InitializesWithViewModel()
+    public void PlayerViewConstructorInitializesWithViewModel()
     {
         // Assert
         _view.Should().NotBeNull();
@@ -32,7 +32,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_SubscribesToNameChanges()
+    public void PlayerViewSubscribesToNameChanges()
     {
         // Arrange
         var nameChanged = false;
@@ -55,7 +55,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_SubscribesToHealthChanges()
+    public void PlayerViewSubscribesToHealthChanges()
     {
         // Arrange
         var healthChanged = false;
@@ -78,7 +78,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_SubscribesToHealthDisplayChanges()
+    public void PlayerViewSubscribesToHealthDisplayChanges()
     {
         // Arrange
         var healthDisplayChanged = false;
@@ -103,7 +103,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_SubscribesToLevelChanges()
+    public void PlayerViewSubscribesToLevelChanges()
     {
         // Arrange
         var levelChanged = false;
@@ -126,7 +126,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_SubscribesToLevelDisplayChanges()
+    public void PlayerViewSubscribesToLevelDisplayChanges()
     {
         // Arrange
         var levelDisplayChanged = false;
@@ -150,7 +150,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_SubscribesToExperienceChanges()
+    public void PlayerViewSubscribesToExperienceChanges()
     {
         // Arrange
         var experienceChanged = false;
@@ -173,7 +173,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_SubscribesToPositionChanges()
+    public void PlayerViewSubscribesToPositionChanges()
     {
         // Arrange
         var positionChanged = false;
@@ -196,7 +196,7 @@ public class PlayerViewTests : IDisposable
     }
 
     [Fact]
-    public void PlayerView_DisposesSubscriptionsOnDispose()
+    public void PlayerViewDisposesSubscriptionsOnDispose()
     {
         // Arrange
         var viewModel = new PlayerViewModel();

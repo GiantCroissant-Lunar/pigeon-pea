@@ -33,7 +33,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Constructor_InitializesAllViewModels()
+    public void ConstructorInitializesAllViewModels()
     {
         // Act
         using var viewModel = new GameViewModel(_world, _services);
@@ -46,7 +46,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Constructor_WithNullWorld_ThrowsArgumentNullException()
+    public void ConstructorWithNullWorldThrowsArgumentNullException()
     {
         // Act
         Action act = () => new GameViewModel(null!, _services);
@@ -57,7 +57,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Constructor_WithNullServices_ThrowsArgumentNullException()
+    public void ConstructorWithNullServicesThrowsArgumentNullException()
     {
         // Act
         Action act = () => new GameViewModel(_world, null!);
@@ -68,7 +68,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Constructor_StartsUpdateLoop()
+    public void ConstructorStartsUpdateLoop()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -83,7 +83,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void UpdateLoop_SynchronizesPlayerViewModel()
+    public void UpdateLoopSynchronizesPlayerViewModel()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -109,7 +109,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Dispose_CleansUpSubscriptions()
+    public void DisposeCleansUpSubscriptions()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -133,7 +133,7 @@ public class GameViewModelTests : IDisposable
     [Theory]
     [InlineData(80, 50)]
     [InlineData(100, 60)]
-    public void Constructor_WorksWithDifferentWorldSizes(int width, int height)
+    public void ConstructorWorksWithDifferentWorldSizes(int width, int height)
     {
         // Arrange
         var world = new GameWorld(width: width, height: height);
@@ -150,7 +150,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Player_PropertyChanges_RaiseNotifications()
+    public void PlayerPropertyChangesRaiseNotifications()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -183,7 +183,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void GameViewModel_InheritsFromReactiveObject()
+    public void GameViewModelInheritsFromReactiveObject()
     {
         // Arrange & Act
         using var viewModel = new GameViewModel(_world, _services);
@@ -194,7 +194,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void GameViewModel_ImplementsIDisposable()
+    public void GameViewModelImplementsIDisposable()
     {
         // Arrange & Act
         using var viewModel = new GameViewModel(_world, _services);
@@ -205,7 +205,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void MultipleDispose_DoesNotThrow()
+    public void MultipleDisposeDoesNotThrow()
     {
         // Arrange
         using var viewModel = new GameViewModel(_world, _services);
@@ -223,7 +223,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void UpdateLoop_ContinuesRunning_WhenPlayerTakesDamage()
+    public void UpdateLoopContinuesRunningWhenPlayerTakesDamage()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -246,7 +246,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void ViewModels_AreIndependent()
+    public void ViewModelsAreIndependent()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -265,7 +265,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Constructor_InitializesCommands()
+    public void ConstructorInitializesCommands()
     {
         // Act
         using var viewModel = new GameViewModel(_world, _services);
@@ -276,7 +276,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void UseItemCommand_CannotExecute_WhenNoItemSelected()
+    public void UseItemCommandCannotExecuteWhenNoItemSelected()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -293,7 +293,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void DropItemCommand_CannotExecute_WhenNoItemSelected()
+    public void DropItemCommandCannotExecuteWhenNoItemSelected()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -310,7 +310,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void UseItemCommand_CanExecute_WhenItemIsSelected()
+    public void UseItemCommandCanExecuteWhenItemIsSelected()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -345,7 +345,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void DropItemCommand_CanExecute_WhenItemIsSelected()
+    public void DropItemCommandCanExecuteWhenItemIsSelected()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -379,7 +379,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void UseItemCommand_Execute_UsesItemFromInventory()
+    public void UseItemCommandExecuteUsesItemFromInventory()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -419,7 +419,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void UseItemCommand_Execute_PublishesEvent()
+    public void UseItemCommandExecutePublishesEvent()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -461,7 +461,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void DropItemCommand_Execute_DropsItemFromInventory()
+    public void DropItemCommandExecuteDropsItemFromInventory()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -499,7 +499,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void DropItemCommand_Execute_PublishesEvent()
+    public void DropItemCommandExecutePublishesEvent()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -539,7 +539,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void UseItemCommand_Execute_DoesNothing_WhenNoItemSelected()
+    public void UseItemCommandExecuteDoesNothingWhenNoItemSelected()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -560,7 +560,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void DropItemCommand_Execute_DoesNothing_WhenNoItemSelected()
+    public void DropItemCommandExecuteDoesNothingWhenNoItemSelected()
     {
         // Arrange
         var scheduler = new TestScheduler();
@@ -582,7 +582,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Fps_PropertyChanges_RaiseNotifications()
+    public void FpsPropertyChangesRaiseNotifications()
     {
         // Arrange
         using var viewModel = new GameViewModel(_world, _services);
@@ -605,7 +605,7 @@ public class GameViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Fps_DefaultValue_IsZero()
+    public void FpsDefaultValueIsZero()
     {
         // Arrange & Act
         using var viewModel = new GameViewModel(_world, _services);

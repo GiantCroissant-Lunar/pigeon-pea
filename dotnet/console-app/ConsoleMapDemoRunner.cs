@@ -1,11 +1,10 @@
-extern alias SR;
-using PigeonPea.Shared.Rendering;
 using Microsoft.Extensions.Configuration;
-using PigeonPea.Map.Rendering;
 using PigeonPea.Map.Core;
 using PigeonPea.Map.Core.Adapters;
-using TilesNS = SR::PigeonPea.Shared.Rendering.Tiles;
+using PigeonPea.Map.Rendering;
+using PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
+using TilesNS = PigeonPea.Shared.Rendering.Tiles;
 
 namespace PigeonPea.Console;
 
@@ -58,7 +57,7 @@ internal static class ConsoleMapDemoRunner
 
             IRenderer active = useITerm2 ? iterm2 : (useKitty ? (IRenderer)kitty : (useSixel ? sixel : (useBraille ? braille : ascii)));
             active.BeginFrame();
-            var vp = new SR::PigeonPea.Shared.Rendering.Viewport(cameraX, cameraY, System.Math.Max(1, width), System.Math.Max(1, height));
+            var vp = new PigeonPea.Shared.Rendering.Viewport(cameraX, cameraY, System.Math.Max(1, width), System.Math.Max(1, height));
             // Reserve a right sidebar (Terminal.Gui-like) of 28 columns
             int sidebar = System.Math.Min(28, System.Math.Max(10, width / 4));
             int mapCols = System.Math.Max(1, width - sidebar);
@@ -71,28 +70,28 @@ internal static class ConsoleMapDemoRunner
                 int ppc = System.Math.Max(4, System.Math.Min(maxPpc, (int)System.Math.Round(16 / System.Math.Max(zoom, 0.5))))
                     ;
                 var src = new PigeonPea.Map.Rendering.Tiles.MapTileSource();
-                var frame = TilesNS.TileAssembler.Assemble(src, map, new SR::PigeonPea.Shared.Rendering.Viewport(cameraX, cameraY, mapCols, mapRows), mapCols, mapRows, ppc, zoom, true, true);
+                var frame = TilesNS.TileAssembler.Assemble(src, map, new PigeonPea.Shared.Rendering.Viewport(cameraX, cameraY, mapCols, mapRows), mapCols, mapRows, ppc, zoom, true, true);
                 it2.ReplaceAndDisplayImage(5555, frame.Rgba, frame.WidthPx, frame.HeightPx, 0, 0, mapCols, mapRows);
             }
             else
             {
                 // ASCII/Braille branch: use existing ASCII renderer. For Braille/pixel modes, Map.Rendering handles conversion.
-if (active is PigeonPea.Console.Rendering.BrailleRenderer)
-{
-    var brailleGrid = BrailleMapRenderer.RenderToBraille(map, vp, zoom, ppc: 4, biomeColors: true, rivers: true);
-    // Convert char[,] to a single string for DrawText placeholder (first row only to avoid huge output)
-    int rows = brailleGrid.GetLength(0);
-    int cols = brailleGrid.GetLength(1);
-    var sb = new System.Text.StringBuilder(cols);
-    for (int c = 0; c < cols; c++) sb.Append(brailleGrid[0, c]);
-    var brailleLine = sb.ToString();
-    active.DrawText(0, 0, brailleLine, SadRogue.Primitives.Color.White, SadRogue.Primitives.Color.Black);
-}
-else
-{
-    // Minimal placeholder for ASCII/Sixel/Kitty while migration completes
-    active.DrawText(0, 0, "Rendering via Map.Rendering pending migration", SadRogue.Primitives.Color.White, SadRogue.Primitives.Color.Black);
-}
+                if (active is PigeonPea.Console.Rendering.BrailleRenderer)
+                {
+                    var brailleGrid = BrailleMapRenderer.RenderToBraille(map, vp, zoom, ppc: 4, biomeColors: true, rivers: true);
+                    // Convert char[,] to a single string for DrawText placeholder (first row only to avoid huge output)
+                    int rows = brailleGrid.GetLength(0);
+                    int cols = brailleGrid.GetLength(1);
+                    var sb = new System.Text.StringBuilder(cols);
+                    for (int c = 0; c < cols; c++) sb.Append(brailleGrid[0, c]);
+                    var brailleLine = sb.ToString();
+                    active.DrawText(0, 0, brailleLine, SadRogue.Primitives.Color.White, SadRogue.Primitives.Color.Black);
+                }
+                else
+                {
+                    // Minimal placeholder for ASCII/Sixel/Kitty while migration completes
+                    active.DrawText(0, 0, "Rendering via Map.Rendering pending migration", SadRogue.Primitives.Color.White, SadRogue.Primitives.Color.Black);
+                }
             }
 
             // Sidebar content

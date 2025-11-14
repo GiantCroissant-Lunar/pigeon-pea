@@ -24,4 +24,3 @@ public sealed class SimpleNavigator : IMapsuiNavigatorLike
         CenterX = x; CenterY = y;
     }
 }
-

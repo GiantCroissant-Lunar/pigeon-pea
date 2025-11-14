@@ -1,8 +1,8 @@
-using Terminal.Gui;
-using PigeonPea.Shared.Rendering;
-using PigeonPea.Map.Rendering;
 using PigeonPea.Map.Core;
 using PigeonPea.Map.Core.Adapters;
+using PigeonPea.Map.Rendering;
+using PigeonPea.Shared.Rendering;
+using Terminal.Gui;
 
 namespace PigeonPea.Console;
 

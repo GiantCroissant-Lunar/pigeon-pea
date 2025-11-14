@@ -55,4 +55,3 @@ public static class TileAssembler
         return (rgba, widthPx, heightPx);
     }
 }
-

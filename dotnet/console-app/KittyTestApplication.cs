@@ -1,6 +1,6 @@
 using System;
-using Terminal.Gui;
 using PigeonPea.Console.Rendering;
+using Terminal.Gui;
 
 namespace PigeonPea.Console;
 

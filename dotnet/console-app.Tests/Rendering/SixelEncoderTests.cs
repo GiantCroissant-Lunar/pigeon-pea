@@ -10,7 +10,7 @@ namespace PigeonPea.Console.Tests.Rendering;
 public class SixelEncoderTests
 {
     [Fact]
-    public void Encode_WithValidByteArray_ReturnsSixelString()
+    public void EncodeWithValidByteArrayReturnsSixelString()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -37,7 +37,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_WithColorArray_ReturnsSixelString()
+    public void EncodeWithColorArrayReturnsSixelString()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -62,7 +62,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_WithNullImageData_ThrowsArgumentNullException()
+    public void EncodeWithNullImageDataThrowsArgumentNullException()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -72,7 +72,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_WithNullPixels_ThrowsArgumentNullException()
+    public void EncodeWithNullPixelsThrowsArgumentNullException()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -82,7 +82,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_WithInvalidImageDataLength_ThrowsArgumentException()
+    public void EncodeWithInvalidImageDataLengthThrowsArgumentException()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -93,7 +93,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_WithInvalidPixelsLength_ThrowsArgumentException()
+    public void EncodeWithInvalidPixelsLengthThrowsArgumentException()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -104,7 +104,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_WithMultipleColors_IncludesPaletteDefinitions()
+    public void EncodeWithMultipleColorsIncludesPaletteDefinitions()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -125,7 +125,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_WithSingleColor_ProducesValidSixel()
+    public void EncodeWithSingleColorProducesValidSixel()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -150,7 +150,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void CreateTestPattern_ReturnsValidSixel()
+    public void CreateTestPatternReturnsValidSixel()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -166,7 +166,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_WithLargeImage_HandlesMultipleBands()
+    public void EncodeWithLargeImageHandlesMultipleBands()
     {
         // Arrange
         var encoder = new SixelEncoder();
@@ -195,7 +195,7 @@ public class SixelEncoderTests
     }
 
     [Fact]
-    public void Encode_With256UniqueColors_OptimizesPalette()
+    public void EncodeWith256UniqueColorsOptimizesPalette()
     {
         // Arrange
         var encoder = new SixelEncoder();

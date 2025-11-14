@@ -33,7 +33,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void Capabilities_ReportsTrueColorAndCharacterBased()
+    public void CapabilitiesReportsTrueColorAndCharacterBased()
     {
         // Assert
         Assert.True(_renderer.Capabilities.Supports(RendererCapabilities.TrueColor));
@@ -42,7 +42,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void Initialize_WithValidTarget_Succeeds()
+    public void InitializeWithValidTargetSucceeds()
     {
         // Arrange
         var renderer = new SkiaSharpRenderer();
@@ -59,7 +59,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void Initialize_WithNonSkiaTarget_ThrowsArgumentException()
+    public void InitializeWithNonSkiaTargetThrowsArgumentException()
     {
         // Arrange
         var renderer = new SkiaSharpRenderer();
@@ -71,7 +71,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_IncreasesFrameCount()
+    public void BeginFrameIncreasesFrameCount()
     {
         // Arrange
         var initialCount = _renderer.FrameCount;
@@ -84,14 +84,14 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void EndFrame_WithoutBeginFrame_DoesNotThrow()
+    public void EndFrameWithoutBeginFrameDoesNotThrow()
     {
         // Act & Assert - should not throw
         _renderer.EndFrame();
     }
 
     [Fact]
-    public void BeginFrame_EndFrame_TracksFrameTiming()
+    public void BeginFrameEndFrameTracksFrameTiming()
     {
         // Act
         _renderer.BeginFrame();
@@ -102,7 +102,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithValidTile_DrawsToCanvas()
+    public void DrawTileWithValidTileDrawsToCanvas()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -118,7 +118,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithEmptyGlyph_DrawsBackgroundOnly()
+    public void DrawTileWithEmptyGlyphDrawsBackgroundOnly()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -134,7 +134,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithForegroundAndBackground_DrawsBothColors()
+    public void DrawTileWithForegroundAndBackgroundDrawsBothColors()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -150,7 +150,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithValidString_DrawsMultipleTiles()
+    public void DrawTextWithValidStringDrawsMultipleTiles()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -171,7 +171,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithEmptyString_DoesNotThrow()
+    public void DrawTextWithEmptyStringDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -182,7 +182,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithNullString_DoesNotThrow()
+    public void DrawTextWithNullStringDoesNotThrow()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -193,7 +193,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void Clear_WithColor_FillsEntireCanvas()
+    public void ClearWithColorFillsEntireCanvas()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -214,7 +214,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void SetViewport_WithValidViewport_DoesNotThrow()
+    public void SetViewportWithValidViewportDoesNotThrow()
     {
         // Arrange
         var viewport = new Viewport(0, 0, 10, 10);
@@ -224,7 +224,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_BeforeInitialize_ThrowsInvalidOperationException()
+    public void DrawTileBeforeInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var uninitializedRenderer = new SkiaSharpRenderer();
@@ -235,7 +235,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_BeforeInitialize_ThrowsInvalidOperationException()
+    public void BeginFrameBeforeInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var uninitializedRenderer = new SkiaSharpRenderer();
@@ -245,7 +245,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void Clear_BeforeInitialize_ThrowsInvalidOperationException()
+    public void ClearBeforeInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var uninitializedRenderer = new SkiaSharpRenderer();
@@ -255,7 +255,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void GetAverageFrameTime_WithNoFrames_ReturnsZero()
+    public void GetAverageFrameTimeWithNoFramesReturnsZero()
     {
         // Arrange
         var newRenderer = new SkiaSharpRenderer();
@@ -276,7 +276,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void GetAverageFrameTime_WithMultipleFrames_ReturnsPositiveValue()
+    public void GetAverageFrameTimeWithMultipleFramesReturnsPositiveValue()
     {
         // Act
         for (int i = 0; i < 5; i++)
@@ -291,7 +291,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithTrueColorSupport_UsesFullRGBRange()
+    public void DrawTileWithTrueColorSupportUsesFullRGBRange()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -310,7 +310,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void Dispose_CanBeCalledMultipleTimes()
+    public void DisposeCanBeCalledMultipleTimes()
     {
         // Arrange
         var bitmap = new SKBitmap(160, 160);
@@ -329,7 +329,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_AfterDispose_ThrowsObjectDisposedException()
+    public void BeginFrameAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         var bitmap = new SKBitmap(160, 160);
@@ -348,7 +348,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_AfterDispose_ThrowsObjectDisposedException()
+    public void DrawTileAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         var bitmap = new SKBitmap(160, 160);
@@ -368,7 +368,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithSpriteId_DrawsSprite()
+    public void DrawTileWithSpriteIdDrawsSprite()
     {
         // Arrange
         using var spriteManager = CreateTestSpriteAtlasManager();
@@ -387,7 +387,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithNonexistentSpriteId_FallsBackToGlyph()
+    public void DrawTileWithNonexistentSpriteIdFallsBackToGlyph()
     {
         // Arrange
         using var spriteManager = CreateTestSpriteAtlasManager();
@@ -406,7 +406,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithSpriteId_ScalesToTileSize()
+    public void DrawTileWithSpriteIdScalesToTileSize()
     {
         // Arrange
         using var spriteManager = CreateTestSpriteAtlasManager();
@@ -426,7 +426,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithoutSpriteManager_DrawsGlyphOnly()
+    public void DrawTileWithoutSpriteManagerDrawsGlyphOnly()
     {
         // Arrange
         _renderer.BeginFrame();
@@ -442,7 +442,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void SetSpriteAtlasManager_WithValidManager_SetsSuccessfully()
+    public void SetSpriteAtlasManagerWithValidManagerSetsSuccessfully()
     {
         // Arrange
         using var spriteManager = CreateTestSpriteAtlasManager();
@@ -452,7 +452,7 @@ public class SkiaSharpRendererTests : IDisposable
     }
 
     [Fact]
-    public void SetSpriteAtlasManager_WithNull_AllowsNullValue()
+    public void SetSpriteAtlasManagerWithNullAllowsNullValue()
     {
         // Act & Assert - should not throw
         _renderer.SetSpriteAtlasManager(null);

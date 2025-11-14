@@ -49,14 +49,14 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Constructor_InheritsFromReactiveObject()
+    public void ConstructorInheritsFromReactiveObject()
     {
         // Assert
         _viewModel.Should().BeAssignableTo<ReactiveUI.ReactiveObject>();
     }
 
     [Fact]
-    public void Messages_ReturnsObservableCollection()
+    public void MessagesReturnsObservableCollection()
     {
         // Assert
         _viewModel.Messages.Should().NotBeNull();
@@ -66,7 +66,7 @@ public class MessageLogViewModelTests : IDisposable
 
 
     [Fact]
-    public void PlayerDamagedEvent_AddsMessageWithCombatType()
+    public void PlayerDamagedEventAddsMessageWithCombatType()
     {
         // Arrange
         var damageEvent = new PlayerDamagedEvent
@@ -87,7 +87,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void ItemPickedUpEvent_AddsMessageWithInventoryType()
+    public void ItemPickedUpEventAddsMessageWithInventoryType()
     {
         // Arrange
         var pickupEvent = new ItemPickedUpEvent
@@ -107,7 +107,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void GameStateChangedEvent_AddsMessageWithGameStateType()
+    public void GameStateChangedEventAddsMessageWithGameStateType()
     {
         // Arrange
         var stateEvent = new GameStateChangedEvent
@@ -127,7 +127,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void AddMessage_AddsMessageToCollection()
+    public void AddMessageAddsMessageToCollection()
     {
         // Act
         _viewModel.AddMessage("Test message", MessageType.Combat);
@@ -139,7 +139,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void AddMessage_WithMultipleMessages_AddsThemInOrder()
+    public void AddMessageWithMultipleMessagesAddsThemInOrder()
     {
         // Act
         _viewModel.AddMessage("First message", MessageType.Combat);
@@ -154,7 +154,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void AddMessage_WhenExceeding100Messages_RemovesOldestMessages()
+    public void AddMessageWhenExceeding100MessagesRemovesOldestMessages()
     {
         // Arrange - Add 105 messages
         for (int i = 0; i < 105; i++)
@@ -169,7 +169,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void AddMessage_Exactly100Messages_DoesNotRemoveAny()
+    public void AddMessageExactly100MessagesDoesNotRemoveAny()
     {
         // Arrange - Add exactly 100 messages
         for (int i = 0; i < 100; i++)
@@ -184,7 +184,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void AddMessage_With99Messages_DoesNotRemoveAny()
+    public void AddMessageWith99MessagesDoesNotRemoveAny()
     {
         // Arrange - Add 99 messages
         for (int i = 0; i < 99; i++)
@@ -198,7 +198,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void AddMessage_SupportsDifferentMessageTypes()
+    public void AddMessageSupportsDifferentMessageTypes()
     {
         // Act
         _viewModel.AddMessage("Combat message", MessageType.Combat);
@@ -217,7 +217,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void MultipleEvents_AddMessagesInOrder()
+    public void MultipleEventsAddMessagesInOrder()
     {
         // Act
         _combatPublisher.Publish(new PlayerDamagedEvent
@@ -247,7 +247,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Dispose_DisposesSubscriptions()
+    public void DisposeDisposesSubscriptions()
     {
         // Act
         _viewModel.Dispose();
@@ -266,7 +266,7 @@ public class MessageLogViewModelTests : IDisposable
     }
 
     [Fact]
-    public void Messages_IsEmptyInitially()
+    public void MessagesIsEmptyInitially()
     {
         // Assert
         _viewModel.Messages.Should().BeEmpty();

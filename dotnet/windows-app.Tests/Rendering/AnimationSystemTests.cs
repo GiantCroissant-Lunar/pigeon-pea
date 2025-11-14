@@ -11,7 +11,7 @@ public class AnimationSystemTests
     #region Animation Tests
 
     [Fact]
-    public void Animation_GetFrameIndex_WithZeroElapsedTime_ReturnsFirstFrame()
+    public void AnimationGetFrameIndexWithZeroElapsedTimeReturnsFirstFrame()
     {
         // Arrange
         var animation = new Animation
@@ -30,7 +30,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_GetFrameIndex_WithElapsedTime_ReturnsCorrectFrame()
+    public void AnimationGetFrameIndexWithElapsedTimeReturnsCorrectFrame()
     {
         // Arrange
         var animation = new Animation
@@ -49,7 +49,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_GetFrameIndex_LoopingAnimation_WrapsAround()
+    public void AnimationGetFrameIndexLoopingAnimationWrapsAround()
     {
         // Arrange
         var animation = new Animation
@@ -68,7 +68,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_GetFrameIndex_NonLoopingAnimation_ClampsToEnd()
+    public void AnimationGetFrameIndexNonLoopingAnimationClampsToEnd()
     {
         // Arrange
         var animation = new Animation
@@ -87,7 +87,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_GetCurrentFrame_ReturnsCorrectSpriteId()
+    public void AnimationGetCurrentFrameReturnsCorrectSpriteId()
     {
         // Arrange
         var animation = new Animation
@@ -106,7 +106,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_GetCurrentFrame_WhenComplete_ReturnsNull()
+    public void AnimationGetCurrentFrameWhenCompleteReturnsNull()
     {
         // Arrange
         var animation = new Animation
@@ -125,7 +125,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_IsComplete_LoopingAnimation_ReturnsFalse()
+    public void AnimationIsCompleteLoopingAnimationReturnsFalse()
     {
         // Arrange
         var animation = new Animation
@@ -144,7 +144,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_IsComplete_NonLoopingAnimation_ReturnsTrue()
+    public void AnimationIsCompleteNonLoopingAnimationReturnsTrue()
     {
         // Arrange
         var animation = new Animation
@@ -163,7 +163,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_TotalDuration_CalculatesCorrectly()
+    public void AnimationTotalDurationCalculatesCorrectly()
     {
         // Arrange
         var animation = new Animation
@@ -182,7 +182,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_WithEmptyFrames_GetFrameIndexReturnsNegative()
+    public void AnimationWithEmptyFramesGetFrameIndexReturnsNegative()
     {
         // Arrange
         var animation = new Animation
@@ -201,7 +201,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_WithZeroFrameDuration_ReturnsFirstFrame()
+    public void AnimationWithZeroFrameDurationReturnsFirstFrame()
     {
         // Arrange
         var animation = new Animation
@@ -220,7 +220,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_GetFrameIndex_WithNegativeElapsedTime_ReturnsFirstFrame()
+    public void AnimationGetFrameIndexWithNegativeElapsedTimeReturnsFirstFrame()
     {
         // Arrange
         var animation = new Animation
@@ -239,7 +239,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_GetFrameIndex_WithNaNElapsedTime_ReturnsFirstFrame()
+    public void AnimationGetFrameIndexWithNaNElapsedTimeReturnsFirstFrame()
     {
         // Arrange
         var animation = new Animation
@@ -258,7 +258,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void Animation_GetFrameIndex_WithInfinityElapsedTime_ReturnsFirstFrame()
+    public void AnimationGetFrameIndexWithInfinityElapsedTimeReturnsFirstFrame()
     {
         // Arrange
         var animation = new Animation
@@ -281,7 +281,7 @@ public class AnimationSystemTests
     #region AnimationSystem Tests
 
     [Fact]
-    public void AnimationSystem_InitialState_HasNoAnimations()
+    public void AnimationSystemInitialStateHasNoAnimations()
     {
         // Arrange & Act
         var system = new AnimationSystem();
@@ -292,7 +292,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_RegisterAnimation_AddsAnimation()
+    public void AnimationSystemRegisterAnimationAddsAnimation()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -312,7 +312,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_RegisterAnimation_WithNullAnimation_ThrowsArgumentNullException()
+    public void AnimationSystemRegisterAnimationWithNullAnimationThrowsArgumentNullException()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -322,7 +322,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_RegisterAnimation_WithDuplicateId_ThrowsInvalidOperationException()
+    public void AnimationSystemRegisterAnimationWithDuplicateIdThrowsInvalidOperationException()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -346,7 +346,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_HasAnimation_WithUnregisteredId_ReturnsFalse()
+    public void AnimationSystemHasAnimationWithUnregisteredIdReturnsFalse()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -356,7 +356,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_PlayAnimation_ReturnsValidInstanceId()
+    public void AnimationSystemPlayAnimationReturnsValidInstanceId()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -377,7 +377,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_PlayAnimation_WithUnregisteredId_ReturnsNegative()
+    public void AnimationSystemPlayAnimationWithUnregisteredIdReturnsNegative()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -391,7 +391,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_PlayAnimation_MultipleTimes_CreatesMultipleInstances()
+    public void AnimationSystemPlayAnimationMultipleTimesCreatesMultipleInstances()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -413,7 +413,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_StopAnimation_RemovesInstance()
+    public void AnimationSystemStopAnimationRemovesInstance()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -435,7 +435,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_StopAnimation_WithInvalidId_ReturnsFalse()
+    public void AnimationSystemStopAnimationWithInvalidIdReturnsFalse()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -448,7 +448,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_Update_AdvancesElapsedTime()
+    public void AnimationSystemUpdateAdvancesElapsedTime()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -472,7 +472,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_Update_RemovesCompletedNonLoopingAnimations()
+    public void AnimationSystemUpdateRemovesCompletedNonLoopingAnimations()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -495,7 +495,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_Update_KeepsLoopingAnimations()
+    public void AnimationSystemUpdateKeepsLoopingAnimations()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -518,7 +518,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_GetCurrentFrame_ReturnsCorrectSpriteId()
+    public void AnimationSystemGetCurrentFrameReturnsCorrectSpriteId()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -541,7 +541,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_GetCurrentFrame_WithInvalidInstanceId_ReturnsNull()
+    public void AnimationSystemGetCurrentFrameWithInvalidInstanceIdReturnsNull()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -554,7 +554,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_IsInstanceActive_WithActiveInstance_ReturnsTrue()
+    public void AnimationSystemIsInstanceActiveWithActiveInstanceReturnsTrue()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -572,7 +572,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_IsInstanceActive_WithInactiveInstance_ReturnsFalse()
+    public void AnimationSystemIsInstanceActiveWithInactiveInstanceReturnsFalse()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -582,7 +582,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_GetElapsedTime_WithActiveInstance_ReturnsElapsedTime()
+    public void AnimationSystemGetElapsedTimeWithActiveInstanceReturnsElapsedTime()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -605,7 +605,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_GetElapsedTime_WithInvalidInstanceId_ReturnsNull()
+    public void AnimationSystemGetElapsedTimeWithInvalidInstanceIdReturnsNull()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -618,7 +618,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_ClearInstances_RemovesAllInstances()
+    public void AnimationSystemClearInstancesRemovesAllInstances()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -641,7 +641,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_Clear_RemovesEverything()
+    public void AnimationSystemClearRemovesEverything()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -663,7 +663,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_Update_WithNegativeDeltaTime_DoesNotUpdate()
+    public void AnimationSystemUpdateWithNegativeDeltaTimeDoesNotUpdate()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -686,7 +686,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_Update_WithNaNDeltaTime_DoesNotUpdate()
+    public void AnimationSystemUpdateWithNaNDeltaTimeDoesNotUpdate()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -709,7 +709,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_Update_WithInfinityDeltaTime_DoesNotUpdate()
+    public void AnimationSystemUpdateWithInfinityDeltaTimeDoesNotUpdate()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -736,7 +736,7 @@ public class AnimationSystemTests
     #region Integration Tests
 
     [Fact]
-    public void AnimationSystem_FullLifecycle_RegisterPlayUpdateStop()
+    public void AnimationSystemFullLifecycleRegisterPlayUpdateStop()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -769,7 +769,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_MultipleAnimations_CanCoexist()
+    public void AnimationSystemMultipleAnimationsCanCoexist()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -809,7 +809,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_OneShotAnimation_CompletesAutomatically()
+    public void AnimationSystemOneShotAnimationCompletesAutomatically()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -845,7 +845,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_LoopingAnimation_NeverCompletes()
+    public void AnimationSystemLoopingAnimationNeverCompletes()
     {
         // Arrange
         var system = new AnimationSystem();
@@ -873,7 +873,7 @@ public class AnimationSystemTests
     }
 
     [Fact]
-    public void AnimationSystem_MultipleInstancesOfSameAnimation_IndependentTiming()
+    public void AnimationSystemMultipleInstancesOfSameAnimationIndependentTiming()
     {
         // Arrange
         var system = new AnimationSystem();

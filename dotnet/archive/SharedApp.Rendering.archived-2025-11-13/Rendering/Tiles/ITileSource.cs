@@ -15,4 +15,3 @@ public interface ITileSource
     // Time-aware overload for animation
     TileImage GetTile(MapData map, Viewport worldViewport, TileRequest req, double zoom, bool biomeColors, bool rivers, double timeSeconds);
 }
-

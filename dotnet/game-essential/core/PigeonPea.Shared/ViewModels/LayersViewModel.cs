@@ -41,4 +41,3 @@ public class LayersViewModel : ReactiveObject
 {
     public ObservableCollection<LayerViewModel> Layers { get; } = new();
 }
-

@@ -14,7 +14,7 @@ public sealed class FovCalculator
     }
 
     // Bresenham LOS per target tile, Manhattan range cutoff
-    public bool[,] ComputeVisible(int originX, int originY, int range, RadiusType radius = RadiusType.Manhattan, Func<(int x,int y), double>? tileOpacity = null, double blockThreshold = 0.99)
+    public bool[,] ComputeVisible(int originX, int originY, int range, RadiusType radius = RadiusType.Manhattan, Func<(int x, int y), double>? tileOpacity = null, double blockThreshold = 0.99)
     {
         var vis = new bool[_dungeon.Height, _dungeon.Width];
         if (!_dungeon.InBounds(originX, originY)) return vis;
@@ -43,12 +43,12 @@ public sealed class FovCalculator
         {
             RadiusType.Manhattan => dx + dy <= range,
             RadiusType.Chebyshev => System.Math.Max(dx, dy) <= range,
-            RadiusType.Euclidean => (dx*dx + dy*dy) <= range * range,
+            RadiusType.Euclidean => (dx * dx + dy * dy) <= range * range,
             _ => dx + dy <= range,
         };
     }
 
-    private bool HasLineOfSightWeighted(int x0, int y0, int x1, int y1, Func<(int x,int y), double>? tileOpacity, double blockThreshold)
+    private bool HasLineOfSightWeighted(int x0, int y0, int x1, int y1, Func<(int x, int y), double>? tileOpacity, double blockThreshold)
     {
         int dx = System.Math.Abs(x1 - x0);
         int sx = x0 < x1 ? 1 : -1;
@@ -61,7 +61,7 @@ public sealed class FovCalculator
         {
             if (!(x == x0 && y == y0))
             {
-                double op = tileOpacity?.Invoke((x,y)) ?? (_dungeon.IsOpaque(x, y) ? 1.0 : 0.0);
+                double op = tileOpacity?.Invoke((x, y)) ?? (_dungeon.IsOpaque(x, y) ? 1.0 : 0.0);
                 accum += op;
                 if (accum >= blockThreshold) return false;
             }
@@ -72,4 +72,3 @@ public sealed class FovCalculator
         }
     }
 }
-

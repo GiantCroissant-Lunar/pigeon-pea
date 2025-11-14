@@ -34,6 +34,7 @@ public sealed class DungeonData
     {
         if (!InBounds(x, y)) return;
         Walkable[y, x] = value;
+        Opaque[y, x] = !value;
     }
 
     public void SetOpaque(int x, int y, bool value)
@@ -73,7 +74,7 @@ public sealed class DungeonData
         Opaque[y, x] = false;
     }
 
-    public bool IsDoor(int x, int y) => InBounds(x,y) && Doors[y,x] != DoorState.None;
-    public bool IsDoorOpen(int x, int y) => InBounds(x,y) && Doors[y,x] == DoorState.Open;
-    public bool IsDoorClosed(int x, int y) => InBounds(x,y) && Doors[y,x] == DoorState.Closed;
+    public bool IsDoor(int x, int y) => InBounds(x, y) && Doors[y, x] != DoorState.None;
+    public bool IsDoorOpen(int x, int y) => InBounds(x, y) && Doors[y, x] == DoorState.Open;
+    public bool IsDoorClosed(int x, int y) => InBounds(x, y) && Doors[y, x] == DoorState.Closed;
 }

@@ -12,7 +12,7 @@ public class ColorGradientTests
     #region Lerp Tests
 
     [Fact]
-    public void Lerp_WithT0_ReturnsFirstColor()
+    public void LerpWithT0ReturnsFirstColor()
     {
         // Arrange
         var colorA = new Color(255, 128, 64, 255);
@@ -26,7 +26,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void Lerp_WithT1_ReturnsSecondColor()
+    public void LerpWithT1ReturnsSecondColor()
     {
         // Arrange
         var colorA = new Color(255, 128, 64, 255);
@@ -40,7 +40,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void Lerp_WithT05_ReturnsMiddleColor()
+    public void LerpWithT05ReturnsMiddleColor()
     {
         // Arrange
         var colorA = new Color(100, 200, 50, 255);
@@ -57,7 +57,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void Lerp_WithDifferentAlpha_InterpolatesAlpha()
+    public void LerpWithDifferentAlphaInterpolatesAlpha()
     {
         // Arrange
         var colorA = new Color(255, 255, 255, 255);
@@ -71,7 +71,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void Lerp_BlackToWhite_InterpolatesCorrectly()
+    public void LerpBlackToWhiteInterpolatesCorrectly()
     {
         // Arrange
         var black = Color.Black;
@@ -87,7 +87,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void Lerp_RedToBlue_InterpolatesCorrectly()
+    public void LerpRedToBlueInterpolatesCorrectly()
     {
         // Arrange
         var red = Color.Red;
@@ -107,7 +107,7 @@ public class ColorGradientTests
     #region CreateGradient Tests
 
     [Fact]
-    public void CreateGradient_WithTwoSteps_ReturnsStartAndEnd()
+    public void CreateGradientWithTwoStepsReturnsStartAndEnd()
     {
         // Arrange
         var start = Color.Red;
@@ -123,7 +123,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void CreateGradient_WithThreeSteps_ReturnsStartMiddleEnd()
+    public void CreateGradientWithThreeStepsReturnsStartMiddleEnd()
     {
         // Arrange
         var start = new Color(0, 0, 0, 255);
@@ -140,7 +140,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void CreateGradient_WithFiveSteps_ReturnsCorrectGradient()
+    public void CreateGradientWithFiveStepsReturnsCorrectGradient()
     {
         // Arrange
         var start = Color.Black;
@@ -159,7 +159,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void CreateGradient_WithLessThanTwoSteps_ThrowsArgumentException()
+    public void CreateGradientWithLessThanTwoStepsThrowsArgumentException()
     {
         // Arrange
         var start = Color.Red;
@@ -172,7 +172,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void CreateGradient_WithSameStartAndEnd_ReturnsUniformGradient()
+    public void CreateGradientWithSameStartAndEndReturnsUniformGradient()
     {
         // Arrange
         var color = new Color(123, 45, 67, 89);
@@ -190,7 +190,7 @@ public class ColorGradientTests
     #region ApplyDistanceFade Tests
 
     [Fact]
-    public void ApplyDistanceFade_WithZeroDistance_ReturnsBaseColor()
+    public void ApplyDistanceFadeWithZeroDistanceReturnsBaseColor()
     {
         // Arrange
         var baseColor = Color.Red;
@@ -205,7 +205,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithMaxDistance_ReturnsBlack()
+    public void ApplyDistanceFadeWithMaxDistanceReturnsBlack()
     {
         // Arrange
         var baseColor = Color.Yellow;
@@ -220,7 +220,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithHalfDistance_ReturnsMiddleColor()
+    public void ApplyDistanceFadeWithHalfDistanceReturnsMiddleColor()
     {
         // Arrange
         var baseColor = new Color(200, 100, 50, 255);
@@ -237,7 +237,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithDistanceBeyondMax_ReturnsClampedBlack()
+    public void ApplyDistanceFadeWithDistanceBeyondMaxReturnsClampedBlack()
     {
         // Arrange
         var baseColor = Color.White;
@@ -252,7 +252,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithNegativeDistance_ReturnsClampedBaseColor()
+    public void ApplyDistanceFadeWithNegativeDistanceReturnsClampedBaseColor()
     {
         // Arrange
         var baseColor = Color.Green;
@@ -267,7 +267,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithQuarterDistance_ReturnsFadedColor()
+    public void ApplyDistanceFadeWithQuarterDistanceReturnsFadedColor()
     {
         // Arrange
         var baseColor = new Color(100, 80, 60, 255);
@@ -285,7 +285,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_MultipleDistances_ProducesGradualFade()
+    public void ApplyDistanceFadeMultipleDistancesProducesGradualFade()
     {
         // Arrange
         var baseColor = Color.Red;
@@ -307,7 +307,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithZeroMaxDistance_AndZeroDistance_ReturnsBaseColor()
+    public void ApplyDistanceFadeWithZeroMaxDistanceAndZeroDistanceReturnsBaseColor()
     {
         // Arrange
         var baseColor = Color.Yellow;
@@ -322,7 +322,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithZeroMaxDistance_AndPositiveDistance_ReturnsBlack()
+    public void ApplyDistanceFadeWithZeroMaxDistanceAndPositiveDistanceReturnsBlack()
     {
         // Arrange
         var baseColor = Color.Yellow;
@@ -337,7 +337,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithNegativeMaxDistance_AndZeroDistance_ReturnsBaseColor()
+    public void ApplyDistanceFadeWithNegativeMaxDistanceAndZeroDistanceReturnsBaseColor()
     {
         // Arrange
         var baseColor = Color.Blue;
@@ -352,7 +352,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void ApplyDistanceFade_WithNegativeMaxDistance_AndPositiveDistance_ReturnsBlack()
+    public void ApplyDistanceFadeWithNegativeMaxDistanceAndPositiveDistanceReturnsBlack()
     {
         // Arrange
         var baseColor = Color.Blue;
@@ -367,7 +367,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void Lerp_WithTBelowZero_ClampsToZero()
+    public void LerpWithTBelowZeroClampsToZero()
     {
         // Arrange
         var colorA = new Color(100, 150, 200, 255);
@@ -381,7 +381,7 @@ public class ColorGradientTests
     }
 
     [Fact]
-    public void Lerp_WithTAboveOne_ClampsToOne()
+    public void LerpWithTAboveOneClampsToOne()
     {
         // Arrange
         var colorA = new Color(100, 150, 200, 255);

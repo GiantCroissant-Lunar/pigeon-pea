@@ -31,7 +31,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithAutoDetection_ReturnsNonNullRenderer()
+    public void CreateRendererWithAutoDetectionReturnsNonNullRenderer()
     {
         // Act
         var renderer = TerminalRendererFactory.CreateRenderer();
@@ -41,7 +41,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithKittyCapabilities_ReturnsKittyRenderer()
+    public void CreateRendererWithKittyCapabilitiesReturnsKittyRenderer()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
@@ -57,7 +57,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithSixelCapabilities_ReturnsSixelRenderer()
+    public void CreateRendererWithSixelCapabilitiesReturnsSixelRenderer()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("TERM", "xterm-256color-sixel"))
@@ -74,7 +74,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithBrailleCapabilitiesOnly_ReturnsBrailleRenderer()
+    public void CreateRendererWithBrailleCapabilitiesOnlyReturnsBrailleRenderer()
     {
         // Arrange - minimal environment with no Kitty or Sixel
         using (new ScopedEnvironmentVariable("TERM", "xterm"))
@@ -93,7 +93,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithMinimalCapabilities_ReturnsAsciiRenderer()
+    public void CreateRendererWithMinimalCapabilitiesReturnsAsciiRenderer()
     {
         // Arrange - create capabilities with all graphics disabled
         var capabilities = new TerminalCapabilities(
@@ -111,7 +111,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithKittyAndSixel_PrefersKitty()
+    public void CreateRendererWithKittyAndSixelPrefersKitty()
     {
         // Arrange - terminal that supports both
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
@@ -128,7 +128,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithManualKittyOverride_ReturnsKittyRenderer()
+    public void CreateRendererWithManualKittyOverrideReturnsKittyRenderer()
     {
         // Arrange - environment with no Kitty support
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", null))
@@ -143,7 +143,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithManualSixelOverride_ReturnsSixelRenderer()
+    public void CreateRendererWithManualSixelOverrideReturnsSixelRenderer()
     {
         // Arrange - environment with Kitty support
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
@@ -157,7 +157,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithManualBrailleOverride_ReturnsBrailleRenderer()
+    public void CreateRendererWithManualBrailleOverrideReturnsBrailleRenderer()
     {
         // Arrange - environment with all graphics protocols
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
@@ -172,7 +172,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithManualAsciiOverride_ReturnsAsciiRenderer()
+    public void CreateRendererWithManualAsciiOverrideReturnsAsciiRenderer()
     {
         // Arrange - environment with all graphics protocols
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
@@ -187,7 +187,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithCapabilitiesAndKittyOverride_ReturnsKittyRenderer()
+    public void CreateRendererWithCapabilitiesAndKittyOverrideReturnsKittyRenderer()
     {
         // Arrange - capabilities without Kitty
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", null))
@@ -204,7 +204,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithNullCapabilities_ThrowsArgumentNullException()
+    public void CreateRendererWithNullCapabilitiesThrowsArgumentNullException()
     {
         // Act & Assert
         Assert.Throws<ArgumentNullException>(() =>
@@ -212,7 +212,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithAutoType_UsesCapabilityDetection()
+    public void CreateRendererWithAutoTypeUsesCapabilityDetection()
     {
         // Arrange
         using (new ScopedEnvironmentVariable("KITTY_WINDOW_ID", "1"))
@@ -228,7 +228,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_SelectionPriorityOrder_IsCorrect()
+    public void CreateRendererSelectionPriorityOrderIsCorrect()
     {
         // This test verifies the priority order: Kitty > Sixel > Braille > ASCII
 
@@ -262,7 +262,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_AllOverrideTypes_CreateValidRenderers()
+    public void CreateRendererAllOverrideTypesCreateValidRenderers()
     {
         // Test that each override type creates a valid, usable renderer
         var types = new[]
@@ -289,7 +289,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_RendererImplementsIRenderer()
+    public void CreateRendererRendererImplementsIRenderer()
     {
         // Arrange & Act
         var renderer = TerminalRendererFactory.CreateRenderer(TerminalRendererFactory.RendererType.Ascii);
@@ -299,7 +299,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithAutoDetection_ReturnsValidRenderer()
+    public void CreateRendererWithAutoDetectionReturnsValidRenderer()
     {
         // Act
         var renderer = TerminalRendererFactory.CreateRenderer();
@@ -317,7 +317,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_MultipleCalls_CreatesSeparateInstances()
+    public void CreateRendererMultipleCallsCreatesSeparateInstances()
     {
         // Act
         var renderer1 = TerminalRendererFactory.CreateRenderer(TerminalRendererFactory.RendererType.Ascii);
@@ -328,7 +328,7 @@ public class TerminalRendererFactoryTests
     }
 
     [Fact]
-    public void CreateRenderer_WithCapabilities_RespectsProvidedCapabilities()
+    public void CreateRendererWithCapabilitiesRespectsProvidedCapabilities()
     {
         // Arrange - create capabilities with Sixel
         using (new ScopedEnvironmentVariable("TERM", "xterm-256color-sixel"))

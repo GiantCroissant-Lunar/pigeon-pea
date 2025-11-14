@@ -9,7 +9,7 @@ namespace PigeonPea.Console.Tests;
 public class ProgramTests
 {
     [Fact]
-    public void ParseArguments_WithNoArguments_UsesDefaults()
+    public void ParseArgumentsWithNoArgumentsUsesDefaults()
     {
         // Arrange
         var (rootCommand, rendererOption, debugOption, widthOption, heightOption) = CreateRootCommand();
@@ -27,7 +27,7 @@ public class ProgramTests
     }
 
     [Fact]
-    public void ParseArguments_WithRendererOption_ParsesCorrectly()
+    public void ParseArgumentsWithRendererOptionParsesCorrectly()
     {
         // Arrange
         var (rootCommand, rendererOption, _, _, _) = CreateRootCommand();
@@ -47,7 +47,7 @@ public class ProgramTests
     [InlineData("sixel")]
     [InlineData("braille")]
     [InlineData("ascii")]
-    public void ParseArguments_WithValidRendererValues_ParsesCorrectly(string renderer)
+    public void ParseArgumentsWithValidRendererValuesParsesCorrectly(string renderer)
     {
         // Arrange
         var (rootCommand, rendererOption, _, _, _) = CreateRootCommand();
@@ -62,7 +62,7 @@ public class ProgramTests
     }
 
     [Fact]
-    public void ParseArguments_WithDebugOption_ParsesCorrectly()
+    public void ParseArgumentsWithDebugOptionParsesCorrectly()
     {
         // Arrange
         var (rootCommand, _, debugOption, _, _) = CreateRootCommand();
@@ -77,7 +77,7 @@ public class ProgramTests
     }
 
     [Fact]
-    public void ParseArguments_WithWidthAndHeight_ParsesCorrectly()
+    public void ParseArgumentsWithWidthAndHeightParsesCorrectly()
     {
         // Arrange
         var (rootCommand, _, _, widthOption, heightOption) = CreateRootCommand();
@@ -93,7 +93,7 @@ public class ProgramTests
     }
 
     [Fact]
-    public void ParseArguments_WithAllOptions_ParsesCorrectly()
+    public void ParseArgumentsWithAllOptionsParsesCorrectly()
     {
         // Arrange
         var (rootCommand, rendererOption, debugOption, widthOption, heightOption) = CreateRootCommand();
@@ -111,7 +111,7 @@ public class ProgramTests
     }
 
     [Fact]
-    public void ParseArguments_WithInvalidWidth_ReportsError()
+    public void ParseArgumentsWithInvalidWidthReportsError()
     {
         // Arrange
         var (rootCommand, _, _, _, _) = CreateRootCommand();
@@ -125,7 +125,7 @@ public class ProgramTests
     }
 
     [Fact]
-    public void ParseArguments_WithInvalidHeight_ReportsError()
+    public void ParseArgumentsWithInvalidHeightReportsError()
     {
         // Arrange
         var (rootCommand, _, _, _, _) = CreateRootCommand();
@@ -139,7 +139,7 @@ public class ProgramTests
     }
 
     [Fact]
-    public void ParseArguments_HelpOption_IsSupported()
+    public void ParseArgumentsHelpOptionIsSupported()
     {
         // Arrange
         var (rootCommand, _, _, _, _) = CreateRootCommand();

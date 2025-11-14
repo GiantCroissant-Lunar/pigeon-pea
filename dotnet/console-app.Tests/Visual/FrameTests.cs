@@ -8,7 +8,7 @@ namespace PigeonPea.Console.Tests.Visual;
 public class FrameTests
 {
     [Fact]
-    public void PlainContent_NoAnsiCodes_ReturnsSameContent()
+    public void PlainContentNoAnsiCodesReturnsSameContent()
     {
         // Arrange
         var frame = new Frame
@@ -24,7 +24,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithSgrCodes_RemovesColorCodes()
+    public void PlainContentWithSgrCodesRemovesColorCodes()
     {
         // Arrange
         var frame = new Frame
@@ -42,7 +42,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithMultipleSgrCodes_RemovesAllColorCodes()
+    public void PlainContentWithMultipleSgrCodesRemovesAllColorCodes()
     {
         // Arrange
         var frame = new Frame
@@ -60,7 +60,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithCursorPositioning_RemovesCursorCodes()
+    public void PlainContentWithCursorPositioningRemovesCursorCodes()
     {
         // Arrange
         var frame = new Frame
@@ -78,7 +78,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithEraseCommands_RemovesEraseCodes()
+    public void PlainContentWithEraseCommandsRemovesEraseCodes()
     {
         // Arrange
         var frame = new Frame
@@ -96,7 +96,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithOscSequences_RemovesOscCodes()
+    public void PlainContentWithOscSequencesRemovesOscCodes()
     {
         // Arrange
         var frame = new Frame
@@ -115,7 +115,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithOscSequencesEscTerminator_RemovesOscCodes()
+    public void PlainContentWithOscSequencesEscTerminatorRemovesOscCodes()
     {
         // Arrange
         var frame = new Frame
@@ -133,7 +133,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithApcSequences_RemovesApcCodes()
+    public void PlainContentWithApcSequencesRemovesApcCodes()
     {
         // Arrange
         var frame = new Frame
@@ -151,7 +151,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithComplexMixedContent_RemovesAllAnsiCodes()
+    public void PlainContentWithComplexMixedContentRemovesAllAnsiCodes()
     {
         // Arrange
         var frame = new Frame
@@ -168,7 +168,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_EmptyString_ReturnsEmptyString()
+    public void PlainContentEmptyStringReturnsEmptyString()
     {
         // Arrange
         var frame = new Frame
@@ -184,7 +184,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_OnlyAnsiCodes_ReturnsEmptyString()
+    public void PlainContentOnlyAnsiCodesReturnsEmptyString()
     {
         // Arrange
         var frame = new Frame
@@ -200,7 +200,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_TextWithNewlinesAndTabs_PreservesWhitespace()
+    public void PlainContentTextWithNewlinesAndTabsPreservesWhitespace()
     {
         // Arrange
         var frame = new Frame
@@ -216,7 +216,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_MixedAnsiAndWhitespace_RemovesOnlyAnsi()
+    public void PlainContentMixedAnsiAndWhitespaceRemovesOnlyAnsi()
     {
         // Arrange
         var frame = new Frame
@@ -234,7 +234,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void Timestamp_SetAndGet_WorksCorrectly()
+    public void TimestampSetAndGetWorksCorrectly()
     {
         // Arrange
         var frame = new Frame();
@@ -247,7 +247,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void Content_SetAndGet_WorksCorrectly()
+    public void ContentSetAndGetWorksCorrectly()
     {
         // Arrange
         var frame = new Frame();
@@ -260,7 +260,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void DefaultConstructor_InitializesEmptyContent()
+    public void DefaultConstructorInitializesEmptyContent()
     {
         // Act
         var frame = new Frame();
@@ -271,7 +271,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithKittyGraphicsProtocol_RemovesKittyCommands()
+    public void PlainContentWithKittyGraphicsProtocolRemovesKittyCommands()
     {
         // Arrange
         var frame = new Frame
@@ -289,7 +289,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_WithCharacterSetSequences_RemovesSequences()
+    public void PlainContentWithCharacterSetSequencesRemovesSequences()
     {
         // Arrange
         var frame = new Frame
@@ -307,7 +307,7 @@ public class FrameTests
     }
 
     [Fact]
-    public void PlainContent_RealWorldExample_RemovesAnsiCorrectly()
+    public void PlainContentRealWorldExampleRemovesAnsiCorrectly()
     {
         // Arrange - Simulating actual terminal output with colors and positioning
         var frame = new Frame

@@ -111,7 +111,7 @@ public sealed class BasicDungeonGenerator : IDungeonGenerator
 
         return d;
 
-        static void TryPlaceDoorAtRoomBoundary(DungeonData d, List<(int x,int y,int w,int h)> rooms, (int x,int y) roomCenter, (int x,int y) entry)
+        static void TryPlaceDoorAtRoomBoundary(DungeonData d, List<(int x, int y, int w, int h)> rooms, (int x, int y) roomCenter, (int x, int y) entry)
         {
             if (!d.InBounds(roomCenter.x, roomCenter.y) || !d.InBounds(entry.x, entry.y)) return;
             // Room membership

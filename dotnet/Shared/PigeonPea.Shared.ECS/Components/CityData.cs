@@ -15,4 +15,24 @@ public struct CityData
         Population = population;
         CultureId = cultureId;
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(CityData left, CityData right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(CityData left, CityData right)
+    {
+        return !(left == right);
+    }
 }

@@ -15,6 +15,26 @@ public readonly struct DoorOpenedEvent
     /// Gets the position of the door that was opened on the game map.
     /// </summary>
     public Point Position { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(DoorOpenedEvent left, DoorOpenedEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(DoorOpenedEvent left, DoorOpenedEvent right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -30,4 +50,24 @@ public readonly struct StairsDescendedEvent
     /// Gets the dungeon floor number the player has descended to.
     /// </summary>
     public int NewFloor { get; init; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(StairsDescendedEvent left, StairsDescendedEvent right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(StairsDescendedEvent left, StairsDescendedEvent right)
+    {
+        return !(left == right);
+    }
 }

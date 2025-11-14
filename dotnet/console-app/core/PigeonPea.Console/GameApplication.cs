@@ -1,12 +1,12 @@
-using Terminal.Gui;
-using Arch.Core;
-using Arch.Core.Extensions;
-using PigeonPea.Shared;
-using PigeonPea.Shared.Components;
-using PigeonPea.Console.Rendering;
-using SadRogue.Primitives;
 using System;
 using System.Threading;
+using Arch.Core;
+using Arch.Core.Extensions;
+using PigeonPea.Console.Rendering;
+using PigeonPea.Shared;
+using PigeonPea.Shared.Components;
+using SadRogue.Primitives;
+using Terminal.Gui;
 
 namespace PigeonPea.Console;
 

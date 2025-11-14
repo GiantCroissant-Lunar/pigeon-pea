@@ -22,4 +22,3 @@ public sealed class RenderLayout
     public RenderLayout(ScreenRect mapRect, IReadOnlyList<ScreenRect>? hudRects = null)
     { MapRect = mapRect; HudRects = hudRects ?? Array.Empty<ScreenRect>(); }
 }
-

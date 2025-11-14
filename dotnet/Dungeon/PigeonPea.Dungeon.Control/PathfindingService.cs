@@ -9,25 +9,25 @@ public sealed class PathfindingService
     private readonly bool _allowDiagonals;
     private readonly Func<(int x, int y), double>? _tileCost;
 
-    public PathfindingService(DungeonData dungeon, bool allowDiagonals = false, Func<(int x,int y), double>? tileCost = null)
+    public PathfindingService(DungeonData dungeon, bool allowDiagonals = false, Func<(int x, int y), double>? tileCost = null)
     {
         _dungeon = dungeon;
         _allowDiagonals = allowDiagonals;
         _tileCost = tileCost;
     }
 
-    private static readonly (int dx, int dy)[] Cardinal = new[] { (1,0), (-1,0), (0,1), (0,-1) };
-    private static readonly (int dx, int dy)[] Diagonal = new[] { (1,1), (1,-1), (-1,1), (-1,-1) };
+    private static readonly (int dx, int dy)[] Cardinal = new[] { (1, 0), (-1, 0), (0, 1), (0, -1) };
+    private static readonly (int dx, int dy)[] Diagonal = new[] { (1, 1), (1, -1), (-1, 1), (-1, -1) };
 
     // If tileCost is null, defaults to 1.0 per tile; you can pass a function like p => d.IsDoorClosed(p.x,p.y) ? 5.0 : 1.0
     public List<(int x, int y)> FindPath((int x, int y) start, (int x, int y) goal)
     {
-        var cameFrom = new Dictionary<(int,int),(int,int)>();
-        var costSoFar = new Dictionary<(int,int), double>();
-        var pq = new PriorityQueue<(int,int), double>();
+        var cameFrom = new Dictionary<(int, int), (int, int)>();
+        var costSoFar = new Dictionary<(int, int), double>();
+        var pq = new PriorityQueue<(int, int), double>();
 
         if (!_dungeon.IsWalkable(start.x, start.y) || !_dungeon.IsWalkable(goal.x, goal.y))
-            return new List<(int,int)>();
+            return new List<(int, int)>();
 
         costSoFar[start] = 0;
         pq.Enqueue(start, 0);
@@ -52,8 +52,19 @@ public sealed class PathfindingService
                 }
 
                 double moveCost = (dx == 0 || dy == 0) ? 1.0 : Math.Sqrt(2.0);
-                double tileCost = _tileCost?.Invoke(next) ?? 1.0;
-                double newCost = costSoFar[current] + moveCost * tileCost;
+                double newCost = costSoFar[current];
+
+                if (_tileCost is null)
+                {
+                    newCost += moveCost;
+                }
+                else
+                {
+                    double fromCost = _tileCost.Invoke(current);
+                    double toCost = _tileCost.Invoke(next);
+                    double weight = (fromCost + toCost) * 0.5;
+                    newCost += moveCost * weight;
+                }
 
                 if (!costSoFar.TryGetValue(next, out var old) || newCost < old)
                 {
@@ -65,9 +76,9 @@ public sealed class PathfindingService
         }
 
         if (!cameFrom.ContainsKey(goal) && start != goal)
-            return new List<(int,int)>();
+            return new List<(int, int)>();
 
-        var path = new List<(int,int)>();
+        var path = new List<(int, int)>();
         var cur = goal;
         path.Add(cur);
         while (cur != start)
@@ -80,7 +91,7 @@ public sealed class PathfindingService
         return path;
     }
 
-    private IEnumerable<(int dx, int dy)> NeighborSteps((int x,int y) _) 
+    private IEnumerable<(int dx, int dy)> NeighborSteps((int x, int y) _)
     {
         foreach (var c in Cardinal) yield return c;
         if (_allowDiagonals)

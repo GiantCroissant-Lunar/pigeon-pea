@@ -24,4 +24,24 @@ public struct Viewport
 
     public bool Contains(int x, int y)
         => x >= X && x < X + Width && y >= Y && y < Y + Height;
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Viewport left, Viewport right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Viewport left, Viewport right)
+    {
+        return !(left == right);
+    }
 }

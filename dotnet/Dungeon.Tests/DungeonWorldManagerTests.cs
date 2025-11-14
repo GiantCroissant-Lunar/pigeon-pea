@@ -1,9 +1,9 @@
-using Xunit;
 using FluentAssertions;
-using PigeonPea.Dungeon.Core;
 using PigeonPea.Dungeon.Control.WorldManager;
+using PigeonPea.Dungeon.Core;
 using PigeonPea.Shared.ECS.Components;
 using PigeonPea.Shared.ECS.Components.Tags;
+using Xunit;
 
 namespace PigeonPea.Dungeon.Tests;
 
@@ -202,7 +202,7 @@ public class DungeonWorldManagerTests
         var query = new Arch.Core.QueryDescription().WithAll<MonsterTag>();
         int monsterCount = 0;
         manager.World.Query(in query, (Arch.Core.Entity entity) => monsterCount++);
-        
+
         monsterCount.Should().Be(5);
     }
 

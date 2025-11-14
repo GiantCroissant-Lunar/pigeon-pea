@@ -457,13 +457,3 @@ public static class MapDataRenderer
         return (fr, fg, fb);
     }
 }
-
-
-
-
-
-
-
-
-
-

@@ -64,4 +64,3 @@ class TestKittyDebug
         Console.ReadLine();
     }
 }
-

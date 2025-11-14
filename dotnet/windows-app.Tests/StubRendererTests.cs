@@ -15,14 +15,14 @@ public class StubRendererTests
     private readonly StubRenderer _renderer = new();
 
     [Fact]
-    public void Constructor_CreatesInstance()
+    public void ConstructorCreatesInstance()
     {
         // Assert
         _renderer.Should().NotBeNull();
     }
 
     [Fact]
-    public void Capabilities_ReturnsPixelGraphics()
+    public void CapabilitiesReturnsPixelGraphics()
     {
         // Act
         var capabilities = _renderer.Capabilities;
@@ -32,7 +32,7 @@ public class StubRendererTests
     }
 
     [Fact]
-    public void Initialize_DoesNotThrow()
+    public void InitializeDoesNotThrow()
     {
         // Arrange
         var mockTarget = new Mock<IRenderTarget>();
@@ -43,7 +43,7 @@ public class StubRendererTests
     }
 
     [Fact]
-    public void BeginFrame_DoesNotThrow()
+    public void BeginFrameDoesNotThrow()
     {
         // Act & Assert
         _renderer.Invoking(r => r.BeginFrame())
@@ -51,7 +51,7 @@ public class StubRendererTests
     }
 
     [Fact]
-    public void EndFrame_DoesNotThrow()
+    public void EndFrameDoesNotThrow()
     {
         // Act & Assert
         _renderer.Invoking(r => r.EndFrame())
@@ -59,7 +59,7 @@ public class StubRendererTests
     }
 
     [Fact]
-    public void DrawTile_DoesNotThrow()
+    public void DrawTileDoesNotThrow()
     {
         // Arrange
         var tile = new Tile { Glyph = '@', Foreground = Color.White, Background = Color.Black };
@@ -70,7 +70,7 @@ public class StubRendererTests
     }
 
     [Fact]
-    public void DrawText_DoesNotThrow()
+    public void DrawTextDoesNotThrow()
     {
         // Act & Assert
         _renderer.Invoking(r => r.DrawText(0, 0, "test", Color.White, Color.Black))
@@ -78,7 +78,7 @@ public class StubRendererTests
     }
 
     [Fact]
-    public void Clear_DoesNotThrow()
+    public void ClearDoesNotThrow()
     {
         // Act & Assert
         _renderer.Invoking(r => r.Clear(Color.Black))
@@ -86,7 +86,7 @@ public class StubRendererTests
     }
 
     [Fact]
-    public void SetViewport_DoesNotThrow()
+    public void SetViewportDoesNotThrow()
     {
         // Arrange
         var viewport = new Viewport(0, 0, 80, 50);

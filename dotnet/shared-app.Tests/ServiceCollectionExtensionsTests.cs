@@ -27,7 +27,7 @@ public class ServiceCollectionExtensionsTests : IDisposable
     }
 
     [Fact]
-    public void AddPigeonPeaServices_RegistersMessagePipe()
+    public void AddPigeonPeaServicesRegistersMessagePipe()
     {
         // Arrange & Act
         var publisher = _serviceProvider.GetService<IPublisher<PlayerDamagedEvent>>();
@@ -37,7 +37,7 @@ public class ServiceCollectionExtensionsTests : IDisposable
     }
 
     [Fact]
-    public void AddPigeonPeaServices_RegistersSubscriber()
+    public void AddPigeonPeaServicesRegistersSubscriber()
     {
         // Arrange & Act
         var subscriber = _serviceProvider.GetService<ISubscriber<PlayerDamagedEvent>>();
@@ -47,7 +47,7 @@ public class ServiceCollectionExtensionsTests : IDisposable
     }
 
     [Fact]
-    public void MessagePipe_PublishSubscribe_Works()
+    public void MessagePipePublishSubscribeWorks()
     {
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
@@ -73,7 +73,7 @@ public class ServiceCollectionExtensionsTests : IDisposable
     }
 
     [Fact]
-    public void MessagePipe_MultipleEventTypes_Work()
+    public void MessagePipeMultipleEventTypesWork()
     {
         // Arrange
         var damagePublisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();
@@ -107,7 +107,7 @@ public class ServiceCollectionExtensionsTests : IDisposable
     }
 
     [Fact]
-    public void MessagePipe_MultipleSubscribers_AllReceiveEvent()
+    public void MessagePipeMultipleSubscribersAllReceiveEvent()
     {
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<GameStateChangedEvent>>();
@@ -130,7 +130,7 @@ public class ServiceCollectionExtensionsTests : IDisposable
     }
 
     [Fact]
-    public void MessagePipe_DisposedSubscription_DoesNotReceiveEvent()
+    public void MessagePipeDisposedSubscriptionDoesNotReceiveEvent()
     {
         // Arrange
         var publisher = _serviceProvider.GetRequiredService<IPublisher<PlayerDamagedEvent>>();

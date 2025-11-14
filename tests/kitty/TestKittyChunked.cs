@@ -99,4 +99,3 @@ class TestKittyChunked
         Console.ReadLine();
     }
 }
-

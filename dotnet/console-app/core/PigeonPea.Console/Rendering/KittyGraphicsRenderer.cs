@@ -1,9 +1,9 @@
-using PigeonPea.Shared.Rendering;
-using SadRogue.Primitives;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
+using PigeonPea.Shared.Rendering;
+using SadRogue.Primitives;
 
 namespace PigeonPea.Console.Rendering;
 

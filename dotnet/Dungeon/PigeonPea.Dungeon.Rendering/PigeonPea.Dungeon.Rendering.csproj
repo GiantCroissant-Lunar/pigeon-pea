@@ -4,6 +4,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn);CA1814;CA1034;CA1819</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SkiaSharp" Version="2.88.7" />

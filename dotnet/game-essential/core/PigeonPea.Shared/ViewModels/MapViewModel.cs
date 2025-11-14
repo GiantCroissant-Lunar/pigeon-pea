@@ -3,10 +3,10 @@ using System.Reactive.Linq;
 using Arch.Core;
 using Arch.Core.Extensions;
 using ObservableCollections;
-using ReactiveUI;
-using SadRogue.Primitives;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Rendering;
+using ReactiveUI;
+using SadRogue.Primitives;
 
 namespace PigeonPea.Shared.ViewModels;
 
@@ -52,8 +52,15 @@ public class MapViewModel : ReactiveObject
     /// </summary>
     public ObservableList<TileViewModel> VisibleTiles { get; }
 
-    public MapViewModel()
+    private readonly Camera _camera;
+
+    public MapViewModel() : this(new Camera())
     {
+    }
+
+    public MapViewModel(Camera camera)
+    {
+        _camera = camera;
         VisibleTiles = new ObservableList<TileViewModel>();
         _cameraPosition = Point.None;
     }
@@ -71,10 +78,12 @@ public class MapViewModel : ReactiveObject
             Width = gameWorld.Width;
             Height = gameWorld.Height;
 
-            // Update camera position to follow player (simple center)
-            if (gameWorld.PlayerEntity.IsAlive() && gameWorld.EcsWorld.TryGet<Position>(gameWorld.PlayerEntity, out var playerPos))
+            // Update camera to follow player
+            if (gameWorld.PlayerEntity.IsAlive())
             {
-                CameraPosition = playerPos.Point;
+                _camera.Follow(gameWorld.PlayerEntity);
+                _camera.Update(gameWorld.EcsWorld, new Rectangle(0, 0, gameWorld.Width, gameWorld.Height));
+                CameraPosition = _camera.Position;
             }
 
             // Update visible tiles
@@ -86,7 +95,7 @@ public class MapViewModel : ReactiveObject
     {
         VisibleTiles.Clear();
 
-        var viewport = new Viewport(0, 0, Width, Height);
+        var viewport = _camera.GetViewport();
 
         // Get player's field of view if available
         HashSet<Point>? playerFov = null;

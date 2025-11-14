@@ -21,4 +21,24 @@ public struct Sprite
     }
 
     public Sprite(string id) : this(id, '?', 255, 255, 255) { }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Sprite left, Sprite right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Sprite left, Sprite right)
+    {
+        return !(left == right);
+    }
 }

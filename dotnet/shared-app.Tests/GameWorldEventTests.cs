@@ -41,7 +41,7 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void EnemyAttacksPlayer_PlayerDamaged_PublishesPlayerDamagedEvent()
+    public void EnemyAttacksPlayerPlayerDamagedPublishesPlayerDamagedEvent()
     {
         // Arrange
         var playerDamagedPublisher = new MockPublisher<PlayerDamagedEvent>();
@@ -67,7 +67,7 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void PlayerAttack_EnemyDefeated_PublishesEnemyDefeatedEvent()
+    public void PlayerAttackEnemyDefeatedPublishesEnemyDefeatedEvent()
     {
         // Arrange
         var enemyDefeatedPublisher = new MockPublisher<EnemyDefeatedEvent>();
@@ -118,7 +118,7 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void TryPickupItem_ItemPickedUp_PublishesItemPickedUpEvent()
+    public void TryPickupItemItemPickedUpPublishesItemPickedUpEvent()
     {
         // Arrange
         var itemPickedUpPublisher = new MockPublisher<ItemPickedUpEvent>();
@@ -148,7 +148,7 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void TryUseItem_ConsumableUsed_PublishesItemUsedEvent()
+    public void TryUseItemConsumableUsedPublishesItemUsedEvent()
     {
         // Arrange
         var itemUsedPublisher = new MockPublisher<ItemUsedEvent>();
@@ -175,7 +175,7 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void TryDropItem_ItemDropped_PublishesItemDroppedEvent()
+    public void TryDropItemItemDroppedPublishesItemDroppedEvent()
     {
         // Arrange
         var itemDroppedPublisher = new MockPublisher<ItemDroppedEvent>();
@@ -201,7 +201,7 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void GainExperience_PlayerLevelsUp_PublishesPlayerLevelUpEvent()
+    public void GainExperiencePlayerLevelsUpPublishesPlayerLevelUpEvent()
     {
         // Arrange
         var playerLevelUpPublisher = new MockPublisher<PlayerLevelUpEvent>();
@@ -221,7 +221,7 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void GameWorld_WithoutPublishers_DoesNotThrow()
+    public void GameWorldWithoutPublishersDoesNotThrow()
     {
         // Arrange & Act - Create GameWorld without any publishers
         var gameWorld = new GameWorld(width: 80, height: 50);
@@ -244,7 +244,7 @@ public class GameWorldEventTests
     }
 
     [Fact]
-    public void ResolveMeleeAttack_NonPlayerDamaged_DoesNotPublishPlayerDamagedEvent()
+    public void ResolveMeleeAttackNonPlayerDamagedDoesNotPublishPlayerDamagedEvent()
     {
         // Arrange
         var playerDamagedPublisher = new MockPublisher<PlayerDamagedEvent>();

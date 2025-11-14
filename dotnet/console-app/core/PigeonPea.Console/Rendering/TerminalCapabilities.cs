@@ -124,7 +124,7 @@ public class TerminalCapabilities
         // Check for actual Kitty terminal and allow explicit override
         var forceKitty = (Environment.GetEnvironmentVariable("PIGEONPEA_FORCE_KITTY") ?? "").Trim();
         if (!string.IsNullOrEmpty(forceKitty) &&
-            (forceKitty.Equals("1") || forceKitty.Equals("true", StringComparison.OrdinalIgnoreCase)))
+            (forceKitty.Equals("1", StringComparison.Ordinal) || forceKitty.Equals("true", StringComparison.OrdinalIgnoreCase)))
         {
             // Force iTerm2 protocol (works on WezTerm)
             caps.SupportsiTerm2Graphics = true;

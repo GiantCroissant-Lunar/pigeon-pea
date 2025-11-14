@@ -24,7 +24,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_DefaultConstructor_InitializesCorrectly()
+    public void CameraDefaultConstructorInitializesCorrectly()
     {
         // Arrange & Act
         var camera = new Camera();
@@ -37,7 +37,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_ConstructorWithDimensions_InitializesCorrectly()
+    public void CameraConstructorWithDimensionsInitializesCorrectly()
     {
         // Arrange & Act
         var camera = new Camera(100, 50);
@@ -50,7 +50,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Follow_SetsFollowTarget()
+    public void CameraFollowSetsFollowTarget()
     {
         // Arrange
         var camera = new Camera();
@@ -64,7 +64,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Unfollow_ClearsFollowTarget()
+    public void CameraUnfollowClearsFollowTarget()
     {
         // Arrange
         var camera = new Camera();
@@ -79,7 +79,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_WithNoFollowTarget_DoesNotChangePosition()
+    public void CameraUpdateWithNoFollowTargetDoesNotChangePosition()
     {
         // Arrange
         var camera = new Camera();
@@ -95,7 +95,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_WithFollowTarget_CentersOnTarget()
+    public void CameraUpdateWithFollowTargetCentersOnTarget()
     {
         // Arrange
         var camera = new Camera(20, 10);
@@ -114,7 +114,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_ClampsToMapBounds_Left()
+    public void CameraUpdateClampsToMapBoundsLeft()
     {
         // Arrange
         var camera = new Camera(20, 10);
@@ -131,7 +131,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_ClampsToMapBounds_Top()
+    public void CameraUpdateClampsToMapBoundsTop()
     {
         // Arrange
         var camera = new Camera(20, 10);
@@ -148,7 +148,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_ClampsToMapBounds_Right()
+    public void CameraUpdateClampsToMapBoundsRight()
     {
         // Arrange
         var camera = new Camera(20, 10);
@@ -165,7 +165,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_ClampsToMapBounds_Bottom()
+    public void CameraUpdateClampsToMapBoundsBottom()
     {
         // Arrange
         var camera = new Camera(20, 10);
@@ -182,7 +182,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_WithDeadEntity_DoesNotCrash()
+    public void CameraUpdateWithDeadEntityDoesNotCrash()
     {
         // Arrange
         var camera = new Camera();
@@ -200,7 +200,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_WithEntityWithoutPosition_DoesNotCrash()
+    public void CameraUpdateWithEntityWithoutPositionDoesNotCrash()
     {
         // Arrange
         var camera = new Camera();
@@ -217,7 +217,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_GetViewport_ReturnsViewportAtCameraPosition()
+    public void CameraGetViewportReturnsViewportAtCameraPosition()
     {
         // Arrange
         var camera = new Camera(80, 24);
@@ -234,7 +234,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_WithSmallMap_HandlesGracefully()
+    public void CameraUpdateWithSmallMapHandlesGracefully()
     {
         // Arrange
         var camera = new Camera(50, 30);
@@ -253,7 +253,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Update_WithNegativeMapBounds_WorksCorrectly()
+    public void CameraUpdateWithNegativeMapBoundsWorksCorrectly()
     {
         // Arrange
         var camera = new Camera(20, 10);
@@ -271,7 +271,7 @@ public class CameraTests : IDisposable
     }
 
     [Fact]
-    public void Camera_Position_CanBeSetDirectly()
+    public void CameraPositionCanBeSetDirectly()
     {
         // Arrange
         var camera = new Camera();

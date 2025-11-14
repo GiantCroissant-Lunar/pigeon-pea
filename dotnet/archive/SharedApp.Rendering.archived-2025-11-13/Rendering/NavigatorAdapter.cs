@@ -59,4 +59,3 @@ public sealed class NavigatorAdapter
     private static double Clamp(double v, double min, double max)
         => v < min ? min : (v > max ? max : v);
 }
-

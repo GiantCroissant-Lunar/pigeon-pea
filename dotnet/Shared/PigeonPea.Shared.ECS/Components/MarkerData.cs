@@ -15,4 +15,24 @@ public struct MarkerData
         Title = title;
         Discovered = discovered;
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(MarkerData left, MarkerData right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(MarkerData left, MarkerData right)
+    {
+        return !(left == right);
+    }
 }

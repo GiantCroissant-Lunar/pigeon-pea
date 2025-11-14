@@ -70,4 +70,3 @@ class TestKittyBinary
         Console.ReadLine();
     }
 }
-

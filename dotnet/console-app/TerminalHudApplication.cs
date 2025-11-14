@@ -1,10 +1,10 @@
-extern alias SR;
-using Terminal.Gui;
-using PigeonPea.Shared.Rendering;
-using PigeonPea.Map.Rendering;
+using PigeonPea.Console.Rendering;
 using PigeonPea.Map.Core;
 using PigeonPea.Map.Core.Adapters;
-using PigeonPea.Console.Rendering;
+using PigeonPea.Map.Control.ViewModels;
+using PigeonPea.Map.Rendering;
+using PigeonPea.Shared.Rendering;
+using Terminal.Gui;
 
 namespace PigeonPea.Console;
 
@@ -19,6 +19,7 @@ internal static class TerminalHudApplication
     private static ITerm2GraphicsRenderer? _pixelRenderer;
     private static IRenderTarget? _pixelTarget;
     private static BrailleMapPanelView? _brailleView;
+    private static MapRenderViewModel? _viewModel;
 
     public static void Run()
     {
@@ -28,7 +29,7 @@ internal static class TerminalHudApplication
             var top = new Toplevel() { X = 0, Y = 0, Width = Dim.Fill(), Height = Dim.Fill() };
 
             int logRows = 10;
-            var mapFrame = new FrameView { Title = "Map", X = 0, Y = 1, Width = Dim.Fill(), Height = Dim.Fill(logRows) };
+            var mapFrame = new FrameView { Title = "Map", X = 0, Y = 2, Width = Dim.Fill(), Height = Dim.Fill(logRows + 1) };
             var logFrame = new FrameView { Title = "Log", X = 0, Y = Pos.Bottom(mapFrame), Width = Dim.Fill(), Height = logRows };
             var logView = new TextView { ReadOnly = true, WordWrap = true };
             logFrame.Add(logView);
@@ -40,6 +41,9 @@ internal static class TerminalHudApplication
             _map = gen.Generate(settings);
             _cameraX = Math.Max(0, settings.Width / 2 - 40);
             _cameraY = Math.Max(0, settings.Height / 2 - 12);
+
+            // Initialize ViewModel for color scheme management
+            _viewModel = new MapRenderViewModel();
 
             // Create a view inside the frame to render the map with Terminal.Gui driver
             var mapView = new MapPanelView(_map)
@@ -70,17 +74,75 @@ internal static class TerminalHudApplication
 
             // Overlays removed for Phase 3 migration; to be reintroduced via Map.Rendering overlays in a follow-up
 
+            // Settings panel for color scheme selector
+            var settingsPanel = new FrameView { 
+                Title = "Settings", 
+                X = 0, 
+                Y = 0, 
+                Width = Dim.Fill(), 
+                Height = 1 
+            };
+            
+            var colorSchemeLabel = new Label("Color Scheme:")
+            {
+                X = 1,
+                Y = 0,
+                Width = 15
+            };
+
+            var colorSchemeCombo = new ComboBox()
+            {
+                X = Pos.Right(colorSchemeLabel) + 1,
+                Y = 0,
+                Width = 20,
+                Height = 1
+            };
+
+            // Populate with available color schemes
+            colorSchemeCombo.SetSource(_viewModel!.AvailableColorSchemes.Select(s => s.ToString()).ToList());
+            colorSchemeCombo.SelectedItem = _viewModel.ColorScheme.ToString();
+
+            // Handle color scheme changes
+            colorSchemeCombo.SelectedItemChanged += (args) =>
+            {
+                if (args.Value >= 0 && _viewModel != null)
+                {
+                    var selectedText = colorSchemeCombo.Source.ToList()[args.Value];
+                    if (Enum.TryParse<ColorScheme>(selectedText, out var selectedScheme))
+                    {
+                        _viewModel.ColorScheme = selectedScheme;
+                        
+                        // Update tile source color scheme
+                        if (_brailleView != null)
+                        {
+                            _brailleView.TileSource.ColorScheme = selectedScheme;
+                        }
+                        
+                        // Trigger re-render
+                        InvalidateActiveView();
+                    }
+                }
+            };
+
+            settingsPanel.Add(colorSchemeLabel, colorSchemeCombo);
+            top.Add(settingsPanel);
+
             // Status bar (v2) using Shortcuts
             var status = new StatusBar();
             var zoomItem = new Shortcut { Title = "Zoom: 1.00", Key = Key.Empty };
             var modeItem = new Shortcut { Title = "Mode: ASCII", Key = Key.Empty };
-            status.Add(zoomItem, modeItem);
+            var schemeItem = new Shortcut { Title = $"Scheme: {_viewModel!.ColorScheme}", Key = Key.Empty };
+            status.Add(zoomItem, modeItem, schemeItem);
             top.Add(status);
 
             void UpdateStatus()
             {
                 zoomItem.Title = $"Zoom: {_zoom:F2}";
                 modeItem.Title = $"Mode: {(_renderMode switch { RenderMode.Ascii => "ASCII", RenderMode.Braille => "Braille", RenderMode.ITerm2 => "iTerm2", _ => "?" })}";
+                if (_viewModel != null)
+                {
+                    schemeItem.Title = $"Scheme: {_viewModel.ColorScheme}";
+                }
             }
 
             void UpdateViews()

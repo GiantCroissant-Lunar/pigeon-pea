@@ -1,8 +1,8 @@
 using System.Reactive.Linq;
 using Arch.Core;
+using PigeonPea.Shared.Components;
 using ReactiveUI;
 using SadRogue.Primitives;
-using PigeonPea.Shared.Components;
 
 namespace PigeonPea.Shared.ViewModels;
 

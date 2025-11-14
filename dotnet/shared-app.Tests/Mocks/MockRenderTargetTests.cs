@@ -9,7 +9,7 @@ namespace PigeonPea.Shared.Tests.Mocks;
 public class MockRenderTargetTests
 {
     [Fact]
-    public void MockRenderTarget_Constructor_SetsDefaultDimensions()
+    public void MockRenderTargetConstructorSetsDefaultDimensions()
     {
         // Arrange & Act
         var target = new MockRenderTarget();
@@ -22,7 +22,7 @@ public class MockRenderTargetTests
     }
 
     [Fact]
-    public void MockRenderTarget_Constructor_SetsCustomDimensions()
+    public void MockRenderTargetConstructorSetsCustomDimensions()
     {
         // Arrange & Act
         var target = new MockRenderTarget(100, 60, 1920, 1080);
@@ -35,7 +35,7 @@ public class MockRenderTargetTests
     }
 
     [Fact]
-    public void Present_MarksPresentCalled()
+    public void PresentMarksPresentCalled()
     {
         // Arrange
         var target = new MockRenderTarget();
@@ -49,7 +49,7 @@ public class MockRenderTargetTests
     }
 
     [Fact]
-    public void Present_IncrementsPresentCallCount()
+    public void PresentIncrementsPresentCallCount()
     {
         // Arrange
         var target = new MockRenderTarget();
@@ -65,7 +65,7 @@ public class MockRenderTargetTests
     }
 
     [Fact]
-    public void Reset_ClearsPresentState()
+    public void ResetClearsPresentState()
     {
         // Arrange
         var target = new MockRenderTarget();
@@ -83,7 +83,7 @@ public class MockRenderTargetTests
     }
 
     [Fact]
-    public void MockRenderTarget_CanBeUsedWithRenderer()
+    public void MockRenderTargetCanBeUsedWithRenderer()
     {
         // Arrange
         var target = new MockRenderTarget(40, 25);

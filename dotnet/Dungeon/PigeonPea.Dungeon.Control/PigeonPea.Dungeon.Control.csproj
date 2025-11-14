@@ -4,6 +4,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn);CA1814</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="GoRogue" Version="3.0.0-beta10" />

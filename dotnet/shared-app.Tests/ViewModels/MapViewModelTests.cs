@@ -24,7 +24,7 @@ public class MapViewModelTests
 
     [Theory]
     [MemberData(nameof(GetPropertyChangeNotificationData))]
-    public void Property_WhenChanged_RaisesNotification(string propertyName, object newValue)
+    public void PropertyWhenChangedRaisesNotification(string propertyName, object newValue)
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -54,7 +54,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void Update_SyncsMapDimensionsFromGameWorld()
+    public void UpdateSyncsMapDimensionsFromGameWorld()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -68,7 +68,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void Update_SyncsCameraPositionFromGameWorld()
+    public void UpdateSyncsCameraPositionFromGameWorld()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -81,7 +81,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void Update_CameraFollowsPlayer()
+    public void UpdateCameraFollowsPlayer()
     {
         // Arrange
         // Use a smaller camera viewport so the camera can actually move within the map
@@ -120,7 +120,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void Update_PopulatesVisibleTiles()
+    public void UpdatePopulatesVisibleTiles()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -133,7 +133,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void VisibleTiles_ContainsTilesInViewport()
+    public void VisibleTilesContainsTilesInViewport()
     {
         // Arrange
         var camera = new Camera(10, 10);
@@ -155,7 +155,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void VisibleTiles_UpdatesWhenCameraMoves()
+    public void VisibleTilesUpdatesWhenCameraMoves()
     {
         // Arrange - Use smaller camera viewport so camera can actually move within the map
         var camera = new Camera(10, 10);
@@ -196,7 +196,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void VisibleTiles_IncludesExploredStatus()
+    public void VisibleTilesIncludesExploredStatus()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -211,7 +211,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void VisibleTiles_IncludesVisibilityStatus()
+    public void VisibleTilesIncludesVisibilityStatus()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -226,7 +226,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void VisibleTiles_ClearsBeforeUpdate()
+    public void VisibleTilesClearsBeforeUpdate()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -245,7 +245,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void Update_WithDeadPlayer_DoesNotCrash()
+    public void UpdateWithDeadPlayerDoesNotCrash()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -262,7 +262,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void Update_MultipleUpdates_SyncsCorrectly()
+    public void UpdateMultipleUpdatesSyncsCorrectly()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -281,7 +281,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void PropertyChanged_DoesNotFireWhenValueUnchanged()
+    public void PropertyChangedDoesNotFireWhenValueUnchanged()
     {
         // Arrange
         var viewModel = new MapViewModel { Width = 100 };
@@ -302,7 +302,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void CameraPosition_InitiallyNone()
+    public void CameraPositionInitiallyNone()
     {
         // Arrange & Act
         var viewModel = new MapViewModel();
@@ -312,7 +312,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void VisibleTiles_InitiallyEmpty()
+    public void VisibleTilesInitiallyEmpty()
     {
         // Arrange & Act
         var viewModel = new MapViewModel();
@@ -322,7 +322,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void VisibleTiles_TilesHaveCorrectProperties()
+    public void VisibleTilesTilesHaveCorrectProperties()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -349,7 +349,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void Update_DimsTilesNotInFOV()
+    public void UpdateDimsTilesNotInFOV()
     {
         // Arrange
         var viewModel = new MapViewModel();
@@ -377,7 +377,7 @@ public class MapViewModelTests
     }
 
     [Fact]
-    public void VisibleTiles_ObservableList_SupportsNotifications()
+    public void VisibleTilesObservableListSupportsNotifications()
     {
         // Arrange
         var viewModel = new MapViewModel();

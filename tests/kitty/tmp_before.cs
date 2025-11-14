@@ -119,4 +119,3 @@ internal static class TerminalHudApplication
         log.Text = (log.Text?.ToString() ?? string.Empty) + text + Environment.NewLine;
     }
 }
-

@@ -1,3 +1,5 @@
+using System;
+
 namespace PigeonPea.Dungeon.Rendering;
 
 public static class FovRenderer
@@ -12,6 +14,10 @@ public static class FovRenderer
         int pixelsPerCell,
         double dimFactor = 0.3)
     {
+        ArgumentNullException.ThrowIfNull(rgba);
+        ArgumentNullException.ThrowIfNull(fov);
+        if (pixelsPerCell <= 0) throw new ArgumentOutOfRangeException(nameof(pixelsPerCell));
+
         int tilesX = widthPx / pixelsPerCell;
         int tilesY = heightPx / pixelsPerCell;
 

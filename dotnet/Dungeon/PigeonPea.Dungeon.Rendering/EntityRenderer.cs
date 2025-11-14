@@ -16,6 +16,9 @@ public static class EntityRenderer
         int pixelsPerCell,
         bool[,]? fov = null)
     {
+        ArgumentNullException.ThrowIfNull(world);
+        ArgumentNullException.ThrowIfNull(rgba);
+
         var query = new QueryDescription().WithAll<Position, Sprite, DungeonEntityTag>();
 
         world.Query(in query, (ref Position pos, ref Sprite sprite) =>
@@ -61,6 +64,9 @@ public static class EntityRenderer
         int viewportY,
         bool[,]? fov = null)
     {
+        ArgumentNullException.ThrowIfNull(world);
+        ArgumentNullException.ThrowIfNull(asciiBuffer);
+
         var query = new QueryDescription().WithAll<Position, Sprite, DungeonEntityTag>();
 
         int bufferHeight = asciiBuffer.GetLength(0);
