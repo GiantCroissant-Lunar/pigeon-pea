@@ -37,7 +37,7 @@ Define a font pipeline to produce a unified, terminal-friendly CJK monospace fon
 ## Non-Goals
 
 - We will not distort CJK shapes to “square-ify” the font. Readability stays intact.
-- We will not ship terminal binaries; bundling directions will be documented separately (RFC-021).
+- We will not ship terminal binaries; bundling directions will be documented separately ([RFC-021](021-terminal-distribution-and-rio-integration.md)).
 
 ## Base Font Selection
 
@@ -129,4 +129,4 @@ codepoint = 0xE000 + bucket
 
 - Expand junctions/terrain/POIs.
 - Optional 5-degree set; smoothing heuristics in renderer.
-- CI/CD artifacts per platform and versioned releases (RFC-022).
+- CI/CD artifacts per platform and versioned releases ([RFC-022](022-ci-cd-font-and-bundle.md)).
