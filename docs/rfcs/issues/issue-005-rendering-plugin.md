@@ -270,5 +270,5 @@ renderer.Shutdown();
 
 ## See Also
 
-- [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
+- [RFC-006: Plugin System Architecture](../006-plugin-system-architecture.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)

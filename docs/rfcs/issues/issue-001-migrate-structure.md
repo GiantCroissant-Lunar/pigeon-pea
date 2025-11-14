@@ -84,5 +84,5 @@ None (can start immediately)
 
 ## See Also
 
-- [RFC-005: Project Structure Reorganization](../rfc-005-project-structure-reorganization.md)
+- [RFC-005: Project Structure Reorganization](../005-project-structure-reorganization.md)
 - [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md)

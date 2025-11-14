@@ -164,8 +164,8 @@ After creating issues:
 
 ## Related Documentation
 
-- [RFC-005: Project Structure Reorganization](../rfc-005-project-structure-reorganization.md)
-- [RFC-006: Plugin System Architecture](../rfc-006-plugin-system-architecture.md)
+- [RFC-005: Project Structure Reorganization](../005-project-structure-reorganization.md)
+- [RFC-006: Plugin System Architecture](../006-plugin-system-architecture.md)
 - [IMPLEMENTATION_PLAN.md](../IMPLEMENTATION_PLAN.md)
 - [PLUGIN_SYSTEM_ANALYSIS.md](../../PLUGIN_SYSTEM_ANALYSIS.md)
 
