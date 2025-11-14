@@ -107,6 +107,18 @@ See existing RFCs (001-004 in main branch, 005-006 in other branch).
 
 ---
 
+### RFC-013: Yazi-integrated Rust GM CLI
+
+**Status**: Proposed
+**Created**: 2025-11-13
+**Priority**: P1 (Medium-High)
+
+**Summary**: Define a Rust CLI integrated with Yazi workflows to send GM commands and stream events over WebSocket, enabling a Play/Edit/GM workflow across local or remote machines.
+
+**Implementation**: [013-yazi-integrated-rust-cli.md](./013-yazi-integrated-rust-cli.md)
+
+---
+
 ## RFC Priority Guide
 
 | Priority | Level    | Description                                      |

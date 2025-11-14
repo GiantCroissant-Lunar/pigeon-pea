@@ -2401,22 +2401,251 @@ Create BenchmarkDotNet benchmarks for rendering performance.
 - [ ] Memory diagnostics
 - [ ] Results tracked in CI
 
+  **Files to Create**:
+  - `dotnet/benchmarks/RenderingBenchmarks.cs`
+  - `dotnet/benchmarks/benchmarks.csproj`
+
+  **Code Example**: (See implementation in main document)
+
+  ***
+
+# RFC-013: Yazi-integrated Rust GM CLI Issues
+
+## Phase 1: Foundation (Week 1)
+
+### Issue #44: Scaffold Rust CLI crate (dev-tool) with Clap/Tokio/Serde
+
+**Title**: Create Rust CLI crate `dev-tool` with CLI parsing and global options
+
+**Labels**: `enhancement`, `tooling`, `rust`, `rfc-013`, `phase-1`
+
+**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+
+**Dependencies**: None
+
+**Description**:
+Initialize a new Rust crate at `tools/dev-tool` using `clap` for CLI parsing. Add global options `--server`, `--token`, `--output`, and `--timeout`. Read defaults from `DEV_TOOL_SERVER`, `DEV_TOOL_TOKEN` when flags are not provided. Provide helpful `--help` text.
+
+**Acceptance Criteria**:
+
+- [ ] Crate compiles on Windows/Linux/macOS
+- [ ] `dev-tool --help` shows global options and subcommands stub
+- [ ] Global options read from env vars by default
+- [ ] Basic logging or verbose flag prints selected options
+
 **Files to Create**:
 
-- `dotnet/benchmarks/RenderingBenchmarks.cs`
-- `dotnet/benchmarks/benchmarks.csproj`
+- `tools/dev-tool/Cargo.toml`
+- `tools/dev-tool/src/main.rs`
+- `tools/dev-tool/README.md`
 
-**Code Example**: (See implementation in main document)
+**Code Example**:
+
+```rust
+#[derive(clap::Parser)]
+struct Cli {
+    #[arg(long, env = "DEV_TOOL_SERVER", default_value = "ws://127.0.0.1:5007/gm")]
+    server: String,
+    #[arg(long, env = "DEV_TOOL_TOKEN")]
+    token: Option<String>,
+    #[arg(long, default_value = "text")]
+    output: String,
+    #[arg(long, default_value_t = 5000)]
+    timeout: u64,
+    #[command(subcommand)]
+    command: Option<Commands>,
+}
+```
+
+---
+
+### Issue #45: WebSocket client and JSON envelope types
+
+**Title**: Add WS client (tokio-tungstenite) and protocol envelope (serde)
+
+**Labels**: `enhancement`, `networking`, `rust`, `rfc-013`, `phase-1`
+
+**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+
+**Dependencies**: Issue #44
+
+**Description**:
+Implement a WS client that connects to the game server and defines a versioned JSON envelope with `type`, `id`, `correlationId`, and `payload`. Add a `send` plumbing that can transmit a small `noop` command and print replies.
+
+**Acceptance Criteria**:
+
+- [ ] Connects to `--server` URL using `tokio-tungstenite`
+- [ ] Sends a `gm.command` noop; prints `gm.reply`
+- [ ] Includes `version: 1` in envelope
+- [ ] Token (if provided) is sent in first message payload (`auth` field) or as a header-equivalent preface
+
+**Files to Create**:
+
+- `tools/dev-tool/src/ws.rs`
+- `tools/dev-tool/src/protocol.rs`
+
+**Code Example**:
+
+```rust
+#[derive(serde::Serialize, serde::Deserialize)]
+struct Envelope<T> {
+    version: u32,
+    #[serde(rename = "type")] ty: String,
+    id: Option<String>,
+    correlationId: Option<String>,
+    payload: T,
+}
+```
+
+---
+
+## Phase 2: Core features (Week 1-2)
+
+### Issue #46: Core commands: spawn, tp, reload, regen-map
+
+**Title**: Implement `spawn`, `tp`, `reload`, and `regen-map` subcommands
+
+**Labels**: `feature`, `cli`, `rust`, `rfc-013`, `phase-2`
+
+**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+
+**Dependencies**: Issue #45
+
+**Description**:
+Implement the core subcommands. Construct `gm.command` envelopes with appropriate args, send over WS, await `gm.reply`. Support `--output json|text` and correct exit codes.
+
+**Acceptance Criteria**:
+
+- [ ] CLI args validated; helpful errors
+- [ ] Correct envelopes; success/error handling
+- [ ] Exit codes: 0 success; non-zero on error
+
+**Files to Modify/Create**:
+
+- `tools/dev-tool/src/cli.rs`
+- `tools/dev-tool/src/commands/spawn.rs`
+- `tools/dev-tool/src/commands/tp.rs`
+- `tools/dev-tool/src/commands/reload.rs`
+- `tools/dev-tool/src/commands/regen_map.rs`
+
+---
+
+### Issue #47: Streaming commands: state --watch, log --watch
+
+**Title**: Subscribe and print `event.state` and `event.log` streams
+
+**Labels**: `feature`, `streaming`, `rust`, `rfc-013`, `phase-2`
+
+**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+
+**Dependencies**: Issue #45
+
+**Description**:
+Implement watch subcommands that subscribe to state and log events. Print as line-delimited JSON for `--output json` or concise text for `--output text`. Provide log level filtering.
+
+**Acceptance Criteria**:
+
+- [ ] Subscription mechanism
+- [ ] Graceful shutdown on SIGINT / Ctrl+C
+- [ ] Output format switch works
+- [ ] Log level filtering for `log --watch`
+
+**Files to Create**:
+
+- `tools/dev-tool/src/commands/state.rs`
+- `tools/dev-tool/src/commands/log.rs`
+
+---
+
+## Phase 3: Robustness, Tests, Docs, Packaging (Week 2)
+
+### Issue #48: Resilience & configuration (reconnect/backoff, timeouts, exit codes)
+
+**Title**: Robustness improvements and user-friendly errors
+
+**Labels**: `enhancement`, `stability`, `rust`, `rfc-013`, `phase-3`
+
+**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+
+**Dependencies**: Issues #45–#47
+
+**Description**:
+Add exponential backoff reconnects for watch commands, request timeouts for one-shot commands, standardized exit codes, and improved error messages.
+
+**Acceptance Criteria**:
+
+- [ ] Backoff with jitter for reconnects
+- [ ] Per-command timeout honored
+- [ ] Exit codes documented and consistent
+
+**Files to Modify**:
+
+- `tools/dev-tool/src/ws.rs`
+- `tools/dev-tool/src/main.rs`
+
+---
+
+### Issue #49: Integration tests with mock WebSocket server
+
+**Title**: Add mock WS server and E2E tests for commands
+
+**Labels**: `testing`, `integration`, `rust`, `rfc-013`, `phase-3`
+
+**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+
+**Dependencies**: Issues #45–#47
+
+**Description**:
+Create a lightweight mock WS server for tests to validate envelopes and replies. Add tests for `spawn`, `tp`, `reload`, `regen-map`, and watch commands.
+
+**Acceptance Criteria**:
+
+- [ ] Mock server accepts connections and echoes `gm.reply`
+- [ ] Tests cover success and error paths
+- [ ] CI executes tests cross-platform
+
+**Files to Create**:
+
+- `tools/dev-tool/tests/ws_integration.rs`
+- `tools/dev-tool/Cargo.toml` (dev-deps for testing)
+
+---
+
+### Issue #50: Yazi integration guide + packaging pipeline
+
+**Title**: Add Yazi integration doc and CI packaging for `dev-tool`
+
+**Labels**: `documentation`, `yazi`, `ci`, `release`, `rust`, `rfc-013`, `phase-3`
+
+**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+
+**Dependencies**: Issues #44–#49
+
+**Description**:
+Document how to invoke `dev-tool` from Yazi for common tasks (reload, load-map for selected file, spawn-from-file). Provide example actions and key bindings. Add a CI workflow to build and publish `dev-tool` binaries for Windows, Linux, and macOS.
+
+**Acceptance Criteria**:
+
+- [ ] New doc `docs/integrations/yazi-dev-tool.md` with at least 3 actionable examples
+- [ ] Verified commands on Windows with Rio terminal
+- [ ] CI workflow builds for `x86_64-pc-windows-msvc`, `x86_64-unknown-linux-gnu`, `aarch64-unknown-linux-gnu`, `aarch64-apple-darwin`, `x86_64-apple-darwin`
+- [ ] Artifacts uploaded per OS with checksums; release notes template added
+
+**Files to Create**:
+
+- `docs/integrations/yazi-dev-tool.md`
+- `.github/workflows/ci-dev-tool.yml`
 
 ---
 
 ## Summary
 
-Total: **43 issues** across 3 RFCs
+Total: **50 issues** across 4 RFCs
 
 - **RFC-001 (Rendering)**: 18 issues
 - **RFC-002 (UI Integration)**: 13 issues
 - **RFC-003 (Testing)**: 12 issues
+- **RFC-013 (Yazi-integrated Rust CLI)**: 7 issues
 
 Each issue is:
 
