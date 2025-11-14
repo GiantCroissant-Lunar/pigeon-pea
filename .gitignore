@@ -115,3 +115,7 @@ ref-projects/
 **/BenchmarkDotNet.Artifacts/
 **/benchmarks/**/Results/
 *.diagsession
+
+# Memory infrastructure
+infra/memory/data/
+infra/memory/logs/
