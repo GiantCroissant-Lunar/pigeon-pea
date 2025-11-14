@@ -162,12 +162,9 @@ Brief description of what this guide covers.
 
 [Detailed instructions]
 
-```bash
+\`\`\`bash
 # Example commands
-```
-````
-
-```
+\`\`\`
 
 ### Step 2: [Name]
 
@@ -184,8 +181,7 @@ Brief description of what this guide covers.
 
 - [Related Guide 1](path)
 - [Related Guide 2](path)
-
-```
+````
 
 ### ADR (Architecture Decision Record)
 

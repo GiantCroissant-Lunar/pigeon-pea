@@ -283,8 +283,8 @@ def detect_near_duplicates(
         return warnings
 
     # Separate inbox docs from corpus
-    inbox_docs = [d for d in documents if "/_inbox/" in str(d.path)]
-    corpus_docs = [d for d in documents if "/_inbox/" not in str(d.path)]
+    inbox_docs = [d for d in documents if "_inbox" in d.path.parts]
+    corpus_docs = [d for d in documents if "_inbox" not in d.path.parts]
 
     # Check for near-duplicates between inbox and corpus
     for inbox_doc in inbox_docs:
@@ -477,7 +477,7 @@ def main():
     all_warnings = []
 
     for doc in documents:
-        is_inbox = "/_inbox/" in str(doc.path)
+        is_inbox = "_inbox" in doc.path.parts
         errors = validate_front_matter_fields(doc.path, doc.front_matter, is_inbox)
         all_errors.extend([e for e in errors if not e.is_warning])
         all_warnings.extend([e for e in errors if e.is_warning])
