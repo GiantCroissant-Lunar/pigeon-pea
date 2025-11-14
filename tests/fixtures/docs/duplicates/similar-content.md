@@ -1,12 +1,12 @@
 ---
-doc_id: "RFC-2025-77779"
-title: "Plugin Architecture System"
-doc_type: "rfc"
-status: "draft"
+doc_id: 'RFC-2025-77779'
+title: 'Plugin Architecture System'
+doc_type: 'rfc'
+status: 'draft'
 canonical: false
-created: "2025-11-14"
-tags: ["plugin", "system"]
-summary: "A document with similar title and content"
+created: '2025-11-14'
+tags: ['plugin', 'system']
+summary: 'A document with similar title and content'
 ---
 
 # Plugin Architecture System

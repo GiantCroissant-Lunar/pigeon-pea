@@ -1,8 +1,8 @@
 ---
-title: "Minimal Inbox Document"
-doc_type: "plan"
-status: "draft"
-created: "2025-11-14"
+title: 'Minimal Inbox Document'
+doc_type: 'plan'
+status: 'draft'
+created: '2025-11-14'
 ---
 
 # Minimal Inbox Document

@@ -1,14 +1,14 @@
 ---
-doc_id: "RFC-2025-00012"
-title: "Documentation Organization Management"
-doc_type: "rfc"
-status: "draft"
+doc_id: 'RFC-2025-00012'
+title: 'Documentation Organization Management'
+doc_type: 'rfc'
+status: 'draft'
 canonical: true
-created: "2025-11-13"
-tags: ["documentation", "infrastructure", "validation", "registry", "agent-tools"]
-summary: "Structured documentation management system with validation, registry generation, and inbox workflow to enable autonomous agents to discover, create, and maintain high-quality documentation"
+created: '2025-11-13'
+tags: ['documentation', 'infrastructure', 'validation', 'registry', 'agent-tools']
+summary: 'Structured documentation management system with validation, registry generation, and inbox workflow to enable autonomous agents to discover, create, and maintain high-quality documentation'
 supersedes: []
-related: ["RFC-2025-00004"]
+related: ['RFC-2025-00004']
 ---
 
 # RFC-012: Documentation Organization Management
@@ -155,38 +155,39 @@ All documentation (except `_inbox/`) must include YAML front-matter:
 
 ```yaml
 ---
-doc_id: "RFC-2025-00042"        # Format: PREFIX-YYYY-NNNNN
-title: "Documentation Title"
-doc_type: "rfc"                 # spec|rfc|adr|plan|finding|guide|glossary|reference
-status: "active"                # draft|active|superseded|rejected|archived
-canonical: true                 # Is this the authoritative version?
-created: "2025-11-13"           # ISO date (YYYY-MM-DD)
-updated: "2025-11-14"           # Optional: last update date
-tags: ["infrastructure", "docs"] # List of tags
-summary: "Brief one-sentence summary of the document"
-supersedes: []                  # Optional: list of doc_ids this replaces
-related: []                     # Optional: list of related doc_ids
+doc_id: 'RFC-2025-00042' # Format: PREFIX-YYYY-NNNNN
+title: 'Documentation Title'
+doc_type: 'rfc' # spec|rfc|adr|plan|finding|guide|glossary|reference
+status: 'active' # draft|active|superseded|rejected|archived
+canonical: true # Is this the authoritative version?
+created: '2025-11-13' # ISO date (YYYY-MM-DD)
+updated: '2025-11-14' # Optional: last update date
+tags: ['infrastructure', 'docs'] # List of tags
+summary: 'Brief one-sentence summary of the document'
+supersedes: [] # Optional: list of doc_ids this replaces
+related: [] # Optional: list of related doc_ids
 ---
 ```
 
 #### Doc ID Prefixes
 
-| Prefix | Document Type | Example |
-|--------|--------------|---------|
-| `RFC-` | Request for Comments | `RFC-2025-00012` |
-| `ADR-` | Architecture Decision Record | `ADR-2025-00001` |
-| `GUIDE-` | How-to Guide | `GUIDE-2025-00001` |
-| `PLAN-` | Planning Document | `PLAN-2025-00001` |
-| `FIND-` | Finding/Analysis | `FIND-2025-00001` |
-| `SPEC-` | Specification | `SPEC-2025-00001` |
-| `GLOSSARY-` | Glossary/Terminology | `GLOSSARY-2025-00001` |
-| `REFERENCE-` | Reference Documentation | `REFERENCE-2025-00001` |
+| Prefix       | Document Type                | Example                |
+| ------------ | ---------------------------- | ---------------------- |
+| `RFC-`       | Request for Comments         | `RFC-2025-00012`       |
+| `ADR-`       | Architecture Decision Record | `ADR-2025-00001`       |
+| `GUIDE-`     | How-to Guide                 | `GUIDE-2025-00001`     |
+| `PLAN-`      | Planning Document            | `PLAN-2025-00001`      |
+| `FIND-`      | Finding/Analysis             | `FIND-2025-00001`      |
+| `SPEC-`      | Specification                | `SPEC-2025-00001`      |
+| `GLOSSARY-`  | Glossary/Terminology         | `GLOSSARY-2025-00001`  |
+| `REFERENCE-` | Reference Documentation      | `REFERENCE-2025-00001` |
 
 #### Valid Values
 
 **doc_type**: `spec`, `rfc`, `adr`, `plan`, `finding`, `guide`, `glossary`, `reference`
 
 **status**:
+
 - `draft`: Work in progress, not yet reviewed
 - `active`: Reviewed and current
 - `superseded`: Replaced by a newer document
@@ -198,6 +199,7 @@ related: []                     # Optional: list of related doc_ids
 **File**: `scripts/validate-docs.py`
 
 Features:
+
 1. **Front-matter validation**: Ensures all required fields present and valid
 2. **Canonical uniqueness**: Only one canonical doc per concept (normalized title)
 3. **Duplicate detection**: SimHash + fuzzy matching to detect near-duplicates
@@ -213,6 +215,7 @@ python scripts/validate-docs.py --pre-commit
 ```
 
 Dependencies:
+
 - `pyyaml`: YAML parsing
 - `simhash`: Content similarity detection
 - `rapidfuzz`: Title fuzzy matching
@@ -265,12 +268,14 @@ Dependencies:
 **Location**: `docs/_inbox/`
 
 **Rules**:
+
 1. **Minimal front-matter**: Only `title`, `doc_type`, `status: draft` required
 2. **No strict validation**: Excluded from required field checks
 3. **Duplicate detection**: Script warns if similar docs exist in corpus
 4. **Temporary home**: Docs should be moved to final location when complete
 
 **Workflow**:
+
 ```bash
 # 1. Agent creates draft using /task command
 # → Creates docs/_inbox/my-draft.md with minimal front-matter
@@ -305,19 +310,22 @@ Purpose: Help agents create structured documentation tasks
 Creates a structured documentation task in `docs/_inbox/` with proper front-matter template.
 
 ## Usage
-
 ```
+
 /task <doc-type> <title>
+
 ```
 
 ## Examples
 
 ```
+
 /task rfc "Plugin System Architecture"
 /task guide "Setting Up Development Environment"
 /task adr "Use PostgreSQL for Primary Database"
 /task plan "Q1 2025 Feature Roadmap"
-```
+
+````
 
 ## What It Does
 
@@ -340,8 +348,9 @@ summary: ""
 # TODO: Set canonical: true/false
 # TODO: Complete tags and summary
 ---
-```
-```
+````
+
+````
 
 ### Agent Rules
 
@@ -365,10 +374,11 @@ summary: ""
 3. **Run validation before finalizing**:
    ```bash
    python scripts/validate-docs.py
-   ```
-   - Check for duplicate warnings
-   - Ensure front-matter is valid
-   - Fix any reported issues
+````
+
+- Check for duplicate warnings
+- Ensure front-matter is valid
+- Fix any reported issues
 
 4. **Complete front-matter before moving**:
    - Generate doc_id following format: `PREFIX-YYYY-NNNNN`
@@ -417,11 +427,13 @@ inbox  final loc  archive/
 ## Pre-commit Hook
 
 The pre-commit hook runs `python scripts/validate-docs.py --pre-commit` to:
+
 - Validate front-matter of all docs (except inbox)
 - Check canonical uniqueness
 - Detect near-duplicates
 - Fail commit if errors found (warnings allowed)
-```
+
+````
 
 ## Core Components
 
@@ -434,29 +446,29 @@ Add to project requirements:
 pyyaml>=6.0.1
 simhash>=2.1.2
 rapidfuzz>=3.5.2
-```
+````
 
 ### 2. Pre-commit Hook Integration
 
 **File**: `.pre-commit-config.yaml` (add to existing hooks)
 
 ```yaml
-  - repo: local
-    hooks:
-      - id: validate-docs
-        name: Validate Documentation
-        entry: python scripts/validate-docs.py --pre-commit
-        language: python
-        files: ^docs/.*\.md$
-        exclude: ^docs/(_inbox|index)/
-        pass_filenames: false
+- repo: local
+  hooks:
+    - id: validate-docs
+      name: Validate Documentation
+      entry: python scripts/validate-docs.py --pre-commit
+      language: python
+      files: ^docs/.*\.md$
+      exclude: ^docs/(_inbox|index)/
+      pass_filenames: false
 ```
 
 ### 3. Inbox README
 
 **File**: `docs/_inbox/README.md`
 
-```markdown
+````markdown
 # Documentation Inbox
 
 This directory is for **draft documentation** that is not yet ready for publication.
@@ -472,12 +484,13 @@ This directory is for **draft documentation** that is not yet ready for publicat
 1. **Minimal front-matter required**:
    ```yaml
    ---
-   title: "Your Title"
-   doc_type: "rfc|guide|adr|plan|finding|spec"
-   status: "draft"
-   created: "YYYY-MM-DD"
+   title: 'Your Title'
+   doc_type: 'rfc|guide|adr|plan|finding|spec'
+   status: 'draft'
+   created: 'YYYY-MM-DD'
    ---
    ```
+````
 
 2. **No strict validation**: Inbox docs excluded from required field checks
 
@@ -496,20 +509,21 @@ This directory is for **draft documentation** that is not yet ready for publicat
 
 ## Final Locations
 
-| Doc Type | Location |
-|----------|----------|
-| RFC | `docs/rfcs/` |
-| Guide | `docs/guides/` |
-| ADR | `docs/architecture/` |
-| Plan | `docs/planning/` |
-| Finding | `docs/planning/` or `docs/` |
-| Spec | `docs/` |
+| Doc Type | Location                    |
+| -------- | --------------------------- |
+| RFC      | `docs/rfcs/`                |
+| Guide    | `docs/guides/`              |
+| ADR      | `docs/architecture/`        |
+| Plan     | `docs/planning/`            |
+| Finding  | `docs/planning/` or `docs/` |
+| Spec     | `docs/`                     |
 
 ## See Also
 
 - [DOCUMENTATION-SCHEMA.md](../DOCUMENTATION-SCHEMA.md) - Front-matter specification
 - [RFC-012](../rfcs/012-documentation-organization-management.md) - This system's design
-```
+
+````
 
 ### 4. Documentation Schema Reference
 
@@ -593,7 +607,7 @@ summary: "Structured documentation management system with validation, registry, 
 supersedes: []
 related: ["RFC-2025-00004"]
 ---
-```
+````
 
 ## Validation
 
@@ -604,6 +618,7 @@ python scripts/validate-docs.py
 ```
 
 Checks:
+
 - All required fields present
 - Valid doc_type and status values
 - Canonical uniqueness (only one canonical doc per concept)
@@ -620,7 +635,8 @@ git commit -m "docs: add new RFC"
 # → Runs: python scripts/validate-docs.py --pre-commit
 # → Fails commit if validation errors found
 ```
-```
+
+````
 
 ## Implementation Plan
 
@@ -751,7 +767,7 @@ def test_duplicate_detection():
     errors = detect_near_duplicates([inbox_doc, corpus_doc])
     assert len(errors) >= 1
     assert "Near-duplicate" in str(errors[0])
-```
+````
 
 ### Integration Tests
 
@@ -858,16 +874,19 @@ After implementation, the system should:
 ## Backward Compatibility
 
 **Existing docs without front-matter**:
+
 - Generate warnings, not errors (initially)
 - Migration plan to add front-matter gradually
 - Inbox pattern allows existing workflow to continue
 
 **Existing directory structure**:
+
 - Keep all existing paths (`docs/rfcs/`, `docs/fonts/`, `docs/terminals/`)
 - Additive changes only (new directories: `guides/`, `architecture/`, `planning/`)
 - No breaking changes to existing docs
 
 **Existing workflows**:
+
 - Agents can still create docs manually (not required to use `/task`)
 - Validation is helpful, not blocking (warnings allowed)
 - Pre-commit hook can be disabled if needed
@@ -973,6 +992,7 @@ rapidfuzz>=3.5.2     # Fuzzy string matching (optional)
 ```
 
 Installation:
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -980,6 +1000,7 @@ pip install -r requirements.txt
 ### Pre-commit Hook
 
 Requires `pre-commit` to be installed:
+
 ```bash
 pip install pre-commit
 pre-commit install
@@ -1004,20 +1025,19 @@ pre-commit install
 
 ```yaml
 ---
-doc_id: "RFC-2025-00012"
-title: "Documentation Organization Management"
-doc_type: "rfc"
-status: "draft"
+doc_id: 'RFC-2025-00012'
+title: 'Documentation Organization Management'
+doc_type: 'rfc'
+status: 'draft'
 canonical: true
-created: "2025-11-13"
-updated: "2025-11-13"
-author: "Development Team"
-tags: ["infrastructure", "documentation", "agent-tools", "automation"]
-summary: "Structured documentation management system with validation, registry generation, and inbox workflow for autonomous agents"
+created: '2025-11-13'
+updated: '2025-11-13'
+author: 'Development Team'
+tags: ['infrastructure', 'documentation', 'agent-tools', 'automation']
+summary: 'Structured documentation management system with validation, registry generation, and inbox workflow for autonomous agents'
 supersedes: []
-related: ["RFC-2025-00004"]
+related: ['RFC-2025-00004']
 ---
-
 # RFC-012: Documentation Organization Management
 
 [Document content...]

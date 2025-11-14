@@ -1,14 +1,14 @@
 ---
-doc_id: "PLAN-2025-00005"
-title: "Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure"
-doc_type: "plan"
-status: "active"
+doc_id: 'PLAN-2025-00005'
+title: 'Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure'
+doc_type: 'plan'
+status: 'active'
 canonical: true
-created: "2025-11-10"
-tags: ["issue", "plugin-system", "rfc-006", "phase-1", "infrastructure"]
-summary: "Implement core plugin infrastructure as defined in RFC-006 Phase 1"
+created: '2025-11-10'
+tags: ['issue', 'plugin-system', 'rfc-006', 'phase-1', 'infrastructure']
+summary: 'Implement core plugin infrastructure as defined in RFC-006 Phase 1'
 supersedes: []
-related: ["RFC-2025-00006", "PLAN-2025-00001", "PLAN-2025-00004"]
+related: ['RFC-2025-00006', 'PLAN-2025-00001', 'PLAN-2025-00004']
 ---
 
 # Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure

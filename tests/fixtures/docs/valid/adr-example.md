@@ -1,15 +1,15 @@
 ---
-doc_id: "ADR-2025-99999"
-title: "Test Architecture Decision Record"
-doc_type: "adr"
-status: "active"
+doc_id: 'ADR-2025-99999'
+title: 'Test Architecture Decision Record'
+doc_type: 'adr'
+status: 'active'
 canonical: false
-created: "2025-11-14"
-updated: "2025-11-14"
-tags: ["test", "architecture", "decision"]
-summary: "A test ADR document for validation testing"
+created: '2025-11-14'
+updated: '2025-11-14'
+tags: ['test', 'architecture', 'decision']
+summary: 'A test ADR document for validation testing'
 supersedes: []
-related: ["RFC-2025-99999"]
+related: ['RFC-2025-99999']
 ---
 
 # Test Architecture Decision Record
