@@ -1,0 +1,14 @@
+{
+  "_comment": "Template for creating custom MCP server configs",
+  "name": "my-custom-server",
+  "description": "Description of what this server does",
+  "command": "node",
+  "args": [
+    "path/to/server.js"
+  ],
+  "env": {
+    "API_KEY": "${MY_API_KEY}",
+    "CUSTOM_CONFIG": "value"
+  },
+  "cwd": "${PROJECT_ROOT}"
+}

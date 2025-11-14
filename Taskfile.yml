@@ -90,6 +90,57 @@ tasks:
     cmds:
       - bash scripts/setup-pre-commit.sh
 
+  # MCP (Model Context Protocol) setup helpers
+  mcp:detect-ides:
+    desc: Detect installed IDEs and their MCP config paths
+    cmds:
+      - python .mcp/scripts/detect-ide-configs.py
+
+  mcp:detect-ides:win:
+    desc: Detect installed IDEs and their MCP config paths (Windows PowerShell)
+    cmds:
+      - pwsh -File .mcp/scripts/detect-ide-configs.ps1
+
+  mcp:detect-ides:json:
+    desc: Detect installed IDEs and output as JSON
+    cmds:
+      - python .mcp/scripts/detect-ide-configs.py --json
+
+  mcp:setup:win:
+    desc: Setup MCP project launcher (Windows - interactive)
+    cmds:
+      - pwsh -File .mcp/setup-windows.ps1
+
+  mcp:setup:unix:
+    desc: Setup MCP project launcher (Linux/Mac - interactive)
+    cmds:
+      - bash .mcp/setup-unix.sh
+
+  mcp:install-launcher:win:
+    desc: Install MCP launcher to global location (Windows - non-interactive)
+    cmds:
+      - pwsh -Command "New-Item -ItemType Directory -Force -Path \"$env:USERPROFILE\.local\mcp-launcher\" | Out-Null; Copy-Item .mcp\launcher\launcher.py \"$env:USERPROFILE\.local\mcp-launcher\"; Write-Host 'Launcher installed to $env:USERPROFILE\.local\mcp-launcher\launcher.py' -ForegroundColor Green"
+
+  mcp:install-launcher:unix:
+    desc: Install MCP launcher to global location (Linux/Mac - non-interactive)
+    cmds:
+      - bash -c "mkdir -p ~/.local/mcp-launcher && cp .mcp/launcher/launcher.py ~/.local/mcp-launcher/ && chmod +x ~/.local/mcp-launcher/launcher.py && echo 'Launcher installed to ~/.local/mcp-launcher/launcher.py'"
+
+  mcp:test-launcher:
+    desc: Test the MCP launcher (requires launcher to be installed)
+    cmds:
+      - python ~/.local/mcp-launcher/launcher.py github --help || python "$env:USERPROFILE\.local\mcp-launcher\launcher.py" github --help
+
+  mcp:docs:
+    desc: Open MCP setup documentation
+    cmds:
+      - cmd: |
+          {{if eq OS "windows"}}
+          start .mcp\README.md
+          {{else}}
+          open .mcp/README.md || xdg-open .mcp/README.md
+          {{end}}
+
   images:create-battle:
     desc: Generate sample battle image (Pillow)
     cmds:
