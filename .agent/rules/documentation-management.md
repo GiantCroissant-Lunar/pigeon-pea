@@ -137,11 +137,11 @@ Generate doc_id following this pattern: `PREFIX-YYYY-NNNNN`
 
 ```bash
 # For RFCs
-ls docs/rfcs/ | grep -oP 'RFC-\d+-\d+' | sort -V | tail -1
+ls docs/rfcs/ | grep -oE 'RFC-[0-9]+-[0-9]+' | sort -V | tail -1
 # Returns: RFC-2025-00012 → next would be RFC-2025-00013
 
 # For Guides
-ls docs/guides/ | grep -oP 'GUIDE-\d+-\d+' | sort -V | tail -1
+ls docs/guides/ | grep -oE 'GUIDE-[0-9]+-[0-9]+' | sort -V | tail -1
 ```
 
 ### Step 5: Move to Final Location
@@ -154,7 +154,7 @@ Move completed docs to their final location based on type:
 | Guide    | `docs/guides/`              | `mv docs/_inbox/draft.md docs/guides/setup-dev.md`              |
 | ADR      | `docs/architecture/`        | `mv docs/_inbox/draft.md docs/architecture/adr-001-database.md` |
 | Plan     | `docs/planning/`            | `mv docs/_inbox/draft.md docs/planning/q1-2025-roadmap.md`      |
-| Finding  | `docs/planning/` or `docs/` | `mv docs/_inbox/draft.md docs/planning/performance-analysis.md` |
+| Finding  | `docs/planning/` (internal analyses) or `docs/` (broader audience) | `mv docs/_inbox/draft.md docs/planning/performance-analysis.md` |
 | Spec     | `docs/`                     | `mv docs/_inbox/draft.md docs/terminal-format-spec.md`          |
 
 ### Step 6: Commit with Validation
@@ -576,7 +576,7 @@ python scripts/validate-docs.py
 cat docs/index/registry.json | jq '.docs[] | select(.tags[] | contains("search-term"))'
 
 # Find next doc ID number
-ls docs/rfcs/ | grep -oP 'RFC-\d+-\d+' | sort -V | tail -1
+ls docs/rfcs/ | grep -oE 'RFC-[0-9]+-[0-9]+' | sort -V | tail -1
 ```
 
 ### File Locations
@@ -587,7 +587,7 @@ ls docs/rfcs/ | grep -oP 'RFC-\d+-\d+' | sort -V | tail -1
 | Guide    | `docs/_inbox/` | `docs/guides/`              |
 | ADR      | `docs/_inbox/` | `docs/architecture/`        |
 | Plan     | `docs/_inbox/` | `docs/planning/`            |
-| Finding  | `docs/_inbox/` | `docs/planning/` or `docs/` |
+| Finding  | `docs/_inbox/` | `docs/planning/` (internal analyses) or `docs/` (broader audience) |
 | Spec     | `docs/_inbox/` | `docs/`                     |
 
 ### Status Values

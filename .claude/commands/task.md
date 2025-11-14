@@ -135,7 +135,7 @@ Why is this needed? What problem does it solve?
 
 ### Guide (How-to)
 
-````markdown
+```markdown
 ---
 title: 'Guide Title'
 doc_type: 'guide'
@@ -165,7 +165,7 @@ Brief description of what this guide covers.
 ```bash
 # Example commands
 ```
-````
+```
 
 ### Step 2: [Name]
 
@@ -183,7 +183,7 @@ Brief description of what this guide covers.
 - [Related Guide 1](path)
 - [Related Guide 2](path)
 
-````
+```
 
 ### ADR (Architecture Decision Record)
 
@@ -244,7 +244,7 @@ What is the change that we're proposing/doing?
 ## References
 
 - [Reference 1](url)
-````
+```
 
 ### Plan (Planning Document)
 
