@@ -4,7 +4,10 @@ use anyhow::Result;
 use serde_json::json;
 
 pub fn execute(seed: Option<i32>, output: &OutputFormat) -> Result<()> {
-    let args = seed.map(|s| json!({ "seed": s }));
+    let args = Some(match seed {
+        Some(s) => json!({ "seed": s }),
+        None => json!({}),
+    });
 
     let envelope = Envelope::success("regen-map".to_string(), args);
 

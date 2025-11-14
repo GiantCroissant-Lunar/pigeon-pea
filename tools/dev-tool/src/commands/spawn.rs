@@ -5,7 +5,7 @@ use serde_json::json;
 
 pub fn execute(mob: &str, x: i32, y: i32, output: &OutputFormat) -> Result<()> {
     // Validate inputs
-    if mob.is_empty() {
+    if mob.trim().is_empty() {
         anyhow::bail!("Mob name cannot be empty");
     }
 
@@ -43,6 +43,12 @@ mod tests {
     #[test]
     fn test_spawn_empty_mob() {
         let result = execute("", 10, 20, &OutputFormat::Text);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_spawn_whitespace_mob() {
+        let result = execute("   ", 10, 20, &OutputFormat::Text);
         assert!(result.is_err());
     }
 }

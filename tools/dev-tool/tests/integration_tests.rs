@@ -102,8 +102,9 @@ fn test_regen_map_without_seed_json_format() {
     let json: Value = serde_json::from_slice(&output.stdout).unwrap();
     assert_eq!(json["cmd"], "regen-map");
     assert_eq!(json["status"], "success");
-    // regen-map without seed should not have args
-    assert!(json["args"].is_null());
+    // regen-map without seed should have empty args object
+    assert!(json["args"].is_object());
+    assert_eq!(json["args"].as_object().unwrap().len(), 0);
 }
 
 #[test]
@@ -128,4 +129,23 @@ fn test_help_displays() {
         .assert()
         .success()
         .stdout(predicate::str::contains("Development tool for Pigeon Pea"));
+}
+
+#[test]
+fn test_exit_code_missing_required_args() {
+    let mut cmd = Command::cargo_bin("dev-tool").unwrap();
+    cmd.args(&["spawn", "--mob", "goblin"])
+        .assert()
+        .failure()
+        .code(2);
+}
+
+#[test]
+fn test_spawn_whitespace_only_mob() {
+    let mut cmd = Command::cargo_bin("dev-tool").unwrap();
+    cmd.args(&["spawn", "--mob", "   ", "--x", "10", "--y", "20"])
+        .assert()
+        .failure()
+        .code(1)
+        .stderr(predicate::str::contains("Mob name cannot be empty"));
 }
