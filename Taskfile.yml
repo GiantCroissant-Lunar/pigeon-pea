@@ -9,17 +9,17 @@ tasks:
   skills:validate:
     desc: Validate all agent skills
     cmds:
-      - python3 scripts/validate_skills.py
+      - python scripts/validate_skills.py
 
   agents:validate:
     desc: Validate all agent manifests
     cmds:
-      - python3 scripts/validate_agents.py
+      - python scripts/validate_agents.py
 
   registry:generate:
     desc: Generate AGENTS.md registry from manifests
     cmds:
-      - python3 scripts/generate_registry.py
+      - python scripts/generate_registry.py
 
   check:
     desc: Run all validations
