@@ -1,3 +1,16 @@
+---
+doc_id: "SPEC-2025-00002"
+title: "Angle → Glyph Mapping Examples"
+doc_type: "reference"
+status: "active"
+canonical: true
+created: "2025-11-13"
+tags: ["fonts", "glyphs", "mapping", "code-examples", "pua"]
+summary: "Code examples for mapping angles to PUA glyph codepoints (36 angle buckets starting at U+E000)"
+supersedes: []
+related: ["RFC-2025-00020", "SPEC-2025-00001"]
+---
+
 # Angle → Glyph Mapping Examples
 
 This mapping assumes 36 angle buckets (every 10°) starting at `U+E000`.
