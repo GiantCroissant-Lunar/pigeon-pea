@@ -62,7 +62,8 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const output = await exec.getExecOutput('python', ['scripts/validate-docs.py']);
+            const execModule = require('@actions/exec');
+            const output = await execModule.getExecOutput('python', ['scripts/validate-docs.py']);
             const warnings = output.stdout.match(/\[WARNING\].*Near-duplicate detected:[\s\S]*?(?=\n\[|$)/g) || [];
 
             if (warnings.length > 0) {
