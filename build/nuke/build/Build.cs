@@ -7,6 +7,8 @@ using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Utilities.Collections;
+using Nuke.Common.Tools.GitVersion;
+using Serilog;
 using static Nuke.Common.EnvironmentInfo;
 
 class Build : NukeBuild,
@@ -17,6 +19,19 @@ class Build : NukeBuild,
     ITest,
     IPublish
 {
+    [GitVersion(NoFetch = true)]
+    readonly GitVersion GitVersion;
+
+    public string GitVersionNuGet
+    {
+        get
+        {
+            var value = GitVersion?.SemVer ?? "0.0.0-local";
+            Log.Information("GitVersion SemVer resolved to {Version}", value);
+            return value;
+        }
+    }
+
     /// Support plugins are available for:
     ///   - JetBrains ReSharper        https://nuke.build/resharper
     ///   - JetBrains Rider            https://nuke.build/rider

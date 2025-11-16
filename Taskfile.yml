@@ -46,6 +46,18 @@ tasks:
     cmds:
       - dotnet format
 
+  game:publish-latest:
+    desc: Publish latest console and Windows players via Nuke
+    cmds:
+      - pwsh -File build/nuke/build.ps1 --target PublishPlayers --configuration Release --Runtime win-x64
+
+  game:run-latest-console:
+    desc: Publish and run latest console player (run this inside Rio)
+    deps:
+      - game:publish-latest
+    cmds:
+      - pwsh -Command "Set-Location build/_artifacts/latest/PigeonPea.Console; ./PigeonPea.Console.exe"
+
   # PTY test helpers (Node.js)
   pty:install:
     desc: Install Node.js deps for PTY tests
@@ -119,17 +131,27 @@ tasks:
   mcp:install-launcher:win:
     desc: Install MCP launcher to global location (Windows - non-interactive)
     cmds:
-      - pwsh -Command "New-Item -ItemType Directory -Force -Path \"$env:USERPROFILE\.local\mcp-launcher\" | Out-Null; Copy-Item .mcp\launcher\launcher.py \"$env:USERPROFILE\.local\mcp-launcher\"; Write-Host 'Launcher installed to $env:USERPROFILE\.local\mcp-launcher\launcher.py' -ForegroundColor Green"
+      - >-
+        pwsh -Command
+        "New-Item -ItemType Directory -Force -Path \"$env:USERPROFILE\.local\mcp-launcher\" | Out-Null;
+        Copy-Item .mcp\launcher\launcher.py \"$env:USERPROFILE\.local\mcp-launcher\";
+        Write-Host 'Launcher installed to $env:USERPROFILE\.local\mcp-launcher\launcher.py' -ForegroundColor Green"
 
   mcp:install-launcher:unix:
     desc: Install MCP launcher to global location (Linux/Mac - non-interactive)
     cmds:
-      - bash -c "mkdir -p ~/.local/mcp-launcher && cp .mcp/launcher/launcher.py ~/.local/mcp-launcher/ && chmod +x ~/.local/mcp-launcher/launcher.py && echo 'Launcher installed to ~/.local/mcp-launcher/launcher.py'"
+      - >-
+        bash -c "mkdir -p ~/.local/mcp-launcher &&
+        cp .mcp/launcher/launcher.py ~/.local/mcp-launcher/ &&
+        chmod +x ~/.local/mcp-launcher/launcher.py &&
+        echo 'Launcher installed to ~/.local/mcp-launcher/launcher.py'"
 
   mcp:test-launcher:
     desc: Test the MCP launcher (requires launcher to be installed)
     cmds:
-      - python ~/.local/mcp-launcher/launcher.py github --help || python "$env:USERPROFILE\.local\mcp-launcher\launcher.py" github --help
+      - >-
+        python ~/.local/mcp-launcher/launcher.py github --help ||
+        python "$env:USERPROFILE\.local\mcp-launcher\launcher.py" github --help
 
   mcp:docs:
     desc: Open MCP setup documentation
