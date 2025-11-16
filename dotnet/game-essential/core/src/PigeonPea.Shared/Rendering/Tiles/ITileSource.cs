@@ -1,5 +1,5 @@
-using PigeonPea.Shared.Rendering;
 using FantasyMapGenerator.Core.Models;
+using PigeonPea.Shared.Rendering;
 
 namespace PigeonPea.SharedApp.Rendering.Tiles;
 
@@ -15,4 +15,3 @@ public interface ITileSource
     // Time-aware overload for animation
     TileImage GetTile(MapData map, Viewport worldViewport, TileRequest req, double zoom, bool biomeColors, bool rivers, double timeSeconds);
 }
-

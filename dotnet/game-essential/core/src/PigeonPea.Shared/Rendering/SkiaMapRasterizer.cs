@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
 using FantasyMapGenerator.Core.Models;
-using SkiaSharp;
 using PigeonPea.Shared.Rendering;
 using PigeonPea.Shared.ViewModels;
+using SkiaSharp;
 
 namespace PigeonPea.SharedApp.Rendering;
 
@@ -69,7 +69,7 @@ public static class SkiaMapRasterizer
                 }
             }
         }
-
+#if BRUTILE_OVERLAY
         // Optional BruTile HTTP raster overlay (demo): fetch a single OSM tile and alpha-blend over the buffer
         if (System.Environment.GetEnvironmentVariable("PP_BRUTILE_OVERLAY") == "1")
         {
@@ -118,6 +118,7 @@ public static class SkiaMapRasterizer
             }
             catch { }
         }
+#endif
 
         // Rivers overlay: thin cyan line between river cell centers projected to pixel space
         if (rivers && map.Rivers != null)

@@ -20,4 +20,3 @@ public class MapRenderViewModel : ReactiveObject
     public int ViewportCols { get => _viewportCols; set => this.RaiseAndSetIfChanged(ref _viewportCols, value); }
     public int ViewportRows { get => _viewportRows; set => this.RaiseAndSetIfChanged(ref _viewportRows, value); }
 }
-

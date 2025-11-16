@@ -8,6 +8,26 @@ public readonly struct ScreenRect
     public int Height { get; }
     public ScreenRect(int x, int y, int width, int height)
     { X = x; Y = y; Width = width; Height = height; }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(ScreenRect left, ScreenRect right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(ScreenRect left, ScreenRect right)
+    {
+        return !(left == right);
+    }
 }
 
 /// <summary>
@@ -22,4 +42,3 @@ public sealed class RenderLayout
     public RenderLayout(ScreenRect mapRect, IReadOnlyList<ScreenRect>? hudRects = null)
     { MapRect = mapRect; HudRects = hudRects ?? Array.Empty<ScreenRect>(); }
 }
-

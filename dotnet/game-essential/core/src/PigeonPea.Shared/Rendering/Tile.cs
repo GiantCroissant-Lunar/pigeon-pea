@@ -70,4 +70,24 @@ public struct Tile
         SpriteFrame = spriteFrame;
         Flags = TileFlags.None;
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override int GetHashCode()
+    {
+        throw new NotImplementedException();
+    }
+
+    public static bool operator ==(Tile left, Tile right)
+    {
+        return left.Equals(right);
+    }
+
+    public static bool operator !=(Tile left, Tile right)
+    {
+        return !(left == right);
+    }
 }

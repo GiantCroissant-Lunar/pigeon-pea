@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
-using PigeonPea.Shared.Rendering;
 using FantasyMapGenerator.Core.Models;
+using PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
 
 namespace PigeonPea.SharedApp.Rendering;
@@ -38,7 +38,7 @@ public static class MapDataRenderer
         var drawImage = rendererType.GetMethod("DrawImage", new[] { typeof(int), typeof(int), typeof(byte[]), typeof(int), typeof(int) });
         // Allow forcing character-based path for troubleshooting via env var
         var disablePixelEnv = (Environment.GetEnvironmentVariable("PIGEONPEA_DISABLE_PIXEL") ?? "").Trim();
-        bool disablePixel = disablePixelEnv.Equals("1") || disablePixelEnv.Equals("true", StringComparison.OrdinalIgnoreCase);
+        bool disablePixel = disablePixelEnv.Equals("1", StringComparison.Ordinal) || disablePixelEnv.Equals("true", StringComparison.OrdinalIgnoreCase);
 
         if (!disablePixel && renderer.Capabilities.Supports(RendererCapabilities.PixelGraphics) && (replaceAndDisplay != null || drawImage != null))
         {
@@ -173,7 +173,7 @@ public static class MapDataRenderer
         int heightPx = rows * ppc;
         // Choose Skia-based rasterizer (faster) when enabled; default to enabled
         var useSkiaEnv = (Environment.GetEnvironmentVariable("PIGEONPEA_USE_SKIA") ?? "1").Trim();
-        bool useSkia = useSkiaEnv.Equals("1") || useSkiaEnv.Equals("true", StringComparison.OrdinalIgnoreCase);
+        bool useSkia = useSkiaEnv.Equals("1", StringComparison.Ordinal) || useSkiaEnv.Equals("true", StringComparison.OrdinalIgnoreCase);
         byte[] rgba;
         if (useSkia)
         {
@@ -363,7 +363,7 @@ public static class MapDataRenderer
             // Leave the last console row free for text/HUD by reducing gridRows by 1 if possible
             int gridRows = rows > 1 ? rows - 1 : rows;
             var tileEnv = (Environment.GetEnvironmentVariable("PIGEONPEA_TILE_IMAGES") ?? "").Trim();
-            bool tileMode = tileEnv.Equals("1") || tileEnv.Equals("true", StringComparison.OrdinalIgnoreCase);
+            bool tileMode = tileEnv.Equals("1", StringComparison.Ordinal) || tileEnv.Equals("true", StringComparison.OrdinalIgnoreCase);
             if (!tileMode)
             {
                 int screenX = layout?.MapRect.X ?? 0;
@@ -457,13 +457,3 @@ public static class MapDataRenderer
         return (fr, fg, fb);
     }
 }
-
-
-
-
-
-
-
-
-
-
