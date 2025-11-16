@@ -20,6 +20,7 @@ terraform version
 https://github.com/settings/tokens
 
 **Required scopes:**
+
 - `repo` (full control)
 - `admin:repo_hook` (webhooks)
 - `workflow` (GitHub Actions)
@@ -37,6 +38,7 @@ nano terraform.tfvars
 ```
 
 **Minimum configuration:**
+
 ```hcl
 github_token = "ghp_YOUR_TOKEN_HERE"
 github_owner = "your-username"
@@ -51,32 +53,38 @@ terraform init
 ## Common Commands
 
 ### Review Changes
+
 ```bash
 terraform plan
 ```
 
 ### Apply Changes
+
 ```bash
 terraform apply
 # Review, type 'yes'
 ```
 
 ### Show Current State
+
 ```bash
 terraform show
 ```
 
 ### List Resources
+
 ```bash
 terraform state list
 ```
 
 ### Format Code
+
 ```bash
 terraform fmt
 ```
 
 ### Validate Configuration
+
 ```bash
 terraform validate
 ```
@@ -86,6 +94,7 @@ terraform validate
 ### Add GitHub Actions Secret
 
 Edit `terraform.tfvars`:
+
 ```hcl
 github_actions_secrets = {
   "OPENAI_API_KEY" = "sk-..."
@@ -94,6 +103,7 @@ github_actions_secrets = {
 ```
 
 Then:
+
 ```bash
 terraform apply
 ```
@@ -101,6 +111,7 @@ terraform apply
 ### Update Branch Protection
 
 Edit `terraform.tfvars`:
+
 ```hcl
 required_status_checks = [
   "pre-commit",
@@ -111,6 +122,7 @@ required_status_checks = [
 ```
 
 Then:
+
 ```bash
 terraform apply
 ```
@@ -118,11 +130,13 @@ terraform apply
 ### Change Repository Visibility
 
 Edit `terraform.tfvars`:
+
 ```hcl
 repository_visibility = "public"  # or "private"
 ```
 
 Then:
+
 ```bash
 terraform apply
 ```
@@ -130,6 +144,7 @@ terraform apply
 ## State Management
 
 ### Local (Default)
+
 State stored in `terraform.tfstate` (not committed).
 
 **Warning:** Contains secrets, don't share!
@@ -181,6 +196,7 @@ git commit -m "Update Terraform config"
 ## Troubleshooting
 
 ### Repository not found
+
 ```bash
 # Check repository exists
 # Verify github_owner matches
@@ -188,12 +204,14 @@ git commit -m "Update Terraform config"
 ```
 
 ### Resource already exists
+
 ```bash
 # Import existing resource
 terraform import <resource_type>.<name> <id>
 ```
 
 ### Invalid credentials
+
 ```bash
 # Generate new token
 # Update terraform.tfvars
@@ -201,6 +219,7 @@ terraform apply
 ```
 
 ### State locked
+
 ```bash
 # If using Terraform Cloud and state is locked
 # Wait for other operation to complete, or force unlock:
@@ -210,12 +229,14 @@ terraform force-unlock <lock-id>
 ## Safety Tips
 
 ### DO:
+
 - ✅ Review `terraform plan` before `apply`
 - ✅ Use `.gitignore` (already configured)
 - ✅ Use Terraform Cloud for teams
 - ✅ Commit `.terraform.lock.hcl`
 
 ### DON'T:
+
 - ❌ Commit `terraform.tfvars`
 - ❌ Commit `.tfstate` files
 - ❌ Use `-auto-approve` without reviewing
@@ -223,16 +244,16 @@ terraform force-unlock <lock-id>
 
 ## File Reference
 
-| File | Purpose | Commit? |
-|------|---------|---------|
-| `main.tf` | Main config | ✅ Yes |
-| `variables.tf` | Variable definitions | ✅ Yes |
-| `outputs.tf` | Output definitions | ✅ Yes |
-| `terraform.tfvars` | **Your secrets** | ❌ **NO** |
-| `terraform.tfvars.example` | Example config | ✅ Yes |
-| `.terraform.lock.hcl` | Provider versions | ✅ Yes |
-| `terraform.tfstate` | State file | ❌ **NO** |
-| `.terraform/` | Provider cache | ❌ No |
+| File                       | Purpose              | Commit?   |
+| -------------------------- | -------------------- | --------- |
+| `main.tf`                  | Main config          | ✅ Yes    |
+| `variables.tf`             | Variable definitions | ✅ Yes    |
+| `outputs.tf`               | Output definitions   | ✅ Yes    |
+| `terraform.tfvars`         | **Your secrets**     | ❌ **NO** |
+| `terraform.tfvars.example` | Example config       | ✅ Yes    |
+| `.terraform.lock.hcl`      | Provider versions    | ✅ Yes    |
+| `terraform.tfstate`        | State file           | ❌ **NO** |
+| `.terraform/`              | Provider cache       | ❌ No     |
 
 ## Common Variables
 

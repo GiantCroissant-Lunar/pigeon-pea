@@ -12,6 +12,7 @@ from pathlib import Path
 # (parent.parent because we're in scripts/ subdirectory)
 MEMORY_FILE = Path(__file__).parent.parent / "data" / "memory-test.jsonl"
 
+
 def save_memory(key: str, content: str, metadata: dict = None):
     """Save a memory and LOG IT"""
     MEMORY_FILE.parent.mkdir(exist_ok=True)
@@ -20,7 +21,7 @@ def save_memory(key: str, content: str, metadata: dict = None):
         "timestamp": datetime.now().isoformat(),
         "key": key,
         "content": content,
-        "metadata": metadata or {}
+        "metadata": metadata or {},
     }
 
     with open(MEMORY_FILE, "a") as f:
@@ -30,6 +31,7 @@ def save_memory(key: str, content: str, metadata: dict = None):
     print(f"  Content: {content[:100]}...")
     print(f"  Location: {MEMORY_FILE}")
     return entry
+
 
 def retrieve_memory(key: str) -> list:
     """Retrieve memories and LOG IT"""
@@ -41,7 +43,10 @@ def retrieve_memory(key: str) -> list:
     with open(MEMORY_FILE, "r") as f:
         for line in f:
             entry = json.loads(line)
-            if key.lower() in entry["key"].lower() or key.lower() in entry["content"].lower():
+            if (
+                key.lower() in entry["key"].lower()
+                or key.lower() in entry["content"].lower()
+            ):
                 matches.append(entry)
 
     print(f"[RETRIEVED] {len(matches)} matches for '{key}'")
@@ -49,6 +54,7 @@ def retrieve_memory(key: str) -> list:
         print(f"  - {m['timestamp']}: {m['content'][:80]}...")
 
     return matches
+
 
 def test_memory_cycle():
     """Run a full save -> retrieve cycle"""
@@ -59,13 +65,13 @@ def test_memory_cycle():
     save_memory(
         key="architecture.domain-separation",
         content="Map and Dungeon are separate domains. Map.Core handles world generation, Dungeon.Core handles local dungeons.",
-        metadata={"project": "pigeon-pea", "type": "architecture-decision"}
+        metadata={"project": "pigeon-pea", "type": "architecture-decision"},
     )
 
     save_memory(
         key="tech.fov-library",
         content="We use GoRogue for field-of-view calculations in Dungeon.Core",
-        metadata={"project": "pigeon-pea", "type": "tech-choice"}
+        metadata={"project": "pigeon-pea", "type": "tech-choice"},
     )
 
     # Test 2: Retrieve exact
@@ -88,6 +94,7 @@ def test_memory_cycle():
     print("\n=== TEST COMPLETE ===")
     print(f"Memory file: {MEMORY_FILE}")
     print("Next: Check if an AGENT can use this same pattern")
+
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:

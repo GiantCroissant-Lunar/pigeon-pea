@@ -52,6 +52,7 @@ If you prefer manual setup or need to install specific components:
    - Docker & Docker Compose
 
 2. **Pre-commit Hooks**
+
    ```bash
    pip install pre-commit
    cd ../..  # Go to project root
@@ -85,12 +86,14 @@ See [`terraform/README.md`](terraform/README.md) for Terraform usage.
 Automated development environment setup using Ansible.
 
 **Features:**
+
 - Python, .NET, Node.js, Docker installation
 - Pre-commit hooks configuration
 - Memory infrastructure (Qdrant) deployment
 - Platform-specific handling (Linux, macOS, Windows/WSL)
 
 **Available Playbooks:**
+
 - `setup-dev.yml` - Full development environment
 - `setup-memory.yml` - Memory infrastructure only
 - `setup-precommit.yml` - Pre-commit hooks only
@@ -101,11 +104,13 @@ See [`ansible/README.md`](ansible/README.md) for full documentation.
 ### Memory (`memory/`)
 
 Long-term memory system for AI agents (Claude Code, Windsurf, etc.) using:
+
 - File-based JSONL storage (Phase 1)
 - Qdrant vector database (Phase 2 - semantic search)
 - MCP server for tool integration
 
 **Features:**
+
 - Full visibility into memory operations (via logs)
 - Extremely low cost (~$0.10-$1/month with embeddings)
 - Shared across multiple tools/editors
@@ -120,6 +125,7 @@ See [`memory/README.md`](memory/README.md) for activation instructions.
 GitHub infrastructure management using Terraform (infrastructure as code).
 
 **Features:**
+
 - Repository settings and configuration
 - Branch protection rules
 - GitHub Actions secrets management
@@ -127,6 +133,7 @@ GitHub infrastructure management using Terraform (infrastructure as code).
 - Infrastructure versioning and reproducibility
 
 **Manages:**
+
 - Repository visibility, features, topics
 - Branch protection (main branch)
 - Required status checks (pre-commit, build, test)
@@ -200,12 +207,12 @@ The Ansible playbooks can be used in CI/CD pipelines:
 
 ## Platform Support
 
-| Platform | Ansible | Memory | Terraform | Status |
-|----------|---------|--------|-----------|--------|
-| Linux (Debian/Ubuntu) | ✅ Full | ✅ Full | ✅ Full | Tested |
-| macOS | ✅ Full | ✅ Full | ✅ Full | Tested |
-| Windows (WSL2) | ⚠️ Partial | ✅ Full | ✅ Full | Recommended |
-| Windows (native) | ❌ Manual | ⚠️ Limited | ✅ Full | Partial |
+| Platform              | Ansible    | Memory     | Terraform | Status      |
+| --------------------- | ---------- | ---------- | --------- | ----------- |
+| Linux (Debian/Ubuntu) | ✅ Full    | ✅ Full    | ✅ Full   | Tested      |
+| macOS                 | ✅ Full    | ✅ Full    | ✅ Full   | Tested      |
+| Windows (WSL2)        | ⚠️ Partial | ✅ Full    | ✅ Full   | Recommended |
+| Windows (native)      | ❌ Manual  | ⚠️ Limited | ✅ Full   | Partial     |
 
 ## Troubleshooting
 

@@ -25,6 +25,7 @@ infra/memory/
 ## Architecture
 
 ### Phase 1: File-based Memory (Current)
+
 - **Storage**: Simple JSONL file (`data/project-memory.jsonl`)
 - **Search**: Basic keyword matching
 - **Cost**: $0
@@ -32,6 +33,7 @@ infra/memory/
 - **Visibility**: Full logging to `logs/memory-mcp.log`
 
 ### Phase 2: Semantic Search (Future)
+
 - **Storage**: Qdrant vector database
 - **Search**: Semantic similarity using embeddings
 - **Embedding model**: OpenAI `text-embedding-3-small`
@@ -47,6 +49,7 @@ infra/memory/
 1. **Add MCP server to Claude Code**
 
    Edit `.claude/mcp_servers.json`:
+
    ```json
    {
      "project-memory": {
@@ -65,6 +68,7 @@ infra/memory/
    - You should see: `save_memory`, `search_memory`, `list_recent_memories`
 
 4. **Test with explicit prompts**
+
    ```
    User: "Use the save_memory tool to remember: We use GoRogue for FOV in Dungeon.Core"
 
@@ -74,11 +78,13 @@ infra/memory/
    ```
 
 5. **Check the logs**
+
    ```bash
    tail -f infra/memory/logs/memory-mcp.log
    ```
 
    You should see:
+
    ```
    [INFO] SAVE: key=tech.fov, content_len=47, metadata={}
    [INFO] SEARCH: query='FOV', found=1, returned=1
@@ -101,6 +107,7 @@ infra/memory/
 **Only if file-based search is insufficient:**
 
 1. **Start Qdrant**
+
    ```bash
    cd infra/memory
    docker compose up -d
@@ -119,11 +126,13 @@ infra/memory/
 ## Cost Estimates
 
 ### File-based (Phase 1)
+
 - **Storage**: Free (local disk)
 - **Compute**: Free (local CPU)
 - **Total**: $0/month
 
 ### With Semantic Search (Phase 2)
+
 - **Storage**: Free (self-hosted Qdrant)
 - **Embeddings**: $0.02 per 1M tokens
 - **Realistic usage**: $0.10-$1.00/month

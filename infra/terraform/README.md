@@ -5,6 +5,7 @@ Manage pigeon-pea GitHub repository infrastructure as code using Terraform.
 ## Overview
 
 This Terraform configuration manages:
+
 - ✅ **Repository settings** (visibility, features, topics)
 - ✅ **Branch protection rules** (main branch, PR requirements)
 - ✅ **GitHub Actions secrets** (API keys, credentials)
@@ -20,6 +21,7 @@ See [QUICKSTART.md](QUICKSTART.md) for a condensed getting-started guide.
 ## Prerequisites
 
 1. **Terraform** 1.0+ installed
+
    ```bash
    # Check version
    terraform version
@@ -53,12 +55,14 @@ nano terraform.tfvars
 ```
 
 **Required variables:**
+
 ```hcl
 github_token = "ghp_YOUR_TOKEN_HERE"
 github_owner = "your-username"
 ```
 
 **Optional but recommended:**
+
 ```hcl
 github_actions_secrets = {
   "OPENAI_API_KEY" = "sk-..."  # For memory system embeddings
@@ -108,6 +112,7 @@ terraform state list
 ### Repository Settings
 
 Managed via `modules/github`:
+
 - Repository description and topics
 - Features (Issues, Projects, Discussions, Wiki)
 - Merge settings (squash, rebase, delete on merge)
@@ -116,6 +121,7 @@ Managed via `modules/github`:
 ### Branch Protection (main)
 
 Default protection rules:
+
 - ✅ Require pull request reviews (optional, configurable)
 - ✅ Require status checks to pass
   - `pre-commit` (formatting, linting)
@@ -129,6 +135,7 @@ Default protection rules:
 ### GitHub Actions Secrets
 
 Securely managed secrets for CI/CD:
+
 - `OPENAI_API_KEY` - For memory system embeddings
 - `ANTHROPIC_API_KEY` - For Claude integration (optional)
 - `GCP_SA_KEY` - For Unity cloud builds (future)
@@ -139,6 +146,7 @@ Securely managed secrets for CI/CD:
 ### GitHub Actions Variables
 
 Non-sensitive configuration:
+
 - `DOTNET_VERSION` = "8.0"
 - `PYTHON_VERSION` = "3.11"
 - `NODE_VERSION` = "18"
@@ -151,10 +159,12 @@ Non-sensitive configuration:
 State stored in `terraform.tfstate` locally.
 
 **Pros:**
+
 - Simple, no setup required
 - Works offline
 
 **Cons:**
+
 - Not suitable for teams
 - State file contains secrets
 - No collaboration features
@@ -177,6 +187,7 @@ terraform {
 ```
 
 **Pros:**
+
 - Remote state storage
 - State encryption
 - Collaboration support
@@ -184,6 +195,7 @@ terraform {
 - Free for small teams
 
 **Setup:**
+
 1. Create account at https://app.terraform.io
 2. Create organization and workspace
 3. Update `main.tf` with your org/workspace
@@ -212,6 +224,7 @@ github_actions_secrets = {
 ```
 
 Then:
+
 ```bash
 terraform apply
 ```
@@ -230,6 +243,7 @@ required_status_checks = [
 ```
 
 Then:
+
 ```bash
 terraform apply
 ```
@@ -274,6 +288,7 @@ infra/terraform/
 ## Security Best Practices
 
 ### DO:
+
 - ✅ Use Terraform Cloud or remote backend for state
 - ✅ Use environment variables for secrets in CI/CD
 - ✅ Review `terraform plan` before `terraform apply`
@@ -281,6 +296,7 @@ infra/terraform/
 - ✅ Use `.gitignore` to exclude sensitive files
 
 ### DON'T:
+
 - ❌ Commit `terraform.tfvars` (contains secrets)
 - ❌ Commit `.tfstate` files (contain secrets)
 - ❌ Store secrets in version control
@@ -294,6 +310,7 @@ infra/terraform/
 **Cause:** Repository doesn't exist or token lacks permissions.
 
 **Fix:**
+
 1. Verify repository exists: `https://github.com/your-username/pigeon-pea`
 2. Check token permissions (repo, admin:repo_hook, workflow)
 3. Verify `github_owner` matches repository owner
@@ -303,6 +320,7 @@ infra/terraform/
 **Cause:** Resource already managed manually in GitHub.
 
 **Fix:** Import the existing resource:
+
 ```bash
 terraform import <resource_type>.<name> <id>
 ```
@@ -312,6 +330,7 @@ terraform import <resource_type>.<name> <id>
 **Cause:** GitHub token expired or invalid.
 
 **Fix:**
+
 1. Generate new token at https://github.com/settings/tokens
 2. Update `terraform.tfvars` with new token
 3. Run `terraform apply`
@@ -319,11 +338,13 @@ terraform import <resource_type>.<name> <id>
 ### State File Corruption
 
 **Prevention:**
+
 - Use Terraform Cloud for state management
 - Enable state locking
 - Don't manually edit state files
 
 **Recovery:**
+
 ```bash
 # Backup current state
 cp terraform.tfstate terraform.tfstate.backup
@@ -401,6 +422,7 @@ jobs:
 ## Support
 
 For issues or questions:
+
 - Check [Troubleshooting](#troubleshooting) section
 - Review Terraform documentation
 - Check GitHub provider documentation

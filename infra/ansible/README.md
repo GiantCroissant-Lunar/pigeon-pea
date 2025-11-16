@@ -27,24 +27,26 @@ ansible-playbook setup-dev.yml --tags memory
 ## What Gets Installed
 
 ### Core Development Tools
+
 - **Python**: Python 3.11+, pip, virtualenv
 - **.NET**: .NET 8.0 SDK
 - **Node.js**: Node.js 18+ LTS, npm
 - **Docker**: Docker Engine, Docker Compose
 
 ### Project-Specific
+
 - **Pre-commit**: Pre-commit hooks framework
 - **Memory Infrastructure**: Qdrant setup via Docker Compose
 - **Project Dependencies**: Python packages, .NET packages, npm packages
 
 ## Available Playbooks
 
-| Playbook | Description |
-|----------|-------------|
-| `setup-dev.yml` | Full development environment setup |
-| `setup-memory.yml` | Only memory infrastructure (Qdrant) |
-| `setup-precommit.yml` | Only pre-commit hooks |
-| `teardown-memory.yml` | Remove memory infrastructure |
+| Playbook              | Description                         |
+| --------------------- | ----------------------------------- |
+| `setup-dev.yml`       | Full development environment setup  |
+| `setup-memory.yml`    | Only memory infrastructure (Qdrant) |
+| `setup-precommit.yml` | Only pre-commit hooks               |
+| `teardown-memory.yml` | Remove memory infrastructure        |
 
 ## Directory Structure
 
@@ -73,26 +75,33 @@ infra/ansible/
 ## Roles
 
 ### python
+
 Installs Python 3.11+, pip, virtualenv, and project Python dependencies.
 
 ### dotnet
+
 Installs .NET 8.0 SDK and verifies installation.
 
 ### docker
+
 Installs Docker Engine and Docker Compose (Linux/macOS).
 
 ### nodejs
+
 Installs Node.js 18 LTS and npm.
 
 ### precommit
+
 Installs pre-commit framework and sets up hooks for the project.
 
 ### memory
+
 Sets up memory infrastructure (Qdrant) using Docker Compose.
 
 ## Configuration
 
 Edit variables in:
+
 - `group_vars/all.yml` - Global settings
 - `vars/dev_tools.yml` - Tool versions
 - `vars/memory.yml` - Memory infrastructure settings
@@ -106,18 +115,21 @@ Edit variables in:
 ## Troubleshooting
 
 ### Ansible not found
+
 ```bash
 pip install --user ansible
 export PATH="$PATH:$HOME/.local/bin"
 ```
 
 ### Permission denied (Docker)
+
 ```bash
 sudo usermod -aG docker $USER
 # Log out and back in
 ```
 
 ### Pre-commit hooks not running
+
 ```bash
 cd ../../  # Go to project root
 pre-commit install
@@ -147,6 +159,7 @@ docker compose ps  # Should show qdrant running
 ## Integration with Project
 
 This Ansible setup is designed to work with:
+
 - Pre-commit configuration in `.pre-commit-config.yaml`
 - Memory infrastructure in `infra/memory/`
 - Development tools required by `dotnet/`, Python scripts, and Node.js packages
@@ -171,6 +184,7 @@ After running setup:
 ## Contributing
 
 When adding new roles:
+
 1. Create role directory under `roles/`
 2. Add `tasks/main.yml` with tasks
 3. Update `setup-dev.yml` to include the role

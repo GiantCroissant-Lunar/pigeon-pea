@@ -148,6 +148,7 @@ Edit these files to customize setup:
 ## Help
 
 For detailed documentation:
+
 - Ansible: `infra/ansible/README.md`
 - Memory: `infra/memory/README.md`
 - Infrastructure: `infra/README.md`

@@ -27,11 +27,8 @@ LOG_FILE = Path(__file__).parent.parent / "logs" / "memory-mcp.log"
 LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s [%(levelname)s] %(message)s',
-    handlers=[
-        logging.FileHandler(LOG_FILE),
-        logging.StreamHandler(sys.stderr)
-    ]
+    format="%(asctime)s [%(levelname)s] %(message)s",
+    handlers=[logging.FileHandler(LOG_FILE), logging.StreamHandler(sys.stderr)],
 )
 logger = logging.getLogger(__name__)
 
@@ -50,7 +47,7 @@ class MemoryStore:
             "timestamp": datetime.now().isoformat(),
             "key": key,
             "content": content,
-            "metadata": metadata or {}
+            "metadata": metadata or {},
         }
 
         with open(self.storage_path, "a", encoding="utf-8") as f:
@@ -72,14 +69,18 @@ class MemoryStore:
             for line in f:
                 entry = json.loads(line)
                 # Simple keyword matching
-                if (query_lower in entry["key"].lower() or
-                    query_lower in entry["content"].lower()):
+                if (
+                    query_lower in entry["key"].lower()
+                    or query_lower in entry["content"].lower()
+                ):
                     matches.append(entry)
 
         # Return most recent matches
         matches = sorted(matches, key=lambda x: x["timestamp"], reverse=True)[:limit]
 
-        logger.info(f"SEARCH: query='{query}', found={len(matches)}, returned={len(matches)}")
+        logger.info(
+            f"SEARCH: query='{query}', found={len(matches)}, returned={len(matches)}"
+        )
         return matches
 
     def list_recent(self, limit: int = 10) -> List[Dict]:
@@ -100,10 +101,7 @@ class MemoryStore:
 
 def create_mcp_response(result: Any) -> Dict:
     """Create MCP-compliant response"""
-    return {
-        "jsonrpc": "2.0",
-        "result": result
-    }
+    return {"jsonrpc": "2.0", "result": result}
 
 
 def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
@@ -114,63 +112,65 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
     logger.info(f"REQUEST: method={method}, params={params}")
 
     if method == "tools/list":
-        return create_mcp_response({
-            "tools": [
-                {
-                    "name": "save_memory",
-                    "description": "Save important project knowledge for long-term retrieval",
-                    "inputSchema": {
-                        "type": "object",
-                        "properties": {
-                            "key": {
-                                "type": "string",
-                                "description": "Categorized key (e.g., 'architecture.domain-separation', 'tech.fov-library')"
+        return create_mcp_response(
+            {
+                "tools": [
+                    {
+                        "name": "save_memory",
+                        "description": "Save important project knowledge for long-term retrieval",
+                        "inputSchema": {
+                            "type": "object",
+                            "properties": {
+                                "key": {
+                                    "type": "string",
+                                    "description": "Categorized key (e.g., 'architecture.domain-separation', 'tech.fov-library')",
+                                },
+                                "content": {
+                                    "type": "string",
+                                    "description": "The knowledge/decision to remember",
+                                },
+                                "metadata": {
+                                    "type": "object",
+                                    "description": "Optional metadata (tags, project, type, etc.)",
+                                },
                             },
-                            "content": {
-                                "type": "string",
-                                "description": "The knowledge/decision to remember"
-                            },
-                            "metadata": {
-                                "type": "object",
-                                "description": "Optional metadata (tags, project, type, etc.)"
-                            }
+                            "required": ["key", "content"],
                         },
-                        "required": ["key", "content"]
-                    }
-                },
-                {
-                    "name": "search_memory",
-                    "description": "Search for previously saved project knowledge",
-                    "inputSchema": {
-                        "type": "object",
-                        "properties": {
-                            "query": {
-                                "type": "string",
-                                "description": "Search query (keywords or concepts)"
+                    },
+                    {
+                        "name": "search_memory",
+                        "description": "Search for previously saved project knowledge",
+                        "inputSchema": {
+                            "type": "object",
+                            "properties": {
+                                "query": {
+                                    "type": "string",
+                                    "description": "Search query (keywords or concepts)",
+                                },
+                                "limit": {
+                                    "type": "number",
+                                    "description": "Max results to return (default: 5)",
+                                },
                             },
-                            "limit": {
-                                "type": "number",
-                                "description": "Max results to return (default: 5)"
-                            }
+                            "required": ["query"],
                         },
-                        "required": ["query"]
-                    }
-                },
-                {
-                    "name": "list_recent_memories",
-                    "description": "List recent memories to understand what's been saved",
-                    "inputSchema": {
-                        "type": "object",
-                        "properties": {
-                            "limit": {
-                                "type": "number",
-                                "description": "Number of recent entries (default: 10)"
-                            }
-                        }
-                    }
-                }
-            ]
-        })
+                    },
+                    {
+                        "name": "list_recent_memories",
+                        "description": "List recent memories to understand what's been saved",
+                        "inputSchema": {
+                            "type": "object",
+                            "properties": {
+                                "limit": {
+                                    "type": "number",
+                                    "description": "Number of recent entries (default: 10)",
+                                }
+                            },
+                        },
+                    },
+                ]
+            }
+        )
 
     elif method == "tools/call":
         tool_name = params.get("name")
@@ -180,21 +180,22 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
             result = memory.save(
                 key=arguments["key"],
                 content=arguments["content"],
-                metadata=arguments.get("metadata", {})
+                metadata=arguments.get("metadata", {}),
             )
-            return create_mcp_response({
-                "content": [
-                    {
-                        "type": "text",
-                        "text": f"✓ Saved memory: {arguments['key']}\nTimestamp: {result['timestamp']}"
-                    }
-                ]
-            })
+            return create_mcp_response(
+                {
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": f"✓ Saved memory: {arguments['key']}\nTimestamp: {result['timestamp']}",
+                        }
+                    ]
+                }
+            )
 
         elif tool_name == "search_memory":
             results = memory.search(
-                query=arguments["query"],
-                limit=arguments.get("limit", 5)
+                query=arguments["query"], limit=arguments.get("limit", 5)
             )
 
             if not results:
@@ -205,9 +206,7 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
                     text += f"[{r['timestamp']}] {r['key']}\n"
                     text += f"  {r['content'][:200]}...\n\n"
 
-            return create_mcp_response({
-                "content": [{"type": "text", "text": text}]
-            })
+            return create_mcp_response({"content": [{"type": "text", "text": text}]})
 
         elif tool_name == "list_recent_memories":
             results = memory.list_recent(limit=arguments.get("limit", 10))
@@ -217,9 +216,7 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
                 text += f"[{r['timestamp']}] {r['key']}\n"
                 text += f"  {r['content'][:100]}...\n\n"
 
-            return create_mcp_response({
-                "content": [{"type": "text", "text": text}]
-            })
+            return create_mcp_response({"content": [{"type": "text", "text": text}]})
 
         else:
             return create_mcp_response({"error": f"Unknown tool: {tool_name}"})
@@ -249,10 +246,7 @@ def main():
             logger.error(f"Error processing request: {e}", exc_info=True)
             error_response = {
                 "jsonrpc": "2.0",
-                "error": {
-                    "code": -32603,
-                    "message": str(e)
-                }
+                "error": {"code": -32603, "message": str(e)},
             }
             print(json.dumps(error_response))
             sys.stdout.flush()
