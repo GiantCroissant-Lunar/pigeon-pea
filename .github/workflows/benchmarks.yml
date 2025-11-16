@@ -50,7 +50,7 @@ jobs:
         with:
           name: benchmark-results
           path: |
-            dotnet/BenchmarkDotNet.Artifacts/**/*
+            build/_artifacts/benchmarks/BenchmarkDotNet.Artifacts/**/*
           retention-days: 30
       - name: Check performance targets
         working-directory: dotnet
@@ -60,7 +60,7 @@ jobs:
           echo "Console renderer target: < 33.33ms per frame (30 FPS)"
 
           # Parse benchmark results and check if targets are met
-          RESULTS="BenchmarkDotNet.Artifacts/results/PigeonPea.Benchmarks.RenderingBenchmarks-report.json"
+          RESULTS="../build/_artifacts/benchmarks/BenchmarkDotNet.Artifacts/results/PigeonPea.Benchmarks.RenderingBenchmarks-report.json"
           if [ -f "$RESULTS" ]; then
             echo "Benchmark results found. Analyzing..."
 
@@ -99,7 +99,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const base = 'dotnet/BenchmarkDotNet.Artifacts/results/';
+            const base = 'build/_artifacts/benchmarks/BenchmarkDotNet.Artifacts/results/';
             const path = base + 'PigeonPea.Benchmarks.RenderingBenchmarks-report.json';
 
             if (fs.existsSync(path)) {
