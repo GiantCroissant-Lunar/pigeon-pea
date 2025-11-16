@@ -9,7 +9,4 @@
     <PackageReference Include="SkiaSharp" Version="2.88.7" />
     <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Map\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
-  </ItemGroup>
 </Project>
