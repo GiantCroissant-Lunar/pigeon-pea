@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PigeonPea.Map.Control\PigeonPea.Map.Control.csproj" />
-    <ProjectReference Include="..\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
-    <ProjectReference Include="..\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Map.Control\PigeonPea.Map.Control.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
   </ItemGroup>
 </Project>
