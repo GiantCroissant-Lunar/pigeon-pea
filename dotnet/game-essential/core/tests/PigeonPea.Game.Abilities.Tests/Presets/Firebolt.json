@@ -1,0 +1,44 @@
+{
+  "$schema": "../../../src/PigeonPea.Game.Abilities/Presets/ability-preset.schema.json",
+  "id": "Firebolt",
+  "name": "Firebolt",
+  "description": "Hurl a bolt of fire at an enemy.",
+  "iconPath": "icons/firebolt.png",
+  "cooldownSeconds": 2.0,
+  "activationPolicy": "Always",
+  "cost": {
+    "modifiers": [
+      { "attributeId": "Mana", "operation": "Add", "magnitude": -10.0 }
+    ]
+  },
+  "activationRequiredTags": [ "State.Alive" ],
+  "activationBlockedTags": [ "State.Stunned", "State.Silenced" ],
+  "targeting": {
+    "type": "SingleTarget",
+    "range": 10.0,
+    "aoeRadius": 0.0,
+    "requiresLineOfSight": false,
+    "canTargetSelf": false,
+    "canTargetAllies": false,
+    "canTargetEnemies": true
+  },
+  "effects": [
+    {
+      "id": "Firebolt_Damage",
+      "name": "Firebolt Damage",
+      "description": "Deal 25 fire damage to the target.",
+      "durationPolicy": "Instant",
+      "durationSeconds": 0.0,
+      "periodSeconds": 0.0,
+      "modifiers": [
+        { "attributeId": "Health", "operation": "Add", "magnitude": -25.0, "applyOnTick": false }
+      ],
+      "grantedTags": [],
+      "removedTags": [],
+      "applicationRequiredTags": [],
+      "applicationBlockedTags": []
+    }
+  ],
+  "casterTagsWhileActive": [],
+  "maxActivations": 0
+}
