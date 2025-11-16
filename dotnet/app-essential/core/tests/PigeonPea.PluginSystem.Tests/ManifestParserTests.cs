@@ -9,7 +9,7 @@ namespace PigeonPea.PluginSystem.Tests;
 public class ManifestParserTests
 {
     [Fact]
-    public void Parse_Valid_Manifest_Succeeds()
+    public void ParseValidManifestSucceeds()
     {
         using var tmp = new TempDir();
         var json = "{\n  \"id\": \"test.plugin\",\n  \"name\": \"Test Plugin\",\n  \"version\": \"1.2.3\",\n  \"entryPoint\": { \"dotnet.console\": \"Plugin.dll,Plugin.Main\" },\n  \"dependencies\": [],\n  \"capabilities\": [\"foo\"]\n}";

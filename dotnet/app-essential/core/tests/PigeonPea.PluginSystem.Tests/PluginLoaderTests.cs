@@ -14,7 +14,7 @@ namespace PigeonPea.PluginSystem.Tests;
 public class PluginLoaderTests
 {
     [Fact]
-    public async Task DiscoverAndLoadAsync_NoPlugins_ReturnsZero()
+    public async Task DiscoverAndLoadAsyncNoPluginsReturnsZero()
     {
         using var tmp = new TempDir();
         var configDict = new Dictionary<string, string?>
@@ -37,7 +37,7 @@ public class PluginLoaderTests
             hostMock.Object
         );
 
-        var count = await loader.DiscoverAndLoadAsync(new[] { tmp.Path }, "dotnet.console", CancellationToken.None);
+        var count = await loader.DiscoverAndLoadAsync(new[] { tmp.Path }, "dotnet.console", CancellationToken.None).ConfigureAwait(false);
         count.Should().Be(0);
     }
 

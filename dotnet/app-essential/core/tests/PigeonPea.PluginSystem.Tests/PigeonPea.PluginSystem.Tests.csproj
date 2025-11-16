@@ -27,7 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../app-essential/core/PigeonPea.PluginSystem/PigeonPea.PluginSystem.csproj" />
-    <ProjectReference Include="../app-essential/core/PigeonPea.Contracts/PigeonPea.Contracts.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
   </ItemGroup>
 </Project>

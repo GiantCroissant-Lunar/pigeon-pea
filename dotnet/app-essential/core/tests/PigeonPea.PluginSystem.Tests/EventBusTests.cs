@@ -1,16 +1,16 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using PigeonPea.PluginSystem;
 using Xunit;
-using System;
-using System.Collections.Generic;
 
 namespace PigeonPea.PluginSystem.Tests;
 
 public class EventBusTests
 {
     [Fact]
-    public async Task Publish_Invokes_All_Subscribers()
+    public async Task PublishInvokesAllSubscribers()
     {
         var bus = new EventBus();
         int c1 = 0, c2 = 0;
@@ -18,14 +18,14 @@ public class EventBusTests
         bus.Subscribe<string>(s => { c1++; return Task.CompletedTask; });
         bus.Subscribe<string>(s => { c2++; return Task.CompletedTask; });
 
-        await bus.PublishAsync("hello");
+        await bus.PublishAsync("hello").ConfigureAwait(false);
 
         c1.Should().Be(1);
         c2.Should().Be(1);
     }
 
     [Fact]
-    public async Task Publish_NullEvent_Throws()
+    public async Task PublishNullEventThrows()
     {
         var bus = new EventBus();
         Func<Task> act = () => bus.PublishAsync<string>(null!);
@@ -33,7 +33,7 @@ public class EventBusTests
     }
 
     [Fact]
-    public async Task Publish_AsyncHandler_IsAwaited()
+    public async Task PublishAsyncHandlerIsAwaited()
     {
         var bus = new EventBus();
         var tcs = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -41,18 +41,18 @@ public class EventBusTests
 
         bus.Subscribe<string>(async s =>
         {
-            await Task.Delay(30);
+            await Task.Delay(30).ConfigureAwait(false);
             observed = true;
             tcs.SetResult(true);
         });
 
-        await bus.PublishAsync("go");
-        await tcs.Task; // ensure handler ran
+        await bus.PublishAsync("go").ConfigureAwait(false);
+        await tcs.Task.ConfigureAwait(false); // ensure handler ran
         observed.Should().BeTrue();
     }
 
     [Fact]
-    public async Task Publish_HandlerThrows_CollectsExceptionsAndRunsAll()
+    public async Task PublishHandlerThrowsCollectsExceptionsAndRunsAll()
     {
         var bus = new EventBus();
         var ran1 = false;
@@ -79,7 +79,7 @@ public class EventBusTests
     }
 
     [Fact]
-    public async Task Publish_Concurrent_IsThreadSafe()
+    public async Task PublishConcurrentIsThreadSafe()
     {
         var bus = new EventBus();
         int count = 0;
@@ -93,7 +93,7 @@ public class EventBusTests
             tasks.Add(bus.PublishAsync("tick"));
         }
 
-        await Task.WhenAll(tasks);
+        await Task.WhenAll(tasks).ConfigureAwait(false);
         count.Should().Be(iterations * 2);
     }
 }

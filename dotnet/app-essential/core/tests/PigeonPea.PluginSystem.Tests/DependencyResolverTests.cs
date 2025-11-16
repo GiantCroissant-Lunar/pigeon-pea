@@ -10,7 +10,7 @@ namespace PigeonPea.PluginSystem.Tests;
 public class DependencyResolverTests
 {
     [Fact]
-    public void ResolveLoadOrder_Respects_Dependencies()
+    public void ResolveLoadOrderRespectsDependencies()
     {
         var a = new PluginManifest { Id = "A", Name = "A", Version = "1.0.0" };
         var b = new PluginManifest { Id = "B", Name = "B", Version = "1.0.0", Dependencies = new List<PluginDependency> { new() { Id = "A" } } };
@@ -21,7 +21,7 @@ public class DependencyResolverTests
     }
 
     [Fact]
-    public void ResolveLoadOrder_Allows_Optional_Missing()
+    public void ResolveLoadOrderAllowsOptionalMissing()
     {
         var a = new PluginManifest { Id = "A", Name = "A", Version = "1.0.0", Dependencies = new List<PluginDependency> { new() { Id = "X", Optional = true } } };
         var order = DependencyResolver.ResolveLoadOrder(new[] { a }).Select(m => m.Id).ToArray();
@@ -29,7 +29,7 @@ public class DependencyResolverTests
     }
 
     [Fact]
-    public void ResolveLoadOrder_Throws_On_Missing_Required_Dependency()
+    public void ResolveLoadOrderThrowsOnMissingRequiredDependency()
     {
         var a = new PluginManifest { Id = "A", Name = "A", Version = "1.0.0", Dependencies = new List<PluginDependency> { new() { Id = "Missing", Optional = false } } };
         var act = () => DependencyResolver.ResolveLoadOrder(new[] { a });
@@ -38,7 +38,7 @@ public class DependencyResolverTests
     }
 
     [Fact]
-    public void ResolveLoadOrder_Throws_On_Cycle()
+    public void ResolveLoadOrderThrowsOnCycle()
     {
         var a = new PluginManifest { Id = "A", Name = "A", Version = "1.0.0", Dependencies = new List<PluginDependency> { new() { Id = "B" } } };
         var b = new PluginManifest { Id = "B", Name = "B", Version = "1.0.0", Dependencies = new List<PluginDependency> { new() { Id = "A" } } };
@@ -48,7 +48,7 @@ public class DependencyResolverTests
     }
 
     [Fact]
-    public void ResolveLoadOrder_Orders_Shared_Dependency_Before_Dependents()
+    public void ResolveLoadOrderOrdersSharedDependencyBeforeDependents()
     {
         // B is a shared dependency of A and C
         var b = new PluginManifest { Id = "B", Name = "B", Version = "1.0.0" };

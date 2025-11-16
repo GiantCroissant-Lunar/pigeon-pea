@@ -14,7 +14,7 @@ public class ServiceRegistryTests
     private class FooB : IFoo { public int V { get; init; } = 2; }
 
     [Fact]
-    public void Register_And_Get_HighestPriority_Works()
+    public void RegisterAndGetHighestPriorityWorks()
     {
         var reg = new ServiceRegistry();
         var a = new FooA();
@@ -28,7 +28,7 @@ public class ServiceRegistryTests
     }
 
     [Fact]
-    public void GetAll_Returns_In_Priority_Order()
+    public void GetAllReturnsInPriorityOrder()
     {
         var reg = new ServiceRegistry();
         var a = new FooA();
@@ -44,7 +44,7 @@ public class ServiceRegistryTests
     }
 
     [Fact]
-    public void Get_SelectionMode_One_Throws_On_Multiple()
+    public void GetSelectionModeOneThrowsOnMultiple()
     {
         var reg = new ServiceRegistry();
         reg.Register<IFoo>(new FooA(), 10);
@@ -55,7 +55,7 @@ public class ServiceRegistryTests
     }
 
     [Fact]
-    public void Get_SelectionMode_One_Works_On_Single()
+    public void GetSelectionModeOneWorksOnSingle()
     {
         var reg = new ServiceRegistry();
         var a = new FooA();
@@ -66,7 +66,7 @@ public class ServiceRegistryTests
     }
 
     [Fact]
-    public void Unregister_Works()
+    public void UnregisterWorks()
     {
         var reg = new ServiceRegistry();
         var a = new FooA();
