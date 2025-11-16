@@ -12,7 +12,7 @@ How it works:
 
 Setup:
 1. Copy this script to: ~/.local/mcp-launcher/launcher.py (Linux/Mac)
-   or %USERPROFILE%\.local\mcp-launcher\launcher.py (Windows)
+   or %USERPROFILE%\\.local\\mcp-launcher\\launcher.py (Windows)
 2. Make it executable: chmod +x ~/.local/mcp-launcher/launcher.py
 3. Configure your editor's global MCP config to point to this script
 
@@ -32,7 +32,6 @@ The second argument ("github") specifies which server config to load from
 import json
 import os
 import sys
-import subprocess
 from pathlib import Path
 import re
 
@@ -54,12 +53,14 @@ def expand_env_vars(value, project_root):
         var_name = match.group(1)
         return os.environ.get(var_name, match.group(0))
 
-    value = re.sub(r'\$\{([^}]+)\}', replace_var, value)
+    value = re.sub(r"\$\{([^}]+)\}", replace_var, value)
 
     # Handle $VAR syntax (without braces)
-    value = re.sub(r'\$([A-Za-z_][A-Za-z0-9_]*)',
-                   lambda m: os.environ.get(m.group(1), m.group(0)),
-                   value)
+    value = re.sub(
+        r"\$([A-Za-z_][A-Za-z0-9_]*)",
+        lambda m: os.environ.get(m.group(1), m.group(0)),
+        value,
+    )
 
     return value
 
@@ -99,7 +100,9 @@ def load_server_config(project_root, server_name=None):
     config_dir = project_root / ".mcp" / "servers"
 
     if not config_dir.exists():
-        print(f"ERROR: No .mcp/servers directory found in {project_root}", file=sys.stderr)
+        print(
+            f"ERROR: No .mcp/servers directory found in {project_root}", file=sys.stderr
+        )
         print(f"Expected path: {config_dir}", file=sys.stderr)
         sys.exit(1)
 
@@ -109,7 +112,7 @@ def load_server_config(project_root, server_name=None):
         if not config_path.exists():
             print(f"ERROR: Server config '{server_name}' not found", file=sys.stderr)
             print(f"Expected path: {config_path}", file=sys.stderr)
-            print(f"\nAvailable configs:", file=sys.stderr)
+            print("\nAvailable configs:", file=sys.stderr)
             for cfg in config_dir.glob("*.json"):
                 if not cfg.name.startswith("_"):
                     print(f"  - {cfg.stem}", file=sys.stderr)
@@ -124,7 +127,7 @@ def load_server_config(project_root, server_name=None):
 
     # Load and parse config
     try:
-        with open(config_path, 'r', encoding='utf-8') as f:
+        with open(config_path, "r", encoding="utf-8") as f:
             config = json.load(f)
     except json.JSONDecodeError as e:
         print(f"ERROR: Invalid JSON in {config_path}: {e}", file=sys.stderr)
@@ -175,7 +178,7 @@ def launch_server(config, project_root):
         os.execvpe(command, full_command, env)
     except FileNotFoundError:
         print(f"ERROR: Command not found: {command}", file=sys.stderr)
-        print(f"Make sure the required tools are installed", file=sys.stderr)
+        print("Make sure the required tools are installed", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
         print(f"ERROR: Failed to launch server: {e}", file=sys.stderr)

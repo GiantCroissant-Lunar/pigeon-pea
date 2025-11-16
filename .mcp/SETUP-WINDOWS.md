@@ -45,6 +45,7 @@ $env:QDRANT_API_KEY = "your_qdrant_key_here"
 ```
 
 Alternatively, set them via System Properties:
+
 1. Press `Win + X` → System
 2. Click "Advanced system settings"
 3. Click "Environment Variables"
@@ -59,11 +60,13 @@ Edit your Copilot MCP config:
 **Full path example:** `C:\Users\YourUsername\.config\github-copilot\mcp\servers.json`
 
 Create the directory if it doesn't exist:
+
 ```powershell
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.config\github-copilot\mcp"
 ```
 
 Edit the file:
+
 ```powershell
 notepad "$env:USERPROFILE\.config\github-copilot\mcp\servers.json"
 ```
@@ -74,24 +77,15 @@ Add this configuration (replace `YourUsername` with your actual Windows username
 {
   "github": {
     "command": "python",
-    "args": [
-      "C:\\Users\\YourUsername\\.local\\mcp-launcher\\launcher.py",
-      "github"
-    ]
+    "args": ["C:\\Users\\YourUsername\\.local\\mcp-launcher\\launcher.py", "github"]
   },
   "memory": {
     "command": "python",
-    "args": [
-      "C:\\Users\\YourUsername\\.local\\mcp-launcher\\launcher.py",
-      "memory-qdrant"
-    ]
+    "args": ["C:\\Users\\YourUsername\\.local\\mcp-launcher\\launcher.py", "memory-qdrant"]
   },
   "sequential-thinking": {
     "command": "python",
-    "args": [
-      "C:\\Users\\YourUsername\\.local\\mcp-launcher\\launcher.py",
-      "sequential-thinking"
-    ]
+    "args": ["C:\\Users\\YourUsername\\.local\\mcp-launcher\\launcher.py", "sequential-thinking"]
   }
 }
 ```
@@ -143,13 +137,17 @@ Copy-Item ".mcp\launcher\launcher.js" "$env:USERPROFILE\.local\mcp-launcher\"
 ## 📝 Editor-Specific Setup
 
 ### GitHub Copilot
+
 Already covered above in step 3.
 
 ### Windsurf
+
 Windsurf may support `.mcp/` natively. Check their docs first.
 
 ### Cline (VS Code Extension)
+
 Edit `.cline/mcp.json` in your project:
+
 ```json
 {
   "mcpServers": {
@@ -173,6 +171,7 @@ Cline has native per-project support, so no launcher needed!
 **Error:** `'python' is not recognized as an internal or external command`
 
 **Solutions:**
+
 1. Try `python3` instead of `python`
 2. Install Python from [python.org](https://www.python.org/downloads/)
 3. Ensure Python is in your PATH
@@ -182,13 +181,11 @@ Cline has native per-project support, so no launcher needed!
 **Error:** Launcher fails when project path has spaces
 
 **Fix:** Ensure paths are properly quoted in your scripts:
+
 ```json
 {
   "command": "python",
-  "args": [
-    "C:\\Users\\My Name\\.local\\mcp-launcher\\launcher.py",
-    "github"
-  ]
+  "args": ["C:\\Users\\My Name\\.local\\mcp-launcher\\launcher.py", "github"]
 }
 ```
 
@@ -197,6 +194,7 @@ Cline has native per-project support, so no launcher needed!
 **Error:** `Access denied` when copying files
 
 **Fix:** Run PowerShell as Administrator:
+
 1. Press `Win + X`
 2. Select "Windows PowerShell (Admin)"
 3. Run the setup commands again
@@ -212,6 +210,7 @@ Cline has native per-project support, so no launcher needed!
 **Error:** Server starts but authentication fails
 
 **Fix:** Restart your terminal/editor after setting environment variables:
+
 ```powershell
 # Reload current session
 . $PROFILE
@@ -250,6 +249,7 @@ Use this checklist to verify your setup:
 ## 🎉 Success!
 
 Once setup is complete:
+
 1. Open this project in your editor
 2. Restart the editor
 3. You should see MCP servers connected

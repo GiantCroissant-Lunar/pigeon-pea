@@ -29,6 +29,7 @@ This directory contains per-project MCP (Model Context Protocol) server configur
 **Problem:** Most AI editors (GitHub Copilot, Windsurf, Cline) only support **global** MCP configs in your user home directory. This makes it hard to have different MCP servers for different projects.
 
 **Solution:** This launcher acts as a **proxy** that:
+
 1. Gets installed once globally in your home directory
 2. Dynamically reads **project-specific** configs from `.mcp/servers/`
 3. Launches the appropriate MCP server for each project
@@ -48,6 +49,7 @@ pwsh -File .mcp/scripts/detect-ide-configs.ps1  # Windows
 ```
 
 This will show you:
+
 - ✅ Which IDEs are installed
 - 📁 Where each IDE stores its global MCP config
 - ✓ Whether the config file already exists
@@ -60,18 +62,21 @@ This will show you:
 ## 🚀 Quick Setup (Automated)
 
 **Windows:**
+
 ```powershell
 task mcp:setup:win
 # Or: .\.mcp\setup-windows.ps1
 ```
 
 **Linux/Mac:**
+
 ```bash
 task mcp:setup:unix
 # Or: bash .mcp/setup-unix.sh
 ```
 
 This automated setup will:
+
 1. Detect your system and installed tools
 2. Install the launcher globally
 3. Prompt for environment variables
@@ -91,6 +96,7 @@ Choose either Python or Node.js version:
 #### Option A: Python Launcher (Recommended)
 
 **Linux/Mac:**
+
 ```bash
 # Create launcher directory
 mkdir -p ~/.local/mcp-launcher
@@ -103,6 +109,7 @@ chmod +x ~/.local/mcp-launcher/launcher.py
 ```
 
 **Windows:**
+
 ```powershell
 # Create launcher directory
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.local\mcp-launcher"
@@ -114,6 +121,7 @@ Copy-Item .mcp\launcher\launcher.py "$env:USERPROFILE\.local\mcp-launcher\"
 #### Option B: Node.js Launcher
 
 **Linux/Mac:**
+
 ```bash
 mkdir -p ~/.local/mcp-launcher
 cp .mcp/launcher/launcher.js ~/.local/mcp-launcher/
@@ -121,6 +129,7 @@ chmod +x ~/.local/mcp-launcher/launcher.js
 ```
 
 **Windows:**
+
 ```powershell
 New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.local\mcp-launcher"
 Copy-Item .mcp\launcher\launcher.js "$env:USERPROFILE\.local\mcp-launcher\"
@@ -139,30 +148,22 @@ Edit your global MCP config:
 {
   "github": {
     "command": "python3",
-    "args": [
-      "~/.local/mcp-launcher/launcher.py",
-      "github"
-    ]
+    "args": ["~/.local/mcp-launcher/launcher.py", "github"]
   },
   "memory": {
     "command": "python3",
-    "args": [
-      "~/.local/mcp-launcher/launcher.py",
-      "memory-qdrant"
-    ]
+    "args": ["~/.local/mcp-launcher/launcher.py", "memory-qdrant"]
   }
 }
 ```
 
 **Windows:** Use full paths:
+
 ```json
 {
   "github": {
     "command": "python",
-    "args": [
-      "C:\\Users\\YourUsername\\.local\\mcp-launcher\\launcher.py",
-      "github"
-    ]
+    "args": ["C:\\Users\\YourUsername\\.local\\mcp-launcher\\launcher.py", "github"]
   }
 }
 ```
@@ -172,6 +173,7 @@ Edit your global MCP config:
 These editors natively support project-level MCP configs!
 
 **Cline:** Edit `.cline/mcp.json`:
+
 ```json
 {
   "mcpServers": {
@@ -198,11 +200,13 @@ These editors natively support project-level MCP configs!
 ## 📝 Creating New Server Configs
 
 1. Copy `_template.json` to a new file:
+
    ```bash
    cp .mcp/servers/_template.json .mcp/servers/my-server.json
    ```
 
 2. Edit the config:
+
    ```json
    {
      "name": "my-server",
@@ -231,14 +235,15 @@ Each server config in `.mcp/servers/*.json` follows this schema:
 
 ```json
 {
-  "name": "server-name",          // Required: Server identifier
-  "description": "...",            // Optional: Human-readable description
-  "command": "npx",                // Required: Executable command
-  "args": ["-y", "..."],          // Optional: Command arguments
-  "env": {                         // Optional: Environment variables
-    "API_KEY": "${MY_API_KEY}"    // Supports ${VAR} expansion
+  "name": "server-name", // Required: Server identifier
+  "description": "...", // Optional: Human-readable description
+  "command": "npx", // Required: Executable command
+  "args": ["-y", "..."], // Optional: Command arguments
+  "env": {
+    // Optional: Environment variables
+    "API_KEY": "${MY_API_KEY}" // Supports ${VAR} expansion
   },
-  "cwd": "${PROJECT_ROOT}"        // Optional: Working directory
+  "cwd": "${PROJECT_ROOT}" // Optional: Working directory
 }
 ```
 
@@ -251,6 +256,7 @@ The launcher supports these variable formats:
 - `${PROJECT_ROOT}` - Special variable for project root path
 
 Example:
+
 ```json
 {
   "command": "node",
@@ -267,18 +273,24 @@ Example:
 This project includes these pre-configured servers:
 
 ### `github.json`
+
 GitHub integration - manage repos, issues, PRs
+
 ```bash
 # Requires: GITHUB_PERSONAL_ACCESS_TOKEN environment variable
 export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_..."
 ```
 
 ### `sequential-thinking.json`
+
 Enable step-by-step reasoning for complex problems
+
 - No configuration needed
 
 ### `memory-qdrant.json`
+
 Long-term memory storage with Qdrant vector database
+
 ```bash
 # Requires: Qdrant running locally or remotely
 docker run -p 6333:6333 qdrant/qdrant
@@ -292,6 +304,7 @@ export QDRANT_API_KEY="your-api-key"  # Optional for local
 **Error:** `Command not found: ~/.local/mcp-launcher/launcher.py`
 
 **Fix:** Use absolute path in editor config:
+
 ```json
 {
   "github": {
@@ -306,6 +319,7 @@ export QDRANT_API_KEY="your-api-key"  # Optional for local
 **Error:** `No .mcp/servers directory found`
 
 **Fix:** Ensure you're in the project directory and `.mcp/servers/` exists:
+
 ```bash
 pwd  # Should be project root
 ls -la .mcp/servers/  # Should show config files
@@ -316,6 +330,7 @@ ls -la .mcp/servers/  # Should show config files
 **Error:** Server starts but can't connect due to missing credentials
 
 **Fix:** Ensure environment variables are set in your shell:
+
 ```bash
 # Add to ~/.bashrc or ~/.zshrc
 export GITHUB_PERSONAL_ACCESS_TOKEN="ghp_..."
@@ -327,6 +342,7 @@ export QDRANT_API_KEY="..."
 **Error:** Different server than expected starts
 
 **Fix:** Check the server name in your editor's global config matches the filename:
+
 - Config file: `.mcp/servers/github.json`
 - Editor config arg: `"github"` (not `"github.json"`)
 
@@ -349,6 +365,7 @@ The launcher runs in the **current working directory** of the editor, which is y
 ### Process Replacement
 
 The launcher uses `os.execvpe()` (Python) or `spawn()` (Node.js) to replace itself with the actual MCP server process. This ensures:
+
 - No extra process overhead
 - Direct stdio communication between editor and server
 - Clean process tree

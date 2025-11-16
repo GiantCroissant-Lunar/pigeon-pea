@@ -64,7 +64,7 @@ function expandEnvVars(value, projectRoot) {
  */
 function expandEnvVarsRecursive(obj, projectRoot) {
   if (Array.isArray(obj)) {
-    return obj.map(item => expandEnvVarsRecursive(item, projectRoot));
+    return obj.map((item) => expandEnvVarsRecursive(item, projectRoot));
   } else if (obj !== null && typeof obj === 'object') {
     const result = {};
     for (const [key, value] of Object.entries(obj)) {
@@ -107,14 +107,15 @@ function loadServerConfig(projectRoot, serverName = null) {
       console.error(`Expected path: ${configPath}`);
       console.error('\nAvailable configs:');
       fs.readdirSync(configDir)
-        .filter(f => f.endsWith('.json') && !f.startsWith('_'))
-        .forEach(f => console.error(`  - ${path.basename(f, '.json')}`));
+        .filter((f) => f.endsWith('.json') && !f.startsWith('_'))
+        .forEach((f) => console.error(`  - ${path.basename(f, '.json')}`));
       process.exit(1);
     }
   } else {
     // Load first available config (excluding templates)
-    const configs = fs.readdirSync(configDir)
-      .filter(f => f.endsWith('.json') && !f.startsWith('_'));
+    const configs = fs
+      .readdirSync(configDir)
+      .filter((f) => f.endsWith('.json') && !f.startsWith('_'));
 
     if (configs.length === 0) {
       console.error(`ERROR: No server configs found in ${configDir}`);
@@ -166,7 +167,7 @@ function launchServer(config, projectRoot) {
       cwd,
       env,
       stdio: 'inherit',
-      shell: process.platform === 'win32'
+      shell: process.platform === 'win32',
     });
 
     child.on('error', (err) => {

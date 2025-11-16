@@ -20,12 +20,11 @@ Usage:
     --verbose   Show detailed detection info
 """
 
-import os
 import sys
 import json
 import platform
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Optional, Tuple
 
 
 class IDEConfigDetector:
@@ -89,11 +88,17 @@ class IDEConfigDetector:
     def _detect_github_copilot(self) -> Dict:
         """Detect GitHub Copilot (VS Code extension)."""
         if self.os_name == "windows":
-            config_path = self.home / ".config" / "github-copilot" / "mcp" / "servers.json"
+            config_path = (
+                self.home / ".config" / "github-copilot" / "mcp" / "servers.json"
+            )
         elif self.os_name == "darwin":  # macOS
-            config_path = self.home / ".config" / "github-copilot" / "mcp" / "servers.json"
+            config_path = (
+                self.home / ".config" / "github-copilot" / "mcp" / "servers.json"
+            )
         else:  # Linux
-            config_path = self.home / ".config" / "github-copilot" / "mcp" / "servers.json"
+            config_path = (
+                self.home / ".config" / "github-copilot" / "mcp" / "servers.json"
+            )
 
         parent_exists, config_exists = self._check_path_exists(config_path)
 
@@ -106,19 +111,45 @@ class IDEConfigDetector:
             "config_exists": config_exists,
             "supports_project_config": False,
             "project_config_path": None,
-            "notes": "Requires VS Code with GitHub Copilot extension"
+            "notes": "Requires VS Code with GitHub Copilot extension",
         }
 
     def _detect_cursor(self) -> Dict:
         """Detect Cursor IDE."""
         if self.os_name == "windows":
-            config_path = self.home / "AppData" / "Roaming" / "Cursor" / "User" / "globalStorage" / "mcp" / "servers.json"
+            config_path = (
+                self.home
+                / "AppData"
+                / "Roaming"
+                / "Cursor"
+                / "User"
+                / "globalStorage"
+                / "mcp"
+                / "servers.json"
+            )
             install_path = self.home / "AppData" / "Local" / "Programs" / "Cursor"
         elif self.os_name == "darwin":  # macOS
-            config_path = self.home / "Library" / "Application Support" / "Cursor" / "User" / "globalStorage" / "mcp" / "servers.json"
+            config_path = (
+                self.home
+                / "Library"
+                / "Application Support"
+                / "Cursor"
+                / "User"
+                / "globalStorage"
+                / "mcp"
+                / "servers.json"
+            )
             install_path = Path("/Applications/Cursor.app")
         else:  # Linux
-            config_path = self.home / ".config" / "Cursor" / "User" / "globalStorage" / "mcp" / "servers.json"
+            config_path = (
+                self.home
+                / ".config"
+                / "Cursor"
+                / "User"
+                / "globalStorage"
+                / "mcp"
+                / "servers.json"
+            )
             install_path = self.home / ".local" / "share" / "Cursor"
 
         parent_exists, config_exists = self._check_path_exists(config_path)
@@ -130,16 +161,25 @@ class IDEConfigDetector:
             "config_exists": config_exists,
             "supports_project_config": True,
             "project_config_path": ".cursor/mcp.json",
-            "notes": "Supports both global and project-level MCP configs"
+            "notes": "Supports both global and project-level MCP configs",
         }
 
     def _detect_windsurf(self) -> Dict:
         """Detect Windsurf IDE."""
         if self.os_name == "windows":
-            config_path = self.home / "AppData" / "Roaming" / "Windsurf" / "mcp" / "servers.json"
+            config_path = (
+                self.home / "AppData" / "Roaming" / "Windsurf" / "mcp" / "servers.json"
+            )
             install_path = self.home / "AppData" / "Local" / "Programs" / "Windsurf"
         elif self.os_name == "darwin":  # macOS
-            config_path = self.home / "Library" / "Application Support" / "Windsurf" / "mcp" / "servers.json"
+            config_path = (
+                self.home
+                / "Library"
+                / "Application Support"
+                / "Windsurf"
+                / "mcp"
+                / "servers.json"
+            )
             install_path = Path("/Applications/Windsurf.app")
         else:  # Linux
             config_path = self.home / ".config" / "Windsurf" / "mcp" / "servers.json"
@@ -154,7 +194,7 @@ class IDEConfigDetector:
             "config_exists": config_exists,
             "supports_project_config": True,
             "project_config_path": ".mcp/servers/",
-            "notes": "May support project-level configs (check Windsurf docs)"
+            "notes": "May support project-level configs (check Windsurf docs)",
         }
 
     def _detect_cline(self) -> Dict:
@@ -171,7 +211,7 @@ class IDEConfigDetector:
             "config_exists": False,
             "supports_project_config": True,
             "project_config_path": project_config,
-            "notes": "Uses project-level config only (no global config)"
+            "notes": "Uses project-level config only (no global config)",
         }
 
     def _detect_zed(self) -> Dict:
@@ -180,7 +220,9 @@ class IDEConfigDetector:
             config_path = self.home / "AppData" / "Roaming" / "Zed" / "settings.json"
             install_path = self.home / "AppData" / "Local" / "Programs" / "Zed"
         elif self.os_name == "darwin":  # macOS
-            config_path = self.home / "Library" / "Application Support" / "Zed" / "settings.json"
+            config_path = (
+                self.home / "Library" / "Application Support" / "Zed" / "settings.json"
+            )
             install_path = Path("/Applications/Zed.app")
         else:  # Linux
             config_path = self.home / ".config" / "zed" / "settings.json"
@@ -195,19 +237,33 @@ class IDEConfigDetector:
             "config_exists": config_exists,
             "supports_project_config": False,
             "project_config_path": None,
-            "notes": "MCP support may vary - check Zed documentation"
+            "notes": "MCP support may vary - check Zed documentation",
         }
 
     def _detect_claude_desktop(self) -> Dict:
         """Detect Claude Desktop app (for reference)."""
         if self.os_name == "windows":
-            config_path = self.home / "AppData" / "Roaming" / "Claude" / "claude_desktop_config.json"
+            config_path = (
+                self.home
+                / "AppData"
+                / "Roaming"
+                / "Claude"
+                / "claude_desktop_config.json"
+            )
             install_path = self.home / "AppData" / "Local" / "Programs" / "Claude"
         elif self.os_name == "darwin":  # macOS
-            config_path = self.home / "Library" / "Application Support" / "Claude" / "claude_desktop_config.json"
+            config_path = (
+                self.home
+                / "Library"
+                / "Application Support"
+                / "Claude"
+                / "claude_desktop_config.json"
+            )
             install_path = Path("/Applications/Claude.app")
         else:  # Linux
-            config_path = self.home / ".config" / "Claude" / "claude_desktop_config.json"
+            config_path = (
+                self.home / ".config" / "Claude" / "claude_desktop_config.json"
+            )
             install_path = self.home / ".local" / "share" / "Claude"
 
         parent_exists, config_exists = self._check_path_exists(config_path)
@@ -219,23 +275,36 @@ class IDEConfigDetector:
             "config_exists": config_exists,
             "supports_project_config": False,
             "project_config_path": None,
-            "notes": "Not a coding IDE, included for reference"
+            "notes": "Not a coding IDE, included for reference",
         }
 
     def _detect_vscode(self) -> Dict:
         """Detect VS Code (base editor)."""
         if self.os_name == "windows":
-            config_path = self.home / "AppData" / "Roaming" / "Code" / "User" / "settings.json"
-            install_path = self.home / "AppData" / "Local" / "Programs" / "Microsoft VS Code"
+            config_path = (
+                self.home / "AppData" / "Roaming" / "Code" / "User" / "settings.json"
+            )
+            install_path = (
+                self.home / "AppData" / "Local" / "Programs" / "Microsoft VS Code"
+            )
         elif self.os_name == "darwin":  # macOS
-            config_path = self.home / "Library" / "Application Support" / "Code" / "User" / "settings.json"
+            config_path = (
+                self.home
+                / "Library"
+                / "Application Support"
+                / "Code"
+                / "User"
+                / "settings.json"
+            )
             install_path = Path("/Applications/Visual Studio Code.app")
         else:  # Linux
             config_path = self.home / ".config" / "Code" / "User" / "settings.json"
             install_path = self.home / ".local" / "share" / "code"
 
         parent_exists, config_exists = self._check_path_exists(config_path)
-        installed = install_path.exists() or parent_exists or self._is_vscode_installed()
+        installed = (
+            install_path.exists() or parent_exists or self._is_vscode_installed()
+        )
 
         return {
             "installed": installed,
@@ -243,12 +312,16 @@ class IDEConfigDetector:
             "config_exists": config_exists,
             "supports_project_config": True,
             "project_config_path": ".vscode/settings.json",
-            "notes": "Base editor - install extensions like Copilot or Cline for MCP support"
+            "notes": (
+                "Base editor - install extensions like Copilot or Cline "
+                "for MCP support"
+            ),
         }
 
     def _is_vscode_installed(self) -> bool:
         """Check if VS Code is installed by looking for the 'code' command."""
         import shutil
+
         return shutil.which("code") is not None
 
 
@@ -264,12 +337,13 @@ def print_results_table(results: Dict[str, Dict]):
     if is_windows:
         try:
             import sys
-            sys.stdout.reconfigure(encoding='utf-8')
+
+            sys.stdout.reconfigure(encoding="utf-8")
             # If successful, use Unicode
             check_mark = "✓"
             cross_mark = "✗"
             warning_mark = "⚠"
-        except:
+        except Exception:
             pass  # Keep ASCII fallbacks
 
     print("\n" + "=" * 80)
@@ -277,7 +351,11 @@ def print_results_table(results: Dict[str, Dict]):
     print("=" * 80 + "\n")
 
     for ide_name, info in results.items():
-        status = f"{check_mark} INSTALLED" if info["installed"] else f"{cross_mark} Not Found"
+        status = (
+            f"{check_mark} INSTALLED"
+            if info["installed"]
+            else f"{cross_mark} Not Found"
+        )
         color = "\033[92m" if info["installed"] else "\033[90m"
         reset = "\033[0m"
 
@@ -285,7 +363,11 @@ def print_results_table(results: Dict[str, Dict]):
 
         if info["installed"]:
             if info["global_config_path"]:
-                config_status = f"{check_mark} EXISTS" if info["config_exists"] else f"{warning_mark} Not Created"
+                config_status = (
+                    f"{check_mark} EXISTS"
+                    if info["config_exists"]
+                    else f"{warning_mark} Not Created"
+                )
                 print(f"  Global Config: {info['global_config_path']}")
                 print(f"  Config Status: {config_status}")
 
@@ -302,27 +384,23 @@ def main():
     """Main entry point."""
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="Detect IDE MCP configuration paths"
-    )
+    parser = argparse.ArgumentParser(description="Detect IDE MCP configuration paths")
+    parser.add_argument("--json", action="store_true", help="Output results as JSON")
     parser.add_argument(
-        "--json",
-        action="store_true",
-        help="Output results as JSON"
-    )
-    parser.add_argument(
-        "--verbose",
-        "-v",
-        action="store_true",
-        help="Show detailed detection info"
+        "--verbose", "-v", action="store_true", help="Show detailed detection info"
     )
     parser.add_argument(
         "--ide",
         help="Check specific IDE only",
         choices=[
-            "GitHub Copilot", "Cursor", "Windsurf",
-            "Cline", "Zed", "Claude Desktop", "VS Code"
-        ]
+            "GitHub Copilot",
+            "Cursor",
+            "Windsurf",
+            "Cline",
+            "Zed",
+            "Claude Desktop",
+            "VS Code",
+        ],
     )
 
     args = parser.parse_args()

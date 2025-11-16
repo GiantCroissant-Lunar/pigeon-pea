@@ -2,10 +2,7 @@
   "name": "github",
   "description": "GitHub MCP Server - Interact with GitHub repositories, issues, and PRs",
   "command": "npx",
-  "args": [
-    "-y",
-    "@modelcontextprotocol/server-github"
-  ],
+  "args": ["-y", "@modelcontextprotocol/server-github"],
   "env": {
     "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_PERSONAL_ACCESS_TOKEN}"
   }
