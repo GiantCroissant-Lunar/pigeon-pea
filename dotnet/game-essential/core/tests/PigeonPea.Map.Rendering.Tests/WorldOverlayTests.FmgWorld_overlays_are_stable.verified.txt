@@ -1,0 +1,209 @@
+﻿[
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Birastead,
+    WorldX: 423.61,
+    WorldY: 368.84,
+    PixelX: 3389,
+    PixelY: 2951
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Boghu Pontorgosh,
+    WorldX: 575.07,
+    WorldY: 243.8,
+    PixelX: 4601,
+    PixelY: 1950
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: BurthsuklkashvTub,
+    WorldX: 748.01,
+    WorldY: 385.08,
+    PixelX: 5984,
+    PixelY: 3081
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Daethbraethlbupgburg,
+    WorldX: 352.71,
+    WorldY: 414.27,
+    PixelX: 2822,
+    PixelY: 3314
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Dasstead,
+    WorldX: 454.77,
+    WorldY: 408.19,
+    PixelX: 3638,
+    PixelY: 3266
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Gatsamstead,
+    WorldX: 625.23,
+    WorldY: 252.65,
+    PixelX: 5002,
+    PixelY: 2021
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Gipsport,
+    WorldX: 261.48,
+    WorldY: 239.07,
+    PixelX: 2092,
+    PixelY: 1913
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Kokban Damtos,
+    WorldX: 660.63,
+    WorldY: 216.11,
+    PixelX: 5285,
+    PixelY: 1729
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Kthotshlunpshaevton,
+    WorldX: 116.66,
+    WorldY: 187.98,
+    PixelX: 933,
+    PixelY: 1504
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: MthusvgabVmathtnuththbid,
+    WorldX: 362.06,
+    WorldY: 365.36,
+    PixelX: 2896,
+    PixelY: 2923
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Nadaham,
+    WorldX: 383.52,
+    WorldY: 393.07,
+    PixelX: 3068,
+    PixelY: 3145
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Ruhaven,
+    WorldX: 540.14,
+    WorldY: 198.43,
+    PixelX: 4321,
+    PixelY: 1587
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: SalaDdob,
+    WorldX: 783.24,
+    WorldY: 347.69,
+    PixelX: 6266,
+    PixelY: 2782
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Shanaboton,
+    WorldX: 212.47,
+    WorldY: 268.89,
+    PixelX: 1700,
+    PixelY: 2151
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Taevkobgothhaven,
+    WorldX: 117.46,
+    WorldY: 229.7,
+    PixelX: 940,
+    PixelY: 1838
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Tafroshtas,
+    WorldX: 784.33,
+    WorldY: 388.25,
+    PixelX: 6275,
+    PixelY: 3106
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Thiham,
+    WorldX: 177.26,
+    WorldY: 251.85,
+    PixelX: 1418,
+    PixelY: 2015
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Thordoktugstead,
+    WorldX: 142.25,
+    WorldY: 257.11,
+    PixelX: 1138,
+    PixelY: 2057
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Vbidlthodthgetstead,
+    WorldX: 394.53,
+    WorldY: 343.94,
+    PixelX: 3156,
+    PixelY: 2752
+  },
+  {
+    LayerId: world.capitals,
+    Kind: capital_city,
+    Name: Vidkdampport,
+    WorldX: 152.43,
+    WorldY: 222.36,
+    PixelX: 1219,
+    PixelY: 1779
+  },
+  {
+    LayerId: world.dungeons,
+    Kind: dungeon_entrance,
+    Name: Boghu Pontorgosh Dungeon,
+    WorldX: 575.07,
+    WorldY: 243.8,
+    PixelX: 4601,
+    PixelY: 1950
+  },
+  {
+    LayerId: world.dungeons,
+    Kind: dungeon_entrance,
+    Name: Gipsport Dungeon,
+    WorldX: 261.48,
+    WorldY: 239.07,
+    PixelX: 2092,
+    PixelY: 1913
+  },
+  {
+    LayerId: world.dungeons,
+    Kind: dungeon_entrance,
+    Name: Kokban Damtos Dungeon,
+    WorldX: 660.63,
+    WorldY: 216.11,
+    PixelX: 5285,
+    PixelY: 1729
+  }
+]

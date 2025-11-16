@@ -1,0 +1,25 @@
+﻿[
+  {
+    Name: Kokban Damtos Dungeon,
+    WorldX: 660.63,
+    WorldY: 216.11,
+    PixelX: 10570,
+    PixelY: 3458
+  },
+  {
+    Id: 1,
+    Name: Gipsport Dungeon,
+    WorldX: 261.48,
+    WorldY: 239.07,
+    PixelX: 4184,
+    PixelY: 3825
+  },
+  {
+    Id: 2,
+    Name: Boghu Pontorgosh Dungeon,
+    WorldX: 575.07,
+    WorldY: 243.8,
+    PixelX: 9201,
+    PixelY: 3901
+  }
+]
