@@ -20,6 +20,7 @@ internal static class TerminalHudApplication
     private static IRenderTarget? _pixelTarget;
     private static BrailleMapPanelView? _brailleView;
     private static MapRenderViewModel? _viewModel;
+    private static System.Collections.Generic.List<Burg>? _capitalBurgs;
 
     public static void Run()
     {
@@ -31,14 +32,63 @@ internal static class TerminalHudApplication
             int logRows = 10;
             var mapFrame = new FrameView { Title = "Map", X = 0, Y = 2, Width = Dim.Fill(), Height = Dim.Fill(logRows + 1) };
             var logFrame = new FrameView { Title = "Log", X = 0, Y = Pos.Bottom(mapFrame), Width = Dim.Fill(), Height = logRows };
-            var logView = new TextView { ReadOnly = true, WordWrap = true };
+            var logView = new TextView
+            {
+                ReadOnly = true,
+                WordWrap = true,
+                X = 0,
+                Y = 0,
+                Width = Dim.Fill(),
+                Height = Dim.Fill()
+            };
             logFrame.Add(logView);
             top.Add(mapFrame, logFrame);
 
-            // Map setup
-            var settings = new MapGenerationSettings { Width = 800, Height = 600, NumPoints = 8000, HeightmapMode = HeightmapMode.Template, Seed = 123456, GridMode = GridMode.Jittered, ReseedAtPhaseStart = true };
-            IMapGenerator gen = new FantasyMapGeneratorAdapter();
-            _map = gen.Generate(settings);
+            // Map setup (match ConsoleMapDemoRunner.DefaultSettings / original FMG archipelago demo)
+            var settings = new MapGenerationSettings
+            {
+                Width = 800,
+                Height = 600,
+                Seed = 123456,
+                NumPoints = 8000,
+                RNGMode = RNGMode.Alea,
+                SeedString = "demo-seed",
+                ReseedAtPhaseStart = true,
+                GridMode = GridMode.Jittered,
+                HeightmapMode = HeightmapMode.Template,
+                UseAdvancedNoise = false,
+                HeightmapTemplate = "archipelago"
+            };
+            var hooks = new MapGenerationHooks
+            {
+                AfterPoliticalMapGenerated = map =>
+                {
+                    try
+                    {
+                        var capitals = new System.Collections.Generic.List<Burg>();
+                        if (map.Burgs != null)
+                        {
+                            foreach (var b in map.Burgs)
+                            {
+                                if (b != null && b.IsCapital)
+                                {
+                                    capitals.Add(b);
+                                }
+                            }
+                        }
+
+                        _capitalBurgs = capitals;
+                        AppendLog(logView, $"[HUD] Capitals detected: {capitals.Count}");
+                    }
+                    catch
+                    {
+                        // Swallow overlay diagnostics errors to avoid breaking map generation
+                    }
+                }
+            };
+
+            var adapter = new FantasyMapGeneratorAdapter();
+            _map = adapter.Generate(settings, hooks);
             _cameraX = Math.Max(0, settings.Width / 2 - 40);
             _cameraY = Math.Max(0, settings.Height / 2 - 12);
 
@@ -135,8 +185,13 @@ internal static class TerminalHudApplication
             var zoomItem = new Shortcut { Title = "Zoom: 1.00", Key = Key.Empty };
             var modeItem = new Shortcut { Title = "Mode: ASCII", Key = Key.Empty };
             var schemeItem = new Shortcut { Title = $"Scheme: {_viewModel!.ColorScheme}", Key = Key.Empty };
-            status.Add(zoomItem, modeItem, schemeItem);
+            var brailleColorItem = new Shortcut { Title = "Braille: Mono", Key = Key.Empty };
+            var overlayItem = new Shortcut { Title = "Overlays: C=On D=On", Key = Key.Empty };
+            status.Add(zoomItem, modeItem, schemeItem, brailleColorItem, overlayItem);
             top.Add(status);
+
+            bool showCapitals = true;
+            bool showDungeons = true;
 
             void UpdateStatus()
             {
@@ -146,6 +201,18 @@ internal static class TerminalHudApplication
                 {
                     schemeItem.Title = $"Scheme: {_viewModel.ColorScheme}";
                 }
+
+                // Reflect Braille mono/color mode in the status bar
+                if (_brailleView != null)
+                {
+                    brailleColorItem.Title = $"Braille: {(_brailleView.MonoMode ? "Mono" : "Color")}";
+                }
+                else
+                {
+                    brailleColorItem.Title = "Braille: -";
+                }
+
+                overlayItem.Title = $"Overlays: C={(showCapitals ? "On" : "Off")} D={(showDungeons ? "On" : "Off")}";
             }
 
             void UpdateViews()
@@ -194,6 +261,15 @@ internal static class TerminalHudApplication
                 }
             }
 
+            void ApplyOverlayState()
+            {
+                if (_brailleView != null)
+                {
+                    _brailleView.TileSource.ShowCapitals = showCapitals;
+                    _brailleView.TileSource.ShowDungeons = showDungeons;
+                }
+            }
+
             // Create menu after views and helpers are ready
             // Animation state (local to HUD)
             bool animEnabled = true;
@@ -233,6 +309,16 @@ internal static class TerminalHudApplication
                     new MenuItem("Renderer: _Braille", string.Empty, () => { _renderMode = RenderMode.Braille; UpdateViews(); }),
                     new MenuItem("Renderer: _iTerm2", string.Empty, () => { _renderMode = RenderMode.ITerm2; EnsurePixelRenderer(); UpdateViews(); }),
                     null,
+                    new MenuItem("Braille: _Toggle Color", string.Empty, () =>
+                    {
+                        if (_brailleView != null)
+                        {
+                            _brailleView.MonoMode = !_brailleView.MonoMode;
+                            UpdateStatus();
+                            InvalidateActiveView();
+                        }
+                    }),
+                    null,
                     animItem
                 }),
                 new MenuBarItem("_Help", new MenuItem[]
@@ -252,12 +338,32 @@ internal static class TerminalHudApplication
 
             Application.KeyDown += (object? sender, Key k) =>
             {
-                bool changed = false;
-                if (k == Key.CursorUp) { _cameraY = Math.Max(0, _cameraY - (int)Math.Ceiling(5 * _zoom)); changed = true; }
-                else if (k == Key.CursorDown) { _cameraY = _cameraY + (int)Math.Ceiling(5 * _zoom); changed = true; }
-                else if (k == Key.CursorLeft) { _cameraX = Math.Max(0, _cameraX - (int)Math.Ceiling(10 * _zoom)); changed = true; }
-                else if (k == Key.CursorRight) { _cameraX = _cameraX + (int)Math.Ceiling(10 * _zoom); changed = true; }
-                if (!changed) return;
+                // Camera controls
+                bool cameraChanged = false;
+                if (k == Key.CursorUp) { _cameraY = Math.Max(0, _cameraY - (int)Math.Ceiling(5 * _zoom)); cameraChanged = true; }
+                else if (k == Key.CursorDown) { _cameraY = _cameraY + (int)Math.Ceiling(5 * _zoom); cameraChanged = true; }
+                else if (k == Key.CursorLeft) { _cameraX = Math.Max(0, _cameraX - (int)Math.Ceiling(10 * _zoom)); cameraChanged = true; }
+                else if (k == Key.CursorRight) { _cameraX = _cameraX + (int)Math.Ceiling(10 * _zoom); cameraChanged = true; }
+
+                // Overlay toggles: C = capitals, D = dungeons
+                else if (k == (Key)'c' || k == (Key)'C')
+                {
+                    showCapitals = !showCapitals;
+                    ApplyOverlayState();
+                    UpdateStatus();
+                    InvalidateActiveView();
+                    return;
+                }
+                else if (k == (Key)'d' || k == (Key)'D')
+                {
+                    showDungeons = !showDungeons;
+                    ApplyOverlayState();
+                    UpdateStatus();
+                    InvalidateActiveView();
+                    return;
+                }
+
+                if (!cameraChanged) return;
                 UpdateViews();
             };
 
@@ -281,6 +387,17 @@ internal static class TerminalHudApplication
         try
         {
             int cellCount = map.Cells?.Count ?? 0;
+            if (cellCount > 0)
+            {
+                // Height statistics to verify FMG port behavior
+                var heights = map.Cells.Select(c => c.Height).ToArray();
+                double minH = heights.Min();
+                double maxH = heights.Max();
+                double avgH = heights.Average();
+                int land = heights.Count(h => h >= 20);
+                int ocean = cellCount - land;
+                AppendLog(log, $"[HUD] Height min={minH:F1}, max={maxH:F1}, avg={avgH:F1}, land={land} ({land * 100.0 / cellCount:F1}%), ocean={ocean} ({ocean * 100.0 / cellCount:F1}%)");
+            }
             int rivers = map.Rivers?.Count ?? 0;
             int riverCells = 0;
             if (map.Rivers != null)
@@ -305,6 +422,10 @@ internal static class TerminalHudApplication
                 }
             }
             AppendLog(log, $"[HUD] Cells={cellCount}, Rivers={rivers}, RiverCells={riverCells}, Biomes={biomes}");
+            if (_capitalBurgs != null)
+            {
+                AppendLog(log, $"[HUD] Capitals={_capitalBurgs.Count}");
+            }
             if (map.Biomes != null && map.Biomes.Count > 0)
             {
                 int shown = 0;

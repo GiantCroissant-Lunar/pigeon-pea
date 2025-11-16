@@ -19,7 +19,8 @@ namespace PigeonPea.Console;
 public class BrailleMapPanelView : View
 {
     public readonly PigeonPea.Map.Rendering.Tiles.MapTileSource TileSource = new();
-    private int _brightnessThreshold = 180;  // Currently unused, kept for future enhancements
+    private int _brightnessThreshold = 160;  // Currently unused, kept for future enhancements
+    private bool _monoMode = true;
     private System.DateTime _lastColorLog = System.DateTime.MinValue;
 
     public BrailleMapPanelView(MapData map)
@@ -33,6 +34,12 @@ public class BrailleMapPanelView : View
     public int CameraX { get; set; }
     public int CameraY { get; set; }
     public double Zoom { get; set; } = 1.0;
+
+    public bool MonoMode
+    {
+        get => _monoMode;
+        set => _monoMode = value;
+    }
 
 
     /// <summary>
@@ -54,23 +61,32 @@ public class BrailleMapPanelView : View
         int h = Viewport.Height;
         if (w <= 0 || h <= 0) return true;
 
-        // Calculate viewport and pixels-per-cell for rendering
-        var vp = new PigeonPea.Shared.Rendering.Viewport(CameraX, CameraY, w, h);
+        // For Braille, render a higher-resolution logical grid so each terminal cell
+        // corresponds to a 2x4 block of pixels. This lets each Braille glyph encode
+        // real sub-cell detail instead of sampling a single solid block.
+        int logicalCols = w * BraillePattern.DotsX;   // 2
+        int logicalRows = h * BraillePattern.DotsY;   // 4
 
-        // Use lower pixels-per-cell tuned for Braille (2x4 dots per cell)
-        int ppc = System.Math.Clamp((int)System.Math.Round(4 / System.Math.Max(Zoom, 0.5)), 4, 8);
+        // World viewport in logical cells
+        var vp = new PigeonPea.Shared.Rendering.Viewport(CameraX, CameraY, logicalCols, logicalRows);
 
-        // Assemble pixel buffer
+        // One pixel per logical cell; overall buffer size is logicalCols x logicalRows.
+        int ppc = 1;
+
+        // Assemble pixel buffer as a single full-frame tile (no internal tiling) using
+        // the higher-resolution logical grid.
         var frame = TilesNS.TileAssembler.Assemble(
             TileSource,
             Map,
             vp,
-            w,
-            h,
+            logicalCols,
+            logicalRows,
             ppc,
             Zoom,
             biomeColors: true,
-            rivers: true
+            rivers: true,
+            tileCols: logicalCols,
+            tileRows: logicalRows
         );
 
         // Optional Skia luminance prefilter (PP_BRAILLE_SHADER=1):
@@ -193,23 +209,32 @@ public class BrailleMapPanelView : View
                         }
                     }
 
-                    // Foreground color: ensure contrast vs background
-                    int avgLum = (avg.R * 77 + avg.G * 150 + avg.B * 29) >> 8;
+                    SadRogue.Primitives.Color bgColor;
                     SadRogue.Primitives.Color fgColor;
-                    if (avgLum > 128)
-                        fgColor = new SadRogue.Primitives.Color((byte)(avg.R * 0.6), (byte)(avg.G * 0.6), (byte)(avg.B * 0.6));
+                    if (_monoMode)
+                    {
+                        bgColor = SadRogue.Primitives.Color.Black;
+                        fgColor = SadRogue.Primitives.Color.White;
+                    }
                     else
-                        fgColor = new SadRogue.Primitives.Color((byte)System.Math.Min(255, avg.R * 1.4), (byte)System.Math.Min(255, avg.G * 1.4), (byte)System.Math.Min(255, avg.B * 1.4));
+                    {
+                        int avgLum = (avg.R * 77 + avg.G * 150 + avg.B * 29) >> 8;
+                        if (avgLum > 128)
+                            fgColor = new SadRogue.Primitives.Color((byte)(avg.R * 0.6), (byte)(avg.G * 0.6), (byte)(avg.B * 0.6));
+                        else
+                            fgColor = new SadRogue.Primitives.Color((byte)System.Math.Min(255, avg.R * 1.4), (byte)System.Math.Min(255, avg.G * 1.4), (byte)System.Math.Min(255, avg.B * 1.4));
+                        bgColor = avg;
+                    }
 
                     // Coalesce attribute changes
-                    if (!haveAttr || avg.R != lastBgR || avg.G != lastBgG || avg.B != lastBgB ||
+                    if (!haveAttr || bgColor.R != lastBgR || bgColor.G != lastBgG || bgColor.B != lastBgB ||
                         fgColor.R != lastFgR || fgColor.G != lastFgG || fgColor.B != lastFgB)
                     {
-                        var bg = new Terminal.Gui.Color(avg.R, avg.G, avg.B);
+                        var bg = new Terminal.Gui.Color(bgColor.R, bgColor.G, bgColor.B);
                         var fg = new Terminal.Gui.Color(fgColor.R, fgColor.G, fgColor.B);
                         Driver.SetAttribute(new Terminal.Gui.Attribute(fg, bg));
                         haveAttr = true;
-                        lastBgR = avg.R; lastBgG = avg.G; lastBgB = avg.B;
+                        lastBgR = bgColor.R; lastBgG = bgColor.G; lastBgB = bgColor.B;
                         lastFgR = fgColor.R; lastFgG = fgColor.G; lastFgB = fgColor.B;
                     }
 

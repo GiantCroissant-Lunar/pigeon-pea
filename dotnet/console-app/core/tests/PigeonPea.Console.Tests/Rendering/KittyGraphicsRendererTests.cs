@@ -1,11 +1,9 @@
-extern alias SR;
-using PigeonPea.Console.Rendering;
-using PigeonPea.Shared.Rendering; // legacy Tile, Viewport, IRenderTarget
-using SRVP = SR::PigeonPea.Shared.Rendering;
-using SadRogue.Primitives;
-using Xunit;
 using System;
 using System.IO;
+using PigeonPea.Console.Rendering;
+using PigeonPea.Shared.Rendering; // legacy Tile, Viewport, IRenderTarget
+using SadRogue.Primitives;
+using Xunit;
 
 namespace PigeonPea.Console.Tests.Rendering;
 
@@ -39,7 +37,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void Capabilities_ReportsTrueColorPixelGraphicsAndSprites()
+    public void CapabilitiesReportsTrueColorPixelGraphicsAndSprites()
     {
         // Assert
         Assert.True(_renderer.Capabilities.Supports(RendererCapabilities.TrueColor));
@@ -50,14 +48,14 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void Initialize_WithValidTarget_Succeeds()
+    public void InitializeWithValidTargetSucceeds()
     {
         // Act & Assert - should not throw
         _renderer.Initialize(_target);
     }
 
     [Fact]
-    public void Initialize_WithNullTarget_ThrowsArgumentNullException()
+    public void InitializeWithNullTargetThrowsArgumentNullException()
     {
         // Arrange
         var renderer = new KittyGraphicsRenderer();
@@ -67,7 +65,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_WithoutInitialize_ThrowsInvalidOperationException()
+    public void BeginFrameWithoutInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var renderer = new KittyGraphicsRenderer();
@@ -77,7 +75,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void EndFrame_WithoutInitialize_ThrowsInvalidOperationException()
+    public void EndFrameWithoutInitializeThrowsInvalidOperationException()
     {
         // Arrange
         var renderer = new KittyGraphicsRenderer();
@@ -87,7 +85,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_ClearsCommandBuffer()
+    public void BeginFrameClearsCommandBuffer()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -108,7 +106,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithGlyph_OutputsAnsiColorCodes()
+    public void DrawTileWithGlyphOutputsAnsiColorCodes()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -128,7 +126,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_PositionsCursorCorrectly()
+    public void DrawTilePositionsCursorCorrectly()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -145,7 +143,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact(Skip = "Temporarily skipped during migration; re-enable after stabilization")]
-    public void DrawTile_WithSpriteIdButNotCached_FallsBackToPlaceholder()
+    public void DrawTileWithSpriteIdButNotCachedFallsBackToPlaceholder()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -162,7 +160,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithValidString_DrawsMultipleGlyphs()
+    public void DrawTextWithValidStringDrawsMultipleGlyphs()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -182,7 +180,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithEmptyString_DoesNotThrow()
+    public void DrawTextWithEmptyStringDoesNotThrow()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -194,7 +192,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawText_WithNullString_DoesNotThrow()
+    public void DrawTextWithNullStringDoesNotThrow()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -206,7 +204,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void Clear_OutputsClearScreenSequence()
+    public void ClearOutputsClearScreenSequence()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -224,7 +222,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void Clear_SetsBackgroundColorCorrectly()
+    public void ClearSetsBackgroundColorCorrectly()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -243,7 +241,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void SetViewport_WithValidViewport_DoesNotThrow()
+    public void SetViewportWithValidViewportDoesNotThrow()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -254,7 +252,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_IncreasesCachedImageCount()
+    public void TransmitImageIncreasesCachedImageCount()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -271,7 +269,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_OutputsKittyProtocolSequence()
+    public void TransmitImageOutputsKittyProtocolSequence()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -285,7 +283,7 @@ public class KittyGraphicsRendererTests : IDisposable
 
         // Assert
         var output = _consoleOutput.ToString();
-        Assert.Contains("\x1b_Ga=T", output); // Kitty transmit command
+        Assert.Contains("\x1b_Ga=t", output); // Kitty transmit command (a=t: transmit only)
         Assert.Contains("f=32", output); // RGBA format
         Assert.Contains("i=42", output); // Image ID
         Assert.Contains("s=1", output); // Width
@@ -293,7 +291,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_WithBase64EncodedData_ContainsEncodedData()
+    public void TransmitImageWithBase64EncodedDataContainsEncodedData()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -311,7 +309,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_WithNullData_ThrowsArgumentException()
+    public void TransmitImageWithNullDataThrowsArgumentException()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -322,7 +320,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_WithEmptyData_ThrowsArgumentException()
+    public void TransmitImageWithEmptyDataThrowsArgumentException()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -333,7 +331,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_WithInvalidDimensions_ThrowsArgumentException()
+    public void TransmitImageWithInvalidDimensionsThrowsArgumentException()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -347,7 +345,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_SameImageTwice_DoesNotRetransmit()
+    public void TransmitImageSameImageTwiceDoesNotRetransmit()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -371,7 +369,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DisplayImage_WithCachedImage_OutputsDisplayCommand()
+    public void DisplayImageWithCachedImageOutputsDisplayCommand()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -393,7 +391,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DisplayImage_WithoutTransmit_ThrowsInvalidOperationException()
+    public void DisplayImageWithoutTransmitThrowsInvalidOperationException()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -404,7 +402,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DeleteImage_RemovesFromCache()
+    public void DeleteImageRemovesFromCache()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -426,7 +424,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DeleteImage_OutputsDeleteCommand()
+    public void DeleteImageOutputsDeleteCommand()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -450,7 +448,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DeleteImage_WithNonExistentImage_DoesNotThrow()
+    public void DeleteImageWithNonExistentImageDoesNotThrow()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -462,7 +460,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact(Skip = "Temporarily skipped during migration; re-enable after stabilization")]
-    public void Dispose_DeletesAllCachedImages()
+    public void DisposeDeletesAllCachedImages()
     {
         // Arrange
         var renderer = new KittyGraphicsRenderer();
@@ -486,7 +484,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void Dispose_CanBeCalledMultipleTimes()
+    public void DisposeCanBeCalledMultipleTimes()
     {
         // Arrange
         var renderer = new KittyGraphicsRenderer();
@@ -498,7 +496,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void BeginFrame_AfterDispose_ThrowsObjectDisposedException()
+    public void BeginFrameAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         var renderer = new KittyGraphicsRenderer();
@@ -510,7 +508,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_AfterDispose_ThrowsObjectDisposedException()
+    public void DrawTileAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         var renderer = new KittyGraphicsRenderer();
@@ -523,7 +521,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void TransmitImage_AfterDispose_ThrowsObjectDisposedException()
+    public void TransmitImageAfterDisposeThrowsObjectDisposedException()
     {
         // Arrange
         var renderer = new KittyGraphicsRenderer();
@@ -536,14 +534,14 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void CachedImageCount_InitiallyZero()
+    public void CachedImageCountInitiallyZero()
     {
         // Assert
         Assert.Equal(0, _renderer.CachedImageCount);
     }
 
     [Fact]
-    public void CachedImageCount_IncreasesWithTransmit()
+    public void CachedImageCountIncreasesWithTransmit()
     {
         // Arrange
         _renderer.Initialize(_target);
@@ -561,7 +559,7 @@ public class KittyGraphicsRendererTests : IDisposable
     }
 
     [Fact]
-    public void DrawTile_WithCachedSprite_DisplaysImage()
+    public void DrawTileWithCachedSpriteDisplaysImage()
     {
         // Arrange
         _renderer.Initialize(_target);

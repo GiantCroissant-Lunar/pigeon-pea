@@ -117,10 +117,6 @@ public class BrailleRenderer : IRenderer
                 throw;
             }
         }
-        catch (ObjectDisposedException)
-        {
-            // Tests or hosts may dispose the writer; ignore output in that case.
-        }
 
         _target.Present();
     }

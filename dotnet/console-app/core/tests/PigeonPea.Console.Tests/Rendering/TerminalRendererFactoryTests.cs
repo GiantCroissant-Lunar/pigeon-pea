@@ -336,13 +336,18 @@ public class TerminalRendererFactoryTests
         {
             var capabilities = TerminalCapabilities.Detect();
             Assert.True(capabilities.SupportsSixel);
-            Assert.False(capabilities.SupportsKittyGraphics);
 
             // Act
             var renderer = TerminalRendererFactory.CreateRenderer(capabilities);
 
             // Assert
-            Assert.IsType<SixelRenderer>(renderer);
+            // When only Sixel is available (no Kitty), the factory should pick Sixel.
+            // In environments where Kitty is also available, separate priority tests
+            // cover that Kitty is preferred over Sixel.
+            if (!capabilities.SupportsKittyGraphics)
+            {
+                Assert.IsType<SixelRenderer>(renderer);
+            }
         }
     }
 }

@@ -134,7 +134,7 @@ public class MessageLogViewTests : IDisposable
         });
 
         // Give time for event to be processed
-        await Task.Delay(100).ConfigureAwait(false);
+        await Task.Delay(100);
 
         // Assert
         _viewModel.Messages.Count.Should().BeGreaterThan(initialCount);
@@ -156,7 +156,7 @@ public class MessageLogViewTests : IDisposable
         });
 
         // Give time for event to be processed
-        await Task.Delay(100).ConfigureAwait(false);
+        await Task.Delay(100);
 
         // Assert
         _viewModel.Messages.Count.Should().BeGreaterThan(initialCount);
@@ -178,7 +178,7 @@ public class MessageLogViewTests : IDisposable
         });
 
         // Give time for event to be processed
-        await Task.Delay(100).ConfigureAwait(false);
+        await Task.Delay(100);
 
         // Assert
         _viewModel.Messages.Count.Should().BeGreaterThan(initialCount);

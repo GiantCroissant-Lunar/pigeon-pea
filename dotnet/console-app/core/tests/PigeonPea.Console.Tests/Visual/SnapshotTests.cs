@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Text;
-using Xunit;
 using FluentAssertions;
+using Xunit;
 
 namespace PigeonPea.Console.Tests.Visual;
 
@@ -17,7 +17,7 @@ public class SnapshotTests
     /// Test that runs PTY scenario for main menu and compares with snapshot.
     /// </summary>
     [Fact(Skip = "Disabled during migration: snapshot stability under new structure. TODO: re-enable once stabilized.")]
-    public async Task MainMenu_MatchesSnapshot()
+    public async Task MainMenuMatchesSnapshot()
     {
         // Arrange
         var snapshotName = "main-menu";
@@ -101,7 +101,7 @@ public class SnapshotTests
         await Task.WhenAny(
             process.WaitForExitAsync(),
             Task.Delay(duration)
-        );
+        ).ConfigureAwait(false);
 
         // Try to gracefully terminate the process
         if (!process.HasExited)
@@ -109,11 +109,11 @@ public class SnapshotTests
             try
             {
                 // Send 'q' to quit for a graceful shutdown.
-                await process.StandardInput.WriteAsync('q');
-                await process.StandardInput.FlushAsync();
+                await process.StandardInput.WriteAsync('q').ConfigureAwait(false);
+                await process.StandardInput.FlushAsync().ConfigureAwait(false);
 
                 // Wait a short time for the process to exit.
-                await Task.WhenAny(process.WaitForExitAsync(), Task.Delay(TimeSpan.FromSeconds(1)));
+                await Task.WhenAny(process.WaitForExitAsync(), Task.Delay(TimeSpan.FromSeconds(1))).ConfigureAwait(false);
             }
             catch (InvalidOperationException)
             {
@@ -214,7 +214,7 @@ public class SnapshotTests
         if (!File.Exists(snapshotPath))
         {
             // Create new snapshot
-            await File.WriteAllTextAsync(snapshotPath, actualOutput);
+            await File.WriteAllTextAsync(snapshotPath, actualOutput).ConfigureAwait(false);
 
             // Inform that a new snapshot was created
             // In CI, this should fail to ensure snapshots are reviewed
@@ -228,7 +228,7 @@ public class SnapshotTests
         }
 
         // Load expected snapshot
-        var expectedOutput = await File.ReadAllTextAsync(snapshotPath);
+        var expectedOutput = await File.ReadAllTextAsync(snapshotPath).ConfigureAwait(false);
         expectedOutput = expectedOutput.Replace("\r\n", "\n").Replace("\r", "\n").Trim();
 
         // Compare outputs
@@ -239,7 +239,7 @@ public class SnapshotTests
 
             // Save the actual output for inspection
             var failurePath = snapshotPath.Replace(".txt", ".actual.txt");
-            await File.WriteAllTextAsync(failurePath, actualOutput);
+            await File.WriteAllTextAsync(failurePath, actualOutput).ConfigureAwait(false);
 
             // Fail with detailed diff
             Assert.Fail($"Visual regression detected!\n\n" +

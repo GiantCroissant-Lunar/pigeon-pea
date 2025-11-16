@@ -1,27 +1,47 @@
-using Terminal.Gui;
-using PigeonPea.Shared;
-using PigeonPea.Shared.Rendering;
-using PigeonPea.Console.Rendering;
 using System;
 using System.CommandLine;
+using System.IO;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PigeonPea.PluginSystem;
+using PigeonPea.Console.Rendering;
 using PigeonPea.Contracts.Plugin;
-using PigeonPea.Game.Contracts.Rendering;
 using PigeonPea.Game.Contracts;
+using PigeonPea.Game.Contracts.Rendering;
+using PigeonPea.PluginSystem;
+using PigeonPea.Shared;
+using PigeonPea.Shared.Rendering;
+using Terminal.Gui;
 
 namespace PigeonPea.Console;
 
 class Program
 {
+    static readonly string RuntimeLogsDirectory = EnsureRuntimeLogsDirectory();
+    static readonly string RuntimeLogFilePath = Path.Combine(RuntimeLogsDirectory, "console-runtime.log");
+
+    static string EnsureRuntimeLogsDirectory()
+    {
+        var baseDir = AppContext.BaseDirectory;
+        var dir = Path.Combine(baseDir, "runtime-logs");
+        Directory.CreateDirectory(dir);
+        return dir;
+    }
+
+    static void RuntimeLog(string message)
+    {
+        var line = $"{DateTime.UtcNow:O} {message}{Environment.NewLine}";
+        File.AppendAllText(RuntimeLogFilePath, line);
+    }
+
     static int Main(string[] args)
     {
+        RuntimeLog($"Args: {string.Join(' ', args)}");
+
         var rendererOption = new Option<string>("--renderer")
         {
-            Description = "Renderer to use (auto, kitty, sixel, braille, ascii, plugin)",
+            Description = "Renderer to use (auto, kitty, sixel, braille, ascii, plugin, hud)",
             DefaultValueFactory = _ => "plugin"
         };
 
@@ -61,6 +81,15 @@ class Program
 
     static void RunGame(string renderer, bool debug, int? width, int? height)
     {
+        RuntimeLog($"RunGame renderer={renderer}, debug={debug}, width={width}, height={height}");
+
+        // HUD mode: run FMG map HUD instead of full game loop
+        if (renderer.Equals("hud", StringComparison.OrdinalIgnoreCase))
+        {
+            TerminalHudApplication.Run();
+            return;
+        }
+
         // Use plugin-based renderer if requested
         if (renderer.ToLowerInvariant() == "plugin")
         {
@@ -127,6 +156,8 @@ class Program
 
     static void RunGameWithPlugins(bool debug, int? width, int? height)
     {
+        RuntimeLog($"RunGameWithPlugins debug={debug}, width={width}, height={height}");
+
         // Build host with plugin system
         var builder = Host.CreateApplicationBuilder();
 

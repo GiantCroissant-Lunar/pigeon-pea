@@ -1,9 +1,7 @@
-extern alias SR;
 using System.IO;
 using System.Text;
 using PigeonPea.Console.Rendering;
 using PigeonPea.Shared.Rendering; // legacy Tile, Viewport, IRenderTarget
-using SRVP = SR::PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
 using Xunit;
 
@@ -71,7 +69,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void Constructor_DefaultSupportsAnsiColors()
+    public void ConstructorDefaultSupportsAnsiColors()
     {
         // Act
         var renderer = new AsciiRenderer();
@@ -81,7 +79,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void Constructor_AcceptsAnsiColorSupport()
+    public void ConstructorAcceptsAnsiColorSupport()
     {
         // Act
         var rendererWithColors = new AsciiRenderer(supportsAnsiColors: true);
@@ -93,7 +91,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void Capabilities_ReturnsCharacterBased()
+    public void CapabilitiesReturnsCharacterBased()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -109,7 +107,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void Initialize_StoresRenderTarget()
+    public void InitializeStoresRenderTarget()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -123,7 +121,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void BeginFrame_ThrowsIfNotInitialized()
+    public void BeginFrameThrowsIfNotInitialized()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -135,7 +133,7 @@ public class AsciiRendererTests
     }
 
     [Fact(Skip = "Temporarily skipped during migration; re-enable after stabilization")]
-    public void BeginFrame_ClearsInternalBuffer()
+    public void BeginFrameClearsInternalBuffer()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -169,7 +167,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void EndFrame_CallsPresentOnTarget()
+    public void EndFrameCallsPresentOnTarget()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -188,7 +186,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void EndFrame_WritesBufferedContentToConsole()
+    public void EndFrameWritesBufferedContentToConsole()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -211,7 +209,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void DrawTile_WithAnsiColors_OutputsColoredCharacter()
+    public void DrawTileWithAnsiColorsOutputsColoredCharacter()
     {
         // Arrange
         var renderer = new AsciiRenderer(supportsAnsiColors: true);
@@ -237,7 +235,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void DrawTile_WithoutAnsiColors_OutputsPlainCharacter()
+    public void DrawTileWithoutAnsiColorsOutputsPlainCharacter()
     {
         // Arrange
         var renderer = new AsciiRenderer(supportsAnsiColors: false);
@@ -261,7 +259,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void DrawTile_PositionsCursor()
+    public void DrawTilePositionsCursor()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -283,7 +281,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void DrawText_WithAnsiColors_OutputsColoredText()
+    public void DrawTextWithAnsiColorsOutputsColoredText()
     {
         // Arrange
         var renderer = new AsciiRenderer(supportsAnsiColors: true);
@@ -309,7 +307,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void DrawText_WithoutAnsiColors_OutputsPlainText()
+    public void DrawTextWithoutAnsiColorsOutputsPlainText()
     {
         // Arrange
         var renderer = new AsciiRenderer(supportsAnsiColors: false);
@@ -333,7 +331,7 @@ public class AsciiRendererTests
     }
 
     [Fact(Skip = "Temporarily skipped during migration; re-enable after stabilization")]
-    public void DrawText_PositionsCursorCorrectly()
+    public void DrawTextPositionsCursorCorrectly()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -355,7 +353,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void Clear_WithAnsiColors_ClearsScreenWithBackgroundColor()
+    public void ClearWithAnsiColorsClearsScreenWithBackgroundColor()
     {
         // Arrange
         var renderer = new AsciiRenderer(supportsAnsiColors: true);
@@ -380,7 +378,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void Clear_WithoutAnsiColors_ClearsScreen()
+    public void ClearWithoutAnsiColorsClearsScreen()
     {
         // Arrange
         var renderer = new AsciiRenderer(supportsAnsiColors: false);
@@ -404,7 +402,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void SetViewport_ClipsDrawingOutsideBounds()
+    public void SetViewportClipsDrawingOutsideBounds()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -439,7 +437,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void SetViewport_TranslatesCoordinates()
+    public void SetViewportTranslatesCoordinates()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -466,7 +464,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void ColorToAnsi_GeneratesCorrectRgbCodes()
+    public void ColorToAnsiGeneratesCorrectRgbCodes()
     {
         // Arrange
         var renderer = new AsciiRenderer(supportsAnsiColors: true);
@@ -493,7 +491,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void MultipleDrawCalls_BuffersCorrectly()
+    public void MultipleDrawCallsBuffersCorrectly()
     {
         // Arrange
         var renderer = new AsciiRenderer();
@@ -519,7 +517,7 @@ public class AsciiRendererTests
     }
 
     [Fact]
-    public void BeginFrame_AfterEndFrame_StartsNewFrame()
+    public void BeginFrameAfterEndFrameStartsNewFrame()
     {
         // Arrange
         var renderer = new AsciiRenderer();

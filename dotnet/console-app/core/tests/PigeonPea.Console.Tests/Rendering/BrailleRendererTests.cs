@@ -1,7 +1,5 @@
-extern alias SR;
 using PigeonPea.Console.Rendering;
 using PigeonPea.Shared.Rendering; // legacy Tile, Viewport, IRenderTarget
-using SRVP = SR::PigeonPea.Shared.Rendering;
 using SadRogue.Primitives;
 using Xunit;
 
@@ -44,7 +42,7 @@ public class BrailleRendererTests
     #region BraillePattern Tests
 
     [Fact]
-    public void BraillePattern_ToChar_ReturnsCorrectUnicodeCharacter()
+    public void BraillePatternToCharReturnsCorrectUnicodeCharacter()
     {
         // Arrange
         byte pattern = 0b00000001; // Dot 1
@@ -57,7 +55,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_FromChar_ReturnsCorrectPattern()
+    public void BraillePatternFromCharReturnsCorrectPattern()
     {
         // Arrange
         char brailleChar = '\u2801'; // Dot 1
@@ -70,7 +68,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_FromChar_InvalidChar_ReturnsZero()
+    public void BraillePatternFromCharInvalidCharReturnsZero()
     {
         // Arrange
         char nonBrailleChar = 'A';
@@ -83,7 +81,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_Empty_ReturnsEmptyPattern()
+    public void BraillePatternEmptyReturnsEmptyPattern()
     {
         // Act
         char empty = BraillePattern.Empty;
@@ -93,7 +91,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_Full_ReturnsFullPattern()
+    public void BraillePatternFullReturnsFullPattern()
     {
         // Act
         char full = BraillePattern.Full;
@@ -103,7 +101,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_FromDots_CreatesCorrectPattern()
+    public void BraillePatternFromDotsCreatesCorrectPattern()
     {
         // Arrange - dots 1, 2, and 4 on
         bool[] dots = { true, true, false, true, false, false, false, false };
@@ -117,7 +115,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_SetDot_SetsCorrectBit()
+    public void BraillePatternSetDotSetsCorrectBit()
     {
         // Arrange
         byte pattern = 0;
@@ -131,7 +129,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_SetDot_ClearsBit()
+    public void BraillePatternSetDotClearsBit()
     {
         // Arrange
         byte pattern = 0xFF; // All dots on
@@ -144,7 +142,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_GetDot_ReturnsCorrectState()
+    public void BraillePatternGetDotReturnsCorrectState()
     {
         // Arrange
         byte pattern = 0b00001001; // Dots 1 and 4
@@ -157,7 +155,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_SetDot_OutOfBounds_ReturnsUnchanged()
+    public void BraillePatternSetDotOutOfBoundsReturnsUnchanged()
     {
         // Arrange
         byte pattern = 0b00001010;
@@ -174,7 +172,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BraillePattern_GetDot_OutOfBounds_ReturnsFalse()
+    public void BraillePatternGetDotOutOfBoundsReturnsFalse()
     {
         // Arrange
         byte pattern = 0xFF;
@@ -194,7 +192,7 @@ public class BrailleRendererTests
     [InlineData(1, 2, 5)] // Bottom-right -> Dot 6
     [InlineData(0, 3, 6)] // Bottom-bottom-left -> Dot 7
     [InlineData(1, 3, 7)] // Bottom-bottom-right -> Dot 8
-    public void BraillePattern_DotMapping_IsCorrect(int x, int y, int expectedBit)
+    public void BraillePatternDotMappingIsCorrect(int x, int y, int expectedBit)
     {
         // Arrange
         byte pattern = 0;
@@ -211,7 +209,7 @@ public class BrailleRendererTests
     #region BrailleRenderer Tests
 
     [Fact]
-    public void BrailleRenderer_Initialize_SetsTarget()
+    public void BrailleRendererInitializeSetsTarget()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -225,7 +223,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_Initialize_NullTarget_ThrowsArgumentNullException()
+    public void BrailleRendererInitializeNullTargetThrowsArgumentNullException()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -235,7 +233,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_Capabilities_IncludesTrueColorAndCharacterBased()
+    public void BrailleRendererCapabilitiesIncludesTrueColorAndCharacterBased()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -251,7 +249,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_EndFrame_CallsPresent()
+    public void BrailleRendererEndFrameCallsPresent()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -267,7 +265,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_DrawTile_WithinBounds_DoesNotThrow()
+    public void BrailleRendererDrawTileWithinBoundsDoesNotThrow()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -285,7 +283,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_DrawTile_OutOfBounds_DoesNotThrow()
+    public void BrailleRendererDrawTileOutOfBoundsDoesNotThrow()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -303,7 +301,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_DrawText_EmptyString_DoesNotThrow()
+    public void BrailleRendererDrawTextEmptyStringDoesNotThrow()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -320,7 +318,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_DrawText_NullString_DoesNotThrow()
+    public void BrailleRendererDrawTextNullStringDoesNotThrow()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -337,7 +335,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_DrawText_ValidString_DoesNotThrow()
+    public void BrailleRendererDrawTextValidStringDoesNotThrow()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -354,7 +352,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_Clear_InitializesBuffer()
+    public void BrailleRendererClearInitializesBuffer()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -371,7 +369,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_SetViewport_UpdatesViewport()
+    public void BrailleRendererSetViewportUpdatesViewport()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -387,7 +385,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_BeginFrame_ClearsBuffer()
+    public void BrailleRendererBeginFrameClearsBuffer()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -410,7 +408,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_MultipleDrawCalls_DoNotThrow()
+    public void BrailleRendererMultipleDrawCallsDoNotThrow()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -434,7 +432,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_ConvertToBraille_SpaceCharacter()
+    public void BrailleRendererConvertToBrailleSpaceCharacter()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -452,7 +450,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_ConvertToBraille_FullBlock()
+    public void BrailleRendererConvertToBrailleFullBlock()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -470,7 +468,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_EndFrame_WithoutInitialize_DoesNotThrow()
+    public void BrailleRendererEndFrameWithoutInitializeDoesNotThrow()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -481,7 +479,7 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_DrawTile_WithViewport_RespectsViewportBounds()
+    public void BrailleRendererDrawTileWithViewportRespectsViewportBounds()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -501,42 +499,34 @@ public class BrailleRendererTests
     }
 
     [Fact]
-    public void BrailleRenderer_EndFrame_ProducesCorrectANSIOutput()
+    public void BrailleRendererEndFrameProducesCorrectANSIOutput()
     {
         // Arrange
         var renderer = new BrailleRenderer();
         var target = new MockRenderTarget(80, 24);
         renderer.Initialize(target);
 
-        var originalOut = System.Console.Out;
         var writer = new System.IO.StringWriter();
-        System.Console.SetOut(writer);
+        renderer.Output = writer;
 
-        try
-        {
-            // Act
-            renderer.BeginFrame();
-            renderer.DrawTile(0, 0, new Tile('@', new Color(255, 255, 0), new Color(0, 0, 0)));
-            renderer.EndFrame();
+        // Act
+        renderer.BeginFrame();
+        renderer.DrawTile(0, 0, new Tile('@', new Color(255, 255, 0), new Color(0, 0, 0)));
+        renderer.EndFrame();
 
-            var output = writer.ToString();
+        var output = writer.ToString();
 
-            // Assert - Verify output contains expected ANSI codes and Braille character
-            Assert.Contains("\x1b[1;1H", output); // Cursor position
-            Assert.Contains("\x1b[38;2;255;255;0m", output); // Foreground color (yellow)
-            Assert.Contains("\x1b[48;2;0;0;0m", output); // Background color (black)
-            Assert.Contains("\x1b[0m", output); // Reset at end
-            // Should contain a Braille character (the converted '@' which maps to specific pattern)
-            Assert.True(output.Length > 0, "Output should not be empty");
-        }
-        finally
-        {
-            System.Console.SetOut(originalOut);
-        }
+        // Assert - Verify output contains expected ANSI codes and Braille character
+        Assert.Contains("\x1b[1;1H", output); // Cursor position
+        Assert.Contains("\x1b[38;2;255;255;0m", output); // Foreground color (yellow)
+        Assert.Contains("\x1b[48;2;0;0;0m", output); // Background color (black)
+        Assert.Contains("\x1b[0m", output); // Reset at end
+        // Should contain a Braille character (the converted '@' which maps to specific pattern)
+        Assert.True(output.Length > 0, "Output should not be empty");
     }
 
     [Fact(Skip = "Temporarily skipped during migration; re-enable after stabilization")]
-    public void BrailleRenderer_EndFrame_OptimizesColorChanges()
+    public void BrailleRendererEndFrameOptimizesColorChanges()
     {
         // Arrange
         var renderer = new BrailleRenderer();
@@ -572,7 +562,7 @@ public class BrailleRendererTests
     }
 
     [Fact(Skip = "Temporarily skipped during migration; re-enable after stabilization")]
-    public void BrailleRenderer_Clear_RespectsViewport()
+    public void BrailleRendererClearRespectsViewport()
     {
         // Arrange
         var renderer = new BrailleRenderer();
