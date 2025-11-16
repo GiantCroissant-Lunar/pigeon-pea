@@ -35,7 +35,10 @@
 
   <ItemGroup>
     <!-- Reference to Shared Game Logic -->
-    <ProjectReference Include="..\..\..\game-essential\core\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="..\..\..\..\game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+
+    <!-- Engine-level rendering primitives (IRenderer, IRenderTarget, Tile, Viewport, RendererCapabilities) -->
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
   </ItemGroup>
 
 </Project>

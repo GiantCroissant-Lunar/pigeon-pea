@@ -11,11 +11,30 @@ namespace PigeonPea.Windows;
 
 public partial class App : Application
 {
+    static readonly string RuntimeLogsDirectory = EnsureRuntimeLogsDirectory();
+    static readonly string RuntimeLogFilePath = Path.Combine(RuntimeLogsDirectory, "windows-runtime.log");
+
+    static string EnsureRuntimeLogsDirectory()
+    {
+        var baseDir = AppContext.BaseDirectory;
+        var dir = Path.Combine(baseDir, "runtime-logs");
+        Directory.CreateDirectory(dir);
+        return dir;
+    }
+
+    static void RuntimeLog(string message)
+    {
+        var line = $"{DateTime.UtcNow:O} {message}{Environment.NewLine}";
+        File.AppendAllText(RuntimeLogFilePath, line);
+    }
+
     public IServiceProvider? Services { get; private set; }
     public SpriteAtlasManager? SpriteAtlasManager { get; private set; }
 
     public override void Initialize()
     {
+        RuntimeLog("App.Initialize");
+
         AvaloniaXamlLoader.Load(this);
 
         // Set up dependency injection container
@@ -33,6 +52,8 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        RuntimeLog("App.OnFrameworkInitializationCompleted");
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             desktop.MainWindow = new MainWindow(SpriteAtlasManager);

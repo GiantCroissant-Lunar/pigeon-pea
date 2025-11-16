@@ -115,7 +115,7 @@ public class FrameExtractorTests : IDisposable
 
         // Act & Assert
         var exception = await Assert.ThrowsAsync<ArgumentException>(
-            () => extractor.ExtractFrames(nonExistentPath, outputDir)).ConfigureAwait(false);
+            () => extractor.ExtractFrames(nonExistentPath, outputDir));
 
         Assert.Contains("Video file not found", exception.Message);
     }
@@ -130,7 +130,7 @@ public class FrameExtractorTests : IDisposable
         _createdDirectories.Add(outputDir);
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir).ConfigureAwait(false);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir);
 
         // Assert
         Assert.NotEmpty(frames);
@@ -151,7 +151,7 @@ public class FrameExtractorTests : IDisposable
         _createdDirectories.Add(outputDir);
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir).ConfigureAwait(false);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir);
 
         // Assert
         Assert.True(Directory.Exists(outputDir));
@@ -169,7 +169,7 @@ public class FrameExtractorTests : IDisposable
         var customPattern = "test-frame-%04d.png";
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir, customPattern).ConfigureAwait(false);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir, customPattern);
 
         // Assert
         Assert.NotEmpty(frames);
@@ -193,8 +193,8 @@ public class FrameExtractorTests : IDisposable
         var extractor2 = new FrameExtractor { FrameRate = 2 };
 
         // Act
-        var frames1 = await extractor1.ExtractFrames(videoPath, outputDir1, "frame1-%03d.png").ConfigureAwait(false);
-        var frames2 = await extractor2.ExtractFrames(videoPath, outputDir2, "frame2-%03d.png").ConfigureAwait(false);
+        var frames1 = await extractor1.ExtractFrames(videoPath, outputDir1, "frame1-%03d.png");
+        var frames2 = await extractor2.ExtractFrames(videoPath, outputDir2, "frame2-%03d.png");
 
         // Assert
         // For a 3s video, 1 FPS should be ~3 frames, 2 FPS should be ~6 frames.
@@ -214,7 +214,7 @@ public class FrameExtractorTests : IDisposable
         _createdDirectories.Add(outputDir);
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir).ConfigureAwait(false);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir);
 
         // Assert
         Assert.NotEmpty(frames);
@@ -233,7 +233,7 @@ public class FrameExtractorTests : IDisposable
         _createdDirectories.Add(outputDir);
 
         // Act
-        var frames = await extractor.ExtractFrames(videoPath, outputDir).ConfigureAwait(false);
+        var frames = await extractor.ExtractFrames(videoPath, outputDir);
 
         // Assert
         Assert.NotEmpty(frames);
@@ -255,7 +255,7 @@ public class FrameExtractorTests : IDisposable
         var extractor = new FrameExtractor();
 
         // Act
-        var isAvailable = await extractor.IsFFmpegAvailable().ConfigureAwait(false);
+        var isAvailable = await extractor.IsFFmpegAvailable();
 
         // Assert
         // Should return either true or false, not throw
@@ -272,7 +272,7 @@ public class FrameExtractorTests : IDisposable
         };
 
         // Act
-        var isAvailable = await extractor.IsFFmpegAvailable().ConfigureAwait(false);
+        var isAvailable = await extractor.IsFFmpegAvailable();
 
         // Assert
         Assert.False(isAvailable);

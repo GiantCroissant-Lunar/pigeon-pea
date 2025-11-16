@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media.Imaging;
@@ -7,7 +8,6 @@ using PigeonPea.Shared.Components;
 using PigeonPea.Windows.Rendering;
 using Plate.SCG.General.DisposePattern.Attributes;
 using SkiaSharp;
-using System;
 using RTile = PigeonPea.Shared.Rendering.Tile;
 
 namespace PigeonPea.Windows;

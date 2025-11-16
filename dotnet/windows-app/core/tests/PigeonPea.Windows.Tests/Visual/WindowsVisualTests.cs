@@ -180,12 +180,12 @@ public class WindowsVisualTests : IDisposable
         const string scenarioName = "basic-rendering";
 
         // Act - Record test scenario
-        var videoPath = await RecordTestScenario(scenarioName, duration: 3).ConfigureAwait(false);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 3);
 
         // Extract frames
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
 
         // Assert - Frames should be extracted
         frames.Should().NotBeEmpty("frames should be extracted from the video");
@@ -205,12 +205,12 @@ public class WindowsVisualTests : IDisposable
         const string scenarioName = "particle-effect";
 
         // Act - Record test scenario with particle effects
-        var videoPath = await RecordTestScenario(scenarioName, duration: 5).ConfigureAwait(false);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 5);
 
         // Extract frames at 1 FPS
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
 
         // Assert - Should have multiple frames
         frames.Should().NotBeEmpty();
@@ -232,12 +232,12 @@ public class WindowsVisualTests : IDisposable
         const string scenarioName = "sprite-rendering";
 
         // Act - Record test scenario with sprites
-        var videoPath = await RecordTestScenario(scenarioName, duration: 3).ConfigureAwait(false);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 3);
 
         // Extract frames
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
 
         // Assert - Frames extracted successfully
         frames.Should().NotBeEmpty();
@@ -261,12 +261,12 @@ public class WindowsVisualTests : IDisposable
         const string scenarioName = "animation-sequence";
 
         // Act - Record animation test scenario
-        var videoPath = await RecordTestScenario(scenarioName, duration: 4).ConfigureAwait(false);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 4);
 
         // Extract frames
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
 
         // Assert - Should have multiple frames showing animation progression
         frames.Should().NotBeEmpty();
@@ -291,12 +291,12 @@ public class WindowsVisualTests : IDisposable
         const string scenarioName = "ui-display";
 
         // Act - Record UI test scenario
-        var videoPath = await RecordTestScenario(scenarioName, duration: 3).ConfigureAwait(false);
+        var videoPath = await RecordTestScenario(scenarioName, duration: 3);
 
         // Extract frames
         var framesDir = Path.Combine(_testOutputDir, $"{scenarioName}_frames");
         _createdDirectories.Add(framesDir);
-        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir).ConfigureAwait(false);
+        var frames = await _frameExtractor.ExtractFrames(videoPath, framesDir);
 
         // Assert
         frames.Should().NotBeEmpty();
@@ -316,7 +316,7 @@ public class WindowsVisualTests : IDisposable
         _frameExtractor.FrameRate.Should().Be(1, "should extract 1 frame per second");
 
         // Verify FFmpeg availability check returns a boolean (method works without throwing)
-        var isAvailable = await _frameExtractor.IsFFmpegAvailable().ConfigureAwait(false);
+        var isAvailable = await _frameExtractor.IsFFmpegAvailable();
         // The method should complete successfully and return a boolean value
         Assert.IsType<bool>(isAvailable);
     }
