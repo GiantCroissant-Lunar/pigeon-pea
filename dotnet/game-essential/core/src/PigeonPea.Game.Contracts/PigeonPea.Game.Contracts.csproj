@@ -8,6 +8,6 @@
     <DocumentationFile>bin/$(Configuration)/$(TargetFramework)/PigeonPea.Game.Contracts.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="../../../app-essential/core/PigeonPea.Contracts/PigeonPea.Contracts.csproj" />
+    <ProjectReference Include="../../../app-essential/core/src/PigeonPea.Contracts/PigeonPea.Contracts.csproj" />
   </ItemGroup>
 </Project>

@@ -9,4 +9,7 @@
     <PackageReference Include="GoRogue" Version="3.0.0-beta10" />
     <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PigeonPea.Overlays\PigeonPea.Overlays.csproj" />
+  </ItemGroup>
 </Project>

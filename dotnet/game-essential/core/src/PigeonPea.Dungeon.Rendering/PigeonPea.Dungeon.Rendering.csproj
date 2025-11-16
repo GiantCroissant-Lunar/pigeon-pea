@@ -11,7 +11,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
-    <ProjectReference Include="..\..\Shared\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
-    <ProjectReference Include="..\..\Shared\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
+    <ProjectReference Include="..\..\..\..\content-authoring\core\src\PigeonPea.Content.ECS\PigeonPea.Content.ECS.csproj" />
   </ItemGroup>
 </Project>
