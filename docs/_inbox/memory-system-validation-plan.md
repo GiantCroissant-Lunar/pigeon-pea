@@ -1,7 +1,9 @@
 # Memory System Validation Plan
 
 ## Problem Statement
+
 Previous attempts at agent memory failed because:
+
 - Unclear if memory was being retrieved
 - No visibility into what was stored
 - Couldn't validate if it improved agent performance
@@ -9,15 +11,17 @@ Previous attempts at agent memory failed because:
 ## Validation-First Approach
 
 ### Phase 1: Proof of Concept (Week 1)
+
 **Goal:** Prove memory read/write works with full visibility
 
 **Setup:**
+
 ```yaml
 # docker-compose.memory-test.yml
 services:
   qdrant:
     image: qdrant/qdrant:latest
-    ports: ["6333:6333"]
+    ports: ['6333:6333']
     volumes:
       - ./data/qdrant:/qdrant/storage
 
@@ -27,6 +31,7 @@ services:
 ```
 
 **Test Cases:**
+
 1. **Explicit Save Test**
    - Tell agent: "Remember: Dungeon.Core uses GoRogue for FOV"
    - Check log: Did it save?
@@ -42,15 +47,18 @@ services:
    - Check: Did it auto-retrieve the GoRogue decision?
 
 **Success Criteria:**
+
 - [ ] Can see every memory operation in logs
 - [ ] Can manually query Qdrant and see stored memories
 - [ ] Agent's response demonstrates it used retrieved memory
 - [ ] Hit rate >30% (agent queries memory in relevant contexts)
 
 ### Phase 2: Integration (Week 2)
+
 **Only proceed if Phase 1 succeeds**
 
 **Setup MCP Server:**
+
 ```json
 // .claude/mcp_servers.json
 {
@@ -67,13 +75,16 @@ services:
 ```
 
 **Test with Claude Code:**
+
 - Configure MCP server
 - Verify tool shows up in available tools
 - Test explicit tool calls
 - Monitor usage in logs
 
 ### Phase 3: Cost Monitoring (Week 3)
+
 **Track actual costs:**
+
 ```bash
 # Daily cost tracker
 python scripts/track-embedding-costs.py
@@ -84,12 +95,15 @@ python scripts/track-embedding-costs.py
 ```
 
 **Expected costs (based on research):**
+
 - Light usage: $0.10-0.30/month
 - Heavy usage: $0.50-1.00/month
 - Extreme: ~$2/month
 
 ## Red Flags to Abort
+
 Stop and reassess if:
+
 - ❌ Memory retrieval rate <10% (agent not using it)
 - ❌ Retrieved memories not relevant >50% of time
 - ❌ Can't easily see what's being stored/retrieved
@@ -97,7 +111,9 @@ Stop and reassess if:
 - ❌ More time spent managing memory than it saves
 
 ## Success Metrics
+
 Continue if:
+
 - ✅ Can demonstrate memory retrieval in agent responses
 - ✅ Agent provides context from previous sessions
 - ✅ Reduces need to re-explain project conventions
@@ -107,26 +123,33 @@ Continue if:
 ## Technology Decisions
 
 ### Embedding Model
+
 **Recommended:** `text-embedding-3-small`
+
 - Cost: $0.02 per 1M tokens
 - Quality: Good for semantic search
 - Provider: OpenAI API (separate from ChatGPT Plus)
 
 **Alternative (free):** Local embeddings via Ollama
+
 - Model: `bge-small-en-v1.5`
 - Cost: $0
 - Quality: Slightly lower but acceptable
 - Tradeoff: Need to run locally
 
 ### Vector Store
+
 **Recommended:** Qdrant (self-hosted)
+
 - Free, open source
 - Easy Docker setup
 - Good UI for inspection
 - Works with Supermemory/Letta
 
 ### Memory Layer
+
 **Start with:** Supermemory + MCP
+
 - Simpler than Letta
 - Just memory, not full agent runtime
 - Works with Claude Code, Windsurf
@@ -140,6 +163,7 @@ Continue if:
 4. **Week 4:** Decide: continue, modify, or abandon
 
 ## Notes
+
 - Don't over-invest before validating
 - Observability is critical
 - Start minimal, expand only if proven valuable

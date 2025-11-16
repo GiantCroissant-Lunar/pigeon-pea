@@ -1,5 +1,5 @@
 ---
-title: "MCP Project Launcher System"
+title: 'MCP Project Launcher System'
 doc_type: guide
 status: draft
 created: 2025-01-15
@@ -67,12 +67,14 @@ Editor (Global Config)
 #### 1. Launcher Scripts
 
 **Python Launcher** (`.mcp/launcher/launcher.py`):
+
 - Universal launcher supporting all platforms
 - Environment variable expansion (`${VAR}`, `${PROJECT_ROOT}`)
 - Dynamic config loading
 - Process replacement via `os.execvpe()`
 
 **Node.js Launcher** (`.mcp/launcher/launcher.js`):
+
 - Alternative for Node.js environments
 - Same features as Python version
 
@@ -81,6 +83,7 @@ Editor (Global Config)
 **Purpose**: Automatically detect installed IDEs and locate their MCP config paths.
 
 **Python Version** (`.mcp/scripts/detect-ide-configs.py`):
+
 - Cross-platform detection
 - JSON output support
 - Checks for:
@@ -93,12 +96,14 @@ Editor (Global Config)
   - VS Code
 
 **PowerShell Version** (`.mcp/scripts/detect-ide-configs.ps1`):
+
 - Windows-native implementation
 - Same detection capabilities
 
 #### 3. Setup Scripts
 
 **Windows Setup** (`.mcp/setup-windows.ps1`):
+
 - Interactive setup wizard
 - Launcher installation
 - Environment variable configuration
@@ -106,6 +111,7 @@ Editor (Global Config)
 - Validation
 
 **Unix Setup** (`.mcp/setup-unix.sh`):
+
 - Bash-based setup for Linux/Mac
 - Shell config integration (.bashrc, .zshrc)
 - Same features as Windows version
@@ -113,6 +119,7 @@ Editor (Global Config)
 #### 4. Server Configurations
 
 **Format** (`.mcp/servers/*.json`):
+
 ```json
 {
   "name": "server-name",
@@ -127,6 +134,7 @@ Editor (Global Config)
 ```
 
 **Pre-configured Servers**:
+
 - `github.json` - GitHub integration (repos, issues, PRs)
 - `sequential-thinking.json` - Step-by-step reasoning
 - `memory-qdrant.json` - Long-term memory with Qdrant
@@ -155,27 +163,30 @@ mcp:docs                 # Open documentation
 
 ## IDE Compatibility
 
-| IDE | Global Config Support | Project Config Support | Launcher Needed? |
-|-----|----------------------|------------------------|------------------|
-| GitHub Copilot | ✅ | ❌ | ✅ Required |
-| Cursor | ✅ | ✅ | ⚠️ Optional |
-| Windsurf | ✅ | ⚠️ Check docs | ⚠️ Optional |
-| Cline | ❌ | ✅ | ❌ Not needed |
-| Zed | ✅ | ⚠️ Varies | ⚠️ Optional |
-| VS Code | ✅ | ✅ | Depends on extension |
+| IDE            | Global Config Support | Project Config Support | Launcher Needed?     |
+| -------------- | --------------------- | ---------------------- | -------------------- |
+| GitHub Copilot | ✅                    | ❌                     | ✅ Required          |
+| Cursor         | ✅                    | ✅                     | ⚠️ Optional          |
+| Windsurf       | ✅                    | ⚠️ Check docs          | ⚠️ Optional          |
+| Cline          | ❌                    | ✅                     | ❌ Not needed        |
+| Zed            | ✅                    | ⚠️ Varies              | ⚠️ Optional          |
+| VS Code        | ✅                    | ✅                     | Depends on extension |
 
 ### IDE Config Paths
 
 **GitHub Copilot**:
+
 - Windows: `%USERPROFILE%\.config\github-copilot\mcp\servers.json`
 - Linux/Mac: `~/.config/github-copilot/mcp/servers.json`
 
 **Cursor**:
+
 - Windows: `%APPDATA%\Cursor\User\globalStorage\mcp\servers.json`
 - Mac: `~/Library/Application Support/Cursor/User/globalStorage/mcp/servers.json`
 - Linux: `~/.config/Cursor/User/globalStorage/mcp/servers.json`
 
 **Windsurf**:
+
 - Windows: `%APPDATA%\Windsurf\mcp\servers.json`
 - Mac: `~/Library/Application Support/Windsurf/mcp/servers.json`
 - Linux: `~/.config/Windsurf/mcp/servers.json`
@@ -189,11 +200,13 @@ See `.mcp/IDE-CONFIG-PATHS.md` for complete reference.
 ### Quick Setup
 
 **Windows**:
+
 ```powershell
 task mcp:setup:win
 ```
 
 **Linux/Mac**:
+
 ```bash
 task mcp:setup:unix
 ```
@@ -201,11 +214,13 @@ task mcp:setup:unix
 ### Manual Setup
 
 1. **Detect IDEs**:
+
    ```bash
    task mcp:detect-ides
    ```
 
 2. **Install Launcher**:
+
    ```bash
    task mcp:install-launcher:win  # Windows
    task mcp:install-launcher:unix # Linux/Mac
@@ -218,6 +233,7 @@ task mcp:setup:unix
 ### Adding New MCP Servers
 
 1. Copy template:
+
    ```bash
    cp .mcp/servers/_template.json .mcp/servers/my-server.json
    ```
@@ -245,16 +261,19 @@ task mcp:setup:unix
 ## Testing
 
 **Test IDE Detection**:
+
 ```bash
 task mcp:detect-ides
 ```
 
 **Test Launcher**:
+
 ```bash
 task mcp:test-launcher
 ```
 
 **Manual Test**:
+
 ```bash
 python ~/.local/mcp-launcher/launcher.py github
 ```

@@ -67,46 +67,69 @@ dotnet/
 dotnet/
 ├── app-essential/                                  # Application framework tier
 │   ├── core/
-│   │   ├── PigeonPea.Contracts/                    # Plugin, DI, Services contracts
-│   │   └── PigeonPea.PluginSystem/                 # Plugin loader + registry + EventBus
+│   │   ├── src/
+│   │   │   ├── PigeonPea.Contracts/                # Plugin, DI, Services contracts
+│   │   │   └── PigeonPea.PluginSystem/             # Plugin loader + registry + EventBus
+│   │   └── tests/
+│   │       └── PigeonPea.Contracts.Tests/          # (Future)
 │   │
 │   └── plugins/
-│       ├── PigeonPea.Plugins.Analytics/            # (Future)
-│       ├── PigeonPea.Plugins.Telemetry/            # (Future)
-│       └── PigeonPea.Plugins.Diagnostics/          # (Future)
+│       ├── src/
+│       │   ├── PigeonPea.Plugins.Analytics/        # (Future)
+│       │   ├── PigeonPea.Plugins.Telemetry/        # (Future)
+│       │   └── PigeonPea.Plugins.Diagnostics/      # (Future)
+│       └── tests/
+│           └── PigeonPea.Plugins.Diagnostics.Tests/# (Future)
 │
 ├── game-essential/                                 # Game framework tier
 │   ├── core/
-│   │   ├── PigeonPea.Game.Contracts/               # Game events, services, components
-│   │   ├── PigeonPea.Shared/                       # Core game logic (ECS + GoRogue)
-│   │   └── PigeonPea.Shared.Tests/                 # Unit tests
+│   │   ├── src/
+│   │   │   ├── PigeonPea.Game.Contracts/           # Game events, services, components
+│   │   │   └── PigeonPea.Shared/                   # Core game logic (ECS + GoRogue)
+│   │   └── tests/
+│   │       └── PigeonPea.Shared.Tests/             # Unit tests
 │   │
 │   └── plugins/
-│       ├── PigeonPea.Plugins.AI/                   # (Future)
-│       ├── PigeonPea.Plugins.Inventory/            # (Future)
-│       ├── PigeonPea.Plugins.Combat/               # (Future)
-│       └── PigeonPea.Plugins.Quest/                # (Future)
+│       ├── src/
+│       │   ├── PigeonPea.Plugins.AI/               # (Future)
+│       │   ├── PigeonPea.Plugins.Inventory/        # (Future)
+│       │   ├── PigeonPea.Plugins.Combat/           # (Future)
+│       │   └── PigeonPea.Plugins.Quest/            # (Future)
+│       └── tests/
+│           └── PigeonPea.Plugins.AI.Tests/         # (Future)
 │
 ├── windows-app/                                    # Windows application
 │   ├── core/
-│   │   └── PigeonPea.Windows/                      # Main Windows project
+│   │   ├── src/
+│   │   │   └── PigeonPea.Windows/                  # Main Windows project
+│   │   └── tests/
+│   │       └── PigeonPea.Windows.Tests/            # Windows app tests
 │   │
 │   ├── plugins/
-│   │   ├── PigeonPea.Plugins.Rendering.SkiaSharp/  # (Future)
-│   │   ├── PigeonPea.Plugins.Rendering.DirectX/    # (Future)
-│   │   └── PigeonPea.Plugins.Rendering.Vulkan/     # (Future)
+│   │   ├── src/
+│   │   │   ├── PigeonPea.Plugins.Rendering.SkiaSharp/  # (Future)
+│   │   │   ├── PigeonPea.Plugins.Rendering.DirectX/    # (Future)
+│   │   │   └── PigeonPea.Plugins.Rendering.Vulkan/     # (Future)
+│   │   └── tests/
+│   │       └── PigeonPea.Plugins.Rendering.SkiaSharp.Tests/ # (Future)
 │   │
 │   └── configs/
 │       └── plugin-manifest.json                    # (Future)
 │
 ├── console-app/                                    # Console application
 │   ├── core/
-│   │   └── PigeonPea.Console/                      # Main Console project
+│   │   ├── src/
+│   │   │   └── PigeonPea.Console/                  # Main Console project
+│   │   └── tests/
+│   │       └── PigeonPea.Console.Tests/            # Console app tests
 │   │
 │   ├── plugins/
-│   │   ├── PigeonPea.Plugins.Rendering.Terminal.Sixel/  # (Future)
-│   │   ├── PigeonPea.Plugins.Rendering.Terminal.Kitty/  # (Future)
-│   │   └── PigeonPea.Plugins.Rendering.Terminal.ANSI/   # (Future)
+│   │   ├── src/
+│   │   │   ├── PigeonPea.Plugins.Rendering.Terminal.Sixel/  # (Future)
+│   │   │   ├── PigeonPea.Plugins.Rendering.Terminal.Kitty/  # (Future)
+│   │   │   └── PigeonPea.Plugins.Rendering.Terminal.ANSI/   # Existing
+│   │   └── tests/
+│   │       └── PigeonPea.Plugins.Rendering.Terminal.ANSI.Tests/ # (Future)
 │   │
 │   └── configs/
 │       └── plugin-manifest.json                    # (Future)
