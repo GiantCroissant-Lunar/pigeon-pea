@@ -32,7 +32,7 @@ static class GameEntrypoint
     static string EnsureRuntimeLogsDirectory()
     {
         var baseDir = AppContext.BaseDirectory;
-        var dir = Path.Combine(baseDir, "runtime-logs");
+        var dir = Path.Combine(baseDir, "logs");
         Directory.CreateDirectory(dir);
         return dir;
     }
@@ -58,6 +58,12 @@ static class GameEntrypoint
             Description = "Enable debug mode"
         };
 
+        var dungeonGenOption = new Option<string>("--dungeon-gen")
+        {
+            Description = "Dungeon generator to use (basic, modern-edgar)",
+            DefaultValueFactory = _ => "modern-edgar"
+        };
+
         var widthOption = new Option<int?>("--width")
         {
             Description = "Window width in characters"
@@ -73,6 +79,7 @@ static class GameEntrypoint
         rootCommand.Add(debugOption);
         rootCommand.Add(widthOption);
         rootCommand.Add(heightOption);
+        rootCommand.Add(dungeonGenOption);
 
         rootCommand.SetAction((parseResult) =>
         {
@@ -80,28 +87,29 @@ static class GameEntrypoint
             var debug = parseResult.GetValue(debugOption);
             var width = parseResult.GetValue(widthOption);
             var height = parseResult.GetValue(heightOption);
+            var dungeonGen = parseResult.GetValue(dungeonGenOption);
 
-            RunGame(renderer!, debug, width, height);
+            RunGame(renderer!, debug, width, height, dungeonGen!);
         });
 
         return rootCommand.Parse(args).Invoke();
     }
 
-    static void RunGame(string renderer, bool debug, int? width, int? height)
+    static void RunGame(string renderer, bool debug, int? width, int? height, string dungeonGen)
     {
         RuntimeLog($"RunGame renderer={renderer}, debug={debug}, width={width}, height={height}");
 
         // HUD mode: use plugin-based HUD via IGameHud
         if (renderer.Equals("hud", StringComparison.OrdinalIgnoreCase))
         {
-            RunGameHudWithPlugins(debug, width, height);
+            RunGameHudWithPlugins(debug, width, height, dungeonGen);
             return;
         }
 
         // Use plugin-based renderer if requested
         if (renderer.ToLowerInvariant() == "plugin")
         {
-            RunGameWithPlugins(debug, width, height);
+            RunGameWithPlugins(debug, width, height, dungeonGen);
             return;
         }
 
@@ -162,12 +170,18 @@ static class GameEntrypoint
         }
     }
 
-    static void RunGameWithPlugins(bool debug, int? width, int? height)
+    static void RunGameWithPlugins(bool debug, int? width, int? height, string dungeonGen)
     {
         RuntimeLog($"RunGameWithPlugins debug={debug}, width={width}, height={height}");
 
         // Build host with plugin system
         var builder = Host.CreateApplicationBuilder();
+
+        var appSettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+        if (File.Exists(appSettingsPath))
+        {
+            builder.Configuration.AddJsonFile(appSettingsPath, optional: false, reloadOnChange: false);
+        }
 
         // Configure logging to use Serilog (configured at the entrypoint)
         builder.Logging.ClearProviders();
@@ -205,8 +219,14 @@ static class GameEntrypoint
                     System.Console.WriteLine($"Inventory service loaded: {inventoryService.GetType().FullName}");
                     logger.LogInformation("Inventory service loaded: {InventoryServiceType}", inventoryService.GetType().FullName);
 
-                    // Create a real game world and ensure the player has an InventoryComponent
-                    var gameWorld = new GameWorld(width: 80, height: 50, eventBus: null, inventoryService: inventoryService);
+                    // Select dungeon generator based on CLI/config and create a real game world.
+                    var selectedGenerator = DungeonGeneratorSelector.Create(dungeonGen);
+                    logger.LogInformation("Selected dungeon generator: {DungeonGenerator}", selectedGenerator.GetType().FullName);
+
+                    var worldWidth = width ?? 80;
+                    var worldHeight = height ?? 50;
+
+                    var gameWorld = new GameWorld(width: worldWidth, height: worldHeight, eventBus: null, inventoryService: inventoryService, dungeonGenerator: selectedGenerator);
                     gameWorld.EnsurePlayerInventory(maxSlots: 8, maxWeight: 5f);
                     var player = gameWorld.PlayerEntity;
 
@@ -344,7 +364,7 @@ static class GameEntrypoint
         }
     }
 
-    static void RunGameHudWithPlugins(bool debug, int? width, int? height)
+    static void RunGameHudWithPlugins(bool debug, int? width, int? height, string dungeonGen)
     {
         RuntimeLog($"RunGameHudWithPlugins debug={debug}, width={width}, height={height}");
 

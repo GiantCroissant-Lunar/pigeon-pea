@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <!-- Copy plugin.json to output directory -->
-    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <!-- Post-build: Copy plugin to console app's plugins directory -->

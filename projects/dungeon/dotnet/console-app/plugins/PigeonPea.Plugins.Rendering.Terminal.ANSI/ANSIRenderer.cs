@@ -2,7 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Game.Contracts;
+using PigeonPea.Game.Contracts.Models;
 using PigeonPea.Game.Contracts.Rendering;
 
 namespace PigeonPea.Plugins.Rendering.Terminal.ANSI;

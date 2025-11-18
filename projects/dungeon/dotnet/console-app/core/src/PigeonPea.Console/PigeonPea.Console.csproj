@@ -19,6 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Serilog" />
     <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Sinks.File" />
     <PackageReference Include="Serilog.Extensions.Hosting" />
     <PackageReference Include="Serilog.Extensions.Logging" />
     <PackageReference Include="Scrutor" />
@@ -59,8 +60,14 @@
 
     <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Hud.TerminalGui\PigeonPea.Plugins.Hud.TerminalGui.csproj" PrivateAssets="all" />
 
+    <!-- ANSI terminal renderer plugin (build-time only; runtime via plugin system) -->
+    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" PrivateAssets="all" />
+
     <!-- Game-level inventory ECS components for testing inventory service calls -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Items\PigeonPea.Game.Items.csproj" />
+
+    <!-- Dungeon generation core (IDungeonGenerator, Basic/ModernEdgar implementations) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
