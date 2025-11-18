@@ -45,6 +45,14 @@ public static class ServiceCollectionExtensions
         // Plugin loader
         services.AddSingleton<PluginLoader>();
 
+        // Profile-specific loader abstraction (default .NET implementation)
+        services.AddSingleton<IPluginProfileLoader>(sp =>
+        {
+            var loader = sp.GetRequiredService<PluginLoader>();
+            var host = sp.GetRequiredService<IPluginHost>();
+            return new DotNetPluginProfileLoader(loader, host.Profile);
+        });
+
         // Background loader hosted service
         services.AddHostedService<PluginLoaderHostedService>();
 

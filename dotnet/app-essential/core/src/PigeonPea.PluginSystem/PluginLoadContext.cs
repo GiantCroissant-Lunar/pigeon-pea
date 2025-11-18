@@ -18,11 +18,17 @@ public class PluginLoadContext : AssemblyLoadContext
 
     protected override Assembly? Load(AssemblyName assemblyName)
     {
-        // Important: ensure shared contracts resolve from Default ALC
+        // Important: ensure shared contracts and core game libraries resolve from Default ALC
+        // so that types like Arch.Core.Entity and inventory components are identical
+        // between host and plugins.
         if (assemblyName.Name == "PigeonPea.Contracts" ||
-            assemblyName.Name == "PigeonPea.Game.Contracts")
+            assemblyName.Name == "PigeonPea.Game.Contracts" ||
+            assemblyName.Name == "PigeonPea.Shared" ||
+            assemblyName.Name == "PigeonPea.Shared.Inventory" ||
+            assemblyName.Name == "PigeonPea.Game.Inventory" ||
+            assemblyName.Name == "Arch")
         {
-            return null; // use Default ALC binding for contracts
+            return null; // use Default ALC binding for shared assemblies
         }
 
         var path = _resolver.ResolveAssemblyToPath(assemblyName);

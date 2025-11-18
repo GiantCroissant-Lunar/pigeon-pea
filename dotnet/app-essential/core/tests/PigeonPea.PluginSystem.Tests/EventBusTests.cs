@@ -18,7 +18,7 @@ public class EventBusTests
         bus.Subscribe<string>(s => { c1++; return Task.CompletedTask; });
         bus.Subscribe<string>(s => { c2++; return Task.CompletedTask; });
 
-        await bus.PublishAsync("hello").ConfigureAwait(false);
+        await bus.PublishAsync("hello");
 
         c1.Should().Be(1);
         c2.Should().Be(1);
@@ -46,8 +46,8 @@ public class EventBusTests
             tcs.SetResult(true);
         });
 
-        await bus.PublishAsync("go").ConfigureAwait(false);
-        await tcs.Task.ConfigureAwait(false); // ensure handler ran
+        await bus.PublishAsync("go");
+        await tcs.Task; // ensure handler ran
         observed.Should().BeTrue();
     }
 
@@ -93,7 +93,7 @@ public class EventBusTests
             tasks.Add(bus.PublishAsync("tick"));
         }
 
-        await Task.WhenAll(tasks).ConfigureAwait(false);
+        await Task.WhenAll(tasks);
         count.Should().Be(iterations * 2);
     }
 }

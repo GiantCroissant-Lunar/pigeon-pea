@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace PigeonPea.PluginSystem;
 
 /// <summary>

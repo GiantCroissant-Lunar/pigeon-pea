@@ -1,6 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,28 +9,21 @@ namespace PigeonPea.PluginSystem;
 public class PluginLoaderHostedService : IHostedService
 {
     private readonly ILogger<PluginLoaderHostedService> _logger;
-    private readonly PluginLoader _loader;
-    private readonly IConfiguration _configuration;
-    private readonly Contracts.Plugin.IPluginHost _host;
+    private readonly IPluginProfileLoader _profileLoader;
 
     public PluginLoaderHostedService(
         ILogger<PluginLoaderHostedService> logger,
-        PluginLoader loader,
-        IConfiguration configuration,
-        Contracts.Plugin.IPluginHost host)
+        IPluginProfileLoader profileLoader)
     {
         _logger = logger;
-        _loader = loader;
-        _configuration = configuration;
-        _host = host;
+        _profileLoader = profileLoader;
     }
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        var profile = _configuration["PluginSystem:Profile"] ?? _host.Profile;
-        var paths = _loader.GetConfiguredPluginPaths();
+        var profile = _profileLoader.Profile;
         _logger.LogInformation("Starting plugin discovery for profile {Profile}...", profile);
-        var count = await _loader.DiscoverAndLoadAsync(paths, profile, cancellationToken).ConfigureAwait(false);
+        var count = await _profileLoader.LoadAsync(cancellationToken).ConfigureAwait(false);
         _logger.LogInformation("Plugin discovery complete. Loaded {Count} plugins.", count);
     }
 
