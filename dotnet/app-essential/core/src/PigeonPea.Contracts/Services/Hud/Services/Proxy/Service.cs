@@ -1,4 +1,3 @@
-using System;
 using PigeonPea.Contracts.Hud.Services;
 using PigeonPea.Contracts.Plugin;
 using PigeonPea.Contracts.Plugin.Attributes;

@@ -4,6 +4,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>$(NoWarn);CA1716;CA1711;CA1814</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />

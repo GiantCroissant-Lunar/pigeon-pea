@@ -30,6 +30,7 @@ public static class BraillePattern
 
     public static char FromDots(params bool[] dots)
     {
+        System.ArgumentNullException.ThrowIfNull(dots);
         byte pattern = 0;
         for (int i = 0; i < Math.Min(dots.Length, 8); i++)
             if (dots[i]) pattern |= DotMasks[i];

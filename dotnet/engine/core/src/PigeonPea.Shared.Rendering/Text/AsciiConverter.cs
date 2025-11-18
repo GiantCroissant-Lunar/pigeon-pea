@@ -4,6 +4,7 @@ public static class AsciiConverter
 {
     public static string[] Convert(byte[] rgba, int width, int height)
     {
+        System.ArgumentNullException.ThrowIfNull(rgba);
         // Placeholder: simple luminance to ASCII ramp conversion
         const string ramp = " .:-=+*#%@";
         var rows = new string[height];

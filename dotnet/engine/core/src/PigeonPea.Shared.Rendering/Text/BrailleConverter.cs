@@ -7,6 +7,7 @@ public static class BrailleConverter
     /// </summary>
     public static char[,] Convert(byte[] rgba, int width, int height, int brightnessThreshold = 128)
     {
+        System.ArgumentNullException.ThrowIfNull(rgba);
         int cellWidth = (width + 1) / BraillePattern.DotsX;
         int cellHeight = (height + 3) / BraillePattern.DotsY;
         var result = new char[cellWidth, cellHeight];

@@ -2,7 +2,7 @@ using SadRogue.Primitives;
 
 namespace PigeonPea.Shared.Rendering;
 
-public struct Tile
+public struct Tile : System.IEquatable<Tile>
 {
     public char Glyph { get; set; }
     public Color Foreground { get; set; }
@@ -31,14 +31,24 @@ public struct Tile
         Flags = TileFlags.None;
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is Tile other && Equals(other);
+    }
+
+    public bool Equals(Tile other)
+    {
+        return Glyph == other.Glyph
+               && Foreground.Equals(other.Foreground)
+               && Background.Equals(other.Background)
+               && SpriteId == other.SpriteId
+               && SpriteFrame == other.SpriteFrame
+               && Flags == other.Flags;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return System.HashCode.Combine(Glyph, Foreground, Background, SpriteId, SpriteFrame, Flags);
     }
 
     public static bool operator ==(Tile left, Tile right)
@@ -48,6 +58,6 @@ public struct Tile
 
     public static bool operator !=(Tile left, Tile right)
     {
-        return !(left == right);
+        return !left.Equals(right);
     }
 }

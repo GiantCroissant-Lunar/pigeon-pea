@@ -16,13 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <Target Name="CopyPluginToConsoleApp" AfterTargets="Build">
     <PropertyGroup>
       <PluginOutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)\</PluginOutputPath>
-      <PluginTargetDir>$(MSBuildThisFileDirectory)..\..\..\..\console-app\core\src\PigeonPea.Console\bin\$(Configuration)\$(TargetFramework)\plugins\$(AssemblyName)\</PluginTargetDir>
+      <PluginTargetDir>$(MSBuildThisFileDirectory)..\..\..\..\..\projects\dungeon\dotnet\console-app\core\src\PigeonPea.Console\bin\$(Configuration)\$(TargetFramework)\plugins\$(AssemblyName)\</PluginTargetDir>
     </PropertyGroup>
     <ItemGroup>
       <PluginFiles Include="$(PluginOutputPath)**\*.*" />

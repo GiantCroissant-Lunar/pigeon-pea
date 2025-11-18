@@ -5,7 +5,7 @@ namespace PigeonPea.Shared.Rendering;
 /// <summary>
 /// Defines the camera viewport for rendering.
 /// </summary>
-public struct Viewport
+public struct Viewport : System.IEquatable<Viewport>
 {
     public int X { get; set; }
     public int Y { get; set; }
@@ -25,14 +25,22 @@ public struct Viewport
     public bool Contains(int x, int y)
         => x >= X && x < X + Width && y >= Y && y < Y + Height;
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is Viewport other && Equals(other);
+    }
+
+    public bool Equals(Viewport other)
+    {
+        return X == other.X
+               && Y == other.Y
+               && Width == other.Width
+               && Height == other.Height;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return System.HashCode.Combine(X, Y, Width, Height);
     }
 
     public static bool operator ==(Viewport left, Viewport right)
@@ -42,6 +50,6 @@ public struct Viewport
 
     public static bool operator !=(Viewport left, Viewport right)
     {
-        return !(left == right);
+        return !left.Equals(right);
     }
 }

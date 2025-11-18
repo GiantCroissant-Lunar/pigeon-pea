@@ -1,5 +1,3 @@
-using System;
-
 namespace PigeonPea.Contracts.Plugin.Attributes;
 
 /// <summary>
