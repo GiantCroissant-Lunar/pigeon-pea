@@ -31,9 +31,9 @@ The second argument ("github") specifies which server config to load from
 
 import json
 import os
+import re
 import sys
 from pathlib import Path
-import re
 
 
 def expand_env_vars(value, project_root):

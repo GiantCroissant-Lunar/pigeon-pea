@@ -20,9 +20,9 @@ Usage:
     --verbose   Show detailed detection info
 """
 
-import sys
 import json
 import platform
+import sys
 from pathlib import Path
 from typing import Dict, Optional, Tuple
 
