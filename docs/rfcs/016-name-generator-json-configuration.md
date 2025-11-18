@@ -14,6 +14,7 @@ related: ['SPEC-2025-00014']
 # RFC 016: Name Generator JSON Configuration System
 
 ## Status
+
 - **State:** Draft
 - **Priority:** ⭐⭐⭐⭐ Critical
 - **Estimated Effort:** 1 week
@@ -33,10 +34,12 @@ The current FantasyNameGenerator has **hardcoded language templates** in C# code
 ### Current State
 
 **6 Hardcoded Languages:**
+
 - Germanic, Romance, Slavic (real-world inspired)
 - Elvish, Dwarvish, Orcish (fantasy)
 
 **Missing Language Families:**
+
 - East Asian (Japanese, Chinese, Korean)
 - Middle Eastern (Arabic, Persian, Turkish)
 - African languages
@@ -120,7 +123,10 @@ src/FantasyNameGenerator/
       "type": "array",
       "items": { "type": "string" },
       "description": "Categorization tags",
-      "examples": [["real-world", "european"], ["fantasy", "tolkien-inspired"]]
+      "examples": [
+        ["real-world", "european"],
+        ["fantasy", "tolkien-inspired"]
+      ]
     },
     "phonology": {
       "type": "object",
@@ -351,6 +357,7 @@ src/FantasyNameGenerator/
 ### Phase 1: JSON Infrastructure (Days 1-2)
 
 #### Step 1.1: Create JSON Models
+
 ```csharp
 namespace FantasyNameGenerator.Configuration;
 
@@ -402,6 +409,7 @@ public class PhonotacticsConfig
 ```
 
 #### Step 1.2: Create JSON Loader
+
 ```csharp
 namespace FantasyNameGenerator.Configuration;
 
@@ -487,6 +495,7 @@ public class LanguageLoader
 ```
 
 #### Step 1.3: Create Converter
+
 ```csharp
 namespace FantasyNameGenerator.Configuration;
 
@@ -537,6 +546,7 @@ public static class LanguageTemplateConverter
 ### Phase 2: Convert Existing Templates to JSON (Day 3)
 
 #### Example: germanic.json
+
 ```json
 {
   "name": "germanic",
@@ -576,7 +586,26 @@ public static class LanguageTemplateConverter
   "phonotactics": {
     "structures": ["CV", "CVC", "CCVC", "CVC?"],
     "forbiddenSequences": ["θθ", "ðð", "ŋŋ", "ww"],
-    "allowedOnsets": ["bl", "br", "dr", "fl", "fr", "gl", "gr", "kl", "kr", "pl", "pr", "sl", "sp", "st", "sw", "tr", "tw", "ʃr"],
+    "allowedOnsets": [
+      "bl",
+      "br",
+      "dr",
+      "fl",
+      "fr",
+      "gl",
+      "gr",
+      "kl",
+      "kr",
+      "pl",
+      "pr",
+      "sl",
+      "sp",
+      "st",
+      "sw",
+      "tr",
+      "tw",
+      "ʃr"
+    ],
     "allowedCodas": ["ft", "ks", "kt", "ld", "lt", "mp", "nd", "nt", "nk", "pt", "sk", "sp", "st"],
     "maxConsonantCluster": 3,
     "maxVowelCluster": 2,
@@ -612,6 +641,7 @@ public static class LanguageTemplateConverter
 ### Phase 3: Add New Language Templates (Days 4-5)
 
 Create JSON files for missing language families:
+
 - `japanese.json` (CJK)
 - `chinese.json` (CJK)
 - `korean.json` (CJK)
@@ -622,6 +652,7 @@ Create JSON files for missing language families:
 ### Phase 4: Update Loading System (Days 6-7)
 
 #### Step 4.1: Update PhonologyTemplates
+
 ```csharp
 // OLD: Hardcoded
 public static class PhonologyTemplates
@@ -688,6 +719,7 @@ public static class PhonologyTemplates
 ```
 
 #### Step 4.2: Add User Template Support
+
 ```csharp
 public class NameGeneratorOptions
 {
@@ -741,6 +773,7 @@ public class NameGenerator
 ### Backward Compatibility
 
 All existing code continues to work:
+
 ```csharp
 // OLD CODE (still works)
 var phonology = PhonologyTemplates.Germanic;
@@ -762,6 +795,7 @@ var phonology = LanguageTemplateConverter.ToPhonology(template);
 ### Creating Custom Language Template
 
 Create `my-language.json`:
+
 ```json
 {
   "name": "my-language",
@@ -780,6 +814,7 @@ Create `my-language.json`:
 ```
 
 Load it:
+
 ```csharp
 var options = new NameGeneratorOptions
 {

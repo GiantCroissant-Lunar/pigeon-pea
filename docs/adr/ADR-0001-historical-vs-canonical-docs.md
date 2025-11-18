@@ -27,21 +27,19 @@ We distinguish between **canonical** documentation (the source of truth) and **h
 1. **Canonical structure documentation**
 
    The following are considered canonical for the current .NET project layout and should be kept in sync with the codebase:
-
    - `docs/rfcs/005-project-structure-reorganization.md` (RFC-005)
    - `dotnet/README.md` (developer-facing structure and run commands)
-   - Planning/checklist docs that describe *desired* or *current* state, such as `docs/rfcs/IMPLEMENTATION_PLAN.md` and `docs/rfcs/issues/issue-001-migrate-structure.md`.
+   - Planning/checklist docs that describe _desired_ or _current_ state, such as `docs/rfcs/IMPLEMENTATION_PLAN.md` and `docs/rfcs/issues/issue-001-migrate-structure.md`.
 
    When the structure changes (e.g. moving projects into `core/src` and `core/tests`), these docs should be updated to reflect the new reality.
 
 2. **Historical review documentation**
 
    The following are treated as historical artifacts that describe what was true at the time of a specific PR or review:
-
    - `docs/architecture/RFC_IMPLEMENTATION_REVIEW.md`
    - `docs/dev-notes/PR_DESCRIPTION.md`
 
-   These documents are *not* required to track every subsequent structural change. They may refer to paths like `game-essential/core/PigeonPea.Shared/` and `console-app/core/PigeonPea.Console/` even if the current codebase uses `core/src` and `core/tests`.
+   These documents are _not_ required to track every subsequent structural change. They may refer to paths like `game-essential/core/PigeonPea.Shared/` and `console-app/core/PigeonPea.Console/` even if the current codebase uses `core/src` and `core/tests`.
 
    If needed, a brief note can be added to clarify that the structure has evolved since the review, but the detailed content remains a snapshot.
 

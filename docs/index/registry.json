@@ -22,18 +22,10 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": [
-        "documentation",
-        "schema",
-        "front-matter",
-        "reference",
-        "validation"
-      ],
+      "tags": ["documentation", "schema", "front-matter", "reference", "validation"],
       "summary": "Reference documentation for YAML front-matter schema required for all documentation files (except inbox drafts)",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00012"
-      ],
+      "related": ["RFC-2025-00012"],
       "simhash": "9443317092299256532"
     },
     {
@@ -45,19 +37,10 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": [
-        "fonts",
-        "glyphs",
-        "mapping",
-        "code-examples",
-        "pua"
-      ],
+      "tags": ["fonts", "glyphs", "mapping", "code-examples", "pua"],
       "summary": "Code examples for mapping angles to PUA glyph codepoints (36 angle buckets starting at U+E000)",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00020",
-        "SPEC-2025-00001"
-      ],
+      "related": ["RFC-2025-00020", "SPEC-2025-00001"],
       "simhash": "16359906183416317459"
     },
     {
@@ -69,19 +52,10 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": [
-        "fonts",
-        "svg",
-        "specification",
-        "pua",
-        "glyphs"
-      ],
+      "tags": ["fonts", "svg", "specification", "pua", "glyphs"],
       "summary": "SVG specification for 36 angle glyphs to be imported into font PUA (Private Use Area) for terminal rendering",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00020",
-        "SPEC-2025-00002"
-      ],
+      "related": ["RFC-2025-00020", "SPEC-2025-00002"],
       "simhash": "11965025844290637544"
     },
     {
@@ -93,16 +67,9 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": [
-        "agent-infrastructure",
-        "rfc-004",
-        "github-issues",
-        "implementation"
-      ],
+      "tags": ["agent-infrastructure", "rfc-004", "github-issues", "implementation"],
       "summary": "Breakdown of RFC-004 into actionable GitHub issues suitable for automated coding agents",
-      "related": [
-        "RFC-2025-00004"
-      ]
+      "related": ["RFC-2025-00004"]
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\CODE_REVIEW_AGENT_INFRASTRUCTURE.md",
@@ -113,17 +80,9 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-11",
-      "tags": [
-        "agent-infrastructure",
-        "rfc-004",
-        "code-review",
-        "quality-assurance"
-      ],
+      "tags": ["agent-infrastructure", "rfc-004", "code-review", "quality-assurance"],
       "summary": "Review of .agent infrastructure implementation against RFC-004 specifications",
-      "related": [
-        "RFC-2025-00004",
-        "PLAN-2025-00008"
-      ],
+      "related": ["RFC-2025-00004", "PLAN-2025-00008"],
       "simhash": "9389916149494697676"
     },
     {
@@ -135,18 +94,9 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": [
-        "platform-enhancements",
-        "windows",
-        "console",
-        "rendering",
-        "roadmap"
-      ],
+      "tags": ["platform-enhancements", "windows", "console", "rendering", "roadmap"],
       "summary": "Platform-specific enhancements for Windows and Console after completing core game logic features",
-      "related": [
-        "RFC-2025-00001",
-        "RFC-2025-00020"
-      ],
+      "related": ["RFC-2025-00001", "RFC-2025-00020"],
       "simhash": "9821453581293671077"
     },
     {
@@ -158,12 +108,7 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": [
-        "github-issues",
-        "implementation",
-        "rfcs",
-        "task-breakdown"
-      ],
+      "tags": ["github-issues", "implementation", "rfcs", "task-breakdown"],
       "summary": "Comprehensive breakdown of all RFCs into 43 actionable GitHub issues for automated coding agents",
       "related": [
         "RFC-2025-00001",
@@ -182,16 +127,9 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": [
-        "github",
-        "labels",
-        "project-management",
-        "organization"
-      ],
+      "tags": ["github", "labels", "project-management", "organization"],
       "summary": "Scalable label strategy for organizing GitHub issues and pull requests in pigeon-pea project",
-      "related": [
-        "PLAN-2025-00011"
-      ],
+      "related": ["PLAN-2025-00011"],
       "simhash": "12185664609912828563"
     },
     {
@@ -203,17 +141,9 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": [
-        "rfc-004",
-        "agent-infrastructure",
-        "execution-order",
-        "parallelization"
-      ],
+      "tags": ["rfc-004", "agent-infrastructure", "execution-order", "parallelization"],
       "summary": "Execution order for implementing RFC-004 issues showing parallel vs serial dependencies",
-      "related": [
-        "RFC-2025-00004",
-        "PLAN-2025-00008"
-      ],
+      "related": ["RFC-2025-00004", "PLAN-2025-00008"],
       "simhash": "10037519603375856215"
     },
     {
@@ -225,18 +155,9 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": [
-        "rfc-004",
-        "self-review",
-        "quality-assurance",
-        "planning"
-      ],
+      "tags": ["rfc-004", "self-review", "quality-assurance", "planning"],
       "summary": "Evaluation of the quality and effectiveness of RFC-004 planning and GitHub issues breakdown",
-      "related": [
-        "RFC-2025-00004",
-        "PLAN-2025-00008",
-        "PLAN-2025-00011"
-      ],
+      "related": ["RFC-2025-00004", "PLAN-2025-00008", "PLAN-2025-00011"],
       "simhash": "14073379390798781644"
     },
     {
@@ -248,13 +169,7 @@
       "status": "draft",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": [
-        "rendering",
-        "architecture",
-        "graphics",
-        "terminal",
-        "skiasharp"
-      ],
+      "tags": ["rendering", "architecture", "graphics", "terminal", "skiasharp"],
       "summary": "Unified rendering architecture supporting both high-fidelity desktop graphics (Windows/SkiaSharp) and multi-tier terminal graphics (Console/Kitty/Sixel/Braille/ASCII) with a shared abstraction layer",
       "supersedes": [],
       "related": [],
@@ -269,19 +184,10 @@
       "status": "draft",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": [
-        "testing",
-        "verification",
-        "qa",
-        "visual-regression",
-        "automation"
-      ],
+      "tags": ["testing", "verification", "qa", "visual-regression", "automation"],
       "summary": "Comprehensive testing and verification strategies for both console and Windows applications, with special focus on visual regression testing and automated rendering verification",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00001",
-        "RFC-2025-00002"
-      ],
+      "related": ["RFC-2025-00001", "RFC-2025-00002"],
       "simhash": "598081441972036775"
     },
     {
@@ -293,18 +199,10 @@
       "status": "draft",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": [
-        "agents",
-        "infrastructure",
-        "automation",
-        "skills",
-        "sub-agents"
-      ],
+      "tags": ["agents", "infrastructure", "automation", "skills", "sub-agents"],
       "summary": "Enhance the .agent infrastructure with sub-agents, declarative skills, validation schemas, and coding-focused policies to enable autonomous GitHub Coding Agents to perform complex development tasks",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00012"
-      ],
+      "related": ["RFC-2025-00012"],
       "simhash": "9947553267058066364"
     },
     {
@@ -317,17 +215,10 @@
       "canonical": true,
       "created": "2025-11-10",
       "updated": "2025-11-13",
-      "tags": [
-        "project-structure",
-        "architecture",
-        "refactoring",
-        "plugins"
-      ],
+      "tags": ["project-structure", "architecture", "refactoring", "plugins"],
       "summary": "Reorganize the dotnet/ folder structure to support a plugin-based architecture with clear separation between application framework, game framework, and platform-specific applications",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00006"
-      ],
+      "related": ["RFC-2025-00006"],
       "simhash": "9801600627675993765"
     },
     {
@@ -340,18 +231,10 @@
       "canonical": true,
       "created": "2025-11-10",
       "updated": "2025-11-13",
-      "tags": [
-        "plugins",
-        "architecture",
-        "extensibility",
-        "alc",
-        "modularity"
-      ],
+      "tags": ["plugins", "architecture", "extensibility", "alc", "modularity"],
       "summary": "Plugin system for PigeonPea based on the hyacinth-bean-base architecture, enabling runtime plugin discovery, loading, and lifecycle management with Assembly Load Context (ALC) isolation",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00005"
-      ],
+      "related": ["RFC-2025-00005"],
       "simhash": "12160922924603098004"
     },
     {
@@ -363,18 +246,10 @@
       "status": "draft",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": [
-        "documentation",
-        "infrastructure",
-        "validation",
-        "registry",
-        "agent-tools"
-      ],
+      "tags": ["documentation", "infrastructure", "validation", "registry", "agent-tools"],
       "summary": "Structured documentation management system with validation, registry generation, and inbox workflow to enable autonomous agents to discover, create, and maintain high-quality documentation",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00004"
-      ],
+      "related": ["RFC-2025-00004"],
       "simhash": "14631400233584495252"
     },
     {
@@ -386,19 +261,10 @@
       "status": "draft",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": [
-        "fonts",
-        "cjk",
-        "pua",
-        "terminal",
-        "pipeline"
-      ],
+      "tags": ["fonts", "cjk", "pua", "terminal", "pipeline"],
       "summary": "Font pipeline to produce a unified, terminal-friendly CJK monospace font that embeds custom map glyphs (angled lines, junctions, terrain) in the Unicode Private Use Area (PUA)",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00021",
-        "RFC-2025-00022"
-      ],
+      "related": ["RFC-2025-00021", "RFC-2025-00022"],
       "simhash": "18117241011440702119"
     },
     {
@@ -410,19 +276,10 @@
       "status": "draft",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": [
-        "terminal",
-        "distribution",
-        "rio",
-        "bundle",
-        "deployment"
-      ],
+      "tags": ["terminal", "distribution", "rio", "bundle", "deployment"],
       "summary": "Ship a consistent terminal experience using Rio Terminal with the custom game font, covering development-time setup and guidelines for player bundles without redistributing proprietary binaries",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00020",
-        "RFC-2025-00022"
-      ],
+      "related": ["RFC-2025-00020", "RFC-2025-00022"],
       "simhash": "817193810909581845"
     },
     {
@@ -434,19 +291,10 @@
       "status": "draft",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": [
-        "ci-cd",
-        "fonts",
-        "automation",
-        "build",
-        "deployment"
-      ],
+      "tags": ["ci-cd", "fonts", "automation", "build", "deployment"],
       "summary": "CI jobs to build patched fonts, validate outputs, and publish versioned artifacts suitable for local development and downstream packaging with Taskfile/Nuke hooks",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00020",
-        "RFC-2025-00021"
-      ],
+      "related": ["RFC-2025-00020", "RFC-2025-00021"],
       "simhash": "598486222950418990"
     },
     {
@@ -458,24 +306,11 @@
       "status": "active",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": [
-        "planning",
-        "implementation",
-        "project-structure",
-        "plugins"
-      ],
+      "tags": ["planning", "implementation", "project-structure", "plugins"],
       "summary": "Implementation plan for restructuring the PigeonPea project and adding plugin system support, broken into 5 sequential issues",
       "supersedes": [],
-      "related": [
-        "RFC-2025-00005",
-        "RFC-2025-00006"
-      ],
+      "related": ["RFC-2025-00005", "RFC-2025-00006"],
       "simhash": "9823554688035786405"
-    },
-    {
-      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\mcp-project-launcher-system.md",
-      "sha256": "0b9822a504cc912a3ec788222ee99171d3050db3d65627e40eab6b05ae68fce1",
-      "title": "MCP Project Launcher System",
-      "doc_type": "guide",
-      "status": "draft",
-      "created": 
+    }
+  ]
+}

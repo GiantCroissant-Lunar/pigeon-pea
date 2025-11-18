@@ -180,15 +180,18 @@ dotnet/
 **Attributes** represent numeric stats (Health, Mana, Attack, Defense, etc.) with modifiable values.
 
 **Formula**: `Current = (Base + ΣAdditive) × ΠMultiplicative`
+
 - Latest `Override` modifier replaces the entire calculation
 
 **Key Types**:
+
 - `AttributeId`: String-based identifier (e.g., "Health", "Mana")
 - `ModifierOperation`: Add, Multiply, Override
 - `AttributeModifier`: Source tag, operation, magnitude
 - `AttributeSet`: Manages base values and active modifiers
 
 **Example**:
+
 ```csharp
 var health = new AttributeDefinition("Health", baseValue: 100f);
 var manaBoost = new AttributeModifier("Mana", ModifierOperation.Add, 50f);
@@ -206,18 +209,21 @@ float currentHealth = attributeSet.GetCurrentValue("Health"); // 100
 **Hierarchical tags** for categorization and matching (e.g., `"State.Movement.Stunned"`).
 
 **Key Features**:
+
 - Parent/child relationships: `"State.Movement"` is parent of `"State.Movement.Stunned"`
 - Ancestor matching: `HasTag("State.Movement")` matches entities with `"State.Movement.Stunned"`
 - Blocking tags: Abilities can be blocked by tags (e.g., `"State.Dead"` blocks all abilities)
 - Required tags: Abilities can require tags (e.g., `"State.Alive"` required)
 
 **Key Types**:
+
 - `GameplayTag`: Immutable tag with dotted path
 - `TagSet`: Collection with add/remove/contains/ancestor matching
 - `TagQuery`: Complex queries (HasAll, HasAny, HasNone)
 - `TagMatchType`: Exact, ExactOrAncestor, ExactOrDescendant
 
 **Example**:
+
 ```csharp
 var tagSet = new TagSet();
 tagSet.AddTag(new GameplayTag("State.Movement.Stunned"));
@@ -232,18 +238,21 @@ tagSet.HasTag(new GameplayTag("State.Combat")); // false
 **Effects** modify attributes and grant/remove tags for a duration.
 
 **Duration Policies**:
+
 - **Instant**: Apply once, then discard (damage, heal)
 - **Duration**: Persist for N seconds, then expire (buff, debuff)
 - **Infinite**: Persist until manually removed (passive aura)
 - **Periodic**: Tick every N seconds for Duration (damage over time, regen)
 
 **Key Types**:
+
 - `EffectDurationPolicy`: Enum (Instant, Duration, Infinite, Periodic)
 - `GameplayEffect`: Definition with modifiers, tags, duration
 - `ActiveEffect`: Runtime instance with remaining time, tick timer
 - `EffectModifier`: Attribute modifiers applied by effect
 
 **Example**:
+
 ```csharp
 // Poison effect: 5 damage every 1 second for 10 seconds
 var poisonEffect = new GameplayEffect
@@ -265,6 +274,7 @@ var poisonEffect = new GameplayEffect
 **Abilities** are player/enemy actions that apply effects with costs and cooldowns.
 
 **Key Properties**:
+
 - **Cost**: Attribute requirements (e.g., -10 Mana)
 - **Cooldown**: Time before ability can be used again
 - **Activation Tags**: Required tags (e.g., "State.Alive") and blocked tags (e.g., "State.Stunned")
@@ -272,6 +282,7 @@ var poisonEffect = new GameplayEffect
 - **Targeting**: Self, Enemy, Location, Direction
 
 **Key Types**:
+
 - `AbilityDefinition`: Blueprint for an ability
 - `AbilityCost`: List of attribute modifiers representing cost
 - `AbilityTargeting`: Targeting parameters (type, range, AOE radius)
@@ -279,6 +290,7 @@ var poisonEffect = new GameplayEffect
 - `IAbilityValidator`: Interface for custom validation logic
 
 **Example**:
+
 ```csharp
 var firebolt = new AbilityDefinition
 {
@@ -328,6 +340,7 @@ var firebolt = new AbilityDefinition
 ### Components
 
 **AbilitySystemComponent** - Main component holding ability state:
+
 ```csharp
 public struct AbilitySystemComponent
 {
@@ -339,6 +352,7 @@ public struct AbilitySystemComponent
 ```
 
 **ActiveEffectsComponent** - Tracks active gameplay effects:
+
 ```csharp
 public struct ActiveEffectsComponent
 {
@@ -347,6 +361,7 @@ public struct ActiveEffectsComponent
 ```
 
 **StatusEffectComponent** - Visual/gameplay status effects:
+
 ```csharp
 public struct StatusEffectComponent
 {
@@ -363,6 +378,7 @@ public class StatusEffect
 ```
 
 **CooldownComponent** - Simplified cooldown tracking (optional alternative):
+
 ```csharp
 public struct CooldownComponent
 {
@@ -379,6 +395,7 @@ public class CooldownState
 ### Systems
 
 **AbilityValidationSystem** - Validates ability execution:
+
 ```csharp
 public static class AbilityValidationSystem
 {
@@ -402,6 +419,7 @@ public static class AbilityValidationSystem
 ```
 
 **AbilityExecutionSystem** - Executes validated abilities:
+
 ```csharp
 public static class AbilityExecutionSystem
 {
@@ -424,6 +442,7 @@ public static class AbilityExecutionSystem
 ```
 
 **EffectTickSystem** - Updates active effects:
+
 ```csharp
 public static class EffectTickSystem
 {
@@ -468,6 +487,7 @@ public static class EffectTickSystem
 ```
 
 **CooldownSystem** - Decrements cooldowns:
+
 ```csharp
 public static class CooldownSystem
 {
@@ -578,6 +598,7 @@ public static class AbilityWorldExtensions
 #### Step 1.1: Create Project Structure
 
 **Execute these commands**:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib
 mkdir nexus-gas
@@ -1440,6 +1461,7 @@ public interface IAbilityValidator
 - [ ] No external dependencies (verify .csproj)
 
 **Verification Command**:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\nexus-gas
 dotnet build
@@ -1491,6 +1513,7 @@ mkdir Attributes Tags Effects Abilities
 ```
 
 Add to solution:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\nexus-gas
 dotnet sln add tests/NexusGas.Core.Tests/NexusGas.Core.Tests.csproj
@@ -2033,6 +2056,7 @@ public class AbilityCostTests
 - [ ] Code coverage ≥ 80%
 
 **Verification Command**:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\nexus-gas
 dotnet test
@@ -2287,6 +2311,7 @@ public record StatusEffectChangedEvent(
 ### Remaining Phases Summary
 
 **Phase 4: Systems Implementation** (Week 2-3)
+
 - AbilityValidationSystem
 - AbilityExecutionSystem
 - EffectTickSystem
@@ -2294,21 +2319,25 @@ public record StatusEffectChangedEvent(
 - StatusEffectSystem
 
 **Phase 5: GameWorld Integration** (Week 3)
+
 - AbilityWorldExtensions
 - DungeonWorldManagerExtensions
 - GameWorld.TryCastAbility() method
 - GameWorld.UpdateAbilities() loop
 
 **Phase 6: Skill Trees & Graphs** (Week 4)
+
 - AbilityGraph with ModernSatsuma
 - ComboChainFinder
 - SkillTreeValidator
 
 **Phase 7: Preset Abilities** (Week 5)
+
 - AbilityFactory
 - Firebolt, HealingTouch, StunningBlow
 
 **Phase 8: UI Integration** (Week 6)
+
 - Console app (Terminal.Gui)
 - Windows app (Avalonia)
 
@@ -2365,4 +2394,4 @@ dotnet sln PigeonPea.sln add game-essential\core\src\PigeonPea.Game.Abilities\Pi
 
 **End of RFC-019: Nexus-GAS Implementation Guide**
 
-*This document provides complete implementation instructions for Phase 1-3. Phases 4-8 will be implemented following the same patterns established here. Other agents should follow this guide step-by-step, creating files in the exact order specified, and running verification commands after each phase.*
+_This document provides complete implementation instructions for Phase 1-3. Phases 4-8 will be implemented following the same patterns established here. Other agents should follow this guide step-by-step, creating files in the exact order specified, and running verification commands after each phase._

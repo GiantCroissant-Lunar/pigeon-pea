@@ -30,7 +30,7 @@ We split rendering into two layers:
    - **Responsibility:**
      - Core rendering abstractions (`IRenderer`, `IRenderTarget`, `RendererCapabilities`).
      - Generic rendering data structures (`Tile`, `Viewport`, etc.).
-     - Shared utilities that do *not* depend on game/content-specific types.
+     - Shared utilities that do _not_ depend on game/content-specific types.
    - **Consumers:**
      - `PigeonPea.Shared` (game-essential shared logic).
      - `PigeonPea.Map.Rendering`, `PigeonPea.Dungeon.Rendering` (game-essential).
@@ -106,7 +106,7 @@ Additional decisions:
 
 - **More projects and references:**
   - The solution now has additional projects (`PigeonPea.Content.Rendering`) and more `ProjectReference` edges.
-  - Console and rendering tests must reference several assemblies (Shared, Shared.Rendering, Map.*, Dungeon.*, Content.Rendering).
+  - Console and rendering tests must reference several assemblies (Shared, Shared.Rendering, Map._, Dungeon._, Content.Rendering).
 
 - **Skipped tests during migration:**
   - A small set of console rendering tests are explicitly skipped while the new pipeline stabilizes.

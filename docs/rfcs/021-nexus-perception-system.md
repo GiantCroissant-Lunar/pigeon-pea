@@ -5,7 +5,18 @@ doc_type: 'rfc'
 status: 'active'
 canonical: true
 created: '2025-01-16'
-tags: ['ai', 'perception', 'sensors', 'fov', 'awareness', 'ecs', 'architecture', 'library', 'nexus-perception']
+tags:
+  [
+    'ai',
+    'perception',
+    'sensors',
+    'fov',
+    'awareness',
+    'ecs',
+    'architecture',
+    'library',
+    'nexus-perception',
+  ]
 summary: 'Comprehensive implementation guide for Nexus-Perception, a reusable agent perception and awareness system with visual/auditory sensing, knowledge management, and threat assessment for AI systems'
 supersedes: []
 related: ['RFC-2025-00020', 'RFC-2025-00019', 'RFC-2025-00005']
@@ -243,12 +254,14 @@ dotnet/
 **PerceptionData** is the complete snapshot of what an agent perceives.
 
 **Key Characteristics**:
+
 - Immutable snapshot (like WorldState in GOAP)
 - Aggregates all perception types
 - Timestamp for temporal queries
 - Used by AI systems for decision-making
 
 **Example**:
+
 ```csharp
 var perception = new PerceptionData
 {
@@ -283,18 +296,21 @@ var perception = new PerceptionData
 **Visual perception** uses Field of View (FOV) and Line of Sight (LOS).
 
 **Key Features**:
+
 - FOV based on view distance and obstacles
 - LOS checks for precise visibility
 - Remember last seen positions
 - Track entity properties (health, position, state)
 
 **Key Types**:
+
 - `VisualPerceptionData`: What the agent sees
 - `FieldOfViewData`: FOV tiles/entities
 - `PerceivedEntity`: Information about seen entity
 - `VisibilityCheck`: LOS validation
 
 **Example**:
+
 ```csharp
 var visual = new VisualPerceptionData
 {
@@ -322,18 +338,21 @@ var visual = new VisualPerceptionData
 **Auditory perception** detects sounds regardless of LOS.
 
 **Key Features**:
+
 - Sounds have type, position, range, volume
 - Different sounds travel different distances
 - No LOS required (can hear through walls)
 - Direction and distance estimation
 
 **Key Types**:
+
 - `AuditoryPerceptionData`: What the agent hears
 - `SoundEvent`: Individual sound with properties
 - `SoundType`: Categorization (footsteps, combat, speech, etc.)
 - `HearingRange`: Agent's hearing capabilities
 
 **Example**:
+
 ```csharp
 var auditory = new AuditoryPerceptionData
 {
@@ -367,18 +386,21 @@ var auditory = new AuditoryPerceptionData
 **Knowledge** is what the agent knows beyond immediate perception.
 
 **Key Features**:
+
 - Short-term memory (recent events, 5 minutes)
 - Long-term memory (persistent facts)
 - Last seen positions of entities
 - Shared knowledge (team communication)
 
 **Key Types**:
+
 - `KnowledgeData`: Agent's knowledge
 - `FactMemory`: Boolean facts about the world
 - `EventMemory`: Temporal event log
 - `MemoryEntry`: Individual memory record
 
 **Example**:
+
 ```csharp
 var knowledge = new KnowledgeData
 {
@@ -422,12 +444,14 @@ var knowledge = new KnowledgeData
 **Awareness** represents the agent's mental state and focus.
 
 **Key Features**:
+
 - Alert levels (Unaware, Suspicious, Alert, Calm)
 - Threat assessment (None, Low, Medium, High, Critical)
 - Focused target tracking
 - Interest points (investigate locations)
 
 **Key Types**:
+
 - `AwarenessData`: Agent's awareness state
 - `AwarenessLevel`: Enum (alert state)
 - `ThreatLevel`: Enum (danger assessment)
@@ -435,6 +459,7 @@ var knowledge = new KnowledgeData
 - `InterestPoint`: Location to investigate
 
 **Example**:
+
 ```csharp
 var awareness = new AwarenessData
 {
@@ -1383,6 +1408,7 @@ public sealed class PerceptionData
 - [ ] No external dependencies (verify .csproj)
 
 **Verification Command**:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\nexus-perception
 dotnet build
@@ -1808,6 +1834,7 @@ public struct AwarenessComponent
 ## Remaining Phases Summary
 
 **Phase 4: Systems Implementation** (Week 2-3)
+
 - PerceptionUpdateSystem (orchestrates sensors)
 - VisionSensor (uses GoRogue FOV)
 - HearingSensor (detects sound events)
@@ -1817,16 +1844,19 @@ public struct AwarenessComponent
 - ThreatAssessmentSystem (evaluates danger)
 
 **Phase 5: Integration with Existing Systems** (Week 3)
+
 - FOV integration with GoRogue
 - Sound emitter component (emit sounds for AI to hear)
 - Integration with existing Position, Health components
 
 **Phase 6: Testing** (Week 3-4)
+
 - Unit tests for all systems
 - Integration tests (full perception loop)
 - Performance profiling
 
 **Phase 7: GOAP Integration** (Week 4)
+
 - PerceptionToWorldStateAdapter (converts PerceptionData → GOAP WorldState)
 - Update RFC-020 systems to use PerceptionComponent
 
@@ -1893,4 +1923,4 @@ dotnet sln PigeonPea.sln add game-essential\core\src\PigeonPea.Game.Perception\P
 
 **End of RFC-021: Nexus-Perception System Implementation Guide**
 
-*This document provides complete implementation instructions for a unified perception layer that serves multiple AI systems. The perception system is fully decoupled from decision-making (GOAP, BT, etc.) and can be tested independently.*
+_This document provides complete implementation instructions for a unified perception layer that serves multiple AI systems. The perception system is fully decoupled from decision-making (GOAP, BT, etc.) and can be tested independently._

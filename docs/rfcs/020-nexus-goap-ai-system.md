@@ -59,15 +59,16 @@ The system is inspired by Jeff Orkin's FEAR AI architecture and modern C# GOAP i
 
 ### GOAP vs Behavior Trees
 
-| GOAP | Behavior Trees |
-|------|----------------|
-| Goal-driven (declarative) | Task-driven (imperative) |
-| Emergent behavior from planning | Explicit behavior sequences |
-| Replans when world changes | Requires explicit state transitions |
-| Better for complex, adaptive AI | Better for authored, cinematic AI |
-| Higher CPU cost (planning) | Lower CPU cost (tree traversal) |
+| GOAP                            | Behavior Trees                      |
+| ------------------------------- | ----------------------------------- |
+| Goal-driven (declarative)       | Task-driven (imperative)            |
+| Emergent behavior from planning | Explicit behavior sequences         |
+| Replans when world changes      | Requires explicit state transitions |
+| Better for complex, adaptive AI | Better for authored, cinematic AI   |
+| Higher CPU cost (planning)      | Lower CPU cost (tree traversal)     |
 
 **For a dungeon crawler**: GOAP is ideal because:
+
 - Turn-based gives time for planning
 - NPCs need to adapt (player casts fireball → enemy retreats)
 - Emergent behavior creates interesting gameplay (enemy drinks potion when low HP)
@@ -79,10 +80,12 @@ The system is inspired by Jeff Orkin's FEAR AI architecture and modern C# GOAP i
 **Desired State**: `{ PlayerHealth: 0 }`
 
 **Available Actions**:
+
 1. `PickupWeapon`: Preconditions: `{ WeaponNearby: true }` → Effects: `{ HasWeapon: true }`
 2. `AttackPlayer`: Preconditions: `{ HasWeapon: true, PlayerVisible: true }` → Effects: `{ PlayerHealth: -25 }`
 
 **Planner Output**:
+
 ```
 Plan: [PickupWeapon → AttackPlayer → AttackPlayer → AttackPlayer → AttackPlayer]
 Cost: 5 (1 + 4 attacks)
@@ -264,18 +267,21 @@ dotnet/
 **World State** is a key-value representation of the game world from an agent's perspective.
 
 **Key Characteristics**:
+
 - Immutable snapshots
 - Keys are strongly-typed identifiers
 - Values support bool, int, float, string
-- Efficient comparison for A* heuristic
+- Efficient comparison for A\* heuristic
 
 **Key Types**:
+
 - `WorldStateKey`: String-based identifier with semantic meaning
 - `WorldStateValue`: Union type supporting multiple value types
 - `WorldState`: Immutable dictionary of state
 - `StateComparer`: Efficient diff/matching for planning
 
 **Example**:
+
 ```csharp
 var currentState = new WorldState()
     .Set("HasWeapon", true)
@@ -293,12 +299,14 @@ var desiredState = new WorldState()
 **Actions** represent things an agent can do that modify world state.
 
 **Key Properties**:
+
 - **Preconditions**: World state requirements to execute action
 - **Effects**: Changes to world state when action completes
 - **Cost**: Planning weight (lower cost = preferred)
 - **Executor**: Optional callback for actual execution
 
 **Key Types**:
+
 - `GoapAction`: Action definition
 - `Precondition`: Required state for action
 - `Effect`: State change produced by action
@@ -306,6 +314,7 @@ var desiredState = new WorldState()
 - `IActionExecutor`: Interface for execution logic
 
 **Example**:
+
 ```csharp
 var attackAction = new GoapAction
 {
@@ -329,16 +338,19 @@ var attackAction = new GoapAction
 **Goals** represent desired world states with priority.
 
 **Key Properties**:
+
 - **Desired State**: Target world state to achieve
 - **Priority**: Weight for goal selection (higher = more important)
 - **Evaluator**: Optional dynamic priority calculation
 
 **Key Types**:
+
 - `GoapGoal`: Goal definition
 - `GoalPriority`: Priority value (0-100)
 - `IGoalEvaluator`: Interface for dynamic priority
 
 **Example**:
+
 ```csharp
 var killPlayerGoal = new GoapGoal
 {
@@ -357,24 +369,27 @@ var surviveGoal = new GoapGoal
 };
 ```
 
-### 4. Planner (A* Search)
+### 4. Planner (A\* Search)
 
-**Planner** finds optimal action sequence to achieve goal using A* search.
+**Planner** finds optimal action sequence to achieve goal using A\* search.
 
 **Algorithm**:
+
 1. Start node = current world state
 2. Goal node = desired world state (from goal)
 3. Edges = actions (with preconditions and effects)
 4. Cost = action cost + heuristic (state diff)
-5. A* finds shortest path from current to desired state
+5. A\* finds shortest path from current to desired state
 
 **Key Types**:
+
 - `Planner`: Main planning algorithm
-- `PlannerNode`: A* search node (state + path)
+- `PlannerNode`: A\* search node (state + path)
 - `Plan`: Ordered action sequence
 - `PlanningResult`: Success/failure with plan or error
 
 **Example**:
+
 ```csharp
 var planner = new Planner();
 
@@ -994,7 +1009,7 @@ public interface IGoalEvaluator
 }
 ```
 
-### Step 1.6: Implement Planner (A* Search)
+### Step 1.6: Implement Planner (A\* Search)
 
 **File**: `_lib/nexus-goap/src/NexusGoap.Core/Planning/Plan.cs`
 
@@ -1192,11 +1207,12 @@ public sealed class Planner
 - [ ] All WorldState classes implemented
 - [ ] All Actions classes implemented
 - [ ] All Goals classes implemented
-- [ ] All Planning classes implemented (A* planner)
+- [ ] All Planning classes implemented (A\* planner)
 - [ ] Solution builds without errors
 - [ ] No external dependencies (verify .csproj)
 
 **Verification Command**:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\nexus-goap
 dotnet build
@@ -1546,6 +1562,7 @@ public struct PlanComponent
 **Note**: Instead of `SensorDataComponent`, GOAP uses `PerceptionComponent` from RFC-021 (Nexus-Perception).
 
 See RFC-021 for details on:
+
 - `PerceptionComponent` (cached perception data)
 - `PerceptionConfigComponent` (vision/hearing ranges)
 - `MemoryComponent` (agent memory)
@@ -1710,6 +1727,7 @@ public static class PerceptionToWorldStateAdapter
 ```
 
 **Usage Example**:
+
 ```csharp
 // In GoalEvaluationSystem or PlanningSystem
 var perception = entity.Get<PerceptionComponent>().Data;
@@ -1724,6 +1742,7 @@ var plan = planner.CreatePlan(worldState, goal, actions);
 ## Remaining Phases Summary
 
 **Phase 4: Systems Implementation** (Week 3)
+
 - SensorUpdateSystem (reads ECS, builds WorldState)
 - GoalEvaluationSystem (selects highest priority goal)
 - PlanningSystem (calls NexusGoap.Planner)
@@ -1731,24 +1750,28 @@ var plan = planner.CreatePlan(worldState, goal, actions);
 - PlanMonitoringSystem (detects when replan is needed)
 
 **Phase 5: Concrete Actions & Goals** (Week 3-4)
+
 - AttackAction, CastAbilityAction (integrates with Nexus-GAS)
 - MoveToAction (integrates with pathfinding)
 - FleeAction, PickupItemAction, UseHealthPotionAction
 - KillEnemyGoal, SurviveGoal, CollectTreasureGoal, ExploreGoal
 
 **Phase 6: Advanced Features** (Week 4)
+
 - Dynamic goal priorities based on world state
 - Multi-step plans with branching
 - Plan caching and reuse
 - Integration with Behavior Trees (future)
 
 **Phase 7: Integration with Existing Systems** (Week 4-5)
+
 - Replace simple AIComponent logic with GOAP
 - Integrate with ability system (AI uses abilities intelligently)
 - Integrate with pathfinding (MoveTo actions)
 - Add debugging/visualization for plans
 
 **Phase 8: Testing & Polish** (Week 5-6)
+
 - Unit tests for all systems
 - Integration tests (full AI loop)
 - Performance profiling (planning cost)
@@ -1900,4 +1923,4 @@ dotnet sln PigeonPea.sln add game-essential\core\src\PigeonPea.Game.AI\PigeonPea
 
 **End of RFC-020: Nexus-GOAP AI System Implementation Guide**
 
-*This document provides complete implementation instructions for Phase 1-3. Phases 4-8 will follow the same patterns, integrating GOAP with the existing dungeon crawler AI, ability system (Nexus-GAS), pathfinding, and FOV systems. The result will be intelligent NPCs that can plan complex action sequences to achieve goals.*
+_This document provides complete implementation instructions for Phase 1-3. Phases 4-8 will follow the same patterns, integrating GOAP with the existing dungeon crawler AI, ability system (Nexus-GAS), pathfinding, and FOV systems. The result will be intelligent NPCs that can plan complex action sequences to achieve goals._

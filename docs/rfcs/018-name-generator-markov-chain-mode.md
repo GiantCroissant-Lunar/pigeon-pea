@@ -14,6 +14,7 @@ related: ['SPEC-2025-00014', 'RFC-2025-00016']
 # RFC 018: Name Generator Markov Chain Mode
 
 ## Status
+
 - **State:** Draft
 - **Priority:** ⭐⭐⭐⭐ High
 - **Estimated Effort:** 1 week
@@ -23,6 +24,7 @@ related: ['SPEC-2025-00014', 'RFC-2025-00016']
 ## Problem Statement
 
 The current FantasyNameGenerator uses a **rule-based phonological approach**:
+
 - Phoneme inventories
 - Phonotactic constraints
 - Morphological rules
@@ -32,6 +34,7 @@ The current FantasyNameGenerator uses a **rule-based phonological approach**:
 **Weaknesses:** Can sound artificial, less natural variation
 
 **Azgaar's Original** uses **Markov chains**:
+
 - Learns from real name examples
 - Statistical generation
 - More natural-sounding output
@@ -43,6 +46,7 @@ The current FantasyNameGenerator uses a **rule-based phonological approach**:
 ### The Gap
 
 Users want **both approaches**:
+
 1. **Rule-based** for fantasy languages, constructed languages, precise control
 2. **Markov-based** for authentic real-world names, historical accuracy
 
@@ -105,6 +109,7 @@ public class NameGenerator
 ### Data Structures
 
 #### Markov Chain
+
 ```csharp
 public class MarkovChain
 {
@@ -133,6 +138,7 @@ public record WeightedChar(char Char, double Weight);
 ```
 
 #### Name Corpus
+
 ```csharp
 public class NameCorpus
 {
@@ -173,6 +179,7 @@ public class NameCorpus
 ### Phase 1: Core Markov Chain (Days 1-2)
 
 #### Step 1.1: Markov Chain Builder
+
 ```csharp
 public class MarkovChainBuilder
 {
@@ -268,6 +275,7 @@ public class MarkovChainBuilder
 ```
 
 #### Step 1.2: Markov Chain Generator
+
 ```csharp
 public class MarkovChainEngine
 {
@@ -360,6 +368,7 @@ public class MarkovChainEngine
 #### Step 2.1: Corpus File Format
 
 **JSON Format:**
+
 ```json
 {
   "name": "english-places",
@@ -389,6 +398,7 @@ public class MarkovChainEngine
 ```
 
 **Text Format (Simple):**
+
 ```
 # English Place Names
 London
@@ -401,6 +411,7 @@ Bristol
 ```
 
 #### Step 2.2: Corpus Loader
+
 ```csharp
 public class CorpusLoader
 {
@@ -449,6 +460,7 @@ public class CorpusLoader
 Create corpus files for Azgaar's 30+ name bases:
 
 **Data/Corpus/RealWorld/**
+
 - `english.json` - English place names
 - `german.json` - German place names
 - `french.json` - French place names
@@ -465,6 +477,7 @@ Create corpus files for Azgaar's 30+ name bases:
 - etc.
 
 **Data/Corpus/Fantasy/**
+
 - `tolkien-elvish.json` - Sindarin/Quenya inspired
 - `tolkien-dwarvish.json` - Khuzdul inspired
 - `lovecraft.json` - Lovecraftian names
@@ -474,6 +487,7 @@ Create corpus files for Azgaar's 30+ name bases:
 ### Phase 4: Integration & Hybrid Mode (Day 5)
 
 #### Step 4.1: Generation Mode Selection
+
 ```csharp
 public class NameGenerator
 {
@@ -527,6 +541,7 @@ public class NameGenerator
 ```
 
 #### Step 4.2: Hybrid Mode Algorithm
+
 ```csharp
 private string GenerateHybrid(NameType type, string template)
 {
@@ -560,6 +575,7 @@ private string GenerateHybrid(NameType type, string template)
 ### Phase 5: Serialization & Caching (Day 6)
 
 #### Pre-trained Chain Serialization
+
 ```csharp
 public class MarkovChainSerializer
 {
@@ -587,6 +603,7 @@ public class MarkovChainSerializer
 ```
 
 **Pre-trained Chains:**
+
 - Ship pre-trained chains as embedded resources
 - Avoid training on every startup
 - Users can add custom chains
@@ -594,6 +611,7 @@ public class MarkovChainSerializer
 ### Phase 6: Testing & Validation (Day 7)
 
 #### Tests
+
 ```csharp
 [Fact]
 public void MarkovChain_TrainAndGenerate_ProducesValidNames()
@@ -690,6 +708,7 @@ public class MarkovChainOptions
 ## Usage Examples
 
 ### Basic Markov Generation
+
 ```csharp
 var generator = new NameGenerator();
 
@@ -705,6 +724,7 @@ Console.WriteLine(name2); // "Liverton" (sounds English)
 ```
 
 ### Hybrid Mode
+
 ```csharp
 // Use phonological constraints with Markov generation
 var name = generator.Generate(
@@ -717,6 +737,7 @@ Console.WriteLine(name); // Follows Germanic phonotactics but uses Markov patter
 ```
 
 ### Custom Corpus
+
 ```csharp
 // Load custom names
 var customCorpus = new NameCorpus
@@ -735,18 +756,19 @@ var name = generator.Generate(NameType.Burg, "my-world", GenerationMode.MarkovCh
 
 ## Comparison: Rule-Based vs Markov
 
-| Aspect | Rule-Based | Markov Chain | Winner |
-|--------|------------|--------------|--------|
-| **Authenticity** | Synthetic | Learned from real names | Markov |
-| **Predictability** | High | Medium | Rule-Based |
-| **Configurability** | High | Low | Rule-Based |
-| **Training Required** | No | Yes | Rule-Based |
-| **Fantasy Languages** | Excellent | Poor | Rule-Based |
-| **Real-World Names** | Good | Excellent | Markov |
-| **Variety** | Good | Excellent | Markov |
-| **Performance** | Fast | Medium | Rule-Based |
+| Aspect                | Rule-Based | Markov Chain            | Winner     |
+| --------------------- | ---------- | ----------------------- | ---------- |
+| **Authenticity**      | Synthetic  | Learned from real names | Markov     |
+| **Predictability**    | High       | Medium                  | Rule-Based |
+| **Configurability**   | High       | Low                     | Rule-Based |
+| **Training Required** | No         | Yes                     | Rule-Based |
+| **Fantasy Languages** | Excellent  | Poor                    | Rule-Based |
+| **Real-World Names**  | Good       | Excellent               | Markov     |
+| **Variety**           | Good       | Excellent               | Markov     |
+| **Performance**       | Fast       | Medium                  | Rule-Based |
 
 **Recommendation:** Use **both**:
+
 - **Rule-based** for fantasy settings, constructed languages
 - **Markov** for historical settings, real-world cultures
 - **Hybrid** for best of both worlds

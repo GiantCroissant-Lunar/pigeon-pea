@@ -26,6 +26,7 @@ These enhancements address the gaps identified in the current implementation and
 ## Prerequisites
 
 Before starting, ensure you have:
+
 - ✅ Completed Spec 014 (Name Generation System)
 - ✅ Existing 4-layer architecture working (Syllable, Phonology, Phonotactics, Morphology)
 - ✅ Basic name generation functional
@@ -51,12 +52,14 @@ Before starting, ensure you have:
 ### Day 1: JSON Infrastructure
 
 #### Tasks
+
 1. Create `Configuration/` namespace
 2. Implement `LanguageTemplate.cs` model
 3. Implement `PhonologyConfig.cs`, `PhonotacticsConfig.cs`, etc.
 4. Create JSON schema file (`Data/Languages/schema.json`)
 
 #### Files to Create
+
 ```
 src/FantasyNameGenerator/
 ├── Configuration/
@@ -73,6 +76,7 @@ src/FantasyNameGenerator/
 ```
 
 #### Implementation Checklist
+
 - [ ] Define `LanguageTemplate` class with all properties
 - [ ] Create nested config classes (Phonology, Phonotactics, etc.)
 - [ ] Add JSON attributes for serialization
@@ -80,6 +84,7 @@ src/FantasyNameGenerator/
 - [ ] Add unit tests for models
 
 #### Code Example
+
 ```csharp
 namespace FantasyNameGenerator.Configuration;
 
@@ -104,12 +109,14 @@ public class LanguageTemplate
 ### Day 2: JSON Loader & Validator
 
 #### Tasks
+
 1. Implement `LanguageLoader.cs`
 2. Implement `LanguageValidator.cs`
 3. Add support for embedded resources
 4. Add support for file system loading
 
 #### Files to Create
+
 ```
 src/FantasyNameGenerator/Configuration/
 ├── LanguageLoader.cs
@@ -117,6 +124,7 @@ src/FantasyNameGenerator/Configuration/
 ```
 
 #### Implementation Checklist
+
 - [ ] `LoadFromFile(string path)` method
 - [ ] `LoadFromResource(string resourceName)` method
 - [ ] `LoadAllFromDirectory(string dir)` method
@@ -128,12 +136,14 @@ src/FantasyNameGenerator/Configuration/
 ### Day 3: Converter & Integration
 
 #### Tasks
+
 1. Implement `LanguageTemplateConverter.cs`
 2. Convert JSON models to existing C# models
 3. Update `PhonologyTemplates.cs` to load from JSON
 4. Update `PhonotacticTemplates.cs` to load from JSON
 
 #### Files to Modify
+
 ```
 src/FantasyNameGenerator/
 ├── Configuration/
@@ -144,6 +154,7 @@ src/FantasyNameGenerator/
 ```
 
 #### Implementation Checklist
+
 - [ ] `ToPhonology(LanguageTemplate)` converter
 - [ ] `ToPhonotactics(LanguageTemplate)` converter
 - [ ] `ToMorphology(LanguageTemplate)` converter
@@ -152,6 +163,7 @@ src/FantasyNameGenerator/
 - [ ] Add integration tests
 
 #### Code Example
+
 ```csharp
 public static class LanguageTemplateConverter
 {
@@ -172,11 +184,13 @@ public static class LanguageTemplateConverter
 ### Days 4-5: Convert Existing Templates to JSON
 
 #### Tasks
+
 1. Create JSON files for all 6 existing languages
 2. Embed as resources in project
 3. Test loading and generation
 
 #### Files to Create
+
 ```
 src/FantasyNameGenerator/Data/Languages/
 ├── RealWorld/
@@ -190,6 +204,7 @@ src/FantasyNameGenerator/Data/Languages/
 ```
 
 #### Implementation Checklist
+
 - [ ] Create `germanic.json` from existing template
 - [ ] Create `romance.json` from existing template
 - [ ] Create `slavic.json` from existing template
@@ -201,6 +216,7 @@ src/FantasyNameGenerator/Data/Languages/
 - [ ] Verify generated names match old output
 
 #### Template Conversion Process
+
 1. Review existing `PhonologyTemplates.Germanic` code
 2. Extract all phoneme inventories
 3. Extract phonotactic rules
@@ -212,18 +228,21 @@ src/FantasyNameGenerator/Data/Languages/
 ### Days 6-7: User Custom Templates & Documentation
 
 #### Tasks
+
 1. Add custom template loading support
 2. Write user documentation
 3. Create example custom template
 4. Write troubleshooting guide
 
 #### Files to Create
+
 ```
 src/FantasyNameGenerator/Data/Languages/Custom/README.md
 docs/guides/creating-custom-language-templates.md
 ```
 
 #### Implementation Checklist
+
 - [ ] `NameGeneratorOptions.CustomLanguagesPath`
 - [ ] `NameGenerator.LoadCustomTemplates(path)`
 - [ ] Precedence: custom > built-in
@@ -243,12 +262,14 @@ docs/guides/creating-custom-language-templates.md
 ### Day 1: Japanese Template
 
 #### Tasks
+
 1. Research Japanese phonology
 2. Create `japanese.json` template
 3. Implement allophonic rules
 4. Test generation
 
 #### Implementation Checklist
+
 - [ ] Define phoneme inventory (consonants, vowels)
 - [ ] Define syllable structures (CV, V, CVN)
 - [ ] Implement allophonic rules (ti→chi, si→shi, etc.)
@@ -259,6 +280,7 @@ docs/guides/creating-custom-language-templates.md
 - [ ] Validate against real Japanese names
 
 #### Key Features
+
 ```json
 {
   "name": "japanese",
@@ -280,12 +302,14 @@ docs/guides/creating-custom-language-templates.md
 ### Day 2: Chinese Template
 
 #### Tasks
+
 1. Research Mandarin phonology
 2. Create `chinese.json` template
 3. Implement Pinyin-style romanization
 4. Test generation
 
 #### Implementation Checklist
+
 - [ ] Define phoneme inventory (initials, finals)
 - [ ] Define syllable structures
 - [ ] Define orthography (Pinyin romanization)
@@ -297,12 +321,14 @@ docs/guides/creating-custom-language-templates.md
 ### Day 3: Korean Template
 
 #### Tasks
+
 1. Research Korean phonology
 2. Create `korean.json` template
 3. Implement Revised Romanization
 4. Test generation
 
 #### Implementation Checklist
+
 - [ ] Define phoneme inventory
 - [ ] Define syllable structures (CVC)
 - [ ] Define orthography (Revised Romanization)
@@ -314,12 +340,14 @@ docs/guides/creating-custom-language-templates.md
 ### Day 4: Integration & Testing
 
 #### Tasks
+
 1. Add CJK templates to `PhonologyTemplates`
 2. Add CJK culture types
 3. Integration testing
 4. Documentation
 
 #### Implementation Checklist
+
 - [ ] Update `PhonologyTemplates` with static properties
 - [ ] Add `CultureType.Japanese`, `.Chinese`, `.Korean`
 - [ ] Update `NameGeneratorFactory` mappings
@@ -340,11 +368,13 @@ docs/guides/creating-custom-language-templates.md
 ### Day 1: Core Markov Chain
 
 #### Tasks
+
 1. Implement `MarkovChain` data structure
 2. Implement `MarkovChainBuilder`
 3. Unit tests for chain building
 
 #### Files to Create
+
 ```
 src/FantasyNameGenerator/
 ├── Markov/
@@ -355,6 +385,7 @@ src/FantasyNameGenerator/
 ```
 
 #### Implementation Checklist
+
 - [ ] `MarkovChain` class (transitions, start prefixes, etc.)
 - [ ] `MarkovChainBuilder.BuildFromCorpus()`
 - [ ] N-gram extraction (order 2-4)
@@ -363,6 +394,7 @@ src/FantasyNameGenerator/
 - [ ] Test with small corpus
 
 #### Code Example
+
 ```csharp
 public class MarkovChain
 {
@@ -375,11 +407,13 @@ public class MarkovChain
 ### Day 2: Markov Chain Generator
 
 #### Tasks
+
 1. Implement `MarkovChainEngine`
 2. Name generation algorithm
 3. Unit tests for generation
 
 #### Implementation Checklist
+
 - [ ] `MarkovChainEngine.Generate()` method
 - [ ] Weighted random selection
 - [ ] Length constraints
@@ -391,12 +425,14 @@ public class MarkovChain
 ### Day 3: Corpus System
 
 #### Tasks
+
 1. Implement `NameCorpus` model
 2. Implement `CorpusLoader`
 3. Create corpus JSON schema
 4. Create 3-5 initial corpus files
 
 #### Files to Create
+
 ```
 src/FantasyNameGenerator/
 ├── Corpus/
@@ -413,6 +449,7 @@ src/FantasyNameGenerator/
 ```
 
 #### Implementation Checklist
+
 - [ ] `NameCorpus` class
 - [ ] Corpus JSON schema
 - [ ] `CorpusLoader.LoadFromJson()`
@@ -424,12 +461,14 @@ src/FantasyNameGenerator/
 ### Day 4: Integration with NameGenerator
 
 #### Tasks
+
 1. Add `GenerationMode` enum
 2. Update `NameGenerator` API
 3. Markov chain caching
 4. Integration tests
 
 #### Implementation Checklist
+
 - [ ] `GenerationMode` enum (RuleBased, MarkovChain, Hybrid)
 - [ ] Update `NameGenerator.Generate()` signature
 - [ ] `LoadMarkovCorpus()` method
@@ -440,11 +479,13 @@ src/FantasyNameGenerator/
 ### Day 5: Hybrid Mode
 
 #### Tasks
+
 1. Implement hybrid generation
 2. Combine rule-based constraints with Markov
 3. Testing
 
 #### Implementation Checklist
+
 - [ ] `GenerateHybrid()` method
 - [ ] Apply phonotactic validation to Markov output
 - [ ] Fallback logic
@@ -454,12 +495,14 @@ src/FantasyNameGenerator/
 ### Days 6-7: Corpus Building & Documentation
 
 #### Tasks
+
 1. Create 10-15 corpus files
 2. Pre-train Markov chains
 3. Serialize chains as embedded resources
 4. Documentation
 
 #### Implementation Checklist
+
 - [ ] Create corpus files for major languages
 - [ ] Pre-train chains (order 2 and 3)
 - [ ] Serialize to JSON
@@ -476,6 +519,7 @@ src/FantasyNameGenerator/
 ### Unit Tests (Per Phase)
 
 **Phase 1:**
+
 - [ ] JSON deserialization
 - [ ] Schema validation
 - [ ] Template validation
@@ -483,12 +527,14 @@ src/FantasyNameGenerator/
 - [ ] Resource loading
 
 **Phase 2:**
+
 - [ ] CJK phoneme generation
 - [ ] Allophonic rules
 - [ ] Syllable structures
 - [ ] Name quality (no forbidden sequences)
 
 **Phase 3:**
+
 - [ ] Markov chain building
 - [ ] N-gram extraction
 - [ ] Probability calculation
@@ -603,6 +649,7 @@ var name = nameGenerator.Generate(
 ## Success Criteria
 
 ### Phase 1 (JSON Configuration)
+
 - [x] All 6 existing templates converted to JSON
 - [x] Templates load from embedded resources
 - [x] Custom templates load from file system
@@ -610,6 +657,7 @@ var name = nameGenerator.Generate(
 - [x] All tests passing
 
 ### Phase 2 (CJK Languages)
+
 - [x] 3 CJK templates created (Japanese, Chinese, Korean)
 - [x] Names sound authentic
 - [x] Phonological rules correct
@@ -617,6 +665,7 @@ var name = nameGenerator.Generate(
 - [x] All tests passing
 
 ### Phase 3 (Markov Chain)
+
 - [x] Markov engine implemented
 - [x] At least 10 corpus files created
 - [x] Hybrid mode working
@@ -630,17 +679,20 @@ var name = nameGenerator.Generate(
 ### Common Issues
 
 **JSON not loading:**
+
 - Check file path
 - Verify JSON syntax (use online validator)
 - Check schema validation errors
 
 **Names don't sound right:**
+
 - Review phoneme inventory
 - Check phonotactic constraints
 - Adjust syllable structures
 - Increase corpus size (for Markov)
 
 **Performance issues:**
+
 - Enable chain caching
 - Reduce Markov chain order
 - Pre-train chains offline
@@ -664,15 +716,18 @@ var name = nameGenerator.Generate(
 ## Resources
 
 ### Reference Implementations
+
 - Azgaar's `names-generator.js`
 - Choochoo's `LanguageGenerator.cs`
 
 ### Linguistic Resources
+
 - IPA Chart: https://www.internationalphoneticassociation.org/
 - Conlang Resources: https://www.zompist.com/kit.html
 - Phonology Databases: https://phoible.org/
 
 ### Libraries
+
 - System.Text.Json for JSON
 - Regex for phonotactic validation
 - LINQ for data processing
@@ -682,11 +737,13 @@ var name = nameGenerator.Generate(
 ## Conclusion
 
 This implementation guide provides a clear roadmap for enhancing the FantasyNameGenerator with:
+
 - **JSON Configuration** for extensibility
 - **CJK Languages** for cultural diversity
 - **Markov Chain Mode** for authentic names
 
 Following this guide, an AI agent or developer can implement all three enhancements in **2-3 weeks** with confidence that the result will be:
+
 - ✅ Architecturally sound
 - ✅ Well-tested
 - ✅ Backward compatible
