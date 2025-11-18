@@ -11,6 +11,7 @@ Welcome to the Pigeon Pea documentation! This directory contains planning docume
 - [handovers/](handovers) – Handover summaries and session notes
 - [notes/](notes) – Scratch notes, snapshots, and fragments
 - [assets/](assets) – Images and static assets used by docs
+- [dotnet/](dotnet) – .NET implementation documentation, architecture, and guides
 
 ### Enhancement Planning
 
@@ -129,8 +130,36 @@ Links to related documentation, libraries, and resources.
 ### Main Documentation
 
 - [Main README](../README.md) - Project overview
-- [.NET README](../dotnet/README.md) - Build and run instructions
-- [Architecture](../dotnet/ARCHITECTURE.md) - Current architecture overview
+- [.NET Documentation](dotnet/README.md) - Comprehensive .NET implementation documentation
+- [.NET Getting Started](dotnet/guides/getting-started.md) - Setup and development guide
+- [.NET Architecture Overview](dotnet/architecture/overview.md) - High-level architecture design
+
+### .NET Implementation Documentation
+
+The .NET implementation is organized with comprehensive documentation covering:
+
+- **[Architecture](dotnet/architecture/)** - Design decisions and technical architecture
+  - [Architecture Overview](dotnet/architecture/overview.md) - ECS design, rendering pipeline, plugin system
+  - [Multi-Scale World System](dotnet/architecture/game-scale-modes.md) - Discrete zoom/mode levels
+  - [Service Tiers](dotnet/architecture/service-tiers.md) - Four-tier service architecture
+  - [Services and Plugins](dotnet/architecture/services-and-plugins.md) - Plugin system integration
+  - [GOAP Perception Checklist](dotnet/architecture/goap-perception-checklist.md) - AI system implementation
+  - [Observable Collections](dotnet/architecture/observable-collections.md) - Reactive patterns
+  - [Reactive Stack and R3](dotnet/architecture/reactive-stack-and-r3.md) - Reactive extensions
+
+- **[Guides](dotnet/guides/)** - How-to guides and tutorials
+  - [Getting Started](dotnet/guides/getting-started.md) - Setup, building, and running applications
+
+- **[Reference](dotnet/reference/)** - Reference documentation and indexes
+  - [.NET Documentation Reference](dotnet/README.md) - Comprehensive reference to all .NET docs
+
+### Related RFCs
+
+The .NET implementation is based on several key RFCs:
+
+- [RFC-005: Project Structure Reorganization](rfcs/005-project-structure-reorganization.md) - Plugin-based architecture
+- [RFC-006: Plugin System Architecture](rfcs/006-plugin-system-architecture.md) - Plugin loading and lifecycle
+- [RFC-012: Documentation Organization Management](rfcs/012-documentation-organization-management.md) - Documentation structure
 
 ### External Resources
 
