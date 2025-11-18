@@ -163,5 +163,10 @@ interface IPublish : ICompile
             CopyDirectoryRecursively(
                 PublishDirectory / "plugins",
                 LatestDirectory / "plugins");
+
+            // Copy build logs to latest for easy debugging access
+            CopyDirectoryRecursively(
+                BuildLogsDirectory,
+                LatestDirectory / "build-logs");
         });
 }

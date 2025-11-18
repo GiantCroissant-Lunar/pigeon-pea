@@ -64,9 +64,16 @@ tasks:
       - pwsh -File build/nuke/build.ps1 --target PublishPlayers --configuration Release --Runtime win-x64
 
   game:run-console:
-    desc: Run console player from latest artifacts (plugin renderer + modern-edgar)
+    desc: Run console player from latest artifacts in Rio terminal (plugin renderer + modern-edgar)
     cmds:
-      - pwsh -Command "Set-Location build/_artifacts/latest/PigeonPea.Console; ./PigeonPea.Console.exe --renderer plugin --dungeon-gen modern-edgar"
+      - pwsh -File build/nuke/scripts/launch-console-rio.ps1
+
+  game:build-and-run-console:
+    desc: Build console via Nuke, then run from latest artifacts in Rio (plugin renderer + modern-edgar)
+    deps:
+      - game:build-console
+    cmds:
+      - task game:run-console
 
   # PTY test helpers (Node.js)
   pty:install:

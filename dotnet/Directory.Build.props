@@ -11,6 +11,7 @@
 
     <!-- Common warnings to suppress across all projects (if needed) -->
     <!-- Example: <NoWarn>$(NoWarn);CS8933</NoWarn> for redundant using in auto-generated files -->
+    <NoWarn>$(NoWarn);CS8933</NoWarn>
   </PropertyGroup>
 
   <!-- Suppress warnings from auto-generated files -->
