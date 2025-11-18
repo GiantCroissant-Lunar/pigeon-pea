@@ -11,8 +11,12 @@ internal static class FmgSettingsMapper
             Seed = s.Seed,
             SeedString = s.SeedString,
             ReseedAtPhaseStart = s.ReseedAtPhaseStart,
-            GridMode = s.GridMode == PigeonPea.Map.Core.GridMode.Jittered ? FantasyMapGenerator.Core.Models.GridMode.Jittered : FantasyMapGenerator.Core.Models.GridMode.Poisson,
-            HeightmapMode = s.HeightmapMode == PigeonPea.Map.Core.HeightmapMode.Template ? FantasyMapGenerator.Core.Models.HeightmapMode.Template : FantasyMapGenerator.Core.Models.HeightmapMode.Auto,
+            GridMode = s.GridMode == PigeonPea.Map.Core.GridMode.Jittered
+                ? FantasyMapGenerator.Core.Models.GridMode.Jittered
+                : FantasyMapGenerator.Core.Models.GridMode.Poisson,
+            HeightmapMode = s.HeightmapMode == PigeonPea.Map.Core.HeightmapMode.Template
+                ? FantasyMapGenerator.Core.Models.HeightmapMode.Template
+                : FantasyMapGenerator.Core.Models.HeightmapMode.Auto,
             UseAdvancedNoise = s.UseAdvancedNoise,
             HeightmapTemplate = s.HeightmapTemplate,
             RNGMode = s.RNGMode switch
@@ -21,6 +25,12 @@ internal static class FmgSettingsMapper
                 PigeonPea.Map.Core.RNGMode.XorShift => FantasyMapGenerator.Core.Models.RNGMode.Alea,
                 PigeonPea.Map.Core.RNGMode.DotNet => FantasyMapGenerator.Core.Models.RNGMode.System,
                 _ => FantasyMapGenerator.Core.Models.RNGMode.Alea
-            }
+            },
+
+            // HUD + map demos currently do not need cultures/religions, and the
+            // CulturesGenerator path is throwing. Disable these phases entirely
+            // to keep terrain/biomes/rivers while avoiding the crash.
+            CultureCount = 0,
+            ReligionCount = 0
         };
 }

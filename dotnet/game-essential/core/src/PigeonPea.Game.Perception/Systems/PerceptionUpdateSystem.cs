@@ -1,13 +1,15 @@
 using Arch.Core;
 using Arch.Core.Extensions;
 using GoRogue.FOV;
-using NexusPerception.Core.Enums;
 using NexusPerception.Core.Models;
+using NexusPerception.Core.Auditory;
+using NexusPerception.Core.Visual;
 using PigeonPea.Game.Perception.Components;
+using PigeonPea.Game.Perception.Sensors;
+using PigeonPea.Game.Perception.Integration;
 using PigeonPea.Shared.ECS.Components;
 using Serilog;
 using SadRogue.Primitives;
-using PercDir = NexusPerception.Core.Enums.Direction;
 
 namespace PigeonPea.Game.Perception.Systems;
 
@@ -23,12 +25,15 @@ public sealed class PerceptionUpdateSystem
     // FOV calculator for vision calculations
     private readonly RecursiveShadowcastingFOV _fovCalculator;
 
+    private readonly IVisualPerception _visualPerception;
+    private readonly IAuditoryPerception _auditoryPerception;
+
     // Map dimensions (you may want to inject these)
     private readonly int _mapWidth;
     private readonly int _mapHeight;
 
     /// <summary>
-    /// Initializes the perception update system.
+    /// Initializes the perception update system with an internal sound bus.
     /// </summary>
     /// <param name="world">ECS world containing entities.</param>
     /// <param name="mapWidth">Map width for FOV calculations.</param>
@@ -39,6 +44,24 @@ public sealed class PerceptionUpdateSystem
         int mapWidth,
         int mapHeight,
         ILogger logger)
+        : this(world, mapWidth, mapHeight, logger, new SoundEventBus())
+    {
+    }
+
+    /// <summary>
+    /// Initializes the perception update system with a shared sound bus.
+    /// </summary>
+    /// <param name="world">ECS world containing entities.</param>
+    /// <param name="mapWidth">Map width for FOV calculations.</param>
+    /// <param name="mapHeight">Map height for FOV calculations.</param>
+    /// <param name="logger">Logger instance.</param>
+    /// <param name="soundBus">Shared sound event bus used by hearing.</param>
+    public PerceptionUpdateSystem(
+        World world,
+        int mapWidth,
+        int mapHeight,
+        ILogger logger,
+        ISoundEventBus soundBus)
     {
         _world = world;
         _mapWidth = mapWidth;
@@ -54,6 +77,9 @@ public sealed class PerceptionUpdateSystem
             _ => true  // Everything is transparent for now
         );
         _fovCalculator = new RecursiveShadowcastingFOV(transparencyGrid);
+
+        _visualPerception = new VisionSensor(_world, _fovCalculator);
+        _auditoryPerception = new HearingSensor(soundBus);
     }
 
     /// <summary>
@@ -98,102 +124,22 @@ public sealed class PerceptionUpdateSystem
         perceptionData.ClearTransientData();
         perceptionData.Timestamp = currentTime;
 
-        // Update visual perception (FOV)
-        UpdateVisualPerception(entity, perceptionData, position, currentTime);
+        var agentPosition = (position.X, position.Y);
 
-        // Update auditory perception (sounds)
-        UpdateAuditoryPerception(entity, perceptionData, position, currentTime);
+        perceptionData.Visual = _visualPerception.UpdateVisualPerception(
+            entity,
+            agentPosition,
+            currentTime,
+            perceptionData.Visual);
+
+        perceptionData.Auditory = _auditoryPerception.UpdateAuditoryPerception(
+            entity,
+            agentPosition,
+            currentTime,
+            perceptionData.Auditory);
 
         // Update knowledge based on new perceptions
         UpdateKnowledge(entity, perceptionData, currentTime);
-    }
-
-    /// <summary>
-    /// Updates visual perception using FOV calculation.
-    /// </summary>
-    private void UpdateVisualPerception(
-        Entity entity,
-        PerceptionData perceptionData,
-        Position position,
-        float currentTime)
-    {
-        var visionRange = perceptionData.Visual.VisionRange;
-        var selfPos = new Point(position.X, position.Y);
-
-        // Calculate FOV
-        _fovCalculator.Calculate(selfPos, visionRange);
-
-        // Store visible tiles
-        foreach (var fovPoint in _fovCalculator.CurrentFOV)
-        {
-            perceptionData.Visual.VisibleTiles.Add((fovPoint.X, fovPoint.Y));
-        }
-
-        // Find all entities within FOV
-        var entitiesQuery = new QueryDescription().WithAll<Position>();
-
-        var visibleEntities = new List<PerceivedEntity>();
-
-        _world.Query(in entitiesQuery, (Entity otherEntity, ref Position otherPosition) =>
-        {
-            // Don't perceive self
-            if (otherEntity == entity)
-                return;
-
-            var otherPos = (otherPosition.X, otherPosition.Y);
-
-            // Check if entity is visible (within FOV)
-            if (!perceptionData.Visual.IsPositionVisible(otherPos))
-                return;
-
-            // Calculate distance
-            var distance = CalculateDistance(position, otherPosition);
-
-            // Determine entity type
-            var entityType = DetermineEntityType(otherEntity);
-
-            // Get health if available
-            float? health = null;
-            if (otherEntity.TryGet<Health>(out var healthComponent))
-            {
-                health = healthComponent.Current;
-            }
-
-            // Calculate direction
-            var direction = CalculateDirection(position, otherPosition);
-
-            // Create perceived entity
-            var perceivedEntity = new PerceivedEntity
-            {
-                EntityId = otherEntity,
-                Position = otherPos,
-                EntityType = entityType,
-                Health = health,
-                Distance = distance,
-                DirectionFromSelf = direction,
-                LastSeenTime = currentTime,
-                IsMoving = false
-            };
-
-            visibleEntities.Add(perceivedEntity);
-        });
-
-        // Add all visible entities to perception data
-        perceptionData.Visual.VisibleEntities.AddRange(visibleEntities);
-    }
-
-    /// <summary>
-    /// Updates auditory perception (sounds heard).
-    /// Note: This is a placeholder. You'll need a proper sound system that emits sound events.
-    /// </summary>
-    private void UpdateAuditoryPerception(
-        Entity entity,
-        PerceptionData perceptionData,
-        Position position,
-        float currentTime)
-    {
-        // TODO: Integrate with your actual sound/event system
-        // For now, this is a placeholder
     }
 
     /// <summary>
@@ -222,50 +168,5 @@ public sealed class PerceptionUpdateSystem
                 perceptionData.Knowledge.MarkAsAlly(visibleEntity.EntityId);
             }
         }
-    }
-
-    /// <summary>
-    /// Calculates Manhattan distance between two positions.
-    /// </summary>
-    private float CalculateDistance(Position a, Position b)
-    {
-        return Math.Abs(a.X - b.X) + Math.Abs(a.Y - b.Y);
-    }
-
-    /// <summary>
-    /// Determines the entity type based on components.
-    /// This is a simplified version - you may want a more sophisticated tagging system.
-    /// </summary>
-    private string DetermineEntityType(Entity entity)
-    {
-        // For now, return "Unknown" - you can enhance this with proper tag detection
-        // when the Tags namespace is available
-        return "Unknown";
-    }
-
-    /// <summary>
-    /// Calculates the direction from position A to position B.
-    /// </summary>
-    private PercDir CalculateDirection(Position from, Position to)
-    {
-        var dx = to.X - from.X;
-        var dy = to.Y - from.Y;
-
-        // Normalize to -1, 0, or 1
-        var ndx = Math.Sign(dx);
-        var ndy = Math.Sign(dy);
-
-        return (ndx, ndy) switch
-        {
-            (0, -1) => PercDir.North,
-            (1, -1) => PercDir.NorthEast,
-            (1, 0) => PercDir.East,
-            (1, 1) => PercDir.SouthEast,
-            (0, 1) => PercDir.South,
-            (-1, 1) => PercDir.SouthWest,
-            (-1, 0) => PercDir.West,
-            (-1, -1) => PercDir.NorthWest,
-            _ => PercDir.Unknown
-        };
     }
 }

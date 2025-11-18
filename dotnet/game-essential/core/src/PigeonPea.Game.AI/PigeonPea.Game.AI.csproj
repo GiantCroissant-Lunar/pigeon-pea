@@ -26,14 +26,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Core GOAP planner -->
-    <ProjectReference Include="..\..\..\..\_lib\nexus-goap\src\NexusGoap.Core\NexusGoap.Core.csproj" />
+    <!-- Core GOAP planner (shared) -->
+    <ProjectReference Include="..\PigeonPea.Shared.Goap\PigeonPea.Shared.Goap.csproj" />
 
-    <!-- Ability system core (Nexus-GAS) -->
-    <ProjectReference Include="..\..\..\..\_lib\nexus-gas\src\NexusGas.Core\NexusGas.Core.csproj" />
+    <!-- Ability system core (shared GAS) -->
+    <ProjectReference Include="..\PigeonPea.Shared.Gas\PigeonPea.Shared.Gas.csproj" />
 
-    <!-- Perception core (Nexus-Perception) -->
-    <ProjectReference Include="..\..\..\..\_lib\nexus-perception\src\NexusPerception.Core\NexusPerception.Core.csproj" />
+    <!-- Perception core (shared) -->
+    <ProjectReference Include="..\PigeonPea.Shared.Perception\PigeonPea.Shared.Perception.csproj" />
 
     <!-- Shared ECS components -->
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
@@ -42,6 +42,9 @@
     <ProjectReference Include="..\PigeonPea.Game.Perception\PigeonPea.Game.Perception.csproj" />
     <ProjectReference Include="..\PigeonPea.Game.Abilities\PigeonPea.Game.Abilities.csproj" />
     <ProjectReference Include="..\PigeonPea.Dungeon.Control\PigeonPea.Dungeon.Control.csproj" />
+
+    <!-- Game-shared components (Inventory, Item, etc.) -->
+    <ProjectReference Include="..\PigeonPea.Shared\PigeonPea.Shared.csproj" />
   </ItemGroup>
 
 </Project>

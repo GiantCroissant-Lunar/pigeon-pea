@@ -27,12 +27,7 @@
     },
     "activationPolicy": {
       "type": "string",
-      "enum": [
-        "Always",
-        "OnTurn",
-        "OnEvent",
-        "WhileChanneling"
-      ]
+      "enum": ["Always", "OnTurn", "OnEvent", "WhileChanneling"]
     },
     "cost": {
       "$ref": "#/definitions/abilityCost"
@@ -82,30 +77,15 @@
     },
     "modifierOperation": {
       "type": "string",
-      "enum": [
-        "Add",
-        "Multiply",
-        "Override"
-      ]
+      "enum": ["Add", "Multiply", "Override"]
     },
     "effectDurationPolicy": {
       "type": "string",
-      "enum": [
-        "Instant",
-        "Duration",
-        "Infinite",
-        "Periodic"
-      ]
+      "enum": ["Instant", "Duration", "Infinite", "Periodic"]
     },
     "targetingType": {
       "type": "string",
-      "enum": [
-        "Self",
-        "SingleTarget",
-        "GroundTarget",
-        "Direction",
-        "None"
-      ]
+      "enum": ["Self", "SingleTarget", "GroundTarget", "Direction", "None"]
     },
     "abilityCost": {
       "type": "object",

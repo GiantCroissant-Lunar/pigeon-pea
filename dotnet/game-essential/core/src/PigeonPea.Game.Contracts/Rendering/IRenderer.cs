@@ -1,5 +1,7 @@
 namespace PigeonPea.Game.Contracts.Rendering;
 
+using PigeonPea.Game.Contracts.Models;
+
 /// <summary>
 /// Renderer contract for game rendering plugins.
 /// </summary>

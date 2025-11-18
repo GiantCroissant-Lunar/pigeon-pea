@@ -1,6 +1,7 @@
 using Arch.Core;
 using Arch.Core.Extensions;
 using NexusPerception.Core.Enums;
+using NexusPerception.Core.Awareness;
 using PigeonPea.Game.Perception.Components;
 using PigeonPea.Shared.ECS.Components;
 using Serilog;
@@ -15,6 +16,7 @@ public sealed class AwarenessUpdateSystem
 {
     private readonly World _world;
     private readonly ILogger _logger;
+    private readonly ThreatAssessmentConfig _config;
 
     // Configuration thresholds
     private readonly float _suspiciousToAlertThreshold = 5.0f; // Time in seconds
@@ -27,9 +29,21 @@ public sealed class AwarenessUpdateSystem
     /// <param name="world">ECS world containing entities.</param>
     /// <param name="logger">Logger instance.</param>
     public AwarenessUpdateSystem(World world, ILogger logger)
+        : this(world, logger, new ThreatAssessmentConfig())
+    {
+    }
+
+    /// <summary>
+    /// Initializes the awareness update system with a custom threat assessment configuration.
+    /// </summary>
+    /// <param name="world">ECS world containing entities.</param>
+    /// <param name="logger">Logger instance.</param>
+    /// <param name="config">Threat assessment configuration.</param>
+    public AwarenessUpdateSystem(World world, ILogger logger, ThreatAssessmentConfig config)
     {
         _world = world;
         _logger = logger;
+        _config = config;
     }
 
     /// <summary>
@@ -55,28 +69,22 @@ public sealed class AwarenessUpdateSystem
         Health health,
         float currentTime)
     {
-        var awareness = perception.Data.Awareness;
-        var visual = perception.Data.Visual;
-        var auditory = perception.Data.Auditory;
-        var knowledge = perception.Data.Knowledge;
+        var data = perception.Data;
+        var awareness = data.Awareness;
+        var visual = data.Visual;
 
-        // Check for visible threats
+        // Delegate core alert/threat state handling to the NexusPerception helper.
+        ThreatAssessment.UpdateAwareness(data, _config, currentTime);
+
+        // Refresh local reference after core update.
+        awareness = data.Awareness;
+
+        // Update primary target when the agent is alert and has visible entities.
         var visibleEnemies = visual.GetEntitiesOfType("Enemy");
         var visiblePlayer = visual.GetClosestEntity("Player");
 
-        bool seesEnemies = visibleEnemies.Count > 0 || visiblePlayer != null;
-        bool heardCombat = auditory.HeardCombat();
-        bool heardFootsteps = auditory.HeardFootsteps();
-
-        // === ALERT STATE TRANSITIONS ===
-
-        if (seesEnemies)
+        if (awareness.AlertLevel == AlertLevel.Alert)
         {
-            // Direct visual contact with enemies -> ALERT
-            var threatLevel = AssessThreatLevel(entity, perception, health);
-            perception.Data.Awareness.SetAlert(threatLevel, currentTime);
-
-            // Set primary target
             if (visiblePlayer != null)
             {
                 awareness.PrimaryTarget = visiblePlayer.EntityId;
@@ -87,64 +95,6 @@ public sealed class AwarenessUpdateSystem
                 var closestEnemy = visibleEnemies.OrderBy(e => e.Distance).First();
                 awareness.PrimaryTarget = closestEnemy.EntityId;
                 awareness.PrimaryTargetPosition = closestEnemy.Position;
-            }
-        }
-        else if (heardCombat || heardFootsteps)
-        {
-            // Heard suspicious sounds but no visual contact
-            if (awareness.AlertLevel == AlertLevel.Unaware || awareness.AlertLevel == AlertLevel.Calm)
-            {
-                // Become suspicious
-                var suspiciousSound = heardCombat
-                    ? auditory.GetClosestSound(SoundType.Combat)
-                    : auditory.GetClosestSound(SoundType.Footsteps);
-
-                if (suspiciousSound != null)
-                {
-                    perception.Data.Awareness.SetSuspicious(suspiciousSound.Position, currentTime);
-                }
-            }
-            else if (awareness.AlertLevel == AlertLevel.Suspicious)
-            {
-                // Already suspicious - check if we should escalate to alert
-                var timeSinceSuspicious = currentTime - awareness.LastAlertChangeTime;
-                if (timeSinceSuspicious >= _suspiciousToAlertThreshold)
-                {
-                    // Escalate to alert (investigating for too long)
-                    perception.Data.Awareness.SetAlert(ThreatLevel.Medium, currentTime);
-                }
-            }
-        }
-        else
-        {
-            // No current threats detected - check for de-escalation
-            var timeSinceLastThreat = awareness.GetTimeSinceLastThreat(currentTime);
-
-            if (awareness.AlertLevel == AlertLevel.Alert)
-            {
-                // Alert -> Calm transition
-                if (timeSinceLastThreat.HasValue && timeSinceLastThreat.Value >= _alertToCalmThreshold)
-                {
-                    perception.Data.Awareness.SetCalm(currentTime);
-                }
-            }
-            else if (awareness.AlertLevel == AlertLevel.Suspicious)
-            {
-                // Suspicious -> Calm transition (found nothing)
-                var timeSinceSuspicious = currentTime - awareness.LastAlertChangeTime;
-                if (timeSinceSuspicious >= _suspiciousToAlertThreshold)
-                {
-                    perception.Data.Awareness.SetCalm(currentTime);
-                }
-            }
-            else if (awareness.AlertLevel == AlertLevel.Calm)
-            {
-                // Calm -> Unaware transition
-                var timeSinceCalm = currentTime - awareness.LastAlertChangeTime;
-                if (timeSinceCalm >= _calmToUnawareThreshold)
-                {
-                    perception.Data.Awareness.SetUnaware(currentTime);
-                }
             }
         }
 

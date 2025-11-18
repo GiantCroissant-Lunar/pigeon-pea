@@ -1,5 +1,6 @@
 using FantasyMapGenerator.Core.Generators;
-using FmgMapGenerationHooks = FantasyMapGenerator.Core.Models.MapGenerationHooks;
+// NOTE: MapGenerationHooks was removed from FantasyMapGenerator library
+// using FmgMapGenerationHooks = FantasyMapGenerator.Core.Models.MapGenerationHooks;
 
 namespace PigeonPea.Map.Core.Adapters;
 
@@ -12,6 +13,11 @@ public class FantasyMapGeneratorAdapter : IMapGenerator
 
     public MapData Generate(MapGenerationSettings settings, MapGenerationHooks? hooks)
     {
+        // TODO: Re-enable hooks once MapGenerationHooks is added back to FantasyMapGenerator library
+        // For now, just ignore hooks and generate without them
+        return Generate(settings);
+
+        /* DISABLED - needs MapGenerationHooks in FantasyMapGenerator library
         if (hooks is null)
         {
             return Generate(settings);
@@ -45,5 +51,6 @@ public class FantasyMapGeneratorAdapter : IMapGenerator
 
         var inner = _generator.Generate(FmgSettingsMapper.ToFmg(settings), fmgHooks);
         return wrapped ?? new MapData(inner);
+        */
     }
 }

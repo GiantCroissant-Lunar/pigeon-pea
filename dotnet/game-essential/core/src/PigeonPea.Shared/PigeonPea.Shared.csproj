@@ -28,6 +28,7 @@
     <PackageReference Include="MessagePipe" Version="1.8.0" />
     <PackageReference Include="ObservableCollections" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+    <PackageReference Include="Stateless" Version="5.17.0" />
 
     <!-- Source Generators -->
     <PackageReference Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
@@ -39,6 +40,7 @@
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    <ProjectReference Include="..\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
   </ItemGroup>
 
   <!-- Use rendering primitives from PigeonPea.Shared.Rendering instead of local duplicates -->

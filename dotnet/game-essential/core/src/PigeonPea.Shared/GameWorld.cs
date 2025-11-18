@@ -2,11 +2,10 @@ using Arch.Core;
 using Arch.Core.Extensions;
 using GoRogue.FOV;
 using GoRogue.GameFramework;
-using GoRogue.MapGeneration;
-using GoRogue.MapGeneration.ContextComponents;
 using GoRogue.Pathing;
 using MessagePipe;
 using PigeonPea.Contracts.Plugin;
+using PigeonPea.Dungeon.Core;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Events;
 using PigeonPea.Shared.Rendering;
@@ -14,6 +13,7 @@ using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using Serilog;
 using CTile = PigeonPea.Shared.Components.Tile;
+using IInventoryService = PigeonPea.Game.Contracts.Inventory.Services.IService;
 using PluginEvents = PigeonPea.Game.Contracts.Events;
 using RTile = PigeonPea.Shared.Rendering.Tile;
 
@@ -45,6 +45,9 @@ public class GameWorld
     // Shared random instance for all spawning
     private readonly Random _random;
 
+    // Dungeon generation strategy
+    private readonly IDungeonGenerator _dungeonGenerator;
+
     // MessagePipe publishers for event-driven architecture
     private readonly IPublisher<PlayerDamagedEvent>? _playerDamagedPublisher;
     private readonly IPublisher<EnemyDefeatedEvent>? _enemyDefeatedPublisher;
@@ -56,6 +59,8 @@ public class GameWorld
     private readonly IPublisher<StairsDescendedEvent>? _stairsDescendedPublisher;
     // Plugin system event bus (optional)
     private readonly IEventBus? _eventBus;
+    // Optional game-level inventory service (backed by plugins).
+    private readonly IInventoryService? _inventoryService;
 
     /// <summary>
     /// Publishes an event to the plugin system synchronously.
@@ -96,7 +101,7 @@ public class GameWorld
     /// Creates a new GameWorld with the specified dimensions.
     /// For use without dependency injection.
     /// </summary>
-    public GameWorld(int width = 80, int height = 50, IEventBus? eventBus = null)
+    public GameWorld(int width = 80, int height = 50, IEventBus? eventBus = null, IInventoryService? inventoryService = null, IDungeonGenerator? dungeonGenerator = null)
     {
         Width = width;
         Height = height;
@@ -106,6 +111,7 @@ public class GameWorld
         WalkabilityMap = new ArrayView<bool>(width, height);
         TransparencyMap = new ArrayView<bool>(width, height);
         _random = new Random();
+        _dungeonGenerator = dungeonGenerator ?? new BasicDungeonGenerator();
 
         // Publishers remain null - no events published
         _playerDamagedPublisher = null;
@@ -117,6 +123,7 @@ public class GameWorld
         _doorOpenedPublisher = null;
         _stairsDescendedPublisher = null;
         _eventBus = eventBus;
+        _inventoryService = inventoryService;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -142,7 +149,9 @@ public class GameWorld
         IPublisher<PlayerLevelUpEvent> playerLevelUpPublisher,
         IPublisher<DoorOpenedEvent> doorOpenedPublisher,
         IPublisher<StairsDescendedEvent> stairsDescendedPublisher,
-        IEventBus? eventBus = null)
+        IEventBus? eventBus = null,
+        IInventoryService? inventoryService = null,
+        IDungeonGenerator? dungeonGenerator = null)
     {
         Width = width;
         Height = height;
@@ -163,6 +172,7 @@ public class GameWorld
         _doorOpenedPublisher = doorOpenedPublisher;
         _stairsDescendedPublisher = stairsDescendedPublisher;
         _eventBus = eventBus;
+        _inventoryService = inventoryService;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -190,25 +200,20 @@ public class GameWorld
 
     private void GenerateDungeon()
     {
-        // Create GoRogue map generator with rectangular room-based dungeon algorithm
-        var mapGen = new Generator(Width, Height)
-            .ConfigAndGenerateSafe(gen =>
-            {
-                // Add rectangular room-based dungeon generation steps
-                gen.AddSteps(DefaultAlgorithms.RectangleMapSteps());
-            });
+        // Use pluggable dungeon generator to produce a DungeonData grid
+        var data = _dungeonGenerator.Generate(Width, Height);
 
-        // Retrieve the generated wall/floor map
-        var wallFloorMap = mapGen.Context.GetFirst<ISettableGridView<bool>>("WallFloor");
-
-        // Create tile entities for each position
+        // Create tile entities for each position based on DungeonData
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)
             {
-                bool isWalkable = wallFloorMap[x, y];
+                bool isWalkable = data.IsWalkable(x, y);
+                bool isOpaque = data.IsOpaque(x, y);
+
                 WalkabilityMap[x, y] = isWalkable;
-                TransparencyMap[x, y] = isWalkable; // Walls block sight, floors don't
+                // TransparencyMap: true means tile does NOT block sight
+                TransparencyMap[x, y] = !isOpaque;
 
                 if (isWalkable)
                 {
@@ -217,7 +222,8 @@ public class GameWorld
                 }
                 else
                 {
-                    // Create wall tile
+                    // For now, treat non-walkable tiles as walls. Door states can be
+                    // handled later by adding explicit door tile components.
                     CreateWallTile(x, y);
                 }
             }
@@ -738,15 +744,10 @@ public class GameWorld
     /// </summary>
     public bool TryPickupItem()
     {
-        if (!PlayerEntity.IsAlive() || !PlayerEntity.Has<Inventory>())
+        if (!PlayerEntity.IsAlive())
             return false;
 
-        ref var inventory = ref PlayerEntity.Get<Inventory>();
         var playerPos = PlayerEntity.Get<Position>();
-
-        // Check if inventory is full
-        if (inventory.IsFull)
-            return false;
 
         // Find pickup items at player position
         var pickupQuery = new QueryDescription().WithAll<Position, Item, Pickup>();
@@ -767,6 +768,49 @@ public class GameWorld
         var item = itemToPickup.Value.Get<Item>();
         string itemName = item.Name;
         string itemType = item.Type.ToString();
+
+        // If an inventory service is available, use it as the primary inventory path
+        if (_inventoryService != null)
+        {
+            // Attempt to add a single instance of this item to the game-level inventory
+            var added = _inventoryService.TryAddItem(PlayerEntity, itemName, 1);
+            if (!added)
+            {
+                return false;
+            }
+
+            // Remove position and pickup components (item is now in inventory)
+            itemToPickup.Value.Remove<Position>();
+            itemToPickup.Value.Remove<Pickup>();
+
+            // Publish ItemPickedUpEvent
+            if (_itemPickedUpPublisher != null)
+            {
+                _itemPickedUpPublisher.Publish(new ItemPickedUpEvent
+                {
+                    ItemName = itemName,
+                    ItemType = itemType
+                });
+            }
+            // Publish plugin-facing ItemPickedUpEvent
+            TryPublishPluginEvent(new PluginEvents.ItemPickedUpEvent
+            {
+                ItemName = itemName,
+                ItemType = itemType
+            });
+
+            return true;
+        }
+
+        // Legacy path: use ECS Inventory component
+        if (!PlayerEntity.Has<Inventory>())
+            return false;
+
+        ref var inventory = ref PlayerEntity.Get<Inventory>();
+
+        // Check if inventory is full
+        if (inventory.IsFull)
+            return false;
 
         // Remove position and pickup components (item is now in inventory)
         itemToPickup.Value.Remove<Position>();

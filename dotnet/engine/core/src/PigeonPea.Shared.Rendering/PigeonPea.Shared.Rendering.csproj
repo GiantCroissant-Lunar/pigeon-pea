@@ -6,7 +6,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="2.88.7" />
     <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Primitives\CurveSmoothing.cs" />
   </ItemGroup>
 </Project>

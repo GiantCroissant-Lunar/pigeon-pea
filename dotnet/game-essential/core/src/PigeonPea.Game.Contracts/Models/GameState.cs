@@ -1,4 +1,4 @@
-namespace PigeonPea.Game.Contracts;
+namespace PigeonPea.Game.Contracts.Models;
 
 /// <summary>
 /// Minimal placeholder for game state consumed by renderers.

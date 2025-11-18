@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddTransient<InventoryViewModel>();
         services.AddTransient<MessageLogViewModel>();
         services.AddTransient<MapViewModel>();
+        services.AddTransient<HudScaleViewModel>();
 
         return services;
     }

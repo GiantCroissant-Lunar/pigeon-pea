@@ -4,6 +4,7 @@ using System.Linq;
 using Arch.Core;
 using MessagePipe;
 using ObservableCollections;
+using PigeonPea.Game.Contracts.Inventory.Services;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Events;
 using ReactiveUI;
@@ -23,6 +24,8 @@ public class InventoryViewModel : ReactiveObject, IDisposable
     /// Observable collection of items in the inventory.
     /// </summary>
     public ObservableList<ItemViewModel> Items { get; } = new();
+
+    public ObservableList<InventorySlotViewModel> Slots { get; } = new();
 
     /// <summary>
     /// The index of the currently selected item.
@@ -149,6 +152,44 @@ public class InventoryViewModel : ReactiveObject, IDisposable
                 existingViewModel.Name = item.Name;
                 existingViewModel.Type = item.Type;
             }
+        }
+    }
+
+    public void UpdateFromInventoryView(InventoryView view)
+    {
+        if (view == null)
+        {
+            return;
+        }
+
+        var slots = view.Slots ?? Array.Empty<InventorySlotView>();
+
+        while (Slots.Count < slots.Count)
+        {
+            Slots.Add(new InventorySlotViewModel());
+        }
+
+        while (Slots.Count > slots.Count)
+        {
+            Slots.RemoveAt(Slots.Count - 1);
+        }
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            var dto = slots[i];
+            var vm = Slots[i];
+            vm.SlotIndex = dto.SlotIndex;
+            vm.DefinitionId = dto.DefinitionId;
+            vm.Quantity = dto.Quantity;
+        }
+
+        if (Slots.Count == 0)
+        {
+            SelectedIndex = -1;
+        }
+        else if (SelectedIndex >= Slots.Count)
+        {
+            SelectedIndex = Slots.Count - 1;
         }
     }
 

@@ -7,6 +7,7 @@ public struct PlanComponent
 {
     public Plan? CurrentPlan { get; set; }
     public int CurrentActionIndex { get; set; }
+    public float LastPlanningTime { get; set; }
 
     public GoapAction? CurrentAction =>
         CurrentPlan != null && CurrentActionIndex >= 0 && CurrentActionIndex < CurrentPlan.Actions.Count

@@ -7,12 +7,10 @@
   "cooldownSeconds": 2.0,
   "activationPolicy": "Always",
   "cost": {
-    "modifiers": [
-      { "attributeId": "Mana", "operation": "Add", "magnitude": -10.0 }
-    ]
+    "modifiers": [{ "attributeId": "Mana", "operation": "Add", "magnitude": -10.0 }]
   },
-  "activationRequiredTags": [ "State.Alive" ],
-  "activationBlockedTags": [ "State.Stunned", "State.Silenced" ],
+  "activationRequiredTags": ["State.Alive"],
+  "activationBlockedTags": ["State.Stunned", "State.Silenced"],
   "targeting": {
     "type": "SingleTarget",
     "range": 10.0,
