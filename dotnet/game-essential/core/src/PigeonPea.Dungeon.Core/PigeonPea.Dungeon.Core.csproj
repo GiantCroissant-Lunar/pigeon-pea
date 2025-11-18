@@ -11,6 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PigeonPea.Overlays\PigeonPea.Overlays.csproj" />
-    <ProjectReference Include="..\..\..\.._lib\modern-edgar-dotnet\ref-projects\Edgar-DotNet\src\Edgar\Edgar.csproj" />
+    <ProjectReference Include="..\..\..\..\_lib\modern-edgar-dotnet\ref-projects\Edgar-DotNet\src\Edgar\Edgar.csproj" />
   </ItemGroup>
 </Project>
