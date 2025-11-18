@@ -340,9 +340,10 @@ impl WebSocketServer {
         Ok(())
     }
 
+    #[allow(dead_code)]
     pub async fn broadcast_to_all_clients(
         app_state: &Arc<Mutex<AppState>>,
-        message: Envelope,
+        _message: Envelope,
     ) -> Result<()> {
         let client_ids: Vec<String> = {
             let state = app_state.lock().unwrap();
@@ -360,6 +361,7 @@ impl WebSocketServer {
         Ok(())
     }
 
+    #[allow(dead_code)]
     pub async fn send_to_client(
         _app_state: &Arc<Mutex<AppState>>,
         _client_id: &str,

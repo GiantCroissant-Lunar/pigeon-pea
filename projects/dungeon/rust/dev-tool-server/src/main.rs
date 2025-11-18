@@ -44,18 +44,22 @@ async fn main() -> Result<()> {
 
     // Start event loop in background
     let tx = app.event_handler.get_tx();
-    tokio::spawn(async move {
+    let event_loop_handle = tokio::spawn(async move {
         let event_loop = events::EventLoop::new(tx);
         if let Err(e) = event_loop.run(app_state.clone()).await {
             eprintln!("Event loop error: {}", e);
         }
     });
 
-    // Run main application
+    // Run main application (blocks until user quits)
     app.run().await?;
 
-    // Wait for server to finish
-    server_handle.await?;
+    // Cleanup: abort background tasks
+    event_loop_handle.abort();
+    server_handle.abort();
+
+    // Give a moment for cleanup
+    tokio::time::sleep(tokio::time::Duration::from_millis(100)).await;
 
     Ok(())
 }

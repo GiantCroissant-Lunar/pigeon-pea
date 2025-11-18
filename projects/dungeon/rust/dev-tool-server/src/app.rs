@@ -18,6 +18,7 @@ use std::sync::{Arc, Mutex};
 use crate::events::{Event, EventHandler};
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct ClientConnection {
     pub id: String,
     pub address: std::net::SocketAddr,
@@ -73,6 +74,7 @@ impl LogEntry {
         }
     }
 
+    #[allow(dead_code)]
     pub fn error(source: &str, message: &str) -> Self {
         Self {
             timestamp: Utc::now(),
@@ -93,6 +95,7 @@ impl LogEntry {
 }
 
 #[derive(Debug, Clone)]
+#[allow(dead_code)]
 pub struct AppState {
     pub auth_token: String,
     pub clients: HashMap<String, ClientConnection>,
@@ -134,10 +137,12 @@ impl AppState {
         self.clients.remove(id);
     }
 
+    #[allow(dead_code)]
     pub fn get_client_ids(&self) -> Vec<String> {
         self.clients.keys().cloned().collect()
     }
 
+    #[allow(dead_code)]
     pub fn get_selected_client_id(&self) -> Option<String> {
         self.clients
             .keys()
@@ -225,18 +230,14 @@ impl App {
     }
 
     async fn handle_key_event(&mut self, key: KeyEvent) -> Result<()> {
-        eprintln!("[KEY_HANDLER] Received key event: {:?}", key);
         match key.code {
             // Handle Ctrl+C first (more specific pattern)
             KeyCode::Char('c') if key.modifiers.contains(KeyModifiers::CONTROL) => {
-                eprintln!("[KEY_HANDLER] Ctrl+C detected, quitting");
                 self.should_quit = true;
             }
             KeyCode::Char(c) => {
-                eprintln!("[KEY_HANDLER] Processing char: '{}' (before push)", c);
                 let mut state = self.state.lock().unwrap();
                 state.current_command.push(c);
-                eprintln!("[KEY_HANDLER] Current command is now: '{}'", state.current_command);
                 drop(state);
             }
             KeyCode::Backspace => {
