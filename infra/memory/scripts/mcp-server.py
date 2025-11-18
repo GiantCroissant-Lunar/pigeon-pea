@@ -13,11 +13,11 @@ Usage:
   }
 """
 import json
-import sys
 import logging
+import sys
 from datetime import datetime
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 # Configuration (parent.parent because we're in scripts/ subdirectory)
 MEMORY_FILE = Path(__file__).parent.parent / "data" / "project-memory.jsonl"
