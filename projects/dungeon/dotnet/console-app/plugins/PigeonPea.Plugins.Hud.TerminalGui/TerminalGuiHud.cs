@@ -19,6 +19,7 @@ public class TerminalGuiHud : IGameHud
 {
     private ILogger? _logger;
     private HudContext? _context;
+    private IRenderer? _renderer;
 
     public string Id => "terminal-gui-hud";
 
@@ -86,22 +87,25 @@ public class TerminalGuiHud : IGameHud
 
                         if (inventoryViewModel != null)
                         {
-                            // Create a small local GameWorld for HUD inventory demo
-                            var world = new GameWorld(width: 80, height: 50, eventBus: null, inventoryService: inventoryService);
-                            world.EnsurePlayerInventory(maxSlots: 8, maxWeight: 5f);
-                            var player = world.PlayerEntity;
-
-                            // Seed a few test items into the player's inventory
-                            inventoryService.TryAddItem(player, "health_potion_small", 3);
-                            hudLogLines.Add("[TerminalGuiHud] Seeded inventory: health_potion_small x3");
-
-                            var view = inventoryService.GetInventory(player);
-                            inventoryViewModel.UpdateFromInventoryView(view);
+                            hudLogLines.Add("[TerminalGuiHud] Inventory demo is currently disabled (no GameWorld integration).");
                         }
                     }
                     else
                     {
                         hudLogLines.Add("[TerminalGuiHud] No inventory service registered in registry.");
+                    }
+
+                    // Resolve renderer plugin if available (e.g., ANSI terminal renderer)
+                    if (registry.IsRegistered<IRenderer>())
+                    {
+                        _renderer = registry.Get<IRenderer>();
+                        var rendererType = _renderer.GetType().FullName ?? "(unknown)";
+                        _logger?.LogInformation("[TerminalGuiHud] Renderer plugin detected: {RendererType}", rendererType);
+                        hudLogLines.Add($"[TerminalGuiHud] Renderer plugin detected: {rendererType}");
+                    }
+                    else
+                    {
+                        hudLogLines.Add("[TerminalGuiHud] No renderer plugin registered in registry.");
                     }
                 }
             }

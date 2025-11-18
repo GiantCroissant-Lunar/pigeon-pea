@@ -9,7 +9,11 @@
   "entryPoint": {
     "dotnet.console": "PigeonPea.Plugins.Hud.TerminalGui.dll,PigeonPea.Plugins.Hud.TerminalGui.TerminalGuiHudPlugin"
   },
-  "dependencies": [],
+  "dependencies": [
+    {
+      "id": "config-service"
+    }
+  ],
   "priority": 100,
   "loadStrategy": "eager"
 }

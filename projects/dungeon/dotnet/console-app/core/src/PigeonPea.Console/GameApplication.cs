@@ -1,5 +1,3 @@
-using System;
-using System.Threading;
 using Arch.Core;
 using Arch.Core.Extensions;
 using PigeonPea.Console.Rendering;

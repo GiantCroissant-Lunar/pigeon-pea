@@ -1,6 +1,5 @@
-using System;
+using System.Collections.Generic;
 using System.CommandLine;
-using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,6 +8,7 @@ using Arch.Core;
 using Arch.Core.Extensions;
 using Scrutor;
 using PigeonPea.Console.Rendering;
+using PigeonPea.Contracts.Config.Extensions;
 using PigeonPea.Contracts.Plugin;
 using PigeonPea.Game.Contracts;
 using PigeonPea.Game.Contracts.Models;
@@ -21,6 +21,7 @@ using PigeonPea.Shared.Rendering;
 using Serilog;
 using Terminal.Gui;
 using IInventoryService = PigeonPea.Game.Contracts.Inventory.Services.IService;
+using IConfigService = PigeonPea.Contracts.Config.Services.IService;
 
 namespace PigeonPea.Console;
 
@@ -46,11 +47,20 @@ static class GameEntrypoint
     public static int Run(string[] args)
     {
         RuntimeLog($"Args: {string.Join(' ', args)}");
+        // Base configuration: defaults + appsettings.json
+        var baseConfig = new ConfigurationBuilder()
+            .SetBasePath(AppContext.BaseDirectory)
+            .AddInMemoryCollection(new Dictionary<string, string?>
+            {
+                ["Game:Renderer"] = "plugin",
+                ["Game:DungeonGen"] = "modern-edgar",
+            })
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
+            .Build();
 
         var rendererOption = new Option<string>("--renderer")
         {
-            Description = "Renderer to use (auto, kitty, sixel, braille, ascii, plugin, hud)",
-            DefaultValueFactory = _ => "plugin"
+            Description = "Renderer to use (auto, kitty, sixel, braille, ascii, plugin, plugin-hud, hud)",
         };
 
         var debugOption = new Option<bool>("--debug")
@@ -61,7 +71,6 @@ static class GameEntrypoint
         var dungeonGenOption = new Option<string>("--dungeon-gen")
         {
             Description = "Dungeon generator to use (basic, modern-edgar)",
-            DefaultValueFactory = _ => "modern-edgar"
         };
 
         var widthOption = new Option<int?>("--width")
@@ -83,13 +92,28 @@ static class GameEntrypoint
 
         rootCommand.SetAction((parseResult) =>
         {
-            var renderer = parseResult.GetValue(rendererOption);
+            var rendererArg = parseResult.GetValue(rendererOption);
             var debug = parseResult.GetValue(debugOption);
             var width = parseResult.GetValue(widthOption);
             var height = parseResult.GetValue(heightOption);
-            var dungeonGen = parseResult.GetValue(dungeonGenOption);
+            var dungeonGenArg = parseResult.GetValue(dungeonGenOption);
 
-            RunGame(renderer!, debug, width, height, dungeonGen!);
+            var configRenderer = baseConfig["Game:Renderer"];
+            var configDungeonGen = baseConfig["Game:DungeonGen"];
+
+            var renderer = !string.IsNullOrWhiteSpace(rendererArg)
+                ? rendererArg
+                : !string.IsNullOrWhiteSpace(configRenderer)
+                    ? configRenderer!
+                    : "plugin";
+
+            var dungeonGen = !string.IsNullOrWhiteSpace(dungeonGenArg)
+                ? dungeonGenArg
+                : !string.IsNullOrWhiteSpace(configDungeonGen)
+                    ? configDungeonGen!
+                    : "modern-edgar";
+
+            RunGame(renderer, debug, width, height, dungeonGen);
         });
 
         return rootCommand.Parse(args).Invoke();
@@ -103,6 +127,13 @@ static class GameEntrypoint
         if (renderer.Equals("hud", StringComparison.OrdinalIgnoreCase))
         {
             RunGameHudWithPlugins(debug, width, height, dungeonGen);
+            return;
+        }
+
+        // Combined Terminal.Gui HUD + plugin renderer
+        if (renderer.Equals("plugin-hud", StringComparison.OrdinalIgnoreCase))
+        {
+            RunGameWithPluginsInTerminalGui(debug, width, height, dungeonGen);
             return;
         }
 
@@ -177,6 +208,13 @@ static class GameEntrypoint
         // Build host with plugin system
         var builder = Host.CreateApplicationBuilder();
 
+        // In-memory defaults for game configuration (can be overridden by appsettings.json, env vars, etc.)
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Game:Renderer"] = "plugin",
+            ["Game:DungeonGen"] = "modern-edgar",
+        });
+
         var appSettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
         if (File.Exists(appSettingsPath))
         {
@@ -190,6 +228,9 @@ static class GameEntrypoint
         // Add plugin system
         builder.Services.AddPluginSystem(builder.Configuration);
 
+        // Expose config service proxy so components can access configuration via IConfigService
+        builder.Services.AddConfigServiceProxy();
+
         // Add Pigeon Pea services
         builder.Services.AddPigeonPeaServices();
 
@@ -202,13 +243,19 @@ static class GameEntrypoint
         var host = builder.Build();
         var logger = host.Services.GetRequiredService<ILogger<ConsoleAssemblyMarker>>();
 
-        // Start the host and wait for plugin system to complete loading
-        host.StartAsync().Wait();
-
         try
         {
+            // Start the host and wait for plugin system to complete loading
+            host.StartAsync().Wait();
+
             // Get registry from plugin system
             var registry = host.Services.GetRequiredService<IRegistry>();
+
+            // Resolve configuration values via the config service proxy (backed by IConfiguration)
+            var configService = host.Services.GetRequiredService<IConfigService>();
+            var configuredRenderer = configService.GetValue("Game:Renderer");
+            var configuredDungeonGen = configService.GetValue("Game:DungeonGen");
+            logger.LogInformation("Config service values: Game:Renderer={Renderer}, Game:DungeonGen={DungeonGen}", configuredRenderer, configuredDungeonGen);
 
             // Inventory service probe + simple test using the real GameWorld player entity
             if (registry.IsRegistered<IInventoryService>())
@@ -357,6 +404,140 @@ static class GameEntrypoint
             System.Console.WriteLine("\nPlugin-based rendering complete. Press any key to exit...");
             System.Console.ReadKey(true);
         }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unhandled exception in plugin renderer pipeline");
+            throw;
+        }
+        finally
+        {
+            host.StopAsync().Wait();
+            host.Dispose();
+        }
+    }
+
+    static void RunGameWithPluginsInTerminalGui(bool debug, int? width, int? height, string dungeonGen)
+    {
+        RuntimeLog($"RunGameWithPluginsInTerminalGui debug={debug}, width={width}, height={height}");
+
+        var builder = Host.CreateApplicationBuilder();
+
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Game:Renderer"] = "plugin-hud",
+            ["Game:DungeonGen"] = "modern-edgar",
+        });
+
+        var appSettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+        if (File.Exists(appSettingsPath))
+        {
+            builder.Configuration.AddJsonFile(appSettingsPath, optional: false, reloadOnChange: false);
+        }
+
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSerilog();
+
+        builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddConfigServiceProxy();
+        builder.Services.AddPigeonPeaServices();
+
+        builder.Services.Scan(scan => scan
+            .FromAssemblyOf<ConsoleAssemblyMarker>()
+            .AddClasses()
+            .AsImplementedInterfaces()
+            .WithSingletonLifetime());
+
+        var host = builder.Build();
+        var logger = host.Services.GetRequiredService<ILogger<ConsoleAssemblyMarker>>();
+
+        try
+        {
+            host.StartAsync().Wait();
+
+            var registry = host.Services.GetRequiredService<IRegistry>();
+
+            if (!registry.IsRegistered<PigeonPea.Game.Contracts.Rendering.IRenderer>())
+            {
+                System.Console.WriteLine("Error: No renderer plugin loaded!");
+                System.Console.WriteLine("Make sure the renderer plugin is built and in the plugins directory.");
+                logger.LogError("No renderer plugin loaded. Ensure the renderer plugin is built and present in the plugins directory.");
+                return;
+            }
+
+            var pluginRenderer = registry.Get<PigeonPea.Game.Contracts.Rendering.IRenderer>();
+            System.Console.WriteLine($"Loaded renderer plugin: {pluginRenderer.Id}");
+            logger.LogInformation(
+                "Loaded renderer plugin: {RendererId}, Type={RendererType}",
+                pluginRenderer.Id,
+                pluginRenderer.GetType().FullName);
+
+            var renderWidth = width ?? 80;
+            var renderHeight = height ?? 24;
+
+            if (debug)
+            {
+                System.Console.WriteLine("Plugin HUD debug mode: ENABLED");
+                System.Console.WriteLine($"Plugin HUD dimensions: {renderWidth}x{renderHeight}");
+                logger.LogInformation(
+                    "Plugin HUD debug: ENABLED, dimensions {Width}x{Height}",
+                    renderWidth,
+                    renderHeight);
+            }
+
+            var renderContext = new RenderContext
+            {
+                Width = renderWidth,
+                Height = renderHeight,
+                Services = host.Services
+            };
+
+            var gameState = new GameState();
+
+            Application.Init();
+
+            try
+            {
+                var top = new Toplevel
+                {
+                    X = 0,
+                    Y = 0,
+                    Width = Dim.Fill(),
+                    Height = Dim.Fill()
+                };
+
+                var frame = new FrameView
+                {
+                    Title = "Plugin Renderer (Terminal.Gui)",
+                    X = 0,
+                    Y = 0,
+                    Width = Dim.Fill(),
+                    Height = Dim.Fill()
+                };
+
+                var panel = new PluginRendererPanelView(pluginRenderer, renderContext, gameState)
+                {
+                    X = 0,
+                    Y = 0,
+                    Width = Dim.Fill(),
+                    Height = Dim.Fill()
+                };
+
+                frame.Add(panel);
+                top.Add(frame);
+
+                Application.Run(top);
+            }
+            finally
+            {
+                Application.Shutdown();
+                pluginRenderer.Shutdown();
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unhandled exception in plugin renderer Terminal.Gui pipeline");
+            throw;
+        }
         finally
         {
             host.StopAsync().Wait();
@@ -371,12 +552,28 @@ static class GameEntrypoint
         // Build host with plugin system
         var builder = Host.CreateApplicationBuilder();
 
+        // In-memory defaults for game configuration (can be overridden by appsettings.json, env vars, etc.)
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Game:Renderer"] = "plugin",
+            ["Game:DungeonGen"] = "modern-edgar",
+        });
+
+        var appSettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+        if (File.Exists(appSettingsPath))
+        {
+            builder.Configuration.AddJsonFile(appSettingsPath, optional: false, reloadOnChange: false);
+        }
+
         // Configure logging to use Serilog (configured at the entrypoint)
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilog();
 
         // Add plugin system
         builder.Services.AddPluginSystem(builder.Configuration);
+
+        // Expose config service proxy so components can access configuration via IConfigService
+        builder.Services.AddConfigServiceProxy();
 
         // Add Pigeon Pea services
         builder.Services.AddPigeonPeaServices();
@@ -447,6 +644,11 @@ static class GameEntrypoint
             hud.Run(gameState);
 
             hud.Shutdown();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unhandled exception in HUD pipeline");
+            throw;
         }
         finally
         {

@@ -1,4 +1,3 @@
-using System;
 using PigeonPea.Console;
 using Terminal.Gui;
 

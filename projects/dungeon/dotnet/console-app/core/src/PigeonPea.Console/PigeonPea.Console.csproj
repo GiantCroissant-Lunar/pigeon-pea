@@ -52,6 +52,9 @@
     <!-- Plugin System -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
 
+    <!-- Config plugin so its outputs are copied into the console app's plugins folder -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\plugins\src\PigeonPea.Plugins.Config\PigeonPea.Plugins.Config.csproj" PrivateAssets="all" />
+
     <!-- Game Contracts for IRenderer -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
 

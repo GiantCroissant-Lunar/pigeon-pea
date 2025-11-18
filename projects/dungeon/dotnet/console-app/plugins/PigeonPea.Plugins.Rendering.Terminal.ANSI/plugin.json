@@ -9,7 +9,11 @@
   "entryPoint": {
     "dotnet.console": "PigeonPea.Plugins.Rendering.Terminal.ANSI.dll,PigeonPea.Plugins.Rendering.Terminal.ANSI.ANSIRendererPlugin"
   },
-  "dependencies": [],
+  "dependencies": [
+    {
+      "id": "config-service"
+    }
+  ],
   "priority": 100,
   "loadStrategy": "eager"
 }

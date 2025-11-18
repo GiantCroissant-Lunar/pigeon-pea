@@ -1,4 +1,3 @@
-using System;
 using PigeonPea.Console.Rendering;
 
 namespace PigeonPea.Console;

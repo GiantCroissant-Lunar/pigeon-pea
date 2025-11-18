@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using Serilog;
 using Serilog.Events;
 using PigeonPea.Console;

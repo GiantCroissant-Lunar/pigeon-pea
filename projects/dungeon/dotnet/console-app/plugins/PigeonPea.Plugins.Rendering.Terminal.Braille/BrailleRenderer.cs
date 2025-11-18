@@ -46,6 +46,15 @@ public class BrailleRenderer : IRenderer
             return;
         }
 
+        if (_context.Surface is IRenderSurface surface)
+        {
+            _logger.LogInformation("Braille renderer using shared surface {SurfaceType} at size {Width}x{Height}", surface.GetType().FullName, _context.Width, _context.Height);
+            RenderToSurface(surface);
+            return;
+        }
+
+        _logger.LogInformation("Braille renderer falling back to direct console rendering; no shared surface available.");
+
         _buffer.Clear();
 
         _buffer.Append("\x1b[2J\x1b[H");
@@ -87,5 +96,33 @@ public class BrailleRenderer : IRenderer
     private void MoveCursor(int x, int y)
     {
         _buffer.Append(CultureInfo.InvariantCulture, $"\x1b[{y + 1};{x + 1}H");
+    }
+
+    private void RenderToSurface(IRenderSurface surface)
+    {
+        if (_context == null)
+        {
+            return;
+        }
+
+        var width = _context.Width;
+        var height = _context.Height;
+
+        surface.BeginFrame();
+        surface.Clear(0, 0, 0);
+        surface.SetViewport(0, 0, width, height);
+
+        var line1 = "[0mBraille Renderer";
+        var line2 = "[0mActive";
+
+        var centerX1 = Math.Max(0, width / 2 - line1.Length / 2);
+        var centerX2 = Math.Max(0, width / 2 - line2.Length / 2);
+        var centerY = height / 2;
+
+        surface.DrawText(centerX1, centerY - 1, line1, 255, 255, 255, 0, 0, 0);
+        surface.DrawText(centerX2, centerY + 1, line2, 255, 255, 255, 0, 0, 0);
+        surface.DrawText(0, 0, $"Mode: Braille  Size: {width}x{height}", 0, 255, 255, 0, 0, 0);
+
+        surface.EndFrame();
     }
 }
