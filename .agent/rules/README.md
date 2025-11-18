@@ -6,6 +6,16 @@ This directory contains rule definitions for agent behavior and constraints.
 
 Rules define how agents should behave, what constraints they must follow, and what policies govern their actions.
 
+## Available Rules
+
+### Core Rules
+
+- **`autonomous-development.md`** - Autonomous build, test, and fix workflow
+- **`build-artifacts-logs.md`** - Build artifacts and log locations
+- **`code-quality.md`** - Code quality standards
+- **`git-commit-rules.md`** - Git and commit requirements (CRITICAL)
+- **`documentation-management.md`** - Documentation workflow (RFC-012)
+
 ## File Format
 
 Rules can be defined in various formats:
@@ -14,9 +24,26 @@ Rules can be defined in various formats:
 - `.yaml` - Structured rule definitions
 - `.json` - JSON-formatted rule configurations
 
-## Example Rules
+## Key Rules Summary
 
-- Code quality standards
-- Security policies
-- Interaction guidelines
-- Domain-specific constraints
+### Autonomous Development
+
+**ALWAYS** build, run, test, and fix code yourself. Never ask user to do these tasks.
+
+### Build and Logs
+
+**ALWAYS** check logs after build/run. Logs are in `build/_artifacts/latest/`.
+
+### Git Commits
+
+**ALL COMMITS MUST PASS PRE-COMMIT HOOKS.** Run `pre-commit run --all-files` before committing.
+
+### Code Quality
+
+- .NET: Use `dotnet format`
+- Python: Use `black` and `isort`
+- JavaScript/TypeScript: Use `prettier`
+
+### Documentation
+
+Follow RFC-012 documentation management system. Check `docs/index/registry.json` before creating new docs.
