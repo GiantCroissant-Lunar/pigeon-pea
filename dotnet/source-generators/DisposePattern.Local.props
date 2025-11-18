@@ -1,0 +1,10 @@
+<Project>
+  <ItemGroup>
+    <!-- Use in-repo analyzer project as an analyzer for consumers -->
+    <ProjectReference Include="..\source-generators\General.DisposePattern.Set\General.DisposePattern\General.DisposePattern.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+    <!-- Attributes available to consumer code -->
+    <PackageReference Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
+  </ItemGroup>
+</Project>
