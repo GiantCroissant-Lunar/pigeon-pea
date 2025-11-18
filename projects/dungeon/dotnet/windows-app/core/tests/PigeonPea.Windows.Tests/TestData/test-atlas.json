@@ -1,0 +1,34 @@
+[
+  {
+    "Id": 1,
+    "Name": "red-sprite",
+    "X": 0,
+    "Y": 0,
+    "Width": 16,
+    "Height": 16
+  },
+  {
+    "Id": 2,
+    "Name": "green-sprite",
+    "X": 16,
+    "Y": 0,
+    "Width": 16,
+    "Height": 16
+  },
+  {
+    "Id": 3,
+    "Name": "blue-sprite",
+    "X": 0,
+    "Y": 16,
+    "Width": 16,
+    "Height": 16
+  },
+  {
+    "Id": 4,
+    "Name": "yellow-sprite",
+    "X": 16,
+    "Y": 16,
+    "Width": 16,
+    "Height": 16
+  }
+]

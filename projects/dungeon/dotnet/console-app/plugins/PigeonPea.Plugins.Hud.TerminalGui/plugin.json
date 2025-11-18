@@ -1,0 +1,15 @@
+{
+  "id": "hud-terminal-terminalgui",
+  "name": "Terminal.Gui HUD",
+  "version": "1.0.0",
+  "description": "Terminal.Gui v2 HUD for Pigeon Pea console applications (placeholder)",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["hud", "hud:terminal-gui"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Hud.TerminalGui.dll,PigeonPea.Plugins.Hud.TerminalGui.TerminalGuiHudPlugin"
+  },
+  "dependencies": [],
+  "priority": 100,
+  "loadStrategy": "eager"
+}

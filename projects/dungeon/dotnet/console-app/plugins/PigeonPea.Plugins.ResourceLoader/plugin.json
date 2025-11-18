@@ -1,0 +1,15 @@
+{
+  "id": "resource-loader",
+  "name": "In-Memory Resource Loader",
+  "version": "1.0.0",
+  "description": "Minimal in-memory implementation of the shared Resource IService for console applications",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["resource", "resource:loader", "resource:in-memory"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.ResourceLoader.dll,PigeonPea.Plugins.ResourceLoader.ResourceLoaderPlugin"
+  },
+  "dependencies": [],
+  "priority": 200,
+  "loadStrategy": "eager"
+}

@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+  </ItemGroup>
+</Project>

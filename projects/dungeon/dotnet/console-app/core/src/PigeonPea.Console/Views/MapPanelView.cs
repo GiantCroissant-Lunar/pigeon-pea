@@ -1,0 +1,56 @@
+using PigeonPea.Console.Rendering;
+using PigeonPea.Map.Core;
+using PigeonPea.Shared.Rendering;
+using PigeonPea.SharedApp.Rendering;
+using Terminal.Gui;
+
+namespace PigeonPea.Console;
+
+/// <summary>
+/// A Terminal.Gui View that renders MapData within its bounds using TerminalGuiRenderer.
+/// </summary>
+public class MapPanelView : View
+{
+    private readonly TerminalGuiRenderer _renderer;
+    private readonly IRenderTarget _target;
+
+    public MapPanelView(MapData map)
+    {
+        Map = map;
+        // Use ASCII as underlying capability descriptor; TerminalGuiRenderer will draw via Driver
+        _renderer = new TerminalGuiRenderer(new AsciiRenderer(true));
+        _target = new TerminalGuiRenderTarget(this);
+        _renderer.Initialize(_target);
+        CanFocus = false;
+    }
+
+    public MapData Map { get; set; }
+    public int CameraX { get; set; }
+    public int CameraY { get; set; }
+    public double Zoom { get; set; } = 1.0;
+
+    protected override bool OnDrawingContent()
+    {
+        // Provide the current driver to the renderer
+        _renderer.SetDriver(Driver);
+
+        int w = Viewport.Width;
+        int h = Viewport.Height;
+        if (w <= 0 || h <= 0 || Map == null) return true;
+
+        _renderer.BeginFrame();
+        // Viewport in screen space (map occupies entire view region)
+        _renderer.SetViewport(new PigeonPea.Shared.Rendering.Viewport(0, 0, w, h));
+        _renderer.Clear(SadRogue.Primitives.Color.Black);
+
+        // World-space viewport based on camera/zoom
+        var worldViewport = new PigeonPea.Shared.Rendering.Viewport(CameraX, CameraY, w, h);
+        var layout = new RenderLayout(new ScreenRect(0, 0, w, h));
+
+        // Draw FMG map via shared MapDataRenderer (character path)
+        MapDataRenderer.Draw(_renderer, Map.Inner, worldViewport, showDungeonOverlay: false, zoom: Zoom, layout: layout);
+
+        _renderer.EndFrame();
+        return true;
+    }
+}

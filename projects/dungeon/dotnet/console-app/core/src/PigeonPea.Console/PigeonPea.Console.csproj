@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Terminal.Gui v2 for Console HUD -->
+    <PackageReference Include="Terminal.Gui" />
+
+    <!-- System.CommandLine for CLI argument parsing -->
+    <PackageReference Include="System.CommandLine" />
+
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Sinks.Console" />
+    <PackageReference Include="Serilog.Extensions.Hosting" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+    <PackageReference Include="Scrutor" />
+    <!-- Image encoding for iTerm2 graphics renderer -->
+    <PackageReference Include="SixLabors.ImageSharp" />
+
+    <!-- Terminal Graphics Support -->
+    <!-- Note: For Sixel/Kitty/Braille, we'll implement custom renderers -->
+    <!-- using ANSI escape sequences and terminal capabilities -->
+
+    <!-- Source Generators -->
+    <PackageReference Include="Plate.SCG.Shared.Attributes" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy configuration files to output -->
+    <None Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\..\scales.json" CopyToOutputDirectory="PreserveNewest" Link="scales.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Include HUD entrypoint living at console-app/TerminalHudApplication.cs -->
+    <Compile Update="TerminalHudApplication.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reference to Shared Game Logic -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+
+    <!-- Plugin System -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
+
+    <!-- Game Contracts for IRenderer -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+
+    <!-- Build inventory plugin so it copies into this console's plugins folder -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugins.Inventory.Basic\PigeonPea.Plugins.Inventory.Basic.csproj" PrivateAssets="all" />
+
+    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Hud.TerminalGui\PigeonPea.Plugins.Hud.TerminalGui.csproj" PrivateAssets="all" />
+
+    <!-- Game-level inventory ECS components for testing inventory service calls -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Items\PigeonPea.Game.Items.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Temporarily exclude dungeon/map HUD views so we can focus on plugin loading -->
+    <Compile Remove="TerminalHudApplication.cs" />
+    <Compile Remove="Views\BrailleMapPanelView.cs" />
+    <Compile Remove="Views\MapPanelView.cs" />
+    <Compile Remove="Views\PixelMapPanelView.cs" />
+    <Compile Remove="Views\DungeonPanelView.cs" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+Terminal: xterm-256color
+Supports Sixel: False
+Supports Kitty Graphics: False
+Supports Unicode Braille: True
+Renderer: auto
+
+Press any key to start...

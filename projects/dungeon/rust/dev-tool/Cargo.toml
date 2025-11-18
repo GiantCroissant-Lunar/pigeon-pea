@@ -1,0 +1,51 @@
+[package]
+name = "dungeon-dev-tool"
+version = "0.1.0"
+edition = "2021"
+authors = ["Pigeon Pea Team"]
+license = "MIT"
+repository = "https://github.com/GiantCroissant-Lunar/pigeon-pea"
+description = "Development CLI tool for Pigeon Pea dungeon game"
+
+[[bin]]
+name = "dev-tool"
+path = "src/main_simple.rs"
+
+[dependencies]
+# Protocol dependencies
+dungeon-protocol = { path = "../protocol" }
+
+# Async dependencies
+tokio = { version = "1.40", features = ["full"] }
+tokio-tungstenite = { version = "0.23" }
+futures-util = { version = "0.3" }
+async-trait = { version = "0.1" }
+
+# Serialization dependencies
+serde = { version = "1.0", features = ["derive"] }
+serde_json = { version = "1.0" }
+
+# Error handling dependencies
+anyhow = { version = "1.0" }
+thiserror = { version = "1.0" }
+
+# Logging dependencies
+tracing = { version = "0.1" }
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Utilities
+uuid = { version = "1.11", features = ["v4", "serde"] }
+
+# CLI dependencies
+clap = { version = "4.5", features = ["derive", "env"] }
+
+# Additional dependencies
+url = "2.5"
+base64 = "0.22"
+colored = "2.1"
+humantime = "2.1"
+chrono = { version = "0.4", features = ["serde"] }
+
+[dev-dependencies]
+tokio-test = { version = "0.4" }
+mockito = { version = "1.5" }

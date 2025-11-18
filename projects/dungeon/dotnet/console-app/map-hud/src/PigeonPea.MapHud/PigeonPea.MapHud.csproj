@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Minimal dependencies for a map-only HUD console app -->
+    <PackageReference Include="Terminal.Gui" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Map + rendering primitives only; avoid plugin/contracts graph for now -->
+    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,56 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Console & HUD -->
+    <PackageVersion Include="Terminal.Gui" Version="2.0.0" />
+    <PackageVersion Include="System.CommandLine" Version="2.0.0-rc.2.25502.107" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageVersion Include="Scrutor" Version="4.2.2" />
+    <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.12" />
+    <PackageVersion Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
+
+    <!-- Testing -->
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageVersion Include="xunit" Version="2.9.2" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
+    <PackageVersion Include="Moq" Version="4.20.72" />
+    <PackageVersion Include="FluentAssertions" Version="6.12.2" />
+
+    <!-- Logging and DI -->
+    <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+
+    <!-- Avalonia / Skia / UI -->
+    <PackageVersion Include="Avalonia" Version="11.2.2" />
+    <PackageVersion Include="Avalonia.Desktop" Version="11.2.2" />
+    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.2.2" />
+    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.2.2" />
+    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.2" />
+    <PackageVersion Include="Avalonia.Skia" Version="11.2.2" />
+    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.2.2" />
+    <PackageVersion Include="SkiaSharp" Version="3.116.1" />
+    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.116.1" />
+    <PackageVersion Include="Plate.SCG.General.DisposePattern" Version="0.1.0" />
+
+    <!-- Reactive / Fody -->
+    <PackageVersion Include="ReactiveUI" Version="20.1.1" />
+    <PackageVersion Include="ReactiveUI.Fody" Version="20.1.1" />
+    <PackageVersion Include="Fody" Version="6.8.0" />
+
+    <!-- Serilog -->
+    <PackageVersion Include="Serilog" Version="4.2.0" />
+    <PackageVersion Include="Serilog.Extensions.Logging" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+
+    <!-- Maps / Tiles -->
+    <PackageVersion Include="Mapsui" Version="5.0.0" />
+    <PackageVersion Include="BruTile" Version="6.0.0" />
+  </ItemGroup>
+</Project>
