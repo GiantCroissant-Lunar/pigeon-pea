@@ -224,7 +224,12 @@ public class PluginLoader
     public IEnumerable<string> GetConfiguredPluginPaths()
     {
         var section = _configuration.GetSection("PluginSystem:PluginPaths");
-        if (!section.Exists()) yield break;
+        if (!section.Exists())
+        {
+            yield return ExpandPath("plugins");
+            yield break;
+        }
+
         foreach (var child in section.GetChildren())
         {
             var value = child.Value;
