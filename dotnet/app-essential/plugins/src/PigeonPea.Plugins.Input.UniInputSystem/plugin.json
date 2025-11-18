@@ -1,0 +1,15 @@
+{
+  "id": "input-uni",
+  "name": "Uni Input System",
+  "version": "1.0.0",
+  "description": "Input IService implementation backed by NexusInput",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["input", "input:service", "input:uni"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Input.UniInputSystem.dll,PigeonPea.Plugins.Input.UniInputSystem.UniInputSystemPlugin"
+  },
+  "dependencies": [],
+  "priority": 200,
+  "loadStrategy": "eager"
+}

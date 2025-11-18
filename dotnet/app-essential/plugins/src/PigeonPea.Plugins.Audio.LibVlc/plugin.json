@@ -1,0 +1,15 @@
+{
+  "id": "audio-libvlc",
+  "name": "LibVLCSharp Audio Service",
+  "version": "1.0.0",
+  "description": "Audio IService implementation backed by LibVLCSharp",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["audio", "audio:service", "audio:libvlc"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Audio.LibVlc.dll,PigeonPea.Plugins.Audio.LibVlc.AudioLibVlcPlugin"
+  },
+  "dependencies": [],
+  "priority": 200,
+  "loadStrategy": "eager"
+}

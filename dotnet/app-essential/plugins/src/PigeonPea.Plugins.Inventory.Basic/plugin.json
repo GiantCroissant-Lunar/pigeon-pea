@@ -1,0 +1,15 @@
+{
+  "id": "inventory-basic",
+  "name": "Basic Inventory Service",
+  "version": "0.1.0",
+  "description": "Basic ECS-backed inventory service built on PigeonPea.Shared.Inventory.",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["inventory", "inventory:basic"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Inventory.Basic.dll,PigeonPea.Plugins.Inventory.Basic.InventoryBasicPlugin"
+  },
+  "dependencies": [],
+  "priority": 200,
+  "loadStrategy": "eager"
+}

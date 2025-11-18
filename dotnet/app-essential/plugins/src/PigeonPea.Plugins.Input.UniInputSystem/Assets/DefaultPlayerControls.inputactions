@@ -1,0 +1,113 @@
+{
+  "name": "DefaultPlayerControls",
+  "maps": [
+    {
+      "name": "Gameplay",
+      "actions": [
+        {
+          "name": "Move",
+          "type": "Value",
+          "expectedControlType": "Vector2"
+        },
+        {
+          "name": "Attack",
+          "type": "Button"
+        },
+        {
+          "name": "Interact",
+          "type": "Button"
+        },
+        {
+          "name": "Inventory",
+          "type": "Button"
+        },
+        {
+          "name": "Pause",
+          "type": "Button"
+        }
+      ],
+      "bindings": [
+        {
+          "name": "WASD",
+          "path": "",
+          "action": "Move",
+          "composite": "2DVector",
+          "compositeParts": [
+            { "name": "up", "path": "<Keyboard>/w" },
+            { "name": "down", "path": "<Keyboard>/s" },
+            { "name": "left", "path": "<Keyboard>/a" },
+            { "name": "right", "path": "<Keyboard>/d" }
+          ]
+        },
+        {
+          "name": "Arrow Keys",
+          "path": "",
+          "action": "Move",
+          "composite": "2DVector",
+          "compositeParts": [
+            { "name": "up", "path": "<Keyboard>/uparrow" },
+            { "name": "down", "path": "<Keyboard>/downarrow" },
+            { "name": "left", "path": "<Keyboard>/leftarrow" },
+            { "name": "right", "path": "<Keyboard>/rightarrow" }
+          ]
+        },
+        {
+          "path": "<Keyboard>/space",
+          "action": "Attack"
+        },
+        {
+          "path": "<Keyboard>/e",
+          "action": "Interact"
+        },
+        {
+          "path": "<Keyboard>/i",
+          "action": "Inventory"
+        },
+        {
+          "path": "<Keyboard>/escape",
+          "action": "Pause"
+        }
+      ]
+    },
+    {
+      "name": "UI",
+      "actions": [
+        {
+          "name": "Navigate",
+          "type": "Value",
+          "expectedControlType": "Vector2"
+        },
+        {
+          "name": "Submit",
+          "type": "Button"
+        },
+        {
+          "name": "Cancel",
+          "type": "Button"
+        }
+      ],
+      "bindings": [
+        {
+          "name": "Arrow Keys",
+          "path": "",
+          "action": "Navigate",
+          "composite": "2DVector",
+          "compositeParts": [
+            { "name": "up", "path": "<Keyboard>/uparrow" },
+            { "name": "down", "path": "<Keyboard>/downarrow" },
+            { "name": "left", "path": "<Keyboard>/leftarrow" },
+            { "name": "right", "path": "<Keyboard>/rightarrow" }
+          ]
+        },
+        {
+          "path": "<Keyboard>/enter",
+          "action": "Submit"
+        },
+        {
+          "path": "<Keyboard>/escape",
+          "action": "Cancel"
+        }
+      ]
+    }
+  ]
+}

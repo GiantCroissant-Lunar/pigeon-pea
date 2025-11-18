@@ -1,0 +1,15 @@
+{
+  "id": "config-service",
+  "name": "Configuration-backed Config Service",
+  "version": "1.0.0",
+  "description": "Config IService implementation backed by Microsoft.Extensions.Configuration",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["config", "config:service", "config:msconfiguration"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Config.dll,PigeonPea.Plugins.Config.ConfigPlugin"
+  },
+  "dependencies": [],
+  "priority": 200,
+  "loadStrategy": "eager"
+}
