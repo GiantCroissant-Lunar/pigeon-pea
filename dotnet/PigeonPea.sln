@@ -5,9 +5,9 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared", "game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj", "{A1234567-1234-1234-1234-123456789ABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Windows", "windows-app\core\src\PigeonPea.Windows\PigeonPea.Windows.csproj", "{B1234567-1234-1234-1234-123456789ABC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Windows", "..\projects\dungeon\dotnet\windows-app\core\src\PigeonPea.Windows\PigeonPea.Windows.csproj", "{B1234567-1234-1234-1234-123456789ABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Console", "console-app\core\src\PigeonPea.Console\PigeonPea.Console.csproj", "{C1234567-1234-1234-1234-123456789ABC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Console", "..\projects\dungeon\dotnet\console-app\core\src\PigeonPea.Console\PigeonPea.Console.csproj", "{C1234567-1234-1234-1234-123456789ABC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared-app.Tests", "shared-app.Tests", "{054E098A-DE7F-C2E2-D498-DCF28B4B3A18}"
 EndProject
@@ -15,11 +15,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Tests", "g
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "console-app.Tests", "console-app.Tests", "{91848824-DE2F-F91E-F172-D8D4BD0164AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Console.Tests", "console-app\core\tests\PigeonPea.Console.Tests\PigeonPea.Console.Tests.csproj", "{A2C8A177-2A96-4DD2-B928-C557DF75A173}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Console.Tests", "..\projects\dungeon\dotnet\console-app\core\tests\PigeonPea.Console.Tests\PigeonPea.Console.Tests.csproj", "{A2C8A177-2A96-4DD2-B928-C557DF75A173}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "windows-app.Tests", "windows-app.Tests", "{F21C9BF3-AE8D-BEA1-BF85-B7CF85C223EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Windows.Tests", "windows-app\core\tests\PigeonPea.Windows.Tests\PigeonPea.Windows.Tests.csproj", "{105033B4-9881-496C-AD05-FB0023623922}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Windows.Tests", "..\projects\dungeon\dotnet\windows-app\core\tests\PigeonPea.Windows.Tests\PigeonPea.Windows.Tests.csproj", "{105033B4-9881-496C-AD05-FB0023623922}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "benchmarks", "benchmarks", "{66320409-64EC-F7C5-3DEF-65E7510DAAD1}"
 EndProject
@@ -43,7 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "console-app", "console-app"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{2888333E-3AC2-D8FF-2B50-8CDB78D3AFA4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugins.Rendering.Terminal.ANSI", "console-app\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj", "{460ACF5B-8DAD-47DD-AA3A-DF10D331C11C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugins.Rendering.Terminal.ANSI", "..\projects\dungeon\dotnet\console-app\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj", "{460ACF5B-8DAD-47DD-AA3A-DF10D331C11C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

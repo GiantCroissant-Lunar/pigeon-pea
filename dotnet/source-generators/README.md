@@ -14,6 +14,35 @@ The generator is already installed in the following projects:
 - `PigeonPea.Windows`
 - `PigeonPea.Shared`
 
+Quick add via MSBuild props (recommended):
+
+- Use in-repo analyzer (preferred during development):
+
+  ```xml
+  <!-- Adjust relative path as needed from your project folder -->
+  <Import Project="..\source-generators\DisposePattern.Local.props" />
+  ```
+
+- Or consume from local NuGet packages:
+
+  ```xml
+  <!-- Adjust the relative path from your project folder to dotnet/source-generators/DisposePattern.props -->
+  <Import Project="..\source-generators\DisposePattern.props" />
+  ```
+
+- Or add direct references explicitly:
+
+  ```xml
+  <ItemGroup>
+    <!-- In-repo analyzer -->
+    <ProjectReference Include="..\source-generators\General.DisposePattern.Set\General.DisposePattern\General.DisposePattern.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+    <!-- Attributes package -->
+    <PackageReference Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
+  </ItemGroup>
+  ```
+
 ### Usage
 
 1. **Mark your class with the `[DisposePattern]` attribute**:
