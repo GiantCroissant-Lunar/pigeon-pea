@@ -31,6 +31,7 @@ interface IPublish : ICompile
 
     Target Publish => _ => _
         .DependsOn(Compile)
+        .AssuredAfterFailure()
         .Executes(() =>
         {
             var projects = Solution.AllProjects
@@ -50,14 +51,26 @@ interface IPublish : ICompile
                     $"Version: {ArtifactsVersion}{Environment.NewLine}" +
                     $"Runtime: {Runtime}{Environment.NewLine}" +
                     $"Configuration: {Configuration}{Environment.NewLine}" +
-                    $"Project: {project.Name}{Environment.NewLine}{Environment.NewLine}");
+                    $"Project: {project.Name}{Environment.NewLine}");
 
-                DotNetPublish(s => s
-                    .SetProject(project)
-                    .SetConfiguration(Configuration)
-                    .SetOutput(PublishDirectory / project.Name)
-                    .SetRuntime(Runtime)
-                    .SetSelfContained(SelfContained));
+                try
+                {
+                    DotNetPublish(s => s
+                        .SetProject(project)
+                        .SetConfiguration(Configuration)
+                        .SetOutput(PublishDirectory / project.Name)
+                        .SetRuntime(Runtime)
+                        .SetSelfContained(SelfContained));
+
+                    File.AppendAllText(metaFile,
+                        $"Status: Success{Environment.NewLine}{Environment.NewLine}");
+                }
+                catch (Exception ex)
+                {
+                    File.AppendAllText(metaFile,
+                        $"Status: Failed{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}");
+                    throw;
+                }
             }
         });
 
@@ -66,6 +79,7 @@ interface IPublish : ICompile
     /// </summary>
     Target PublishPlayers => _ => _
         .DependsOn<IRestore>()
+        .AssuredAfterFailure()
         .Executes(() =>
         {
             var playerNames = new[] { "PigeonPea.Console", "PigeonPea.Windows" };
@@ -104,19 +118,50 @@ interface IPublish : ICompile
                     $"Version: {ArtifactsVersion}{Environment.NewLine}" +
                     $"Runtime: {Runtime}{Environment.NewLine}" +
                     $"Configuration: {Configuration}{Environment.NewLine}" +
-                    $"Project: {project.Name}{Environment.NewLine}{Environment.NewLine}");
+                    $"Project: {project.Name}{Environment.NewLine}");
 
-                DotNetPublish(s => s
-                    .SetProject(project)
-                    .SetConfiguration(Configuration)
-                    .SetOutput(PublishDirectory / project.Name)
-                    .SetRuntime(Runtime)
-                    .SetSelfContained(SelfContained));
+                try
+                {
+                    DotNetPublish(s => s
+                        .SetProject(project)
+                        .SetConfiguration(Configuration)
+                        .SetOutput(PublishDirectory / project.Name)
+                        .SetRuntime(Runtime)
+                        .SetSelfContained(SelfContained));
+
+                    File.AppendAllText(metaFile,
+                        $"Status: Success{Environment.NewLine}{Environment.NewLine}");
+                }
+                catch (Exception ex)
+                {
+                    File.AppendAllText(metaFile,
+                        $"Status: Failed{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}");
+                    throw;
+                }
 
                 // Copy the published output for this player into the latest alias folder
                 CopyDirectoryRecursively(
                     PublishDirectory / project.Name,
                     LatestDirectory / project.Name);
+
+                // For the console player, also copy its dev-time plugins into a shared plugins folder
+                // under the versioned artifacts root (build/_artifacts/{version}/plugins).
+                if (project.Name == "PigeonPea.Console")
+                {
+                    var targetFramework = project.GetProperty<string>("TargetFramework") ?? "net9.0";
+                    var consoleBinPlugins = project.Directory / "bin" / Configuration / targetFramework / "plugins";
+
+                    // Shared plugins under the versioned artifacts root, e.g. build/_artifacts/{version}/plugins
+                    CopyDirectoryRecursively(
+                        consoleBinPlugins,
+                        PublishDirectory / "plugins");
+                }
             }
+
+            // Mirror shared plugins into the latest alias so runs from build/_artifacts/latest
+            // can discover plugins via "../plugins" from the player directories.
+            CopyDirectoryRecursively(
+                PublishDirectory / "plugins",
+                LatestDirectory / "plugins");
         });
 }

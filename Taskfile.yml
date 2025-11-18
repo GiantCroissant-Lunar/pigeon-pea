@@ -58,6 +58,16 @@ tasks:
     cmds:
       - pwsh -Command "Set-Location build/_artifacts/latest/PigeonPea.Console; ./PigeonPea.Console.exe"
 
+  game:build-console:
+    desc: Build console (and windows) players via Nuke PublishPlayers only
+    cmds:
+      - pwsh -File build/nuke/build.ps1 --target PublishPlayers --configuration Release --Runtime win-x64
+
+  game:run-console:
+    desc: Run console player from latest artifacts (plugin renderer + modern-edgar)
+    cmds:
+      - pwsh -Command "Set-Location build/_artifacts/latest/PigeonPea.Console; ./PigeonPea.Console.exe --renderer plugin --dungeon-gen modern-edgar"
+
   # PTY test helpers (Node.js)
   pty:install:
     desc: Install Node.js deps for PTY tests
