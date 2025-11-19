@@ -4,12 +4,13 @@ using GameRenderer = PigeonPea.Game.Contracts.Rendering.IRenderer;
 using RenderSurface = PigeonPea.Game.Contracts.Rendering.IRenderSurface;
 using SharedRenderer = PigeonPea.Shared.Rendering.IRenderer;
 using SharedRenderTarget = PigeonPea.Shared.Rendering.IRenderTarget;
+using PigeonPea.Contracts.Input.Services;
 using SadRogue.Primitives;
 using Terminal.Gui;
 
 namespace PigeonPea.Console;
 
-public class PluginRendererPanelView : View
+public partial class PluginRendererPanelView : View
 {
     private readonly GameRenderer _pluginRenderer;
     private readonly GameRenderContext _renderContext;
@@ -17,13 +18,15 @@ public class PluginRendererPanelView : View
     private readonly SharedRenderer _surfaceRenderer;
     private readonly SharedRenderTarget _renderTarget;
     private readonly RenderSurface _surfaceAdapter;
+    private readonly IService? _inputService;
     private bool _initialized;
 
-    public PluginRendererPanelView(GameRenderer pluginRenderer, GameRenderContext renderContext, GameState gameState)
+    public PluginRendererPanelView(GameRenderer pluginRenderer, GameRenderContext renderContext, GameState gameState, IService? inputService)
     {
         _pluginRenderer = pluginRenderer;
         _renderContext = renderContext;
         _gameState = gameState;
+        _inputService = inputService;
 
         _surfaceRenderer = new TerminalGuiRenderer(new PigeonPea.Console.Rendering.AsciiRenderer(true));
         _renderTarget = new TerminalGuiRenderTarget(this);
@@ -51,6 +54,9 @@ public class PluginRendererPanelView : View
             tgui.SetDriver(Driver);
         }
 
+        // Update player position from input before rendering
+        UpdatePlayerFromInput();
+
         if (!_initialized)
         {
             _pluginRenderer.Initialize(_renderContext);
@@ -59,6 +65,56 @@ public class PluginRendererPanelView : View
 
         _pluginRenderer.Render(_gameState);
         return true;
+    }
+}
+
+public partial class PluginRendererPanelView
+{
+    private void UpdatePlayerFromInput()
+    {
+        if (_inputService == null)
+        {
+            return;
+        }
+
+        if (_gameState.Dungeon is not { } dungeon)
+        {
+            return;
+        }
+
+        // Use UniInputSystem axes if available
+        float moveX;
+        float moveY;
+
+        try
+        {
+            moveX = _inputService.GetAxis("MoveX");
+            moveY = _inputService.GetAxis("MoveY");
+        }
+        catch
+        {
+            return;
+        }
+
+        int dx = moveX > 0.5f ? 1 : moveX < -0.5f ? -1 : 0;
+        int dy = moveY > 0.5f ? 1 : moveY < -0.5f ? -1 : 0;
+
+        if (dx == 0 && dy == 0)
+        {
+            return;
+        }
+
+        var newX = _gameState.PlayerX + dx;
+        var newY = _gameState.PlayerY + dy;
+
+        if (newX >= 0 && newY >= 0 && newX < dungeon.Width && newY < dungeon.Height)
+        {
+            if (dungeon.Walkable[newY, newX])
+            {
+                _gameState.PlayerX = newX;
+                _gameState.PlayerY = newY;
+            }
+        }
     }
 }
 

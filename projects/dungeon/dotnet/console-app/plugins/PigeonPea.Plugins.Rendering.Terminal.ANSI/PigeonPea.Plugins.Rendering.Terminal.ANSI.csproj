@@ -16,6 +16,7 @@
     <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
 
     <!-- Dungeon core + rendering for dungeon generation and ASCII rendering -->
+    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Rendering\PigeonPea.Dungeon.Rendering.csproj" />
 

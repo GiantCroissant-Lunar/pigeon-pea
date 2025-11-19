@@ -32,6 +32,7 @@
 
     <!-- Source Generators -->
     <PackageReference Include="Plate.SCG.Shared.Attributes" />
+    <PackageReference Include="Riok.Mapperly" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,6 +58,7 @@
 
     <!-- Game Contracts for IRenderer -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
 
     <!-- Build inventory plugin so it copies into this console's plugins folder -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugins.Inventory.Basic\PigeonPea.Plugins.Inventory.Basic.csproj" PrivateAssets="all" />

@@ -12,6 +12,7 @@
     <PackageVersion Include="Scrutor" Version="4.2.2" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="3.1.12" />
     <PackageVersion Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
+    <PackageVersion Include="Riok.Mapperly" Version="4.1.0" />
 
     <!-- Testing -->
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />

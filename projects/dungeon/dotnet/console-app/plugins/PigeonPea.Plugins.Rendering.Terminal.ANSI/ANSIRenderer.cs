@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using PigeonPea.Dungeon.Contracts.Models;
 using PigeonPea.Dungeon.Core;
 using PigeonPea.Dungeon.Rendering;
 using PigeonPea.Game.Contracts.Models;
@@ -18,10 +19,6 @@ public class ANSIRenderer : IRenderer
     private readonly StringBuilder _buffer = new();
     private RenderContext? _context;
     private bool _initialized;
-    private DungeonData? _dungeon;
-    private bool _dungeonInitialized;
-    private int _playerX;
-    private int _playerY;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ANSIRenderer"/> class.
@@ -45,7 +42,12 @@ public class ANSIRenderer : IRenderer
         _context = context ?? throw new ArgumentNullException(nameof(context));
         _initialized = true;
 
-        _logger.LogInformation("ANSI renderer initialized: {Width}x{Height}", context.Width, context.Height);
+        var assembly = typeof(ANSIRenderer).Assembly;
+        _logger.LogInformation(
+            "ANSI renderer initialized: {Width}x{Height}, AssemblyLocation={AssemblyLocation}",
+            context.Width,
+            context.Height,
+            assembly.Location);
 
         // Setup console for ANSI rendering
         Console.OutputEncoding = Encoding.UTF8;
@@ -63,17 +65,21 @@ public class ANSIRenderer : IRenderer
             throw new InvalidOperationException("Renderer not initialized. Call Initialize() first.");
         }
 
+        // Diagnostic: log which GameState assembly is actually loaded at runtime
+        var gameStateAssembly = typeof(GameState).Assembly;
+        _logger.LogInformation("GameState assembly at render time: {AssemblyLocation}, Version={AssemblyVersion}",
+            gameStateAssembly.Location,
+            gameStateAssembly.GetName().Version?.ToString());
+
         if (_context == null)
         {
             return;
         }
 
-        EnsureDungeonInitialized(_context.Width, _context.Height);
-
         if (_context.Surface is IRenderSurface surface)
         {
             _logger.LogInformation("ANSI renderer using shared surface {SurfaceType} at size {Width}x{Height}", surface.GetType().FullName, _context.Width, _context.Height);
-            RenderToSurface(surface);
+            RenderToSurface(surface, state);
             return;
         }
 
@@ -137,7 +143,7 @@ public class ANSIRenderer : IRenderer
         _buffer.Append(CultureInfo.InvariantCulture, $"\x1b[{y + 1};{x + 1}H");
     }
 
-    private void RenderToSurface(IRenderSurface surface)
+    private void RenderToSurface(IRenderSurface surface, GameState state)
     {
         if (_context == null)
         {
@@ -146,13 +152,29 @@ public class ANSIRenderer : IRenderer
 
         var width = _context.Width;
         var height = _context.Height;
+        var dungeonView = state.Dungeon;
+        var playerX = state.PlayerX;
+        var playerY = state.PlayerY;
+
+        if (dungeonView != null)
+        {
+            width = Math.Min(width, dungeonView.Width);
+            height = Math.Min(height, dungeonView.Height);
+        }
+
+        _logger.LogInformation("RenderToSurface state diagnostics: HasDungeon={HasDungeon}, Player=({PlayerX},{PlayerY})",
+            dungeonView != null,
+            playerX,
+            playerY);
 
         surface.BeginFrame();
         surface.Clear(0, 0, 0);
         surface.SetViewport(0, 0, width, height);
-        var dungeon = _dungeon;
-        if (dungeon != null)
+
+        if (dungeonView != null)
         {
+            var dungeon = ToDungeonData(dungeonView);
+
             var ascii = BrailleDungeonRenderer.RenderAscii(
                 dungeon,
                 viewportX: 0,
@@ -160,8 +182,8 @@ public class ANSIRenderer : IRenderer
                 viewportWidth: width,
                 viewportHeight: height,
                 fov: null,
-                playerX: _playerX,
-                playerY: _playerY);
+                playerX: playerX,
+                playerY: playerY);
 
             var lines = ascii.Split('\n');
             for (int y = 0; y < height && y < lines.Length; y++)
@@ -173,33 +195,26 @@ public class ANSIRenderer : IRenderer
         surface.EndFrame();
     }
 
-    private void EnsureDungeonInitialized(int width, int height)
+    private static DungeonData ToDungeonData(DungeonView view)
     {
-        if (_dungeonInitialized)
-        {
-            return;
-        }
+        var dungeon = new DungeonData(view.Width, view.Height);
+        var height = view.Height;
+        var width = view.Width;
 
-        var generator = new ModernEdgarDungeonGenerator();
-        _dungeon = generator.Generate(width, height, seed: 1234);
+        var walkable = view.Walkable;
+        var opaque = view.Opaque;
+        var doors = view.Doors;
 
-        // Simple player placement: first walkable tile
-        for (var y = 0; y < _dungeon.Height; y++)
+        for (var y = 0; y < height; y++)
         {
-            for (var x = 0; x < _dungeon.Width; x++)
+            for (var x = 0; x < width; x++)
             {
-                if (_dungeon.IsWalkable(x, y))
-                {
-                    _playerX = x;
-                    _playerY = y;
-                    _dungeonInitialized = true;
-                    return;
-                }
+                dungeon.Walkable[y, x] = walkable[y, x];
+                dungeon.Opaque[y, x] = opaque[y, x];
+                dungeon.Doors[y, x] = (DoorState)doors[y, x];
             }
         }
 
-        _playerX = width / 2;
-        _playerY = height / 2;
-        _dungeonInitialized = true;
+        return dungeon;
     }
 }

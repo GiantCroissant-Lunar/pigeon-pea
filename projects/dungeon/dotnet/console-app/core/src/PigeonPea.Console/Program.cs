@@ -13,6 +13,8 @@ using PigeonPea.Contracts.Plugin;
 using PigeonPea.Game.Contracts;
 using PigeonPea.Game.Contracts.Models;
 using PigeonPea.Game.Contracts.Rendering;
+using PigeonPea.Contracts.Input.Extensions;
+using PigeonPea.Contracts.Input.Services;
 using PigeonPea.Game.Inventory;
 using PigeonPea.Game.Inventory.Components;
 using PigeonPea.PluginSystem;
@@ -38,7 +40,7 @@ static class GameEntrypoint
         return dir;
     }
 
-    static void RuntimeLog(string message)
+    internal static void RuntimeLog(string message)
     {
         var line = $"{DateTime.UtcNow:O} {message}{Environment.NewLine}";
         File.AppendAllText(RuntimeLogFilePath, line);
@@ -440,6 +442,7 @@ static class GameEntrypoint
         builder.Services.AddPluginSystem(builder.Configuration);
         builder.Services.AddConfigServiceProxy();
         builder.Services.AddPigeonPeaServices();
+        builder.Services.AddInputServiceProxy();
 
         builder.Services.Scan(scan => scan
             .FromAssemblyOf<ConsoleAssemblyMarker>()
@@ -491,7 +494,52 @@ static class GameEntrypoint
                 Services = host.Services
             };
 
-            var gameState = new GameState();
+            // Resolve input service proxy (optional)
+            IService? inputService = null;
+            try
+            {
+                inputService = host.Services.GetService<IService>();
+                if (inputService == null)
+                {
+                    logger.LogWarning("No input service proxy resolved; player movement will be disabled.");
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.LogWarning(ex, "Failed to resolve input service proxy; player movement will be disabled.");
+            }
+
+            // Generate dungeon and initial player position for the plugin-hud mode
+            var dungeonGenerator = DungeonGeneratorSelector.Create(dungeonGen);
+            logger.LogInformation("Selected dungeon generator for plugin-hud: {DungeonGenerator}", dungeonGenerator.GetType().FullName);
+
+            var dungeon = dungeonGenerator.Generate(renderWidth, renderHeight, seed: 1234);
+
+            var playerX = renderWidth / 2;
+            var playerY = renderHeight / 2;
+            for (var y = 0; y < dungeon.Height; y++)
+            {
+                for (var x = 0; x < dungeon.Width; x++)
+                {
+                    if (dungeon.IsWalkable(x, y))
+                    {
+                        playerX = x;
+                        playerY = y;
+                        y = dungeon.Height; // break outer
+                        break;
+                    }
+                }
+            }
+
+            var mapper = new DungeonMappers();
+            var dungeonView = mapper.ToView(dungeon);
+
+            var gameState = new GameState
+            {
+                Dungeon = dungeonView,
+                PlayerX = playerX,
+                PlayerY = playerY
+            };
 
             Application.Init();
 
@@ -514,7 +562,7 @@ static class GameEntrypoint
                     Height = Dim.Fill()
                 };
 
-                var panel = new PluginRendererPanelView(pluginRenderer, renderContext, gameState)
+                var panel = new PluginRendererPanelView(pluginRenderer, renderContext, gameState, inputService)
                 {
                     X = 0,
                     Y = 0,
