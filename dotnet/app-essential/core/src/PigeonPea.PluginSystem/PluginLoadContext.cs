@@ -23,6 +23,7 @@ public class PluginLoadContext : AssemblyLoadContext
         // between host and plugins.
         if (assemblyName.Name == "PigeonPea.Contracts" ||
             assemblyName.Name == "PigeonPea.Game.Contracts" ||
+            assemblyName.Name == "PigeonPea.Dungeon.Contracts" ||
             assemblyName.Name == "PigeonPea.Shared" ||
             assemblyName.Name == "PigeonPea.Shared.Inventory" ||
             assemblyName.Name == "PigeonPea.Game.Inventory" ||

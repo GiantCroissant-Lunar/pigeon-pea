@@ -6,4 +6,9 @@ namespace PigeonPea.Game.Contracts.Models;
 /// </summary>
 public class GameState
 {
+    public PigeonPea.Dungeon.Contracts.Models.DungeonView? Dungeon { get; set; }
+
+    public int PlayerX { get; set; }
+
+    public int PlayerY { get; set; }
 }

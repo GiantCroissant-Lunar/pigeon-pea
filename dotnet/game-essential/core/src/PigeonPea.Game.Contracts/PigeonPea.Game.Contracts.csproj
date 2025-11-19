@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -12,5 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../../../../app-essential/core/src/PigeonPea.Contracts/PigeonPea.Contracts.csproj" />
+    <ProjectReference Include="..\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
   </ItemGroup>
 </Project>
