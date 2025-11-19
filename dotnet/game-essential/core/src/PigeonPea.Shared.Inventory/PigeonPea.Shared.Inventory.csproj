@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PigeonPea.Shared.Inventory</RootNamespace>
+    <AssemblyName>PigeonPea.Shared.Inventory</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- JSON serialization for item databases -->
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+</Project>

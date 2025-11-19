@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <AssemblyName>PigeonPea.Plugins.UI.Windows.AvaloniaHUD</AssemblyName>
+    <RootNamespace>PigeonPea.Plugins.UI.Windows.AvaloniaHUD</RootNamespace>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Avalonia.ReactiveUI" />
+    <PackageReference Include="Avalonia.Skia" />
+    <PackageReference Include="ReactiveUI" />
+    <PackageReference Include="ReactiveUI.Fody">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Fody">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Serilog" />
+    <PackageReference Include="Serilog.Extensions.Logging" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\..\..\engine\core\src\PigeonPea.Plugin\PigeonPea.Plugin.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Themes\**\*.axaml" />
+    <AvaloniaResource Include="Controls\**\*.axaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Controls\**\*.axaml.cs" DependentUpon="%(Filename)" />
+  </ItemGroup>
+
+</Project>

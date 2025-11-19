@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Core plugin contracts & registry -->
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+    <!-- Game-level inventory service & DTOs -->
+    <ProjectReference Include="..\..\..\..\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <!-- Shared inventory mechanics -->
+    <ProjectReference Include="..\..\..\..\game-essential\core\src\PigeonPea.Shared.Inventory\PigeonPea.Shared.Inventory.csproj" />
+    <!-- ECS world & shared components -->
+    <ProjectReference Include="..\..\..\..\game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <!-- Game-side inventory component -->
+    <ProjectReference Include="..\..\..\..\game-essential\core\src\PigeonPea.Game.Items\PigeonPea.Game.Items.csproj" />
+    <!-- Logging -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="CopyPluginToConsoleApp" AfterTargets="Build">
+    <PropertyGroup>
+      <PluginOutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)\</PluginOutputPath>
+      <PluginTargetDir>$(MSBuildThisFileDirectory)..\..\..\..\console-app\core\src\PigeonPea.Console\bin\$(Configuration)\$(TargetFramework)\plugins\$(AssemblyName)\</PluginTargetDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PluginFiles Include="$(PluginOutputPath)**\*.*" />
+    </ItemGroup>
+    <MakeDir Directories="$(PluginTargetDir)" />
+    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginTargetDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

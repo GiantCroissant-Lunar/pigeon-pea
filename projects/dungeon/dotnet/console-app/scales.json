@@ -1,0 +1,31 @@
+{
+  "scales": [
+    {
+      "id": "world",
+      "environment": "world",
+      "metersPerCell": 1000.0,
+      "minZoom": 0.75,
+      "maxZoom": 2.0,
+      "chunkSizeCells": 32,
+      "description": "Overland map (1 km per cell)"
+    },
+    {
+      "id": "dungeon-coarse",
+      "environment": "dungeon",
+      "metersPerCell": 5.0,
+      "minZoom": 1.0,
+      "maxZoom": 2.0,
+      "chunkSizeCells": 64,
+      "description": "Dungeon overview (5 m per tile)"
+    },
+    {
+      "id": "dungeon-fine",
+      "environment": "dungeon",
+      "metersPerCell": 2.0,
+      "minZoom": 1.0,
+      "maxZoom": 1.5,
+      "chunkSizeCells": 64,
+      "description": "Dungeon gameplay (2 m per tile)"
+    }
+  ]
+}

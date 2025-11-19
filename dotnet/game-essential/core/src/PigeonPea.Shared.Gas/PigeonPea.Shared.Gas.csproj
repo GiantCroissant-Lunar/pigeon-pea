@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>NexusGas</RootNamespace>
+    <AssemblyName>PigeonPea.Shared.Gas</AssemblyName>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Reuse NexusGas.Core sources from _lib during migration -->
+    <Compile Include="..\..\..\..\_lib\nexus-gas\src\NexusGas.Core\**\*.cs" />
+  </ItemGroup>
+
+</Project>

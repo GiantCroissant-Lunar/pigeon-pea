@@ -6,6 +6,8 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <IsPackable>false</IsPackable>
     <RootNamespace>PigeonPea.Benchmarks</RootNamespace>
     <AssemblyName>PigeonPea.Benchmarks</AssemblyName>
@@ -16,7 +18,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../game-essential/core/PigeonPea.Shared/PigeonPea.Shared.csproj" />
+    <ProjectReference Include="../game-essential/core/src/PigeonPea.Shared/PigeonPea.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="FantasyMapGenerator.Benchmarks\**\*.cs" />
   </ItemGroup>
 
 </Project>

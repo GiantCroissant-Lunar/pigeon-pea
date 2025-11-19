@@ -1,0 +1,101 @@
+[config]
+default_to_workspace = false
+skip_core_tasks = true
+
+[env]
+PROJECT_NAME = "dev-tool-server"
+PROJECT_PATH = { script = ["echo ../../projects/dungeon/rust/dev-tool-server"] }
+ARTIFACTS_BASE = "../../build/_artifacts"
+CARGO_MAKE_EXTEND_WORKSPACE_MAKEFILE = true
+
+# Platform-specific binary extension
+[env.windows]
+BINARY_EXT = ".exe"
+
+[env.linux]
+BINARY_EXT = ""
+
+[env.mac]
+BINARY_EXT = ""
+
+# Get version from GitVersion
+[tasks.get-version]
+description = "Get semantic version from GitVersion"
+condition = { platforms = ["windows"] }
+script_runner = "@rust"
+script = '''
+fn main() {
+    use std::process::Command;
+
+    let output = Command::new("GitVersion")
+        .arg("/showvariable")
+        .arg("SemVer")
+        .output()
+        .expect("Failed to run GitVersion");
+
+    let version = String::from_utf8_lossy(&output.stdout).trim().to_string();
+    println!("{}", version);
+
+    // Set as environment variable for subsequent tasks
+    std::env::set_var("CARGO_MAKE_PROJECT_VERSION", &version);
+}
+'''
+
+[tasks.get-version.linux]
+script_runner = "bash"
+script_path = "scripts/get-version.sh"
+
+[tasks.get-version.mac]
+script_runner = "bash"
+script_path = "scripts/get-version.sh"
+
+# Clean build artifacts
+[tasks.clean]
+description = "Clean Rust build artifacts"
+command = "cargo"
+args = ["clean", "--manifest-path", "${PROJECT_PATH}/Cargo.toml"]
+
+# Build debug binary
+[tasks.build-debug]
+description = "Build debug binary"
+command = "cargo"
+args = ["build", "--manifest-path", "${PROJECT_PATH}/Cargo.toml"]
+
+# Build release binary
+[tasks.build-release]
+description = "Build release binary"
+command = "cargo"
+args = ["build", "--release", "--manifest-path", "${PROJECT_PATH}/Cargo.toml"]
+
+# Run tests
+[tasks.test]
+description = "Run tests"
+command = "cargo"
+args = ["test", "--manifest-path", "${PROJECT_PATH}/Cargo.toml"]
+
+# Copy artifacts to versioned directory
+[tasks.copy-artifacts]
+description = "Copy built artifacts to versioned directory"
+dependencies = ["get-version"]
+condition = { platforms = ["windows"] }
+script_runner = "@shell"
+script = ["powershell -ExecutionPolicy Bypass -File scripts/copy-artifacts.ps1"]
+
+[tasks.copy-artifacts.linux]
+dependencies = ["get-version"]
+script_runner = "bash"
+script_path = "scripts/copy-artifacts.sh"
+
+[tasks.copy-artifacts.mac]
+dependencies = ["get-version"]
+script_runner = "bash"
+script_path = "scripts/copy-artifacts.sh"
+
+# Full publish workflow
+[tasks.publish]
+description = "Build release binary and copy to versioned artifacts"
+dependencies = ["build-release", "copy-artifacts"]
+
+# Default task
+[tasks.default]
+alias = "build-release"

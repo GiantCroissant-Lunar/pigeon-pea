@@ -1,0 +1,59 @@
+---
+# Node.js and npm setup
+
+- name: Check if Node.js is installed
+  ansible.builtin.command: node --version
+  register: node_check
+  changed_when: false
+  failed_when: false
+
+- name: Install Node.js (Debian/Ubuntu)
+  when:
+    - ansible_os_family == "Debian"
+    - node_check.rc != 0
+  block:
+    - name: Add NodeSource repository
+      become: true
+      ansible.builtin.shell: |
+        curl -fsSL https://deb.nodesource.com/setup_{{ nodejs_version }}.x | bash -
+      args:
+        creates: /etc/apt/sources.list.d/nodesource.list
+
+    - name: Install Node.js
+      become: true
+      ansible.builtin.apt:
+        name: nodejs
+        state: present
+        update_cache: yes
+
+- name: Install Node.js (macOS)
+  community.general.homebrew:
+    name: "node@{{ nodejs_version }}"
+    state: present
+  when:
+    - ansible_os_family == "Darwin"
+    - node_check.rc != 0
+
+- name: Install global npm packages
+  community.general.npm:
+    name: "{{ item }}"
+    global: yes
+    state: present
+  loop: "{{ nodejs_packages }}"
+  when: nodejs_packages is defined
+
+- name: Verify Node.js installation
+  ansible.builtin.command: node --version
+  register: node_version_check
+  changed_when: false
+
+- name: Verify npm installation
+  ansible.builtin.command: npm --version
+  register: npm_version_check
+  changed_when: false
+
+- name: Display Node.js and npm versions
+  ansible.builtin.debug:
+    msg:
+      - "Node.js installed: {{ node_version_check.stdout }}"
+      - "npm installed: {{ npm_version_check.stdout }}"

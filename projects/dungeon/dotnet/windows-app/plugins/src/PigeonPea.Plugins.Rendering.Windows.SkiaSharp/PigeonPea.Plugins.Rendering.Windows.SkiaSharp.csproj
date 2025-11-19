@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Core Plugin Contracts -->
+    <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+
+    <!-- Game Contracts for IRenderer -->
+    <ProjectReference Include="..\..\..\..\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+
+    <!-- Avalonia UI for Windows integration -->
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Skia" />
+
+    <!-- SkiaSharp for rendering -->
+    <PackageReference Include="SkiaSharp" />
+
+    <!-- Logging -->
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy plugin.json to output directory -->
+    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <!-- Post-build: Copy plugin to Windows app's plugins directory -->
+  <Target Name="CopyPluginToWindowsApp" AfterTargets="Build">
+    <PropertyGroup>
+      <PluginOutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)\</PluginOutputPath>
+      <PluginTargetDir>$(MSBuildThisFileDirectory)..\..\core\src\PigeonPea.Windows\bin\$(Configuration)\$(TargetFramework)\plugins\$(AssemblyName)\</PluginTargetDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PluginFiles Include="$(PluginOutputPath)**\*.*" />
+    </ItemGroup>
+    <MakeDir Directories="$(PluginTargetDir)" />
+    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginTargetDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

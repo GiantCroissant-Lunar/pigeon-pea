@@ -8,7 +8,7 @@ interface ICompile : INukeBuild
     [Parameter("Configuration to build")]
     string Configuration => TryGetValue(() => Configuration) ?? "Debug";
 
-    [Solution]
+    [Solution("dotnet/PigeonPea.sln")]
     Solution Solution => TryGetValue(() => Solution);
 
     Target Compile => _ => _

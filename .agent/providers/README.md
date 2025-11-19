@@ -10,6 +10,7 @@ Different AI agent platforms (Claude, GitHub Copilot, etc.) may have different c
 
 - **claude.yaml** - Configuration and hints for Claude Code and Claude-based agents
 - **copilot.yaml** - Configuration and hints for GitHub Copilot agents
+- **windsurf.yaml** - Configuration and hints for Windsurf agents (GPT-5.1)
 
 ## Purpose
 
@@ -195,13 +196,15 @@ def load_provider_hints(provider_name):
 
 ## Platform Comparison
 
-| Feature          | Claude         | Copilot       | Universal |
-| ---------------- | -------------- | ------------- | --------- |
-| Context Window   | 200K tokens    | 128K tokens   | -         |
-| MCP Support      | Yes            | No            | No        |
-| Tool Calling     | Yes (extended) | Yes (limited) | Yes       |
-| Thinking Process | Visible        | Hidden        | Varies    |
-| Code Execution   | Via MCP        | Via tools     | Varies    |
+| Feature          | Claude         | Copilot       | Windsurf      | Universal |
+| ---------------- | -------------- | ------------- | ------------- | --------- |
+| Context Window   | 200K tokens    | 128K tokens   | 128K tokens   | -         |
+| Model            | Sonnet 4.5     | GPT-4         | GPT-5.1       | Varies    |
+| MCP Support      | Yes            | Yes           | Yes           | Varies    |
+| Tool Calling     | Yes (extended) | Yes (limited) | Yes           | Yes       |
+| Thinking Process | Visible        | Hidden        | Minimal       | Varies    |
+| Code Execution   | Via MCP/tools  | Via MCP/tools | Via MCP/tools | Varies    |
+| Autonomy Level   | Normal         | Concise       | High          | Varies    |
 
 ## Future Providers
 

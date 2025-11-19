@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- ECS Framework -->
+    <PackageReference Include="Arch" Version="2.0.0" />
+
+    <!-- Roguelike Algorithms & Utilities (for FOV, pathfinding) -->
+    <PackageReference Include="GoRogue" Version="3.0.0-beta10" />
+    <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
+
+    <!-- Logging -->
+    <PackageReference Include="Serilog" Version="4.2.0" />
+
+    <!-- Event Publishing -->
+    <PackageReference Include="MessagePipe" Version="1.8.0" />
+
+    <!-- Dependency Injection -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reference NexusPerception.Core library -->
+    <ProjectReference Include="..\..\..\..\_lib\nexus-perception\src\NexusPerception.Core\NexusPerception.Core.csproj" />
+
+    <!-- Reference shared ECS components -->
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
+
+    <!-- Reference game contracts for events -->
+    <ProjectReference Include="..\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

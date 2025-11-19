@@ -1,0 +1,60 @@
+---
+# Memory infrastructure setup (Qdrant via Docker Compose)
+
+- name: Verify Docker is available
+  ansible.builtin.command: docker --version
+  register: docker_check
+  changed_when: false
+
+- name: Ensure memory data directory exists
+  ansible.builtin.file:
+    path: "{{ qdrant_data_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Ensure memory logs directory exists
+  ansible.builtin.file:
+    path: "{{ qdrant_logs_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Start Qdrant via Docker Compose
+  community.docker.docker_compose:
+    project_src: "{{ playbook_dir }}/../memory"
+    state: present
+    pull: yes
+  register: qdrant_startup
+
+- name: Wait for Qdrant to be ready
+  ansible.builtin.uri:
+    url: "http://localhost:{{ qdrant_http_port }}/health"
+    status_code: 200
+  register: qdrant_health
+  until: qdrant_health.status == 200
+  retries: 30
+  delay: 2
+  when: qdrant_startup is changed
+
+- name: Display Qdrant status
+  ansible.builtin.debug:
+    msg:
+      - "Qdrant is running!"
+      - "HTTP API: http://localhost:{{ qdrant_http_port }}"
+      - "Dashboard: http://localhost:{{ qdrant_http_port }}/dashboard"
+      - "gRPC: localhost:{{ qdrant_grpc_port }}"
+
+- name: Test memory system
+  ansible.builtin.command: python {{ playbook_dir }}/../memory/scripts/test-visibility.py
+  register: memory_test
+  changed_when: false
+  failed_when: false
+
+- name: Display memory test results
+  ansible.builtin.debug:
+    msg: "{{ memory_test.stdout_lines }}"
+  when: memory_test.rc == 0
+
+- name: Warn about memory test failure
+  ansible.builtin.debug:
+    msg: "⚠️  Memory test failed. Check the output above."
+  when: memory_test.rc != 0

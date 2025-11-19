@@ -1,0 +1,15 @@
+{
+  "id": "rendering-terminal-braille",
+  "name": "Braille Terminal Renderer",
+  "version": "1.0.0",
+  "description": "Unicode braille-based terminal renderer for console applications",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["renderer", "renderer:terminal", "braille"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Rendering.Terminal.Braille.dll,PigeonPea.Plugins.Rendering.Terminal.Braille.BrailleRendererPlugin"
+  },
+  "dependencies": [],
+  "priority": 90,
+  "loadStrategy": "eager"
+}

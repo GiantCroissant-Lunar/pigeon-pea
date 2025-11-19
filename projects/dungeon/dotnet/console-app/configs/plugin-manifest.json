@@ -1,0 +1,31 @@
+{
+  "profile": "dotnet.console",
+  "pluginPaths": ["../../app-essential/plugins", "../../game-essential/plugins", "./plugins"],
+  "plugins": [
+    {
+      "id": "rendering-terminal-ansi",
+      "enabled": true,
+      "priority": 100
+    },
+    {
+      "id": "rendering-terminal-braille",
+      "enabled": true,
+      "priority": 90
+    },
+    {
+      "id": "rendering-terminal-kitty",
+      "enabled": true,
+      "priority": 80
+    },
+    {
+      "id": "rendering-terminal-sixel",
+      "enabled": true,
+      "priority": 70
+    },
+    {
+      "id": "hud-terminal-terminalgui",
+      "enabled": true,
+      "priority": 100
+    }
+  ]
+}

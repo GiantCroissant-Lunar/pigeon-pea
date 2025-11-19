@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="6.12.2" />
+    <PackageReference Include="Verify.Xunit" Version="31.6.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Dungeon.Control\PigeonPea.Dungeon.Control.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Dungeon.Rendering\PigeonPea.Dungeon.Rendering.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Map.Control\PigeonPea.Map.Control.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
+  </ItemGroup>
+</Project>

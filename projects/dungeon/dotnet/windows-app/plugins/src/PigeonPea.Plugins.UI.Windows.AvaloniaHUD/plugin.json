@@ -1,0 +1,182 @@
+{
+  "id": "ui-windows-avalonia-hud",
+  "name": "Avalonia HUD for Windows",
+  "description": "Avalonia-based HUD and UI system for Windows applications, providing rich game interface capabilities including health bars, inventory, character status, notifications, and theming support.",
+  "version": "1.0.0",
+  "author": "PigeonPea Team",
+  "website": "https://github.com/GiantCroissant-Lunar/pigeon-pea",
+  "license": "MIT",
+  "type": "ui",
+  "category": "windows",
+  "tags": [
+    "ui",
+    "hud",
+    "avalonia",
+    "windows",
+    "game-ui",
+    "notifications",
+    "theming",
+    "inventory",
+    "character-status",
+    "menus",
+    "dialogs"
+  ],
+  "capabilities": [
+    "ui",
+    "ui:hud",
+    "ui:menus",
+    "ui:dialogs",
+    "ui:tooltips",
+    "ui:notifications",
+    "ui:inventory",
+    "ui:character-status",
+    "ui:animations",
+    "ui:theming"
+  ],
+  "supportedProfiles": [
+    "dotnet.windows"
+  ],
+  "dependencies": {
+    "frameworks": [
+      "net8.0-windows"
+    ],
+    "packages": {
+      "Avalonia": "11.2.2",
+      "Avalonia.Desktop": "11.2.2",
+      "Avalonia.Themes.Fluent": "11.2.2",
+      "Avalonia.Fonts.Inter": "11.2.2",
+      "Avalonia.ReactiveUI": "11.2.2",
+      "Avalonia.Skia": "11.2.2",
+      "ReactiveUI": "20.1.1",
+      "ReactiveUI.Fody": "20.1.1",
+      "Fody": "6.8.0",
+      "Microsoft.Extensions.DependencyInjection": "8.0.0",
+      "Microsoft.Extensions.Logging": "8.0.0",
+      "Serilog": "4.0.0",
+      "Serilog.Extensions.Logging": "8.0.0"
+    },
+    "projects": [
+      "PigeonPea.Contracts",
+      "PigeonPea.Game.Contracts",
+      "PigeonPea.Plugin"
+    ]
+  },
+  "entryPoints": {
+    "plugin": "PigeonPea.Plugins.UI.Windows.AvaloniaHUD.AvaloniaHudPlugin",
+    "ui": "PigeonPea.Plugins.UI.Windows.AvaloniaHUD.AvaloniaHudManager"
+  },
+  "interfaces": {
+    "provides": [
+      {
+        "interface": "PigeonPea.Game.Contracts.UI.IUserInterface",
+        "implementation": "PigeonPea.Plugins.UI.Windows.AvaloniaHUD.AvaloniaHudManager",
+        "description": "Rich game UI interface with HUD, menus, dialogs, notifications, and theming"
+      },
+      {
+        "interface": "PigeonPea.Contracts.Hud.Services.IService",
+        "implementation": "PigeonPea.Plugins.UI.Windows.AvaloniaHUD.AvaloniaHudManager",
+        "description": "Basic HUD service for app-level compatibility"
+      }
+    ]
+  },
+  "configuration": {
+    "ui": {
+      "defaultWidth": 1920,
+      "defaultHeight": 1080,
+      "targetFPS": 60,
+      "enableAnimations": true,
+      "defaultTheme": "dark"
+    },
+    "features": {
+      "hud": {
+        "enabled": true,
+        "showHealth": true,
+        "showLevel": true,
+        "showGold": true,
+        "showExperience": true,
+        "showLocation": true,
+        "showQuests": true,
+        "showNotifications": true,
+        "notificationTimeout": 5
+      },
+      "panels": {
+        "inventory": {
+          "enabled": true,
+          "defaultVisible": false
+        },
+        "character": {
+          "enabled": true,
+          "defaultVisible": false
+        },
+        "minimap": {
+          "enabled": true,
+          "defaultVisible": true
+        },
+        "debug": {
+          "enabled": true,
+          "defaultVisible": false
+        }
+      },
+      "theming": {
+        "enabled": true,
+        "defaultTheme": "dark",
+        "supportedThemes": ["dark", "light", "custom"]
+      }
+    }
+  },
+  "resources": {
+    "themes": [
+      "Themes/GameHUDTheme.axaml"
+    ],
+    "controls": [
+      "Controls/GameHUD.axaml"
+    ],
+    "assets": []
+  },
+  "compatibility": {
+    "platforms": ["windows"],
+    "architectures": ["x64", "arm64"],
+    "frameworks": ["net8.0-windows"],
+    "minimumVersion": "1.0.0"
+  },
+  "build": {
+    "outputType": "library",
+    "targetFramework": "net8.0-windows",
+    "useWPF": true,
+    "useWindowsForms": true,
+    "selfContained": false,
+    "singleFile": false
+  },
+  "testing": {
+    "unitTests": true,
+    "integrationTests": true,
+    "uiTests": true,
+    "testFrameworks": ["xunit", "avalonia.ui.testing"]
+  },
+  "documentation": {
+    "readme": "README.md",
+    "apiDocs": true,
+    "examples": true,
+    "tutorials": true
+  },
+  "metadata": {
+    "created": "2025-11-17",
+    "updated": "2025-11-17",
+    "changelog": [
+      {
+        "version": "1.0.0",
+        "date": "2025-11-17",
+        "changes": [
+          "Initial release",
+          "Avalonia-based HUD implementation",
+          "Rich UI capabilities (HUD, menus, dialogs, notifications)",
+          "Theme support with dark/light modes",
+          "Player stats display (health, level, gold, experience)",
+          "Panel management (inventory, character, minimap, debug)",
+          "ReactiveUI integration for MVVM pattern",
+          "Plugin system integration with dual interface support"
+        ]
+      }
+    ]
+  }
+}

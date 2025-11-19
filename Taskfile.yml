@@ -46,6 +46,35 @@ tasks:
     cmds:
       - dotnet format
 
+  game:publish-latest:
+    desc: Publish latest console and Windows players via Nuke
+    cmds:
+      - pwsh -File build/nuke/build.ps1 --target PublishPlayers --configuration Release --Runtime win-x64
+
+  game:run-latest-console:
+    desc: Publish and run latest console player (run this inside Rio)
+    deps:
+      - game:publish-latest
+    cmds:
+      - pwsh -Command "Set-Location build/_artifacts/latest/PigeonPea.Console; ./PigeonPea.Console.exe"
+
+  game:build-console:
+    desc: Build console (and windows) players via Nuke PublishPlayers only
+    cmds:
+      - pwsh -File build/nuke/build.ps1 --target PublishPlayers --configuration Release --Runtime win-x64
+
+  game:run-console:
+    desc: Run console player from latest artifacts in Rio terminal (plugin renderer + modern-edgar)
+    cmds:
+      - pwsh -File build/nuke/scripts/launch-console-rio.ps1
+
+  game:build-and-run-console:
+    desc: Build console via Nuke, then run from latest artifacts in Rio (plugin renderer + modern-edgar)
+    deps:
+      - game:build-console
+    cmds:
+      - task game:run-console
+
   # PTY test helpers (Node.js)
   pty:install:
     desc: Install Node.js deps for PTY tests
@@ -90,6 +119,67 @@ tasks:
     cmds:
       - bash scripts/setup-pre-commit.sh
 
+  # MCP (Model Context Protocol) setup helpers
+  mcp:detect-ides:
+    desc: Detect installed IDEs and their MCP config paths
+    cmds:
+      - python .mcp/scripts/detect-ide-configs.py
+
+  mcp:detect-ides:win:
+    desc: Detect installed IDEs and their MCP config paths (Windows PowerShell)
+    cmds:
+      - pwsh -File .mcp/scripts/detect-ide-configs.ps1
+
+  mcp:detect-ides:json:
+    desc: Detect installed IDEs and output as JSON
+    cmds:
+      - python .mcp/scripts/detect-ide-configs.py --json
+
+  mcp:setup:win:
+    desc: Setup MCP project launcher (Windows - interactive)
+    cmds:
+      - pwsh -File .mcp/setup-windows.ps1
+
+  mcp:setup:unix:
+    desc: Setup MCP project launcher (Linux/Mac - interactive)
+    cmds:
+      - bash .mcp/setup-unix.sh
+
+  mcp:install-launcher:win:
+    desc: Install MCP launcher to global location (Windows - non-interactive)
+    cmds:
+      - >-
+        pwsh -Command
+        "New-Item -ItemType Directory -Force -Path \"$env:USERPROFILE\.local\mcp-launcher\" | Out-Null;
+        Copy-Item .mcp\launcher\launcher.py \"$env:USERPROFILE\.local\mcp-launcher\";
+        Write-Host 'Launcher installed to $env:USERPROFILE\.local\mcp-launcher\launcher.py' -ForegroundColor Green"
+
+  mcp:install-launcher:unix:
+    desc: Install MCP launcher to global location (Linux/Mac - non-interactive)
+    cmds:
+      - >-
+        bash -c "mkdir -p ~/.local/mcp-launcher &&
+        cp .mcp/launcher/launcher.py ~/.local/mcp-launcher/ &&
+        chmod +x ~/.local/mcp-launcher/launcher.py &&
+        echo 'Launcher installed to ~/.local/mcp-launcher/launcher.py'"
+
+  mcp:test-launcher:
+    desc: Test the MCP launcher (requires launcher to be installed)
+    cmds:
+      - >-
+        python ~/.local/mcp-launcher/launcher.py github --help ||
+        python "$env:USERPROFILE\.local\mcp-launcher\launcher.py" github --help
+
+  mcp:docs:
+    desc: Open MCP setup documentation
+    cmds:
+      - cmd: |
+          {{if eq OS "windows"}}
+          start .mcp\README.md
+          {{else}}
+          open .mcp/README.md || xdg-open .mcp/README.md
+          {{end}}
+
   images:create-battle:
     desc: Generate sample battle image (Pillow)
     cmds:
@@ -104,6 +194,54 @@ tasks:
     desc: Install Python dev dependencies
     cmds:
       - python -m pip install -r requirements/dev.txt
+
+  # Rust build tasks
+  rust:install-cargo-make:
+    desc: Install cargo-make build tool
+    cmds:
+      - cargo install --force cargo-make
+
+  rust:build:debug:
+    desc: Build Rust dev-tool-server (debug)
+    dir: ./build/rust
+    cmds:
+      - cargo make build-debug
+
+  rust:build:release:
+    desc: Build Rust dev-tool-server (release)
+    dir: ./build/rust
+    cmds:
+      - cargo make build-release
+
+  rust:test:
+    desc: Run Rust tests
+    dir: ./build/rust
+    cmds:
+      - cargo make test
+
+  rust:publish:
+    desc: Build and publish versioned Rust artifacts
+    dir: ./build/rust
+    cmds:
+      - cargo make publish
+
+  rust:clean:
+    desc: Clean Rust build artifacts
+    dir: ./build/rust
+    cmds:
+      - cargo make clean
+
+  rust:run-latest:
+    desc: Launch Rio terminal with latest built dev-tool-server
+    cmds:
+      - pwsh -File build/rust/scripts/launch-latest.ps1
+
+  rust:build-and-run:
+    desc: Build, publish, and run latest dev-tool-server in Rio
+    deps:
+      - rust:publish
+    cmds:
+      - task rust:run-latest
 
   fonts:generate-svgs:
     desc: Generate 36 angle SVGs for font import

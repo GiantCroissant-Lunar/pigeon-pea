@@ -4,6 +4,8 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <RootNamespace>FantasyMapGenerator.Benchmarks</RootNamespace>
   </PropertyGroup>
 
@@ -13,6 +15,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\dotnet\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
+    <ProjectReference Include="..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,25 @@
+# Ansible-specific ignores
+
+# Retry files
+*.retry
+
+# Vault password files
+.vault_pass
+vault_pass.txt
+
+# Logs
+ansible.log
+*.log
+
+# Cache
+.cache/
+/tmp/ansible_facts/
+
+# Secrets (if any)
+secrets/
+*.secret
+*.key
+
+# OS-specific
+.DS_Store
+Thumbs.db

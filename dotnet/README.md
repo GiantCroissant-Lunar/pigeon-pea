@@ -16,26 +16,46 @@ A multiplatform roguelike dungeon crawler built with modern C# technologies.
 
 ```
 dotnet/
+├── engine/                               # Engine-level shared libraries (no game/content deps)
+│   ├── core/
+│   │   └── src/
+│   │       ├── PigeonPea.Shared.ECS/     # ECS foundation built on Arch
+│   │       └── PigeonPea.Shared.Rendering/ # Rendering primitives (tiles, viewports, targets, text)
+│
 ├── app-essential/
-│   ├── core/                  # App framework core (future)
-│   └── plugins/               # App-level plugins (future)
+│   ├── core/
+│   │   ├── src/
+│   │   │   ├── PigeonPea.Contracts/       # Plugin, DI, services contracts
+│   │   │   └── PigeonPea.PluginSystem/    # Plugin loader + registry + EventBus
+│   │   └── tests/                         # App framework tests
+│   └── plugins/                           # App-level plugins (future)
 │
 ├── game-essential/
 │   ├── core/
-│   │   └── PigeonPea.Shared/  # Core game logic (ECS + GoRogue)
-│   └── plugins/               # Game feature plugins (future)
+│   │   ├── src/
+│   │   │   ├── PigeonPea.Game.Contracts/  # Game events, services, components
+│   │   │   └── PigeonPea.Shared/          # Core game logic built on Shared.ECS/Rendering
+│   │   └── tests/
+│   │       └── PigeonPea.Shared.Tests/    # Game framework tests
+│   └── plugins/                           # Game feature plugins (future)
 │
 ├── windows-app/
 │   ├── core/
-│   │   └── PigeonPea.Windows/ # Windows desktop app
-│   ├── plugins/               # Windows-specific plugins (future)
-│   └── configs/               # Plugin manifests and configs (future)
+│   │   ├── src/
+│   │   │   └── PigeonPea.Windows/         # Windows desktop app
+│   │   └── tests/
+│   │       └── PigeonPea.Windows.Tests/   # Windows app tests
+│   ├── plugins/                           # Windows-specific plugins (future)
+│   └── configs/                           # Plugin manifests and configs (future)
 │
 └── console-app/
     ├── core/
-    │   └── PigeonPea.Console/ # Terminal app
-    ├── plugins/               # Terminal renderers/plugins (future)
-    └── configs/               # Plugin manifests and configs (future)
+    │   ├── src/
+    │   │   └── PigeonPea.Console/         # Terminal app
+    │   └── tests/
+    │       └── PigeonPea.Console.Tests/   # Console app tests
+    ├── plugins/                           # Terminal renderers/plugins (future)
+    └── configs/                           # Plugin manifests and configs (future)
 ```
 
 ## Building & Running
@@ -53,7 +73,7 @@ dotnet/
 ### Run Windows App
 
 ```bash
-cd dotnet/windows-app/core/PigeonPea.Windows
+cd dotnet/windows-app/core/src/PigeonPea.Windows
 dotnet run
 ```
 
@@ -65,7 +85,7 @@ dotnet run
 ### Run Console App
 
 ```bash
-cd dotnet/console-app/core/PigeonPea.Console
+cd dotnet/console-app/core/src/PigeonPea.Console
 dotnet run
 ```
 
@@ -82,7 +102,7 @@ dotnet run
 
 1. Define component struct in `game-essential/core/PigeonPea.Shared/Components.cs`
 2. Create entities with components in `GameWorld.cs`
-3. Query components in rendering logic (Windows: `windows-app/core/PigeonPea.Windows/GameCanvas.cs`, Console: `console-app/core/PigeonPea.Console/GameView.cs`)
+3. Query components in rendering logic (Windows: `windows-app/core/src/PigeonPea.Windows/GameCanvas.cs`, Console: `console-app/core/src/PigeonPea.Console/GameView.cs`)
 
 ### Adding New Systems
 
@@ -115,7 +135,7 @@ public partial class GameWorld
 
 **Windows (SkiaSharp)**: Modify `windows-app/core/PigeonPea.Windows/GameCanvas.cs` `RenderGame()` method.
 
-**Console (Terminal)**: Implement `ITerminalRenderer` interface in `console-app/core/PigeonPea.Console/ITerminalRenderer.cs`.
+**Console (Terminal)**: Implement `ITerminalRenderer` interface in `console-app/core/src/PigeonPea.Console/ITerminalRenderer.cs`.
 
 ## References
 

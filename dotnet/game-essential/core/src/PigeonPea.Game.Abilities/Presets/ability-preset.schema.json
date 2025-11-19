@@ -1,0 +1,232 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pigeon-pea.dev/schemas/ability-preset.schema.json",
+  "title": "AbilityPreset",
+  "description": "Schema for a single ability preset JSON file (one file per ability).",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "iconPath": {
+      "type": "string"
+    },
+    "cooldownSeconds": {
+      "type": "number",
+      "minimum": 0
+    },
+    "activationPolicy": {
+      "type": "string",
+      "enum": ["Always", "OnTurn", "OnEvent", "WhileChanneling"]
+    },
+    "cost": {
+      "$ref": "#/definitions/abilityCost"
+    },
+    "activationRequiredTags": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/tag" },
+      "default": []
+    },
+    "activationBlockedTags": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/tag" },
+      "default": []
+    },
+    "targeting": {
+      "$ref": "#/definitions/abilityTargeting"
+    },
+    "effects": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/effect" },
+      "minItems": 1
+    },
+    "casterTagsWhileActive": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/tag" },
+      "default": []
+    },
+    "maxActivations": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "description",
+    "cooldownSeconds",
+    "activationPolicy",
+    "targeting",
+    "effects"
+  ],
+  "definitions": {
+    "tag": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*$",
+      "description": "GameplayTag in dotted notation, e.g. 'State.Movement.Stunned'."
+    },
+    "modifierOperation": {
+      "type": "string",
+      "enum": ["Add", "Multiply", "Override"]
+    },
+    "effectDurationPolicy": {
+      "type": "string",
+      "enum": ["Instant", "Duration", "Infinite", "Periodic"]
+    },
+    "targetingType": {
+      "type": "string",
+      "enum": ["Self", "SingleTarget", "GroundTarget", "Direction", "None"]
+    },
+    "abilityCost": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "modifiers": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/attributeModifier" },
+          "minItems": 1
+        }
+      },
+      "required": ["modifiers"]
+    },
+    "attributeModifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "attributeId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "$ref": "#/definitions/modifierOperation"
+        },
+        "magnitude": {
+          "type": "number"
+        }
+      },
+      "required": ["attributeId", "operation", "magnitude"]
+    },
+    "abilityTargeting": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "$ref": "#/definitions/targetingType"
+        },
+        "range": {
+          "type": "number",
+          "minimum": 0
+        },
+        "aoeRadius": {
+          "type": "number",
+          "minimum": 0
+        },
+        "requiresLineOfSight": {
+          "type": "boolean"
+        },
+        "canTargetSelf": {
+          "type": "boolean"
+        },
+        "canTargetAllies": {
+          "type": "boolean"
+        },
+        "canTargetEnemies": {
+          "type": "boolean"
+        }
+      },
+      "required": ["type"]
+    },
+    "effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "durationPolicy": {
+          "$ref": "#/definitions/effectDurationPolicy"
+        },
+        "durationSeconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "periodSeconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "modifiers": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/effectModifier" },
+          "default": []
+        },
+        "grantedTags": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/tag" },
+          "default": []
+        },
+        "removedTags": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/tag" },
+          "default": []
+        },
+        "applicationRequiredTags": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/tag" },
+          "default": []
+        },
+        "applicationBlockedTags": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/tag" },
+          "default": []
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description",
+        "durationPolicy",
+        "durationSeconds",
+        "periodSeconds"
+      ]
+    },
+    "effectModifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "attributeId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operation": {
+          "$ref": "#/definitions/modifierOperation"
+        },
+        "magnitude": {
+          "type": "number"
+        },
+        "applyOnTick": {
+          "type": "boolean"
+        }
+      },
+      "required": ["attributeId", "operation", "magnitude"]
+    }
+  }
+}

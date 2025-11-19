@@ -1,0 +1,6 @@
+{
+  "name": "sequential-thinking",
+  "description": "Sequential Thinking MCP Server - Enable step-by-step reasoning",
+  "command": "npx",
+  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+}

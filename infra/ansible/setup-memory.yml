@@ -1,0 +1,40 @@
+---
+# Memory infrastructure setup playbook
+# Sets up Qdrant vector database for project memory system
+
+- name: Setup pigeon-pea memory infrastructure
+  hosts: localhost
+  connection: local
+  gather_facts: true
+  vars_files:
+    - vars/memory.yml
+
+  pre_tasks:
+    - name: Verify Docker is installed
+      ansible.builtin.command: docker --version
+      register: docker_version
+      changed_when: false
+      failed_when: false
+
+    - name: Fail if Docker is not installed
+      ansible.builtin.fail:
+        msg: "Docker is not installed. Run setup-dev.yml first or install Docker manually."
+      when: docker_version.rc != 0
+
+  roles:
+    - role: memory
+      tags: [memory, infra]
+
+  post_tasks:
+    - name: Display completion message
+      ansible.builtin.debug:
+        msg: |
+          ✅ Memory infrastructure setup complete!
+
+          Qdrant is now running at: http://localhost:6333
+          Dashboard: http://localhost:6333/dashboard
+
+          Next steps:
+          1. Test memory: python infra/memory/scripts/test-visibility.py
+          2. Configure Claude Code MCP server
+          3. See infra/memory/README.md for activation instructions

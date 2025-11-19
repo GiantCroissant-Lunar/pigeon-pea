@@ -1,0 +1,120 @@
+# Rio Terminal Configuration for Dungeon Dev Server
+# Optimized for Ratatui TUI rendering and multi-window development
+
+[window]
+title = "Dungeon Dev Server"
+width = 1200
+height = 800
+decorations = "Enabled"
+opacity = 0.95
+
+[fonts]
+# Use JetBrains Mono for excellent TUI rendering
+# You can also use your custom Nerd Font here
+family = "JetBrains Mono"
+size = 14
+# Enable ligatures for better TUI appearance
+ligatures = true
+# Suppress missing-font warnings, we provide explicit fallbacks
+disable-warnings-not-found = true
+
+# Extra fonts for CJK and fallback support
+extras = [
+    { family = "Microsoft YaHei" },     # Simplified Chinese
+    { family = "Microsoft JhengHei" },  # Traditional Chinese
+    { family = "SimSun" },              # Additional Chinese font
+    { family = "Consolas" }             # Western fallback
+]
+
+# Additional directories to search for fonts (relative to Rio working dir)
+additional-dirs = [
+    "./JetBrainsMono",
+    "./Microsoft JhengHei Regular"
+]
+
+[colors]
+# Dark theme optimized for Ratatui
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+cursor = "#f5e0dc"
+selection = "#585b70"
+selection_foreground = "#cdd6f4"
+black = "#45475a"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#cdd6f4"
+bright_black = "#6c7086"
+bright_red = "#f38ba8"
+bright_green = "#a6e3a1"
+bright_yellow = "#f9e2af"
+bright_blue = "#89b4fa"
+bright_magenta = "#f5c2e7"
+bright_cyan = "#94e2d5"
+bright_white = "#cdd6f4"
+
+[shell]
+# Use PowerShell; working_directory will place us in the project folder
+program = "pwsh"
+args = [
+    "-NoExit",
+    "-Command",
+    "cargo run"
+]
+
+[options]
+# Enable GPU acceleration for smooth TUI rendering
+gpu_acceleration = true
+# Enable true color support for better Ratatui colors
+true_color = true
+# Use absolute path so Rio starts directly in dev-tool-server
+working_directory = "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\projects\\dungeon\\rust\\dev-tool-server"
+# Enable mouse support for TUI interactions
+mouse_support = true
+
+# Custom keybindings for development workflow
+[[keybindings]]
+key = "Ctrl+Shift+N"
+action = "NewWindow"
+description = "Open new Rio window"
+
+[[keybindings]]
+key = "Ctrl+Shift+T"
+action = "NewTab"
+description = "Open new tab in current window"
+
+[[keybindings]]
+key = "Ctrl+Shift+D"
+action = "ToggleDebug"
+description = "Toggle debug mode"
+
+[profiles]
+# Development profile with optimal settings
+[profiles.development]
+name = "Development"
+inherit = "default"
+fonts.family = "JetBrains Mono"
+fonts.size = 14
+colors.background = "#1e1e2e"
+colors.foreground = "#cdd6f4"
+options.gpu_acceleration = true
+
+# Gaming profile with larger font
+[profiles.gaming]
+name = "Gaming"
+inherit = "development"
+fonts.size = 16
+window.width = 1400
+window.height = 900
+
+# Minimal profile for resource-constrained environments
+[profiles.minimal]
+name = "Minimal"
+inherit = "default"
+fonts.size = 12
+window.width = 1000
+window.height = 600
+options.gpu_acceleration = false

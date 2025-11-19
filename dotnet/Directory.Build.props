@@ -1,4 +1,21 @@
 <Project>
   <!-- Shared .NET configuration for projects under dotnet/.
        Intentionally minimal to keep root clean. Add common properties here when needed. -->
+
+  <PropertyGroup>
+    <!-- Enable code analysis for project code -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+
+    <!-- Treat specific warnings as errors to prevent common issues -->
+    <!-- Uncomment to enable: <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->
+
+    <!-- Common warnings to suppress across all projects (if needed) -->
+    <!-- Example: <NoWarn>$(NoWarn);CS8933</NoWarn> for redundant using in auto-generated files -->
+    <NoWarn>$(NoWarn);CS8933</NoWarn>
+  </PropertyGroup>
+
+  <!-- Suppress warnings from auto-generated files -->
+  <ItemGroup>
+    <CompilerVisibleProperty Include="NoWarn" />
+  </ItemGroup>
 </Project>

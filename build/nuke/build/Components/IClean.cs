@@ -5,7 +5,7 @@ using Nuke.Common.Utilities.Collections;
 interface IClean : INukeBuild
 {
     AbsolutePath SourceDirectory => RootDirectory / "dotnet";
-    AbsolutePath ArtifactsDirectory => RootDirectory / "artifacts";
+    AbsolutePath ArtifactsDirectory => RootDirectory / "build" / "_artifacts";
 
     Target Clean => _ => _
         .Before<IRestore>()

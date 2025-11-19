@@ -1,0 +1,15 @@
+{
+  "id": "rendering-terminal-kitty",
+  "name": "Kitty Terminal Renderer",
+  "version": "1.0.0",
+  "description": "Kitty graphics-based terminal renderer for console applications (placeholder)",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["renderer", "renderer:terminal", "kitty"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Rendering.Terminal.Kitty.dll,PigeonPea.Plugins.Rendering.Terminal.Kitty.KittyRendererPlugin"
+  },
+  "dependencies": [],
+  "priority": 80,
+  "loadStrategy": "eager"
+}

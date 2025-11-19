@@ -1,0 +1,15 @@
+{
+  "id": "rendering-windows-skiasharp",
+  "name": "SkiaSharp Windows Renderer",
+  "version": "1.0.0",
+  "description": "Hardware-accelerated SkiaSharp renderer for Windows applications",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["renderer", "renderer:windows", "skiasharp", "gpu-accelerated"],
+  "supportedProfiles": ["dotnet.windows"],
+  "entryPoint": {
+    "dotnet.windows": "PigeonPea.Plugins.Rendering.Windows.SkiaSharp.dll,PigeonPea.Plugins.Rendering.Windows.SkiaSharp.SkiaSharpRendererPlugin"
+  },
+  "dependencies": [],
+  "priority": 100,
+  "loadStrategy": "eager"
+}

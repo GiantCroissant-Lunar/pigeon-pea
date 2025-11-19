@@ -5,7 +5,7 @@ using static Nuke.Common.Tools.DotNet.DotNetTasks;
 
 interface IRestore : INukeBuild
 {
-    [Solution]
+    [Solution("dotnet/PigeonPea.sln")]
     Solution Solution => TryGetValue(() => Solution);
 
     Target Restore => _ => _

@@ -1,0 +1,15 @@
+{
+  "id": "rendering-terminal-sixel",
+  "name": "Sixel Terminal Renderer",
+  "version": "1.0.0",
+  "description": "Sixel-based terminal renderer for console applications (placeholder)",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["renderer", "renderer:terminal", "sixel"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Rendering.Terminal.Sixel.dll,PigeonPea.Plugins.Rendering.Terminal.Sixel.SixelRendererPlugin"
+  },
+  "dependencies": [],
+  "priority": 70,
+  "loadStrategy": "eager"
+}

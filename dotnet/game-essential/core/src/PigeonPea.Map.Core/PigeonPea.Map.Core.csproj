@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\_lib\modern-edgar-dotnet\src\Edgar.Core\Edgar.Core.csproj" />
+    <ProjectReference Include="..\PigeonPea.Overlays\PigeonPea.Overlays.csproj" />
+  </ItemGroup>
+</Project>

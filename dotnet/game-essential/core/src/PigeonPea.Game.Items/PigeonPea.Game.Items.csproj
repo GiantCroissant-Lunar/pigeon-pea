@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PigeonPea.Game.Inventory</RootNamespace>
+    <AssemblyName>PigeonPea.Game.Inventory</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- ECS Framework -->
+    <PackageReference Include="Arch" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Shared inventory core -->
+    <ProjectReference Include="..\PigeonPea.Shared.Inventory\PigeonPea.Shared.Inventory.csproj" />
+    <!-- Shared game world/components -->
+    <ProjectReference Include="..\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <!-- Game-level contracts (for future events/services) -->
+    <ProjectReference Include="..\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,44 @@
+---
+# Pre-commit hooks setup
+
+- name: Check if pre-commit is installed
+  ansible.builtin.command: pre-commit --version
+  register: precommit_check
+  changed_when: false
+  failed_when: false
+
+- name: Install pre-commit
+  ansible.builtin.pip:
+    name: pre-commit
+    state: present
+  when: precommit_check.rc != 0
+
+- name: Navigate to project root
+  ansible.builtin.set_fact:
+    project_root: "{{ playbook_dir }}/../.."
+
+- name: Install pre-commit hooks
+  ansible.builtin.command: pre-commit install
+  args:
+    chdir: "{{ project_root }}"
+  changed_when: true
+
+- name: Update pre-commit hooks (if enabled)
+  ansible.builtin.command: pre-commit autoupdate
+  args:
+    chdir: "{{ project_root }}"
+  when: precommit_autoupdate | default(false) | bool
+  changed_when: true
+
+- name: Verify pre-commit installation
+  ansible.builtin.command: pre-commit --version
+  register: precommit_version_check
+  changed_when: false
+
+- name: Display pre-commit version
+  ansible.builtin.debug:
+    msg: "Pre-commit installed: {{ precommit_version_check.stdout }}"
+
+- name: Display pre-commit test instructions
+  ansible.builtin.debug:
+    msg: "Test pre-commit hooks with: cd {{ project_root }} && pre-commit run --all-files"

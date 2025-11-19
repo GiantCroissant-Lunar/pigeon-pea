@@ -1,10 +1,20 @@
-# Claude Agent Configuration
+# Agent Configuration
 
-This document describes Claude-specific agent configuration for the pigeon-pea project.
+This document describes agent configuration for the pigeon-pea project, supporting multiple AI platforms.
 
 ## Overview
 
-This file provides guidance for Claude AI agents working with this codebase, including specific rules, workflows, and best practices.
+This file provides guidance for AI agents working with this codebase, including specific rules, workflows, and best practices.
+
+## Multi-Platform Support
+
+This project supports multiple AI agent platforms:
+
+- **Claude Code** - See [`.agent/providers/claude.yaml`](.agent/providers/claude.yaml) for Claude-specific configuration
+- **GitHub Copilot** - See [`.agent/providers/copilot.yaml`](.agent/providers/copilot.yaml) for Copilot-specific hints
+- **Windsurf** - See [`.windsurf/rules.md`](.windsurf/rules.md) and [`.agent/providers/windsurf.yaml`](.agent/providers/windsurf.yaml) for Windsurf configuration
+
+All agents should follow the core rules in [`.agent/rules/`](.agent/rules/), with platform-specific optimizations available in [`.agent/providers/`](.agent/providers/).
 
 ## Agent Rules
 

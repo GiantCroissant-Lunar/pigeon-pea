@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp" Version="2.88.7" />
+    <PackageReference Include="Arch" Version="2.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
+    <ProjectReference Include="..\..\..\..\content-authoring\core\src\PigeonPea.Content.ECS\PigeonPea.Content.ECS.csproj" />
+    <ProjectReference Include="..\..\..\..\content-authoring\core\src\PigeonPea.Content.Rendering\PigeonPea.Content.Rendering.csproj" />
+  </ItemGroup>
+</Project>

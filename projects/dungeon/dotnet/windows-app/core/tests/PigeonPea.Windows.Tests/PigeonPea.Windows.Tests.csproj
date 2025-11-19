@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit" />
+    <PackageReference Include="xunit.runner.visualstudio">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="SkiaSharp" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" />
+    <PackageReference Include="Moq" />
+    <PackageReference Include="FluentAssertions" />
+    <PackageReference Include="SixLabors.ImageSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Include only the Rendering files we need for testing -->
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/SkiaRenderTarget.cs" Link="Rendering/SkiaRenderTarget.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/SkiaSharpRenderer.cs" Link="Rendering/SkiaSharpRenderer.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/SpriteAtlasManager.cs" Link="Rendering/SpriteAtlasManager.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/SpriteDefinition.cs" Link="Rendering/SpriteDefinition.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/Particle.cs" Link="Rendering/Particle.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/ParticleEmitter.cs" Link="Rendering/ParticleEmitter.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/ParticleSystem.cs" Link="Rendering/ParticleSystem.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/Animation.cs" Link="Rendering/Animation.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/Rendering/AnimationSystem.cs" Link="Rendering/AnimationSystem.cs" />
+    <Compile Include="../../src/PigeonPea.Windows/StubRenderer.cs" Link="StubRenderer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy test data files to output directory -->
+    <None Include="TestData/**/*" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>

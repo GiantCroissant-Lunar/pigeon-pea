@@ -115,3 +115,9 @@ ref-projects/
 **/BenchmarkDotNet.Artifacts/
 **/benchmarks/**/Results/
 *.diagsession
+
+# Memory infrastructure
+infra/memory/data/
+infra/memory/logs/
+# Exported conversations
+2025-*.txt

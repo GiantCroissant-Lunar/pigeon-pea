@@ -1,0 +1,907 @@
+﻿{
+  Width: 800,
+  Height: 600,
+  Cells: [
+    {
+      Height: 17.0,
+      CenterX: 3.06,
+      CenterY: 5.75
+    },
+    {
+      Id: 62,
+      Height: 19.0,
+      CenterX: 484.85,
+      CenterY: 4.02
+    },
+    {
+      Id: 125,
+      Height: 20.0,
+      CenterX: 174.65,
+      CenterY: 11.77
+    },
+    {
+      Id: 187,
+      Height: 21.0,
+      Biome: 10,
+      CenterX: 654.42,
+      CenterY: 8.97
+    },
+    {
+      Id: 250,
+      Height: 18.0,
+      CenterX: 345.0,
+      CenterY: 20.15
+    },
+    {
+      Id: 312,
+      Height: 19.0,
+      CenterX: 30.13,
+      CenterY: 25.5
+    },
+    {
+      Id: 375,
+      Height: 18.0,
+      CenterX: 515.91,
+      CenterY: 24.32
+    },
+    {
+      Id: 437,
+      Height: 19.0,
+      CenterX: 194.17,
+      CenterY: 35.5
+    },
+    {
+      Id: 500,
+      Height: 20.0,
+      Biome: 10,
+      CenterX: 685.87,
+      CenterY: 37.99
+    },
+    {
+      Id: 562,
+      Height: 18.0,
+      CenterX: 369.91,
+      CenterY: 45.9
+    },
+    {
+      Id: 624,
+      Height: 18.0,
+      CenterX: 51.75,
+      CenterY: 50.59
+    },
+    {
+      Id: 687,
+      Height: 20.0,
+      Biome: 10,
+      CenterX: 541.41,
+      CenterY: 48.93
+    },
+    {
+      Id: 749,
+      Height: 18.0,
+      CenterX: 220.46,
+      CenterY: 56.7
+    },
+    {
+      Id: 812,
+      Height: 20.0,
+      Biome: 10,
+      CenterX: 711.6,
+      CenterY: 57.67
+    },
+    {
+      Id: 874,
+      Height: 21.0,
+      Biome: 2,
+      CenterX: 392.38,
+      CenterY: 69.21
+    },
+    {
+      Id: 937,
+      Height: 19.0,
+      CenterX: 81.64,
+      CenterY: 71.47
+    },
+    {
+      Id: 999,
+      Height: 19.0,
+      CenterX: 558.12,
+      CenterY: 70.78
+    },
+    {
+      Id: 1061,
+      Height: 22.0,
+      Biome: 2,
+      CenterX: 241.01,
+      CenterY: 78.15
+    },
+    {
+      Id: 1124,
+      Height: 19.0,
+      CenterX: 731.03,
+      CenterY: 80.01
+    },
+    {
+      Id: 1186,
+      Height: 17.0,
+      CenterX: 417.05,
+      CenterY: 90.09
+    },
+    {
+      Id: 1249,
+      Height: 19.0,
+      CenterX: 101.71,
+      CenterY: 99.66
+    },
+    {
+      Id: 1311,
+      Height: 19.0,
+      CenterX: 586.91,
+      CenterY: 95.19
+    },
+    {
+      Id: 1374,
+      Height: 19.0,
+      CenterX: 272.06,
+      CenterY: 103.87
+    },
+    {
+      Id: 1436,
+      Height: 19.0,
+      CenterX: 754.3,
+      CenterY: 105.11
+    },
+    {
+      Id: 1499,
+      Height: 18.0,
+      CenterX: 444.76,
+      CenterY: 108.88
+    },
+    {
+      Id: 1561,
+      Height: 20.0,
+      Biome: 9,
+      CenterX: 131.02,
+      CenterY: 121.2
+    },
+    {
+      Id: 1623,
+      Height: 21.0,
+      Biome: 9,
+      CenterX: 605.61,
+      CenterY: 120.96
+    },
+    {
+      Id: 1686,
+      Height: 21.0,
+      CenterX: 298.24,
+      CenterY: 129.69
+    },
+    {
+      Id: 1748,
+      Height: 18.0,
+      CenterX: 776.86,
+      CenterY: 124.8
+    },
+    {
+      Id: 1811,
+      Height: 20.0,
+      Biome: 2,
+      CenterX: 471.48,
+      CenterY: 136.18
+    },
+    {
+      Id: 1873,
+      Height: 32.0,
+      Biome: 2,
+      CenterX: 149.61,
+      CenterY: 146.08
+    },
+    {
+      Id: 1936,
+      Height: 25.0,
+      Biome: 2,
+      CenterX: 641.82,
+      CenterY: 144.46
+    },
+    {
+      Id: 1998,
+      Height: 18.0,
+      CenterX: 319.21,
+      CenterY: 151.83
+    },
+    {
+      Id: 2061,
+      Height: 20.0,
+      Biome: 9,
+      CenterX: 8.51,
+      CenterY: 159.83
+    },
+    {
+      Id: 2123,
+      Height: 19.0,
+      CenterX: 488.93,
+      CenterY: 156.85
+    },
+    {
+      Id: 2185,
+      Height: 51.0,
+      Biome: 2,
+      CenterX: 174.16,
+      CenterY: 164.84
+    },
+    {
+      Id: 2248,
+      Height: 24.0,
+      Biome: 2,
+      CenterX: 664.5,
+      CenterY: 164.97
+    },
+    {
+      Id: 2310,
+      Height: 19.0,
+      CenterX: 342.16,
+      CenterY: 173.3
+    },
+    {
+      Id: 2373,
+      Height: 21.0,
+      Biome: 9,
+      CenterX: 37.29,
+      CenterY: 184.43
+    },
+    {
+      Id: 2435,
+      Height: 18.0,
+      CenterX: 516.86,
+      CenterY: 185.4
+    },
+    {
+      Id: 2498,
+      Height: 67.0,
+      Biome: 2,
+      CenterX: 205.86,
+      CenterY: 189.06
+    },
+    {
+      Id: 2560,
+      Height: 20.0,
+      CenterX: 683.45,
+      CenterY: 189.35
+    },
+    {
+      Id: 2623,
+      Height: 19.0,
+      CenterX: 377.31,
+      CenterY: 196.72
+    },
+    {
+      Id: 2685,
+      Height: 20.0,
+      Biome: 4,
+      CenterX: 58.89,
+      CenterY: 203.35
+    },
+    {
+      Id: 2747,
+      Height: 30.0,
+      CenterX: 540.68,
+      CenterY: 206.23
+    },
+    {
+      Id: 2810,
+      Height: 55.0,
+      Biome: 2,
+      CenterX: 231.38,
+      CenterY: 212.83
+    },
+    {
+      Id: 2872,
+      Height: 17.0,
+      CenterX: 707.95,
+      CenterY: 214.69
+    },
+    {
+      Id: 2935,
+      Height: 19.0,
+      CenterX: 396.98,
+      CenterY: 220.09
+    },
+    {
+      Id: 2997,
+      Height: 20.0,
+      Biome: 6,
+      CenterX: 78.81,
+      CenterY: 225.97
+    },
+    {
+      Id: 3060,
+      Height: 41.0,
+      CenterX: 568.06,
+      CenterY: 228.79
+    },
+    {
+      Id: 3122,
+      Height: 39.0,
+      CenterX: 248.49,
+      CenterY: 238.28
+    },
+    {
+      Id: 3184,
+      Height: 18.0,
+      CenterX: 729.8,
+      CenterY: 236.84
+    },
+    {
+      Id: 3247,
+      Height: 20.0,
+      CenterX: 419.75,
+      CenterY: 245.71
+    },
+    {
+      Id: 3309,
+      Height: 17.0,
+      CenterX: 105.65,
+      CenterY: 253.97
+    },
+    {
+      Id: 3372,
+      Height: 32.0,
+      Biome: 4,
+      CenterX: 594.54,
+      CenterY: 253.95
+    },
+    {
+      Id: 3434,
+      Height: 22.0,
+      Biome: 6,
+      CenterX: 276.94,
+      CenterY: 259.39
+    },
+    {
+      Id: 3497,
+      Height: 19.0,
+      CenterX: 763.63,
+      CenterY: 259.43
+    },
+    {
+      Id: 3559,
+      Height: 19.0,
+      CenterX: 443.93,
+      CenterY: 268.43
+    },
+    {
+      Id: 3622,
+      Height: 21.0,
+      Biome: 6,
+      CenterX: 135.42,
+      CenterY: 278.34
+    },
+    {
+      Id: 3684,
+      Height: 19.0,
+      CenterX: 616.47,
+      CenterY: 275.07
+    },
+    {
+      Id: 3746,
+      Height: 20.0,
+      CenterX: 294.79,
+      CenterY: 285.47
+    },
+    {
+      Id: 3809,
+      Height: 20.0,
+      CenterX: 787.77,
+      CenterY: 281.57
+    },
+    {
+      Id: 3871,
+      Height: 19.0,
+      CenterX: 471.41,
+      CenterY: 287.67
+    },
+    {
+      Id: 3934,
+      Height: 18.0,
+      CenterX: 161.93,
+      CenterY: 297.59
+    },
+    {
+      Id: 3996,
+      Height: 18.0,
+      CenterX: 640.59,
+      CenterY: 299.4
+    },
+    {
+      Id: 4059,
+      Height: 21.0,
+      Biome: 6,
+      CenterX: 327.07,
+      CenterY: 308.45
+    },
+    {
+      Id: 4121,
+      Height: 20.0,
+      Biome: 6,
+      CenterX: 14.55,
+      CenterY: 312.5
+    },
+    {
+      Id: 4184,
+      Height: 19.0,
+      CenterX: 498.71,
+      CenterY: 310.53
+    },
+    {
+      Id: 4246,
+      Height: 18.0,
+      CenterX: 180.67,
+      CenterY: 318.25
+    },
+    {
+      Id: 4308,
+      Height: 18.0,
+      CenterX: 665.34,
+      CenterY: 324.58
+    },
+    {
+      Id: 4371,
+      Height: 19.0,
+      CenterX: 350.37,
+      CenterY: 327.01
+    },
+    {
+      Id: 4433,
+      Height: 19.0,
+      CenterX: 33.71,
+      CenterY: 337.94
+    },
+    {
+      Id: 4496,
+      Height: 20.0,
+      Biome: 6,
+      CenterX: 525.69,
+      CenterY: 336.54
+    },
+    {
+      Id: 4558,
+      Height: 19.0,
+      CenterX: 206.25,
+      CenterY: 347.53
+    },
+    {
+      Id: 4621,
+      Height: 21.0,
+      Biome: 6,
+      CenterX: 693.55,
+      CenterY: 344.27
+    },
+    {
+      Id: 4683,
+      Height: 25.0,
+      Biome: 4,
+      CenterX: 372.73,
+      CenterY: 355.08
+    },
+    {
+      Id: 4746,
+      Height: 18.0,
+      CenterX: 63.96,
+      CenterY: 360.68
+    },
+    {
+      Id: 4808,
+      Height: 20.0,
+      CenterX: 545.52,
+      CenterY: 362.0
+    },
+    {
+      Id: 4870,
+      Height: 23.0,
+      Biome: 4,
+      CenterX: 229.0,
+      CenterY: 369.37
+    },
+    {
+      Id: 4933,
+      Height: 18.0,
+      CenterX: 715.76,
+      CenterY: 368.86
+    },
+    {
+      Id: 4995,
+      Height: 43.0,
+      CenterX: 398.16,
+      CenterY: 377.37
+    },
+    {
+      Id: 5058,
+      Height: 19.0,
+      CenterX: 88.88,
+      CenterY: 385.52
+    },
+    {
+      Id: 5120,
+      Height: 18.0,
+      CenterX: 568.27,
+      CenterY: 384.42
+    },
+    {
+      Id: 5183,
+      Height: 18.0,
+      CenterX: 261.08,
+      CenterY: 389.28
+    },
+    {
+      Id: 5245,
+      Height: 24.0,
+      CenterX: 741.54,
+      CenterY: 391.04
+    },
+    {
+      Id: 5307,
+      Height: 43.0,
+      Biome: 2,
+      CenterX: 421.23,
+      CenterY: 398.33
+    },
+    {
+      Id: 5370,
+      Height: 18.0,
+      CenterX: 115.12,
+      CenterY: 406.7
+    },
+    {
+      Id: 5432,
+      Height: 20.0,
+      Biome: 9,
+      CenterX: 592.96,
+      CenterY: 409.93
+    },
+    {
+      Id: 5495,
+      Height: 19.0,
+      CenterX: 285.63,
+      CenterY: 411.37
+    },
+    {
+      Id: 5557,
+      Height: 34.0,
+      Biome: 2,
+      CenterX: 764.45,
+      CenterY: 417.37
+    },
+    {
+      Id: 5620,
+      Height: 23.0,
+      Biome: 9,
+      CenterX: 456.25,
+      CenterY: 420.72
+    },
+    {
+      Id: 5682,
+      Height: 19.0,
+      CenterX: 138.23,
+      CenterY: 432.07
+    },
+    {
+      Id: 5745,
+      Height: 18.0,
+      CenterX: 622.85,
+      CenterY: 430.45
+    },
+    {
+      Id: 5807,
+      Height: 18.0,
+      CenterX: 303.44,
+      CenterY: 439.61
+    },
+    {
+      Id: 5869,
+      Height: 34.0,
+      Biome: 2,
+      CenterX: 789.54,
+      CenterY: 435.04
+    },
+    {
+      Id: 5932,
+      Height: 19.0,
+      CenterX: 478.4,
+      CenterY: 444.06
+    },
+    {
+      Id: 5994,
+      Height: 19.0,
+      CenterX: 155.71,
+      CenterY: 452.07
+    },
+    {
+      Id: 6057,
+      Height: 17.0,
+      CenterX: 646.59,
+      CenterY: 451.02
+    },
+    {
+      Id: 6119,
+      Height: 18.0,
+      CenterX: 328.53,
+      CenterY: 461.62
+    },
+    {
+      Id: 6182,
+      Height: 19.0,
+      CenterX: 21.83,
+      CenterY: 466.52
+    },
+    {
+      Id: 6244,
+      Height: 17.0,
+      CenterX: 501.99,
+      CenterY: 469.42
+    },
+    {
+      Id: 6307,
+      Height: 21.0,
+      Biome: 2,
+      CenterX: 188.72,
+      CenterY: 475.12
+    },
+    {
+      Id: 6369,
+      Height: 18.0,
+      CenterX: 667.15,
+      CenterY: 479.8
+    },
+    {
+      Id: 6431,
+      Height: 20.0,
+      Biome: 9,
+      CenterX: 355.24,
+      CenterY: 482.49
+    },
+    {
+      Id: 6494,
+      Height: 21.0,
+      Biome: 9,
+      CenterX: 40.64,
+      CenterY: 492.21
+    },
+    {
+      Id: 6556,
+      Height: 19.0,
+      CenterX: 523.36,
+      CenterY: 489.48
+    },
+    {
+      Id: 6619,
+      Height: 20.0,
+      Biome: 9,
+      CenterX: 213.48,
+      CenterY: 496.97
+    },
+    {
+      Id: 6681,
+      Height: 19.0,
+      CenterX: 695.71,
+      CenterY: 497.75
+    },
+    {
+      Id: 6744,
+      Height: 20.0,
+      Biome: 2,
+      CenterX: 382.0,
+      CenterY: 504.29
+    },
+    {
+      Id: 6806,
+      Height: 21.0,
+      Biome: 2,
+      CenterX: 62.55,
+      CenterY: 514.74
+    },
+    {
+      Id: 6869,
+      Height: 20.0,
+      CenterX: 550.89,
+      CenterY: 516.64
+    },
+    {
+      Id: 6931,
+      Height: 22.0,
+      Biome: 2,
+      CenterX: 234.0,
+      CenterY: 519.57
+    },
+    {
+      Id: 6993,
+      Height: 21.0,
+      Biome: 9,
+      CenterX: 719.25,
+      CenterY: 521.78
+    },
+    {
+      Id: 7056,
+      Height: 19.0,
+      CenterX: 403.23,
+      CenterY: 533.14
+    },
+    {
+      Id: 7118,
+      Height: 18.0,
+      CenterX: 92.53,
+      CenterY: 535.6
+    },
+    {
+      Id: 7181,
+      Height: 30.0,
+      Biome: 11,
+      CenterX: 579.04,
+      CenterY: 541.65
+    },
+    {
+      Id: 7243,
+      Height: 21.0,
+      Biome: 10,
+      CenterX: 262.95,
+      CenterY: 545.78
+    },
+    {
+      Id: 7306,
+      Height: 19.0,
+      CenterX: 750.2,
+      CenterY: 545.27
+    },
+    {
+      Id: 7368,
+      Height: 18.0,
+      CenterX: 427.62,
+      CenterY: 553.47
+    },
+    {
+      Id: 7430,
+      Height: 19.0,
+      CenterX: 115.06,
+      CenterY: 559.21
+    },
+    {
+      Id: 7493,
+      Height: 41.0,
+      Biome: 11,
+      CenterX: 600.89,
+      CenterY: 562.09
+    },
+    {
+      Id: 7555,
+      Height: 20.0,
+      Biome: 10,
+      CenterX: 285.81,
+      CenterY: 572.69
+    },
+    {
+      Id: 7618,
+      Height: 18.0,
+      CenterX: 769.07,
+      CenterY: 567.94
+    },
+    {
+      Id: 7680,
+      Height: 18.0,
+      CenterX: 453.62,
+      CenterY: 580.53
+    },
+    {
+      Id: 7743,
+      Height: 36.0,
+      Biome: 11,
+      CenterX: 145.21,
+      CenterY: 585.76
+    },
+    {
+      Id: 7805,
+      Height: 48.0,
+      Biome: 11,
+      CenterX: 625.97,
+      CenterY: 586.33
+    },
+    {
+      Id: 7868,
+      Height: 18.0,
+      CenterX: 312.87,
+      CenterY: 595.26
+    },
+    {
+      Id: 7930,
+      Height: 16.0,
+      CenterX: 795.45,
+      CenterY: 592.68
+    }
+  ],
+  Biomes: [
+    {
+      Name: Marine,
+      ColorHex: #466eab
+    },
+    {
+      Index: 1,
+      Id: 1,
+      Name: Hot desert,
+      ColorHex: #fbe79f
+    },
+    {
+      Index: 2,
+      Id: 2,
+      Name: Cold desert,
+      ColorHex: #b5b887
+    },
+    {
+      Index: 3,
+      Id: 3,
+      Name: Savanna,
+      ColorHex: #d2d082
+    },
+    {
+      Index: 4,
+      Id: 4,
+      Name: Grassland,
+      ColorHex: #c8d68f
+    },
+    {
+      Index: 5,
+      Id: 5,
+      Name: Tropical seasonal forest,
+      ColorHex: #b6d95d
+    },
+    {
+      Index: 6,
+      Id: 6,
+      Name: Temperate deciduous forest,
+      ColorHex: #29bc56
+    },
+    {
+      Index: 7,
+      Id: 7,
+      Name: Tropical rainforest,
+      ColorHex: #7dcb35
+    },
+    {
+      Index: 8,
+      Id: 8,
+      Name: Temperate rainforest,
+      ColorHex: #409c43
+    },
+    {
+      Index: 9,
+      Id: 9,
+      Name: Taiga,
+      ColorHex: #4b6b32
+    },
+    {
+      Index: 10,
+      Id: 10,
+      Name: Tundra,
+      ColorHex: #96784b
+    },
+    {
+      Index: 11,
+      Id: 11,
+      Name: Glacier,
+      ColorHex: #d5e7eb
+    },
+    {
+      Index: 12,
+      Id: 12,
+      Name: Wetland,
+      ColorHex: #0b9131
+    }
+  ],
+  Rivers: [
+    {
+      Cells: [
+        4379,
+        4276,
+        4173
+      ]
+    }
+  ]
+}

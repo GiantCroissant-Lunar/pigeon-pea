@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Avalonia UI Framework -->
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+
+    <!-- Avalonia Diagnostics (Debug only) -->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
+
+    <!-- Avalonia Skia Integration -->
+    <PackageReference Include="Avalonia.Skia" />
+
+    <!-- SkiaSharp for Custom Rendering -->
+    <PackageReference Include="SkiaSharp" />
+
+    <!-- Source Generators -->
+    <PackageReference Include="Plate.SCG.Shared.Attributes" />
+    <PackageReference Include="Plate.SCG.General.DisposePattern" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Reference to Shared Game Logic -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+
+    <!-- Engine-level rendering primitives (IRenderer, IRenderTarget, Tile, Viewport, RendererCapabilities) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+  </ItemGroup>
+
+</Project>
