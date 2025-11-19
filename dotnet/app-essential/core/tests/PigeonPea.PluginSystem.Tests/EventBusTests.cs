@@ -18,7 +18,7 @@ public class EventBusTests
         bus.Subscribe<string>(s => { c1++; return Task.CompletedTask; });
         bus.Subscribe<string>(s => { c2++; return Task.CompletedTask; });
 
-        await bus.PublishAsync("hello");
+        await bus.PublishAsync("hello").ConfigureAwait(false);
 
         c1.Should().Be(1);
         c2.Should().Be(1);
@@ -29,7 +29,7 @@ public class EventBusTests
     {
         var bus = new EventBus();
         Func<Task> act = () => bus.PublishAsync<string>(null!);
-        await act.Should().ThrowAsync<ArgumentNullException>();
+        await act.Should().ThrowAsync<ArgumentNullException>().ConfigureAwait(false);
     }
 
     [Fact]
@@ -46,8 +46,8 @@ public class EventBusTests
             tcs.SetResult(true);
         });
 
-        await bus.PublishAsync("go");
-        await tcs.Task; // ensure handler ran
+        await bus.PublishAsync("go").ConfigureAwait(false);
+        await tcs.Task.ConfigureAwait(false); // ensure handler ran
         observed.Should().BeTrue();
     }
 
@@ -67,7 +67,7 @@ public class EventBusTests
         Func<Task> act = () => bus.PublishAsync("x");
 
         // Should throw AggregateException containing all handler exceptions
-        var exception = await act.Should().ThrowAsync<AggregateException>();
+        var exception = await act.Should().ThrowAsync<AggregateException>().ConfigureAwait(false);
         exception.Which.InnerExceptions.Should().HaveCount(2);
         exception.Which.InnerExceptions.Should().Contain(ex => ex is InvalidOperationException);
         exception.Which.InnerExceptions.Should().Contain(ex => ex is ArgumentException);
@@ -93,7 +93,7 @@ public class EventBusTests
             tasks.Add(bus.PublishAsync("tick"));
         }
 
-        await Task.WhenAll(tasks);
+        await Task.WhenAll(tasks).ConfigureAwait(false);
         count.Should().Be(iterations * 2);
     }
 }

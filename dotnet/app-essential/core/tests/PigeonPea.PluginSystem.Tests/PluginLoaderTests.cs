@@ -37,7 +37,7 @@ public class PluginLoaderTests
             hostMock.Object
         );
 
-        var count = await loader.DiscoverAndLoadAsync(new[] { tmp.Path }, "dotnet.console", CancellationToken.None);
+        var count = await loader.DiscoverAndLoadAsync(new[] { tmp.Path }, "dotnet.console", CancellationToken.None).ConfigureAwait(false);
         count.Should().Be(0);
     }
 
