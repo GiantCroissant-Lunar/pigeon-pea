@@ -2,8 +2,8 @@ using PigeonPea.Game.Contracts.Models;
 using GameRenderContext = PigeonPea.Game.Contracts.Rendering.RenderContext;
 using GameRenderer = PigeonPea.Game.Contracts.Rendering.IRenderer;
 using RenderSurface = PigeonPea.Game.Contracts.Rendering.IRenderSurface;
-using SharedRenderer = PigeonPea.Shared.Rendering.IRenderer;
-using SharedRenderTarget = PigeonPea.Shared.Rendering.IRenderTarget;
+using SharedRenderer = PigeonPea.Rendering.Contracts.IRenderer;
+using SharedRenderTarget = PigeonPea.Rendering.Contracts.IRenderTarget;
 using PigeonPea.Contracts.Input.Services;
 using SadRogue.Primitives;
 using Terminal.Gui;
@@ -144,7 +144,7 @@ public class PluginRenderSurfaceAdapter : RenderSurface
 
     public void SetViewport(int x, int y, int width, int height)
     {
-        _renderer.SetViewport(new PigeonPea.Shared.Rendering.Viewport(x, y, width, height));
+        _renderer.SetViewport(new PigeonPea.Rendering.Contracts.Viewport(x, y, width, height));
     }
 
     public void DrawText(int x, int y, string text, byte foregroundR, byte foregroundG, byte foregroundB, byte backgroundR, byte backgroundG, byte backgroundB)

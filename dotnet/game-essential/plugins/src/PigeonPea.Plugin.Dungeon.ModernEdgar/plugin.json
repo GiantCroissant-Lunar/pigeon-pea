@@ -1,0 +1,11 @@
+{
+  "id": "dungeon-generator-modern-edgar",
+  "name": "Modern Edgar Dungeon Generator",
+  "version": "0.1.0",
+  "author": "PigeonPea",
+  "description": "Dungeon generation using modern-edgar-dotnet library",
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugin.Dungeon.ModernEdgar.dll,PigeonPea.Plugin.Dungeon.ModernEdgar.ModernEdgarDungeonGenerator"
+  },
+  "dependencies": []
+}

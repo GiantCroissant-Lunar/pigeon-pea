@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <!-- Project References -->
-    <ProjectReference Include="..\PigeonPea.Shared\PigeonPea.Shared.csproj" />
-    <ProjectReference Include="..\PigeonPea.Game.Input\PigeonPea.Game.Input.csproj" />
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Game.Input\PigeonPea.Game.Input.csproj" />
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Shared.Input\PigeonPea.Shared.Input.csproj" />
   </ItemGroup>
 

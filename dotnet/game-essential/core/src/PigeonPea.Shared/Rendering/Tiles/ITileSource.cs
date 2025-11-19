@@ -1,5 +1,5 @@
 using FantasyMapGenerator.Core.Models;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 
 namespace PigeonPea.SharedApp.Rendering.Tiles;
 

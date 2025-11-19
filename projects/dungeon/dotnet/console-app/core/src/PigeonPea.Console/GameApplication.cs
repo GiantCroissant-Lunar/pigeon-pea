@@ -24,7 +24,7 @@ public class GameApplication : Toplevel
     private int _frameCount;
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
 
-    public GameApplication(TerminalCapabilities terminalCaps, PigeonPea.Shared.Rendering.IRenderer renderer)
+    public GameApplication(TerminalCapabilities terminalCaps, PigeonPea.Rendering.Contracts.IRenderer renderer)
     {
         _terminalCaps = terminalCaps;
         _gameWorld = new GameWorld(80, 40);

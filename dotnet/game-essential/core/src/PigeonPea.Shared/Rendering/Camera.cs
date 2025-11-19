@@ -1,4 +1,5 @@
 using Arch.Core;
+using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Components;
 using SadRogue.Primitives;
 

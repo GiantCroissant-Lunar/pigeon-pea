@@ -40,17 +40,12 @@
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
-    <ProjectReference Include="..\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
+    <ProjectReference Include="..\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
+    <ProjectReference Include="..\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
   </ItemGroup>
 
   <!-- Use rendering primitives from PigeonPea.Shared.Rendering instead of local duplicates -->
   <ItemGroup>
-    <Compile Remove="Rendering\IRenderTarget.cs" />
-    <Compile Remove="Rendering\IRenderer.cs" />
-    <Compile Remove="Rendering\RendererCapabilities.cs" />
-    <Compile Remove="Rendering\Tile.cs" />
-    <Compile Remove="Rendering\TileFlags.cs" />
-    <Compile Remove="Rendering\Viewport.cs" />
   </ItemGroup>
 
 </Project>

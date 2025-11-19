@@ -1,0 +1,11 @@
+{
+  "id": "dungeon-renderer-domain",
+  "name": "Dungeon Domain Renderer",
+  "version": "0.1.0",
+  "author": "PigeonPea",
+  "description": "Domain logic for rendering dungeons using abstract IRenderer",
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugin.Dungeon.Rendering.dll,PigeonPea.Plugin.Dungeon.Rendering.DungeonRendererPlugin"
+  },
+  "dependencies": []
+}

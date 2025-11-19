@@ -125,7 +125,7 @@ class Program
         var nearbyEntities = 0;
         var fov = gameWorld.PlayerEntity.Get<FieldOfView>();
         var query = new Arch.Core.QueryDescription().WithAll<Position, Health>();
-        
+
         gameWorld.EcsWorld.Query(in query, (Arch.Core.Entity entity, ref Position pos, ref Health health) =>
         {
             if (entity != gameWorld.PlayerEntity && fov.VisibleTiles.Contains(pos.Point))

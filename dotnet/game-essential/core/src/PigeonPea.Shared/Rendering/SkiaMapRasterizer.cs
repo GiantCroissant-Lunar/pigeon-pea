@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using FantasyMapGenerator.Core.Models;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.ViewModels;
 using SkiaSharp;
 

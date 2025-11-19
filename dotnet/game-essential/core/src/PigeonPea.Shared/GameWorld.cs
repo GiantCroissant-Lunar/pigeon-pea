@@ -5,17 +5,19 @@ using GoRogue.GameFramework;
 using GoRogue.Pathing;
 using MessagePipe;
 using PigeonPea.Contracts.Plugin;
-using PigeonPea.Dungeon.Core;
+using PigeonPea.Dungeon.Contracts;
+using PigeonPea.Dungeon.Contracts.Models;
 using PigeonPea.Shared.Components;
+// using PigeonPea.Shared.Dungeon; // Removed: BasicDungeonGenerator moved to plugin
 using PigeonPea.Shared.Events;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using Serilog;
 using CTile = PigeonPea.Shared.Components.Tile;
 using IInventoryService = PigeonPea.Game.Contracts.Inventory.Services.IService;
 using PluginEvents = PigeonPea.Game.Contracts.Events;
-using RTile = PigeonPea.Shared.Rendering.Tile;
+using RTile = PigeonPea.Rendering.Contracts.Tile;
 
 /// <summary>
 /// Core game world managing ECS entities, map, and game state.
@@ -111,7 +113,7 @@ public class GameWorld
         WalkabilityMap = new ArrayView<bool>(width, height);
         TransparencyMap = new ArrayView<bool>(width, height);
         _random = new Random();
-        _dungeonGenerator = dungeonGenerator ?? new BasicDungeonGenerator();
+        _dungeonGenerator = dungeonGenerator ?? new FallbackDungeonGenerator();
 
         // Publishers remain null - no events published
         _playerDamagedPublisher = null;
@@ -201,7 +203,8 @@ public class GameWorld
     private void GenerateDungeon()
     {
         // Use pluggable dungeon generator to produce a DungeonData grid
-        var data = _dungeonGenerator.Generate(Width, Height);
+        var view = _dungeonGenerator.Generate(new DungeonGenerationOptions { Width = Width, Height = Height });
+        var data = DungeonData.FromView(view);
 
         // Create tile entities for each position based on DungeonData
         for (int y = 0; y < Height; y++)
@@ -970,5 +973,50 @@ public class GameWorld
         });
 
         _renderer.EndFrame();
+    }
+
+    /// <summary>
+    /// Simple fallback generator that creates a single large room.
+    /// Used when no generator is provided.
+    /// </summary>
+    private class FallbackDungeonGenerator : IDungeonGenerator
+    {
+        public DungeonView Generate(DungeonGenerationOptions options)
+        {
+            var d = new DungeonData(options.Width, options.Height);
+            // Fill with walls
+            for (int y = 0; y < options.Height; y++)
+                for (int x = 0; x < options.Width; x++)
+                    d.SetWall(x, y);
+
+            // Carve a large central room with 2-tile padding
+            for (int y = 2; y < options.Height - 2; y++)
+                for (int x = 2; x < options.Width - 2; x++)
+                    d.SetFloor(x, y);
+
+            return ToView(d);
+        }
+
+        private static DungeonView ToView(DungeonData d)
+        {
+            var view = new DungeonView
+            {
+                Width = d.Width,
+                Height = d.Height,
+                Walkable = d.Walkable,
+                Opaque = d.Opaque,
+                Doors = new byte[d.Height, d.Width]
+            };
+
+            for (int y = 0; y < d.Height; y++)
+            {
+                for (int x = 0; x < d.Width; x++)
+                {
+                    view.Doors[y, x] = (byte)d.Doors[y, x];
+                }
+            }
+
+            return view;
+        }
     }
 }

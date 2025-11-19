@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using FantasyMapGenerator.Core.Models;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 
 namespace PigeonPea.SharedApp.Rendering;
@@ -15,7 +15,7 @@ public static class MapDataRenderer
     private static bool s_loggedKittyOnce;
     private static readonly System.Diagnostics.Stopwatch s_animClock = System.Diagnostics.Stopwatch.StartNew();
     private static bool s_kittySmokeDrawn;
-    public static void Draw(IRenderer renderer, MapData map, Viewport viewport, bool showDungeonOverlay = false, double zoom = 1.0, RenderLayout? layout = null)
+    public static void Draw(IRenderer renderer, MapData map, Viewport viewport, bool showDungeonOverlay = false, double zoom = 1.0, PigeonPea.Shared.Rendering.RenderLayout? layout = null)
     {
         int screenX = layout?.MapRect.X ?? 0;
         int screenY = layout?.MapRect.Y ?? 0;
@@ -161,7 +161,7 @@ public static class MapDataRenderer
         renderer.DrawText(screenX, screenY, "MAP", Color.White, Color.Black);
     }
 
-    private static void DrawPixelFrameViaReflection(IRenderer renderer, MapData map, Viewport viewport, double zoom, bool preferKitty, RenderLayout? layout)
+    private static void DrawPixelFrameViaReflection(IRenderer renderer, MapData map, Viewport viewport, double zoom, bool preferKitty, PigeonPea.Shared.Rendering.RenderLayout? layout)
     {
         int cols = layout?.MapRect.Width ?? viewport.Width;
         int rows = layout?.MapRect.Height ?? viewport.Height;
