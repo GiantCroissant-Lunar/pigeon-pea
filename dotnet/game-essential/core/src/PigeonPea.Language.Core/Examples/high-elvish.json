@@ -1,0 +1,98 @@
+{
+  "id": "high-elvish",
+  "name": "High Elvish",
+  "description": "The ancient tongue of the Elven nobility, characterized by soft consonants and flowing vowels. Inspired by Quenya and Sindarin.",
+  "phonology": {
+    "inventory": {
+      "vowels": ["a", "e", "i", "o", "u", "á", "é", "í"],
+      "consonants": ["l", "r", "n", "m", "s", "h", "t", "th", "d", "v", "f"],
+      "diphthongs": ["ae", "ai", "ei"]
+    },
+    "syllableTemplates": [
+      {
+        "pattern": "CV",
+        "weight": 40,
+        "allowedOnsets": [],
+        "allowedCodas": []
+      },
+      {
+        "pattern": "CVC",
+        "weight": 30,
+        "allowedOnsets": [],
+        "allowedCodas": ["n", "l", "r"]
+      },
+      {
+        "pattern": "V",
+        "weight": 20,
+        "allowedOnsets": [],
+        "allowedCodas": []
+      },
+      {
+        "pattern": "CCV",
+        "weight": 10,
+        "allowedOnsets": ["th", "el", "ar"],
+        "allowedCodas": []
+      }
+    ],
+    "clusters": {
+      "initialClusters": ["l", "r", "th", "el", "ar"],
+      "medialClusters": ["lv", "rl", "nd", "rv", "ll"],
+      "finalClusters": ["n", "l", "r"]
+    }
+  },
+  "grammar": {
+    "wordOrder": "svo",
+    "morphologyRules": [
+      {
+        "name": "feminine_suffix",
+        "type": "suffix",
+        "pattern": "{root}iel",
+        "condition": "feminine"
+      },
+      {
+        "name": "plural",
+        "type": "suffix",
+        "pattern": "{root}lir",
+        "condition": "plural"
+      },
+      {
+        "name": "genitive",
+        "type": "suffix",
+        "pattern": "{root}ien",
+        "condition": "genitive"
+      },
+      {
+        "name": "agent_suffix",
+        "type": "suffix",
+        "pattern": "{root}ar",
+        "condition": "agent"
+      }
+    ],
+    "compoundRules": [
+      {
+        "pattern": "{root1}{root2}",
+        "connector": null,
+        "type": "noun_Noun"
+      },
+      {
+        "pattern": "{root1}a{root2}",
+        "connector": "a",
+        "type": "adjective_Noun"
+      }
+    ]
+  },
+  "parentLanguageId": null,
+  "soundChanges": [],
+  "metadata": {
+    "author": "Fantasy Language Service",
+    "version": "1.0",
+    "created": "2025-11-19",
+    "lexicon_path": "high-elvish-lexicon.json",
+    "example_names": ["Aelóriel", "Thaloren", "Mirathel", "Elendil", "Lothíriel"],
+    "example_phrases": {
+      "hello": "Aelór",
+      "farewell": "Namarië",
+      "thank_you": "Hantale"
+    }
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "id": "draconic",
+  "name": "Draconic",
+  "description": "The ancient, thunderous language of dragons. Features booming syllables, guttural consonants, and compound-heavy morphology.",
+  "phonology": {
+    "inventory": {
+      "vowels": ["a", "aa", "o", "oo", "u", "uu"],
+      "consonants": ["k", "g", "r", "d", "th", "z", "v", "gr", "kr", "dr"],
+      "diphthongs": []
+    },
+    "syllableTemplates": [
+      {
+        "pattern": "CVC",
+        "weight": 40,
+        "allowedOnsets": [],
+        "allowedCodas": ["r", "n", "th"]
+      },
+      {
+        "pattern": "CCVC",
+        "weight": 35,
+        "allowedOnsets": ["gr", "kr", "dr", "th"],
+        "allowedCodas": ["r", "n"]
+      },
+      {
+        "pattern": "CVV",
+        "weight": 25,
+        "allowedOnsets": [],
+        "allowedCodas": []
+      }
+    ],
+    "clusters": {
+      "initialClusters": ["gr", "kr", "dr", "thr", "zr"],
+      "medialClusters": ["gr", "kr", "dr"],
+      "finalClusters": ["r", "n", "th"]
+    }
+  },
+  "grammar": {
+    "wordOrder": "vso",
+    "morphologyRules": [
+      {
+        "name": "ancient_prefix",
+        "type": "prefix",
+        "pattern": "zu{root}",
+        "condition": "ancient"
+      },
+      {
+        "name": "plural",
+        "type": "suffix",
+        "pattern": "{root}oth",
+        "condition": "plural"
+      }
+    ],
+    "compoundRules": [
+      {
+        "pattern": "{root1}'{root2}",
+        "connector": "'",
+        "type": "noun_Noun"
+      },
+      {
+        "pattern": "{root1}{root2}",
+        "connector": null,
+        "type": "adjective_Noun"
+      }
+    ]
+  },
+  "parentLanguageId": null,
+  "soundChanges": [],
+  "metadata": {
+    "author": "Fantasy Language Service",
+    "version": "1.0",
+    "created": "2025-11-19",
+    "lexicon_path": "draconic-lexicon.json",
+    "example_names": ["Gravax", "Zhor'athuun", "Kraalthor", "Thu'urval", "Drakonzaan"],
+    "example_phrases": {
+      "fire": "THU'UR",
+      "sky": "vokunmaar",
+      "dragon": "dovah"
+    }
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "languageId": "high-elvish",
+  "entries": [
+    {
+      "word": "aelór",
+      "meaning": "fire",
+      "root": "ael",
+      "affixes": ["ór"],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "thalor",
+      "meaning": "mountain",
+      "root": "thal",
+      "affixes": ["or"],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "miriel",
+      "meaning": "jewel",
+      "root": "mir",
+      "affixes": ["iel"],
+      "partOfSpeech": "noun",
+      "alternateMeanings": ["beloved", "treasure"]
+    },
+    {
+      "word": "loth",
+      "meaning": "flower",
+      "root": "loth",
+      "affixes": [],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "el",
+      "meaning": "star",
+      "root": "el",
+      "affixes": [],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "tawar",
+      "meaning": "forest",
+      "root": "tawar",
+      "affixes": [],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "nen",
+      "meaning": "water",
+      "root": "nen",
+      "affixes": [],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "anor",
+      "meaning": "sun",
+      "root": "anor",
+      "affixes": [],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "ithil",
+      "meaning": "moon",
+      "root": "ithil",
+      "affixes": [],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "telír",
+      "meaning": "burns",
+      "root": "tel",
+      "affixes": ["ír"],
+      "partOfSpeech": "verb"
+    },
+    {
+      "word": "miren",
+      "meaning": "shines",
+      "root": "mir",
+      "affixes": ["en"],
+      "partOfSpeech": "verb"
+    },
+    {
+      "word": "valar",
+      "meaning": "flows",
+      "root": "val",
+      "affixes": ["ar"],
+      "partOfSpeech": "verb"
+    }
+  ]
+}

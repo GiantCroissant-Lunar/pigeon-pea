@@ -1,0 +1,253 @@
+using Microsoft.Extensions.Logging;
+using PigeonPea.Language.Contracts.Lexicon;
+using System.Text.Json;
+
+namespace PigeonPea.Language.Core;
+
+public class LexiconManager : ILexiconManager
+{
+    private readonly ILogger<LexiconManager> _logger;
+    
+    // Dictionary<LanguageId, Dictionary<Meaning, LexiconEntry>>
+    private readonly Dictionary<string, Dictionary<string, LexiconEntry>> _forwardLexicons = new();
+    
+    // Dictionary<LanguageId, Dictionary<Word, LexiconEntry>>
+    private readonly Dictionary<string, Dictionary<string, LexiconEntry>> _reverseLexicons = new();
+
+    public LexiconManager(ILogger<LexiconManager> logger)
+    {
+        _logger = logger;
+    }
+
+    public void AddEntry(string languageId, LexiconEntry entry)
+    {
+        if (string.IsNullOrWhiteSpace(languageId))
+        {
+            throw new ArgumentException("Language ID cannot be null or empty", nameof(languageId));
+        }
+
+        if (entry == null)
+        {
+            throw new ArgumentNullException(nameof(entry));
+        }
+
+        if (string.IsNullOrWhiteSpace(entry.Word))
+        {
+            throw new ArgumentException("Entry word cannot be null or empty", nameof(entry));
+        }
+
+        if (string.IsNullOrWhiteSpace(entry.Meaning))
+        {
+            throw new ArgumentException("Entry meaning cannot be null or empty", nameof(entry));
+        }
+
+        // Ensure lexicons exist for this language
+        if (!_forwardLexicons.ContainsKey(languageId))
+        {
+            _forwardLexicons[languageId] = new Dictionary<string, LexiconEntry>();
+        }
+
+        if (!_reverseLexicons.ContainsKey(languageId))
+        {
+            _reverseLexicons[languageId] = new Dictionary<string, LexiconEntry>();
+        }
+
+        // Add to forward lexicon (meaning -> entry)
+        _forwardLexicons[languageId][entry.Meaning] = entry;
+
+        // Add to reverse lexicon (word -> entry)
+        _reverseLexicons[languageId][entry.Word] = entry;
+
+        _logger.LogDebug("Added lexicon entry for language '{LanguageId}': {Word} = {Meaning}", 
+            languageId, entry.Word, entry.Meaning);
+    }
+
+    public LexiconEntry? LookupByMeaning(string languageId, string meaning)
+    {
+        if (string.IsNullOrWhiteSpace(languageId))
+        {
+            _logger.LogWarning("Language ID is null or empty");
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(meaning))
+        {
+            _logger.LogWarning("Meaning is null or empty");
+            return null;
+        }
+
+        if (!_forwardLexicons.TryGetValue(languageId, out var lexicon))
+        {
+            _logger.LogDebug("No lexicon found for language '{LanguageId}'", languageId);
+            return null;
+        }
+
+        if (lexicon.TryGetValue(meaning, out var entry))
+        {
+            return entry;
+        }
+
+        _logger.LogDebug("No entry found for meaning '{Meaning}' in language '{LanguageId}'", 
+            meaning, languageId);
+        return null;
+    }
+
+    public string? LookupByWord(string languageId, string word)
+    {
+        if (string.IsNullOrWhiteSpace(languageId))
+        {
+            _logger.LogWarning("Language ID is null or empty");
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(word))
+        {
+            _logger.LogWarning("Word is null or empty");
+            return null;
+        }
+
+        if (!_reverseLexicons.TryGetValue(languageId, out var lexicon))
+        {
+            _logger.LogDebug("No lexicon found for language '{LanguageId}'", languageId);
+            return null;
+        }
+
+        if (lexicon.TryGetValue(word, out var entry))
+        {
+            return entry.Meaning;
+        }
+
+        _logger.LogDebug("No entry found for word '{Word}' in language '{LanguageId}'", 
+            word, languageId);
+        return null;
+    }
+
+    public IEnumerable<LexiconEntry> GetAllEntries(string languageId)
+    {
+        if (string.IsNullOrWhiteSpace(languageId))
+        {
+            _logger.LogWarning("Language ID is null or empty");
+            return Enumerable.Empty<LexiconEntry>();
+        }
+
+        if (!_forwardLexicons.TryGetValue(languageId, out var lexicon))
+        {
+            _logger.LogDebug("No lexicon found for language '{LanguageId}'", languageId);
+            return Enumerable.Empty<LexiconEntry>();
+        }
+
+        return lexicon.Values;
+    }
+
+    public async Task SaveLexiconAsync(string languageId, string path)
+    {
+        if (string.IsNullOrWhiteSpace(languageId))
+        {
+            throw new ArgumentException("Language ID cannot be null or empty", nameof(languageId));
+        }
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentException("Path cannot be null or empty", nameof(path));
+        }
+
+        if (!_forwardLexicons.TryGetValue(languageId, out var lexicon))
+        {
+            throw new InvalidOperationException($"No lexicon found for language '{languageId}'");
+        }
+
+        var lexiconData = new LexiconFile
+        {
+            LanguageId = languageId,
+            Entries = lexicon.Values.ToList()
+        };
+
+        var options = new JsonSerializerOptions
+        {
+            WriteIndented = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+        };
+
+        try
+        {
+            var json = JsonSerializer.Serialize(lexiconData, options);
+            await File.WriteAllTextAsync(path, json).ConfigureAwait(false);
+            
+            _logger.LogInformation("Saved lexicon for language '{LanguageId}' to '{Path}' ({Count} entries)", 
+                languageId, path, lexicon.Count);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to save lexicon for language '{LanguageId}' to '{Path}'", 
+                languageId, path);
+            throw;
+        }
+    }
+
+    public async Task LoadLexiconAsync(string languageId, string path)
+    {
+        if (string.IsNullOrWhiteSpace(languageId))
+        {
+            throw new ArgumentException("Language ID cannot be null or empty", nameof(languageId));
+        }
+
+        if (string.IsNullOrWhiteSpace(path))
+        {
+            throw new ArgumentException("Path cannot be null or empty", nameof(path));
+        }
+
+        if (!File.Exists(path))
+        {
+            throw new FileNotFoundException($"Lexicon file not found: {path}", path);
+        }
+
+        try
+        {
+            var json = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+            
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            };
+
+            var lexiconData = JsonSerializer.Deserialize<LexiconFile>(json, options);
+
+            if (lexiconData == null)
+            {
+                throw new InvalidOperationException($"Failed to deserialize lexicon from '{path}'");
+            }
+
+            if (lexiconData.LanguageId != languageId)
+            {
+                _logger.LogWarning(
+                    "Lexicon file language ID '{FileLanguageId}' does not match requested language ID '{LanguageId}'",
+                    lexiconData.LanguageId, languageId);
+            }
+
+            // Clear existing entries for this language
+            _forwardLexicons.Remove(languageId);
+            _reverseLexicons.Remove(languageId);
+
+            // Add all entries
+            foreach (var entry in lexiconData.Entries)
+            {
+                AddEntry(languageId, entry);
+            }
+
+            _logger.LogInformation("Loaded lexicon for language '{LanguageId}' from '{Path}' ({Count} entries)",
+                languageId, path, lexiconData.Entries.Count);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to load lexicon for language '{LanguageId}' from '{Path}'",
+                languageId, path);
+            throw;
+        }
+    }
+
+    private class LexiconFile
+    {
+        public string LanguageId { get; set; } = string.Empty;
+        public List<LexiconEntry> Entries { get; set; } = new();
+    }
+}

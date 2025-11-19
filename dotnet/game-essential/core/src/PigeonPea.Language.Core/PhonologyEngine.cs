@@ -1,0 +1,283 @@
+using Microsoft.Extensions.Logging;
+using PigeonPea.Language.Contracts.Phonology;
+
+namespace PigeonPea.Language.Core;
+
+public class PhonologyEngine : IPhonologyEngine
+{
+    private readonly ILogger<PhonologyEngine> _logger;
+    private static readonly HashSet<string> ValidPatterns = new()
+    {
+        "V", "CV", "VC", "CVC", "CCV", "CCVC", "CVCC", "CCVCC", "VCC", "CVV"
+    };
+
+    public PhonologyEngine(ILogger<PhonologyEngine> logger)
+    {
+        _logger = logger;
+    }
+
+    public bool ValidatePhonemeInventory(PhonemeInventory inventory)
+    {
+        if (inventory == null)
+        {
+            _logger.LogWarning("Phoneme inventory is null");
+            return false;
+        }
+
+        if (inventory.Vowels == null || inventory.Vowels.Count == 0)
+        {
+            _logger.LogWarning("Phoneme inventory must have at least one vowel");
+            return false;
+        }
+
+        if (inventory.Consonants == null || inventory.Consonants.Count == 0)
+        {
+            _logger.LogWarning("Phoneme inventory must have at least one consonant");
+            return false;
+        }
+
+        // Check for duplicates
+        var allPhonemes = inventory.Vowels
+            .Concat(inventory.Consonants)
+            .Concat(inventory.Diphthongs ?? Array.Empty<string>())
+            .ToList();
+
+        if (allPhonemes.Count != allPhonemes.Distinct().Count())
+        {
+            _logger.LogWarning("Phoneme inventory contains duplicate phonemes");
+            return false;
+        }
+
+        // Check for empty phonemes
+        if (allPhonemes.Any(string.IsNullOrWhiteSpace))
+        {
+            _logger.LogWarning("Phoneme inventory contains empty or whitespace phonemes");
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool ValidateSyllableTemplate(SyllableTemplate template, PhonemeInventory inventory)
+    {
+        if (template == null)
+        {
+            _logger.LogWarning("Syllable template is null");
+            return false;
+        }
+
+        if (inventory == null)
+        {
+            _logger.LogWarning("Phoneme inventory is null");
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(template.Pattern))
+        {
+            _logger.LogWarning("Syllable template pattern is empty");
+            return false;
+        }
+
+        // Validate pattern follows standard forms
+        if (!ValidPatterns.Contains(template.Pattern))
+        {
+            _logger.LogWarning("Syllable template pattern '{Pattern}' is not a standard pattern", template.Pattern);
+            return false;
+        }
+
+        // Validate that all phonemes in onsets exist in inventory
+        if (template.AllowedOnsets != null)
+        {
+            foreach (var onset in template.AllowedOnsets)
+            {
+                if (!ValidateCluster(onset, inventory.Consonants))
+                {
+                    _logger.LogWarning("Onset '{Onset}' contains phonemes not in consonant inventory", onset);
+                    return false;
+                }
+            }
+        }
+
+        // Validate that all phonemes in codas exist in inventory
+        if (template.AllowedCodas != null)
+        {
+            foreach (var coda in template.AllowedCodas)
+            {
+                if (!ValidateCluster(coda, inventory.Consonants))
+                {
+                    _logger.LogWarning("Coda '{Coda}' contains phonemes not in consonant inventory", coda);
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public string GenerateSyllable(SyllableTemplate template, Random random)
+    {
+        if (template == null)
+        {
+            throw new ArgumentNullException(nameof(template));
+        }
+
+        if (random == null)
+        {
+            throw new ArgumentNullException(nameof(random));
+        }
+
+        // Note: This is a simplified implementation that generates based on pattern only
+        // A full implementation would need access to PhonemeInventory to select actual phonemes
+        // For now, we generate a valid syllable structure that matches the pattern
+        
+        var syllable = new System.Text.StringBuilder();
+        var pattern = template.Pattern;
+
+        int i = 0;
+        while (i < pattern.Length)
+        {
+            char symbol = pattern[i];
+            
+            if (symbol == 'C')
+            {
+                // Check if this is part of a consonant cluster at the beginning
+                if (i == 0 && i + 1 < pattern.Length && pattern[i + 1] == 'C')
+                {
+                    // Onset cluster
+                    if (template.AllowedOnsets != null && template.AllowedOnsets.Count > 0)
+                    {
+                        var onset = template.AllowedOnsets[random.Next(template.AllowedOnsets.Count)];
+                        syllable.Append(onset);
+                        // Skip the consonants we've handled
+                        while (i < pattern.Length && pattern[i] == 'C')
+                        {
+                            i++;
+                        }
+                        continue;
+                    }
+                }
+                // Check if this is part of a consonant cluster at the end
+                else if (i > 0 && i == pattern.LastIndexOf('C'))
+                {
+                    // Check if there are multiple C's at the end
+                    int cCount = 0;
+                    for (int j = i; j < pattern.Length && pattern[j] == 'C'; j++)
+                    {
+                        cCount++;
+                    }
+                    
+                    if (cCount > 1 && template.AllowedCodas != null && template.AllowedCodas.Count > 0)
+                    {
+                        var coda = template.AllowedCodas[random.Next(template.AllowedCodas.Count)];
+                        syllable.Append(coda);
+                        i += cCount;
+                        continue;
+                    }
+                }
+                
+                // Single consonant - use placeholder for now
+                // In a full implementation, this would select from inventory.Consonants
+                syllable.Append('k');
+                i++;
+            }
+            else if (symbol == 'V')
+            {
+                // Vowel - use placeholder for now
+                // In a full implementation, this would select from inventory.Vowels
+                syllable.Append('a');
+                i++;
+            }
+            else
+            {
+                // Unknown symbol, skip it
+                i++;
+            }
+        }
+
+        return syllable.ToString();
+    }
+
+    public bool IsValidWord(string word, PhonologyRules rules)
+    {
+        if (string.IsNullOrWhiteSpace(word))
+        {
+            return false;
+        }
+
+        if (rules == null || rules.Inventory == null)
+        {
+            return false;
+        }
+
+        // Check if all characters in the word are valid phonemes
+        var allPhonemes = rules.Inventory.Vowels
+            .Concat(rules.Inventory.Consonants)
+            .Concat(rules.Inventory.Diphthongs ?? Array.Empty<string>())
+            .ToHashSet();
+
+        // Simple validation: check if word can be broken into valid phonemes
+        // This is a simplified implementation - a real one would need more sophisticated parsing
+        int i = 0;
+        while (i < word.Length)
+        {
+            bool foundMatch = false;
+            
+            // Try to match longest phoneme first
+            for (int len = Math.Min(3, word.Length - i); len > 0; len--)
+            {
+                var substring = word.Substring(i, len);
+                if (allPhonemes.Contains(substring))
+                {
+                    i += len;
+                    foundMatch = true;
+                    break;
+                }
+            }
+
+            if (!foundMatch)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private bool ValidateCluster(string cluster, IReadOnlyList<string> consonants)
+    {
+        if (string.IsNullOrWhiteSpace(cluster))
+        {
+            return false;
+        }
+
+        // Simple validation: check if all characters in cluster are consonants
+        // This is simplified - a real implementation would need more sophisticated parsing
+        var consonantSet = consonants.ToHashSet();
+        
+        // Try to parse the cluster into individual consonants
+        int i = 0;
+        while (i < cluster.Length)
+        {
+            bool foundMatch = false;
+            
+            // Try to match longest consonant first
+            for (int len = Math.Min(2, cluster.Length - i); len > 0; len--)
+            {
+                var substring = cluster.Substring(i, len);
+                if (consonantSet.Contains(substring))
+                {
+                    i += len;
+                    foundMatch = true;
+                    break;
+                }
+            }
+
+            if (!foundMatch)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}

@@ -1,0 +1,86 @@
+{
+  "id": "dwarvish",
+  "name": "Dwarvish",
+  "description": "The harsh, guttural language of the mountain dwarves. Features triconsonantal roots and Semitic-inspired morphology.",
+  "phonology": {
+    "inventory": {
+      "vowels": ["a", "u", "i"],
+      "consonants": ["k", "g", "d", "z", "kh", "gh", "r", "b", "t", "m", "n", "th"],
+      "diphthongs": []
+    },
+    "syllableTemplates": [
+      {
+        "pattern": "CVC",
+        "weight": 50,
+        "allowedOnsets": [],
+        "allowedCodas": ["k", "r", "n", "m"]
+      },
+      {
+        "pattern": "CCVC",
+        "weight": 30,
+        "allowedOnsets": ["kr", "gr", "dr", "kh", "zh"],
+        "allowedCodas": ["k", "r", "n"]
+      },
+      {
+        "pattern": "CV",
+        "weight": 20,
+        "allowedOnsets": [],
+        "allowedCodas": []
+      }
+    ],
+    "clusters": {
+      "initialClusters": ["kr", "gr", "dr", "thr", "br", "kh", "gh"],
+      "medialClusters": ["zg", "rk", "nd", "mb"],
+      "finalClusters": ["k", "r", "n", "m", "kh"]
+    }
+  },
+  "grammar": {
+    "wordOrder": "vso",
+    "morphologyRules": [
+      {
+        "name": "plural",
+        "type": "suffix",
+        "pattern": "{root}im",
+        "condition": "plural"
+      },
+      {
+        "name": "genitive",
+        "type": "suffix",
+        "pattern": "{root}ul",
+        "condition": "genitive"
+      },
+      {
+        "name": "agent",
+        "type": "prefix",
+        "pattern": "bar{root}",
+        "condition": "agent"
+      }
+    ],
+    "compoundRules": [
+      {
+        "pattern": "{root1}{root2}",
+        "connector": null,
+        "type": "noun_Noun"
+      },
+      {
+        "pattern": "{root1}ak{root2}",
+        "connector": "ak",
+        "type": "adjective_Noun"
+      }
+    ]
+  },
+  "parentLanguageId": null,
+  "soundChanges": [],
+  "metadata": {
+    "author": "Fantasy Language Service",
+    "version": "1.0",
+    "created": "2025-11-19",
+    "lexicon_path": "dwarvish-lexicon.json",
+    "example_names": ["Durzak", "Khazrim", "Barukthor", "Grimnak", "Thoradin"],
+    "example_phrases": {
+      "hello": "Khazâd",
+      "farewell": "Baruk",
+      "axes": "Baruk Khazâd"
+    }
+  }
+}

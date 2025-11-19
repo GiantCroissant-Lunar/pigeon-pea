@@ -1,0 +1,61 @@
+{
+  "languageId": "dwarvish",
+  "entries": [
+    {
+      "word": "barzakh",
+      "meaning": "fire",
+      "root": "brz",
+      "affixes": ["akh"],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "durnak",
+      "meaning": "mountain",
+      "root": "drn",
+      "affixes": ["ak"],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "khazad",
+      "meaning": "dwarf",
+      "root": "khz",
+      "affixes": ["ad"],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "baruk",
+      "meaning": "axe",
+      "root": "brk",
+      "affixes": [],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "gabil",
+      "meaning": "great",
+      "root": "gbl",
+      "affixes": [],
+      "partOfSpeech": "adjective"
+    },
+    {
+      "word": "zigil",
+      "meaning": "silver",
+      "root": "zgl",
+      "affixes": [],
+      "partOfSpeech": "noun"
+    },
+    {
+      "word": "thurim",
+      "meaning": "roars",
+      "root": "thr",
+      "affixes": ["im"],
+      "partOfSpeech": "verb"
+    },
+    {
+      "word": "zunrak",
+      "meaning": "strikes",
+      "root": "znr",
+      "affixes": ["ak"],
+      "partOfSpeech": "verb"
+    }
+  ]
+}
