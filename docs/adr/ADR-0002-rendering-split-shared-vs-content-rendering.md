@@ -1,3 +1,22 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00002
+doc_type: adr
+related: []
+status: active
+summary: Accepted
+supersedes: []
+tags:
+- adr
+- ecs
+- plugins
+- rendering
+- terminal
+- testing
+title: 'ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering'
+---
+
 # ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering
 
 ## Status

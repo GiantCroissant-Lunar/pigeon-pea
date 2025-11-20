@@ -1,3 +1,21 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: GUIDE-2025-00008
+doc_type: guide
+related: []
+status: active
+summary: This guide helps you move from the deprecated FMG rendering stack to the
+  modern Map domain rendering components.
+supersedes: []
+tags:
+- documentation
+- ecs
+- guide
+- rendering
+title: 'Migration: FantasyMapGenerator.Rendering → PigeonPea.Map.Rendering'
+---
+
 # Migration: FantasyMapGenerator.Rendering → PigeonPea.Map.Rendering
 
 This guide helps you move from the deprecated FMG rendering stack to the modern Map domain rendering components.

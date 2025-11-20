@@ -1,3 +1,20 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: GUIDE-2025-00004
+doc_type: guide
+related: []
+status: active
+summary: This note summarizes how we plan to version builds and organize logs under
+  build/artifacts/{version}/.
+supersedes: []
+tags:
+- ci-cd
+- guide
+- terminal
+title: Build Versioning and Logging
+---
+
 # Build Versioning and Logging
 
 This note summarizes how we plan to version builds and organize logs under `build/_artifacts/{version}/`.

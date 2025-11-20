@@ -1,3 +1,26 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: GUIDE-2025-00007
+doc_type: guide
+related: []
+status: active
+summary: A practical reference for working with the Arch ECS setup in PigeonPea. The
+  examples below cover dungeon + map worlds, rendering, queries, events, tests, and
+  performance tips. There are more than 15 f
+supersedes: []
+tags:
+- architecture
+- documentation
+- ecs
+- fonts
+- guide
+- rendering
+- terminal
+- testing
+title: ECS Usage Examples
+---
+
 # ECS Usage Examples
 
 A practical reference for working with the Arch ECS setup in PigeonPea. The examples below cover dungeon + map worlds, rendering, queries, events, tests, and performance tips. There are more than **15 focused snippets** so you can copy/paste the patterns you need.

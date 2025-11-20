@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00012
+doc_type: rfc
+related: []
+status: active
+summary: '- Message: docs: document domain-driven architecture and RFC-007 - Key files:'
+supersedes: []
+tags:
+- architecture
+- ci-cd
+- documentation
+- ecs
+- rendering
+- rfc
+- terminal
+- testing
+title: Temporary Commit Plan (Safe to delete after use)
+---
+
 # Temporary Commit Plan (Safe to delete after use)
 
 ## Commit 1 – Docs & changelog for RFC-007 / architecture

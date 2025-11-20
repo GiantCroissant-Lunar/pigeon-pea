@@ -1,3 +1,23 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00009
+doc_type: rfc
+related: []
+status: active
+summary: 'Source: RFC-00026 (see docs/inbox/rfc-numbering-convention.md)'
+supersedes: []
+tags:
+- architecture
+- documentation
+- ecs
+- fonts
+- plugins
+- rfc
+- terminal
+title: RFC Numbering Convention - Quick Reference
+---
+
 # RFC Numbering Convention - Quick Reference
 
 **Source**: RFC-00026 (see `docs/_inbox/rfc-numbering-convention.md`)

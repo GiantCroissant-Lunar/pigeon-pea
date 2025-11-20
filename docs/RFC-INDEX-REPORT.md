@@ -1,3 +1,27 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: PLAN-2025-00001
+doc_type: plan
+related: []
+status: active
+summary: 'Total RFCs: 19'
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- fonts
+- plan
+- plugins
+- rendering
+- terminal
+- testing
+title: RFC Indexing Synchronization Report
+---
+
 # RFC Indexing Synchronization Report
 *Total RFCs: 19*
 

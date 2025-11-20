@@ -1,3 +1,19 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: SPEC-2025-00002
+doc_type: spec
+related: []
+status: active
+summary: This document enumerates the Private Use Area (PUA) codepoints used by the
+  project.
+supersedes: []
+tags:
+- fonts
+- spec
+title: PUA Layout for Map Glyphs
+---
+
 # PUA Layout for Map Glyphs
 
 This document enumerates the Private Use Area (PUA) codepoints used by the project.

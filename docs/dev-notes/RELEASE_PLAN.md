@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: GUIDE-2025-00005
+doc_type: guide
+related: []
+status: active
+summary: 'This document describes how we plan to ship self-contained bundles of PigeonPea
+  for different platforms, including:'
+supersedes: []
+tags:
+- ci-cd
+- ecs
+- fonts
+- guide
+- rendering
+- terminal
+- testing
+title: 'Release Plan: Cross-Platform Bundles'
+---
+
 # Release Plan: Cross-Platform Bundles
 
 This document describes how we plan to ship **self-contained bundles** of PigeonPea for different platforms, including:

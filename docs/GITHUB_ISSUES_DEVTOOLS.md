@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: GUIDE-2025-00002
+doc_type: guide
+related: []
+status: active
+summary: Successfully created 12 GitHub issues for the pigeon-pea DevTools system,
+  organized by priority and milestone.
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- guide
+- testing
+title: DevTools GitHub Issues - Creation Summary
+---
+
 # DevTools GitHub Issues - Creation Summary
 
 ## Overview

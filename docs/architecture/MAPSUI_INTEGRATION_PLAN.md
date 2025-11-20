@@ -1,3 +1,23 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00009
+doc_type: adr
+related: []
+status: active
+summary: 'Date: 2025-01-12 Status: Planning Phase'
+supersedes: []
+tags:
+- adr
+- architecture
+- ecs
+- fonts
+- rendering
+- terminal
+- testing
+title: Mapsui/BruTile Integration Plan
+---
+
 # Mapsui/BruTile Integration Plan
 
 **Date**: 2025-01-12

@@ -1,3 +1,21 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00001
+doc_type: adr
+related: []
+status: active
+summary: '- Status: Accepted - Date: 2025-11-14'
+supersedes: []
+tags:
+- adr
+- architecture
+- documentation
+- terminal
+- testing
+title: 'ADR-0001: Historical vs Canonical Documentation for .NET Project Structure'
+---
+
 # ADR-0001: Historical vs Canonical Documentation for .NET Project Structure
 
 - **Status:** Accepted

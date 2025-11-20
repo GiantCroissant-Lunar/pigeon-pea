@@ -1,3 +1,22 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00014
+doc_type: rfc
+related: []
+status: active
+summary: 'Audience: Developers who previously used dotnet/shared-app/Rendering/ or
+  SharedApp.Rendering APIs. Date: 2025-11-13 (RFC-007 Phase 6)'
+supersedes: []
+tags:
+- architecture
+- ecs
+- rendering
+- rfc
+- terminal
+title: 'Migration: SharedApp.Rendering → Domain-Specific Projects'
+---
+
 # Migration: SharedApp.Rendering → Domain-Specific Projects
 
 **Audience**: Developers who previously used `dotnet/shared-app/Rendering/` or `SharedApp.Rendering` APIs.

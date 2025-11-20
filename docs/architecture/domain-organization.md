@@ -1,3 +1,23 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00007
+doc_type: adr
+related: []
+status: active
+summary: 'Last Updated: 2025-11-13 Status: Current (Post RFC-007 implementation)'
+supersedes: []
+tags:
+- adr
+- agents
+- architecture
+- documentation
+- ecs
+- rendering
+- terminal
+title: Domain-Driven Architecture Organization
+---
+
 # Domain-Driven Architecture Organization
 
 **Last Updated**: 2025-11-13

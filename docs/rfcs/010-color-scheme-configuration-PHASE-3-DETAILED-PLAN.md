@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00021
+doc_type: rfc
+related: []
+status: active
+summary: 'Status: Ready for Implementation Phase: 3 of 5'
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-010 Phase 3: ViewModel Integration - Detailed Implementation Plan'
+---
+
 # RFC-010 Phase 3: ViewModel Integration - Detailed Implementation Plan
 
 ## Status

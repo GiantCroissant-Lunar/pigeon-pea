@@ -1,3 +1,23 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00004
+doc_type: adr
+related: []
+status: active
+summary: Accepted
+supersedes: []
+tags:
+- adr
+- agents
+- architecture
+- ecs
+- plugins
+- rendering
+- terminal
+title: 'ADR-0004: Mapsui Integration, Zoomable World, and External Map Stacks'
+---
+
 # ADR-0004: Mapsui Integration, Zoomable World, and External Map Stacks
 
 ## Status

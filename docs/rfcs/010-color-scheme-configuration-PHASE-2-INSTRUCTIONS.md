@@ -1,3 +1,26 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00020
+doc_type: rfc
+related: []
+status: active
+summary: 'Goal: Integrate the ColorScheme system (Phase 1) with the map rendering
+  pipeline by modifying SkiaMapRasterizer and MapColor classes to use the new ColorSchemes
+  provider instead of hardcoded colors.'
+supersedes: []
+tags:
+- architecture
+- ci-cd
+- documentation
+- ecs
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-010 Phase 2: Integration with SkiaMapRasterizer'
+---
+
 # RFC-010 Phase 2: Integration with SkiaMapRasterizer
 
 ## Overview

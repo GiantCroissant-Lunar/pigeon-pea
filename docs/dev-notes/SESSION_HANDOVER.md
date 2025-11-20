@@ -1,3 +1,25 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: PLAN-2025-00002
+doc_type: plan
+related: []
+status: active
+summary: 'Last updated: 2025-11-16'
+supersedes: []
+tags:
+- architecture
+- ci-cd
+- documentation
+- fonts
+- plan
+- plugins
+- rendering
+- terminal
+- testing
+title: Session Handover
+---
+
 # Session Handover
 
 _Last updated: 2025-11-16_

@@ -1,3 +1,21 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00012
+doc_type: adr
+related: []
+status: active
+summary: 'The Fantasy Map Generator C# port generates 0 rivers despite having complete
+  river generation code. All other features work correctly:'
+supersedes: []
+tags:
+- adr
+- rendering
+- terminal
+- testing
+title: River Generation Investigation - Handover Document
+---
+
 # River Generation Investigation - Handover Document
 
 ## Problem Summary

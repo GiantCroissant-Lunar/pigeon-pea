@@ -1,3 +1,23 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00005
+doc_type: rfc
+related: []
+status: active
+summary: 'Purpose: Provide AI agents with programmatic access to documentation management
+  functions through the Model Context Protocol (MCP).'
+supersedes: []
+tags:
+- agents
+- architecture
+- documentation
+- ecs
+- plugins
+- rfc
+title: Documentation Management MCP Server Specification
+---
+
 # Documentation Management MCP Server Specification
 
 **Purpose**: Provide AI agents with programmatic access to documentation management functions through the Model Context Protocol (MCP).

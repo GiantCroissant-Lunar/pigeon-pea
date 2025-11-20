@@ -1,3 +1,22 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: SPEC-2025-00005
+doc_type: spec
+related: []
+status: active
+summary: 'Date: 2025-11-18 Project: Pigeon Pea - Dungeon Dev Server'
+supersedes: []
+tags:
+- documentation
+- ecs
+- fonts
+- spec
+- terminal
+- testing
+title: Rio Terminal Configuration Troubleshooting Guide
+---
+
 # Rio Terminal Configuration Troubleshooting Guide
 
 **Date:** 2025-11-18

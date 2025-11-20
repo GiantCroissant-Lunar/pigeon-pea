@@ -1,3 +1,25 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00010
+doc_type: rfc
+related: []
+status: active
+summary: 'Purpose: Seamlessly integrate RFC-centric development with task-master task-based
+  execution.'
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- plugins
+- rfc
+- testing
+title: Task-Master Workflow Integration
+---
+
 # Task-Master Workflow Integration
 
 **Purpose**: Seamlessly integrate RFC-centric development with task-master task-based execution.

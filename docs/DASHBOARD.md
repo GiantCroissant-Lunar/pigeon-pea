@@ -1,16 +1,16 @@
 # RFC Implementation Dashboard
-*Generated: 2025-11-20 09:05:34*
+*Generated: 2025-11-20 19:32:02*
 
 ## Summary
-- **Total RFCs**: 18
+- **Total RFCs**: 38
 - **With Implementation Tracking**: 0
-- **Not Started**: 18
+- **Not Started**: 38
 - **In Progress**: 0
 - **Completed**: 0
 - **Blocked**: 0
 - **Deferred**: 0
 
-## 📋 Not Started (18 RFCs)
+## 📋 Not Started (38 RFCs)
 | RFC | Title | Status |
 |-----|-------|--------|
 | RFC-00001 | Rendering Architecture | draft |
@@ -24,4 +24,4 @@
 | RFC-00015 | Fantasy Calendar to Real-World Time Transformation | draft |
 | RFC-00016 | Name Generator JSON Configuration System | draft |
 
-*...and 8 more*
+*...and 28 more*

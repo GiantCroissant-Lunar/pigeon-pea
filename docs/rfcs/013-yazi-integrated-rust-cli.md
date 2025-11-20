@@ -1,3 +1,23 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00026
+doc_type: rfc
+related: []
+status: active
+summary: 'Status: Proposed Created: 2025-11-13'
+supersedes: []
+tags:
+- architecture
+- ci-cd
+- documentation
+- plugins
+- rfc
+- terminal
+- testing
+title: 'RFC-013: Yazi-integrated Rust GM CLI'
+---
+
 # RFC-013: Yazi-integrated Rust GM CLI
 
 ## Status

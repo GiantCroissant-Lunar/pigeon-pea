@@ -1,3 +1,22 @@
+---
+created: '2025-11-20'
+doc_type: guide
+status: draft
+summary: This note summarizes the current state of the FantasyMapGenerator (FMG) integration
+  as used by the map HUD sandbox (PigeonPea.MapHud) and documents a crash in the cultures
+  generation phase.
+tags:
+- agents
+- ecs
+- fonts
+- guide
+- plugins
+- rendering
+- terminal
+- testing
+title: FMG Cultures Generation Handover
+---
+
 # FMG Cultures Generation Handover
 
 ## Context

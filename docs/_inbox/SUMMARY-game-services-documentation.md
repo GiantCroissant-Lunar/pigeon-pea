@@ -1,3 +1,19 @@
+---
+created: '2025-11-20'
+doc_type: rfc
+status: draft
+summary: 'Created: 2025-11-20 For: Implementation by AI agents'
+tags:
+- agents
+- architecture
+- documentation
+- ecs
+- plugins
+- rfc
+- testing
+title: 'Summary: Game Services Documentation Package'
+---
+
 # Summary: Game Services Documentation Package
 
 **Created:** 2025-11-20

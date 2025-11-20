@@ -1,3 +1,18 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00037
+doc_type: rfc
+related: []
+status: active
+summary: 'RFC Reference: RFC-013: Yazi-integrated Rust CLI'
+supersedes: []
+tags:
+- ci-cd
+- rfc
+title: Integration tests with mock WebSocket server
+---
+
 # Integration tests with mock WebSocket server
 
 RFC Reference: [RFC-013: Yazi-integrated Rust CLI](../../rfcs/013-yazi-integrated-rust-cli.md)

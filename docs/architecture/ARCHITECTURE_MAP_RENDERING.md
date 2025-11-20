@@ -1,3 +1,22 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00005
+doc_type: adr
+related: []
+status: active
+summary: '> ✅ Status: Implemented via dotnet/Map/PigeonPea.Map.Rendering/ (post RFC-007).
+  For the big-picture structure see Domain Organization. This document explains the
+  map rendering pipeline in detail.'
+supersedes: []
+tags:
+- adr
+- architecture
+- rendering
+- terminal
+title: Map Rendering Architecture (Console + Desktop)
+---
+
 # Map Rendering Architecture (Console + Desktop)
 
 > ✅ **Status**: Implemented via `dotnet/Map/PigeonPea.Map.Rendering/` (post RFC-007). For the big-picture structure see [Domain Organization](domain-organization.md). This document explains the map rendering pipeline in detail.

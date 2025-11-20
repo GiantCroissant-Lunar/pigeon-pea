@@ -1,3 +1,21 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00008
+doc_type: adr
+related: []
+status: active
+summary: '- Tested: Yes (see testkitty\.py files) - Result: Does not render on WezTerm
+  Windows build 20240203'
+supersedes: []
+tags:
+- adr
+- documentation
+- rendering
+- terminal
+title: Graphics Protocol Notes for WezTerm on Windows
+---
+
 # Graphics Protocol Notes for WezTerm on Windows
 
 ## Tested Protocols

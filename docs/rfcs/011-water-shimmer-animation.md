@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00025
+doc_type: rfc
+related: []
+status: active
+summary: 'Status: Proposed Created: 2025-11-13'
+supersedes: []
+tags:
+- architecture
+- ci-cd
+- documentation
+- ecs
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-011: Water Shimmer Animation Feature'
+---
+
 # RFC-011: Water Shimmer Animation Feature
 
 ## Status

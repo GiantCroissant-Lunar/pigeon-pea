@@ -1,3 +1,25 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00031
+doc_type: rfc
+related: []
+status: active
+summary: 'Created: 2025-11-13 For: Agent implementing Phase 6 of RFC-007'
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-007 Phase 6: Deprecation and Documentation - Detailed Instructions'
+---
+
 # RFC-007 Phase 6: Deprecation and Documentation - Detailed Instructions
 
 ## Status: Ready for Implementation

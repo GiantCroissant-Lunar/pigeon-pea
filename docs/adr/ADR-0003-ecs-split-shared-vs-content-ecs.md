@@ -1,3 +1,21 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00003
+doc_type: adr
+related: []
+status: active
+summary: Accepted
+supersedes: []
+tags:
+- adr
+- ecs
+- plugins
+- rendering
+- testing
+title: 'ADR-0003: ECS Split Between Shared.ECS and Content.ECS'
+---
+
 # ADR-0003: ECS Split Between Shared.ECS and Content.ECS
 
 ## Status

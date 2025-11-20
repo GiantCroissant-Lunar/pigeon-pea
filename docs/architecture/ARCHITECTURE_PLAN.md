@@ -1,3 +1,25 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00006
+doc_type: adr
+related: []
+status: active
+summary: '> ⚠️ Historical: This plan captures early thinking. For the current architecture,
+  start with: >'
+supersedes: []
+tags:
+- adr
+- architecture
+- ci-cd
+- documentation
+- ecs
+- rendering
+- terminal
+- testing
+title: Pigeon Pea Architecture Plan
+---
+
 # Pigeon Pea Architecture Plan
 
 > ⚠️ **Historical**: This plan captures early thinking. For the current architecture, start with:

@@ -1,3 +1,26 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00011
+doc_type: adr
+related: []
+status: active
+summary: 'Date: 2025-11-13 Reviewer: Claude Agent'
+supersedes: []
+tags:
+- adr
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- plugins
+- rendering
+- terminal
+- testing
+title: RFC-005 & RFC-006 Implementation Review
+---
+
 # RFC-005 & RFC-006 Implementation Review
 
 **Date:** 2025-11-13

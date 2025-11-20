@@ -1,3 +1,21 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: SPEC-2025-00001
+doc_type: spec
+related: []
+status: active
+summary: Outline of a FontForge Python script to import SVG angle glyphs into PUA
+  of the base Sarasa font. This is documentation-first; actual script can live under
+  fonts/scripts/ later.
+supersedes: []
+tags:
+- documentation
+- fonts
+- spec
+title: FontForge Patch Script — Outline
+---
+
 # FontForge Patch Script — Outline
 
 Outline of a FontForge Python script to import SVG angle glyphs into PUA of the base Sarasa font. This is documentation-first; actual script can live under `fonts/scripts/` later.

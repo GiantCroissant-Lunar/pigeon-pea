@@ -1,3 +1,16 @@
+---
+created: '2025-11-20'
+doc_type: plan
+status: draft
+summary: 'Previous attempts at agent memory failed because:'
+tags:
+- agents
+- ecs
+- plan
+- testing
+title: Memory System Validation Plan
+---
+
 # Memory System Validation Plan
 
 ## Problem Statement

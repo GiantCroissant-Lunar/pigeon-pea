@@ -1,3 +1,25 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00018
+doc_type: rfc
+related: []
+status: active
+summary: 'Status: Proposed Created: 2025-11-13'
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-009: Performance Benchmarking Infrastructure'
+---
+
 # RFC-009: Performance Benchmarking Infrastructure
 
 ## Status

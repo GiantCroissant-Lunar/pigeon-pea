@@ -1,3 +1,28 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00011
+doc_type: rfc
+related: []
+status: active
+summary: This PR implements the complete plugin system architecture for PigeonPea,
+  including project structure reorganization and a production-ready plugin infrastructure
+  with Assembly Load Context (ALC) isola
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- plugins
+- rendering
+- rfc
+- terminal
+- testing
+title: 'Implement RFC-005 and RFC-006: Plugin System Architecture'
+---
+
 # Implement RFC-005 and RFC-006: Plugin System Architecture
 
 ## Summary

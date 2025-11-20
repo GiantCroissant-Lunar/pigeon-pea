@@ -1,3 +1,26 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: ADR-2025-00010
+doc_type: adr
+related: []
+status: active
+summary: 'Date: 2025-11-10 Source Repository: hyacinth-bean-base'
+supersedes: []
+tags:
+- adr
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- plugins
+- rendering
+- terminal
+- testing
+title: 'Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption'
+---
+
 # Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption
 
 **Date:** 2025-11-10

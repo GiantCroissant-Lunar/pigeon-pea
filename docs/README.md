@@ -1,3 +1,26 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00008
+doc_type: rfc
+related: []
+status: active
+summary: Welcome to the Pigeon Pea documentation! This directory contains planning
+  documents, RFCs, and technical discussions for the project.
+supersedes: []
+tags:
+- architecture
+- ci-cd
+- documentation
+- ecs
+- plugins
+- rendering
+- rfc
+- terminal
+- testing
+title: Pigeon Pea Documentation
+---
+
 # Pigeon Pea Documentation
 
 Welcome to the Pigeon Pea documentation! This directory contains planning documents, RFCs, and technical discussions for the project.

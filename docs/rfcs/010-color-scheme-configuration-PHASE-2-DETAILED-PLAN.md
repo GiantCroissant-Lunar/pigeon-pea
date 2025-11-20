@@ -1,3 +1,25 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00019
+doc_type: rfc
+related: []
+status: active
+summary: 'Goal: Integrate the ColorScheme system with SkiaMapRasterizer and MapColor
+  to replace hardcoded colors with the new color scheme provider.'
+supersedes: []
+tags:
+- architecture
+- ci-cd
+- documentation
+- ecs
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-010 Phase 2: Detailed Implementation Plan'
+---
+
 # RFC-010 Phase 2: Detailed Implementation Plan
 
 ## Executive Summary

@@ -1,3 +1,18 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: GUIDE-2025-00001
+doc_type: guide
+related: []
+status: active
+summary: 'Generated: 2025-11-20 06:56:13'
+supersedes: []
+tags:
+- documentation
+- guide
+title: Documentation Dependencies
+---
+
 # Documentation Dependencies
 *Generated: 2025-11-20 06:56:13*
 

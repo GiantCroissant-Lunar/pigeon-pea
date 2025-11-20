@@ -1,3 +1,19 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00001
+doc_type: rfc
+related: []
+status: active
+summary: 'Location: This file should be referenced by agents working with documentation.'
+supersedes: []
+tags:
+- agents
+- documentation
+- rfc
+title: Agent Documentation Management Rules
+---
+
 # Agent Documentation Management Rules
 
 **Location**: This file should be referenced by agents working with documentation.

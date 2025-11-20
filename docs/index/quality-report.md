@@ -1,3 +1,22 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00013
+doc_type: rfc
+related: []
+status: active
+summary: 'Generated: 2025-11-20 09:05:36'
+supersedes: []
+tags:
+- architecture
+- documentation
+- ecs
+- plugins
+- rendering
+- rfc
+title: Documentation Quality Report
+---
+
 # Documentation Quality Report
 *Generated: 2025-11-20 09:05:36*
 

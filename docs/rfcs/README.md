@@ -1,3 +1,27 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00028
+doc_type: rfc
+related: []
+status: active
+summary: This directory contains RFCs (Request for Comments) for architectural decisions,
+  feature proposals, and significant changes to the Pigeon Pea project.
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- plugins
+- rendering
+- rfc
+- terminal
+- testing
+title: Request for Comments (RFCs)
+---
+
 # Request for Comments (RFCs)
 
 This directory contains RFCs (Request for Comments) for architectural decisions, feature proposals, and significant changes to the Pigeon Pea project.

@@ -1,3 +1,26 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00016
+doc_type: rfc
+related: []
+status: active
+summary: 'Status: Proposed (Revised 2025-11-13) Created: 2025-11-13'
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- plugins
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-007: Domain-Driven Architecture Reorganization (Map & Dungeon)'
+---
+
 # RFC-007: Domain-Driven Architecture Reorganization (Map & Dungeon)
 
 ## Status

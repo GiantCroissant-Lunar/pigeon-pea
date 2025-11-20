@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00023
+doc_type: rfc
+related: []
+status: active
+summary: 'Status: Ready for Implementation Created: 2025-11-14'
+supersedes: []
+tags:
+- architecture
+- ci-cd
+- documentation
+- ecs
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-010 Phase 4: UI Controls - Detailed Implementation Plan'
+---
+
 # RFC-010 Phase 4: UI Controls - Detailed Implementation Plan
 
 **Status**: Ready for Implementation

@@ -1,3 +1,22 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: GUIDE-2025-00006
+doc_type: guide
+related: []
+status: active
+summary: '- File: dotnet/.editorconfig - Date: 2025-11-13'
+supersedes: []
+tags:
+- architecture
+- documentation
+- guide
+- rendering
+- terminal
+- testing
+title: 'Temporary Commit Documentation: .editorconfig Configuration'
+---
+
 # Temporary Commit Documentation: .editorconfig Configuration
 
 ## Commit Information

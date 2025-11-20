@@ -1,3 +1,21 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00007
+doc_type: rfc
+related: []
+status: active
+summary: 'Product Requirement Documents (PRDs) and RFCs serve different purposes:'
+supersedes: []
+tags:
+- architecture
+- documentation
+- ecs
+- plugins
+- rfc
+title: PRD-RFC Relationship Schema
+---
+
 # PRD-RFC Relationship Schema
 
 ## Overview

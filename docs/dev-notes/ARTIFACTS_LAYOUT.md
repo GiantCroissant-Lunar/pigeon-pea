@@ -1,3 +1,23 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: GUIDE-2025-00003
+doc_type: guide
+related: []
+status: active
+summary: This document describes where build, runtime, and benchmark artifacts are
+  written in the PigeonPea repository. The goal is to centralize generated outputs
+  under build/artifacts so they are easy to dis
+supersedes: []
+tags:
+- ci-cd
+- documentation
+- guide
+- rendering
+- terminal
+title: Artifacts Layout
+---
+
 # Artifacts Layout
 
 This document describes where build, runtime, and benchmark artifacts are written in the PigeonPea repository. The goal is to centralize generated outputs under `build/_artifacts` so they are easy to discover, easy to clean, and excluded from source control.

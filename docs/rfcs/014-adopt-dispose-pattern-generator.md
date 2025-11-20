@@ -1,3 +1,25 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00027
+doc_type: rfc
+related: []
+status: active
+summary: "\uFEFF--- docid: 'RFC-00014'"
+supersedes: []
+tags:
+- agents
+- architecture
+- ci-cd
+- documentation
+- ecs
+- plugins
+- rfc
+- terminal
+- testing
+title: 'RFC-014: Adopt DisposePattern Source Code Generator'
+---
+
 ﻿---
 doc_id: 'RFC-00014'
 title: 'Adopt DisposePattern Source Code Generator'

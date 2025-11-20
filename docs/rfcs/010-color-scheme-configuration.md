@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00024
+doc_type: rfc
+related: []
+status: active
+summary: 'Status: Proposed Created: 2025-11-13'
+supersedes: []
+tags:
+- architecture
+- documentation
+- ecs
+- plugins
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-010: Color Scheme Configuration System'
+---
+
 # RFC-010: Color Scheme Configuration System
 
 ## Status

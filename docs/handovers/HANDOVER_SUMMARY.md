@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: SPEC-2025-00004
+doc_type: spec
+related: []
+status: active
+summary: 'Date: 2025-01-12 Session Topic: Graphics rendering in Terminal.Gui v2 HUD
+  mode'
+supersedes: []
+tags:
+- architecture
+- documentation
+- ecs
+- rendering
+- spec
+- terminal
+- testing
+title: Pigeon Pea - Handover Document
+---
+
 # Pigeon Pea - Handover Document
 
 **Date**: 2025-01-12

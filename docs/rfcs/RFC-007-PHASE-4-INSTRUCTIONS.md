@@ -1,3 +1,24 @@
+---
+canonical: true
+created: '2025-11-20'
+doc_id: RFC-2025-00029
+doc_type: rfc
+related: []
+status: active
+summary: 'Created: 2025-11-13 For: Agent implementing Phase 4 of RFC-007'
+supersedes: []
+tags:
+- agents
+- architecture
+- documentation
+- ecs
+- rendering
+- rfc
+- terminal
+- testing
+title: 'RFC-007 Phase 4: Dungeon Domain Implementation - Detailed Instructions'
+---
+
 # RFC-007 Phase 4: Dungeon Domain Implementation - Detailed Instructions
 
 ## Status: Ready for Implementation
