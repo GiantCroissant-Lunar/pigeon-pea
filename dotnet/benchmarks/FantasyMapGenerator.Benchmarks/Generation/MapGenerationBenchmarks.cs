@@ -1,5 +1,4 @@
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Running;
 using FantasyMapGenerator.Core.Generators;
 using FantasyMapGenerator.Core.Models;
 using FantasyMapGenerator.Core.Random;
@@ -10,10 +9,7 @@ namespace FantasyMapGenerator.Benchmarks.Generation;
 /// Core end-to-end map generation benchmarks
 /// Tests different map sizes and RNG algorithms to establish performance baseline
 /// </summary>
-[MemoryDiagnoser]
-[SimpleJob]
-[MarkdownExporter]
-[HtmlExporter]
+[Config(typeof(FantasyMapGenerator.Benchmarks.BenchmarkConfig))]
 [BenchmarkCategory("Generation")]
 public class MapGenerationBenchmarks
 {
