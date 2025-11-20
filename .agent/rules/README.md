@@ -15,6 +15,7 @@ Rules define how agents should behave, what constraints they must follow, and wh
 - **`code-quality.md`** - Code quality standards
 - **`git-commit-rules.md`** - Git and commit requirements (CRITICAL)
 - **`documentation-management.md`** - Documentation workflow (RFC-012)
+- **`dotnet-architecture.md`** - .NET tiered architecture and layer rules (CRITICAL)
 
 ## File Format
 
@@ -47,3 +48,16 @@ Rules can be defined in various formats:
 ### Documentation
 
 Follow RFC-012 documentation management system. Check `docs/index/registry.json` before creating new docs.
+
+### .NET Architecture (CRITICAL)
+
+**ALL .NET code MUST follow four-tier architecture.** See `dotnet-architecture.md` for complete rules.
+
+Key requirements:
+- **NO wrapper projects** - Use external libraries directly in plugins
+- **Four tiers**: Contracts (1) → Proxies (2) → Implementations (3) → Providers (4)
+- **Double-plugin for content domains**: Domain plugins (WHAT) + Platform plugins (HOW)
+- **Plugins are isolated** - Never depend on other plugins
+- **Contracts are stable** - Minimal dependencies, framework types only
+
+**Before writing .NET code**: Read [.NET Architecture Rules](./dotnet-architecture.md)
