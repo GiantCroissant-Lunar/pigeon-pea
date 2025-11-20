@@ -9,14 +9,14 @@ summary: 'Purpose: Seamlessly integrate RFC-centric development with task-master
   execution.'
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rfc
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rfc
+  - testing
 title: Task-Master Workflow Integration
 ---
 
@@ -39,23 +39,28 @@ This document defines workflows for converting RFCs to tasks, tracking implement
 ### Process
 
 1. **Read the RFC**
+
    ```bash
    # View RFC
    cat docs/rfcs/042-game-services-architecture.md
    ```
 
 2. **Create Task Template**
+
    ```markdown
    # Implement RFC-00042: Game Services Architecture
-   
+
    ## Context
+
    RFC: docs/rfcs/042-game-services-architecture.md
    Status: Approved, ready for implementation
-   
+
    ## Objective
+
    Implement the six core game services as defined in RFC-00042
-   
+
    ## Tasks
+
    - [ ] Create service contracts
    - [ ] Implement GameplayLoop service
    - [ ] Implement WorldManagement service
@@ -65,24 +70,27 @@ This document defines workflows for converting RFCs to tasks, tracking implement
    - [ ] Implement Dialogue service
    - [ ] Write integration tests
    - [ ] Update documentation
-   
+
    ## Success Criteria
+
    - All services implemented per RFC spec
    - Tests passing
    - Documentation updated
-   
+
    ## Related
+
    - RFC-00042
    - RFC-00013 (Plugin Architecture dependency)
    ```
 
 3. **Update RFC Implementation Status**
+
    ```yaml
    # In RFC front-matter
    implementation:
      status: 'in-progress'
      completion: 0
-     tasks: ['task-456']  # Add task ID
+     tasks: ['task-456'] # Add task ID
      started: '2025-11-20'
    ```
 
@@ -108,10 +116,11 @@ This document defines workflows for converting RFCs to tasks, tracking implement
    - Architectural impact is significant
 
 2. **Create RFC Draft**
+
    ```bash
    # Find next RFC number
    ls docs/rfcs/*.md | grep -E '^[0-9]' | sort -n | tail -1
-   
+
    # Create draft (assuming next is 043)
    cat > docs/_inbox/043-feature-name.md << 'EOF'
    ---
@@ -125,20 +134,23 @@ This document defines workflows for converting RFCs to tasks, tracking implement
    summary: 'Architecture design for feature name'
    implements: 'PRD-00001'  # If implementing a PRD
    ---
-   
+
    # RFC: Feature Name Architecture
-   
+
    ## Summary
    ...
    EOF
    ```
 
 3. **Link Task to RFC**
+
    ```markdown
    # In task description
+
    Design documented in RFC-00043 (draft)
-   
+
    ## Blocked By
+
    - RFC-00043 needs approval
    ```
 
@@ -174,10 +186,10 @@ When task status changes significantly:
 ```yaml
 # In RFC front-matter
 implementation:
-  status: 'in-progress'     # Update status
-  completion: 75            # Update percentage
+  status: 'in-progress' # Update status
+  completion: 75 # Update percentage
   tasks: ['task-456']
-  issues: [123]             # Add GitHub issues if any
+  issues: [123] # Add GitHub issues if any
 ```
 
 ## Task Templates
@@ -188,37 +200,45 @@ implementation:
 # Implement RFC-{NUMBER}: {TITLE}
 
 ## Context
+
 - **RFC**: docs/rfcs/{NUMBER}-{slug}.md
 - **Status**: {draft|approved|active}
 - **Priority**: {high|medium|low}
 
 ## Objective
+
 Implement the design specified in RFC-{NUMBER}
 
 ## Prerequisites
+
 - [ ] RFC-{NUMBER} approved
 - [ ] Dependencies implemented: {list dependent RFCs}
 - [ ] Design reviewed by team
 
 ## Implementation Tasks
+
 {Break down RFC into specific tasks}
 
 ## Testing
+
 - [ ] Unit tests written
 - [ ] Integration tests written
 - [ ] Manual testing completed
 
 ## Documentation
+
 - [ ] Code documented
 - [ ] README updated
 - [ ] RFC implementation status updated
 
 ## Success Criteria
+
 - All acceptance criteria from RFC met
 - Tests passing
 - Code reviewed and merged
 
 ## Related
+
 - RFC-{NUMBER}
 - {Other related RFCs}
 - {GitHub issues}
@@ -230,14 +250,17 @@ Implement the design specified in RFC-{NUMBER}
 # Create RFC: {TOPIC}
 
 ## Context
+
 Need architectural design for {topic}
 
 ## Objective
+
 Document design decisions and architecture for {topic}
 
 ## Tasks
+
 - [ ] Research existing solutions
-- [ ] Draft RFC in docs/_inbox/
+- [ ] Draft RFC in docs/\_inbox/
 - [ ] Add front-matter with proper doc_id
 - [ ] Write Summary section
 - [ ] Write Motivation section
@@ -251,12 +274,14 @@ Document design decisions and architecture for {topic}
 - [ ] Update related RFCs
 
 ## Success Criteria
+
 - RFC approved by team
 - Quality score ≥ 60
 - All validation passing
 - Related docs updated
 
 ## Related
+
 - {Related RFCs}
 - {PRD if implementing one}
 ```
@@ -267,9 +292,11 @@ Document design decisions and architecture for {topic}
 # Update Documentation for {FEATURE}
 
 ## Context
+
 {Feature} has been implemented, need to update documentation
 
 ## Tasks
+
 - [ ] Update relevant RFCs with implementation status
 - [ ] Create/update guides if needed
 - [ ] Update README if needed
@@ -279,16 +306,19 @@ Document design decisions and architecture for {topic}
 - [ ] Regenerate indexes
 
 ## Documentation Updates
+
 - [ ] RFC-{NUMBER}: Update implementation.status to 'completed'
 - [ ] GUIDE-{NUMBER}: Add new section for {feature}
 - [ ] README: Add {feature} to features list
 
 ## Success Criteria
+
 - All docs updated and validated
 - Indexes regenerated
 - Quality scores maintained
 
 ## Related
+
 - {List RFCs/guides to update}
 ```
 
@@ -296,13 +326,13 @@ Document design decisions and architecture for {topic}
 
 ### Task Status → RFC Implementation Status
 
-| Task Status | RFC Status | Completion % |
-|-------------|------------|--------------|
-| Not Started | not-started | 0 |
-| In Progress | in-progress | 1-99 |
-| Blocked | blocked | Current % |
-| Completed | completed | 100 |
-| Cancelled | deferred | Current % |
+| Task Status | RFC Status  | Completion % |
+| ----------- | ----------- | ------------ |
+| Not Started | not-started | 0            |
+| In Progress | in-progress | 1-99         |
+| Blocked     | blocked     | Current %    |
+| Completed   | completed   | 100          |
+| Cancelled   | deferred    | Current %    |
 
 ### Automatic Sync Rules
 
@@ -344,29 +374,29 @@ name: Sync RFC Status
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # Every 6 hours
-  workflow_dispatch:  # Manual trigger
+    - cron: '0 */6 * * *' # Every 6 hours
+  workflow_dispatch: # Manual trigger
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      
+
       - name: Install dependencies
         run: pip install pyyaml
-      
+
       - name: Sync RFC status
         run: python scripts/sync-tasks.py --apply
-      
+
       - name: Regenerate dashboard
         run: python scripts/generate-dashboard.py
-      
+
       - name: Commit changes
         run: |
           git config user.name "GitHub Actions"
@@ -386,7 +416,7 @@ name: Weekly Quality Report
 
 on:
   schedule:
-    - cron: '0 9 * * 1'  # Monday 9 AM
+    - cron: '0 9 * * 1' # Monday 9 AM
   workflow_dispatch:
 
 jobs:
@@ -394,18 +424,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
-      
+
       - name: Install dependencies
         run: pip install pyyaml
-      
+
       - name: Generate quality report
         run: python scripts/generate-quality-report.py
-      
+
       - name: Commit report
         run: |
           git config user.name "GitHub Actions"
@@ -430,6 +460,7 @@ This enables automatic status syncing.
 ### 2. Update RFC Status Manually
 
 Don't rely solely on automation. Update RFC status when:
+
 - Starting implementation
 - Hitting blockers
 - Completing implementation

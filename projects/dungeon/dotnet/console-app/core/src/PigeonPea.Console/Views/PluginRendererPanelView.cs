@@ -19,6 +19,9 @@ public partial class PluginRendererPanelView : View
     private readonly SharedRenderTarget _renderTarget;
     private readonly RenderSurface _surfaceAdapter;
     private readonly IService? _inputService;
+    private readonly DungeonInputHandler? _inputHandler;
+    private readonly DungeonInputState _inputState = new DungeonInputState();
+    private bool _paused;
     private bool _initialized;
 
     public PluginRendererPanelView(GameRenderer pluginRenderer, GameRenderContext renderContext, GameState gameState, IService? inputService)
@@ -34,6 +37,12 @@ public partial class PluginRendererPanelView : View
 
         _surfaceAdapter = new PluginRenderSurfaceAdapter(_surfaceRenderer);
         _renderContext.Surface = _surfaceAdapter;
+
+        if (_inputService != null)
+        {
+            _inputHandler = new DungeonInputHandler(_inputService);
+        }
+
         _initialized = false;
     }
 
@@ -64,6 +73,8 @@ public partial class PluginRendererPanelView : View
         }
 
         _pluginRenderer.Render(_gameState);
+
+        DrawDebugHud();
         return true;
     }
 }
@@ -72,49 +83,31 @@ public partial class PluginRendererPanelView
 {
     private void UpdatePlayerFromInput()
     {
-        if (_inputService == null)
+        if (_inputHandler == null)
         {
             return;
         }
 
-        if (_gameState.Dungeon is not { } dungeon)
+        _inputHandler.Update(_gameState, _inputState);
+
+        if (_inputState.PauseJustPressed)
+        {
+            _paused = !_paused;
+        }
+    }
+
+    private void DrawDebugHud()
+    {
+        if (Driver == null)
         {
             return;
         }
 
-        // Use UniInputSystem axes if available
-        float moveX;
-        float moveY;
+        var status = _paused ? "PAUSED" : "RUNNING";
+        var text = $"[{status}] Atk:{_inputState.AttackPressed} Int:{_inputState.InteractPressed} Inv:{_inputState.InventoryPressed} Pause:{_inputState.PausePressed}";
 
-        try
-        {
-            moveX = _inputService.GetAxis("MoveX");
-            moveY = _inputService.GetAxis("MoveY");
-        }
-        catch
-        {
-            return;
-        }
-
-        int dx = moveX > 0.5f ? 1 : moveX < -0.5f ? -1 : 0;
-        int dy = moveY > 0.5f ? 1 : moveY < -0.5f ? -1 : 0;
-
-        if (dx == 0 && dy == 0)
-        {
-            return;
-        }
-
-        var newX = _gameState.PlayerX + dx;
-        var newY = _gameState.PlayerY + dy;
-
-        if (newX >= 0 && newY >= 0 && newX < dungeon.Width && newY < dungeon.Height)
-        {
-            if (dungeon.Walkable[newY, newX])
-            {
-                _gameState.PlayerX = newX;
-                _gameState.PlayerY = newY;
-            }
-        }
+        Driver.Move(0, 0);
+        Driver.AddStr(text);
     }
 }
 

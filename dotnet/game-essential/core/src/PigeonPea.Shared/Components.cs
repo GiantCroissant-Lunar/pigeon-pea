@@ -6,204 +6,120 @@ namespace PigeonPea.Shared.Components;
 /// <summary>
 /// Position component for entities on the grid.
 /// </summary>
-public struct Position
+public record Position(Point Point);
+
+/// <summary>
+/// Scene membership component.
+/// </summary>
+public record SceneComponent(string Name);
+
+/// <summary>
+/// Represents a dungeon map with tile data.
+/// </summary>
+public record DungeonMapComponent
 {
-    public Point Point { get; set; }
+    public int Width { get; init; }
+    public int Height { get; init; }
+    public byte[] TileData { get; init; } = Array.Empty<byte>();
+    public byte[] DoorStates { get; init; } = Array.Empty<byte>();
+    public System.Collections.BitArray Walkable { get; init; } = new System.Collections.BitArray(0);
+    public System.Collections.BitArray Opaque { get; init; } = new System.Collections.BitArray(0);
+}
 
-    public Position(int x, int y)
-    {
-        Point = new Point(x, y);
-    }
+/// <summary>
+/// Position component using separate X,Y,Z fields.
+/// </summary>
+public record PositionComponent
+{
+    public int X { get; init; }
+    public int Y { get; init; }
+    public int Z { get; init; }
 
-    public Position(Point point)
+    public PositionComponent() : this(0, 0, 0) { }
+    public PositionComponent(int x, int y, int z = 0)
     {
-        Point = point;
+        X = x;
+        Y = y;
+        Z = z;
     }
+}
 
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
+/// <summary>
+/// Renderable component using separate fields.
+/// </summary>
+public record RenderableComponent
+{
+    public char Glyph { get; init; }
+    public Color Foreground { get; init; }
+    public Color Background { get; init; }
+    public RenderLayer Layer { get; init; }
 
-    public override int GetHashCode()
+    public RenderableComponent() : this(' ', Color.White, Color.Black, RenderLayer.Floor) { }
+    public RenderableComponent(char glyph, Color foreground, Color background, RenderLayer layer = RenderLayer.Floor)
     {
-        throw new NotImplementedException();
+        Glyph = glyph;
+        Foreground = foreground;
+        Background = background;
+        Layer = layer;
     }
+}
 
-    public static bool operator ==(Position left, Position right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Position left, Position right)
-    {
-        return !(left == right);
-    }
+/// <summary>
+/// Rendering layers for draw order.
+/// </summary>
+public enum RenderLayer
+{
+    Floor,
+    Wall,
+    Item,
+    Actor,
+    Effect,
+    UI
 }
 
 /// <summary>
 /// Visual representation component.
 /// </summary>
-public struct Renderable
+public record Renderable(char Glyph, Color Foreground, Color Background)
 {
-    public char Glyph { get; set; }
-    public Color Foreground { get; set; }
-    public Color Background { get; set; }
-
     public Renderable(char glyph, Color foreground, Color? background = null)
+        : this(glyph, foreground, background ?? Color.Black)
     {
-        Glyph = glyph;
-        Foreground = foreground;
-        Background = background ?? Color.Black;
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(Renderable left, Renderable right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Renderable left, Renderable right)
-    {
-        return !(left == right);
     }
 }
 
 /// <summary>
-/// Component marking an entity as the player.
+/// Component marking an entity as a player.
 /// </summary>
-public struct PlayerComponent
-{
-    public string Name { get; set; }
+public record PlayerComponent(string Name);
 
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(PlayerComponent left, PlayerComponent right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(PlayerComponent left, PlayerComponent right)
-    {
-        return !(left == right);
-    }
-}
+/// <summary>
+/// Stores player input intent for the current frame.
+/// </summary>
+public record PlayerInputComponent(System.Numerics.Vector2 MoveDirection, bool ActionPressed);
 
 /// <summary>
 /// Health component for combat entities.
 /// </summary>
-public struct Health
+public record Health(int Current, int Maximum)
 {
-    public int Current { get; set; }
-    public int Maximum { get; set; }
-
+    public Health() : this(100, 100) { }
     public bool IsAlive => Current > 0;
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(Health left, Health right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Health left, Health right)
-    {
-        return !(left == right);
-    }
 }
 
 /// <summary>
 /// Field of View component.
 /// </summary>
-public struct FieldOfView
+public record FieldOfView(int Radius, HashSet<Point> VisibleTiles)
 {
-    public int Radius { get; set; }
-    public HashSet<Point> VisibleTiles { get; set; }
-
-    public FieldOfView(int radius)
-    {
-        Radius = radius;
-        VisibleTiles = new HashSet<Point>();
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(FieldOfView left, FieldOfView right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(FieldOfView left, FieldOfView right)
-    {
-        return !(left == right);
-    }
+    public FieldOfView() : this(10, new HashSet<Point>()) { }
+    public FieldOfView(int radius) : this(radius, new HashSet<Point>()) { }
 }
 
 /// <summary>
 /// Component marking an entity as a tile (wall or floor).
 /// </summary>
-public struct Tile
-{
-    public TileType Type { get; set; }
-
-    public Tile(TileType type)
-    {
-        Type = type;
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(Tile left, Tile right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Tile left, Tile right)
-    {
-        return !(left == right);
-    }
-}
+public record Tile(TileType Type);
 
 /// <summary>
 /// Types of tiles in the game world.
@@ -217,51 +133,21 @@ public enum TileType
 /// <summary>
 /// Component marking an entity as blocking movement.
 /// </summary>
-public struct BlocksMovement
-{
-}
+public record BlocksMovement;
 
 /// <summary>
 /// Component marking a tile as explored (seen at least once by player).
 /// Used for fog of war - explored tiles are shown dimmed when not visible.
 /// </summary>
-public struct Explored
-{
-}
+public record Explored;
 
 /// <summary>
 /// AI component for enemy behavior.
 /// </summary>
-public struct AIComponent
+public record AIComponent(AIBehavior Behavior, List<Point> CurrentPath)
 {
-    public AIBehavior Behavior { get; set; }
-    public List<Point> CurrentPath { get; set; }
-
-    public AIComponent(AIBehavior behavior)
-    {
-        Behavior = behavior;
-        CurrentPath = new List<Point>();
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(AIComponent left, AIComponent right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(AIComponent left, AIComponent right)
-    {
-        return !(left == right);
-    }
+    public AIComponent() : this(AIBehavior.Passive, new List<Point>()) { }
+    public AIComponent(AIBehavior behavior) : this(behavior, new List<Point>()) { }
 }
 
 /// <summary>
@@ -283,79 +169,17 @@ public enum AIBehavior
 /// <summary>
 /// Combat stats component.
 /// </summary>
-public struct CombatStats
-{
-    public int Attack { get; set; }
-    public int Defense { get; set; }
-
-    public CombatStats(int attack, int defense)
-    {
-        Attack = attack;
-        Defense = defense;
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(CombatStats left, CombatStats right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(CombatStats left, CombatStats right)
-    {
-        return !(left == right);
-    }
-}
+public record CombatStats(int Attack, int Defense);
 
 /// <summary>
 /// Marks that an entity is dead and should be removed.
 /// </summary>
-public struct Dead
-{
-}
+public record Dead;
 
 /// <summary>
 /// Item component for items in the game world.
 /// </summary>
-public struct Item
-{
-    public string Name { get; set; }
-    public ItemType Type { get; set; }
-
-    public Item(string name, ItemType type)
-    {
-        Name = name;
-        Type = type;
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(Item left, Item right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Item left, Item right)
-    {
-        return !(left == right);
-    }
-}
+public record Item(string Name, ItemType Type);
 
 /// <summary>
 /// Types of items.
@@ -370,94 +194,44 @@ public enum ItemType
 /// <summary>
 /// Inventory component for storing items.
 /// </summary>
-public struct Inventory
+public record Inventory(List<Entity> Items, int MaxCapacity)
 {
-    public List<Entity> Items { get; set; }
-    public int MaxCapacity { get; set; }
-
-    public Inventory(int maxCapacity = 10)
-    {
-        Items = new List<Entity>();
-        MaxCapacity = maxCapacity;
-    }
+    public Inventory() : this(new List<Entity>(), 10) { }
+    public Inventory(int maxCapacity = 10) : this(new List<Entity>(), maxCapacity) { }
 
     public bool IsFull => Items.Count >= MaxCapacity;
 
-    public override bool Equals(object obj)
+    public bool TryAdd(Entity item)
     {
-        throw new NotImplementedException();
+        if (IsFull) return false;
+        Items.Add(item);
+        return true;
     }
 
-    public override int GetHashCode()
+    public bool TryRemove(Entity item)
     {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(Inventory left, Inventory right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Inventory left, Inventory right)
-    {
-        return !(left == right);
+        return Items.Remove(item);
     }
 }
 
 /// <summary>
 /// Consumable component for items that restore health or provide buffs.
 /// </summary>
-public struct Consumable
-{
-    public int HealthRestore { get; set; }
-
-    public Consumable(int healthRestore)
-    {
-        HealthRestore = healthRestore;
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(Consumable left, Consumable right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Consumable left, Consumable right)
-    {
-        return !(left == right);
-    }
-}
+public record Consumable(int HealthRestore);
 
 /// <summary>
 /// Component marking an item as pickable from the ground.
 /// </summary>
-public struct Pickup
-{
-}
+public record Pickup;
 
 /// <summary>
 /// Experience and leveling component.
 /// </summary>
-public struct Experience
+public record Experience(int CurrentXP, int Level, int XPToNextLevel)
 {
-    public int CurrentXP { get; set; }
-    public int Level { get; set; }
-    public int XPToNextLevel { get; set; }
-
-    public Experience(int startingLevel = 1)
+    public Experience() : this(0, 1, 100) { }
+    public Experience(int startingLevel) : this(0, startingLevel, CalculateXPForLevel(startingLevel + 1))
     {
-        Level = startingLevel;
-        CurrentXP = 0;
-        XPToNextLevel = CalculateXPForLevel(startingLevel + 1);
     }
 
     /// <summary>
@@ -466,59 +240,11 @@ public struct Experience
     /// </summary>
     public static int CalculateXPForLevel(int level)
     {
-        return (int)(100 * Math.Pow(level, 1.5));
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(Experience left, Experience right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(Experience left, Experience right)
-    {
-        return !(left == right);
+        return (int)(100 * System.Math.Pow(level, 1.5));
     }
 }
 
 /// <summary>
 /// Component indicating how much XP an entity awards when killed.
 /// </summary>
-public struct ExperienceValue
-{
-    public int XP { get; set; }
-
-    public ExperienceValue(int xp)
-    {
-        XP = xp;
-    }
-
-    public override bool Equals(object obj)
-    {
-        throw new NotImplementedException();
-    }
-
-    public override int GetHashCode()
-    {
-        throw new NotImplementedException();
-    }
-
-    public static bool operator ==(ExperienceValue left, ExperienceValue right)
-    {
-        return left.Equals(right);
-    }
-
-    public static bool operator !=(ExperienceValue left, ExperienceValue right)
-    {
-        return !(left == right);
-    }
-}
+public record ExperienceValue(int XP);

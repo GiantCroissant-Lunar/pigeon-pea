@@ -45,7 +45,7 @@ public sealed partial class SomeType01
     // This field will not be disposed
     [ToBeDisposed]
     private readonly List<int> _values;
-    
+
     // This field will not be disposed
     [ToBeDisposed]
     private List<string>? _nullableValues;

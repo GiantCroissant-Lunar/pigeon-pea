@@ -1,21 +1,19 @@
 ---
 created: '2025-11-20'
+canonical: true
 doc_id: RFC-00024
 doc_type: rfc
 status: draft
 summary: Universal stat management service for any entity type (characters, weapons,
   items, traps) with data-driven definitions and modifier system
 tags:
-- stats
-- game-essential
-- services
-- ecs
-- data-driven
+  - stats
+  - game-essential
+  - services
+  - ecs
+  - data-driven
 title: 'Stats Service: Universal Stat Management for Game Entities'
 ---
-
-
-
 
 # RFC: Stats Service
 
@@ -838,6 +836,7 @@ public void CalculateDerivedStat_EvaluatesFormula()
 ### Benchmarks
 
 Target performance:
+
 - `GetStatValue()`: < 100 ns
 - `SetStat()`: < 500 ns
 - `AddModifier()`: < 1 µs

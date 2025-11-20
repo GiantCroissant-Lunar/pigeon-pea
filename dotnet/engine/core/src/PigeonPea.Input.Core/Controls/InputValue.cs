@@ -1,4 +1,4 @@
-namespace PigeonPea.Shared.Input.Controls;
+namespace PigeonPea.Input.Core.Controls;
 
 /// <summary>
 /// Union type for input values (float, Vector2, bool).

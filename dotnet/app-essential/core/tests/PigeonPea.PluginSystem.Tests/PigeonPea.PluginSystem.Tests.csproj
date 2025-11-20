@@ -30,6 +30,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\source-generators\PigeonPea.SourceGenerators.Proxy\PigeonPea.SourceGenerators.Proxy.csproj" />
+    <ProjectReference Include="..\..\..\..\source-generators\PigeonPea.SourceGenerators.Proxy\PigeonPea.SourceGenerators.Proxy.csproj" />
   </ItemGroup>
 </Project>

@@ -4,19 +4,16 @@ created: '2025-11-18'
 doc_id: ADR-00007
 doc_type: adr
 related:
-- ADR-00001
+  - ADR-00001
 status: active
 summary: Guidelines for integrating reactive extensions and R3 in Pigeon Pea applications
 tags:
-- architecture
-- reactive
-- r3
-- integration
+  - architecture
+  - reactive
+  - r3
+  - integration
 title: Reactive Stack and R3 Integration
 ---
-
-
-
 
 # Reactive Stack and R3 Integration
 

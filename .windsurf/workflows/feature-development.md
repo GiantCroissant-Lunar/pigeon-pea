@@ -110,6 +110,6 @@ git tag -a v<version> -m "<message>"
 
 ---
 
-*Generated from `.agent/workflows/feature-development.yaml`*
+_Generated from `.agent/workflows/feature-development.yaml`_
 
 To modify this workflow, edit the canonical YAML file and regenerate.

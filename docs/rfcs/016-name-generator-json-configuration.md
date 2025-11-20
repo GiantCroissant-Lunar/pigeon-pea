@@ -4,22 +4,19 @@ created: '2025-11-15'
 doc_id: RFC-00016
 doc_type: rfc
 related:
-- SPEC-00014
+  - SPEC-00014
 status: draft
 summary: External JSON configuration for language templates to enable user-extensible
   name generation without code changes
 supersedes: []
 tags:
-- name-generation
-- json
-- configuration
-- extensibility
-- languages
+  - name-generation
+  - json
+  - configuration
+  - extensibility
+  - languages
 title: Name Generator JSON Configuration System
 ---
-
-
-
 
 # RFC 016: Name Generator JSON Configuration System
 

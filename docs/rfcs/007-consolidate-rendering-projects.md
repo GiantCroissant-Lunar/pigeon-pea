@@ -8,16 +8,16 @@ status: active
 summary: 'Status: Proposed (Revised 2025-11-13) Created: 2025-11-13'
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rendering
-- rfc
-- terminal
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-007: Domain-Driven Architecture Reorganization (Map & Dungeon)'
 ---
 

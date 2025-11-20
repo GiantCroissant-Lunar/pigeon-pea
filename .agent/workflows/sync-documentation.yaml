@@ -80,19 +80,19 @@ stages:
         type: output
         template: |
           ✅ Documentation Sync Complete
-          
+
           📊 Statistics:
           - Total documents: {{ total_docs }}
           - Average quality: {{ avg_quality }}/100
           - RFCs synced: {{ rfcs_synced }}
           - Inbox files: {{ inbox_count }}
-          
+
           📈 Quality Breakdown:
           - Excellent (≥90): {{ excellent_count }}
           - Good (≥75): {{ good_count }}
           - Acceptable (≥60): {{ acceptable_count }}
           - Needs improvement (<60): {{ needs_improvement_count }}
-          
+
           ⚠️ Action Items:
           {% if needs_improvement_count > 0 %}
           - {{ needs_improvement_count }} docs need quality improvements
@@ -103,7 +103,7 @@ stages:
           {% if validation_errors > 0 %}
           - {{ validation_errors }} validation errors to fix
           {% endif %}
-          
+
           📄 Updated Files:
           - docs/INDEX.md
           - docs/DASHBOARD.md

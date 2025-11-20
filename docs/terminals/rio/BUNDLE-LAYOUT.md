@@ -4,24 +4,21 @@ created: '2025-11-13'
 doc_id: REFERENCE-00003
 doc_type: reference
 related:
-- RFC-00021
-- GUIDE-00001
-- GUIDE-00002
+  - RFC-00021
+  - GUIDE-00001
+  - GUIDE-00002
 status: active
 summary: Template folder structure for assembling a developer or player bundle with
   Rio Terminal (binaries not included)
 supersedes: []
 tags:
-- terminal
-- rio
-- bundle
-- distribution
-- template
+  - terminal
+  - rio
+  - bundle
+  - distribution
+  - template
 title: Rio Bundle Layout (Template)
 ---
-
-
-
 
 # Rio Bundle Layout (Template)
 

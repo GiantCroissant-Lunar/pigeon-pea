@@ -3,14 +3,15 @@
 Script to update the documentation registry with dotnet documentation entries.
 """
 
-import json
-import os
-from pathlib import Path
 import hashlib
+import json
 from datetime import datetime, timezone
+from pathlib import Path
+
+import yaml
 
 
-def calculate_simhash(content):
+def calculate_simhash(content: str) -> str:
     """Calculate a simple simhash for content."""
     return str(hashlib.md5(content.encode()).hexdigest())
 
@@ -36,8 +37,6 @@ def get_dotnet_docs():
                                 body = content[frontmatter_end + 3 :]
 
                                 # Parse YAML frontmatter
-                                import yaml
-
                                 try:
                                     metadata = yaml.safe_load(frontmatter)
                                     doc_id = metadata.get("doc_id", "")
@@ -74,7 +73,7 @@ def get_dotnet_docs():
                                         )
                                 except yaml.YAMLError:
                                     continue
-                        except:
+                        except Exception:
                             continue
 
     # Guide documents
@@ -89,8 +88,6 @@ def get_dotnet_docs():
                         if frontmatter_end != -1:
                             frontmatter = content[: frontmatter_end + 3]
                             body = content[frontmatter_end + 3 :]
-
-                            import yaml
 
                             try:
                                 metadata = yaml.safe_load(frontmatter)
@@ -128,7 +125,7 @@ def get_dotnet_docs():
                                     )
                             except yaml.YAMLError:
                                 continue
-                    except:
+                    except Exception:
                         continue
 
     return docs
@@ -181,7 +178,7 @@ def update_registry():
 
     # Update generated_at timestamp
     registry["generated_at"] = (
-        datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat()
+        datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
     )
 
     # Write updated registry
@@ -195,6 +192,4 @@ def update_registry():
 
 
 if __name__ == "__main__":
-    import yaml
-
     update_registry()

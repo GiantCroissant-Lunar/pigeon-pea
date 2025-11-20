@@ -24,8 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" />
+    <None Include="plugin.json" />
   </ItemGroup>
+
+  <Target Name="CopyPluginJson" AfterTargets="Build">
+    <Copy SourceFiles="plugin.json" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
 
   <Target Name="CopyPluginToConsoleApp" AfterTargets="Build">
     <PropertyGroup>

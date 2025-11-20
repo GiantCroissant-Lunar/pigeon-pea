@@ -9,10 +9,10 @@ summary: '- Tested: Yes (see testkitty\.py files) - Result: Does not render on W
   Windows build 20240203'
 supersedes: []
 tags:
-- adr
-- documentation
-- rendering
-- terminal
+  - adr
+  - documentation
+  - rendering
+  - terminal
 title: Graphics Protocol Notes for WezTerm on Windows
 ---
 

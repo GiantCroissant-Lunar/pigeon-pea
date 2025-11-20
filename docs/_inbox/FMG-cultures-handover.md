@@ -6,14 +6,14 @@ summary: This note summarizes the current state of the FantasyMapGenerator (FMG)
   as used by the map HUD sandbox (PigeonPea.MapHud) and documents a crash in the cultures
   generation phase.
 tags:
-- agents
-- ecs
-- fonts
-- guide
-- plugins
-- rendering
-- terminal
-- testing
+  - agents
+  - ecs
+  - fonts
+  - guide
+  - plugins
+  - rendering
+  - terminal
+  - testing
 title: FMG Cultures Generation Handover
 ---
 

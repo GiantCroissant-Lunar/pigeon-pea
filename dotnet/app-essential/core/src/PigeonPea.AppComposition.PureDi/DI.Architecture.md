@@ -30,7 +30,7 @@ engine/app-essential composition explicit, static, and host-agnostic.
 - **Dynamic content via plugins**
   - Content-authoring assemblies provide Resource loaders, GOAP archetypes,
     GOAP executors, etc. via the plugin system.
-  - Engine code does *not* reference content-authoring directly.
+  - Engine code does _not_ reference content-authoring directly.
 - **Multi-container / multi-context support**
   - Support multiple logical containers, e.g.:
     - Per scene.

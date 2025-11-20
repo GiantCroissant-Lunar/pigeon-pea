@@ -1,22 +1,20 @@
 ---
 created: '2025-11-20'
+canonical: true
 doc_id: RFC-00023
 doc_type: rfc
 status: draft
 summary: Comprehensive architecture for six core game services using tiered plugin
   architecture with ECS-first design and data-driven configuration
 tags:
-- architecture
-- services
-- game-essential
-- ecs
-- tiered-architecture
+  - architecture
+  - services
+  - game-essential
+  - ecs
+  - tiered-architecture
 title: 'Game Services Architecture: Stats, Character, Avatar, Animation, Persistence,
   and World Management'
 ---
-
-
-
 
 # RFC: Game Services Architecture
 
@@ -42,6 +40,7 @@ All services follow the **four-tier plugin architecture** and are **ECS-first** 
 ### Current State
 
 The project currently has:
+
 - Basic ECS components (Health, Position, Name) in `PigeonPea.Shared.ECS`
 - Some gameplay logic in `GameWorld.cs` (monolithic)
 - Inventory service (partially implemented)
@@ -121,66 +120,78 @@ The project currently has:
 ### Six Core Services
 
 #### 1. Stats Service
+
 **Purpose:** Universal stat management for ANY entity (characters, weapons, items, traps)
 
 **Scope:** Base stats, modifiers (buffs/debuffs), derived stats
 
 **Key Features:**
+
 - Data-driven stat definitions
 - Modifier system (additive, multiplicative)
 - Derived stat calculations
 - Stat formulas
 
 #### 2. Character Service
+
 **Purpose:** Character identity, class, and progression
 
 **Scope:** Character creation, class system, experience/leveling
 
 **Key Features:**
+
 - Data-driven character classes
 - Experience/level system
 - Class-specific starting stats
 - Progression hooks
 
 #### 3. Avatar Service
+
 **Purpose:** Visual appearance and cosmetic customization
 
 **Scope:** Appearance data, cosmetic items, display info
 
 **Key Features:**
+
 - Appearance customization (body type, colors, features)
 - Cosmetic equipment (separate from gameplay equipment)
 - Avatar presets
 - Display name and titles
 
 #### 4. Animation Service
+
 **Purpose:** Animation state management for any entity
 
 **Scope:** Animation playback, state tracking, frame management
 
 **Key Features:**
+
 - Data-driven animation definitions
 - Animation playback control
 - Loop/one-shot animations
 - Frame interpolation support
 
 #### 5. Persistence Service
+
 **Purpose:** Universal save/load system
 
 **Scope:** Entity serialization, world state, save file management
 
 **Key Features:**
+
 - Save/load entities
 - Save/load entire worlds
 - Save metadata and versioning
 - Multiple storage providers (JSON, SQLite, cloud)
 
 #### 6. World Management Service
+
 **Purpose:** Manage multiple ECS worlds
 
 **Scope:** World lifecycle, entity transfer, world cloning, interpolation
 
 **Key Features:**
+
 - Create/destroy worlds
 - Clone worlds for simulation/rollback
 - Transfer entities between worlds
@@ -214,6 +225,7 @@ public interface IStatsService
 ```
 
 **Why?**
+
 - Supports multiple worlds (simulation, interpolation, scenes)
 - Clear which world is being operated on
 - No hidden global state
@@ -228,6 +240,7 @@ All definitions are in JSON files:
 - `avatar-presets.json` - Avatar presets
 
 **Benefits:**
+
 - Modder-friendly (no recompilation)
 - Easy balancing and iteration
 - Version-controllable game data
@@ -260,6 +273,7 @@ statsService.RecalculateDerivedStats(world, entity);
 **Critical Decision:** `Arch.Core.World` is NOT abstracted as a service.
 
 **Rationale:**
+
 - World is infrastructure (like memory allocator)
 - Components already depend on Arch
 - Performance would suffer from extra indirection
@@ -268,12 +282,14 @@ statsService.RecalculateDerivedStats(world, entity);
 ## Implementation Phases
 
 ### Phase 1: Contracts & Components (Week 1)
+
 - [ ] Define all service contracts (`IService` interfaces)
 - [ ] Create DTOs (Views, Configs, etc.)
 - [ ] Add ECS components to `Shared.ECS`
 - [ ] Write proxy services (manual, source-gen later)
 
 **Deliverables:**
+
 - `PigeonPea.Game.Contracts/Stats/Services/IService.cs`
 - `PigeonPea.Game.Contracts/Character/Services/IService.cs`
 - `PigeonPea.Game.Contracts/Avatar/Services/IService.cs`
@@ -283,6 +299,7 @@ statsService.RecalculateDerivedStats(world, entity);
 - ECS components in `Shared.ECS/Components/`
 
 ### Phase 2: Basic Plugin Implementations (Week 2-3)
+
 - [ ] `PigeonPea.Plugins.Stats.Basic` - Simple stat system
 - [ ] `PigeonPea.Plugins.Character.Basic` - Basic progression
 - [ ] `PigeonPea.Plugins.Avatar.Basic` - Simple appearance
@@ -291,11 +308,13 @@ statsService.RecalculateDerivedStats(world, entity);
 - [ ] `PigeonPea.Plugins.WorldManagement.Basic` - Multi-world support
 
 **Deliverables:**
+
 - Working plugin implementations
 - Unit tests for each plugin
 - Data files (JSON definitions)
 
 ### Phase 3: Integration (Week 4)
+
 - [ ] Wire up Character ↔ Stats (equipment affects stats)
 - [ ] Wire up Character ↔ Avatar (class affects default appearance)
 - [ ] Wire up Avatar ↔ Animation (appearance affects animations)
@@ -303,6 +322,7 @@ statsService.RecalculateDerivedStats(world, entity);
 - [ ] Integration tests
 
 ### Phase 4: Advanced Features (Week 5+)
+
 - [ ] Advanced stat formulas
 - [ ] Talent trees
 - [ ] Animation blending
@@ -366,16 +386,19 @@ dotnet/game-essential/
 ## Testing Strategy
 
 ### Unit Tests
+
 - Test each service implementation in isolation
 - Mock dependencies via interfaces
 - Test data-driven configuration loading
 
 ### Integration Tests
+
 - Test service-to-service interactions
 - Test event-driven coordination
 - Test multi-world scenarios
 
 ### End-to-End Tests
+
 - Character creation → customization → save → load
 - Multi-world entity transfer
 - Animation state transitions
@@ -385,6 +408,7 @@ dotnet/game-essential/
 ### Existing Code
 
 Current `GameWorld.cs` contains:
+
 - ECS World management
 - Player/enemy spawning
 - Combat logic
@@ -414,24 +438,28 @@ Current `GameWorld.cs` contains:
 ## Success Criteria
 
 ### Phase 1 Complete When:
+
 - ✅ All service contracts defined
 - ✅ All ECS components created
 - ✅ Proxy services implemented
 - ✅ Unit tests for contracts (interface validation)
 
 ### Phase 2 Complete When:
+
 - ✅ All basic plugin implementations working
 - ✅ Data files created and loading correctly
 - ✅ Unit tests passing
 - ✅ Example usage documented
 
 ### Phase 3 Complete When:
+
 - ✅ Services integrated and coordinating
 - ✅ Character creation → save → load working
 - ✅ Multi-world entity transfer working
 - ✅ Integration tests passing
 
 ### Final Success Criteria:
+
 - ✅ All six services implemented and tested
 - ✅ Data-driven configuration working
 - ✅ Multi-world support functional
@@ -441,23 +469,26 @@ Current `GameWorld.cs` contains:
 
 ## Risks & Mitigations
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Performance overhead from service calls | Medium | Profile and optimize hot paths; inline where needed |
-| Complexity of multi-world system | High | Start with simple use cases; document patterns clearly |
-| Data-driven config schema evolution | Medium | Version config files; support migration |
-| Service interdependencies | Medium | Use events for loose coupling; document dependencies |
-| Save format compatibility | High | Version save files; support backward compatibility |
+| Risk                                    | Impact | Mitigation                                             |
+| --------------------------------------- | ------ | ------------------------------------------------------ |
+| Performance overhead from service calls | Medium | Profile and optimize hot paths; inline where needed    |
+| Complexity of multi-world system        | High   | Start with simple use cases; document patterns clearly |
+| Data-driven config schema evolution     | Medium | Version config files; support migration                |
+| Service interdependencies               | Medium | Use events for loose coupling; document dependencies   |
+| Save format compatibility               | High   | Version save files; support backward compatibility     |
 
 ## Alternatives Considered
 
 ### Alternative 1: Monolithic GameWorld
+
 **Rejected:** Doesn't scale, hard to test, not modular
 
 ### Alternative 2: Abstract Arch.Core.World
+
 **Rejected:** Performance penalty, leaky abstraction, high complexity
 
 ### Alternative 3: Single "GameService"
+
 **Rejected:** God object, tight coupling, hard to extend
 
 ## Open Questions
@@ -485,6 +516,7 @@ Current `GameWorld.cs` contains:
 ### Appendix A: Service Contract Examples
 
 See individual service RFCs:
+
 - RFC: Stats Service (to be created)
 - RFC: Character Service (to be created)
 - RFC: Avatar Service (to be created)

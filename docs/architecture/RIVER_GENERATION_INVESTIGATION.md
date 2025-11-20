@@ -9,10 +9,10 @@ summary: 'The Fantasy Map Generator C# port generates 0 rivers despite having co
   river generation code. All other features work correctly:'
 supersedes: []
 tags:
-- adr
-- rendering
-- terminal
-- testing
+  - adr
+  - rendering
+  - terminal
+  - testing
 title: River Generation Investigation - Handover Document
 ---
 

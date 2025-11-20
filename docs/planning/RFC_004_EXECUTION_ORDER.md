@@ -4,21 +4,18 @@ created: '2025-11-10'
 doc_id: PLAN-00013
 doc_type: plan
 related:
-- RFC-00004
-- PLAN-00008
+  - RFC-00004
+  - PLAN-00008
 status: active
 summary: Execution order for implementing RFC-004 issues showing parallel vs serial
   dependencies
 tags:
-- rfc-004
-- agent-infrastructure
-- execution-order
-- parallelization
+  - rfc-004
+  - agent-infrastructure
+  - execution-order
+  - parallelization
 title: 'RFC-004 Implementation: Execution Order'
 ---
-
-
-
 
 # RFC-004 Implementation: Execution Order
 

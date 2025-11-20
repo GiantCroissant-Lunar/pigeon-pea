@@ -5,6 +5,7 @@ Create a well-formatted pull request with proper testing and documentation.
 ## 1. Pre-PR Checks
 
 ### Ensure on Feature Branch
+
 ```bash
 git branch --show-current
 ```
@@ -12,6 +13,7 @@ git branch --show-current
 Verify you're not on `main` branch.
 
 ### Sync with Main
+
 ```bash
 git fetch origin main
 git merge origin/main
@@ -22,11 +24,13 @@ Resolve any conflicts if they arise.
 ## 2. Quality Verification
 
 ### Format Code
+
 ```bash
 task dotnet:format
 ```
 
 ### Run Pre-commit Hooks
+
 ```bash
 pre-commit run --all-files
 ```
@@ -34,6 +38,7 @@ pre-commit run --all-files
 Fix any issues.
 
 ### Build and Test
+
 ```bash
 task game:build-console
 task dotnet:test
@@ -42,6 +47,7 @@ task dotnet:test
 Ensure everything passes.
 
 ### Run Application
+
 ```bash
 task game:run-console
 ```
@@ -51,6 +57,7 @@ Verify the application works.
 ## 3. Review Changes
 
 ### Check All Changes
+
 ```bash
 git diff main...HEAD
 ```
@@ -58,11 +65,13 @@ git diff main...HEAD
 Review all changes that will be in the PR.
 
 ### List Changed Files
+
 ```bash
 git diff main...HEAD --name-only
 ```
 
 ### Review Commit History
+
 ```bash
 git log main..HEAD --oneline
 ```
@@ -78,7 +87,9 @@ git push -u origin $(git branch --show-current)
 ## 5. Analyze Changes for PR Description
 
 ### Identify Change Type
+
 Determine if this is:
+
 - New feature
 - Bug fix
 - Refactoring
@@ -87,6 +98,7 @@ Determine if this is:
 - Other
 
 ### Summarize Changes
+
 - What was changed?
 - Why was it changed?
 - What problem does it solve?
@@ -166,6 +178,7 @@ Check the PR details.
 ## 8. Report Results
 
 Provide summary:
+
 - Branch: [branch-name]
 - PR Title: [title]
 - PR URL: [url]

@@ -8,15 +8,15 @@ status: active
 summary: 'Status: Proposed Created: 2025-11-13'
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- rendering
-- rfc
-- terminal
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-009: Performance Benchmarking Infrastructure'
 ---
 

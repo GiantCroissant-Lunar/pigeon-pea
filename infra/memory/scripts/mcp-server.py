@@ -59,7 +59,7 @@ class MemoryStore:
     def search(self, query: str, limit: int = 5) -> List[Dict]:
         """Search for memories (simple text matching for now)"""
         if not self.storage_path.exists():
-            logger.warning(f"SEARCH: No memory file exists yet")
+            logger.warning("SEARCH: No memory file exists yet")
             return []
 
         matches = []
@@ -117,13 +117,13 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
                 "tools": [
                     {
                         "name": "save_memory",
-                        "description": "Save important project knowledge for long-term retrieval",
+                        "description": "Save important project knowledge",
                         "inputSchema": {
                             "type": "object",
                             "properties": {
                                 "key": {
                                     "type": "string",
-                                    "description": "Categorized key (e.g., 'architecture.domain-separation', 'tech.fov-library')",
+                                    "description": "Categorized key identifier",
                                 },
                                 "content": {
                                     "type": "string",
@@ -131,7 +131,9 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
                                 },
                                 "metadata": {
                                     "type": "object",
-                                    "description": "Optional metadata (tags, project, type, etc.)",
+                                    "description": (
+                                        "Optional metadata (tags, project, type, etc.)"
+                                    ),
                                 },
                             },
                             "required": ["key", "content"],
@@ -139,13 +141,13 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
                     },
                     {
                         "name": "search_memory",
-                        "description": "Search for previously saved project knowledge",
+                        "description": "Search saved project knowledge",
                         "inputSchema": {
                             "type": "object",
                             "properties": {
                                 "query": {
                                     "type": "string",
-                                    "description": "Search query (keywords or concepts)",
+                                    "description": "Query string",
                                 },
                                 "limit": {
                                     "type": "number",
@@ -157,13 +159,15 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
                     },
                     {
                         "name": "list_recent_memories",
-                        "description": "List recent memories to understand what's been saved",
+                        "description": "List recent saved memories",
                         "inputSchema": {
                             "type": "object",
                             "properties": {
                                 "limit": {
                                     "type": "number",
-                                    "description": "Number of recent entries (default: 10)",
+                                    "description": (
+                                        "Number of recent entries (default: 10)"
+                                    ),
                                 }
                             },
                         },
@@ -182,12 +186,16 @@ def handle_mcp_request(request: Dict, memory: MemoryStore) -> Dict:
                 content=arguments["content"],
                 metadata=arguments.get("metadata", {}),
             )
+            message = (
+                f"✓ Saved memory: {arguments['key']}\n"
+                f"Timestamp: {result['timestamp']}"
+            )
             return create_mcp_response(
                 {
                     "content": [
                         {
                             "type": "text",
-                            "text": f"✓ Saved memory: {arguments['key']}\nTimestamp: {result['timestamp']}",
+                            "text": message,
                         }
                     ]
                 }

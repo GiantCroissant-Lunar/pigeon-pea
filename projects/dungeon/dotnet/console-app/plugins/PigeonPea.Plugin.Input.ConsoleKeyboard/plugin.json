@@ -1,0 +1,12 @@
+{
+  "id": "PigeonPea.Plugin.Input.ConsoleKeyboard",
+  "name": "Console Keyboard Input Device",
+  "version": "1.0.0",
+  "description": "Console keyboard device provider for System.Console input",
+  "author": "Pigeon Pea Development Team",
+  "pluginType": "InputDevice",
+  "entryPoint": "PigeonPea.Plugin.Input.ConsoleKeyboard.ConsoleKeyboardPlugin",
+  "dependencies": [],
+  "platforms": ["console"],
+  "tags": ["input", "device", "keyboard", "tier-4"]
+}

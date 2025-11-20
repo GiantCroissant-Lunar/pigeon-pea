@@ -8,7 +8,7 @@ status: active
 summary: 'RFC Reference: RFC-013: Yazi-integrated Rust CLI'
 supersedes: []
 tags:
-- rfc
+  - rfc
 title: WebSocket client and JSON envelope types
 ---
 

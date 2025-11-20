@@ -87,12 +87,12 @@ public partial class MainWindow : Window
     {
         var registry = _serviceProvider.GetRequiredService<IServiceRegistry>();
         _renderer = registry.Get<SkiaSharpRenderer>();
-        
+
         if (_renderer != null)
         {
-            _renderer.Initialize(new RenderContext 
-            { 
-                Width = (int)Bounds.Width, 
+            _renderer.Initialize(new RenderContext
+            {
+                Width = (int)Bounds.Width,
                 Height = (int)Bounds.Height,
                 Services = _serviceProvider
             });
@@ -108,7 +108,7 @@ public partial class MainWindow : Window
     protected override void OnResized(WindowResizedEventArgs e)
     {
         base.OnResized(e);
-        
+
         if (_renderer?.Context != null)
         {
             _renderer.Context.Width = (int)Bounds.Width;

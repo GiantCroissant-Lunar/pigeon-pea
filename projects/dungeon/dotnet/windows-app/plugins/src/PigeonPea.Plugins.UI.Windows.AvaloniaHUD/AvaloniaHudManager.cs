@@ -34,15 +34,15 @@ public class AvaloniaHudManager : IUserInterface, IService
     /// <summary>
     /// Gets the UI capabilities supported by this implementation.
     /// </summary>
-    public UICapabilities Capabilities { get; } = 
-        UICapabilities.HUD | 
-        UICapabilities.Menus | 
-        UICapabilities.Dialogs | 
-        UICapabilities.Tooltips | 
-        UICapabilities.Notifications | 
-        UICapabilities.Inventory | 
-        UICapabilities.CharacterStatus | 
-        UICapabilities.Animations | 
+    public UICapabilities Capabilities { get; } =
+        UICapabilities.HUD |
+        UICapabilities.Menus |
+        UICapabilities.Dialogs |
+        UICapabilities.Tooltips |
+        UICapabilities.Notifications |
+        UICapabilities.Inventory |
+        UICapabilities.CharacterStatus |
+        UICapabilities.Animations |
         UICapabilities.Theming;
 
     /// <summary>
@@ -69,7 +69,7 @@ public class AvaloniaHudManager : IUserInterface, IService
     {
         _context = context ?? throw new ArgumentNullException(nameof(context));
 
-        _logger.LogInformation("Initializing Avalonia HUD Manager with {Width}x{Height}", 
+        _logger.LogInformation("Initializing Avalonia HUD Manager with {Width}x{Height}",
             context.Width, context.Height);
 
         // Initialize Avalonia if not already running
@@ -77,7 +77,7 @@ public class AvaloniaHudManager : IUserInterface, IService
         {
             var builder = BuildAvaloniaApp();
             var app = builder.Build();
-            
+
             // Don't start the application, just build it for control creation
             app.SetupWithoutStarting();
         }
@@ -192,14 +192,14 @@ public class AvaloniaHudManager : IUserInterface, IService
         }
 
         var notificationId = Guid.NewGuid().ToString("N")[..8];
-        
+
         AvaloniaThreadSafetyExtensions.EnsureOnUiThread(() =>
         {
             _viewModel?.AddNotification(notificationId, message, type);
         });
 
         _activeNotifications[notificationId] = DateTime.UtcNow;
-        
+
         _logger.LogDebug("Notification shown: {Message} ({Type})", message, type);
 
         // Auto-hide notification after 5 seconds

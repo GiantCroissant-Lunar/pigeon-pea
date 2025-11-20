@@ -9,11 +9,11 @@ summary: 'Audience: Developers who previously used dotnet/shared-app/Rendering/ 
   SharedApp.Rendering APIs. Date: 2025-11-13 (RFC-007 Phase 6)'
 supersedes: []
 tags:
-- architecture
-- ecs
-- rendering
-- rfc
-- terminal
+  - architecture
+  - ecs
+  - rendering
+  - rfc
+  - terminal
 title: 'Migration: SharedApp.Rendering → Domain-Specific Projects'
 ---
 

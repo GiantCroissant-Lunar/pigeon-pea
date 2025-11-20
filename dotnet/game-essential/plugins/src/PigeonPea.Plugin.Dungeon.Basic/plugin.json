@@ -1,11 +1,11 @@
 {
-    "id": "dungeon-generator-basic",
-    "name": "Basic Dungeon Generator",
-    "version": "1.0.0",
-    "author": "PigeonPea",
-    "description": "Simple procedural dungeon generator",
-    "entryPoint": {
-        "dotnet.console": "PigeonPea.Plugin.Dungeon.Basic.dll,PigeonPea.Plugin.Dungeon.Basic.BasicDungeonGenerator"
-    },
-    "dependencies": []
+  "id": "dungeon-generator-basic",
+  "name": "Basic Dungeon Generator",
+  "version": "1.0.0",
+  "author": "PigeonPea",
+  "description": "Simple procedural dungeon generator",
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugin.Dungeon.Basic.dll,PigeonPea.Plugin.Dungeon.Basic.BasicDungeonGeneratorPlugin"
+  },
+  "dependencies": []
 }

@@ -9,11 +9,13 @@ The build system uses [cargo-make](https://github.com/sagiegurari/cargo-make) to
 ## Prerequisites
 
 ### Windows
+
 - Rust toolchain
 - GitVersion (installed globally)
 - PowerShell
 
 ### Linux/macOS
+
 - Rust toolchain
 - .NET SDK (for GitVersion)
 - GitVersion.Tool: `dotnet tool install --global GitVersion.Tool`
@@ -73,6 +75,7 @@ task rust:build-and-run
 ```
 
 This will:
+
 1. Build the release binary with cargo
 2. Copy it to `build/_artifacts/{version}/dev-tool-server/`
 3. Launch Rio terminal configured to run the built binary
@@ -99,47 +102,61 @@ cargo make --list-all-steps
 ### Taskfile Tasks
 
 #### `rust:build:debug`
+
 Build the project in debug mode.
 
 #### `rust:build:release`
+
 Build the project in release mode with optimizations.
 
 #### `rust:test`
+
 Run all tests for the project.
 
 #### `rust:publish`
+
 Complete workflow: build release binary and copy to versioned artifacts directory.
 
 #### `rust:run-latest`
+
 Launch Rio terminal with the latest built dev-tool-server binary. Automatically finds the latest version in `build/_artifacts/`.
 
 #### `rust:build-and-run`
+
 Convenience task that builds, publishes, and launches the latest version in Rio terminal.
 
 #### `rust:clean`
+
 Remove all build artifacts from the target directory.
 
 ### cargo-make Tasks (Internal)
 
 #### `build-debug`
+
 Build the project in debug mode.
 
 #### `build-release`
+
 Build the project in release mode with optimizations.
 
 #### `test`
+
 Run all tests for the project.
 
 #### `clean`
+
 Remove all build artifacts from the target directory.
 
 #### `publish`
+
 Complete workflow: build release binary and copy to versioned artifacts directory.
 
 #### `get-version`
+
 Get the semantic version from GitVersion. Used internally by other tasks.
 
 #### `copy-artifacts`
+
 Copy built binaries and metadata to the versioned artifacts directory. Used internally by `publish`.
 
 ## Output Structure
@@ -168,6 +185,7 @@ To build additional Rust projects, create a new `Makefile.toml` or modify the ex
 ## Cross-Platform Support
 
 The build system works across:
+
 - **Windows**: Uses PowerShell scripts and `.exe` binaries
 - **Linux**: Uses Bash scripts and ELF binaries
 - **macOS**: Uses Bash scripts and Mach-O binaries
@@ -189,6 +207,7 @@ This ensures Rust artifacts follow the same versioning scheme as C# artifacts bu
 ### "GitVersion not found" on Linux/macOS
 
 Install GitVersion.Tool:
+
 ```bash
 dotnet tool install --global GitVersion.Tool
 ```
@@ -196,6 +215,7 @@ dotnet tool install --global GitVersion.Tool
 ### "dotnet not found" on Linux/macOS
 
 Install the .NET SDK for your platform:
+
 - Ubuntu/Debian: https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu
 - macOS: https://learn.microsoft.com/en-us/dotnet/core/install/macos
 

@@ -8,13 +8,13 @@ status: active
 summary: 'Status: Proposed Created: 2025-11-13'
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- plugins
-- rfc
-- terminal
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - plugins
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-013: Yazi-integrated Rust GM CLI'
 ---
 

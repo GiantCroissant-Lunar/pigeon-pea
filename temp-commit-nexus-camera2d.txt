@@ -1,0 +1,11 @@
+feat: complete nexus-camera2d core features and tests, and unblock Nexus-Camera2D work by fixing pre-commit/doc/tooling issues
+
+- Add Damping namespace with DampingType and DampingHelper utilities
+- Refactor FollowExtension to use DampingType, Smoothness, and optional look-ahead
+- Add DeadzoneExtension and ParallaxExtension
+- Add triggers system (ICameraTrigger, ZoomTrigger, BoundaryTrigger) and hook into Camera2D
+- Add NexusCamera2D.Core.Tests project with basic tests for camera core, extensions, and triggers
+- Fix pre-commit hooks (flake8, yamllint, prettier, validate-docs) so they pass cleanly
+- Regenerate docs index registry and normalize RFC front-matter and canonical flags
+- Clean up Python docs/tooling scripts to satisfy flake8 (imports, line length, f-strings)
+- Scope dotnet-format pre-commit to whitespace formatting to avoid analyzer autofix failures

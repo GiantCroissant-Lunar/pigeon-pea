@@ -4,23 +4,20 @@ created: '2025-11-13'
 doc_id: RFC-00012
 doc_type: rfc
 related:
-- RFC-00004
+  - RFC-00004
 status: draft
 summary: Structured documentation management system with validation, registry generation,
   and inbox workflow to enable autonomous agents to discover, create, and maintain
   high-quality documentation
 supersedes: []
 tags:
-- documentation
-- infrastructure
-- validation
-- registry
-- agent-tools
+  - documentation
+  - infrastructure
+  - validation
+  - registry
+  - agent-tools
 title: Documentation Organization Management
 ---
-
-
-
 
 # RFC-012: Documentation Organization Management
 

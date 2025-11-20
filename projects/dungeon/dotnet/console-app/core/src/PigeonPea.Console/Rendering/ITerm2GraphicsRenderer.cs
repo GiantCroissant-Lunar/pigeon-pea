@@ -1,5 +1,5 @@
 using System.Text;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
@@ -14,8 +14,15 @@ public class ITerm2GraphicsRenderer : IRenderer, IDisposable
     private readonly Dictionary<int, CachedImage> _imageCache = new();
     private readonly StringBuilder _commandBuffer = new();
 
+    public string Id => "iterm2";
+
     public RendererCapabilities Capabilities =>
         RendererCapabilities.TrueColor | RendererCapabilities.PixelGraphics | RendererCapabilities.Sprites;
+
+    public void Shutdown()
+    {
+        Dispose();
+    }
 
     public void Initialize(IRenderTarget target)
     {

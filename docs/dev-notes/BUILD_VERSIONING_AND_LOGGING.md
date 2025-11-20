@@ -9,9 +9,9 @@ summary: This note summarizes how we plan to version builds and organize logs un
   build/artifacts/{version}/.
 supersedes: []
 tags:
-- ci-cd
-- guide
-- terminal
+  - ci-cd
+  - guide
+  - terminal
 title: Build Versioning and Logging
 ---
 

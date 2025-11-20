@@ -5,6 +5,7 @@ This document describes how to integrate the `dev-tool` CLI with Yazi for a seam
 ## Overview
 
 The integration allows you to:
+
 - Launch dungeon commands directly from Yazi
 - Edit game data files with automatic hot-reload
 - Use Yazi as your primary file browser for dungeon assets
@@ -44,7 +45,7 @@ local function setup()
 	ya.add_custom_previewer("dungeon_map", function(path)
 		return ya.preview_image(path, ya.image_size_for("width=80,height=24"))
 	end)
-	
+
 	-- Add dungeon commands to the command line
 	ya.add_custom_command("dungeon-spawn", function(args)
 		local entity = args[1] or "goblin"
@@ -52,7 +53,7 @@ local function setup()
 		local y = args[3] or "5"
 		ya.spawn(string.format("dev-tool spawn %s --x %s --y %s --server ws://localhost:5007", entity, x, y))
 	end)
-	
+
 	ya.add_custom_command("dungeon-teleport", function(args)
 		local x = args[1] or "0"
 		local y = args[2] or "0"
@@ -130,7 +131,7 @@ For multiple game instances, configure different server ports:
 # Development instance
 dev-tool --server ws://localhost:5007
 
-# Testing instance  
+# Testing instance
 dev-tool --server ws://localhost:5008
 
 # Production instance
@@ -178,7 +179,7 @@ If the dev tool can't connect:
 ```bash
 # Spawn multiple entities
 dev-tool spawn goblin --x 10 --y 5
-dev-tool spawn orc --x 15 --y 8  
+dev-tool spawn orc --x 15 --y 8
 dev-tool spawn treasure --x 20 --y 12
 
 # Teleport and inspect

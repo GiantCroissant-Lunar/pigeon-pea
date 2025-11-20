@@ -1,4 +1,5 @@
-using PigeonPea.Dungeon.Core;
+using PigeonPea.Dungeon.Contracts;
+using PigeonPea.Plugin.Dungeon.Basic;
 
 namespace PigeonPea.Console;
 
@@ -22,8 +23,10 @@ public static class DungeonGeneratorSelector
         return key switch
         {
             "basic" or "classic" => new BasicDungeonGenerator(),
-            "modern" or "modern-edgar" or "edgar" => new ModernEdgarDungeonGenerator(),
-            _ => new ModernEdgarDungeonGenerator(),
+            // Legacy core Edgar is being removed. Fallback to basic in legacy selector.
+            // Real Edgar is available via plugins (useNewArch=true).
+            "modern" or "modern-edgar" or "edgar" => new BasicDungeonGenerator(),
+            _ => new BasicDungeonGenerator(),
         };
     }
 }

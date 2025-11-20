@@ -1,4 +1,4 @@
-namespace PigeonPea.Shared.Input.Events;
+namespace PigeonPea.Input.Core.Events;
 
 /// <summary>
 /// Lifecycle phase of an input action.

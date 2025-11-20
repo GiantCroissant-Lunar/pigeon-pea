@@ -4,26 +4,23 @@ created: '2025-11-15'
 doc_id: GUIDE-00001
 doc_type: guide
 related:
-- RFC-00016
-- RFC-00017
-- RFC-00018
-- SPEC-00014
+  - RFC-00016
+  - RFC-00017
+  - RFC-00018
+  - SPEC-00014
 status: active
 summary: Step-by-step guide for implementing JSON configuration, CJK languages, and
   Markov chain mode for the FantasyNameGenerator
 supersedes: []
 tags:
-- name-generation
-- implementation
-- guide
-- json
-- markov-chain
-- cjk
+  - name-generation
+  - implementation
+  - guide
+  - json
+  - markov-chain
+  - cjk
 title: Name Generator Enhancement Implementation Guide
 ---
-
-
-
 
 # Name Generator Enhancement Implementation Guide
 

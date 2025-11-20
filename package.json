@@ -1,0 +1,29 @@
+{
+  "name": "pigeon-pea",
+  "version": "1.0.0",
+  "description": "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Pre-Commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit)](https://github.com/pre-commit/pre-commit) [![Pre-commit CI](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/pre-commit.yml) [![Benchmarks](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/benchmarks.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/benchmarks.yml) [![Console Visual Tests](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/console-visual-tests.yml/badge.svg)](https://github.com/GiantCroissant-Lunar/pigeon-pea/actions/workflows/console-visual-tests.yml)",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "tests"
+  },
+  "devDependencies": {
+    "@anthropic-ai/claude-code": "^2.0.46",
+    "task-master-ai": "^0.33.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GiantCroissant-Lunar/pigeon-pea.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GiantCroissant-Lunar/pigeon-pea/issues"
+  },
+  "homepage": "https://github.com/GiantCroissant-Lunar/pigeon-pea#readme"
+}

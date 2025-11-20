@@ -14,7 +14,7 @@ public class LanguageDefinitionRepository
     public LanguageDefinitionRepository(ILogger<LanguageDefinitionRepository> logger)
     {
         _logger = logger;
-        
+
         _jsonOptions = new JsonSerializerOptions
         {
             WriteIndented = true,
@@ -41,7 +41,7 @@ public class LanguageDefinitionRepository
             _logger.LogInformation("Loading language definition from '{Path}'", path);
 
             var json = await File.ReadAllTextAsync(path).ConfigureAwait(false);
-            
+
             var language = JsonSerializer.Deserialize<LanguageDefinition>(json, _jsonOptions);
 
             if (language == null)
@@ -89,7 +89,7 @@ public class LanguageDefinitionRepository
             _logger.LogInformation("Saving language '{LanguageId}' to '{Path}'", language.Id, path);
 
             var json = JsonSerializer.Serialize(language, _jsonOptions);
-            
+
             // Ensure directory exists
             var directory = Path.GetDirectoryName(path);
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
@@ -200,7 +200,7 @@ public class LanguageDefinitionRepository
         {
             var errorMessage = $"Validation errors in language definition '{path}':\n" +
                              string.Join("\n", errors.Select(e => $"  - {e}"));
-            
+
             _logger.LogError("Validation failed for '{Path}': {Errors}", path, string.Join("; ", errors));
             throw new InvalidOperationException(errorMessage);
         }

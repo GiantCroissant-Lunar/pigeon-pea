@@ -5,18 +5,18 @@ doc_id: RFC-2025-00027
 doc_type: rfc
 related: []
 status: active
-summary: "\uFEFF--- docid: 'RFC-00014'"
+summary: 'Adopt and standardize the use of DisposePattern source code generator across all projects that need IDisposable implementation'
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rfc
-- terminal
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-014: Adopt DisposePattern Source Code Generator'
 ---
 
@@ -32,6 +32,7 @@ tags: ['source-generators', 'dispose-pattern', 'resource-management', 'code-qual
 summary: 'Adopt and standardize the use of DisposePattern source code generator across all projects that need IDisposable implementation'
 supersedes: []
 related: []
+
 ---
 
 # RFC-014: Adopt DisposePattern Source Code Generator

@@ -3,10 +3,10 @@
 Simple script to add dotnet documentation to the registry.
 """
 
-import json
-from pathlib import Path
 import hashlib
+import json
 from datetime import datetime
+from pathlib import Path
 
 
 def calculate_simhash(content):
@@ -73,7 +73,7 @@ def get_dotnet_docs():
                                         )
                                 except yaml.YAMLError:
                                     continue
-                        except:
+                        except Exception:
                             continue
 
     # Guide documents
@@ -127,7 +127,7 @@ def get_dotnet_docs():
                                     )
                             except yaml.YAMLError:
                                 continue
-                    except:
+                    except Exception:
                         continue
 
     return docs

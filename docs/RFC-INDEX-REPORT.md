@@ -8,26 +8,28 @@ status: active
 summary: 'Total RFCs: 19'
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- fonts
-- plan
-- plugins
-- rendering
-- terminal
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - fonts
+  - plan
+  - plugins
+  - rendering
+  - terminal
+  - testing
 title: RFC Indexing Synchronization Report
 ---
 
 # RFC Indexing Synchronization Report
-*Total RFCs: 19*
+
+_Total RFCs: 19_
 
 ⚠️ **Found 19 issues**
 
 ## ❌ Missing Doc ID (19)
+
 - `001-rendering-architecture.md` - Add proper doc_id to front-matter
 - `003-testing-verification.md` - Add proper doc_id to front-matter
 - `004-agent-infrastructure-enhancement.md` - Add proper doc_id to front-matter
@@ -49,6 +51,7 @@ title: RFC Indexing Synchronization Report
 - `IMPLEMENTATION_PLAN.md` - Add proper doc_id to front-matter
 
 ## ℹ️ Numbering Gaps (3)
+
 - Filename: Gap from 1 to 3 (missing: 2)
 - Filename: Gap from 6 to 12 (missing: 7, 8, 9, 10, 11)
 - Filename: Gap from 22 to 27 (missing: 23, 24, 25, 26)

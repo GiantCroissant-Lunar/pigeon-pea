@@ -41,7 +41,6 @@
     <!-- Game-layer systems used by AI -->
     <ProjectReference Include="..\PigeonPea.Game.Perception\PigeonPea.Game.Perception.csproj" />
     <ProjectReference Include="..\PigeonPea.Game.Abilities\PigeonPea.Game.Abilities.csproj" />
-    <ProjectReference Include="..\PigeonPea.Dungeon.Control\PigeonPea.Dungeon.Control.csproj" />
 
     <!-- Game-shared components (Inventory, Item, etc.) -->
     <ProjectReference Include="..\PigeonPea.Shared\PigeonPea.Shared.csproj" />

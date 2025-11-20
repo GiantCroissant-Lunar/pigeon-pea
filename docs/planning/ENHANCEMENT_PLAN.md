@@ -4,22 +4,19 @@ created: '2025-11-08'
 doc_id: PLAN-00010
 doc_type: plan
 related:
-- RFC-00001
-- RFC-00020
+  - RFC-00001
+  - RFC-00020
 status: active
 summary: Platform-specific enhancements for Windows and Console after completing core
   game logic features
 tags:
-- platform-enhancements
-- windows
-- console
-- rendering
-- roadmap
+  - platform-enhancements
+  - windows
+  - console
+  - rendering
+  - roadmap
 title: Pigeon Pea Enhancement Plan
 ---
-
-
-
 
 # Pigeon Pea Enhancement Plan
 

@@ -8,11 +8,11 @@ status: active
 summary: '- Status: Accepted - Date: 2025-11-14'
 supersedes: []
 tags:
-- adr
-- architecture
-- documentation
-- terminal
-- testing
+  - adr
+  - architecture
+  - documentation
+  - terminal
+  - testing
 title: 'ADR-0001: Historical vs Canonical Documentation for .NET Project Structure'
 ---
 

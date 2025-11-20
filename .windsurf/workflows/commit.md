@@ -67,6 +67,7 @@ git diff
 **Create commit message**
 
 Analyze changes and create message using conventional commits:
+
 - feat: new features
 - fix: bug fixes
 - refactor: code refactoring
@@ -113,6 +114,6 @@ Ready to push: yes
 
 ---
 
-*Generated from `.agent/workflows/commit.yaml`*
+_Generated from `.agent/workflows/commit.yaml`_
 
 To modify this workflow, edit the canonical YAML file and regenerate.

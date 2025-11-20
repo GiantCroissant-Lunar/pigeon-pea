@@ -1,6 +1,6 @@
 using PigeonPea.Console.Rendering;
 using PigeonPea.Map.Core;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using PigeonPea.SharedApp.Rendering;
 using Terminal.Gui;
 
@@ -40,11 +40,11 @@ public class MapPanelView : View
 
         _renderer.BeginFrame();
         // Viewport in screen space (map occupies entire view region)
-        _renderer.SetViewport(new PigeonPea.Shared.Rendering.Viewport(0, 0, w, h));
+        _renderer.SetViewport(new PigeonPea.Rendering.Contracts.Viewport(0, 0, w, h));
         _renderer.Clear(SadRogue.Primitives.Color.Black);
 
         // World-space viewport based on camera/zoom
-        var worldViewport = new PigeonPea.Shared.Rendering.Viewport(CameraX, CameraY, w, h);
+        var worldViewport = new PigeonPea.Rendering.Contracts.Viewport(CameraX, CameraY, w, h);
         var layout = new RenderLayout(new ScreenRect(0, 0, w, h));
 
         // Draw FMG map via shared MapDataRenderer (character path)

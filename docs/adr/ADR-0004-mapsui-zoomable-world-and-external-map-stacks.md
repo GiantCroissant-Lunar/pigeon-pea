@@ -8,13 +8,13 @@ status: active
 summary: Accepted
 supersedes: []
 tags:
-- adr
-- agents
-- architecture
-- ecs
-- plugins
-- rendering
-- terminal
+  - adr
+  - agents
+  - architecture
+  - ecs
+  - plugins
+  - rendering
+  - terminal
 title: 'ADR-0004: Mapsui Integration, Zoomable World, and External Map Stacks'
 ---
 

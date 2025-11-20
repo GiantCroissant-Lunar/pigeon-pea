@@ -4,21 +4,18 @@ created: '2025-11-18'
 doc_id: ADR-00002
 doc_type: adr
 related:
-- ADR-00001
+  - ADR-00001
 status: active
 summary: Design for discrete zoom/mode levels in Pigeon Pea with physical scale and
   chunking
 tags:
-- architecture
-- scale
-- modes
-- world
-- dungeon
+  - architecture
+  - scale
+  - modes
+  - world
+  - dungeon
 title: Multi-Scale World & Mode System
 ---
-
-
-
 
 # Multi-Scale World & Mode System
 

@@ -9,8 +9,8 @@ summary: This document enumerates the Private Use Area (PUA) codepoints used by 
   project.
 supersedes: []
 tags:
-- fonts
-- spec
+  - fonts
+  - spec
 title: PUA Layout for Map Glyphs
 ---
 

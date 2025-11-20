@@ -9,10 +9,10 @@ summary: This is SARASA GOTHIC, a CJK composite font based on Inter, Iosevka and
   Han Sans.
 supersedes: []
 tags:
-- ci-cd
-- ecs
-- fonts
-- spec
+  - ci-cd
+  - ecs
+  - fonts
+  - spec
 title: Sarasa Gothic (更纱黑体 / 更紗黑體 / 更紗ゴシック / 사라사고딕)
 ---
 

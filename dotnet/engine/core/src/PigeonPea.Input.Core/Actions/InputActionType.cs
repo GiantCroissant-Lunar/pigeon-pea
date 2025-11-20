@@ -1,4 +1,4 @@
-namespace PigeonPea.Shared.Input.Actions;
+namespace PigeonPea.Input.Core.Actions;
 
 /// <summary>
 /// Type of input action.

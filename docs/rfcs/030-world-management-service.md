@@ -1,23 +1,21 @@
 ---
 created: '2025-11-20'
+canonical: true
 doc_id: RFC-00025
 doc_type: rfc
 status: draft
 summary: Service for managing multiple Arch ECS worlds to enable interpolation, simulation,
   scene transitions, and future networking support
 tags:
-- world-management
-- ecs
-- multi-world
-- interpolation
-- simulation
-- scene-management
+  - world-management
+  - ecs
+  - multi-world
+  - interpolation
+  - simulation
+  - scene-management
 title: 'World Management Service: Multiple ECS Worlds for Interpolation, Simulation,
   and Scene Management'
 ---
-
-
-
 
 # RFC: World Management Service
 
@@ -807,6 +805,7 @@ public class SceneManager
 **Challenge:** Cloning a world with 10,000 entities can be expensive.
 
 **Optimizations:**
+
 - Use structural sharing for immutable components
 - Parallel entity cloning
 - Component pooling

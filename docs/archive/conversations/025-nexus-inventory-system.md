@@ -1,24 +1,22 @@
 ---
 created: '2025-01-17'
 doc_id: ''
+canonical: false
 doc_type: rfc
 status: draft
 summary: Comprehensive implementation guide for Nexus-Inventory, a data-driven inventory
   and item system inspired by RPGCore with modular item behaviors, equipment, crafting,
   and JSON configuration
 tags:
-- inventory
-- items
-- equipment
-- crafting
-- architecture
-- library
-- nexus-inventory
+  - inventory
+  - items
+  - equipment
+  - crafting
+  - architecture
+  - library
+  - nexus-inventory
 title: 'Nexus-Inventory: RPGCore-Inspired Inventory and Item System'
 ---
-
-
-
 
 # RFC-025: Nexus-Inventory - Modular Inventory and Item System
 

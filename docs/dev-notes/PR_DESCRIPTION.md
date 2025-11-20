@@ -10,16 +10,16 @@ summary: This PR implements the complete plugin system architecture for PigeonPe
   with Assembly Load Context (ALC) isola
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rendering
-- rfc
-- terminal
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'Implement RFC-005 and RFC-006: Plugin System Architecture'
 ---
 

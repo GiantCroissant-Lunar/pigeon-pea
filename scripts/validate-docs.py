@@ -43,8 +43,9 @@ VALID_DOC_TYPES = {
 }
 VALID_STATUSES = {"draft", "active", "superseded", "rejected", "archived"}
 
-# Doc ID format per RFC-00026: PREFIX-NNNNN (no year)
-DOC_ID_PATTERN = re.compile(r"^[A-Z]+-\d{5}$")
+# Doc ID format per RFC-00026: PREFIX-NNNNN (no year).
+# For compatibility, also accept legacy PREFIX-YYYY-NNNNN format.
+DOC_ID_PATTERN = re.compile(r"^[A-Z]+-(\d{5}|\d{4}-\d{5})$")
 
 # ISO date format: YYYY-MM-DD
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -420,7 +421,7 @@ def generate_registry(documents: List[DocumentInfo], output_path: Path) -> None:
     # Write registry
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
-        json.dump(registry, f, indent=2, ensure_ascii=False)
+        json.dump(registry, f, indent=2, ensure_ascii=False, default=str)
         f.write("\n")  # Add final newline
 
     print(f"Registry generated: {output_path}")

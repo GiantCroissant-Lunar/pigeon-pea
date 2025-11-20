@@ -38,6 +38,20 @@ public class PluginLoader
     /// </summary>
     public async Task<int> DiscoverAndLoadAsync(IEnumerable<string> pluginPaths, string profile, CancellationToken ct = default)
     {
+        // Resolve shared assemblies from configuration or use defaults
+        var sharedAssemblies = _configuration.GetSection("PluginSystem:SharedAssemblies").Get<string[]>()
+            ?? new[]
+            {
+                "PigeonPea.Contracts",
+                "PigeonPea.Game.Contracts",
+                "PigeonPea.Dungeon.Contracts",
+                "PigeonPea.Rendering.Contracts",
+                "PigeonPea.Shared",
+                "PigeonPea.Shared.Inventory",
+                "PigeonPea.Game.Inventory",
+                "Arch"
+            };
+
         var discovered = new List<(PluginManifest manifest, string dir)>();
 
         foreach (var root in pluginPaths.Distinct())
@@ -119,7 +133,7 @@ public class PluginLoader
                     continue;
                 }
 
-                alc = new PluginLoadContext(assemblyPath, isCollectible: true);
+                alc = new PluginLoadContext(assemblyPath, sharedAssemblies, isCollectible: true);
                 var asm = alc.LoadFromAssemblyPath(assemblyPath);
                 var pluginType = asm.GetType(typeName, throwOnError: true)!;
 

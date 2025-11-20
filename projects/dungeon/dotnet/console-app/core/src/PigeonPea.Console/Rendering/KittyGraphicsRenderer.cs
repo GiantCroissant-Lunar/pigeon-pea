@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 
 namespace PigeonPea.Console.Rendering;
@@ -23,6 +23,8 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
     // Always use ST (ESC \) terminator - this is what imgcat and most tools use
     private static readonly string KittyTerminator = "\x1b\\";
 
+    public string Id => "kitty";
+
     /// <summary>
     /// Gets the capabilities of this renderer.
     /// </summary>
@@ -30,6 +32,11 @@ public class KittyGraphicsRenderer : IRenderer, IDisposable
         RendererCapabilities.TrueColor |
         RendererCapabilities.PixelGraphics |
         RendererCapabilities.Sprites;
+
+    public void Shutdown()
+    {
+        Dispose();
+    }
 
     /// <summary>
     /// Initializes the renderer with a render target.

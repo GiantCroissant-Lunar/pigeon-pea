@@ -1,9 +1,9 @@
-using PigeonPea.Shared.Input.Actions;
-using PigeonPea.Shared.Input.Bindings;
-using PigeonPea.Shared.Input.Controls;
-using PigeonPea.Shared.Input.Events;
+using PigeonPea.Input.Core.Actions;
+using PigeonPea.Input.Core.Bindings;
+using PigeonPea.Input.Core.Controls;
+using PigeonPea.Input.Core.Events;
 
-namespace PigeonPea.Shared.Input;
+namespace PigeonPea.Input.Core;
 
 /// <summary>
 /// Main input system. Polls devices and triggers actions.
@@ -123,17 +123,17 @@ public sealed class InputSystem
     public InputContext? WaitForInput(float timeoutSeconds = 0f)
     {
         var startTime = _currentTime;
-        
+
         while (true)
         {
             Update(0.016); // Simulate 60 FPS frame
-            
+
             if (_pendingInputs.Count > 0)
                 return _pendingInputs.Dequeue();
-                
+
             if (timeoutSeconds > 0 && (_currentTime - startTime) >= timeoutSeconds)
                 return null;
-                
+
             Thread.Sleep(16); // Sleep for ~60 FPS
         }
     }
@@ -168,7 +168,7 @@ public sealed class InputSystem
     private void ProcessAction(InputAction action)
     {
         bool wasProcessed = false;
-        
+
         foreach (var binding in action.Bindings)
         {
             if (binding.IsComposite)
@@ -188,7 +188,7 @@ public sealed class InputSystem
                 }
             }
         }
-        
+
         // If no binding was active but action was previously performed, it's been released
         if (!wasProcessed && action.Phase == InputActionPhase.Performed)
         {
@@ -225,7 +225,7 @@ public sealed class InputSystem
     private bool ProcessCompositeBinding(InputAction action, InputBinding binding)
     {
         var composite = binding.Composite!;
-        
+
         if (composite.Type == CompositeType.TwoDVector)
         {
             return ProcessTwoDVectorComposite(action, composite);

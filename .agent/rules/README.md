@@ -54,6 +54,7 @@ Follow RFC-012 documentation management system. Check `docs/index/registry.json`
 **ALL .NET code MUST follow four-tier architecture.** See `dotnet-architecture.md` for complete rules.
 
 Key requirements:
+
 - **NO wrapper projects** - Use external libraries directly in plugins
 - **Four tiers**: Contracts (1) → Proxies (2) → Implementations (3) → Providers (4)
 - **Double-plugin for content domains**: Domain plugins (WHAT) + Platform plugins (HOW)

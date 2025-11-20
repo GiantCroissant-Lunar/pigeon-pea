@@ -8,13 +8,13 @@ status: active
 summary: 'Date: 2025-01-12 Status: Planning Phase'
 supersedes: []
 tags:
-- adr
-- architecture
-- ecs
-- fonts
-- rendering
-- terminal
-- testing
+  - adr
+  - architecture
+  - ecs
+  - fonts
+  - rendering
+  - terminal
+  - testing
 title: Mapsui/BruTile Integration Plan
 ---
 

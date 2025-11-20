@@ -4,24 +4,21 @@ created: '2025-11-08'
 doc_id: RFC-00003
 doc_type: rfc
 related:
-- RFC-00001
-- RFC-00002
+  - RFC-00001
+  - RFC-00002
 status: draft
 summary: Comprehensive testing and verification strategies for both console and Windows
   applications, with special focus on visual regression testing and automated rendering
   verification
 supersedes: []
 tags:
-- testing
-- verification
-- qa
-- visual-regression
-- automation
+  - testing
+  - verification
+  - qa
+  - visual-regression
+  - automation
 title: Testing and Verification
 ---
-
-
-
 
 # RFC-003: Testing and Verification
 

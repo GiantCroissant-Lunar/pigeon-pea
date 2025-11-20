@@ -8,14 +8,14 @@ status: active
 summary: 'Status: Ready for Implementation Created: 2025-11-14'
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- ecs
-- rendering
-- rfc
-- terminal
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-010 Phase 4: UI Controls - Detailed Implementation Plan'
 ---
 

@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 
 namespace PigeonPea.Console.Rendering;
@@ -14,6 +14,8 @@ public class BrailleRenderer : IRenderer
     private Viewport _viewport;
     private readonly Dictionary<(int x, int y), (char glyph, Color fg, Color bg)> _buffer = new();
 
+    public string Id => "braille";
+
     /// <summary>
     /// Gets or sets the writer used for console output. Defaults to <see cref="System.Console.Out" />.
     /// </summary>
@@ -24,6 +26,11 @@ public class BrailleRenderer : IRenderer
     /// </summary>
     public RendererCapabilities Capabilities =>
         RendererCapabilities.TrueColor | RendererCapabilities.CharacterBased;
+
+    public void Shutdown()
+    {
+        // No specific shutdown logic needed
+    }
 
     /// <summary>
     /// Initializes the renderer with a render target.

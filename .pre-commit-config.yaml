@@ -55,10 +55,15 @@ repos:
         exclude: '^\.pre-commit-config\.yaml$|^AGENTS\.md$'
 
   # YAML linting
-  - repo: https://github.com/adrienverge/yamllint
-    rev: v1.35.1
+  - repo: local
     hooks:
       - id: yamllint
+        name: yamllint
+        language: python
+        entry: python -X utf8 -m yamllint
+        types: [yaml]
+        additional_dependencies:
+          - yamllint==1.35.1
         args:
           - '-d'
           - >-
@@ -67,7 +72,7 @@ repos:
             document-start: disable,
             truthy: {check-keys: false}}}
         exclude: >-
-          ^\.agent/agents/|^dotnet/_lib/modern-satsuma/|^ref-projects/hyacinth-bean-base/
+          ^\.agent/agents/|^dotnet/_lib/modern-satsuma/|^ref-projects/hyacinth-bean-base/|^ref-projects/Fantasy-Calendar/
 
   # .NET formatting (using dotnet format)
   # Note: This requires .NET SDK to be installed
@@ -76,7 +81,7 @@ repos:
       - id: dotnet-format
         name: dotnet format
         entry: dotnet
-        args: ["format", "dotnet/PigeonPea.sln", "--no-restore"]
+        args: ["format", "whitespace", "dotnet/PigeonPea.sln", "--no-restore"]
         language: system
         types: [c#]
         pass_filenames: false

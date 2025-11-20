@@ -6,22 +6,20 @@ status: draft
 summary: Complete implementation guide for building the six core game services with
   detailed steps, code examples, and validation criteria
 tags:
-- implementation
-- guide
-- services
-- game-essential
-- step-by-step
+  - implementation
+  - guide
+  - services
+  - game-essential
+  - step-by-step
 title: 'Game Services Implementation Guide: Step-by-Step Instructions for Agents'
 ---
-
-
-
 
 # Game Services Implementation Guide
 
 **For:** AI Agents implementing the game services architecture
 **Date:** 2025-11-20
 **Related RFCs:**
+
 - [Game Services Architecture](./game-services-architecture.md)
 - [Stats Service RFC](./stats-service-rfc.md)
 - [World Management Service RFC](./world-management-service-rfc.md)
@@ -42,6 +40,7 @@ This guide provides step-by-step instructions for implementing six core game ser
 ## Prerequisites
 
 Before starting, ensure you understand:
+
 - ✅ [Four-Tier Plugin Architecture](../guides/dotnet-tiered-architecture-guide.md)
 - ✅ [Arch ECS basics](https://github.com/genaray/Arch)
 - ✅ PigeonPea project structure
@@ -390,6 +389,7 @@ public interface IService
 ### Step 2.3: Define DTOs
 
 Create `Stats/Models/`:
+
 - `StatsView.cs`
 - `StatModifier.cs`
 - `StatModifierView.cs`
@@ -837,12 +837,14 @@ public void CharacterCreation_SetsStartingStats()
 ### Pitfall 1: Forgetting World Parameter
 
 **Problem:**
+
 ```csharp
 // Wrong: no world parameter
 statsService.GetStats(entity);
 ```
 
 **Solution:**
+
 ```csharp
 // Correct: world-aware
 statsService.GetStats(world, entity);
@@ -851,12 +853,14 @@ statsService.GetStats(world, entity);
 ### Pitfall 2: Not Using Proxy Services
 
 **Problem:**
+
 ```csharp
 // Wrong: direct instantiation
 var service = new BasicStatsService();
 ```
 
 **Solution:**
+
 ```csharp
 // Correct: via DI/plugin system
 var service = registry.Get<IStatsService>();
@@ -865,12 +869,14 @@ var service = registry.Get<IStatsService>();
 ### Pitfall 3: Modifying Components Without ref
 
 **Problem:**
+
 ```csharp
 var stats = world.Get<Stats>(entity);
 stats.BaseStats["strength"] = 15; // Won't work!
 ```
 
 **Solution:**
+
 ```csharp
 ref var stats = ref world.Get<Stats>(entity);
 stats.BaseStats["strength"] = 15; // Works!
@@ -883,6 +889,7 @@ stats.BaseStats["strength"] = 15; // Works!
 ### Unit Test Coverage
 
 Each service should have tests for:
+
 - ✅ Basic CRUD operations
 - ✅ Edge cases (null handling, invalid IDs)
 - ✅ Integration with dependent services
@@ -907,24 +914,28 @@ Each service should have tests for:
 ## Completion Criteria
 
 ### Phase 1 Complete (World Management)
+
 - ✅ Can create/destroy worlds
 - ✅ Can clone worlds
 - ✅ Can transfer entities between worlds
 - ✅ Unit tests passing
 
 ### Phase 2 Complete (Stats)
+
 - ✅ Stats work for all entity types
 - ✅ Modifier system working
 - ✅ Derived stats evaluating correctly
 - ✅ Unit tests passing
 
 ### Phase 3 Complete (Character)
+
 - ✅ Character creation working
 - ✅ Experience/leveling working
 - ✅ Integrates with Stats Service
 - ✅ Unit tests passing
 
 ### All Services Complete
+
 - ✅ All six services implemented
 - ✅ Data-driven configuration working
 - ✅ Services coordinate via events

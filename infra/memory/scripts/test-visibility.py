@@ -64,7 +64,11 @@ def test_memory_cycle():
     print("TEST 1: Save memory")
     save_memory(
         key="architecture.domain-separation",
-        content="Map and Dungeon are separate domains. Map.Core handles world generation, Dungeon.Core handles local dungeons.",
+        content=(
+            "Map and Dungeon are separate domains. "
+            "Map.Core handles world generation, Dungeon.Core "
+            "handles local dungeons."
+        ),
         metadata={"project": "pigeon-pea", "type": "architecture-decision"},
     )
 

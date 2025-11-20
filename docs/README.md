@@ -9,15 +9,15 @@ summary: Welcome to the Pigeon Pea documentation! This directory contains planni
   documents, RFCs, and technical discussions for the project.
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rendering
-- rfc
-- terminal
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: Pigeon Pea Documentation
 ---
 

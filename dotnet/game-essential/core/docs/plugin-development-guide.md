@@ -84,10 +84,10 @@ public class MyLanguageService : ILanguageService
         // Load and parse your language definition
         var json = await File.ReadAllTextAsync(configPath);
         var definition = JsonSerializer.Deserialize<LanguageDefinition>(json);
-        
+
         if (definition == null)
             return false;
-            
+
         _loadedLanguages[languageId] = definition;
         return true;
     }
@@ -151,9 +151,7 @@ Create a plugin manifest file `plugin.json`:
   "dependencies": {
     "PigeonPea.Language.Contracts": "1.0.0"
   },
-  "supportedLanguages": [
-    "my-custom-language"
-  ]
+  "supportedLanguages": ["my-custom-language"]
 }
 ```
 
@@ -171,10 +169,10 @@ public class CustomPhonologyEngine : IPhonologyEngine
         // Custom validation logic
         if (inventory.Vowels.Count < 3)
             return false;
-            
+
         if (inventory.Consonants.Count < 5)
             return false;
-            
+
         return true;
     }
 
@@ -182,7 +180,7 @@ public class CustomPhonologyEngine : IPhonologyEngine
     {
         // Custom syllable generation
         var syllable = new StringBuilder();
-        
+
         foreach (char c in template.Pattern)
         {
             switch (c)
@@ -195,7 +193,7 @@ public class CustomPhonologyEngine : IPhonologyEngine
                     break;
             }
         }
-        
+
         return syllable.ToString();
     }
 
@@ -278,15 +276,15 @@ public class MarkovNameGenerator
         foreach (var name in names)
         {
             var padded = new string('^', _order) + name.ToLower() + '$';
-            
+
             for (int i = 0; i < padded.Length - _order; i++)
             {
                 var context = padded.Substring(i, _order);
                 var next = padded[i + _order];
-                
+
                 if (!_transitions.ContainsKey(context))
                     _transitions[context] = new List<char>();
-                    
+
                 _transitions[context].Add(next);
             }
         }
@@ -296,25 +294,25 @@ public class MarkovNameGenerator
     {
         var result = new StringBuilder();
         var context = new string('^', _order);
-        
+
         while (result.Length < maxLength)
         {
             if (!_transitions.ContainsKey(context))
                 break;
-                
+
             var options = _transitions[context];
             var next = options[random.Next(options.Count)];
-            
+
             if (next == '$' && result.Length >= minLength)
                 break;
-                
+
             if (next != '$')
                 result.Append(next);
-                
+
             context = context.Substring(1) + next;
         }
-        
-        return result.Length > 0 
+
+        return result.Length > 0
             ? char.ToUpper(result[0]) + result.ToString().Substring(1)
             : "Unnamed";
     }
@@ -355,7 +353,7 @@ public class PluginLoader
     public IEnumerable<ILanguageService> DiscoverPlugins(string pluginDirectory)
     {
         var plugins = new List<ILanguageService>();
-        
+
         foreach (var dll in Directory.GetFiles(pluginDirectory, "*.dll"))
         {
             try
@@ -363,7 +361,7 @@ public class PluginLoader
                 var assembly = Assembly.LoadFrom(dll);
                 var types = assembly.GetTypes()
                     .Where(t => typeof(ILanguageService).IsAssignableFrom(t) && !t.IsInterface);
-                
+
                 foreach (var type in types)
                 {
                     if (Activator.CreateInstance(type) is ILanguageService plugin)
@@ -377,7 +375,7 @@ public class PluginLoader
                 Console.WriteLine($"Failed to load plugin from {dll}: {ex.Message}");
             }
         }
-        
+
         return plugins;
     }
 }
@@ -398,10 +396,10 @@ public class MyLanguageServiceTests
         // Arrange
         var service = new MyLanguageService();
         var configPath = "test-language.json";
-        
+
         // Act
         var result = await service.LoadLanguageAsync("test", configPath);
-        
+
         // Assert
         Assert.True(result);
     }
@@ -416,10 +414,10 @@ public class MyLanguageServiceTests
             MinSyllables = 2,
             MaxSyllables = 4
         };
-        
+
         // Act
         var name = service.GenerateName("test", options);
-        
+
         // Assert
         Assert.False(string.IsNullOrEmpty(name));
     }
@@ -435,13 +433,13 @@ public async Task EndToEnd_LoadTranslateGenerate_WorksCorrectly()
     // Arrange
     var service = new MyLanguageService();
     await service.LoadLanguageAsync("test", "test-language.json");
-    
+
     // Act - Generate name
     var name = service.GenerateName("test", new NameGenerationOptions());
-    
+
     // Act - Translate
     var translated = await service.TranslateAsync("hello", "english", "test");
-    
+
     // Assert
     Assert.NotNull(name);
     Assert.NotNull(translated);
@@ -504,16 +502,16 @@ public class SimpleLanguageService : ILanguageService
         try
         {
             _logger.LogInformation("Loading language {LanguageId} from {Path}", languageId, configPath);
-            
+
             var json = await File.ReadAllTextAsync(configPath);
             var definition = JsonSerializer.Deserialize<LanguageDefinition>(json);
-            
+
             if (definition == null)
             {
                 _logger.LogError("Failed to deserialize language definition");
                 return false;
             }
-            
+
             _languages[languageId] = definition;
             _logger.LogInformation("Successfully loaded language {LanguageId}", languageId);
             return true;
@@ -541,15 +539,15 @@ public class SimpleLanguageService : ILanguageService
     {
         if (!_languages.TryGetValue(languageId, out var language))
             throw new InvalidOperationException($"Language {languageId} not loaded");
-        
+
         var syllableCount = _random.Next(options.MinSyllables, options.MaxSyllables + 1);
         var name = new StringBuilder();
-        
+
         for (int i = 0; i < syllableCount; i++)
         {
             var template = language.Phonology.SyllableTemplates[
                 _random.Next(language.Phonology.SyllableTemplates.Count)];
-            
+
             foreach (char c in template.Pattern)
             {
                 if (c == 'C')
@@ -560,11 +558,11 @@ public class SimpleLanguageService : ILanguageService
                         _random.Next(language.Phonology.Inventory.Vowels.Count)]);
             }
         }
-        
+
         // Capitalize first letter
         if (name.Length > 0)
             name[0] = char.ToUpper(name[0]);
-        
+
         return name.ToString();
     }
 
@@ -585,7 +583,7 @@ public class SimpleLanguageService : ILanguageService
             MinSyllables = 1,
             MaxSyllables = 2
         }));
-        
+
         return Task.FromResult(string.Join(" ", translated));
     }
 
@@ -623,6 +621,7 @@ dotnet pack -c Release
 ### Distribution
 
 Consider publishing to:
+
 - NuGet (for .NET plugins)
 - GitHub Releases
 - Custom plugin repository
@@ -636,6 +635,7 @@ Consider publishing to:
 ## Support
 
 For questions or issues:
+
 - Open an issue on GitHub
 - Join the community Discord
 - Check the documentation wiki

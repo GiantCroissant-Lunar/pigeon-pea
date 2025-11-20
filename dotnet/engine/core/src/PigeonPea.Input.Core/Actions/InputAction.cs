@@ -1,8 +1,8 @@
-using PigeonPea.Shared.Input.Bindings;
-using PigeonPea.Shared.Input.Controls;
-using PigeonPea.Shared.Input.Events;
+using PigeonPea.Input.Core.Bindings;
+using PigeonPea.Input.Core.Controls;
+using PigeonPea.Input.Core.Events;
 
-namespace PigeonPea.Shared.Input.Actions;
+namespace PigeonPea.Input.Core.Actions;
 
 /// <summary>
 /// Represents a logical input action (e.g., "Jump", "Fire").

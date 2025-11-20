@@ -69,7 +69,7 @@ public class TranslationEngine
             {
                 // Word not in lexicon - generate a phonologically appropriate word
                 _logger.LogDebug("Word '{Word}' not in lexicon, generating phonologically appropriate word", token);
-                
+
                 var generatedWord = _nameGenerator.GenerateName(new Contracts.NameGenerationOptions
                 {
                     MinSyllables = 1,
@@ -94,9 +94,9 @@ public class TranslationEngine
                 targetLanguage.Grammar.WordOrder);
 
             var result = string.Join(" ", reordered);
-            
+
             _logger.LogDebug("Translation result: {Result}", result);
-            
+
             return result;
         }
 
@@ -160,9 +160,9 @@ public class TranslationEngine
                 sourceLanguage.Grammar.WordOrder);
 
             var result = string.Join(" ", reordered);
-            
+
             _logger.LogDebug("Translation result: {Result}", result);
-            
+
             return result;
         }
 

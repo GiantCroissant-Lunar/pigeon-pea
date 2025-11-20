@@ -4,24 +4,21 @@ created: '2025-11-13'
 doc_id: GUIDE-00002
 doc_type: guide
 related:
-- RFC-00021
-- GUIDE-00001
-- GUIDE-00003
+  - RFC-00021
+  - GUIDE-00001
+  - GUIDE-00003
 status: active
 summary: Guide for configuring Rio Terminal to use the project's custom font with
   PUA glyphs
 supersedes: []
 tags:
-- terminal
-- rio
-- configuration
-- fonts
-- setup
+  - terminal
+  - rio
+  - configuration
+  - fonts
+  - setup
 title: Rio Terminal Configuration — Using the Custom Font
 ---
-
-
-
 
 # Rio Terminal Configuration — Using the Custom Font
 

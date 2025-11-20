@@ -24,7 +24,7 @@
       ansible.builtin.apt:
         name: nodejs
         state: present
-        update_cache: yes
+        update_cache: true
 
 - name: Install Node.js (macOS)
   community.general.homebrew:
@@ -37,7 +37,7 @@
 - name: Install global npm packages
   community.general.npm:
     name: "{{ item }}"
-    global: yes
+    global: true
     state: present
   loop: "{{ nodejs_packages }}"
   when: nodejs_packages is defined

@@ -40,6 +40,29 @@ See [`.agent/rules/code-quality.md`](.agent/rules/code-quality.md) for detailed 
 - Testing expectations
 - Security guidelines
 
+### .NET Architecture Rules (CRITICAL)
+
+**ALL agents working on .NET projects MUST follow the tiered architecture rules.**
+
+See [`.agent/rules/dotnet-architecture.md`](.agent/rules/dotnet-architecture.md) for complete architecture requirements.
+
+Key requirements:
+
+- **Four-tier service architecture**: Contracts (Tier 1) → Proxies (Tier 2) → Implementations (Tier 3) → Providers (Tier 4)
+- **NO wrapper projects** - Use external libraries directly in plugins
+- **Double-plugin architecture** for content domains (Map, Dungeon):
+  - Domain plugins: Know WHAT to render/generate
+  - Platform plugins: Know HOW to render (ANSI, Braille, SkiaSharp)
+- **Plugin isolation** - Plugins never depend on other plugins
+- **Contract stability** - Tier 1 contracts use only primitives and DTOs
+- **Dependency rules**:
+  - ✅ Tier 3 → Tier 1 (allowed)
+  - ✅ Tier 3 → Shared libraries (allowed)
+  - ❌ Tier 3 → Other Tier 3 (forbidden)
+  - ❌ Plugin → Plugin (forbidden)
+
+**Before writing .NET code**: Read [.NET Tiered Architecture and Layer Implementation Guide](docs/guides/dotnet-tiered-architecture-guide.md) for comprehensive details.
+
 ### Documentation Management Rules
 
 **IMPORTANT:** Follow RFC-012 documentation management system for all documentation tasks.
@@ -174,33 +197,77 @@ When encountering errors:
 
 ## Architecture Overview
 
+### Tiered Service Architecture
+
+Pigeon Pea follows a **four-tier service architecture** with **plugin-based composition**:
+
+1. **Tier 1 - Contracts**: Service interfaces and DTOs (stable, minimal dependencies)
+2. **Tier 2 - Proxies**: Source-generated routing to implementations
+3. **Tier 3 - Real Services**: Plugin implementations of services
+4. **Tier 4 - Providers**: Optional internal strategies/backends
+
+**CRITICAL**: See [.NET Tiered Architecture Guide](docs/guides/dotnet-tiered-architecture-guide.md) for complete details.
+
+### Project Organization
+
+- **app-essential**: Non-gameplay infrastructure (Input, Audio, Config, Resource)
+  - Contracts: `PigeonPea.Contracts.<Domain>`
+  - Plugins: `PigeonPea.Plugins.<Domain>.<Implementation>`
+
+- **game-essential**: Gameplay infrastructure (Inventory, GAS, Perception, AI)
+  - Contracts: `PigeonPea.Game.Contracts.<Domain>`
+  - Shared: `PigeonPea.Shared.<Domain>` (algorithms and models)
+  - Plugins: `PigeonPea.Plugins.<Domain>.<Implementation>`
+
+- **projects**: Domain-specific implementations (Map, Dungeon)
+  - Contracts: `PigeonPea.<Domain>.Contracts`
+  - Plugins: `PigeonPea.Plugin.<Domain>.<Feature>`
+
 ### Domain-Driven Organization
 
-- **Map Domain (`dotnet/Map/`)**: World map generation, navigation, rendering
-- **Dungeon Domain (`dotnet/Dungeon/`)**: Dungeon generation, FOV, pathfinding, rendering
-- Each domain follows **Core / Control / Rendering** layers:
-  - **Core**: Domain models, generators (`Map.Core`, `Dungeon.Core`)
-  - **Control**: Navigation, world managers, ViewModels (`Map.Control`, `Dungeon.Control`)
-  - **Rendering**: Visualization (`Map.Rendering`, `Dungeon.Rendering`)
+**Content domains** (Map, Dungeon) follow **Double-Plugin Architecture**:
+
+- **Domain Plugins**: Know WHAT to render/generate (domain logic)
+  - Example: `PigeonPea.Plugin.Dungeon.Rendering` calls `IRenderer.DrawTile()`
+  - Example: `PigeonPea.Plugin.Dungeon.ModernEdgar` uses modern-edgar-dotnet directly
+
+- **Platform Plugins**: Know HOW to render (platform-specific)
+  - Example: `PigeonPea.Plugin.Rendering.Terminal.ANSI` implements `IRenderer`
+  - Example: `PigeonPea.Plugin.Rendering.Terminal.Braille` implements `IRenderer`
+
+**Key Insight**: Domain and platform plugins don't know about each other! Add new domain → works with all platforms. Add new platform → works with all domains.
 
 ### Shared Infrastructure
 
-- `Shared.ECS`: Arch components (Position, Renderable, Health, etc.) and helper systems
-- `Shared.Rendering`: Rendering contracts (`IRenderer`, `IRenderTarget`), primitives, tiles, converters
-- External libraries (FantasyMapGenerator, GoRogue, Mapsui, SkiaSharp) stay inside their domain wrappers
+- `PigeonPea.Shared.ECS`: Arch components (Position, Renderable, Health, etc.)
+- `PigeonPea.Shared.Rendering`: Unified rendering contracts (`IRenderer`, `Tile`, `Color`)
+- `PigeonPea.Shared.<Domain>`: Domain-specific algorithms and models
+- External libraries: Used **directly** in plugins (NO wrappers)
 
 ### ECS Worlds
 
 - Each domain owns its own `World` (Map: cities/markers, Dungeon: player/monsters/items)
 - Shared components live in `Shared.ECS/Components`
-- Rendering layers query these worlds (see `DungeonWorldManager`, `MapWorldManager`)
+- Game integration layers (`PigeonPea.Game.<Domain>`) tie domains to ECS
 
 ### Deprecated/Archived Code
 
-- `_lib/fantasy-map-generator-port/src/FantasyMapGenerator.Rendering/` (reference only; see README-DEPRECATED)
-- `dotnet/archive/SharedApp.Rendering.archived-*` contains the retired shared renderer
+- `dotnet/game-essential/core/src/PigeonPea.Dungeon.Core/` - **DEPRECATED** (use plugins instead)
+- `dotnet/game-essential/core/src/PigeonPea.Dungeon.Rendering/` - **DEPRECATED** (use plugins instead)
+- `dotnet/game-essential/core/src/PigeonPea.Dungeon.Control/` - **DEPRECATED** (use plugins instead)
+- `dotnet/archive/SharedApp.Rendering.archived-*` - Retired shared renderer
 
-For deep dives see `docs/architecture/domain-organization.md` and `docs/rfcs/RFC-007-PHASE-6-INSTRUCTIONS.md`.
+**IMPORTANT**: Do NOT create new wrapper projects. Wrapper projects violate the tiered architecture and create ALC type identity issues.
+
+### Architecture Documentation
+
+For comprehensive architecture information:
+
+- **Quick Reference**: [.agent/rules/dotnet-architecture.md](.agent/rules/dotnet-architecture.md)
+- **Complete Guide**: [docs/guides/dotnet-tiered-architecture-guide.md](docs/guides/dotnet-tiered-architecture-guide.md)
+- **Design Rationale**: [docs/rfcs/013-plugin-architecture-refinement-tiered.md](docs/rfcs/013-plugin-architecture-refinement-tiered.md)
+- **Service Tiers**: [docs/dotnet/architecture/service-tiers.md](docs/dotnet/architecture/service-tiers.md)
+- **Overview**: [docs/dotnet/architecture/overview.md](docs/dotnet/architecture/overview.md)
 
 ## Task Management
 

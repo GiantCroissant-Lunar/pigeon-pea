@@ -10,11 +10,11 @@ summary: This document describes where build, runtime, and benchmark artifacts a
   under build/artifacts so they are easy to dis
 supersedes: []
 tags:
-- ci-cd
-- documentation
-- guide
-- rendering
-- terminal
+  - ci-cd
+  - documentation
+  - guide
+  - rendering
+  - terminal
 title: Artifacts Layout
 ---
 

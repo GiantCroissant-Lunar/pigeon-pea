@@ -19,7 +19,7 @@ public sealed class SourceGenerator : IIncrementalGenerator
     private const string DisposePattern = "DisposePattern";
     private const string DisposePatternAttribute = "DisposePatternAttribute";
     private const string AttributeName = "ToBeDisposed";
-    
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var typeSymbols = context.SyntaxProvider

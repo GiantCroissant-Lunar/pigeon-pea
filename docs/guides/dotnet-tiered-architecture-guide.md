@@ -4,27 +4,24 @@ created: '2025-11-19'
 doc_id: GUIDE-00002
 doc_type: guide
 related:
-- RFC-00013
-- RFC-00014
-- ADR-00001
-- ADR-00003
-- ADR-00004
+  - RFC-00013
+  - RFC-00014
+  - ADR-00001
+  - ADR-00003
+  - ADR-00004
 status: active
 summary: Comprehensive guide for implementing the four-tier service architecture and
   domain layering in .NET projects
 tags:
-- dotnet
-- architecture
-- tiered-architecture
-- plugins
-- layers
-- services
+  - dotnet
+  - architecture
+  - tiered-architecture
+  - plugins
+  - layers
+  - services
 title: .NET Tiered Architecture and Layer Implementation Guide
 updated: '2025-11-19'
 ---
-
-
-
 
 # .NET Tiered Architecture and Layer Implementation Guide
 
@@ -100,10 +97,12 @@ Every service category (Audio, Input, Inventory, GAS, Perception, AI, etc.) foll
 **Purpose**: Define the stable API that consumers use.
 
 **Location**:
+
 - App-level: `dotnet/app-essential/core/src/PigeonPea.Contracts/<Domain>/Services/IService.cs`
 - Game-level: `dotnet/game-essential/core/src/PigeonPea.Game.Contracts/<Domain>/Services/IService.cs`
 
 **Rules**:
+
 - ✅ **MUST** be small and focused
 - ✅ **MUST** use only primitives or DTOs from the same Contracts assembly
 - ✅ **MUST** remain stable (breaking changes require versioning)
@@ -112,6 +111,7 @@ Every service category (Audio, Input, Inventory, GAS, Perception, AI, etc.) foll
 - ❌ **MUST NOT** expose plugin-specific types
 
 **Example**:
+
 ```csharp
 namespace PigeonPea.Contracts.Input.Services;
 
@@ -141,6 +141,7 @@ public interface IService
 **Location**: Next to Tier 1 interface in `Services.Proxy` namespace
 
 **Rules**:
+
 - ✅ **MUST** be decorated with `[RealizeService(typeof(IService))]`
 - ✅ **MUST** delegate all calls to `IRegistry.Get<T>()`
 - ✅ **CAN** be source-generated (planned) or hand-written (current)
@@ -148,6 +149,7 @@ public interface IService
 - ❌ **MUST NOT** cache implementation references (registry may change)
 
 **Example**:
+
 ```csharp
 namespace PigeonPea.Contracts.Input.Services.Proxy;
 
@@ -186,10 +188,12 @@ public class Service : IService
 **Purpose**: Provide the actual implementation of the service.
 
 **Location**:
+
 - App-level: `dotnet/app-essential/plugins/src/PigeonPea.Plugins.<Domain>.<Implementation>/`
 - Game-level: `dotnet/game-essential/plugins/src/PigeonPea.Plugins.<Domain>.<Implementation>/`
 
 **Rules**:
+
 - ✅ **MUST** implement the Tier 1 interface
 - ✅ **MUST** register into `IRegistry` during plugin initialization
 - ✅ **CAN** depend on Shared libraries (`PigeonPea.Shared.<Domain>`)
@@ -199,6 +203,7 @@ public class Service : IService
 - ❌ **MUST NOT** depend on Tier 2 proxies
 
 **Example**:
+
 ```csharp
 namespace PigeonPea.Plugins.Input.UniInputSystem;
 
@@ -241,6 +246,7 @@ public class UniInputSystemService : IService
 ```
 
 **Plugin Class**:
+
 ```csharp
 public class UniInputSystemPlugin : IPlugin
 {
@@ -278,6 +284,7 @@ public class UniInputSystemPlugin : IPlugin
 **Location**: Inside the Tier 3 plugin project
 
 **Rules**:
+
 - ✅ **CAN** provide alternative implementations (e.g., different FOV algorithms)
 - ✅ **CAN** be selected by Tier 3 via registry or configuration
 - ✅ **CAN** be swapped based on profile or runtime conditions
@@ -285,6 +292,7 @@ public class UniInputSystemPlugin : IPlugin
 - ❌ **MUST NOT** bypass Tier 3 service
 
 **Example**:
+
 ```csharp
 // Inside PigeonPea.Plugins.Perception.Basic
 
@@ -372,11 +380,13 @@ These are **non-gameplay** capabilities used by any application.
 **Plugins Location**: `dotnet/app-essential/plugins/src/PigeonPea.Plugins.<Domain>.<Name>/`
 
 **Dependencies**:
+
 - ✅ Contracts → (none)
 - ✅ Shared → (domain primitives only, no plugin system)
 - ✅ Plugins → Contracts + Shared + external libraries
 
 **Example: Input**
+
 ```
 dotnet/app-essential/
 ├── core/src/
@@ -408,12 +418,14 @@ These are **gameplay** capabilities that most games need.
 **Plugins Location**: `dotnet/game-essential/plugins/src/PigeonPea.Plugins.<Domain>.<Name>/`
 
 **Dependencies**:
+
 - ✅ Contracts → (none or minimal shared types)
 - ✅ Shared → (domain models and algorithms, no ECS)
 - ✅ Game Integration → Shared + Arch ECS
 - ✅ Plugins → Contracts + Shared + Game Integration (optional) + external libraries
 
 **Example: Inventory**
+
 ```
 dotnet/game-essential/
 ├── core/src/
@@ -452,6 +464,7 @@ These have **special rendering and content** requirements.
 **Platform Plugins Location**: `projects/<domain>/dotnet/console-app/plugins/PigeonPea.Plugin.Rendering.<Platform>.<Tech>/`
 
 **Example: Dungeon**
+
 ```
 dotnet/game-essential/core/src/
 └── PigeonPea.Dungeon.Contracts/
@@ -481,6 +494,7 @@ projects/dungeon/dotnet/console-app/plugins/
 ```
 
 **❌ ANTI-PATTERN: Do NOT create these wrapper projects**:
+
 ```
 ❌ PigeonPea.Dungeon.Core/            # NO! Use plugin instead
 ❌ PigeonPea.Dungeon.Rendering/       # NO! Use plugin instead
@@ -488,6 +502,7 @@ projects/dungeon/dotnet/console-app/plugins/
 ```
 
 **Why?**
+
 - Wrapper projects violate the tiered architecture
 - They create ALC type identity issues
 - They prevent proper plugin isolation
@@ -542,21 +557,26 @@ projects/
 ### Project Naming Conventions
 
 **Contracts (Tier 1)**:
+
 - App-level: `PigeonPea.Contracts.<Domain>`
 - Game-level: `PigeonPea.Game.Contracts.<Domain>`
 
 **Shared Libraries**:
+
 - `PigeonPea.Shared.<Domain>`
 
 **ECS Integration**:
+
 - `PigeonPea.Game.<Domain>`
 
 **Plugins (Tier 3)**:
+
 - App-level: `PigeonPea.Plugins.<Domain>.<Implementation>`
 - Game-level: `PigeonPea.Plugins.<Domain>.<Implementation>`
 - Project-specific: `PigeonPea.Plugin.<Domain>.<Implementation>` (note: singular "Plugin")
 
 **Examples**:
+
 - ✅ `PigeonPea.Contracts.Input`
 - ✅ `PigeonPea.Shared.Inventory`
 - ✅ `PigeonPea.Plugins.Audio.LibVlc`
@@ -570,6 +590,7 @@ projects/
 ### Allowed Dependencies
 
 **Tier-based rules**:
+
 - ✅ Tier 2 → Tier 1
 - ✅ Tier 3 → Tier 1
 - ✅ Tier 3 → Shared libraries
@@ -581,6 +602,7 @@ projects/
 - ❌ Tier 3 → Other Tier 3 implementations
 
 **Layer-based rules**:
+
 - ✅ game-essential → app-essential
 - ✅ projects → app-essential + game-essential
 - ✅ Plugins → Contracts + Shared
@@ -591,6 +613,7 @@ projects/
 ### Project Reference Examples
 
 **Good ✅**:
+
 ```xml
 <!-- Plugin referencing contracts and shared -->
 <ItemGroup>
@@ -605,6 +628,7 @@ projects/
 ```
 
 **Bad ❌**:
+
 ```xml
 <!-- Plugin depending on another plugin -->
 <ProjectReference Include="..\PigeonPea.Plugins.Other\PigeonPea.Plugins.Other.csproj" />  ❌
@@ -626,6 +650,7 @@ projects/
 ### Assembly Load Context (ALC) Isolation
 
 Plugins are loaded in isolated ALCs to:
+
 - Allow different versions of dependencies
 - Enable plugin unload/reload (planned)
 - Isolate failures and conflicts
@@ -635,6 +660,7 @@ Plugins are loaded in isolated ALCs to:
 ### ALC Configuration
 
 **Shared Assemblies** (config-driven whitelist):
+
 ```json
 {
   "PluginSystem": {
@@ -652,6 +678,7 @@ Plugins are loaded in isolated ALCs to:
 ```
 
 **PluginLoadContext Implementation**:
+
 ```csharp
 protected override Assembly? Load(AssemblyName assemblyName)
 {
@@ -675,6 +702,7 @@ protected override Assembly? Load(AssemblyName assemblyName)
 ### Plugin Manifest (plugin.json)
 
 **Required fields**:
+
 ```json
 {
   "id": "unique-plugin-id",
@@ -774,6 +802,7 @@ public static class YourAlgorithms
 Location: `dotnet/[app|game]-essential/plugins/src/PigeonPea.Plugins.<Domain>.<Name>/`
 
 **Service implementation**:
+
 ```csharp
 namespace PigeonPea.Plugins.YourDomain.Basic;
 
@@ -796,6 +825,7 @@ public class BasicYourDomainService : IService
 ```
 
 **Plugin class**:
+
 ```csharp
 public class YourDomainPlugin : IPlugin
 {
@@ -827,6 +857,7 @@ public class YourDomainPlugin : IPlugin
 ```
 
 **plugin.json**:
+
 ```json
 {
   "id": "yourdomain-basic",
@@ -845,6 +876,7 @@ public class YourDomainPlugin : IPlugin
 For domains with **rendering** (Map, Dungeon), use two types of plugins:
 
 **Domain Plugin** (knows WHAT to render):
+
 ```csharp
 // PigeonPea.Plugin.Dungeon.Rendering
 public class DungeonRenderer
@@ -890,6 +922,7 @@ public class DungeonRenderer
 ```
 
 **Platform Plugin** (knows HOW to render):
+
 ```csharp
 // PigeonPea.Plugin.Rendering.Terminal.ANSI
 public class ANSIRenderer : IRenderer
@@ -931,12 +964,14 @@ public class ANSIRenderer : IRenderer
 ### ❌ Mistake 1: Creating Wrapper Projects
 
 **Wrong**:
+
 ```
 PigeonPea.Dungeon.Core/
 └── ModernEdgarWrapper.cs  // Wraps modern-edgar-dotnet
 ```
 
 **Right**:
+
 ```
 PigeonPea.Plugin.Dungeon.ModernEdgar/
 └── ModernEdgarDungeonGenerator.cs  // Uses modern-edgar-dotnet DIRECTLY
@@ -947,12 +982,14 @@ PigeonPea.Plugin.Dungeon.ModernEdgar/
 ### ❌ Mistake 2: Plugin Depending on Another Plugin
 
 **Wrong**:
+
 ```xml
 <!-- In PigeonPea.Plugin.A -->
 <ProjectReference Include="..\PigeonPea.Plugin.B\PigeonPea.Plugin.B.csproj" />
 ```
 
 **Right**:
+
 ```csharp
 // Both plugins implement same contract
 // Host/consumer uses registry to get implementation
@@ -964,6 +1001,7 @@ var service = _registry.Get<IService>();
 ### ❌ Mistake 3: Contracts Depending on Heavy Libraries
 
 **Wrong**:
+
 ```csharp
 // In PigeonPea.Contracts
 using Newtonsoft.Json; // Heavy external dependency
@@ -975,6 +1013,7 @@ public interface IService
 ```
 
 **Right**:
+
 ```csharp
 // In PigeonPea.Contracts
 public interface IService
@@ -988,6 +1027,7 @@ public interface IService
 ### ❌ Mistake 4: Putting Business Logic in Proxies
 
 **Wrong**:
+
 ```csharp
 [RealizeService(typeof(IService))]
 public class Service : IService
@@ -1002,6 +1042,7 @@ public class Service : IService
 ```
 
 **Right**:
+
 ```csharp
 [RealizeService(typeof(IService))]
 public class Service : IService
@@ -1021,12 +1062,14 @@ public class Service : IService
 ### ❌ Mistake 5: Game Logic in App-Essential
 
 **Wrong**:
+
 ```
 dotnet/app-essential/core/src/
 └── PigeonPea.Contracts/Combat/  // ❌ Combat is game-specific
 ```
 
 **Right**:
+
 ```
 dotnet/game-essential/core/src/
 └── PigeonPea.Game.Contracts/Combat/  // ✅ Game contracts
@@ -1037,6 +1080,7 @@ dotnet/game-essential/core/src/
 ### ❌ Mistake 6: Mixing Domain and Platform Concerns
 
 **Wrong**:
+
 ```csharp
 public class DungeonANSIRenderer // ❌ Coupled to both dungeon and ANSI
 {
@@ -1049,6 +1093,7 @@ public class DungeonANSIRenderer // ❌ Coupled to both dungeon and ANSI
 ```
 
 **Right**:
+
 ```csharp
 // Domain plugin
 public class DungeonRenderer
@@ -1079,6 +1124,7 @@ public class ANSIRenderer : IRenderer
 ### Example 1: Complete Service Stack (Inventory)
 
 **1. Contract (Tier 1)**:
+
 ```csharp
 // dotnet/game-essential/core/src/PigeonPea.Game.Contracts/Inventory/Services/IService.cs
 namespace PigeonPea.Game.Contracts.Inventory.Services;
@@ -1096,6 +1142,7 @@ public record InventorySlotView(int Index, ItemStack? Item, SlotConstraints Cons
 ```
 
 **2. Proxy (Tier 2)**:
+
 ```csharp
 // Services/Proxy/Service.cs
 namespace PigeonPea.Game.Contracts.Inventory.Services.Proxy;
@@ -1128,6 +1175,7 @@ public class Service : IService
 ```
 
 **3. Shared Library**:
+
 ```csharp
 // dotnet/game-essential/core/src/PigeonPea.Shared.Inventory/Core/Inventory.cs
 namespace PigeonPea.Shared.Inventory.Core;
@@ -1174,6 +1222,7 @@ public class Inventory
 ```
 
 **4. Plugin (Tier 3)**:
+
 ```csharp
 // dotnet/game-essential/plugins/src/PigeonPea.Plugins.Inventory.Basic/BasicInventoryService.cs
 namespace PigeonPea.Plugins.Inventory.Basic;
@@ -1225,6 +1274,7 @@ public class BasicInventoryService : IService
 ```
 
 **5. Plugin Registration**:
+
 ```csharp
 public class InventoryBasicPlugin : IPlugin
 {
@@ -1255,6 +1305,7 @@ public class InventoryBasicPlugin : IPlugin
 ### Example 2: Double-Plugin (Dungeon Rendering)
 
 **Contracts**:
+
 ```csharp
 // PigeonPea.Dungeon.Contracts/IDungeonGenerator.cs
 public interface IDungeonGenerator
@@ -1272,6 +1323,7 @@ public interface IRenderer
 ```
 
 **Domain Plugin (Generation)**:
+
 ```csharp
 // PigeonPea.Plugin.Dungeon.ModernEdgar/ModernEdgarDungeonGenerator.cs
 public class ModernEdgarDungeonGenerator : IDungeonGenerator
@@ -1294,6 +1346,7 @@ public class ModernEdgarDungeonGenerator : IDungeonGenerator
 ```
 
 **Domain Plugin (Rendering)**:
+
 ```csharp
 // PigeonPea.Plugin.Dungeon.Rendering/DungeonRenderer.cs
 public class DungeonRenderer
@@ -1324,6 +1377,7 @@ public class DungeonRenderer
 ```
 
 **Platform Plugins** (multiple options, all implement IRenderer):
+
 ```csharp
 // PigeonPea.Plugin.Rendering.Terminal.ANSI/ANSIRenderer.cs
 public class ANSIRenderer : IRenderer { /* ANSI implementation */ }
@@ -1402,6 +1456,7 @@ public class SkiaRenderer : IRenderer { /* SkiaSharp implementation */ }
 ## Summary
 
 **Core Principles**:
+
 1. **Four tiers**: Contracts (1) → Proxies (2) → Implementations (3) → Providers (4)
 2. **Layer separation**: Contracts / Shared / Game / Plugins
 3. **No wrappers**: Use external libraries directly in plugins
@@ -1409,6 +1464,7 @@ public class SkiaRenderer : IRenderer { /* SkiaSharp implementation */ }
 5. **ALC isolation**: Shared contracts from Default ALC, implementations in plugin ALCs
 
 **Remember**:
+
 - Contracts are small and stable
 - Proxies delegate only
 - Plugins implement
@@ -1416,6 +1472,7 @@ public class SkiaRenderer : IRenderer { /* SkiaSharp implementation */ }
 - External libraries go in plugins, not wrappers
 
 **When in doubt**:
+
 1. Check if a contract exists
 2. Check if you can use a shared library
 3. Create a plugin, not a wrapper

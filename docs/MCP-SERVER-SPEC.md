@@ -9,12 +9,12 @@ summary: 'Purpose: Provide AI agents with programmatic access to documentation m
   functions through the Model Context Protocol (MCP).'
 supersedes: []
 tags:
-- agents
-- architecture
-- documentation
-- ecs
-- plugins
-- rfc
+  - agents
+  - architecture
+  - documentation
+  - ecs
+  - plugins
+  - rfc
 title: Documentation Management MCP Server Specification
 ---
 
@@ -25,6 +25,7 @@ title: Documentation Management MCP Server Specification
 ## Overview
 
 The Documentation MCP Server exposes the documentation organization system's functionality through a standardized interface, allowing agents to:
+
 - Search and discover existing documentation
 - Create and update documentation with proper validation
 - Check quality scores and implementation status
@@ -59,6 +60,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Machine-readable registry of all documentation
 
 **Returns**:
+
 ```json
 {
   "documents": [
@@ -74,8 +76,8 @@ The Documentation MCP Server exposes the documentation organization system's fun
   ],
   "summary": {
     "total": 59,
-    "by_type": {"rfc": 18, "guide": 8, "adr": 7},
-    "by_status": {"active": 41, "draft": 14}
+    "by_type": { "rfc": 18, "guide": 8, "adr": 7 },
+    "by_status": { "active": 41, "draft": 14 }
   }
 }
 ```
@@ -87,6 +89,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Current documentation quality metrics
 
 **Returns**:
+
 ```json
 {
   "average_score": 75,
@@ -110,6 +113,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: RFC implementation status
 
 **Returns**:
+
 ```json
 {
   "total_rfcs": 18,
@@ -133,6 +137,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Retrieve specific document by doc_id
 
 **Returns**:
+
 ```json
 {
   "doc_id": "RFC-00012",
@@ -152,6 +157,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Search documentation by query
 
 **Parameters**:
+
 - `query` (string, required): Search query
 - `doc_type` (string, optional): Filter by document type
 - `tags` (array, optional): Filter by tags
@@ -160,6 +166,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Returns**: Array of matching documents
 
 **Example**:
+
 ```json
 {
   "query": "plugin architecture",
@@ -173,6 +180,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Create new documentation with validation
 
 **Parameters**:
+
 - `title` (string, required): Document title
 - `doc_type` (string, required): Document type
 - `content` (string, required): Document content
@@ -186,6 +194,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Validation**: Automatically validates and assigns next doc_id
 
 **Example**:
+
 ```json
 {
   "title": "Game Services Architecture",
@@ -201,6 +210,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Update existing documentation
 
 **Parameters**:
+
 - `doc_id` (string, required): Document to update
 - `content` (string, optional): New content
 - `front_matter` (object, optional): Front-matter updates
@@ -209,6 +219,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Returns**: Updated document
 
 **Example**:
+
 ```json
 {
   "doc_id": "RFC-00042",
@@ -227,6 +238,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Validate documentation without saving
 
 **Parameters**:
+
 - `doc_id` (string, optional): Validate specific document
 - `content` (string, optional): Validate draft content
 - `front_matter` (object, optional): Validate front-matter
@@ -234,6 +246,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Returns**: Validation results with errors/warnings
 
 **Example**:
+
 ```json
 {
   "front_matter": {
@@ -250,12 +263,14 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Check quality score for document
 
 **Parameters**:
+
 - `doc_id` (string, optional): Check specific document
 - `content` (string, optional): Check draft content
 
 **Returns**: Quality metrics and score
 
 **Example**:
+
 ```json
 {
   "doc_id": "RFC-00012"
@@ -263,6 +278,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 ```
 
 **Returns**:
+
 ```json
 {
   "overall": 88,
@@ -282,12 +298,14 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Sync RFC implementation status with task-master
 
 **Parameters**:
+
 - `tasks_file` (string, optional): Path to tasks.json
 - `rfc_id` (string, optional): Sync specific RFC
 
 **Returns**: Sync results
 
 **Example**:
+
 ```json
 {
   "tasks_file": ".taskmaster/tasks.json"
@@ -299,11 +317,13 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Find next available doc_id number
 
 **Parameters**:
+
 - `prefix` (string, required): Doc ID prefix (RFC, ADR, PRD, etc.)
 
 **Returns**: Next available number
 
 **Example**:
+
 ```json
 {
   "prefix": "RFC"
@@ -311,6 +331,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 ```
 
 **Returns**:
+
 ```json
 {
   "next_number": 43,
@@ -324,6 +345,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Find documents related to a topic or doc_id
 
 **Parameters**:
+
 - `doc_id` (string, optional): Find docs related to this one
 - `topic` (string, optional): Find docs about this topic
 - `include_dependencies` (boolean, optional): Include dependency graph
@@ -331,6 +353,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Returns**: Related documents with relationship types
 
 **Example**:
+
 ```json
 {
   "doc_id": "RFC-00013",
@@ -347,6 +370,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Returns**: Status of regeneration
 
 **Side Effects**:
+
 - Regenerates `docs/INDEX.md`
 - Regenerates `docs/DASHBOARD.md`
 - Regenerates `docs/DEPENDENCIES.md`
@@ -359,9 +383,11 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Guide agent through RFC creation process
 
 **Arguments**:
+
 - `topic` (string): RFC topic
 
 **Flow**:
+
 1. Search for existing RFCs on topic
 2. Check for near-duplicates
 3. Find next RFC number
@@ -374,6 +400,7 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Update RFC implementation status
 
 **Arguments**:
+
 - `rfc_id` (string): RFC to update
 - `status` (string): New status
 - `completion` (number): Completion percentage
@@ -383,9 +410,11 @@ The Documentation MCP Server exposes the documentation organization system's fun
 **Description**: Help agent find relevant documentation
 
 **Arguments**:
+
 - `query` (string): What to search for
 
 **Flow**:
+
 1. Search registry
 2. Check quality scores
 3. Show related documents

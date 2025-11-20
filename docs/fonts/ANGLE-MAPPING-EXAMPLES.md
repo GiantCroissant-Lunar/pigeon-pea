@@ -4,23 +4,20 @@ created: '2025-11-13'
 doc_id: REFERENCE-00002
 doc_type: reference
 related:
-- RFC-00020
-- SPEC-00001
+  - RFC-00020
+  - SPEC-00001
 status: active
 summary: Code examples for mapping angles to PUA glyph codepoints (36 angle buckets
   starting at U+E000)
 supersedes: []
 tags:
-- fonts
-- glyphs
-- mapping
-- code-examples
-- pua
+  - fonts
+  - glyphs
+  - mapping
+  - code-examples
+  - pua
 title: Angle → Glyph Mapping Examples
 ---
-
-
-
 
 # Angle → Glyph Mapping Examples
 

@@ -24,7 +24,7 @@ public class GrammarEngine : IGrammarEngine
         // - words[0] = Subject
         // - words[1] = Verb
         // - words[2] = Object (if exists)
-        
+
         if (words.Length < 2)
         {
             return words;

@@ -4,20 +4,17 @@ created: '2025-11-18'
 doc_id: ADR-00003
 doc_type: adr
 related:
-- ADR-00001
+  - ADR-00001
 status: active
 summary: Four-tier service architecture for app-level and game-level features in Pigeon
   Pea
 tags:
-- architecture
-- services
-- plugins
-- tiers
+  - architecture
+  - services
+  - plugins
+  - tiers
 title: Service Tiers and Category Layout
 ---
-
-
-
 
 # Service Tiers and Category Layout
 

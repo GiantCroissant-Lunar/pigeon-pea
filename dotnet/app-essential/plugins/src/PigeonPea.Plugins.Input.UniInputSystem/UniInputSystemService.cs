@@ -2,18 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using NexusInput;
-using NexusInput.Actions;
-using NexusInput.Controls;
-using NexusInput.Events;
-using NexusInput.Json;
+using PigeonPea.Input.Core;
+using PigeonPea.Input.Core.Actions;
+using PigeonPea.Input.Core.Controls;
+using PigeonPea.Input.Core.Events;
+using PigeonPea.Input.Core.Json;
 using PigeonPea.Contracts.Input.Services;
+using PigeonPea.Contracts.Plugin;
 
 namespace PigeonPea.Plugins.Input.UniInputSystem;
 
 public sealed class UniInputSystemService : IService, IDisposable
 {
     private readonly ILogger? _logger;
+    private readonly IRegistry _registry;
     private readonly InputSystem _inputSystem;
     private readonly InputActionAsset _asset;
     private readonly Dictionary<string, bool> _buttonStates = new(StringComparer.OrdinalIgnoreCase);
@@ -23,14 +25,15 @@ public sealed class UniInputSystemService : IService, IDisposable
     private double _lastUpdateSeconds;
     private bool _disposed;
 
-    public UniInputSystemService(ILogger? logger)
+    public UniInputSystemService(IRegistry registry, ILogger? logger)
     {
         _logger = logger;
+        _registry = registry ?? throw new ArgumentNullException(nameof(registry));
 
         _inputSystem = new InputSystem();
 
-        var keyboard = new ConsoleKeyboardDevice();
-        _inputSystem.RegisterDevice(keyboard);
+        // Discover and register Tier 4 input devices via the registry
+        DiscoverAndRegisterDevices();
 
         var json = LoadDefaultPlayerControls();
         _asset = InputActionAssetJson.FromJson(json);
@@ -40,6 +43,27 @@ public sealed class UniInputSystemService : IService, IDisposable
         {
             RegisterCallbacks(map);
             map.Enable();
+        }
+    }
+
+    private void DiscoverAndRegisterDevices()
+    {
+        var devices = _registry.GetAll<IInputDevice>();
+
+        _logger?.LogInformation("Discovered {Count} input device providers", devices.Count());
+
+        foreach (var device in devices)
+        {
+            _logger?.LogInformation(
+                "Registering input device: {DeviceId} ({DeviceType})",
+                device.DeviceId,
+                device.DeviceType);
+            _inputSystem.RegisterDevice(device);
+        }
+
+        if (!devices.Any())
+        {
+            _logger?.LogWarning("No input device providers found! Input will not work.");
         }
     }
 
@@ -96,7 +120,7 @@ public sealed class UniInputSystemService : IService, IDisposable
             {
                 action.OnPerformed(context =>
                 {
-                    var v = context.ReadValue<NexusInput.Controls.Vector2>();
+                    var v = context.ReadValue<Vector2>();
                     lock (_sync)
                     {
                         _axisStates["MoveX"] = v.X;
@@ -117,7 +141,7 @@ public sealed class UniInputSystemService : IService, IDisposable
             {
                 action.OnPerformed(context =>
                 {
-                    var v = context.ReadValue<NexusInput.Controls.Vector2>();
+                    var v = context.ReadValue<Vector2>();
                     lock (_sync)
                     {
                         _axisStates["NavigateX"] = v.X;

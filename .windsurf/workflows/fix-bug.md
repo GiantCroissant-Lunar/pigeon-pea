@@ -106,6 +106,6 @@ Test added: {{ regression_test }}
 
 ---
 
-*Generated from `.agent/workflows/fix-bug.yaml`*
+_Generated from `.agent/workflows/fix-bug.yaml`_
 
 To modify this workflow, edit the canonical YAML file and regenerate.

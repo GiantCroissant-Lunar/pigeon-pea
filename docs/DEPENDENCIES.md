@@ -8,16 +8,18 @@ status: active
 summary: 'Generated: 2025-11-20 06:56:13'
 supersedes: []
 tags:
-- documentation
-- guide
+  - documentation
+  - guide
 title: Documentation Dependencies
 ---
 
 # Documentation Dependencies
-*Generated: 2025-11-20 06:56:13*
+
+_Generated: 2025-11-20 06:56:13_
 
 ## Implementation Status Flow
-*Current distribution of RFCs by implementation status*
+
+_Current distribution of RFCs by implementation status_
 
 ```mermaid
 flowchart LR

@@ -4,23 +4,20 @@ created: '2025-11-10'
 doc_id: RFC-00004
 doc_type: rfc
 related:
-- RFC-00012
+  - RFC-00012
 status: draft
 summary: Enhance the .agent infrastructure with sub-agents, declarative skills, validation
   schemas, and coding-focused policies to enable autonomous GitHub Coding Agents to
   perform complex development tasks
 supersedes: []
 tags:
-- agents
-- infrastructure
-- automation
-- skills
-- sub-agents
+  - agents
+  - infrastructure
+  - automation
+  - skills
+  - sub-agents
 title: Agent Infrastructure Enhancement
 ---
-
-
-
 
 # RFC-004: Agent Infrastructure Enhancement
 

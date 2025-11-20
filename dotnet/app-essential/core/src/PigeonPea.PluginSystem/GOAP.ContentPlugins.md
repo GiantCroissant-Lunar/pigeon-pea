@@ -28,7 +28,6 @@ Key constraint:
 
 > Game-essential must not reference content-authoring.
 
-
 ---
 
 ## 2. Existing GOAP runtime (engine side)
@@ -58,7 +57,6 @@ All of this already exists in **game-essential** (and is considered the
 
 From the GOAP side, everything is ready to **consume** goals/actions; what we
 need is a plugin-friendly mechanism to **supply** them from content-authoring.
-
 
 ---
 
@@ -104,7 +102,6 @@ These contracts:
 - Live on the engine side (no dependency on content-authoring).
 - Are **implemented by content-authoring assemblies**.
 
-
 ### 3.2 Implementations in content-authoring
 
 Content-authoring projects:
@@ -137,7 +134,6 @@ Each archetype:
 registration in a central `IGoapRegistry` (e.g., shared factories, common
 actions/goals reused across archetypes).
 
-
 ### 3.3 Runtime discovery & DI wiring
 
 At startup, **plugin host responsibilities** include:
@@ -162,7 +158,6 @@ At **entity spawn** (or when applying an archetype):
 
 This keeps `game-essential` agnostic of which concrete goals/actions exist,
 while content-authoring defines them.
-
 
 ---
 
@@ -209,7 +204,6 @@ When building a `GoapAction`, archetypes:
 At runtime, `ActionExecutionSystem` continues to simply call
 `executor.Execute(entity, action)`; the rest is handled by plugin wiring.
 
-
 ---
 
 ## 5. Responsibilities of the plugin-system side
@@ -217,7 +211,6 @@ At runtime, `ActionExecutionSystem` continues to simply call
 The plugin-system agent (this project) is responsible for:
 
 1. **Contracts location**
-
    - Ensure the GOAP plugin contracts live in a low-level project accessible to
      content-authoring, likely `PigeonPea.Game.AI` or a sibling.
    - Examples:
@@ -227,7 +220,6 @@ The plugin-system agent (this project) is responsible for:
      - `IGoapActionExecutorFactory`
 
 2. **Plugin discovery & DI registration**
-
    - Extend or integrate with `PluginLoader` to, for each loaded content plugin
      assembly:
      - Find all `IGoapArchetype` implementations.
@@ -242,7 +234,6 @@ The plugin-system agent (this project) is responsible for:
      plugins can use to register additional factories.
 
 3. **Entity setup hook**
-
    - Provide a simple, engine-side accessible API such as:
 
      ```csharp
@@ -259,7 +250,6 @@ The plugin-system agent (this project) is responsible for:
      DI/registration pieces.
 
 4. **Executor factory implementation**
-
    - Provide a default implementation of `IGoapActionExecutorFactory` that:
      - Is registered in DI.
      - Can be extended/populated by content plugins (e.g. via
@@ -268,13 +258,11 @@ The plugin-system agent (this project) is responsible for:
      and resolves them as needed by archetypes.
 
 5. **Respecting layering and profiles**
-
    - Content-authoring assemblies are treated as **plugins**:
      - Loaded via `PluginLoader` / `PluginLoadContext`.
      - Filtered by plugin profile (e.g. `dotnet.console`, `unity.game`).
    - `PigeonPea.Game.AI` remains unaware of which content assemblies exist; it
      only knows about the contracts and resolves them via DI.
-
 
 ---
 
@@ -301,7 +289,6 @@ engine-side data when constructing goals/actions:
 
 This should be sufficient for content plugins to construct meaningful GOAP
 `GoapGoal` and `GoapAction` instances that respond to in-game perception.
-
 
 ---
 

@@ -114,6 +114,7 @@ Tier 4: Providers (Optional)          → Internal strategies
 **Examples**: Map, Dungeon
 
 **CRITICAL**: Content domains use **Double-Plugin Architecture**:
+
 - Domain plugins (know WHAT to render)
 - Platform plugins (know HOW to render)
 
@@ -151,12 +152,14 @@ Two types of plugins that don't know about each other:
 ### Rules
 
 **Domain Plugins**:
+
 - ✅ Know domain semantics (walls, floors, doors)
 - ✅ Call `IRenderer.DrawTile(x, y, tile)`
 - ❌ NO platform-specific code (ANSI escapes, Win32 APIs)
 - ❌ NO knowledge of platform plugins
 
 **Platform Plugins**:
+
 - ✅ Implement `IRenderer` interface
 - ✅ Know platform-specific rendering (ANSI, Braille, etc.)
 - ❌ NO domain-specific knowledge (dungeon, map)
@@ -171,12 +174,14 @@ Two types of plugins that don't know about each other:
 ### ❌ Anti-Pattern 1: Wrapper Projects
 
 **WRONG**:
+
 ```
 PigeonPea.Dungeon.Core/
 └── ModernEdgarWrapper.cs  // Wraps modern-edgar-dotnet
 ```
 
 **RIGHT**:
+
 ```
 PigeonPea.Plugin.Dungeon.ModernEdgar/
 └── ModernEdgarDungeonGenerator.cs  // Uses modern-edgar-dotnet DIRECTLY
@@ -187,12 +192,14 @@ PigeonPea.Plugin.Dungeon.ModernEdgar/
 ### ❌ Anti-Pattern 2: Plugin Depending on Plugin
 
 **WRONG**:
+
 ```xml
 <!-- In PigeonPea.Plugin.A -->
 <ProjectReference Include="..\PigeonPea.Plugin.B\PigeonPea.Plugin.B.csproj" />
 ```
 
 **RIGHT**:
+
 ```csharp
 // Both plugins implement same contract
 // Consumer uses registry
@@ -204,6 +211,7 @@ var service = _registry.Get<IService>();
 ### ❌ Anti-Pattern 3: Heavy Dependencies in Contracts
 
 **WRONG**:
+
 ```csharp
 // In PigeonPea.Contracts
 using Newtonsoft.Json;
@@ -211,6 +219,7 @@ public interface IService { JObject GetData(); }
 ```
 
 **RIGHT**:
+
 ```csharp
 // In PigeonPea.Contracts
 public interface IService { Dictionary<string, object> GetData(); }
@@ -221,6 +230,7 @@ public interface IService { Dictionary<string, object> GetData(); }
 ### ❌ Anti-Pattern 4: Business Logic in Proxies
 
 **WRONG**:
+
 ```csharp
 public class Service : IService
 {
@@ -233,6 +243,7 @@ public class Service : IService
 ```
 
 **RIGHT**:
+
 ```csharp
 public class Service : IService
 {
@@ -250,6 +261,7 @@ public class Service : IService
 ### ❌ Anti-Pattern 5: Mixing Domain and Platform
 
 **WRONG**:
+
 ```csharp
 public class DungeonANSIRenderer // ❌ Coupled to both
 {
@@ -262,6 +274,7 @@ public class DungeonANSIRenderer // ❌ Coupled to both
 ```
 
 **RIGHT**:
+
 ```csharp
 // Domain plugin
 public class DungeonRenderer
@@ -352,6 +365,7 @@ Is this rendering-related?
 Contracts MUST be loaded from Default ALC to ensure type identity.
 
 **Configuration** (`appsettings.json`):
+
 ```json
 {
   "PluginSystem": {
@@ -373,6 +387,7 @@ Contracts MUST be loaded from Default ALC to ensure type identity.
 ### Plugin Manifest
 
 **Required fields** (`plugin.json`):
+
 ```json
 {
   "id": "unique-plugin-id",
@@ -397,10 +412,11 @@ Contracts MUST be loaded from Default ALC to ensure type identity.
 **Purpose**: Define service API
 **Location**: `PigeonPea[.Game].Contracts.<Domain>/Services/`
 **Contains**:
+
 - Interface definitions
 - DTOs and primitives
 - Enums and constants
-**Does NOT contain**:
+  **Does NOT contain**:
 - Implementations
 - Business logic
 - Heavy dependencies
@@ -410,11 +426,12 @@ Contracts MUST be loaded from Default ALC to ensure type identity.
 **Purpose**: Reusable domain logic
 **Location**: `PigeonPea.Shared.<Domain>/`
 **Contains**:
+
 - Domain models
 - Algorithms
 - Utilities
 - Data structures
-**Does NOT contain**:
+  **Does NOT contain**:
 - Plugin knowledge
 - `IRegistry` usage
 - Service contracts
@@ -424,11 +441,12 @@ Contracts MUST be loaded from Default ALC to ensure type identity.
 **Purpose**: Service implementation
 **Location**: `PigeonPea.Plugins.<Domain>.<Name>/`
 **Contains**:
+
 - Service implementation
 - Plugin class (`IPlugin`)
 - External library usage
 - `plugin.json` manifest
-**Does NOT contain**:
+  **Does NOT contain**:
 - Dependencies on other plugins
 - Wrapper projects
 - Contract definitions
@@ -438,11 +456,12 @@ Contracts MUST be loaded from Default ALC to ensure type identity.
 **Purpose**: Tie domain to ECS
 **Location**: `PigeonPea.Game.<Domain>/`
 **Contains**:
+
 - Components
 - Systems
 - ECS queries
 - Event publishers/subscribers
-**Does NOT contain**:
+  **Does NOT contain**:
 - Service contracts
 - Plugin code
 - Platform-specific code
@@ -460,6 +479,7 @@ Ask the user or check documentation when:
 5. **Breaking changes**: "This would change a Tier 1 contract, how to handle?"
 
 **Default action**: Follow this guide. When in doubt, prefer:
+
 - Plugin over wrapper
 - Shared library over contract (for algorithms)
 - Separate domain and platform plugins
@@ -487,6 +507,7 @@ Before submitting PR or asking for review:
 ### Common Review Feedback
 
 If you receive feedback like:
+
 - "This should be a plugin, not a wrapper" → Review Anti-Pattern 1
 - "Plugins can't depend on each other" → Review Anti-Pattern 2
 - "Contracts should be lighter" → Review Anti-Pattern 3
@@ -498,15 +519,18 @@ If you receive feedback like:
 ## Additional Resources
 
 **Comprehensive Guide**:
+
 - [.NET Tiered Architecture and Layer Implementation Guide](../../docs/guides/dotnet-tiered-architecture-guide.md)
 
 **Related RFCs and ADRs**:
+
 - [RFC-013: Plugin Architecture Refinement](../../docs/rfcs/013-plugin-architecture-refinement-tiered.md)
 - [ADR-001: Architecture Overview](../../docs/dotnet/architecture/overview.md)
 - [ADR-003: Service Tiers](../../docs/dotnet/architecture/service-tiers.md)
 - [ADR-004: Services and Plugins](../../docs/dotnet/architecture/services-and-plugins.md)
 
 **Questions?**
+
 - Check the comprehensive guide first
 - Review related RFCs/ADRs
 - Ask the user if still unclear
@@ -516,6 +540,7 @@ If you receive feedback like:
 ## Summary
 
 **Remember the Golden Rules**:
+
 1. NO wrapper projects
 2. Contracts are stable
 3. Plugins are isolated
@@ -523,6 +548,7 @@ If you receive feedback like:
 5. Shared libraries are building blocks
 
 **When in doubt**:
+
 1. Check if a contract exists
 2. Use external libraries directly
 3. Create a plugin, not a wrapper
@@ -530,6 +556,7 @@ If you receive feedback like:
 5. Follow the decision tree above
 
 **Most Important**:
+
 - Read [.NET Tiered Architecture Guide](../../docs/guides/dotnet-tiered-architecture-guide.md) for complete details
 - This is a living document - check for updates
 - Architecture consistency > quick fixes

@@ -8,8 +8,8 @@ status: active
 summary: 'RFC Reference: RFC-013: Yazi-integrated Rust CLI'
 supersedes: []
 tags:
-- ci-cd
-- rfc
+  - ci-cd
+  - rfc
 title: Integration tests with mock WebSocket server
 ---
 

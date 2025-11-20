@@ -8,14 +8,14 @@ status: active
 summary: 'Status: Proposed Created: 2025-11-13'
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- ecs
-- rendering
-- rfc
-- terminal
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-008: Determinism Test Suite for Fantasy Map Generation'
 ---
 

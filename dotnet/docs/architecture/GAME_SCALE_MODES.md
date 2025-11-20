@@ -15,12 +15,12 @@ The core idea:
 We define two base units:
 
 - **World scale** (FMG map)
-  - `1 world unit = 1 km`  
+  - `1 world unit = 1 km`
   - FMG archipelago demo: 800×600 world units → **800 km × 600 km** region.
   - `WorldPosition` is interpreted as `(xWorldUnits * 1 km, yWorldUnits * 1 km)`.
 
 - **Dungeon scale** (grid-based dungeons)
-  - **Fine** dungeon tiles: `1 tile = 2 m`  
+  - **Fine** dungeon tiles: `1 tile = 2 m`
   - **Coarse** dungeon tiles (optional): `1 tile = 5 m` (e.g. macro-dungeon overview).
   - `DungeonData` coordinates live in tile space and can be mapped to meters:
     - `meters = tile * metersPerTile`.
@@ -83,7 +83,7 @@ Rather than hard-coding scale levels as enums, we define them via configuration,
 
 One possible schema for a scale definition:
 
-```jsonc
+````jsonc
 {
   "id": "world",                // unique string identifier
   "environment": "world",      // world | town | interior | dungeon | vehicle
@@ -154,7 +154,7 @@ More metadata can be added as needed:
     }
   ]
 }
-```
+````
 
 Renderers and HUD code operate against a runtime model (e.g. `ScaleConfig`) loaded from this config, so scales can be tuned/added/removed during experimentation.
 
@@ -168,9 +168,9 @@ Transitions are also configurable. A transition describes how the game moves fro
 
 ```jsonc
 {
-  "from": "world",             // source scale id
-  "to": "dungeon-coarse",      // target scale id
-  "trigger": "enter_dungeon"   // logical trigger name
+  "from": "world", // source scale id
+  "to": "dungeon-coarse", // target scale id
+  "trigger": "enter_dungeon", // logical trigger name
 }
 ```
 
@@ -179,12 +179,12 @@ Example transitions.json:
 ```jsonc
 {
   "transitions": [
-    { "from": "world",         "to": "dungeon-coarse", "trigger": "enter_dungeon" },
-    { "from": "dungeon-coarse", "to": "dungeon-fine",   "trigger": "enter_boss_room" },
-    { "from": "town",          "to": "dungeon-fine",   "trigger": "enter_house" },
-    { "from": "world",         "to": "vehicle-fast",   "trigger": "mount_vehicle" },
-    { "from": "vehicle-fast",  "to": "world",         "trigger": "dismount_vehicle" }
-  ]
+    { "from": "world", "to": "dungeon-coarse", "trigger": "enter_dungeon" },
+    { "from": "dungeon-coarse", "to": "dungeon-fine", "trigger": "enter_boss_room" },
+    { "from": "town", "to": "dungeon-fine", "trigger": "enter_house" },
+    { "from": "world", "to": "vehicle-fast", "trigger": "mount_vehicle" },
+    { "from": "vehicle-fast", "to": "world", "trigger": "dismount_vehicle" },
+  ],
 }
 ```
 

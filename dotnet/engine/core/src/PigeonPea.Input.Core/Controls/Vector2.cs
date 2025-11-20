@@ -1,4 +1,4 @@
-namespace PigeonPea.Shared.Input.Controls;
+namespace PigeonPea.Input.Core.Controls;
 
 /// <summary>
 /// Simple 2D vector struct (to avoid external dependencies).

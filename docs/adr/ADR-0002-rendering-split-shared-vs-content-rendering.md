@@ -8,12 +8,12 @@ status: active
 summary: Accepted
 supersedes: []
 tags:
-- adr
-- ecs
-- plugins
-- rendering
-- terminal
-- testing
+  - adr
+  - ecs
+  - plugins
+  - rendering
+  - terminal
+  - testing
 title: 'ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering'
 ---
 

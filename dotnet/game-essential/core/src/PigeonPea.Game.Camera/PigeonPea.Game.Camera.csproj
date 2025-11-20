@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Arch" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\_lib\nexus-camera2d\src\NexusCamera2D.Core\NexusCamera2D.Core.csproj" />
+    <ProjectReference Include="..\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

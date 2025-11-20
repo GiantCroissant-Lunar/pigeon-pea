@@ -40,7 +40,7 @@ class Program
         {
             Console.Write("> ");
             var input = Console.ReadLine()?.Trim();
-            
+
             if (string.IsNullOrEmpty(input))
                 continue;
 
@@ -111,7 +111,7 @@ class Program
         }
 
         var path = string.Join(" ", parts.Skip(1));
-        
+
         // Resolve relative path
         var fullPath = Path.GetFullPath(path);
         if (!File.Exists(fullPath))
@@ -131,7 +131,7 @@ class Program
         }
 
         Console.WriteLine($"Loading language from: {fullPath}");
-        
+
         var json = await File.ReadAllTextAsync(fullPath).ConfigureAwait(false);
         var definition = JsonSerializer.Deserialize<LanguageDefinition>(json, new JsonSerializerOptions
         {
@@ -152,7 +152,7 @@ class Program
         }
 
         _loadedLanguages[definition.Id] = definition.Name;
-        
+
         Console.WriteLine($"✓ Loaded language: {definition.Name} ({definition.Id})");
         Console.WriteLine($"  Description: {definition.Description}");
         Console.WriteLine($"  Vowels: {string.Join(", ", definition.Phonology.Inventory.Vowels)}");
@@ -163,7 +163,7 @@ class Program
     static void ListLanguagesCommand()
     {
         var languages = _languageService.GetLoadedLanguages();
-        
+
         if (!languages.Any())
         {
             Console.WriteLine("No languages loaded. Use 'load <path>' to load a language.");
@@ -198,9 +198,9 @@ class Program
 
         Console.WriteLine($"Translating: \"{text}\"");
         Console.WriteLine($"Target: {languageId}");
-        
+
         var result = await _languageService.TranslateAsync(text, "english", languageId).ConfigureAwait(false);
-        
+
         Console.WriteLine($"Result: {result}");
         Console.WriteLine();
         Console.WriteLine("Note: Translation requires a lexicon file. If words are missing,");
@@ -236,7 +236,7 @@ class Program
         };
 
         var names = _languageService.GenerateNames(languageId, count, options).ToList();
-        
+
         for (int i = 0; i < names.Count; i++)
         {
             Console.WriteLine($"  {i + 1}. {names[i]}");

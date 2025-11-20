@@ -4,23 +4,20 @@ created: '2025-11-15'
 doc_id: RFC-00018
 doc_type: rfc
 related:
-- SPEC-00014
-- RFC-00016
+  - SPEC-00014
+  - RFC-00016
 status: draft
 summary: Add Markov chain statistical name generation mode alongside existing rule-based
   system for more natural-sounding names learned from real examples
 supersedes: []
 tags:
-- name-generation
-- markov-chain
-- statistical
-- machine-learning
-- linguistic
+  - name-generation
+  - markov-chain
+  - statistical
+  - machine-learning
+  - linguistic
 title: Name Generator Markov Chain Mode
 ---
-
-
-
 
 # RFC 018: Name Generator Markov Chain Mode
 

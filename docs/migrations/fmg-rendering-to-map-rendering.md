@@ -9,10 +9,10 @@ summary: This guide helps you move from the deprecated FMG rendering stack to th
   modern Map domain rendering components.
 supersedes: []
 tags:
-- documentation
-- ecs
-- guide
-- rendering
+  - documentation
+  - ecs
+  - guide
+  - rendering
 title: 'Migration: FantasyMapGenerator.Rendering → PigeonPea.Map.Rendering'
 ---
 

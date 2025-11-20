@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using NexusInput.Controls;
+using PigeonPea.Input.Core.Bindings;
+using PigeonPea.Input.Core.Controls;
 
 namespace PigeonPea.Plugins.Input.UniInputSystem;
 

@@ -1,4 +1,4 @@
-namespace PigeonPea.Shared.Input.Bindings;
+namespace PigeonPea.Input.Core.Bindings;
 
 /// <summary>
 /// Combines multiple inputs into a single value (e.g., WASD → Vector2).

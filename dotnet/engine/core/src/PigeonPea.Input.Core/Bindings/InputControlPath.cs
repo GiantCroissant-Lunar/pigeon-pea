@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace PigeonPea.Shared.Input.Bindings;
+namespace PigeonPea.Input.Core.Bindings;
 
 /// <summary>
 /// Represents a path to a physical control (e.g., "<Keyboard>/w", "<Mouse>/leftButton").
@@ -9,7 +9,7 @@ namespace PigeonPea.Shared.Input.Bindings;
 public readonly struct InputControlPath : IEquatable<InputControlPath>
 {
     private static readonly Regex PathRegex = new(
-            @"^<(?<device>[A-Za-z0-9]+)>/(?<control>[A-Za-z0-9_\-]+)$", 
+            @"^<(?<device>[A-Za-z0-9]+)>/(?<control>[A-Za-z0-9_\-]+)$",
             RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
     public string Path { get; }

@@ -4,23 +4,20 @@ created: '2025-11-18'
 doc_id: GUIDE-00001
 doc_type: guide
 related:
-- ADR-00001
-- ADR-00003
-- ADR-00004
-- REFERENCE-00001
-- GUIDE-00002
+  - ADR-00001
+  - ADR-00003
+  - ADR-00004
+  - REFERENCE-00001
+  - GUIDE-00002
 status: active
 summary: Comprehensive guide to setting up and running Pigeon Pea .NET applications
 tags:
-- dotnet
-- getting-started
-- setup
-- development
+  - dotnet
+  - getting-started
+  - setup
+  - development
 title: Getting Started with Pigeon Pea .NET
 ---
-
-
-
 
 # Pigeon Pea - 2D Dungeon Crawler
 

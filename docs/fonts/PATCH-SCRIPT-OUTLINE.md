@@ -10,9 +10,9 @@ summary: Outline of a FontForge Python script to import SVG angle glyphs into PU
   fonts/scripts/ later.
 supersedes: []
 tags:
-- documentation
-- fonts
-- spec
+  - documentation
+  - fonts
+  - spec
 title: FontForge Patch Script — Outline
 ---
 

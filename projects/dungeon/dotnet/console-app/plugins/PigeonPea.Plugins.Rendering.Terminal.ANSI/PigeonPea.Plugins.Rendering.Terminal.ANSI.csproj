@@ -12,13 +12,11 @@
     <!-- Core Plugin Contracts -->
     <ProjectReference Include="..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
 
+    <!-- New Unified Rendering Contracts (Tier 1) -->
+    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+
     <!-- Game Contracts for IRenderer -->
     <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
-
-    <!-- Dungeon core + rendering for dungeon generation and ASCII rendering -->
-    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Rendering\PigeonPea.Dungeon.Rendering.csproj" />
 
     <!-- Logging -->
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
@@ -26,8 +24,12 @@
 
   <ItemGroup>
     <!-- Copy plugin.json to output directory -->
-    <None Include="plugin.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never" />
+    <None Include="plugin.json" />
   </ItemGroup>
+
+  <Target Name="CopyPluginJson" AfterTargets="Build">
+    <Copy SourceFiles="plugin.json" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
 
   <!-- Post-build: Copy plugin to console app's plugins directory -->
   <Target Name="CopyPluginToConsoleApp" AfterTargets="Build">

@@ -8,14 +8,14 @@ status: active
 summary: 'Status: Proposed Created: 2025-11-13'
 supersedes: []
 tags:
-- architecture
-- documentation
-- ecs
-- plugins
-- rendering
-- rfc
-- terminal
-- testing
+  - architecture
+  - documentation
+  - ecs
+  - plugins
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-010: Color Scheme Configuration System'
 ---
 

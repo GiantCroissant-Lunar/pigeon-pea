@@ -49,6 +49,7 @@ cargo run --bin dev-tool -- --token your-token-here
 ### Protocol (`dungeon-protocol`)
 
 The protocol crate defines:
+
 - Message types for game communication
 - Error handling and validation
 - Serialization/deserialization helpers
@@ -57,6 +58,7 @@ The protocol crate defines:
 ### CLI Tool (`dungeon-dev-tool`)
 
 The development tool provides:
+
 - WebSocket client with authentication
 - Command execution framework
 - Multiple output formats (text, JSON)
@@ -134,6 +136,7 @@ The CLI tool can be launched from Yazi for seamless asset editing:
 ## Configuration
 
 The CLI tool supports configuration via:
+
 - Command-line arguments
 - Environment variables (`DUNGEON_SERVER_URL`, `DUNGEON_TOKEN`)
 - Future: Configuration files

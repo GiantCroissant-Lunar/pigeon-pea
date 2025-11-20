@@ -9,14 +9,14 @@ summary: '> ⚠️ Historical: This plan captures early thinking. For the curren
   start with: >'
 supersedes: []
 tags:
-- adr
-- architecture
-- ci-cd
-- documentation
-- ecs
-- rendering
-- terminal
-- testing
+  - adr
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - rendering
+  - terminal
+  - testing
 title: Pigeon Pea Architecture Plan
 ---
 

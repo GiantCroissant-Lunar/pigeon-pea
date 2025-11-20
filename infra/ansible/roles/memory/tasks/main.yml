@@ -22,7 +22,7 @@
   community.docker.docker_compose:
     project_src: "{{ playbook_dir }}/../memory"
     state: present
-    pull: yes
+    pull: true
   register: qdrant_startup
 
 - name: Wait for Qdrant to be ready

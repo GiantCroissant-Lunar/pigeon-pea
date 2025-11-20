@@ -66,7 +66,7 @@ public static class PerceptionToWorldStateAdapter
         state = state.Set("KnownEnemyCount", perception.Knowledge.KnownEnemies.Count);
         state = state.Set("HasKnownThreats", perception.Knowledge.KnownEnemies.Count > 0);
 
-        // Do we know where the player was last seen? (by type string, if stored that way) 
+        // Do we know where the player was last seen? (by type string, if stored that way)
         // This is a heuristic; exact keying is higher-level game logic.
         var knowsAnyLastPosition = perception.Knowledge.LastKnownPositions.Count > 0;
         state = state.Set("HasLastKnownPositions", knowsAnyLastPosition);

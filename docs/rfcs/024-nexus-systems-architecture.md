@@ -4,29 +4,26 @@ created: '2025-11-19'
 doc_id: RFC-00024
 doc_type: rfc
 related:
-- RFC-00023
-- RFC-00019
-- RFC-00020
-- RFC-00021
+  - RFC-00023
+  - RFC-00019
+  - RFC-00020
+  - RFC-00021
 status: draft
 summary: Refactor Nexus systems (GAS, GOAP, Perception) from _lib link compilation
   to proper engine layer placement, eliminating temporary wrapper projects and establishing
   clean architecture
 supersedes: []
 tags:
-- architecture
-- refactoring
-- engine
-- gas
-- goap
-- perception
-- nexus
-- migration
+  - architecture
+  - refactoring
+  - engine
+  - gas
+  - goap
+  - perception
+  - nexus
+  - migration
 title: 'Nexus Systems Architecture Refactoring: Move to Engine Layer'
 ---
-
-
-
 
 # RFC-024: Nexus Systems Architecture Refactoring: Move to Engine Layer
 
@@ -39,7 +36,7 @@ title: 'Nexus Systems Architecture Refactoring: Move to Engine Layer'
 
 Refactor three Nexus systems to proper architecture:
 
-1. **Move from _lib to engine layer**
+1. **Move from \_lib to engine layer**
    - `_lib/nexus-gas` → `engine/core/src/PigeonPea.Gas.Core`
    - `_lib/nexus-goap` → `engine/core/src/PigeonPea.Goap.Core`
    - `_lib/nexus-perception` → `engine/core/src/PigeonPea.Perception.Core`
@@ -86,9 +83,8 @@ Refactor three Nexus systems to proper architecture:
    - Migration artifacts that should be removed
 
 2. **Wrong Layer Placement**
-
-   - **nexus-* libraries** are in `_lib/` (external dependency location)
-   - **PigeonPea.Shared.*** projects are in `game-essential/core/src`
+   - **nexus-\* libraries** are in `_lib/` (external dependency location)
+   - **PigeonPea.Shared.\*** projects are in `game-essential/core/src`
    - But these are **engine-level concerns** (like Unity packages: GAS, GOAP, Perception)
    - Should be in `engine/core/src` alongside other engine libraries
 
@@ -100,7 +96,6 @@ Refactor three Nexus systems to proper architecture:
    - Creates architectural inconsistency
 
 4. **Unclear Ownership**
-
    - Are these external libraries (in `_lib`)?
    - Are these internal libraries (compiled via `Shared.*`)?
    - Should be: **Internal engine libraries** owned by pigeon-pea
@@ -539,7 +534,7 @@ rm -rf dotnet/game-essential/core/src/PigeonPea.Shared.Goap
 rm -rf dotnet/game-essential/core/src/PigeonPea.Shared.Perception
 ```
 
-**Delete _lib sources:**
+**Delete \_lib sources:**
 
 ```bash
 rm -rf dotnet/_lib/nexus-gas
@@ -642,7 +637,7 @@ dotnet test dotnet/game-essential/core/tests/PigeonPea.Game.Abilities.Tests
    - Update solution file
    - Verify no broken references
 
-2. **Day 2: Delete _lib sources**
+2. **Day 2: Delete \_lib sources**
    - Remove `_lib/nexus-gas`, `_lib/nexus-goap`, `_lib/nexus-perception`
    - Update any build scripts
    - Verify builds
@@ -827,15 +822,15 @@ dotnet test dotnet/game-essential/core/tests/PigeonPea.Game.Abilities.Tests
 
 ## Comparison with Input System
 
-| Aspect | Input System (RFC-023) | Nexus Systems (RFC-024) |
-|--------|------------------------|-------------------------|
-| **Engine Library** | `PigeonPea.Input.Core` ✅ | `PigeonPea.Gas/Goap/Perception.Core` ✅ |
-| **Old Location** | N/A (already in engine) | `_lib/nexus-*` ❌ |
-| **Wrapper Project** | `Shared.Input` (empty) ❌ | `Shared.Gas/Goap/Perception` (link) ❌ |
-| **Service Tier** | Yes (Tier 1-4) | No (used directly by game) |
-| **Platform Plugins** | Yes (Tier 4 devices) | No (engine libraries) |
-| **Game Integration** | Content plugins | `Game.Abilities/AI/Perception` |
-| **Layer** | App-essential | Game-essential |
+| Aspect               | Input System (RFC-023)    | Nexus Systems (RFC-024)                 |
+| -------------------- | ------------------------- | --------------------------------------- |
+| **Engine Library**   | `PigeonPea.Input.Core` ✅ | `PigeonPea.Gas/Goap/Perception.Core` ✅ |
+| **Old Location**     | N/A (already in engine)   | `_lib/nexus-*` ❌                       |
+| **Wrapper Project**  | `Shared.Input` (empty) ❌ | `Shared.Gas/Goap/Perception` (link) ❌  |
+| **Service Tier**     | Yes (Tier 1-4)            | No (used directly by game)              |
+| **Platform Plugins** | Yes (Tier 4 devices)      | No (engine libraries)                   |
+| **Game Integration** | Content plugins           | `Game.Abilities/AI/Perception`          |
+| **Layer**            | App-essential             | Game-essential                          |
 
 **Key Difference:** Input has service tiers + platform plugins, while Nexus systems are engine libraries used directly by game ECS integration.
 
@@ -949,27 +944,27 @@ dotnet/
 
 **For Gas:**
 
-| Old | New |
-|-----|-----|
+| Old                  | New                       |
+| -------------------- | ------------------------- |
 | `namespace NexusGas` | `namespace PigeonPea.Gas` |
-| `using NexusGas` | `using PigeonPea.Gas` |
-| `NexusGas.` | `PigeonPea.Gas.` |
+| `using NexusGas`     | `using PigeonPea.Gas`     |
+| `NexusGas.`          | `PigeonPea.Gas.`          |
 
 **For GOAP:**
 
-| Old | New |
-|-----|-----|
+| Old                   | New                        |
+| --------------------- | -------------------------- |
 | `namespace NexusGoap` | `namespace PigeonPea.Goap` |
-| `using NexusGoap` | `using PigeonPea.Goap` |
-| `NexusGoap.` | `PigeonPea.Goap.` |
+| `using NexusGoap`     | `using PigeonPea.Goap`     |
+| `NexusGoap.`          | `PigeonPea.Goap.`          |
 
 **For Perception:**
 
-| Old | New |
-|-----|-----|
+| Old                         | New                              |
+| --------------------------- | -------------------------------- |
 | `namespace NexusPerception` | `namespace PigeonPea.Perception` |
-| `using NexusPerception` | `using PigeonPea.Perception` |
-| `NexusPerception.` | `PigeonPea.Perception.` |
+| `using NexusPerception`     | `using PigeonPea.Perception`     |
+| `NexusPerception.`          | `PigeonPea.Perception.`          |
 
 ### Automated Migration Script
 

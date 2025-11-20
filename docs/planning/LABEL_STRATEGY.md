@@ -4,20 +4,17 @@ created: '2025-11-08'
 doc_id: PLAN-00012
 doc_type: plan
 related:
-- PLAN-00011
+  - PLAN-00011
 status: active
 summary: Scalable label strategy for organizing GitHub issues and pull requests in
   pigeon-pea project
 tags:
-- github
-- labels
-- project-management
-- organization
+  - github
+  - labels
+  - project-management
+  - organization
 title: GitHub Label Strategy
 ---
-
-
-
 
 # GitHub Label Strategy
 

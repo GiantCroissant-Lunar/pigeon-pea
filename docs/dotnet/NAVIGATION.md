@@ -4,22 +4,19 @@ created: '2025-11-18'
 doc_id: GUIDE-00002
 doc_type: guide
 related:
-- REFERENCE-00001
-- GUIDE-00001
-- ADR-00001
+  - REFERENCE-00001
+  - GUIDE-00001
+  - ADR-00001
 status: active
 summary: Comprehensive navigation guide for the .NET documentation with reading paths,
   cross-references, and quick access
 tags:
-- dotnet
-- navigation
-- documentation
-- guide
+  - dotnet
+  - navigation
+  - documentation
+  - guide
 title: .NET Documentation Navigation Guide
 ---
-
-
-
 
 # .NET Documentation Navigation Guide
 

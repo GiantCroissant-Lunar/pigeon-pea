@@ -8,14 +8,14 @@ status: active
 summary: 'Created: 2025-11-13 For: Agent implementing Phase 5 of RFC-007'
 supersedes: []
 tags:
-- agents
-- architecture
-- documentation
-- ecs
-- rendering
-- rfc
-- terminal
-- testing
+  - agents
+  - architecture
+  - documentation
+  - ecs
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-007 Phase 5: Arch ECS Integration - Detailed Instructions'
 ---
 

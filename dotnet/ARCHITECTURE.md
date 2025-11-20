@@ -18,4 +18,4 @@ Please update your references to point to the new location.
 
 ---
 
-*This redirect file preserves existing links while the documentation is being reorganized according to RFC-012 standards.*
+_This redirect file preserves existing links while the documentation is being reorganized according to RFC-012 standards._

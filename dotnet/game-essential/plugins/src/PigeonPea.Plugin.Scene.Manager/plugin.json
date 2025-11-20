@@ -1,0 +1,11 @@
+{
+  "id": "scene-manager",
+  "name": "Scene Manager",
+  "version": "1.0.0",
+  "author": "PigeonPea",
+  "description": "Manages scenes and ECS worlds",
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugin.Scene.Manager.dll,PigeonPea.Plugin.Scene.Manager.SceneManagerPlugin"
+  },
+  "dependencies": []
+}

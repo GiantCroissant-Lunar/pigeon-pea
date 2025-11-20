@@ -10,14 +10,14 @@ summary: 'Goal: Integrate the ColorScheme system (Phase 1) with the map renderin
   provider instead of hardcoded colors.'
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- ecs
-- rendering
-- rfc
-- terminal
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-010 Phase 2: Integration with SkiaMapRasterizer'
 ---
 

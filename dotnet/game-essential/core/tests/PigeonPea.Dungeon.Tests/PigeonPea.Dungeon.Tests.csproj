@@ -22,9 +22,9 @@
     <PackageReference Include="Verify.Xunit" Version="31.6.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
-    <ProjectReference Include="..\..\src\PigeonPea.Dungeon.Control\PigeonPea.Dungeon.Control.csproj" />
-    <ProjectReference Include="..\..\src\PigeonPea.Dungeon.Rendering\PigeonPea.Dungeon.Rendering.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Dungeon.ModernEdgar\PigeonPea.Plugin.Dungeon.ModernEdgar.csproj" />
+    <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Dungeon.Rendering\PigeonPea.Plugin.Dungeon.Rendering.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Control\PigeonPea.Map.Control.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />

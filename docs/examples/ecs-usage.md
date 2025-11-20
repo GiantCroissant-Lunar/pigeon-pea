@@ -10,14 +10,14 @@ summary: A practical reference for working with the Arch ECS setup in PigeonPea.
   performance tips. There are more than 15 f
 supersedes: []
 tags:
-- architecture
-- documentation
-- ecs
-- fonts
-- guide
-- rendering
-- terminal
-- testing
+  - architecture
+  - documentation
+  - ecs
+  - fonts
+  - guide
+  - rendering
+  - terminal
+  - testing
 title: ECS Usage Examples
 ---
 

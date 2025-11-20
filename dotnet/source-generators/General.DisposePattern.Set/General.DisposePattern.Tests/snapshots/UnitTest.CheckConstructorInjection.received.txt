@@ -8,7 +8,7 @@ namespace Plate.Game.Fake;
 public sealed partial class SomeType01 :
     global::System.IDisposable
 {
-    
+
     [global::System.CodeDom.Compiler.GeneratedCode("Plate.SCG.General.DisposePattern.SourceGenerator", "0.1.0.0")]
     [global::System.Runtime.CompilerServices.CompilerGenerated]
     private bool _disposed;
@@ -21,13 +21,13 @@ public sealed partial class SomeType01 :
         Dispose(disposing: true);
         global::System.GC.SuppressFinalize(this);
     }
-    
+
     [global::System.CodeDom.Compiler.GeneratedCode("Plate.SCG.General.DisposePattern.SourceGenerator", "0.1.0.0")]
     [global::System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage]
     [global::System.Runtime.CompilerServices.CompilerGenerated]
     private void Dispose(bool disposing)
     {
-        
+
         if (_disposed)
         {
             return;
@@ -37,7 +37,7 @@ public sealed partial class SomeType01 :
         {
             BeforeDisposeManagedResources();
 
-            
+
             if (_person is not null)
             {
                 _person.Dispose();

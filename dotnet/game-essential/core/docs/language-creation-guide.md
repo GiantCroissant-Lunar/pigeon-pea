@@ -31,16 +31,19 @@ Phonology defines what your language sounds like. Start by choosing your phoneme
 Select 3-7 vowels for your language. Common choices:
 
 **Minimal (3-5 vowels):**
+
 ```json
 "vowels": ["a", "i", "u"]
 ```
 
 **Standard (5-7 vowels):**
+
 ```json
 "vowels": ["a", "e", "i", "o", "u"]
 ```
 
 **Extended (with length or quality distinctions):**
+
 ```json
 "vowels": ["a", "e", "i", "o", "u", "á", "é", "í", "ó", "ú"]
 ```
@@ -50,16 +53,19 @@ Select 3-7 vowels for your language. Common choices:
 Select 10-25 consonants. Consider the aesthetic you want:
 
 **Soft/Flowing (Elvish-style):**
+
 ```json
 "consonants": ["l", "r", "n", "m", "s", "h", "t", "th", "d", "v", "f"]
 ```
 
 **Harsh/Guttural (Dwarvish-style):**
+
 ```json
 "consonants": ["k", "g", "kh", "gh", "r", "rr", "z", "zh", "d", "t", "b", "p"]
 ```
 
 **Sibilant/Hissing (Draconic-style):**
+
 ```json
 "consonants": ["s", "z", "sh", "zh", "th", "dh", "k", "g", "r", "h"]
 ```
@@ -112,18 +118,21 @@ Specify which consonant combinations are allowed:
 ### Phonology Examples
 
 **Elvish (Flowing, Vowel-Rich):**
+
 - Many vowels, soft consonants
 - Simple syllable structure (CV, CVC)
 - Liquid consonants (l, r) common
 - Few consonant clusters
 
 **Dwarvish (Harsh, Consonant-Heavy):**
+
 - Fewer vowels, many consonants
 - Complex syllable structure (CCVC, CVCC)
 - Guttural sounds (kh, gh)
 - Many consonant clusters
 
 **Draconic (Ancient, Booming):**
+
 - Long vowels, sibilants
 - Varied syllable structure
 - Emphasis on resonant sounds
@@ -142,6 +151,7 @@ Select one of six basic word orders:
 ```
 
 Options:
+
 - **SVO**: Subject-Verb-Object (English, Chinese) - "The cat eats fish"
 - **SOV**: Subject-Object-Verb (Japanese, Turkish) - "The cat fish eats"
 - **VSO**: Verb-Subject-Object (Welsh, Irish) - "Eats the cat fish"
@@ -183,6 +193,7 @@ Morphology rules modify words for grammar (plural, tense, case, etc.):
 ```
 
 **Types:**
+
 - `suffix`: Add to end (most common)
 - `prefix`: Add to beginning
 - `infix`: Insert in middle
@@ -293,6 +304,7 @@ Create language variants through sound changes.
 ```
 
 **Context Notation:**
+
 - `_a`: Before 'a'
 - `a_`: After 'a'
 - `_#`: At end of word
@@ -311,8 +323,8 @@ Create language variants through sound changes.
   "name": "High Elvish",
   "parentLanguageId": "ancient-elvish",
   "soundChanges": [
-    {"name": "p_to_f", "source": "p", "target": "f"},
-    {"name": "k_to_h", "source": "k", "target": "h"}
+    { "name": "p_to_f", "source": "p", "target": "f" },
+    { "name": "k_to_h", "source": "k", "target": "h" }
   ]
 }
 ```
@@ -368,18 +380,21 @@ dotnet run
 ### Aesthetic Guidelines
 
 **For Elegant/Flowing Languages (Elvish-style):**
+
 - Favor vowels and liquid consonants (l, r, m, n)
 - Use simple syllable structures (CV, CVC)
 - Avoid harsh consonant clusters
 - Include long vowels or diphthongs
 
 **For Harsh/Guttural Languages (Dwarvish-style):**
+
 - Favor stops and fricatives (k, g, kh, gh)
 - Use complex syllable structures (CCVC, CVCC)
 - Include consonant clusters
 - Limit vowel variety
 
 **For Ancient/Mystical Languages (Draconic-style):**
+
 - Mix sibilants with resonants
 - Use varied syllable structures
 - Include unusual phonemes
@@ -403,10 +418,10 @@ Let's create a forest-dwelling language step by step.
       "diphthongs": ["ai", "ei", "ou"]
     },
     "syllableTemplates": [
-      {"pattern": "CV", "weight": 45},
-      {"pattern": "CVC", "weight": 30},
-      {"pattern": "V", "weight": 15},
-      {"pattern": "CCV", "weight": 10, "allowedOnsets": ["sl", "sv", "fl"]}
+      { "pattern": "CV", "weight": 45 },
+      { "pattern": "CVC", "weight": 30 },
+      { "pattern": "V", "weight": 15 },
+      { "pattern": "CCV", "weight": 10, "allowedOnsets": ["sl", "sv", "fl"] }
     ],
     "clusters": {
       "initialClusters": ["sl", "sv", "fl", "vr"],
@@ -453,10 +468,10 @@ Let's create a forest-dwelling language step by step.
 ```json
 {
   "entries": [
-    {"word": "silva", "meaning": "forest", "partOfSpeech": "noun", "root": "silv"},
-    {"word": "lumen", "meaning": "light", "partOfSpeech": "noun", "root": "lum"},
-    {"word": "verna", "meaning": "spring", "partOfSpeech": "noun", "root": "vern"},
-    {"word": "flor", "meaning": "flower", "partOfSpeech": "noun", "root": "flor"}
+    { "word": "silva", "meaning": "forest", "partOfSpeech": "noun", "root": "silv" },
+    { "word": "lumen", "meaning": "light", "partOfSpeech": "noun", "root": "lum" },
+    { "word": "verna", "meaning": "spring", "partOfSpeech": "noun", "root": "vern" },
+    { "word": "flor", "meaning": "flower", "partOfSpeech": "noun", "root": "flor" }
   ]
 }
 ```
@@ -464,6 +479,7 @@ Let's create a forest-dwelling language step by step.
 ### 4. Generated Names
 
 Using this language, we might generate:
+
 - Silvaren (forest-dweller)
 - Lumevil (little light)
 - Vernalor (spring-bringer)
@@ -472,17 +488,20 @@ Using this language, we might generate:
 ## Resources
 
 ### Linguistic Concepts
+
 - **IPA (International Phonetic Alphabet)**: Standard for representing sounds
 - **Phonotactics**: Rules for sound combinations
 - **Morphology**: Word structure and formation
 - **Syntax**: Sentence structure
 
 ### Inspiration Sources
+
 - **Tolkien's Languages**: Quenya, Sindarin (Elvish)
 - **Natural Languages**: Study real-world language families
 - **Conlang Communities**: r/conlangs, Language Creation Society
 
 ### Tools
+
 - **IPA Chart**: https://www.ipachart.com/
 - **Phonology Generators**: Various online tools
 - **Etymology Dictionaries**: For root word inspiration

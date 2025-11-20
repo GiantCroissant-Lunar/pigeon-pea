@@ -53,26 +53,44 @@
     <!-- Plugin System -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
 
-    <!-- Config plugin so its outputs are copied into the console app's plugins folder -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\plugins\src\PigeonPea.Plugins.Config\PigeonPea.Plugins.Config.csproj" PrivateAssets="all" />
+    <!-- Config plugin so its outputs are copied into this console's plugins folder -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\plugins\src\PigeonPea.Plugins.Config\PigeonPea.Plugins.Config.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
 
     <!-- Game Contracts for IRenderer -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
 
-    <!-- Build inventory plugin so it copies into this console's plugins folder -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugins.Inventory.Basic\PigeonPea.Plugins.Inventory.Basic.csproj" PrivateAssets="all" />
+    <!-- Rendering contracts (IRenderer, IRenderTarget, Tile, Viewport, etc.) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
 
-    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Hud.TerminalGui\PigeonPea.Plugins.Hud.TerminalGui.csproj" PrivateAssets="all" />
+    <!-- Scene Management Contracts -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Scene.Contracts\PigeonPea.Scene.Contracts.csproj" />
+
+    <!-- Build inventory plugin so it copies into this console's plugins folder -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugins.Inventory.Basic\PigeonPea.Plugins.Inventory.Basic.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+
+    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Hud.TerminalGui\PigeonPea.Plugins.Hud.TerminalGui.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
 
     <!-- ANSI terminal renderer plugin (build-time only; runtime via plugin system) -->
-    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" PrivateAssets="all" />
+    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+
+    <!-- Modern Edgar Dungeon Generator Plugin -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugin.Dungeon.ModernEdgar\PigeonPea.Plugin.Dungeon.ModernEdgar.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+
+    <!-- Basic Dungeon Generator Plugin (Tier 3) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugin.Dungeon.Basic\PigeonPea.Plugin.Dungeon.Basic.csproj" PrivateAssets="all" />
+
+    <!-- Scene Manager Plugin (build-time, runtime via plugin system) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugin.Scene.Manager\PigeonPea.Plugin.Scene.Manager.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+
+    <!-- Dungeon Renderer Plugin (Tier 3) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugin.Dungeon.Rendering\PigeonPea.Plugin.Dungeon.Rendering.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
 
     <!-- Game-level inventory ECS components for testing inventory service calls -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Items\PigeonPea.Game.Items.csproj" />
 
     <!-- Dungeon generation core (IDungeonGenerator, Basic/ModernEdgar implementations) -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Core\PigeonPea.Dungeon.Core.csproj" />
+    <!-- REMOVED: PigeonPea.Dungeon.Core reference -->
   </ItemGroup>
 
   <ItemGroup>
@@ -83,5 +101,15 @@
     <Compile Remove="Views\PixelMapPanelView.cs" />
     <Compile Remove="Views\DungeonPanelView.cs" />
   </ItemGroup>
+
+  <Target Name="AddPluginsToPublish" AfterTargets="ComputeFilesToPublish">
+    <ItemGroup>
+      <PluginsFiles Include="$(TargetDir)plugins\**\*.*" />
+      <ResolvedFileToPublish Include="@(PluginsFiles)">
+        <RelativePath>plugins\%(RecursiveDir)%(Filename)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
 
 </Project>

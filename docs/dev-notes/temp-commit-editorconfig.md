@@ -8,12 +8,12 @@ status: active
 summary: '- File: dotnet/.editorconfig - Date: 2025-11-13'
 supersedes: []
 tags:
-- architecture
-- documentation
-- guide
-- rendering
-- terminal
-- testing
+  - architecture
+  - documentation
+  - guide
+  - rendering
+  - terminal
+  - testing
 title: 'Temporary Commit Documentation: .editorconfig Configuration'
 ---
 

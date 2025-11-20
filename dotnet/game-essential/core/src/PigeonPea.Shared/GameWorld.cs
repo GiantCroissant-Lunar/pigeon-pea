@@ -7,10 +7,10 @@ using MessagePipe;
 using PigeonPea.Contracts.Plugin;
 using PigeonPea.Dungeon.Contracts;
 using PigeonPea.Dungeon.Contracts.Models;
+using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Components;
 // using PigeonPea.Shared.Dungeon; // Removed: BasicDungeonGenerator moved to plugin
 using PigeonPea.Shared.Events;
-using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
 using Serilog;
@@ -100,7 +100,7 @@ public class GameWorld
     }
 
     /// <summary>
-    /// Creates a new GameWorld with the specified dimensions.
+    /// Creates a new GameWorld with specified dimensions.
     /// For use without dependency injection.
     /// </summary>
     public GameWorld(int width = 80, int height = 50, IEventBus? eventBus = null, IInventoryService? inventoryService = null, IDungeonGenerator? dungeonGenerator = null)
@@ -202,9 +202,9 @@ public class GameWorld
 
     private void GenerateDungeon()
     {
-        // Use pluggable dungeon generator to produce a DungeonData grid
-        var view = _dungeonGenerator.Generate(new DungeonGenerationOptions { Width = Width, Height = Height });
-        var data = DungeonData.FromView(view);
+        // Use pluggable dungeon generator to produce an Entity with dungeon data
+        var dungeonEntity = _dungeonGenerator.Generate(EcsWorld, new DungeonGenerationOptions { Width = Width, Height = Height });
+        var data = ExtractDungeonDataFromEntity(dungeonEntity);
 
         // Create tile entities for each position based on DungeonData
         for (int y = 0; y < Height; y++)
@@ -233,10 +233,47 @@ public class GameWorld
         }
     }
 
+    private static DungeonData ExtractDungeonDataFromEntity(Entity dungeonEntity)
+    {
+        // Extract dungeon data from ECS entity
+        if (dungeonEntity.Has<DungeonMapComponent>())
+        {
+            var dungeonMap = dungeonEntity.Get<DungeonMapComponent>();
+            var width = dungeonMap.Width;
+            var height = dungeonMap.Height;
+
+            var data = new DungeonData(width, height);
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int index = y * width + x;
+                    bool isWalkable = dungeonMap.Walkable[index];
+                    bool isOpaque = dungeonMap.Opaque[index];
+
+                    if (isWalkable)
+                    {
+                        data.SetFloor(x, y);
+                    }
+                    else
+                    {
+                        data.SetWall(x, y);
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        // Fallback: create empty dungeon
+        return new DungeonData(80, 50);
+    }
+
     private void CreateFloorTile(int x, int y)
     {
         EcsWorld.Create(
-            new Position(x, y),
+            new Position(new Point(x, y)),
             new Renderable('.', Color.DarkGray),
             new CTile(TileType.Floor)
         );
@@ -245,7 +282,7 @@ public class GameWorld
     private void CreateWallTile(int x, int y)
     {
         EcsWorld.Create(
-            new Position(x, y),
+            new Position(new Point(x, y)),
             new Renderable('#', Color.White),
             new CTile(TileType.Wall),
             new BlocksMovement()
@@ -254,19 +291,19 @@ public class GameWorld
 
     private void SpawnPlayer()
     {
-        // Find a valid walkable position for the player
+        // Find a valid walkable position for player
         Point playerPos = FindWalkablePosition();
 
         // Create player entity
         PlayerEntity = EcsWorld.Create(
             new Position(playerPos),
             new Renderable('@', Color.Yellow),
-            new PlayerComponent { Name = "Hero" },
-            new Health { Current = 100, Maximum = 100 },
-            new CombatStats(attack: 5, defense: 2),
+            new PlayerComponent("Hero"),
+            new Health(100, 100),
+            new CombatStats(5, 2),
             new FieldOfView(8),
-            new Inventory(maxCapacity: 10),
-            new Experience(startingLevel: 1),
+            new Inventory(10),
+            new Experience(1),
             new BlocksMovement()
         );
 
@@ -276,7 +313,7 @@ public class GameWorld
 
     private Point FindWalkablePosition()
     {
-        // Find the first walkable tile (simple approach)
+        // Find first walkable tile (simple approach)
         // In a real game, you might want to pick a random room center
         for (int y = 0; y < Height; y++)
         {
@@ -306,10 +343,10 @@ public class GameWorld
             EcsWorld.Create(
                 new Position(enemyPos),
                 new Renderable('g', Color.Green),
-                new Health { Current = 20, Maximum = 20 },
-                new CombatStats(attack: 3, defense: 1),
+                new Health(20, 20),
+                new CombatStats(3, 1),
                 new AIComponent(AIBehavior.Aggressive),
-                new ExperienceValue(xp: 35),
+                new ExperienceValue(35),
                 new BlocksMovement()
             );
         }
@@ -367,14 +404,14 @@ public class GameWorld
                 new Position(itemPos),
                 new Renderable('!', Color.Red),
                 new Item("Health Potion", ItemType.Consumable),
-                new Consumable(healthRestore: 25),
+                new Consumable(25),
                 new Pickup()
             );
         }
     }
 
     /// <summary>
-    /// Updates the field of view for all entities with FOV components.
+    /// Updates field of view for all entities with FOV components.
     /// </summary>
     private void UpdateFieldOfView()
     {
@@ -470,7 +507,9 @@ public class GameWorld
                             // Only move if next position is not occupied by another entity
                             else if (!IsPositionOccupied(nextPos))
                             {
-                                pos.Point = nextPos;
+                                // Create new Position component
+                                entity.Remove<Position>();
+                                entity.Add(new Position(nextPos));
                             }
                         }
                     }
@@ -488,50 +527,49 @@ public class GameWorld
         if (!entity.Has<Experience>())
             return;
 
-        ref var experience = ref entity.Get<Experience>();
-        experience.CurrentXP += xp;
+        var experience = entity.Get<Experience>();
+        var newCurrentXP = experience.CurrentXP + xp;
+        var newLevel = experience.Level;
+        var newXPToNext = experience.XPToNextLevel;
 
         // Check for level up
-        while (experience.CurrentXP >= experience.XPToNextLevel)
+        while (newCurrentXP >= newXPToNext)
         {
-            experience.Level++;
-            experience.CurrentXP -= experience.XPToNextLevel;
-            experience.XPToNextLevel = Experience.CalculateXPForLevel(experience.Level + 1);
+            newLevel++;
+            newCurrentXP -= newXPToNext;
+            newXPToNext = Experience.CalculateXPForLevel(newLevel + 1);
 
             // Apply level-up bonuses
-            LevelUp(entity);
+            LevelUp(entity, newLevel);
         }
+
+        // Create new Experience component with updated values
+        entity.Remove<Experience>();
+        entity.Add(new Experience(newCurrentXP, newLevel, newXPToNext));
     }
 
     /// <summary>
     /// Applies stat increases when leveling up.
     /// </summary>
-    private void LevelUp(Entity entity)
+    private void LevelUp(Entity entity, int newLevel)
     {
-        int healthIncrease = 0;
-        int newLevel = 0;
+        int healthIncrease = 10;
 
-        // Increase health
+        // Increase health - create new Health component
         if (entity.Has<Health>())
         {
-            ref var health = ref entity.Get<Health>();
-            healthIncrease = 10;
-            health.Maximum += healthIncrease;
-            health.Current = health.Maximum; // Fully heal on level up
+            var health = entity.Get<Health>();
+            var newMaximum = health.Maximum + healthIncrease;
+            entity.Remove<Health>();
+            entity.Add(new Health(newMaximum, newMaximum)); // Fully heal on level up
         }
 
-        // Increase combat stats
+        // Increase combat stats - create new CombatStats component
         if (entity.Has<CombatStats>())
         {
-            ref var stats = ref entity.Get<CombatStats>();
-            stats.Attack += 1;
-            stats.Defense += 1;
-        }
-
-        // Get new level for event
-        if (entity.Has<Experience>())
-        {
-            newLevel = entity.Get<Experience>().Level;
+            var stats = entity.Get<CombatStats>();
+            entity.Remove<CombatStats>();
+            entity.Add(new CombatStats(stats.Attack + 1, stats.Defense + 1));
         }
 
         // Publish level up event for player
@@ -577,13 +615,14 @@ public class GameWorld
         int damage = Math.Max(1, attackerStats.Attack - defenderStats.Defense);
 
         // Apply damage
-        defenderHealth.Current -= damage;
+        var newHealth = defenderHealth.Current - damage;
+        if (newHealth < 0) newHealth = 0;
 
-        // Clamp health to 0
-        if (defenderHealth.Current < 0)
-            defenderHealth.Current = 0;
+        // Create new Health component with updated values
+        defender.Remove<Health>();
+        defender.Add(new Health(newHealth, defenderHealth.Maximum));
 
-        // Publish PlayerDamagedEvent if defender is the player
+        // Publish PlayerDamagedEvent if defender is player
         if (defender.Has<PlayerComponent>() && _playerDamagedPublisher != null)
         {
             // Get attacker name for source
@@ -702,7 +741,7 @@ public class GameWorld
     }
 
     /// <summary>
-    /// Attempts to move the player in the given direction.
+    /// Attempts to move player in the given direction.
     /// If an enemy is at the target position, attacks instead.
     /// </summary>
     public bool TryMovePlayer(Point direction)
@@ -737,8 +776,9 @@ public class GameWorld
                 return false;
         }
 
-        // Move player
-        playerPos.Point = targetPos;
+        // Move player - create new Position component
+        PlayerEntity.Remove<Position>();
+        PlayerEntity.Add(new Position(targetPos));
         return true;
     }
 
@@ -866,15 +906,17 @@ public class GameWorld
             string itemType = itemComponent.Type.ToString();
 
             var consumable = item.Get<Consumable>();
-            ref var health = ref PlayerEntity.Get<Health>();
+            var health = PlayerEntity.Get<Health>();
 
-            // Restore health
-            health.Current = Math.Min(health.Maximum, health.Current + consumable.HealthRestore);
+            // Restore health - create new Health component with updated values
+            var newCurrent = Math.Min(health.Maximum, health.Current + consumable.HealthRestore);
+            PlayerEntity.Remove<Health>();
+            PlayerEntity.Add(new Health(newCurrent, health.Maximum));
 
             // Remove item from inventory
             inventory.Items.RemoveAt(itemIndex);
 
-            // Destroy the item entity
+            // Destroy: item entity
             EcsWorld.Destroy(item);
 
             // Publish ItemUsedEvent
@@ -981,7 +1023,7 @@ public class GameWorld
     /// </summary>
     private class FallbackDungeonGenerator : IDungeonGenerator
     {
-        public DungeonView Generate(DungeonGenerationOptions options)
+        public Entity Generate(World world, DungeonGenerationOptions options)
         {
             var d = new DungeonData(options.Width, options.Height);
             // Fill with walls
@@ -994,29 +1036,48 @@ public class GameWorld
                 for (int x = 2; x < options.Width - 2; x++)
                     d.SetFloor(x, y);
 
-            return ToView(d);
+            return CreateDungeonEntity(world, d);
         }
 
-        private static DungeonView ToView(DungeonData d)
+        private Entity CreateDungeonEntity(World world, DungeonData d)
         {
-            var view = new DungeonView
-            {
-                Width = d.Width,
-                Height = d.Height,
-                Walkable = d.Walkable,
-                Opaque = d.Opaque,
-                Doors = new byte[d.Height, d.Width]
-            };
+            // Convert DungeonData arrays to flat byte arrays for ECS component
+            var walkableArray = new System.Collections.BitArray(d.Width * d.Height);
+            var opaqueArray = new System.Collections.BitArray(d.Width * d.Height);
+            var doorStates = new byte[d.Width * d.Height];
 
             for (int y = 0; y < d.Height; y++)
             {
                 for (int x = 0; x < d.Width; x++)
                 {
-                    view.Doors[y, x] = (byte)d.Doors[y, x];
+                    int index = y * d.Width + x;
+                    walkableArray[index] = d.Walkable[y, x];
+                    opaqueArray[index] = d.Opaque[y, x];
+                    doorStates[index] = (byte)d.Doors[y, x];
                 }
             }
 
-            return view;
+            // Create dungeon entity in the world
+            var dungeonEntity = world.Create(
+                new DungeonMapComponent
+                {
+                    Width = d.Width,
+                    Height = d.Height,
+                    TileData = new byte[d.Width * d.Height],
+                    DoorStates = doorStates,
+                    Walkable = walkableArray,
+                    Opaque = opaqueArray
+                },
+                new PositionComponent { X = 0, Y = 0 },
+                new RenderableComponent
+                {
+                    Glyph = ' ',
+                    Foreground = SadRogue.Primitives.Color.White,
+                    Background = SadRogue.Primitives.Color.Black
+                }
+            );
+
+            return dungeonEntity;
         }
     }
 }

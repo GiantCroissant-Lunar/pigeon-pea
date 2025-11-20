@@ -9,14 +9,14 @@ summary: 'Goal: Integrate the ColorScheme system with SkiaMapRasterizer and MapC
   to replace hardcoded colors with the new color scheme provider.'
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- ecs
-- rendering
-- rfc
-- terminal
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-010 Phase 2: Detailed Implementation Plan'
 ---
 

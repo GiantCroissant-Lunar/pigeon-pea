@@ -48,11 +48,13 @@ task --list
 When the user asks you to modify code or reports an issue:
 
 1. **Build the project**
+
    ```bash
    task game:build-console
    ```
 
 2. **Check build logs** - Always read build logs for errors
+
    ```bash
    cat "$(ls -t build/_artifacts/latest/build-logs/*.log | head -1)"
    ```
@@ -65,11 +67,13 @@ When the user asks you to modify code or reports an issue:
    - Rebuild
 
 4. **Run the application**
+
    ```bash
    task game:run-console
    ```
 
 5. **Check runtime logs** - Always read runtime logs
+
    ```bash
    cat "$(ls -t build/_artifacts/latest/PigeonPea.Console/logs/*.log 2>/dev/null | head -1)"
    ```
@@ -81,12 +85,14 @@ When the user asks you to modify code or reports an issue:
 ### 2. Never Ask User To Do This
 
 ❌ **DON'T SAY:**
+
 - "Can you build the project and paste the errors?"
 - "Please run the app and tell me what happens"
 - "Try this and let me know if it works"
 - "Build it and share the output"
 
 ✅ **INSTEAD DO:**
+
 - Build it yourself
 - Run it yourself
 - Read the errors yourself
@@ -97,6 +103,7 @@ When the user asks you to modify code or reports an issue:
 ### 3. When to Ask the User
 
 Only ask for:
+
 - **Design decisions**: "Should we use approach A or B?"
 - **Requirements**: "What should the behavior be when X happens?"
 - **Preferences**: "Do you want feature X or Y?"
@@ -107,11 +114,13 @@ Only ask for:
 ### Compiler Errors
 
 Example error:
+
 ```
 GameView.cs(42,15): error CS0103: The name 'renderer' does not exist
 ```
 
 Your response:
+
 1. Parse: File=GameView.cs, Line=42, Error=CS0103 (name doesn't exist)
 2. Read `GameView.cs`
 3. Find line 42
@@ -123,12 +132,14 @@ Your response:
 ### Runtime Errors
 
 Example:
+
 ```
 System.NullReferenceException: Object reference not set to an instance
    at PigeonPea.Console.GameView.Render() in GameView.cs:line 67
 ```
 
 Your response:
+
 1. Read stack trace
 2. Identify: GameView.cs, line 67
 3. Read the file
@@ -156,6 +167,7 @@ This project has comprehensive agent infrastructure in `.agent/`:
 ### Skills Available
 
 Check `.agent/skills/` for reusable procedures:
+
 - `dotnet-build/` - Build workflows
 - `dotnet-test/` - Testing workflows
 - `code-format/` - Formatting tools
@@ -164,6 +176,7 @@ Check `.agent/skills/` for reusable procedures:
 ### Workflows
 
 Check `.agent/workflows/` for structured processes:
+
 - `feature-development.yaml` - Feature development workflow
 
 ## Architecture Overview
@@ -208,11 +221,13 @@ Never use `--no-verify` to skip hooks!
 Be concise and results-focused:
 
 ✅ **Good:**
+
 - "Built successfully. App runs without errors."
 - "Fixed 3 compilation errors. Verified working."
 - "Implemented feature X. Tested with scenario Y."
 
 ❌ **Bad:**
+
 - "I've made changes. Can you test?"
 - "This should work. Let me know if errors."
 - "Try building and tell me what happens."
@@ -220,6 +235,7 @@ Be concise and results-focused:
 ## Verification Before "Done"
 
 Always verify:
+
 - ✅ Builds without errors
 - ✅ Runs without crashes
 - ✅ Produces expected output
@@ -247,6 +263,7 @@ Response: "Fixed GameView.cs line 42 - added missing _renderer field. Built and 
 ## Log Locations
 
 ### Build Logs (Compilation)
+
 ```bash
 # Latest build log
 cat "$(ls -t build/_artifacts/latest/build-logs/*.log | head -1)"
@@ -256,6 +273,7 @@ grep -i "error" build/_artifacts/latest/build-logs/*.log
 ```
 
 ### Runtime Logs (Execution)
+
 ```bash
 # Latest runtime log
 cat "$(ls -t build/_artifacts/latest/PigeonPea.Console/logs/*.log 2>/dev/null | head -1)"

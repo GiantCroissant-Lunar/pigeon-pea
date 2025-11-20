@@ -4,23 +4,20 @@ created: '2025-11-13'
 doc_id: SPEC-00001
 doc_type: spec
 related:
-- RFC-00020
-- SPEC-00002
+  - RFC-00020
+  - SPEC-00002
 status: active
 summary: SVG specification for 36 angle glyphs to be imported into font PUA (Private
   Use Area) for terminal rendering
 supersedes: []
 tags:
-- fonts
-- svg
-- specification
-- pua
-- glyphs
+  - fonts
+  - svg
+  - specification
+  - pua
+  - glyphs
 title: SVG Specification — 36 Angle Glyphs
 ---
-
-
-
 
 # SVG Specification — 36 Angle Glyphs
 

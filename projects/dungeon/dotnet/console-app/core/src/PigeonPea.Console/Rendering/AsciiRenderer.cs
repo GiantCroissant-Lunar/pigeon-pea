@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Text;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 
 namespace PigeonPea.Console.Rendering;
@@ -16,6 +16,8 @@ public class AsciiRenderer : IRenderer
     private readonly StringBuilder _buffer = new();
     private readonly bool _supportsAnsiColors;
 
+    public string Id => "ascii";
+
     /// <summary>
     /// Initializes a new instance of the <see cref="AsciiRenderer"/> class.
     /// </summary>
@@ -29,6 +31,11 @@ public class AsciiRenderer : IRenderer
     /// Gets the capabilities of this renderer.
     /// </summary>
     public RendererCapabilities Capabilities => RendererCapabilities.CharacterBased;
+
+    public void Shutdown()
+    {
+        // No specific shutdown logic needed
+    }
 
     /// <summary>
     /// Initializes the renderer with a render target.

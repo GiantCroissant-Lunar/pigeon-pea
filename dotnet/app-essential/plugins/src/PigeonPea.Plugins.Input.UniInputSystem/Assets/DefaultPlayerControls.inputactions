@@ -52,7 +52,27 @@
           ]
         },
         {
+          "name": "Gamepad DPad",
+          "path": "",
+          "action": "Move",
+          "composite": "2DVector",
+          "compositeParts": [
+            { "name": "up", "path": "<Gamepad>/dpad_up" },
+            { "name": "down", "path": "<Gamepad>/dpad_down" },
+            { "name": "left", "path": "<Gamepad>/dpad_left" },
+            { "name": "right", "path": "<Gamepad>/dpad_right" }
+          ]
+        },
+        {
           "path": "<Keyboard>/space",
+          "action": "Attack"
+        },
+        {
+          "path": "<Gamepad>/a",
+          "action": "Attack"
+        },
+        {
+          "path": "<Mouse>/leftButton",
           "action": "Attack"
         },
         {
@@ -60,11 +80,31 @@
           "action": "Interact"
         },
         {
+          "path": "<Gamepad>/x",
+          "action": "Interact"
+        },
+        {
+          "path": "<Mouse>/rightButton",
+          "action": "Interact"
+        },
+        {
           "path": "<Keyboard>/i",
           "action": "Inventory"
         },
         {
+          "path": "<Gamepad>/y",
+          "action": "Inventory"
+        },
+        {
           "path": "<Keyboard>/escape",
+          "action": "Pause"
+        },
+        {
+          "path": "<Gamepad>/start",
+          "action": "Pause"
+        },
+        {
+          "path": "<Mouse>/middleButton",
           "action": "Pause"
         }
       ]
@@ -105,6 +145,34 @@
         },
         {
           "path": "<Keyboard>/escape",
+          "action": "Cancel"
+        },
+        {
+          "path": "<Mouse>/leftButton",
+          "action": "Submit"
+        },
+        {
+          "path": "<Mouse>/rightButton",
+          "action": "Cancel"
+        },
+        {
+          "name": "Gamepad DPad",
+          "path": "",
+          "action": "Navigate",
+          "composite": "2DVector",
+          "compositeParts": [
+            { "name": "up", "path": "<Gamepad>/dpad_up" },
+            { "name": "down", "path": "<Gamepad>/dpad_down" },
+            { "name": "left", "path": "<Gamepad>/dpad_left" },
+            { "name": "right", "path": "<Gamepad>/dpad_right" }
+          ]
+        },
+        {
+          "path": "<Gamepad>/a",
+          "action": "Submit"
+        },
+        {
+          "path": "<Gamepad>/b",
           "action": "Cancel"
         }
       ]

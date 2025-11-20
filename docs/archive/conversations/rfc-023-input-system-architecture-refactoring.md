@@ -4,26 +4,23 @@ created: '2025-11-19'
 doc_id: RFC-00023
 doc_type: rfc
 related:
-- RFC-00013
-- RFC-00006
-- ADR-00003
+  - RFC-00013
+  - RFC-00006
+  - ADR-00003
 status: draft
 summary: Refactor input system to follow tier-based architecture (Tier 1-4), eliminate
   redundant wrapper projects, and separate platform-specific device implementations
   into plugins following Unity Input System patterns
 supersedes: []
 tags:
-- input
-- architecture
-- refactoring
-- tiered-architecture
-- plugins
-- platform
+  - input
+  - architecture
+  - refactoring
+  - tiered-architecture
+  - plugins
+  - platform
 title: 'Input System Architecture Refactoring: Tier-Based System and Platform Plugins'
 ---
-
-
-
 
 # RFC-023: Input System Architecture Refactoring: Tier-Based System and Platform Plugins
 
@@ -167,19 +164,19 @@ Refactor the input system architecture to:
 
 **Allowed:**
 
-- Tier 2 → Tier 1 
-- Tier 3 → Tier 1, Input.Core (engine) 
-- Tier 4 → Tier 1, Input.Core (engine) 
-- Tier 3 discovers Tier 4 via registry 
-- app-essential → engine 
-- projects → app-essential, engine 
+- Tier 2 → Tier 1
+- Tier 3 → Tier 1, Input.Core (engine)
+- Tier 4 → Tier 1, Input.Core (engine)
+- Tier 3 discovers Tier 4 via registry
+- app-essential → engine
+- projects → app-essential, engine
 
 **Not Allowed:**
 
-- Tier 1 → Any other tier 
+- Tier 1 → Any other tier
 - Tier 3 → Tier 4 direct dependency (use registry)
-- game-essential → app-essential input (input is app-level!) 
-- Lower tier → Higher tier 
+- game-essential → app-essential input (input is app-level!)
+- Lower tier → Higher tier
 
 ### Unity Input System Pattern
 
@@ -255,11 +252,13 @@ Refactor the input system architecture to:
 **Actions:**
 
 1. **Verify existence:**
+
    ```bash
    ls dotnet/app-essential/core/src/PigeonPea.Shared.Input
    ```
 
 2. **Delete project (if exists):**
+
    ```bash
    rm -rf dotnet/app-essential/core/src/PigeonPea.Shared.Input/
    ```
@@ -278,6 +277,7 @@ Refactor the input system architecture to:
    ```
 
 **Validation:**
+
 - [ ] PigeonPea.Shared.Input directory deleted (or confirmed missing)
 - [ ] UniInputSystem plugin builds successfully
 - [ ] No broken references in solution
@@ -473,6 +473,7 @@ public sealed class ConsoleKeyboardPlugin : IPlugin
 
 **Update Directory.Packages.props:**
 Before creating the project, ensure SDL3-CS is available.
+
 ```xml
 <!-- projects/dungeon/dotnet/Directory.Packages.props -->
 <PackageVersion Include="SDL3-CS" Version="3.0.0-preview*" />
@@ -770,13 +771,13 @@ public sealed class UniInputSystemService : IService, IDisposable
         // TODO: In production, use IFileSystem service or Configuration
         // For now, assume file is copied to content/input/
         var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "content", "input", "DefaultPlayerControls.inputactions");
-        
+
         if (File.Exists(path))
         {
             _logger?.LogInformation("Loading input controls from {Path}", path);
             return File.ReadAllText(path);
         }
-        
+
         _logger?.LogWarning("Input controls file not found at {Path}. Using empty config.", path);
         return "{ \"maps\": [] }";
     }
@@ -800,11 +801,13 @@ public sealed class UniInputSystemService : IService, IDisposable
 **Actions:**
 
 1. **Verify existence:**
+
    ```bash
    ls dotnet/game-essential/core/src/PigeonPea.Game.Input
    ```
 
 2. **Delete project (if exists):**
+
    ```bash
    rm -rf dotnet/game-essential/core/src/PigeonPea.Game.Input/
    ```
@@ -812,6 +815,7 @@ public sealed class UniInputSystemService : IService, IDisposable
 3. **Move game behavior to content plugins:**
 
    Create in content layer:
+
    ```bash
    projects/dungeon/dotnet/console-app/core/src/DungeonGame.Console/
      └─ Input/
@@ -1439,6 +1443,7 @@ projects/dungeon/
 ```
 
 **Key:**
+
 - **Configuration** (content-authoring): WHAT inputs exist
 - **Mechanism** (engine): HOW to read input
 - **Service** (Tier 3): Orchestration

@@ -1,4 +1,4 @@
-namespace PigeonPea.Shared.Input.Bindings;
+namespace PigeonPea.Input.Core.Bindings;
 
 /// <summary>
 /// Type of composite binding.

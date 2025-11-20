@@ -8,16 +8,16 @@ status: active
 summary: 'Date: 2025-11-13 Reviewer: Claude Agent'
 supersedes: []
 tags:
-- adr
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rendering
-- terminal
-- testing
+  - adr
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rendering
+  - terminal
+  - testing
 title: RFC-005 & RFC-006 Implementation Review
 ---
 

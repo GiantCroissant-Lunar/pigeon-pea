@@ -4,13 +4,13 @@ doc_type: rfc
 status: draft
 summary: 'Created: 2025-11-20 For: Implementation by AI agents'
 tags:
-- agents
-- architecture
-- documentation
-- ecs
-- plugins
-- rfc
-- testing
+  - agents
+  - architecture
+  - documentation
+  - ecs
+  - plugins
+  - rfc
+  - testing
 title: 'Summary: Game Services Documentation Package'
 ---
 
@@ -24,7 +24,9 @@ title: 'Summary: Game Services Documentation Package'
 I've created comprehensive documentation for the six core game services architecture:
 
 ### 1. Main RFC (Umbrella Document)
+
 **File:** `docs/_inbox/game-services-architecture.md`
+
 - Overview of all six services
 - Architecture principles
 - Design patterns
@@ -35,6 +37,7 @@ I've created comprehensive documentation for the six core game services architec
 ### 2. Detailed Service RFCs
 
 **File:** `docs/_inbox/stats-service-rfc.md`
+
 - Complete Stats Service specification
 - Service contract (interface + DTOs)
 - ECS components
@@ -44,6 +47,7 @@ I've created comprehensive documentation for the six core game services architec
 - Use cases for characters, weapons, items, traps
 
 **File:** `docs/_inbox/world-management-service-rfc.md`
+
 - Complete World Management Service specification
 - Multiple world patterns (interpolation, simulation, scene management)
 - Entity transfer between worlds
@@ -54,6 +58,7 @@ I've created comprehensive documentation for the six core game services architec
 ### 3. Implementation Guide
 
 **File:** `docs/_inbox/game-services-implementation-guide.md`
+
 - Step-by-step implementation instructions
 - Implementation order (dependencies)
 - Code examples for each phase
@@ -114,31 +119,39 @@ I've created comprehensive documentation for the six core game services architec
 ## Key Architectural Decisions
 
 ### 1. World-Aware Services
+
 All services accept `World` as a parameter:
+
 ```csharp
 statsService.GetStats(world, entity);  // ✅ Correct
 statsService.GetStats(entity);          // ❌ Wrong
 ```
 
 ### 2. No World Abstraction
+
 **Critical:** `Arch.Core.World` is NOT abstracted as a service.
+
 - World is shared infrastructure (like memory allocator)
 - Services operate on World directly for performance
 - World Management Service manages multiple worlds, not World operations
 
 ### 3. ECS-First Design
+
 - Services operate on `Arch.Core.Entity` and components
 - No EntityId abstraction layer
 - Components in `PigeonPea.Shared.ECS`
 
 ### 4. Data-Driven Configuration
+
 - Stats definitions: `stats-definitions.json`
 - Character classes: `character-classes.json`
 - Animations: `animations.json`
 - Modder-friendly, no recompilation needed
 
 ### 5. Four-Tier Architecture
+
 Each service follows standard pattern:
+
 - Tier 1: Contract (interface + DTOs)
 - Tier 2: Proxy (source-generated routing)
 - Tier 3: Plugin Implementation
@@ -186,6 +199,7 @@ Implement in this order due to dependencies:
 ### Before Implementation:
 
 1. **Validate Documents**
+
    ```bash
    python scripts/validate-docs.py
    ```

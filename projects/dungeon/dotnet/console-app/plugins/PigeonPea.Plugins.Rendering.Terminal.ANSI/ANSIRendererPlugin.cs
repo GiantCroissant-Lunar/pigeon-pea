@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Plugin;
 using PigeonPea.Game.Contracts.Rendering;
+using UnifiedIRenderer = PigeonPea.Rendering.Contracts.IRenderer;
 
 namespace PigeonPea.Plugins.Rendering.Terminal.ANSI;
 
@@ -10,7 +11,7 @@ namespace PigeonPea.Plugins.Rendering.Terminal.ANSI;
 public class ANSIRendererPlugin : IPlugin
 {
     private ILogger? _logger;
-    private ANSIRenderer? _renderer;
+    private UnifiedANSIRenderer? _unifiedRenderer;
 
     /// <inheritdoc/>
     public string Id => "rendering-terminal-ansi";
@@ -32,22 +33,20 @@ public class ANSIRendererPlugin : IPlugin
         _logger = context.Logger;
         _logger.LogInformation("Initializing {PluginName} v{Version}", Name, Version);
 
-        // Create renderer instance
-        _renderer = new ANSIRenderer(_logger);
-
-        // Register renderer in service registry
-        context.Registry.Register<IRenderer>(
-            _renderer,
+        // Create and register Unified Renderer (Tier 1)
+        _unifiedRenderer = new UnifiedANSIRenderer();
+        context.Registry.Register<UnifiedIRenderer>(
+            _unifiedRenderer,
             new ServiceMetadata
             {
                 Priority = 100,
-                Name = "ANSIRenderer",
+                Name = "UnifiedANSIRenderer",
                 Version = Version,
                 PluginId = Id
             }
         );
 
-        _logger.LogInformation("ANSI terminal renderer registered successfully");
+        _logger.LogInformation("ANSI terminal renderer registered successfully (Unified Mode)");
         return Task.CompletedTask;
     }
 
@@ -61,11 +60,12 @@ public class ANSIRendererPlugin : IPlugin
     /// <inheritdoc/>
     public Task StopAsync(CancellationToken ct = default)
     {
-        if (_renderer != null)
+        if (_unifiedRenderer != null)
         {
-            _renderer.Shutdown();
-            _logger?.LogInformation("ANSI renderer plugin stopped");
+            _unifiedRenderer.Shutdown();
         }
+
+        _logger?.LogInformation("ANSI renderer plugin stopped");
         return Task.CompletedTask;
     }
 }

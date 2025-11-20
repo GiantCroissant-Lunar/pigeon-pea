@@ -72,11 +72,11 @@ These do **not** share a single collection type, so we deliberately isolate Cysh
   - HUD/game viewmodels (`HudScaleViewModel.AvailableModes`).
 - Treat these as the **authoritative representation** of a collection in the game logic.
 
-### 3.2 Where to *not* use them directly
+### 3.2 Where to _not_ use them directly
 
 - Do **not** pass `ObservableList<T>` directly into UI controls that expect:
   - `ObservableCollection<T>` / `INotifyCollectionChanged` (WPF/ReactiveUI bindings).
-  - `IListDataSource`, `IList` or arrays (Terminal.Gui). 
+  - `IListDataSource`, `IList` or arrays (Terminal.Gui).
 - Instead, build **thin adapters** at the UI boundary (see next section).
 
 ---

@@ -16,7 +16,7 @@
       - "python{{ python_version }}-venv"
       - python3-pip
     state: present
-    update_cache: yes
+    update_cache: true
   when:
     - ansible_os_family == "Debian"
     - python_check.rc != 0

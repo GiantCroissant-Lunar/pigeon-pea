@@ -1,6 +1,6 @@
-using PigeonPea.Shared.Input.Bindings;
+using PigeonPea.Input.Core.Bindings;
 
-namespace PigeonPea.Shared.Input.Controls;
+namespace PigeonPea.Input.Core.Controls;
 
 /// <summary>
 /// Platform-agnostic input device interface.

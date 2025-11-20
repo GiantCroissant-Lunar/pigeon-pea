@@ -4,23 +4,20 @@ created: '2025-11-10'
 doc_id: PLAN-00004
 doc_type: plan
 related:
-- RFC-00005
-- PLAN-00001
-- PLAN-00003
+  - RFC-00005
+  - PLAN-00001
+  - PLAN-00003
 status: active
 summary: Create contract projects for plugin system as defined in RFC-005 Phase 2
 supersedes: []
 tags:
-- issue
-- contracts
-- rfc-005
-- phase-2
-- infrastructure
+  - issue
+  - contracts
+  - rfc-005
+  - phase-2
+  - infrastructure
 title: 'Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system'
 ---
-
-
-
 
 # Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system
 

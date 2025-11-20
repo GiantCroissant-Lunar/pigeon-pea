@@ -1,4 +1,4 @@
-using PigeonPea.Dungeon.Core;
+using PigeonPea.Dungeon.Contracts;
 using PigeonPea.Dungeon.Contracts.Models;
 using Riok.Mapperly.Abstractions;
 

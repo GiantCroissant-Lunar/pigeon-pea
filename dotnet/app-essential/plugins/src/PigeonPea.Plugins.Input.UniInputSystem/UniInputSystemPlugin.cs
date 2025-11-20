@@ -23,7 +23,7 @@ public sealed class UniInputSystemPlugin : IPlugin
         _logger = context.Logger;
         _logger.LogInformation("Initializing {PluginName} v{Version}", Name, Version);
 
-        _service = new UniInputSystemService(_logger);
+        _service = new UniInputSystemService(context.Registry, _logger);
 
         context.Registry.Register<IService>(
             _service,

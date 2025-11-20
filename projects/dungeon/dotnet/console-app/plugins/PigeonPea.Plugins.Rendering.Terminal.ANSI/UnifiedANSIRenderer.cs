@@ -13,9 +13,9 @@ public class UnifiedANSIRenderer : IRenderer
     private bool _initialized;
 
     public string Id => "ansi-terminal-renderer";
-    
-    public RendererCapabilities Capabilities => 
-        RendererCapabilities.TrueColor | 
+
+    public RendererCapabilities Capabilities =>
+        RendererCapabilities.TrueColor |
         RendererCapabilities.CharacterBased;
 
     public void Initialize(IRenderTarget target)
@@ -26,7 +26,7 @@ public class UnifiedANSIRenderer : IRenderer
 
         Console.OutputEncoding = Encoding.UTF8;
         Console.CursorVisible = false;
-        
+
         // Initial clear
         _buffer.Clear();
         _buffer.Append("\x1b[2J\x1b[H"); // Clear screen and home
@@ -37,7 +37,7 @@ public class UnifiedANSIRenderer : IRenderer
     public void Shutdown()
     {
         if (!_initialized) return;
-        
+
         Console.Write("\x1b[0m"); // Reset
         Console.Write("\x1b[2J\x1b[H"); // Clear
         Console.CursorVisible = true;

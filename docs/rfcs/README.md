@@ -9,16 +9,16 @@ summary: This directory contains RFCs (Request for Comments) for architectural d
   feature proposals, and significant changes to the Pigeon Pea project.
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rendering
-- rfc
-- terminal
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: Request for Comments (RFCs)
 ---
 

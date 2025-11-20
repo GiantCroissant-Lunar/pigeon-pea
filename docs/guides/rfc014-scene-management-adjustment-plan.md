@@ -4,25 +4,22 @@ created: '2025-11-19'
 doc_id: GUIDE-00002
 doc_type: guide
 related:
-- RFC-00014
-- GUIDE-00001
+  - RFC-00014
+  - GUIDE-00001
 status: active
 summary: Detailed step-by-step adjustment plan to complete RFC-014 Scene Management
   implementation, addressing interface mismatches, compilation errors, and missing
   features
 supersedes: []
 tags:
-- rfc-014
-- scene-management
-- ecs
-- adjustment
-- implementation
+  - rfc-014
+  - scene-management
+  - ecs
+  - adjustment
+  - implementation
 title: 'RFC-014 Scene Management: Adjustment Plan'
 updated: '2025-11-19'
 ---
-
-
-
 
 # RFC-014 Scene Management: Adjustment Plan
 
@@ -66,6 +63,7 @@ The RFC-014 implementation is **60% complete** with good infrastructure but crit
 ### ❌ **What's Broken**
 
 1. **Interface Mismatch**
+
    ```csharp
    // Current (OLD)
    public interface IDungeonGenerator
@@ -102,6 +100,7 @@ The RFC-014 implementation is **60% complete** with good infrastructure but crit
 **File:** `dotnet/game-essential/core/src/PigeonPea.Dungeon.Contracts/IDungeonGenerator.cs`
 
 **Before:**
+
 ```csharp
 using PigeonPea.Dungeon.Contracts.Models;
 
@@ -114,6 +113,7 @@ public interface IDungeonGenerator
 ```
 
 **After:**
+
 ```csharp
 using Arch.Core;
 using PigeonPea.Dungeon.Contracts.Models;
@@ -133,12 +133,14 @@ public interface IDungeonGenerator
 ```
 
 **Changes:**
+
 - ✅ Add `using Arch.Core;`
 - ✅ Change return type from `DungeonView` to `Entity`
 - ✅ Add `World world` parameter
 - ✅ Add XML documentation
 
 **Impact:**
+
 - All implementations must be updated to match new signature
 
 ---
@@ -148,6 +150,7 @@ public interface IDungeonGenerator
 **File:** `dotnet/game-essential/core/src/PigeonPea.Dungeon.Contracts/PigeonPea.Dungeon.Contracts.csproj`
 
 **Before:**
+
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -163,6 +166,7 @@ public interface IDungeonGenerator
 ```
 
 **After:**
+
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -179,6 +183,7 @@ public interface IDungeonGenerator
 ```
 
 **Changes:**
+
 - ✅ Add `Arch` package reference (needed for `Entity`, `World`)
 
 ---
@@ -188,6 +193,7 @@ public interface IDungeonGenerator
 **File:** `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Dungeon.Basic/PigeonPea.Plugin.Dungeon.Basic.csproj`
 
 **Before:**
+
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -204,6 +210,7 @@ public interface IDungeonGenerator
 ```
 
 **After:**
+
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -237,6 +244,7 @@ public interface IDungeonGenerator
 ```
 
 **Changes:**
+
 - ✅ Add `Arch` package (for `Entity`, `World`, `QueryDescription`)
 - ✅ Add `Microsoft.Extensions.Logging.Abstractions`
 - ✅ Add reference to `PigeonPea.Shared` (for `DungeonMapComponent`, etc.)
@@ -249,6 +257,7 @@ public interface IDungeonGenerator
 **File:** `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Dungeon.Basic/BasicDungeonGenerator.cs`
 
 **Current Issues:**
+
 - Line 13: Signature matches new interface ✅
 - Missing: Create plugin wrapper ❌
 - Missing: Create entity at end of generation ❌
@@ -390,11 +399,13 @@ private static DungeonView ToView(DungeonData d)
 **File:** `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Dungeon.ModernEdgar/ModernEdgarDungeonGenerator.cs`
 
 **Current Signature:**
+
 ```csharp
 public DungeonView Generate(DungeonGenerationOptions options)
 ```
 
 **New Signature:**
+
 ```csharp
 public Entity Generate(World world, DungeonGenerationOptions options)
 ```
@@ -509,6 +520,7 @@ dotnet build
 ```
 
 **Expected Result:**
+
 ```
 Build succeeded.
     0 Warning(s)
@@ -597,6 +609,7 @@ while (running)
 **File:** `projects/dungeon/dotnet/console-app/core/src/PigeonPea.Console/PigeonPea.Console.csproj`
 
 **Add:**
+
 ```xml
 <ItemGroup>
   <!-- ... existing references ... -->
@@ -616,6 +629,7 @@ while (running)
 **File:** `projects/dungeon/dotnet/console-app/core/src/PigeonPea.Console/PigeonPea.Console.csproj`
 
 **Add plugin reference:**
+
 ```xml
 <ItemGroup>
   <!-- ... existing plugin references ... -->
@@ -974,6 +988,7 @@ public class SceneIntegrationTests
 ### **Issue: Compilation Error - "Type 'Entity' not found"**
 
 **Solution:**
+
 ```bash
 # Add Arch package reference
 dotnet add package Arch --version 2.0.0
@@ -983,6 +998,7 @@ dotnet add package Arch --version 2.0.0
 
 **Solution:**
 Ensure method signature exactly matches interface:
+
 ```csharp
 // Must match:
 Entity Generate(World world, DungeonGenerationOptions options)
@@ -991,6 +1007,7 @@ Entity Generate(World world, DungeonGenerationOptions options)
 ### **Issue: "DungeonMapComponent not found"**
 
 **Solution:**
+
 ```bash
 # Add reference to PigeonPea.Shared
 dotnet add reference path/to/PigeonPea.Shared.csproj
@@ -999,6 +1016,7 @@ dotnet add reference path/to/PigeonPea.Shared.csproj
 ### **Issue: Player doesn't move**
 
 **Debug:**
+
 ```csharp
 // Add logging in InputHandler
 _logger.LogDebug("Player at ({X}, {Y}), moving to ({NewX}, {NewY}), Walkable: {Walkable}",
@@ -1008,6 +1026,7 @@ _logger.LogDebug("Player at ({X}, {Y}), moving to ({NewX}, {NewY}), Walkable: {W
 ### **Issue: Rendering shows black screen**
 
 **Debug:**
+
 ```csharp
 // Check dungeon entity exists
 var query = new QueryDescription().WithAll<DungeonMapComponent>();
@@ -1021,11 +1040,13 @@ _logger.LogInformation("Dungeon entities in world: {Count}", count);
 ## **Success Criteria**
 
 ### **Phase 1 Complete When:**
+
 - ✅ All plugins compile without errors
 - ✅ `dotnet build` succeeds for entire solution
 - ✅ Unit tests pass
 
 ### **Phase 2 Complete When:**
+
 - ✅ Console app starts using scenes
 - ✅ Dungeon entity created in scene world
 - ✅ Player entity created in scene world
@@ -1035,6 +1056,7 @@ _logger.LogInformation("Dungeon entities in world: {Count}", count);
 - ✅ Walls block movement
 
 ### **RFC-014 Fully Implemented When:**
+
 - ✅ All Phase 1 & 2 criteria met
 - ✅ Systems (Movement, FOV) implemented
 - ✅ Scene transitions work

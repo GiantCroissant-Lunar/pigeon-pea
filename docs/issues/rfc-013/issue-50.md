@@ -8,10 +8,10 @@ status: active
 summary: 'RFC Reference: RFC-013: Yazi-integrated Rust CLI'
 supersedes: []
 tags:
-- ci-cd
-- documentation
-- rfc
-- terminal
+  - ci-cd
+  - documentation
+  - rfc
+  - terminal
 title: Yazi integration doc + packaging pipeline
 ---
 

@@ -1,9 +1,9 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using PigeonPea.Shared.Input.Actions;
-using PigeonPea.Shared.Input.Bindings;
+using PigeonPea.Input.Core.Actions;
+using PigeonPea.Input.Core.Bindings;
 
-namespace PigeonPea.Shared.Input.Json;
+namespace PigeonPea.Input.Core.Json;
 
 /// <summary>
 /// JSON representation of InputActionAsset (matches Unity format).
@@ -166,10 +166,10 @@ public sealed class InputActionAssetJson
                     {
                         bindingJson.Composite = binding.Composite.Type.ToString();
                         bindingJson.CompositeParts = binding.Composite.Bindings
-                            .Select(kvp => new CompositePartJson 
-                            { 
-                                Name = kvp.Key, 
-                                Path = kvp.Value.Path 
+                            .Select(kvp => new CompositePartJson
+                            {
+                                Name = kvp.Key,
+                                Path = kvp.Value.Path
                             })
                             .ToList();
                     }

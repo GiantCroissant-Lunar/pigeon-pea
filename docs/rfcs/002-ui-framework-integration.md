@@ -8,7 +8,6 @@ status: active
 summary: Documentation for 002 Ui Framework Integration
 supersedes: []
 tags:
-- rfc
+  - rfc
 title: 002 Ui Framework Integration
 ---
-

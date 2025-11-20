@@ -115,7 +115,7 @@ public class SoundChangeEngine : ISoundChangeEngine
         // 1. Transform the lexicon by applying sound changes to all words
         // 2. Update phoneme inventory if sound changes introduce new phonemes or remove old ones
         // 3. Update phonotactic rules if sound changes affect allowed clusters
-        
+
         // For now, we return the derived language with the sound change rules attached
         // The actual lexicon transformation would happen when the lexicon is loaded
 

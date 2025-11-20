@@ -16,12 +16,12 @@ public class RendererAdapter : PigeonPea.Game.Contracts.Rendering.IRenderer
     public RenderingCapabilities Capabilities => RenderingCapabilities.ANSI;
 
     public RendererAdapter(
-        IDungeonRenderer dungeonRenderer, 
+        IDungeonRenderer dungeonRenderer,
         PigeonPea.Rendering.Contracts.IRenderer platformRenderer)
     {
         _dungeonRenderer = dungeonRenderer;
         _platformRenderer = platformRenderer;
-        
+
         // Wire them up
         _dungeonRenderer.Initialize(_platformRenderer);
     }
@@ -37,12 +37,6 @@ public class RendererAdapter : PigeonPea.Game.Contracts.Rendering.IRenderer
     {
         if (state.Dungeon != null)
         {
-            // Render dungeon (which calls BeginFrame/EndFrame internally in current implementation)
-            // Wait, DungeonRenderer.Render calls BeginFrame/EndFrame.
-            // If we want to draw UI on top, we should split them.
-            // But for now, let's assume DungeonRenderer handles the whole frame or at least the dungeon part.
-            // If we need to draw text on top, we might have issues if EndFrame flushes.
-            
             _dungeonRenderer.Render(state.Dungeon, state.PlayerX, state.PlayerY);
         }
         else

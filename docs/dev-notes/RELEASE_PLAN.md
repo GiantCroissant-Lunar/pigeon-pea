@@ -9,13 +9,13 @@ summary: 'This document describes how we plan to ship self-contained bundles of 
   for different platforms, including:'
 supersedes: []
 tags:
-- ci-cd
-- ecs
-- fonts
-- guide
-- rendering
-- terminal
-- testing
+  - ci-cd
+  - ecs
+  - fonts
+  - guide
+  - rendering
+  - terminal
+  - testing
 title: 'Release Plan: Cross-Platform Bundles'
 ---
 

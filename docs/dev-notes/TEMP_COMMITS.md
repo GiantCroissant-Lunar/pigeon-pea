@@ -8,14 +8,14 @@ status: active
 summary: '- Message: docs: document domain-driven architecture and RFC-007 - Key files:'
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- ecs
-- rendering
-- rfc
-- terminal
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: Temporary Commit Plan (Safe to delete after use)
 ---
 

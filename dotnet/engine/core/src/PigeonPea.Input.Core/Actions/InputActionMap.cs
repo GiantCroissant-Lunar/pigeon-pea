@@ -1,4 +1,4 @@
-namespace PigeonPea.Shared.Input.Actions;
+namespace PigeonPea.Input.Core.Actions;
 
 /// <summary>
 /// Collection of related actions (e.g., "Gameplay", "UI").

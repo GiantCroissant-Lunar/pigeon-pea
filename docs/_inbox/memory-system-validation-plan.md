@@ -4,10 +4,10 @@ doc_type: plan
 status: draft
 summary: 'Previous attempts at agent memory failed because:'
 tags:
-- agents
-- ecs
-- plan
-- testing
+  - agents
+  - ecs
+  - plan
+  - testing
 title: Memory System Validation Plan
 ---
 

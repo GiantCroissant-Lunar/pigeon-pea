@@ -8,15 +8,15 @@ status: active
 summary: 'Created: 2025-11-13 For: Agent implementing Phase 6 of RFC-007'
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- rendering
-- rfc
-- terminal
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - rendering
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-007 Phase 6: Deprecation and Documentation - Detailed Instructions'
 ---
 

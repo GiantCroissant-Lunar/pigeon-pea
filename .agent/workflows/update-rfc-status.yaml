@@ -28,7 +28,7 @@ stages:
         type: manual
         description: |
           Edit RFC front-matter:
-          
+
           implementation:
             status: 'in-progress'  # not-started | in-progress | completed | blocked | deferred
             completion: 50         # 0-100 percentage
@@ -41,7 +41,7 @@ stages:
         type: manual
         description: |
           If RFC is blocked, update:
-          
+
           dependencies:
             rfcs: ['RFC-00013']    # RFCs this depends on
             blocks: ['RFC-00050']  # RFCs blocked by this one
@@ -83,13 +83,13 @@ stages:
         type: output
         template: |
           ✅ RFC Status Updated: {{ doc_id }}
-          
+
           Status: {{ status }}
           Completion: {{ completion }}%
           Tasks: {{ task_count }}
-          
+
           Dashboard updated: docs/DASHBOARD.md
-          
+
           Next steps:
           {% if status == 'blocked' %}
           - Resolve blocking dependencies: {{ blocking_rfcs }}

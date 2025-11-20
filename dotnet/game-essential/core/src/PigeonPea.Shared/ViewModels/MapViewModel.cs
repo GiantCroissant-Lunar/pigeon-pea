@@ -3,6 +3,7 @@ using System.Reactive.Linq;
 using Arch.Core;
 using Arch.Core.Extensions;
 using ObservableCollections;
+using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Rendering;
 using ReactiveUI;

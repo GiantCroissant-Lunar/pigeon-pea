@@ -47,32 +47,36 @@ Item Names:
 
 ### Sample Phrases
 
-| English | High Elvish | Literal Translation |
-|---------|-------------|---------------------|
-| Hello | Aelór | Light-greeting |
-| Farewell | Namarië | Be well |
-| Thank you | Hantale | Gift-thanks |
-| Friend | Mellon | Companion |
-| Star | Elen | Star |
-| Forest | Silva | Forest |
-| Water | Nen | Water |
-| Light | Lóme | Light |
+| English   | High Elvish | Literal Translation |
+| --------- | ----------- | ------------------- |
+| Hello     | Aelór       | Light-greeting      |
+| Farewell  | Namarië     | Be well             |
+| Thank you | Hantale     | Gift-thanks         |
+| Friend    | Mellon      | Companion           |
+| Star      | Elen        | Star                |
+| Forest    | Silva       | Forest              |
+| Water     | Nen         | Water               |
+| Light     | Lóme        | Light               |
 
 ### Grammar Features
 
 **Pluralization**: Add suffix "-lir"
+
 - Elen → Elenlir (stars)
 - Mellon → Mellonlir (friends)
 
 **Genitive (Possession)**: Add suffix "-ien"
+
 - Elen → Elenien (of the star)
 - Silva → Silvien (of the forest)
 
 **Feminine Marker**: Add suffix "-iel"
+
 - Aelor → Aelóriel (light maiden)
 - Mir → Miriel (jewel maiden)
 
 **Agent Noun**: Add suffix "-ar"
+
 - Thal → Thalar (stone-worker)
 - Mir → Mirar (jeweler)
 
@@ -126,29 +130,32 @@ Item Names:
 
 ### Sample Phrases
 
-| English | Dwarvish | Literal Translation |
-|---------|----------|---------------------|
-| Greetings | Khazûn | Stone-greeting |
-| Farewell | Baraz-dûm | Red-halls (safe journey) |
-| Thank you | Gund-rak | Stone-gift |
-| Friend | Khel-zad | Silver-companion |
-| Mountain | Baraz | Red-peak |
-| Stone | Gund | Stone |
-| Gold | Khel | Silver/precious |
-| Axe | Gimr | Axe |
+| English   | Dwarvish  | Literal Translation      |
+| --------- | --------- | ------------------------ |
+| Greetings | Khazûn    | Stone-greeting           |
+| Farewell  | Baraz-dûm | Red-halls (safe journey) |
+| Thank you | Gund-rak  | Stone-gift               |
+| Friend    | Khel-zad  | Silver-companion         |
+| Mountain  | Baraz     | Red-peak                 |
+| Stone     | Gund      | Stone                    |
+| Gold      | Khel      | Silver/precious          |
+| Axe       | Gimr      | Axe                      |
 
 ### Grammar Features
 
 **Triconsonantal Roots**: Words built from 3-consonant roots
+
 - K-H-Z (dwarf): Khazad, Khazûn, Khazra
 - G-N-D (stone): Gund, Gundabad, Gundrak
 - B-R-Z (red/fire): Baraz, Barazûn, Barazdûm
 
 **Pluralization**: Add suffix "-ûl"
+
 - Khazad → Khazadûl (dwarves)
 - Gund → Gundûl (stones)
 
 **Compound Formation**: Direct concatenation with optional connector
+
 - Khazad + dûm → Khazad-dûm (dwarf-halls)
 - Baraz + gund → Baraz-gund (red-stone)
 
@@ -202,29 +209,32 @@ Artifact Names:
 
 ### Sample Phrases
 
-| English | Draconic | Literal Translation |
-|---------|----------|---------------------|
-| Greetings | Skaroth | Fire-ancient |
-| Farewell | Zharakul | Flame-eternal |
-| Power | Axis | Power |
-| Fire | Skar | Fire |
-| Sky | Xar | Sky |
-| Ancient | Thar | Ancient |
-| Scale | Zhir | Scale |
-| Wing | Thax | Wing |
+| English   | Draconic | Literal Translation |
+| --------- | -------- | ------------------- |
+| Greetings | Skaroth  | Fire-ancient        |
+| Farewell  | Zharakul | Flame-eternal       |
+| Power     | Axis     | Power               |
+| Fire      | Skar     | Fire                |
+| Sky       | Xar      | Sky                 |
+| Ancient   | Thar     | Ancient             |
+| Scale     | Zhir     | Scale               |
+| Wing      | Thax     | Wing                |
 
 ### Grammar Features
 
 **Compound Words**: Extensive use of compounds
+
 - Skar + axis → Skaraxis (fire-power)
 - Xar + thar → Xarthar (sky-ancient)
 - Zhir + thax → Zhirthax (scale-wing)
 
 **Intensification**: Doubling vowels for emphasis
+
 - Skar → Skaar (great fire)
 - Thar → Thaar (very ancient)
 
 **Verb-First Structure**: Actions precede actors
+
 - Breathes dragon fire → Skar drakaar axis
 
 ### Example Sentences
@@ -245,22 +255,22 @@ Structure: [Verb] [Subject] [Object]
 
 ### Phonological Comparison
 
-| Feature | High Elvish | Dwarvish | Draconic |
-|---------|-------------|----------|----------|
-| Vowel Count | 8 | 5 | 7 |
-| Consonant Count | 11 | 14 | 11 |
-| Syllable Complexity | Simple | Complex | Varied |
-| Consonant Clusters | Rare | Common | Moderate |
-| Aesthetic | Flowing | Harsh | Sibilant |
+| Feature             | High Elvish | Dwarvish | Draconic |
+| ------------------- | ----------- | -------- | -------- |
+| Vowel Count         | 8           | 5        | 7        |
+| Consonant Count     | 11          | 14       | 11       |
+| Syllable Complexity | Simple      | Complex  | Varied   |
+| Consonant Clusters  | Rare        | Common   | Moderate |
+| Aesthetic           | Flowing     | Harsh    | Sibilant |
 
 ### Grammatical Comparison
 
-| Feature | High Elvish | Dwarvish | Draconic |
-|---------|-------------|----------|----------|
-| Word Order | SVO | VSO | VSO |
-| Morphology | Agglutinative | Root-based | Compound-heavy |
-| Pluralization | Suffix (-lir) | Suffix (-ûl) | Prefix (zha-) |
-| Compounds | Connector | Direct | Direct |
+| Feature       | High Elvish   | Dwarvish     | Draconic       |
+| ------------- | ------------- | ------------ | -------------- |
+| Word Order    | SVO           | VSO          | VSO            |
+| Morphology    | Agglutinative | Root-based   | Compound-heavy |
+| Pluralization | Suffix (-lir) | Suffix (-ûl) | Prefix (zha-)  |
+| Compounds     | Connector     | Direct       | Direct         |
 
 ### Name Length Comparison
 
@@ -511,8 +521,8 @@ Use sound changes to create regional variants:
   "id": "wood-elvish",
   "parentLanguageId": "high-elvish",
   "soundChanges": [
-    {"source": "th", "target": "f"},
-    {"source": "á", "target": "a"}
+    { "source": "th", "target": "f" },
+    { "source": "á", "target": "a" }
   ]
 }
 ```
@@ -534,6 +544,7 @@ These three sample languages demonstrate the versatility of the Fantasy Language
 Use them as-is, modify them for your needs, or use them as templates for creating entirely new languages!
 
 For more information, see:
+
 - [Language Creation Guide](language-creation-guide.md)
 - [API Documentation](../src/PigeonPea.Language.Contracts/README.md)
 - [Plugin Development Guide](plugin-development-guide.md)

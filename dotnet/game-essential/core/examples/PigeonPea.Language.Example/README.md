@@ -22,6 +22,7 @@ dotnet run
 ## Available Commands
 
 ### help
+
 Display all available commands and examples.
 
 ```
@@ -29,6 +30,7 @@ Display all available commands and examples.
 ```
 
 ### load <path>
+
 Load a language definition from a JSON file.
 
 ```
@@ -38,6 +40,7 @@ Load a language definition from a JSON file.
 ```
 
 ### list
+
 List all currently loaded languages.
 
 ```
@@ -45,6 +48,7 @@ List all currently loaded languages.
 ```
 
 ### translate <language-id> <text>
+
 Translate English text to the specified fantasy language.
 
 ```
@@ -55,6 +59,7 @@ Translate English text to the specified fantasy language.
 Note: Translation requires a lexicon file. If words are not in the lexicon, they will be generated based on the language's phonological rules.
 
 ### generate-name <language-id> [count]
+
 Generate one or more names in the specified language.
 
 ```
@@ -63,6 +68,7 @@ Generate one or more names in the specified language.
 ```
 
 ### exit
+
 Exit the application.
 
 ```

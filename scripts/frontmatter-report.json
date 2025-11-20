@@ -17,13 +17,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "architecture",
-          "ci-cd",
-          "documentation",
-          "rfc",
-          "testing"
-        ],
+        "tags": ["architecture", "ci-cd", "documentation", "rfc", "testing"],
         "summary": "This document provides reference information for the RFC-008 Determinism Test Suite implementation.",
         "doc_id": "RFC-2025-00002",
         "canonical": true,
@@ -41,15 +35,7 @@
         "doc_type": "guide",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "agents",
-          "architecture",
-          "ci-cd",
-          "documentation",
-          "ecs",
-          "guide",
-          "testing"
-        ],
+        "tags": ["agents", "architecture", "ci-cd", "documentation", "ecs", "guide", "testing"],
         "summary": "Successfully created 12 GitHub issues for the pigeon-pea DevTools system, organized by priority and milestone.",
         "doc_id": "GUIDE-2025-00003",
         "canonical": true,
@@ -67,10 +53,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "ecs",
-          "rfc"
-        ],
+        "tags": ["ecs", "rfc"],
         "summary": "Date: 2025-11-13 Machine: AMD Ryzen 5 5600X, 32GB RAM, Windows 11 (10.0.26200.7171)",
         "doc_id": "RFC-2025-00007",
         "canonical": true,
@@ -116,13 +99,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "architecture",
-          "documentation",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["adr", "architecture", "documentation", "terminal", "testing"],
         "summary": "- Status: Accepted - Date: 2025-11-14",
         "doc_id": "ADR-2025-00008",
         "canonical": true,
@@ -140,14 +117,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "ecs",
-          "plugins",
-          "rendering",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["adr", "ecs", "plugins", "rendering", "terminal", "testing"],
         "summary": "Accepted",
         "doc_id": "ADR-2025-00009",
         "canonical": true,
@@ -165,13 +135,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "ecs",
-          "plugins",
-          "rendering",
-          "testing"
-        ],
+        "tags": ["adr", "ecs", "plugins", "rendering", "testing"],
         "summary": "Accepted",
         "doc_id": "ADR-2025-00010",
         "canonical": true,
@@ -189,15 +153,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "agents",
-          "architecture",
-          "ecs",
-          "plugins",
-          "rendering",
-          "terminal"
-        ],
+        "tags": ["adr", "agents", "architecture", "ecs", "plugins", "rendering", "terminal"],
         "summary": "Accepted",
         "doc_id": "ADR-2025-00011",
         "canonical": true,
@@ -215,12 +171,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "architecture",
-          "rendering",
-          "terminal"
-        ],
+        "tags": ["adr", "architecture", "rendering", "terminal"],
         "summary": "> ✅ Status: Implemented via dotnet/Map/PigeonPea.Map.Rendering/ (post RFC-007). For the big-picture structure see Domain Organization. This document explains the map rendering pipeline in detail.",
         "doc_id": "ADR-2025-00012",
         "canonical": true,
@@ -265,15 +216,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "agents",
-          "architecture",
-          "documentation",
-          "ecs",
-          "rendering",
-          "terminal"
-        ],
+        "tags": ["adr", "agents", "architecture", "documentation", "ecs", "rendering", "terminal"],
         "summary": "Last Updated: 2025-11-13 Status: Current (Post RFC-007 implementation)",
         "doc_id": "ADR-2025-00014",
         "canonical": true,
@@ -291,12 +234,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "documentation",
-          "rendering",
-          "terminal"
-        ],
+        "tags": ["adr", "documentation", "rendering", "terminal"],
         "summary": "- Tested: Yes (see testkitty\\.py files) - Result: Does not render on WezTerm Windows build 20240203",
         "doc_id": "ADR-2025-00015",
         "canonical": true,
@@ -314,15 +252,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "architecture",
-          "ecs",
-          "fonts",
-          "rendering",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["adr", "architecture", "ecs", "fonts", "rendering", "terminal", "testing"],
         "summary": "Date: 2025-01-12 Status: Planning Phase",
         "doc_id": "ADR-2025-00016",
         "canonical": true,
@@ -398,12 +328,7 @@
         "doc_type": "adr",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "adr",
-          "rendering",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["adr", "rendering", "terminal", "testing"],
         "summary": "The Fantasy Map Generator C# port generates 0 rivers despite having complete river generation code. All other features work correctly:",
         "doc_id": "ADR-2025-00019",
         "canonical": true,
@@ -421,13 +346,7 @@
         "doc_type": "guide",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "ci-cd",
-          "documentation",
-          "guide",
-          "rendering",
-          "terminal"
-        ],
+        "tags": ["ci-cd", "documentation", "guide", "rendering", "terminal"],
         "summary": "This document describes where build, runtime, and benchmark artifacts are written in the PigeonPea repository. The goal is to centralize generated outputs under build/artifacts so they are easy to dis",
         "doc_id": "GUIDE-2025-00005",
         "canonical": true,
@@ -445,11 +364,7 @@
         "doc_type": "guide",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "ci-cd",
-          "guide",
-          "terminal"
-        ],
+        "tags": ["ci-cd", "guide", "terminal"],
         "summary": "This note summarizes how we plan to version builds and organize logs under build/artifacts/{version}/.",
         "doc_id": "GUIDE-2025-00006",
         "canonical": true,
@@ -496,15 +411,7 @@
         "doc_type": "guide",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "ci-cd",
-          "ecs",
-          "fonts",
-          "guide",
-          "rendering",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["ci-cd", "ecs", "fonts", "guide", "rendering", "terminal", "testing"],
         "summary": "This document describes how we plan to ship self-contained bundles of PigeonPea for different platforms, including:",
         "doc_id": "GUIDE-2025-00007",
         "canonical": true,
@@ -550,14 +457,7 @@
         "doc_type": "guide",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "architecture",
-          "documentation",
-          "guide",
-          "rendering",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["architecture", "documentation", "guide", "rendering", "terminal", "testing"],
         "summary": "- File: dotnet/.editorconfig - Date: 2025-11-13",
         "doc_id": "GUIDE-2025-00008",
         "canonical": true,
@@ -629,11 +529,7 @@
         "doc_type": "spec",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "documentation",
-          "fonts",
-          "spec"
-        ],
+        "tags": ["documentation", "fonts", "spec"],
         "summary": "Outline of a FontForge Python script to import SVG angle glyphs into PUA of the base Sarasa font. This is documentation-first; actual script can live under fonts/scripts/ later.",
         "doc_id": "SPEC-2025-00002",
         "canonical": true,
@@ -651,10 +547,7 @@
         "doc_type": "spec",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "fonts",
-          "spec"
-        ],
+        "tags": ["fonts", "spec"],
         "summary": "This document enumerates the Private Use Area (PUA) codepoints used by the project.",
         "doc_id": "SPEC-2025-00003",
         "canonical": true,
@@ -672,12 +565,7 @@
         "doc_type": "spec",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "ci-cd",
-          "ecs",
-          "fonts",
-          "spec"
-        ],
+        "tags": ["ci-cd", "ecs", "fonts", "spec"],
         "summary": "This is SARASA GOTHIC, a CJK composite font based on Inter, Iosevka and Source Han Sans.",
         "doc_id": "SPEC-2025-00004",
         "canonical": true,
@@ -721,12 +609,7 @@
         "doc_type": "guide",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "documentation",
-          "ecs",
-          "guide",
-          "rendering"
-        ],
+        "tags": ["documentation", "ecs", "guide", "rendering"],
         "summary": "This guide helps you move from the deprecated FMG rendering stack to the modern Map domain rendering components.",
         "doc_id": "GUIDE-2025-00010",
         "canonical": true,
@@ -744,13 +627,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "architecture",
-          "ecs",
-          "rendering",
-          "rfc",
-          "terminal"
-        ],
+        "tags": ["architecture", "ecs", "rendering", "rfc", "terminal"],
         "summary": "Audience: Developers who previously used dotnet/shared-app/Rendering/ or SharedApp.Rendering APIs. Date: 2025-11-13 (RFC-007 Phase 6)",
         "doc_id": "RFC-2025-00011",
         "canonical": true,
@@ -768,9 +645,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "rfc"
-        ],
+        "tags": ["rfc"],
         "summary": "Documentation for 002 Ui Framework Integration",
         "doc_id": "RFC-2025-00025",
         "canonical": true,
@@ -953,13 +828,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "architecture",
-          "documentation",
-          "rendering",
-          "rfc",
-          "testing"
-        ],
+        "tags": ["architecture", "documentation", "rendering", "rfc", "testing"],
         "summary": "Review Date: 2025-11-13 Reviewer: Claude Code",
         "doc_id": "RFC-2025-00032",
         "canonical": true,
@@ -1058,15 +927,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "architecture",
-          "ci-cd",
-          "documentation",
-          "plugins",
-          "rfc",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["architecture", "ci-cd", "documentation", "plugins", "rfc", "terminal", "testing"],
         "summary": "Status: Proposed Created: 2025-11-13",
         "doc_id": "RFC-2025-00036",
         "canonical": true,
@@ -1223,16 +1084,7 @@
         "doc_type": "guide",
         "status": "draft",
         "created": "2025-11-19",
-        "tags": [
-          "agents",
-          "ecs",
-          "fonts",
-          "guide",
-          "plugins",
-          "rendering",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["agents", "ecs", "fonts", "guide", "plugins", "rendering", "terminal", "testing"],
         "summary": "This note summarizes the current state of the FantasyMapGenerator (FMG) integration as used by the map HUD sandbox (PigeonPea.MapHud) and documents a crash in the cultures generation phase."
       },
       "title": "FMG Cultures Generation Handover",
@@ -1246,12 +1098,7 @@
         "doc_type": "plan",
         "status": "draft",
         "created": "2025-11-19",
-        "tags": [
-          "agents",
-          "ecs",
-          "plan",
-          "testing"
-        ],
+        "tags": ["agents", "ecs", "plan", "testing"],
         "summary": "Previous attempts at agent memory failed because:"
       },
       "title": "Memory System Validation Plan",
@@ -1265,14 +1112,7 @@
         "doc_type": "spec",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "documentation",
-          "ecs",
-          "fonts",
-          "spec",
-          "terminal",
-          "testing"
-        ],
+        "tags": ["documentation", "ecs", "fonts", "spec", "terminal", "testing"],
         "summary": "Date: 2025-11-18 Project: Pigeon Pea - Dungeon Dev Server",
         "doc_id": "SPEC-2025-00006",
         "canonical": true,
@@ -1290,9 +1130,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "rfc"
-        ],
+        "tags": ["rfc"],
         "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
         "doc_id": "RFC-2025-00042",
         "canonical": true,
@@ -1310,9 +1148,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "rfc"
-        ],
+        "tags": ["rfc"],
         "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
         "doc_id": "RFC-2025-00043",
         "canonical": true,
@@ -1330,9 +1166,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "rfc"
-        ],
+        "tags": ["rfc"],
         "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
         "doc_id": "RFC-2025-00044",
         "canonical": true,
@@ -1350,9 +1184,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "rfc"
-        ],
+        "tags": ["rfc"],
         "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
         "doc_id": "RFC-2025-00045",
         "canonical": true,
@@ -1370,9 +1202,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "rfc"
-        ],
+        "tags": ["rfc"],
         "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
         "doc_id": "RFC-2025-00046",
         "canonical": true,
@@ -1390,10 +1220,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "ci-cd",
-          "rfc"
-        ],
+        "tags": ["ci-cd", "rfc"],
         "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
         "doc_id": "RFC-2025-00047",
         "canonical": true,
@@ -1411,12 +1238,7 @@
         "doc_type": "rfc",
         "status": "active",
         "created": "2025-11-19",
-        "tags": [
-          "ci-cd",
-          "documentation",
-          "rfc",
-          "terminal"
-        ],
+        "tags": ["ci-cd", "documentation", "rfc", "terminal"],
         "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
         "doc_id": "RFC-2025-00048",
         "canonical": true,

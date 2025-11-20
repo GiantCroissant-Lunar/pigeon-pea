@@ -1,8 +1,8 @@
 using Arch.Core;
 using Arch.Core.Extensions;
+using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Components;
-using PigeonPea.Shared.Rendering;
 using Terminal.Gui;
 using GuiAttribute = Terminal.Gui.Attribute;
 using SRColor = SadRogue.Primitives.Color;
@@ -59,7 +59,7 @@ public class GameView : View
         var viewport = Viewport;
 
         // Set the viewport for the renderer
-        _renderer.SetViewport(new PigeonPea.Shared.Rendering.Viewport(0, 0, viewport.Width, viewport.Height));
+        _renderer.SetViewport(new PigeonPea.Rendering.Contracts.Viewport(0, 0, viewport.Width, viewport.Height));
 
         // Render all entities using the IRenderer
         var query = new Arch.Core.QueryDescription().WithAll<Position, Renderable>();
@@ -69,7 +69,7 @@ public class GameView : View
                 pos.Point.Y >= 0 && pos.Point.Y < viewport.Height)
             {
                 // Create a tile from the renderable component
-                var tile = new PigeonPea.Shared.Rendering.Tile(renderable.Glyph, renderable.Foreground, renderable.Background);
+                var tile = new PigeonPea.Rendering.Contracts.Tile(renderable.Glyph, renderable.Foreground, renderable.Background);
                 _renderer.DrawTile(pos.Point.X, pos.Point.Y, tile);
             }
         });

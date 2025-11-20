@@ -7,10 +7,10 @@ namespace PigeonPea.Language.Core;
 public class LexiconManager : ILexiconManager
 {
     private readonly ILogger<LexiconManager> _logger;
-    
+
     // Dictionary<LanguageId, Dictionary<Meaning, LexiconEntry>>
     private readonly Dictionary<string, Dictionary<string, LexiconEntry>> _forwardLexicons = new();
-    
+
     // Dictionary<LanguageId, Dictionary<Word, LexiconEntry>>
     private readonly Dictionary<string, Dictionary<string, LexiconEntry>> _reverseLexicons = new();
 
@@ -58,7 +58,7 @@ public class LexiconManager : ILexiconManager
         // Add to reverse lexicon (word -> entry)
         _reverseLexicons[languageId][entry.Word] = entry;
 
-        _logger.LogDebug("Added lexicon entry for language '{LanguageId}': {Word} = {Meaning}", 
+        _logger.LogDebug("Added lexicon entry for language '{LanguageId}': {Word} = {Meaning}",
             languageId, entry.Word, entry.Meaning);
     }
 
@@ -87,7 +87,7 @@ public class LexiconManager : ILexiconManager
             return entry;
         }
 
-        _logger.LogDebug("No entry found for meaning '{Meaning}' in language '{LanguageId}'", 
+        _logger.LogDebug("No entry found for meaning '{Meaning}' in language '{LanguageId}'",
             meaning, languageId);
         return null;
     }
@@ -117,7 +117,7 @@ public class LexiconManager : ILexiconManager
             return entry.Meaning;
         }
 
-        _logger.LogDebug("No entry found for word '{Word}' in language '{LanguageId}'", 
+        _logger.LogDebug("No entry found for word '{Word}' in language '{LanguageId}'",
             word, languageId);
         return null;
     }
@@ -172,13 +172,13 @@ public class LexiconManager : ILexiconManager
         {
             var json = JsonSerializer.Serialize(lexiconData, options);
             await File.WriteAllTextAsync(path, json).ConfigureAwait(false);
-            
-            _logger.LogInformation("Saved lexicon for language '{LanguageId}' to '{Path}' ({Count} entries)", 
+
+            _logger.LogInformation("Saved lexicon for language '{LanguageId}' to '{Path}' ({Count} entries)",
                 languageId, path, lexicon.Count);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Failed to save lexicon for language '{LanguageId}' to '{Path}'", 
+            _logger.LogError(ex, "Failed to save lexicon for language '{LanguageId}' to '{Path}'",
                 languageId, path);
             throw;
         }
@@ -204,7 +204,7 @@ public class LexiconManager : ILexiconManager
         try
         {
             var json = await File.ReadAllTextAsync(path).ConfigureAwait(false);
-            
+
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase

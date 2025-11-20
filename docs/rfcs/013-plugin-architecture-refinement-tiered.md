@@ -4,27 +4,24 @@ created: '2025-11-19'
 doc_id: RFC-00013
 doc_type: rfc
 related:
-- RFC-00006
-- RFC-00014
+  - RFC-00006
+  - RFC-00014
 status: draft
 summary: Refine plugin architecture to follow tier-based system (Tier 1-4) with proper
   separation between domain plugins and platform plugins, eliminating wrapper projects
   and establishing correct dependency flow
 supersedes: []
 tags:
-- plugins
-- architecture
-- refactoring
-- tiered-architecture
-- alc
-- dungeon
-- rendering
+  - plugins
+  - architecture
+  - refactoring
+  - tiered-architecture
+  - alc
+  - dungeon
+  - rendering
 title: 'Plugin Architecture Refinement: Tier-Based System'
 updated: '2025-11-19'
 ---
-
-
-
 
 # RFC-013: Plugin Architecture Refinement: Tier-Based System
 

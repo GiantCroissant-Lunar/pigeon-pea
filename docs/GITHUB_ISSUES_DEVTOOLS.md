@@ -9,13 +9,13 @@ summary: Successfully created 12 GitHub issues for the pigeon-pea DevTools syste
   organized by priority and milestone.
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- guide
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - guide
+  - testing
 title: DevTools GitHub Issues - Creation Summary
 ---
 

@@ -1,0 +1,12 @@
+{
+  "id": "PigeonPea.Plugin.Input.SDL3Mouse",
+  "name": "SDL3 Mouse Input Device",
+  "version": "1.0.0",
+  "description": "SDL3 mouse device provider for cross-platform mouse support",
+  "author": "Pigeon Pea Development Team",
+  "pluginType": "InputDevice",
+  "entryPoint": "PigeonPea.Plugin.Input.SDL3Mouse.SDL3MousePlugin",
+  "dependencies": ["SDL3-CS"],
+  "platforms": ["console", "windows"],
+  "tags": ["input", "device", "mouse", "sdl3", "tier-4"]
+}

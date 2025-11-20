@@ -4,21 +4,18 @@ created: '2025-11-18'
 doc_id: ADR-00004
 doc_type: adr
 related:
-- ADR-00001
-- ADR-00003
+  - ADR-00001
+  - ADR-00003
 status: active
 summary: How services, shared libraries, and plugins fit together in Pigeon Pea for
   runtime composition
 tags:
-- architecture
-- services
-- plugins
-- shared-libraries
+  - architecture
+  - services
+  - plugins
+  - shared-libraries
 title: Services, Shared Libraries, and Plugins
 ---
-
-
-
 
 # Services, Shared Libraries, and Plugins
 

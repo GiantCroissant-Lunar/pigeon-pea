@@ -4,24 +4,21 @@ created: '2025-11-10'
 doc_id: RFC-00006
 doc_type: rfc
 related:
-- RFC-00005
+  - RFC-00005
 status: active
 summary: Plugin system for PigeonPea based on the hyacinth-bean-base architecture,
   enabling runtime plugin discovery, loading, and lifecycle management with Assembly
   Load Context (ALC) isolation
 supersedes: []
 tags:
-- plugins
-- architecture
-- extensibility
-- alc
-- modularity
+  - plugins
+  - architecture
+  - extensibility
+  - alc
+  - modularity
 title: Plugin System Architecture
 updated: '2025-11-13'
 ---
-
-
-
 
 # RFC-006: Plugin System Architecture
 

@@ -33,13 +33,9 @@
     "ui:animations",
     "ui:theming"
   ],
-  "supportedProfiles": [
-    "dotnet.windows"
-  ],
+  "supportedProfiles": ["dotnet.windows"],
   "dependencies": {
-    "frameworks": [
-      "net8.0-windows"
-    ],
+    "frameworks": ["net8.0-windows"],
     "packages": {
       "Avalonia": "11.2.2",
       "Avalonia.Desktop": "11.2.2",
@@ -55,11 +51,7 @@
       "Serilog": "4.0.0",
       "Serilog.Extensions.Logging": "8.0.0"
     },
-    "projects": [
-      "PigeonPea.Contracts",
-      "PigeonPea.Game.Contracts",
-      "PigeonPea.Plugin"
-    ]
+    "projects": ["PigeonPea.Contracts", "PigeonPea.Game.Contracts", "PigeonPea.Plugin"]
   },
   "entryPoints": {
     "plugin": "PigeonPea.Plugins.UI.Windows.AvaloniaHUD.AvaloniaHudPlugin",
@@ -125,12 +117,8 @@
     }
   },
   "resources": {
-    "themes": [
-      "Themes/GameHUDTheme.axaml"
-    ],
-    "controls": [
-      "Controls/GameHUD.axaml"
-    ],
+    "themes": ["Themes/GameHUDTheme.axaml"],
+    "controls": ["Controls/GameHUD.axaml"],
     "assets": []
   },
   "compatibility": {

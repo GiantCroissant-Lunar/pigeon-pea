@@ -4,25 +4,22 @@ created: '2025-11-18'
 doc_id: ADR-00001
 doc_type: adr
 related:
-- ADR-00002
-- ADR-00003
-- ADR-00004
-- GUIDE-00001
-- RFC-00005
-- RFC-00006
+  - ADR-00002
+  - ADR-00003
+  - ADR-00004
+  - GUIDE-00001
+  - RFC-00005
+  - RFC-00006
 status: active
 summary: High-level architecture overview of Pigeon Pea with ECS design, rendering
   pipeline, and plugin system
 tags:
-- architecture
-- ecs
-- rendering
-- plugins
+  - architecture
+  - ecs
+  - rendering
+  - plugins
 title: Architecture Overview
 ---
-
-
-
 
 # Architecture Overview
 

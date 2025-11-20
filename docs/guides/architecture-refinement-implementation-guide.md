@@ -4,25 +4,22 @@ created: '2025-11-19'
 doc_id: GUIDE-00001
 doc_type: guide
 related:
-- RFC-00013
-- RFC-00014
+  - RFC-00013
+  - RFC-00014
 status: active
 summary: Step-by-step implementation guide for refining plugin architecture and introducing
   scene management, with incremental steps that keep the console app functional at
   each stage
 supersedes: []
 tags:
-- implementation
-- guide
-- architecture
-- refactoring
-- step-by-step
+  - implementation
+  - guide
+  - architecture
+  - refactoring
+  - step-by-step
 title: Architecture Refinement Implementation Guide
 updated: '2025-11-19'
 ---
-
-
-
 
 # Architecture Refinement Implementation Guide
 

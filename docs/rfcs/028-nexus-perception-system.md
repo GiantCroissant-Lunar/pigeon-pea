@@ -4,30 +4,26 @@ created: '2025-01-16'
 doc_id: RFC-00028
 doc_type: rfc
 related:
-- RFC-00020
-- RFC-00019
-- RFC-00005
+  - RFC-00020
+  - RFC-00019
+  - RFC-00005
 status: active
 summary: Comprehensive implementation guide for Nexus-Perception, a reusable agent
   perception and awareness system with visual/auditory sensing, knowledge management,
   and threat assessment for AI systems
 supersedes: []
 tags:
-- ai
-- perception
-- sensors
-- fov
-- awareness
-- ecs
-- architecture
-- library
-- nexus-perception
+  - ai
+  - perception
+  - sensors
+  - fov
+  - awareness
+  - ecs
+  - architecture
+  - library
+  - nexus-perception
 title: 'Nexus-Perception: Agent Perception and Awareness System'
 ---
-
-
-
-
 
 # RFC-021: Nexus-Perception - Agent Perception and Awareness System
 

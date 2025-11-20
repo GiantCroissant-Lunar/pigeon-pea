@@ -8,12 +8,12 @@ status: active
 summary: 'Date: 2025-11-18 Project: Pigeon Pea - Dungeon Dev Server'
 supersedes: []
 tags:
-- documentation
-- ecs
-- fonts
-- spec
-- terminal
-- testing
+  - documentation
+  - ecs
+  - fonts
+  - spec
+  - terminal
+  - testing
 title: Rio Terminal Configuration Troubleshooting Guide
 ---
 

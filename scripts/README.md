@@ -154,6 +154,7 @@ This script can be integrated into:
 Validates documentation front-matter and generates the registry (RFC-012).
 
 **Usage**:
+
 ```bash
 # Full validation and registry generation
 python scripts/validate-docs.py
@@ -167,6 +168,7 @@ python scripts/validate-docs.py --pre-commit
 Automatically generates YAML front-matter for markdown files that lack it.
 
 **Usage**:
+
 ```bash
 # Preview (dry-run)
 python scripts/generate-frontmatter.py
@@ -183,6 +185,7 @@ python scripts/generate-frontmatter.py --output scripts/frontmatter-report.json
 Relocates files to correct directories based on doc_type and updates cross-references.
 
 **Usage**:
+
 ```bash
 # Preview migrations
 python scripts/migrate-docs.py --report scripts/frontmatter-report.json
@@ -196,6 +199,7 @@ python scripts/migrate-docs.py --report scripts/frontmatter-report.json --apply
 Enforces inbox retention policy and auto-archives conversation dumps.
 
 **Usage**:
+
 ```bash
 # Preview cleanup
 python scripts/cleanup-inbox.py
@@ -216,6 +220,7 @@ python scripts/cleanup-inbox.py --retention-days 14 --apply
 Synchronizes RFC implementation status with task-master tasks.
 
 **Usage**:
+
 ```bash
 # Preview sync (requires .taskmaster/tasks.json)
 python scripts/sync-tasks.py
@@ -228,6 +233,7 @@ python scripts/sync-tasks.py --generate-map
 ```
 
 **Features**:
+
 - Extracts RFC references from tasks
 - Calculates implementation status and completion
 - Updates RFC front-matter automatically
@@ -238,6 +244,7 @@ python scripts/sync-tasks.py --generate-map
 Generates comprehensive RFC implementation dashboard.
 
 **Usage**:
+
 ```bash
 # Generate dashboard
 python scripts/generate-dashboard.py
@@ -247,6 +254,7 @@ python scripts/generate-dashboard.py --output docs/STATUS.md
 ```
 
 **Features**:
+
 - Status summaries and metrics
 - Active/blocked/completed RFCs
 - Dependency graphs (Mermaid)
@@ -262,6 +270,7 @@ python scripts/generate-dashboard.py --output docs/STATUS.md
 Generates comprehensive quality reports with scoring metrics.
 
 **Usage**:
+
 ```bash
 # Generate full quality report
 python scripts/generate-quality-report.py
@@ -271,6 +280,7 @@ python scripts/generate-quality-report.py --min-score 60
 ```
 
 **Quality Metrics** (0-100 each):
+
 - **Completeness**: Required and optional fields filled
 - **Freshness**: Recently updated (age-based scoring)
 - **Linkage**: Cross-references to other docs
@@ -279,6 +289,7 @@ python scripts/generate-quality-report.py --min-score 60
 **Output**: `docs/index/quality-report.md`
 
 **Report Sections**:
+
 - Summary statistics and grade distribution
 - Top quality documents
 - Documents needing improvement
@@ -292,6 +303,7 @@ python scripts/generate-quality-report.py --min-score 60
 Generates comprehensive documentation index with hierarchical navigation.
 
 **Usage**:
+
 ```bash
 # Generate main index
 python scripts/generate-index.py
@@ -301,6 +313,7 @@ python scripts/generate-index.py --generate-dir-readmes
 ```
 
 **Features**:
+
 - Hierarchical table of contents
 - Grouping by document type and status
 - Recently updated section
@@ -314,12 +327,14 @@ python scripts/generate-index.py --generate-dir-readmes
 Creates Mermaid dependency visualizations.
 
 **Usage**:
+
 ```bash
 # Generate dependency diagrams
 python scripts/visualize-deps.py
 ```
 
 **Features**:
+
 - RFC dependency graphs
 - Implementation status flowcharts
 - Color-coded status indicators

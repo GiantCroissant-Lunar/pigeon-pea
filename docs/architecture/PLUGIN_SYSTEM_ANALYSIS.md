@@ -8,16 +8,16 @@ status: active
 summary: 'Date: 2025-11-10 Source Repository: hyacinth-bean-base'
 supersedes: []
 tags:
-- adr
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rendering
-- terminal
-- testing
+  - adr
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rendering
+  - terminal
+  - testing
 title: 'Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption'
 ---
 

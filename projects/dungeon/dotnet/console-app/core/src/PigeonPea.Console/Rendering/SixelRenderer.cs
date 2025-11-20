@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using System.Text;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 
 namespace PigeonPea.Console.Rendering;
@@ -18,12 +18,19 @@ public class SixelRenderer : IRenderer
     private bool _disposed;
     private int _tileSize = 8; // Pixels per tile
 
+    public string Id => "sixel";
+
     /// <summary>
     /// Gets the capabilities of this renderer.
     /// </summary>
     public RendererCapabilities Capabilities =>
         RendererCapabilities.TrueColor |
         RendererCapabilities.PixelGraphics;
+
+    public void Shutdown()
+    {
+        _disposed = true;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SixelRenderer"/> class.

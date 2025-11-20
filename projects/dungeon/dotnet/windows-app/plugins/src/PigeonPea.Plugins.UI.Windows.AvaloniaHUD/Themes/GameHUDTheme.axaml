@@ -37,12 +37,12 @@
     <Setter Property="Padding" Value="8,4"/>
     <Setter Property="Margin" Value="2"/>
     <Setter Property="FontSize" Value="16"/>
-    
+
     <Style Selector="Button.panel-toggle:pointerover">
       <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
       <Setter Property="Opacity" Value="0.8"/>
     </Style>
-    
+
     <Style Selector="Button.panel-toggle:pressed">
       <Setter Property="Background" Value="{StaticResource AccentBrush}"/>
       <Setter Property="Opacity" Value="1.0"/>

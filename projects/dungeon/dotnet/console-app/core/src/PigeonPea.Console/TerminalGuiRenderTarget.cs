@@ -1,4 +1,4 @@
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using Terminal.Gui;
 
 namespace PigeonPea.Console;

@@ -4,20 +4,17 @@ created: '2025-11-10'
 doc_id: PLAN-00008
 doc_type: plan
 related:
-- RFC-00004
+  - RFC-00004
 status: active
 summary: Breakdown of RFC-004 into actionable GitHub issues suitable for automated
   coding agents
 tags:
-- agent-infrastructure
-- rfc-004
-- github-issues
-- implementation
+  - agent-infrastructure
+  - rfc-004
+  - github-issues
+  - implementation
 title: 'GitHub Issues: Agent Infrastructure Enhancement'
 ---
-
-
-
 
 # GitHub Issues: Agent Infrastructure Enhancement
 

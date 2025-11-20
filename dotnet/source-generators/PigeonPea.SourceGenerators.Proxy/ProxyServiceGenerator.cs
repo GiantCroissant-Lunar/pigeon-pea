@@ -230,7 +230,7 @@ public class ProxyServiceGenerator : IIncrementalGenerator
         sb.AppendLine("{");
 
         var alreadyImplementsInterface = classSymbol.Interfaces.Any(i => SymbolEqualityComparer.Default.Equals(i, serviceType));
-        
+
         if (alreadyImplementsInterface)
         {
             sb.AppendLine($"    partial class {classSymbol.Name}");

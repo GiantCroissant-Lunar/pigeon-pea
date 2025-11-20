@@ -35,6 +35,7 @@ task dotnet:test
 **Fix test failures (if tests_failed)**
 
 For each failing test:
+
 - Analyze failure message
 - Identify root cause
 - Fix implementation or test
@@ -74,6 +75,6 @@ Status: {{ final_status }}
 
 ---
 
-*Generated from `.agent/workflows/build-and-test.yaml`*
+_Generated from `.agent/workflows/build-and-test.yaml`_
 
 To modify this workflow, edit the canonical YAML file and regenerate.

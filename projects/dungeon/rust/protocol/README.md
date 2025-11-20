@@ -16,7 +16,9 @@ Every message is wrapped in this envelope:
   "type": "gm.command|gm.reply|event.state|event.log",
   "id": "uuid-v4",
   "correlation_id": "uuid-v4",
-  "payload": { /* type-specific data */ }
+  "payload": {
+    /* type-specific data */
+  }
 }
 ```
 
@@ -39,7 +41,9 @@ Commands sent from dev-tool to game:
   "type": "gm.command",
   "payload": {
     "cmd": "spawn|tp|reload|regen-map|load-map|custom",
-    "args": { /* command-specific arguments */ }
+    "args": {
+      /* command-specific arguments */
+    }
   }
 }
 ```
@@ -47,6 +51,7 @@ Commands sent from dev-tool to game:
 #### Commands
 
 **spawn**: Spawn an entity
+
 ```json
 {
   "cmd": "spawn",
@@ -59,6 +64,7 @@ Commands sent from dev-tool to game:
 ```
 
 **tp**: Teleport player
+
 ```json
 {
   "cmd": "tp",
@@ -70,6 +76,7 @@ Commands sent from dev-tool to game:
 ```
 
 **reload**: Reload game data from disk
+
 ```json
 {
   "cmd": "reload",
@@ -78,6 +85,7 @@ Commands sent from dev-tool to game:
 ```
 
 **regen-map**: Regenerate current map
+
 ```json
 {
   "cmd": "regen-map",
@@ -88,6 +96,7 @@ Commands sent from dev-tool to game:
 ```
 
 **load-map**: Load specific map file
+
 ```json
 {
   "cmd": "load-map",
@@ -107,8 +116,12 @@ Replies from game to dev-tool:
   "correlation_id": "original-command-id",
   "payload": {
     "ok": true,
-    "data": { /* optional response data */ },
-    "error": { /* optional error info */ }
+    "data": {
+      /* optional response data */
+    },
+    "error": {
+      /* optional error info */
+    }
   }
 }
 ```
@@ -140,7 +153,9 @@ Game log events:
     "timestamp": "2025-01-15T10:30:00Z",
     "level": "info|warn|error|debug",
     "message": "Player moved north",
-    "context": { /* optional context data */ }
+    "context": {
+      /* optional context data */
+    }
   }
 }
 ```
@@ -176,6 +191,7 @@ Protocol versioning policy:
 - **Patch version**: Bug fixes, documentation updates
 
 Compatibility:
+
 - Server must support all minor versions within its major version
 - Clients should negotiate highest compatible version
 - Version 1 is current stable version
@@ -242,6 +258,7 @@ cargo test -p dungeon-protocol
 ```
 
 Tests cover:
+
 - Message serialization/deserialization
 - Schema validation
 - Error handling

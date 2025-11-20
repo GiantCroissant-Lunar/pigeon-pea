@@ -4,24 +4,21 @@ created: '2025-11-08'
 doc_id: PLAN-00011
 doc_type: plan
 related:
-- RFC-00001
-- RFC-00002
-- RFC-00003
-- RFC-00005
-- RFC-00006
+  - RFC-00001
+  - RFC-00002
+  - RFC-00003
+  - RFC-00005
+  - RFC-00006
 status: active
 summary: Comprehensive breakdown of all RFCs into 43 actionable GitHub issues for
   automated coding agents
 tags:
-- github-issues
-- implementation
-- rfcs
-- task-breakdown
+  - github-issues
+  - implementation
+  - rfcs
+  - task-breakdown
 title: GitHub Issues Breakdown
 ---
-
-
-
 
 # GitHub Issues Breakdown
 

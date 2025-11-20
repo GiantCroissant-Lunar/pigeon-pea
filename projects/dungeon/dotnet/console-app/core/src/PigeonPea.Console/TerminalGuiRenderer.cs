@@ -1,4 +1,4 @@
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 using Terminal.Gui;
 using GuiAttribute = Terminal.Gui.Attribute;
@@ -19,6 +19,8 @@ public class TerminalGuiRenderer : IRenderer
     private IConsoleDriver? _driver;
     private readonly RendererCapabilities _capabilities;
 
+    public string Id => "terminal-gui";
+
     /// <summary>
     /// Initializes a new instance of the <see cref="TerminalGuiRenderer"/> class.
     /// </summary>
@@ -32,6 +34,11 @@ public class TerminalGuiRenderer : IRenderer
     /// Gets the capabilities of this renderer.
     /// </summary>
     public RendererCapabilities Capabilities => _capabilities;
+
+    public void Shutdown()
+    {
+        // No specific shutdown logic needed for Terminal.Gui renderer wrapper
+    }
 
     /// <summary>
     /// Sets the Terminal.Gui driver to use for rendering.
@@ -78,7 +85,7 @@ public class TerminalGuiRenderer : IRenderer
     /// <param name="x">The X grid coordinate.</param>
     /// <param name="y">The Y grid coordinate.</param>
     /// <param name="tile">The tile to draw.</param>
-    public void DrawTile(int x, int y, PigeonPea.Shared.Rendering.Tile tile)
+    public void DrawTile(int x, int y, PigeonPea.Rendering.Contracts.Tile tile)
     {
         if (!_viewport.Contains(x, y) || _driver is null)
             return;

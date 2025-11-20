@@ -61,7 +61,7 @@ Key points relevant to Pigeon Pea:
 
 - R3 **does not use** `System.Reactive`'s `IObservable<T> / IObserver<T>`.
   - It has its own `Observable`/`Observer` base classes and contracts.
-  - Errors flow to `OnErrorResume` and *do not* automatically stop the pipeline.
+  - Errors flow to `OnErrorResume` and _do not_ automatically stop the pipeline.
 - ReactiveUI is built on **System.Reactive**, not R3.
   - If we keep ReactiveUI (we do), we must keep System.Reactive.
   - R3 cannot simply "replace" Rx.NET under ReactiveUI.

@@ -4,25 +4,22 @@ created: '2025-11-19'
 doc_id: RFC-00014
 doc_type: rfc
 related:
-- RFC-00013
+  - RFC-00013
 status: draft
 summary: Introduce scene/space concept where dungeon, player, monsters, and all game
   objects are entities in ECS worlds, with proper scene lifecycle management and multi-world
   support
 supersedes: []
 tags:
-- ecs
-- architecture
-- scene-management
-- world
-- entities
-- dungeon
+  - ecs
+  - architecture
+  - scene-management
+  - world
+  - entities
+  - dungeon
 title: Scene Management with ECS Architecture
 updated: '2025-11-19'
 ---
-
-
-
 
 # RFC-014: Scene Management with ECS Architecture
 

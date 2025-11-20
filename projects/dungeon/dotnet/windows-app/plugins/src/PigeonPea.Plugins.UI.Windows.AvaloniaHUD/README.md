@@ -260,6 +260,7 @@ dotnet test --framework net8.0-windows
 ### Debug Mode
 
 Enable debug panel to see:
+
 - Current FPS
 - Memory usage
 - Active UI objects

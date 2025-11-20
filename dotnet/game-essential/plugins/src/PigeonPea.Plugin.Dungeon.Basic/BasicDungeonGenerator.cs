@@ -1,18 +1,47 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arch.Core;
+using Microsoft.Extensions.Logging;
+using PigeonPea.Contracts.Plugin;
 using PigeonPea.Dungeon.Contracts;
 using PigeonPea.Dungeon.Contracts.Models;
+using PigeonPea.Shared.Components;
 
 namespace PigeonPea.Plugin.Dungeon.Basic;
 
-public sealed class BasicDungeonGenerator : IDungeonGenerator
+public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
 {
-    public DungeonView Generate(DungeonGenerationOptions options)
+    private ILogger _logger = null!;
+
+    public string Id => "dungeon-generator-basic";
+    public string Name => "Basic Dungeon Generator";
+    public string Version => "1.0.0";
+
+    public Task InitializeAsync(IPluginContext context, CancellationToken ct)
+    {
+        _logger = context.Logger;
+        _logger.LogInformation("Basic dungeon generator initialized");
+
+        // Register service
+        context.Registry.Register<IDungeonGenerator>(this, new ServiceMetadata
+        {
+            Name = Name,
+            Version = Version,
+            PluginId = Id
+        });
+
+        return Task.CompletedTask;
+    }
+
+    public Task StartAsync(CancellationToken ct) => Task.CompletedTask;
+    public Task StopAsync(CancellationToken ct) => Task.CompletedTask;
+
+    public Entity Generate(World world, DungeonGenerationOptions options)
     {
         int width = options.Width;
         int height = options.Height;
-        
+
         if (width <= 0 || height <= 0) throw new ArgumentOutOfRangeException();
         var rng = options.Seed.HasValue ? new Random(options.Seed.Value) : new Random();
         var d = new DungeonData(width, height);
@@ -116,7 +145,7 @@ public sealed class BasicDungeonGenerator : IDungeonGenerator
             TryPlaceDoorAtRoomBoundary(d, rooms, (x1, y1), (x1, y1 - sy));
         }
 
-        return ToView(d);
+        return CreateDungeonEntity(world, d);
     }
 
     private static void TryPlaceDoorAtRoomBoundary(DungeonData d, List<(int x, int y, int w, int h)> rooms, (int x, int y) roomCenter, (int x, int y) entry)
@@ -143,25 +172,44 @@ public sealed class BasicDungeonGenerator : IDungeonGenerator
         d.SetDoorClosed(entry.x, entry.y);
     }
 
-    private static DungeonView ToView(DungeonData d)
+    private static Entity CreateDungeonEntity(World world, DungeonData d)
     {
-        var view = new DungeonView
-        {
-            Width = d.Width,
-            Height = d.Height,
-            Walkable = d.Walkable,
-            Opaque = d.Opaque,
-            Doors = new byte[d.Height, d.Width]
-        };
+        var tileData = new byte[d.Width * d.Height];
+        var doorStates = new byte[d.Width * d.Height];
+        var walkable = new System.Collections.BitArray(d.Width * d.Height);
+        var opaque = new System.Collections.BitArray(d.Width * d.Height);
 
         for (int y = 0; y < d.Height; y++)
         {
             for (int x = 0; x < d.Width; x++)
             {
-                view.Doors[y, x] = (byte)d.Doors[y, x];
+                int index = y * d.Width + x;
+                // Determine tile type based on walkable/opaque state
+                tileData[index] = (byte)(d.Walkable[y, x] ? 1 : 0); // 1 for floor, 0 for wall
+                doorStates[index] = (byte)d.Doors[y, x];
+                walkable[index] = d.Walkable[y, x];
+                opaque[index] = d.Opaque[y, x];
             }
         }
 
-        return view;
+        return world.Create(
+            new DungeonMapComponent
+            {
+                Width = d.Width,
+                Height = d.Height,
+                TileData = tileData,
+                DoorStates = doorStates,
+                Walkable = walkable,
+                Opaque = opaque
+            },
+            new PositionComponent { X = 0, Y = 0, Z = 0 },
+            new RenderableComponent
+            {
+                Glyph = '.',
+                Foreground = SadRogue.Primitives.Color.DarkGray,
+                Background = SadRogue.Primitives.Color.Black,
+                Layer = RenderLayer.Floor
+            }
+        );
     }
 }

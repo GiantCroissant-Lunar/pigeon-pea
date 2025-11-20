@@ -22,7 +22,7 @@
           - gnupg
           - lsb-release
         state: present
-        update_cache: yes
+        update_cache: true
 
     - name: Add Docker GPG key
       become: true
@@ -44,14 +44,14 @@
           - docker-ce-cli
           - containerd.io
         state: present
-        update_cache: yes
+        update_cache: true
 
     - name: Add user to docker group
       become: true
       ansible.builtin.user:
         name: "{{ dev_user }}"
         groups: docker
-        append: yes
+        append: true
 
 - name: Install Docker (macOS)
   community.general.homebrew_cask:

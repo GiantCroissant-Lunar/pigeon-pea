@@ -16,7 +16,7 @@ public class LanguageService : ILanguageService
 
     // Cache of name generators per language
     private readonly Dictionary<string, NameGenerator> _nameGenerators = new();
-    
+
     // Cache of translation engines per language pair
     private readonly Dictionary<string, TranslationEngine> _translationEngines = new();
 

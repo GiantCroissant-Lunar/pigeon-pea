@@ -129,7 +129,7 @@ public class PhonologyEngine : IPhonologyEngine
         // Note: This is a simplified implementation that generates based on pattern only
         // A full implementation would need access to PhonemeInventory to select actual phonemes
         // For now, we generate a valid syllable structure that matches the pattern
-        
+
         var syllable = new System.Text.StringBuilder();
         var pattern = template.Pattern;
 
@@ -137,7 +137,7 @@ public class PhonologyEngine : IPhonologyEngine
         while (i < pattern.Length)
         {
             char symbol = pattern[i];
-            
+
             if (symbol == 'C')
             {
                 // Check if this is part of a consonant cluster at the beginning
@@ -165,7 +165,7 @@ public class PhonologyEngine : IPhonologyEngine
                     {
                         cCount++;
                     }
-                    
+
                     if (cCount > 1 && template.AllowedCodas != null && template.AllowedCodas.Count > 0)
                     {
                         var coda = template.AllowedCodas[random.Next(template.AllowedCodas.Count)];
@@ -174,7 +174,7 @@ public class PhonologyEngine : IPhonologyEngine
                         continue;
                     }
                 }
-                
+
                 // Single consonant - use placeholder for now
                 // In a full implementation, this would select from inventory.Consonants
                 syllable.Append('k');
@@ -221,7 +221,7 @@ public class PhonologyEngine : IPhonologyEngine
         while (i < word.Length)
         {
             bool foundMatch = false;
-            
+
             // Try to match longest phoneme first
             for (int len = Math.Min(3, word.Length - i); len > 0; len--)
             {
@@ -253,13 +253,13 @@ public class PhonologyEngine : IPhonologyEngine
         // Simple validation: check if all characters in cluster are consonants
         // This is simplified - a real implementation would need more sophisticated parsing
         var consonantSet = consonants.ToHashSet();
-        
+
         // Try to parse the cluster into individual consonants
         int i = 0;
         while (i < cluster.Length)
         {
             bool foundMatch = false;
-            
+
             // Try to match longest consonant first
             for (int len = Math.Min(2, cluster.Length - i); len > 0; len--)
             {

@@ -10,16 +10,13 @@ summary: Unified rendering architecture supporting both high-fidelity desktop gr
   with a shared abstraction layer
 supersedes: []
 tags:
-- rendering
-- architecture
-- graphics
-- terminal
-- skiasharp
+  - rendering
+  - architecture
+  - graphics
+  - terminal
+  - skiasharp
 title: Rendering Architecture
 ---
-
-
-
 
 # RFC-001: Rendering Architecture
 

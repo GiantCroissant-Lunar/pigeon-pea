@@ -4,25 +4,22 @@ created: '2025-11-19'
 doc_id: RFC-00015
 doc_type: rfc
 related:
-- RFC-00013
+  - RFC-00013
 status: draft
 summary: Design a system to transform fantasy calendar dates to real-world calendar
   dates using NodaTime, enabling event logging, scheduling, and configurable time
   progression for game worlds
 supersedes: []
 tags:
-- time
-- calendar
-- nodatime
-- transformation
-- scheduling
-- logging
+  - time
+  - calendar
+  - nodatime
+  - transformation
+  - scheduling
+  - logging
 title: Fantasy Calendar to Real-World Time Transformation
 updated: '2025-11-19'
 ---
-
-
-
 
 # RFC-015: Fantasy Calendar to Real-World Time Transformation
 
@@ -35,6 +32,7 @@ updated: '2025-11-19'
 ## Summary
 
 Design and implement a system to transform fantasy calendar dates (Harptos, custom calendars) to real-world calendar dates using NodaTime, enabling:
+
 - Event logging with real-world timestamps
 - Scheduled in-game events mapped to real-world times
 - Configurable time progression (real-time, accelerated, or slowed)
@@ -45,6 +43,7 @@ Design and implement a system to transform fantasy calendar dates (Harptos, cust
 ### Current State
 
 The fantasy calendar system (`PigeonPea.Time`) provides:
+
 - ✅ `WorldTick`: Absolute game time representation
 - ✅ `ICalendarDefinition`: Fantasy calendar interface
 - ✅ `WorldClock`: Basic NodaTime integration

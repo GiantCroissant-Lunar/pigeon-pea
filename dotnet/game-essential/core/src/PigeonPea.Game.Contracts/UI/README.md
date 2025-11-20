@@ -9,7 +9,9 @@ The UI contracts provide a standardized way for plugins to implement user interf
 ## Key Components
 
 ### IUserInterface
+
 The main interface for UI/HUD implementations. Provides methods for:
+
 - Initialization with UI context
 - Game state updates
 - Panel management (show/hide)
@@ -17,7 +19,9 @@ The main interface for UI/HUD implementations. Provides methods for:
 - Root control access for embedding
 
 ### UIContext
+
 Configuration context for UI initialization including:
+
 - Service provider integration
 - Display dimensions
 - Theme configuration
@@ -25,7 +29,9 @@ Configuration context for UI initialization including:
 - Custom data support
 
 ### UICapabilities
+
 Flags enum defining supported UI features:
+
 - Basic HUD display
 - Menu systems
 - Dialog systems
@@ -42,14 +48,18 @@ Flags enum defining supported UI features:
 - Input binding
 
 ### UITheme
+
 Theme configuration class with:
+
 - Color schemes (primary, secondary, background, etc.)
 - Typography settings
 - Layout properties
 - Built-in light/dark theme factories
 
 ### NotificationType
+
 Enumeration of notification types:
+
 - Info, Success, Warning, Error
 - System, Achievement, Quest
 - Combat, Item, Character
@@ -94,12 +104,14 @@ The UI layer typically overlays the rendering layer, providing interactive eleme
 ## Plugin Implementation
 
 UI plugins should:
+
 1. Implement `IUserInterface` for game-specific functionality
 2. Implement `PigeonPea.Contracts.Hud.Services.IService` for app-level compatibility
 3. Register both interfaces in the plugin system
 4. Return appropriate root controls for the host framework
 
 This dual-implementation approach allows:
+
 - Game code to use rich `IUserInterface` features
 - App infrastructure to use basic `IService` compatibility
 - Single plugin to serve both layers of the application

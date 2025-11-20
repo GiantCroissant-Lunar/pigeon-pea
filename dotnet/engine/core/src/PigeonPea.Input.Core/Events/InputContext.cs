@@ -1,6 +1,6 @@
-using PigeonPea.Shared.Input.Controls;
+using PigeonPea.Input.Core.Controls;
 
-namespace PigeonPea.Shared.Input.Events;
+namespace PigeonPea.Input.Core.Events;
 
 /// <summary>
 /// Context passed to action callbacks.

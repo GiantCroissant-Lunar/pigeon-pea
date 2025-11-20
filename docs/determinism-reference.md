@@ -9,11 +9,11 @@ summary: This document provides reference information for the RFC-008 Determinis
   Test Suite implementation.
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- rfc
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - rfc
+  - testing
 title: Determinism Test Suite Reference
 ---
 

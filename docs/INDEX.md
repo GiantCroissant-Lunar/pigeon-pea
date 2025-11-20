@@ -1,8 +1,10 @@
 # Documentation Index
-*Generated: 2025-11-20 19:32:00*
-*Total Documents: 124*
+
+_Generated: 2025-11-20 19:32:00_
+_Total Documents: 124_
 
 ## Quick Navigation
+
 - [By Document Type](#by-document-type)
 - [By Status](#by-status)
 - [Recently Updated](#recently-updated)
@@ -12,6 +14,7 @@
 ## By Document Type
 
 ### RFCs (Requests for Comments) (62)
+
 - 📝 **[N/A](_inbox\SUMMARY-game-services-documentation.md)**: Summary: Game Services Documentation Package
 - 📦 **[](archive\conversations\023-nexus-input-system.md)**: Nexus-Input: Unity-Inspired Input System
 - 📝 **[](archive\conversations\025-nexus-inventory-system.md)**: Nexus-Inventory: RPGCore-Inspired Inventory and Item System
@@ -76,6 +79,7 @@
 - ✅ **[RFC-2025-00038](issues\rfc-013\issue-50.md)**: Yazi integration doc + packaging pipeline
 
 ### Guides (18)
+
 - 📝 **[N/A](_inbox\FMG-cultures-handover.md)**: FMG Cultures Generation Handover
 - 📝 **[](_inbox\mcp-project-launcher-system.md)**: MCP Project Launcher System
 - ✅ **[GUIDE-00001](guides\architecture-refinement-implementation-guide.md)**: Architecture Refinement Implementation Guide
@@ -96,6 +100,7 @@
 - ✅ **[GUIDE-2025-00008](migrations\fmg-rendering-to-map-rendering.md)**: Migration: FantasyMapGenerator.Rendering → PigeonPea.Map.Rendering
 
 ### Architecture Decision Records (19)
+
 - ✅ **[ADR-00001](dotnet\architecture\overview.md)**: Architecture Overview
 - ✅ **[ADR-00002](dotnet\architecture\game-scale-modes.md)**: Multi-Scale World & Mode System
 - ✅ **[ADR-00003](dotnet\architecture\service-tiers.md)**: Service Tiers and Category Layout
@@ -117,6 +122,7 @@
 - ✅ **[ADR-2025-00012](architecture\RIVER_GENERATION_INVESTIGATION.md)**: River Generation Investigation - Handover Document
 
 ### Planning Documents (16)
+
 - 📝 **[N/A](_inbox\memory-system-validation-plan.md)**: Memory System Validation Plan
 - ✅ **[PLAN-00001](rfcs\IMPLEMENTATION_PLAN.md)**: Implementation Plan: Project Restructure and Plugin System
 - ✅ **[PLAN-00003](rfcs\issues\issue-001-migrate-structure.md)**: Issue #1: [RFC-005] Phase 1: Migrate project structure to new organization
@@ -135,6 +141,7 @@
 - ✅ **[PLAN-2025-00002](dev-notes\SESSION_HANDOVER.md)**: Session Handover
 
 ### Specifications (6)
+
 - ✅ **[SPEC-00001](fonts\SVG-SPEC-ANGLES.md)**: SVG Specification — 36 Angle Glyphs
 - ✅ **[SPEC-2025-00001](fonts\PATCH-SCRIPT-OUTLINE.md)**: FontForge Patch Script — Outline
 - ✅ **[SPEC-2025-00002](fonts\PUA-LAYOUT.md)**: PUA Layout for Map Glyphs
@@ -143,6 +150,7 @@
 - ✅ **[SPEC-2025-00005](terminals\rio\RIO_CONFIG_TROUBLESHOOTING.md)**: Rio Terminal Configuration Troubleshooting Guide
 
 ### Reference Documentation (3)
+
 - ✅ **[REFERENCE-00001](DOCUMENTATION-SCHEMA.md)**: Documentation Front-Matter Schema
 - ✅ **[REFERENCE-00002](fonts\ANGLE-MAPPING-EXAMPLES.md)**: Angle → Glyph Mapping Examples
 - ✅ **[REFERENCE-00003](terminals\rio\BUNDLE-LAYOUT.md)**: Rio Bundle Layout (Template)
@@ -150,57 +158,61 @@
 ## By Status
 
 ### Active (98)
-- [ADR-00001](dotnet\architecture\overview.md) - Architecture Overview *(adr)*
-- [ADR-00002](dotnet\architecture\game-scale-modes.md) - Multi-Scale World & Mode System *(adr)*
-- [ADR-00003](dotnet\architecture\service-tiers.md) - Service Tiers and Category Layout *(adr)*
-- [ADR-00004](dotnet\architecture\services-and-plugins.md) - Services, Shared Libraries, and Plugins *(adr)*
-- [ADR-00005](dotnet\architecture\goap-perception-checklist.md) - GOAP Perception Checklist *(adr)*
-- [ADR-00006](dotnet\architecture\observable-collections.md) - Observable Collections and Reactive Patterns *(adr)*
-- [ADR-00007](dotnet\architecture\reactive-stack-and-r3.md) - Reactive Stack and R3 Integration *(adr)*
-- [ADR-2025-00001](adr\ADR-0001-historical-vs-canonical-docs.md) - ADR-0001: Historical vs Canonical Documentation for .NET Project Structure *(adr)*
-- [ADR-2025-00002](adr\ADR-0002-rendering-split-shared-vs-content-rendering.md) - ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering *(adr)*
-- [ADR-2025-00003](adr\ADR-0003-ecs-split-shared-vs-content-ecs.md) - ADR-0003: ECS Split Between Shared.ECS and Content.ECS *(adr)*
-- [ADR-2025-00004](adr\ADR-0004-mapsui-zoomable-world-and-external-map-stacks.md) - ADR-0004: Mapsui Integration, Zoomable World, and External Map Stacks *(adr)*
-- [ADR-2025-00005](architecture\ARCHITECTURE_MAP_RENDERING.md) - Map Rendering Architecture (Console + Desktop) *(adr)*
-- [ADR-2025-00006](architecture\ARCHITECTURE_PLAN.md) - Pigeon Pea Architecture Plan *(adr)*
-- [ADR-2025-00007](architecture\domain-organization.md) - Domain-Driven Architecture Organization *(adr)*
-- [ADR-2025-00008](architecture\GRAPHICS_PROTOCOL_NOTES.md) - Graphics Protocol Notes for WezTerm on Windows *(adr)*
-- [ADR-2025-00009](architecture\MAPSUI_INTEGRATION_PLAN.md) - Mapsui/BruTile Integration Plan *(adr)*
-- [ADR-2025-00010](architecture\PLUGIN_SYSTEM_ANALYSIS.md) - Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption *(adr)*
-- [ADR-2025-00011](architecture\RFC_IMPLEMENTATION_REVIEW.md) - RFC-005 & RFC-006 Implementation Review *(adr)*
-- [ADR-2025-00012](architecture\RIVER_GENERATION_INVESTIGATION.md) - River Generation Investigation - Handover Document *(adr)*
-- [GUIDE-00001](guides\architecture-refinement-implementation-guide.md) - Architecture Refinement Implementation Guide *(guide)*
 
-*...and 78 more*
+- [ADR-00001](dotnet\architecture\overview.md) - Architecture Overview _(adr)_
+- [ADR-00002](dotnet\architecture\game-scale-modes.md) - Multi-Scale World & Mode System _(adr)_
+- [ADR-00003](dotnet\architecture\service-tiers.md) - Service Tiers and Category Layout _(adr)_
+- [ADR-00004](dotnet\architecture\services-and-plugins.md) - Services, Shared Libraries, and Plugins _(adr)_
+- [ADR-00005](dotnet\architecture\goap-perception-checklist.md) - GOAP Perception Checklist _(adr)_
+- [ADR-00006](dotnet\architecture\observable-collections.md) - Observable Collections and Reactive Patterns _(adr)_
+- [ADR-00007](dotnet\architecture\reactive-stack-and-r3.md) - Reactive Stack and R3 Integration _(adr)_
+- [ADR-2025-00001](adr\ADR-0001-historical-vs-canonical-docs.md) - ADR-0001: Historical vs Canonical Documentation for .NET Project Structure _(adr)_
+- [ADR-2025-00002](adr\ADR-0002-rendering-split-shared-vs-content-rendering.md) - ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering _(adr)_
+- [ADR-2025-00003](adr\ADR-0003-ecs-split-shared-vs-content-ecs.md) - ADR-0003: ECS Split Between Shared.ECS and Content.ECS _(adr)_
+- [ADR-2025-00004](adr\ADR-0004-mapsui-zoomable-world-and-external-map-stacks.md) - ADR-0004: Mapsui Integration, Zoomable World, and External Map Stacks _(adr)_
+- [ADR-2025-00005](architecture\ARCHITECTURE_MAP_RENDERING.md) - Map Rendering Architecture (Console + Desktop) _(adr)_
+- [ADR-2025-00006](architecture\ARCHITECTURE_PLAN.md) - Pigeon Pea Architecture Plan _(adr)_
+- [ADR-2025-00007](architecture\domain-organization.md) - Domain-Driven Architecture Organization _(adr)_
+- [ADR-2025-00008](architecture\GRAPHICS_PROTOCOL_NOTES.md) - Graphics Protocol Notes for WezTerm on Windows _(adr)_
+- [ADR-2025-00009](architecture\MAPSUI_INTEGRATION_PLAN.md) - Mapsui/BruTile Integration Plan _(adr)_
+- [ADR-2025-00010](architecture\PLUGIN_SYSTEM_ANALYSIS.md) - Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption _(adr)_
+- [ADR-2025-00011](architecture\RFC_IMPLEMENTATION_REVIEW.md) - RFC-005 & RFC-006 Implementation Review _(adr)_
+- [ADR-2025-00012](architecture\RIVER_GENERATION_INVESTIGATION.md) - River Generation Investigation - Handover Document _(adr)_
+- [GUIDE-00001](guides\architecture-refinement-implementation-guide.md) - Architecture Refinement Implementation Guide _(guide)_
+
+_...and 78 more_
 
 ### Draft (25)
-- [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover *(guide)*
-- [](_inbox\mcp-project-launcher-system.md) - MCP Project Launcher System *(guide)*
-- [N/A](_inbox\memory-system-validation-plan.md) - Memory System Validation Plan *(plan)*
-- [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package *(rfc)*
-- [](archive\conversations\025-nexus-inventory-system.md) - Nexus-Inventory: RPGCore-Inspired Inventory and Item System *(rfc)*
-- [GUIDE-00002](_inbox\game-services-implementation-guide.md) - Game Services Implementation Guide: Step-by-Step Instructions for Agents *(guide)*
-- [RFC-00001](rfcs\001-rendering-architecture.md) - Rendering Architecture *(rfc)*
-- [RFC-00003](rfcs\003-testing-verification.md) - Testing and Verification *(rfc)*
-- [RFC-00004](rfcs\004-agent-infrastructure-enhancement.md) - Agent Infrastructure Enhancement *(rfc)*
-- [RFC-00012](rfcs\012-documentation-organization-management.md) - Documentation Organization Management *(rfc)*
-- [RFC-00013](rfcs\013-plugin-architecture-refinement-tiered.md) - Plugin Architecture Refinement: Tier-Based System *(rfc)*
-- [RFC-00014](rfcs\014-scene-management-ecs.md) - Scene Management with ECS Architecture *(rfc)*
-- [RFC-00015](rfcs\015-fantasy-calendar-real-world-transformation.md) - Fantasy Calendar to Real-World Time Transformation *(rfc)*
-- [RFC-00016](rfcs\016-name-generator-json-configuration.md) - Name Generator JSON Configuration System *(rfc)*
-- [RFC-00017](rfcs\017-name-generator-cjk-languages.md) - Name Generator CJK Language Support *(rfc)*
-- [RFC-00018](rfcs\018-name-generator-markov-chain-mode.md) - Name Generator Markov Chain Mode *(rfc)*
-- [RFC-00020](rfcs\020-font-pipeline-and-pua-layout.md) - Custom CJK Monospace Game Font — Pipeline and PUA Layout *(rfc)*
-- [RFC-00021](rfcs\021-terminal-distribution-and-rio-integration.md) - Terminal Distribution — Rio Integration and Bundle Layout *(rfc)*
-- [RFC-00022](rfcs\022-ci-cd-font-and-bundle.md) - CI/CD for Custom Font and Developer Bundle *(rfc)*
-- [RFC-00023](rfcs\031-game-services-architecture.md) - Game Services Architecture: Stats, Character, Avatar, Animation, Persistence, and World Management *(rfc)*
 
-*...and 5 more*
+- [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover _(guide)_
+- [](_inbox\mcp-project-launcher-system.md) - MCP Project Launcher System _(guide)_
+- [N/A](_inbox\memory-system-validation-plan.md) - Memory System Validation Plan _(plan)_
+- [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package _(rfc)_
+- [](archive\conversations\025-nexus-inventory-system.md) - Nexus-Inventory: RPGCore-Inspired Inventory and Item System _(rfc)_
+- [GUIDE-00002](_inbox\game-services-implementation-guide.md) - Game Services Implementation Guide: Step-by-Step Instructions for Agents _(guide)_
+- [RFC-00001](rfcs\001-rendering-architecture.md) - Rendering Architecture _(rfc)_
+- [RFC-00003](rfcs\003-testing-verification.md) - Testing and Verification _(rfc)_
+- [RFC-00004](rfcs\004-agent-infrastructure-enhancement.md) - Agent Infrastructure Enhancement _(rfc)_
+- [RFC-00012](rfcs\012-documentation-organization-management.md) - Documentation Organization Management _(rfc)_
+- [RFC-00013](rfcs\013-plugin-architecture-refinement-tiered.md) - Plugin Architecture Refinement: Tier-Based System _(rfc)_
+- [RFC-00014](rfcs\014-scene-management-ecs.md) - Scene Management with ECS Architecture _(rfc)_
+- [RFC-00015](rfcs\015-fantasy-calendar-real-world-transformation.md) - Fantasy Calendar to Real-World Time Transformation _(rfc)_
+- [RFC-00016](rfcs\016-name-generator-json-configuration.md) - Name Generator JSON Configuration System _(rfc)_
+- [RFC-00017](rfcs\017-name-generator-cjk-languages.md) - Name Generator CJK Language Support _(rfc)_
+- [RFC-00018](rfcs\018-name-generator-markov-chain-mode.md) - Name Generator Markov Chain Mode _(rfc)_
+- [RFC-00020](rfcs\020-font-pipeline-and-pua-layout.md) - Custom CJK Monospace Game Font — Pipeline and PUA Layout _(rfc)_
+- [RFC-00021](rfcs\021-terminal-distribution-and-rio-integration.md) - Terminal Distribution — Rio Integration and Bundle Layout _(rfc)_
+- [RFC-00022](rfcs\022-ci-cd-font-and-bundle.md) - CI/CD for Custom Font and Developer Bundle _(rfc)_
+- [RFC-00023](rfcs\031-game-services-architecture.md) - Game Services Architecture: Stats, Character, Avatar, Animation, Persistence, and World Management _(rfc)_
+
+_...and 5 more_
 
 ### Archived (1)
-- [](archive\conversations\023-nexus-input-system.md) - Nexus-Input: Unity-Inspired Input System *(rfc)*
+
+- [](archive\conversations\023-nexus-input-system.md) - Nexus-Input: Unity-Inspired Input System _(rfc)_
 
 ## Recently Updated
+
 - **2025-11-20**: [RFC-2025-00001](AGENT-RULES-QUICK-REF.md) - Agent Documentation Management Rules
 - **2025-11-20**: [RFC-2025-00002](DASHBOARD.md) - RFC Implementation Dashboard
 - **2025-11-20**: [GUIDE-2025-00001](DEPENDENCIES.md) - Documentation Dependencies
@@ -218,26 +230,28 @@
 - **2025-11-20**: [ADR-2025-00003](adr\ADR-0003-ecs-split-shared-vs-content-ecs.md) - ADR-0003: ECS Split Between Shared.ECS and Content.ECS
 
 ## Most Referenced
-*Documents frequently referenced by others*
 
-- [ADR-00001](dotnet\architecture\overview.md) - Architecture Overview *(8 references)*
-- [RFC-00005](rfcs\005-project-structure-reorganization.md) - Project Structure Reorganization *(8 references)*
-- [RFC-00006](rfcs\006-plugin-system-architecture.md) - Plugin System Architecture *(8 references)*
-- [RFC-00020](rfcs\020-font-pipeline-and-pua-layout.md) - Custom CJK Monospace Game Font — Pipeline and PUA Layout *(7 references)*
-- [ADR-00003](dotnet\architecture\service-tiers.md) - Service Tiers and Category Layout *(6 references)*
-- [RFC-00021](rfcs\021-terminal-distribution-and-rio-integration.md) - Terminal Distribution — Rio Integration and Bundle Layout *(6 references)*
-- [GUIDE-00001](guides\architecture-refinement-implementation-guide.md) - Architecture Refinement Implementation Guide *(5 references)*
-- [RFC-00013](rfcs\013-plugin-architecture-refinement-tiered.md) - Plugin Architecture Refinement: Tier-Based System *(5 references)*
-- [RFC-00004](rfcs\004-agent-infrastructure-enhancement.md) - Agent Infrastructure Enhancement *(5 references)*
-- [PLAN-00001](rfcs\IMPLEMENTATION_PLAN.md) - Implementation Plan: Project Restructure and Plugin System *(5 references)*
-- [RFC-00014](rfcs\014-scene-management-ecs.md) - Scene Management with ECS Architecture *(4 references)*
-- [ADR-00004](dotnet\architecture\services-and-plugins.md) - Services, Shared Libraries, and Plugins *(3 references)*
-- [RFC-00016](rfcs\016-name-generator-json-configuration.md) - Name Generator JSON Configuration System *(3 references)*
-- [PLAN-00008](planning\AGENT_INFRASTRUCTURE_ISSUES.md) - GitHub Issues: Agent Infrastructure Enhancement *(3 references)*
+_Documents frequently referenced by others_
+
+- [ADR-00001](dotnet\architecture\overview.md) - Architecture Overview _(8 references)_
+- [RFC-00005](rfcs\005-project-structure-reorganization.md) - Project Structure Reorganization _(8 references)_
+- [RFC-00006](rfcs\006-plugin-system-architecture.md) - Plugin System Architecture _(8 references)_
+- [RFC-00020](rfcs\020-font-pipeline-and-pua-layout.md) - Custom CJK Monospace Game Font — Pipeline and PUA Layout _(7 references)_
+- [ADR-00003](dotnet\architecture\service-tiers.md) - Service Tiers and Category Layout _(6 references)_
+- [RFC-00021](rfcs\021-terminal-distribution-and-rio-integration.md) - Terminal Distribution — Rio Integration and Bundle Layout _(6 references)_
+- [GUIDE-00001](guides\architecture-refinement-implementation-guide.md) - Architecture Refinement Implementation Guide _(5 references)_
+- [RFC-00013](rfcs\013-plugin-architecture-refinement-tiered.md) - Plugin Architecture Refinement: Tier-Based System _(5 references)_
+- [RFC-00004](rfcs\004-agent-infrastructure-enhancement.md) - Agent Infrastructure Enhancement _(5 references)_
+- [PLAN-00001](rfcs\IMPLEMENTATION_PLAN.md) - Implementation Plan: Project Restructure and Plugin System _(5 references)_
+- [RFC-00014](rfcs\014-scene-management-ecs.md) - Scene Management with ECS Architecture _(4 references)_
+- [ADR-00004](dotnet\architecture\services-and-plugins.md) - Services, Shared Libraries, and Plugins _(3 references)_
+- [RFC-00016](rfcs\016-name-generator-json-configuration.md) - Name Generator JSON Configuration System _(3 references)_
+- [PLAN-00008](planning\AGENT_INFRASTRUCTURE_ISSUES.md) - GitHub Issues: Agent Infrastructure Enhancement _(3 references)_
 
 ## By Topic
 
 ### Architecture (62)
+
 - [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package
 - [](archive\conversations\023-nexus-input-system.md) - Nexus-Input: Unity-Inspired Input System
 - [](archive\conversations\025-nexus-inventory-system.md) - Nexus-Inventory: RPGCore-Inspired Inventory and Item System
@@ -249,9 +263,10 @@
 - [ADR-00006](dotnet\architecture\observable-collections.md) - Observable Collections and Reactive Patterns
 - [ADR-00007](dotnet\architecture\reactive-stack-and-r3.md) - Reactive Stack and R3 Integration
 
-*...and 52 more*
+_...and 52 more_
 
 ### Ecs (50)
+
 - [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover
 - [N/A](_inbox\memory-system-validation-plan.md) - Memory System Validation Plan
 - [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package
@@ -263,9 +278,10 @@
 - [ADR-2025-00007](architecture\domain-organization.md) - Domain-Driven Architecture Organization
 - [ADR-2025-00009](architecture\MAPSUI_INTEGRATION_PLAN.md) - Mapsui/BruTile Integration Plan
 
-*...and 40 more*
+_...and 40 more_
 
 ### Documentation (48)
+
 - [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package
 - [ADR-2025-00001](adr\ADR-0001-historical-vs-canonical-docs.md) - ADR-0001: Historical vs Canonical Documentation for .NET Project Structure
 - [ADR-2025-00006](architecture\ARCHITECTURE_PLAN.md) - Pigeon Pea Architecture Plan
@@ -277,9 +293,10 @@
 - [GUIDE-2025-00001](DEPENDENCIES.md) - Documentation Dependencies
 - [GUIDE-2025-00002](GITHUB_ISSUES_DEVTOOLS.md) - DevTools GitHub Issues - Creation Summary
 
-*...and 38 more*
+_...and 38 more_
 
 ### Terminal (45)
+
 - [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover
 - [ADR-2025-00001](adr\ADR-0001-historical-vs-canonical-docs.md) - ADR-0001: Historical vs Canonical Documentation for .NET Project Structure
 - [ADR-2025-00002](adr\ADR-0002-rendering-split-shared-vs-content-rendering.md) - ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering
@@ -291,9 +308,10 @@
 - [ADR-2025-00009](architecture\MAPSUI_INTEGRATION_PLAN.md) - Mapsui/BruTile Integration Plan
 - [ADR-2025-00010](architecture\PLUGIN_SYSTEM_ANALYSIS.md) - Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption
 
-*...and 35 more*
+_...and 35 more_
 
 ### Rendering (44)
+
 - [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover
 - [ADR-00001](dotnet\architecture\overview.md) - Architecture Overview
 - [ADR-2025-00002](adr\ADR-0002-rendering-split-shared-vs-content-rendering.md) - ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering
@@ -305,9 +323,10 @@
 - [ADR-2025-00008](architecture\GRAPHICS_PROTOCOL_NOTES.md) - Graphics Protocol Notes for WezTerm on Windows
 - [ADR-2025-00009](architecture\MAPSUI_INTEGRATION_PLAN.md) - Mapsui/BruTile Integration Plan
 
-*...and 34 more*
+_...and 34 more_
 
 ### Testing (40)
+
 - [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover
 - [N/A](_inbox\memory-system-validation-plan.md) - Memory System Validation Plan
 - [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package
@@ -319,9 +338,10 @@
 - [ADR-2025-00010](architecture\PLUGIN_SYSTEM_ANALYSIS.md) - Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption
 - [ADR-2025-00011](architecture\RFC_IMPLEMENTATION_REVIEW.md) - RFC-005 & RFC-006 Implementation Review
 
-*...and 30 more*
+_...and 30 more_
 
 ### Rfc (37)
+
 - [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package
 - [RFC-00026](rfcs\026-rfc-numbering-convention.md) - RFC Numbering Convention and Document Identification
 - [RFC-2025-00001](AGENT-RULES-QUICK-REF.md) - Agent Documentation Management Rules
@@ -333,9 +353,10 @@
 - [RFC-2025-00007](PRD-RFC-SCHEMA.md) - PRD-RFC Relationship Schema
 - [RFC-2025-00009](RFC-NUMBERING-QUICK-REF.md) - RFC Numbering Convention - Quick Reference
 
-*...and 27 more*
+_...and 27 more_
 
 ### Plugins (29)
+
 - [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover
 - [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package
 - [ADR-00001](dotnet\architecture\overview.md) - Architecture Overview
@@ -347,9 +368,10 @@
 - [ADR-2025-00010](architecture\PLUGIN_SYSTEM_ANALYSIS.md) - Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption
 - [ADR-2025-00011](architecture\RFC_IMPLEMENTATION_REVIEW.md) - RFC-005 & RFC-006 Implementation Review
 
-*...and 19 more*
+_...and 19 more_
 
 ### Ci-Cd (28)
+
 - [ADR-2025-00006](architecture\ARCHITECTURE_PLAN.md) - Pigeon Pea Architecture Plan
 - [ADR-2025-00010](architecture\PLUGIN_SYSTEM_ANALYSIS.md) - Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption
 - [ADR-2025-00011](architecture\RFC_IMPLEMENTATION_REVIEW.md) - RFC-005 & RFC-006 Implementation Review
@@ -361,9 +383,10 @@
 - [PLAN-2025-00002](dev-notes\SESSION_HANDOVER.md) - Session Handover
 - [RFC-00022](rfcs\022-ci-cd-font-and-bundle.md) - CI/CD for Custom Font and Developer Bundle
 
-*...and 18 more*
+_...and 18 more_
 
 ### Agents (22)
+
 - [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover
 - [N/A](_inbox\memory-system-validation-plan.md) - Memory System Validation Plan
 - [N/A](_inbox\SUMMARY-game-services-documentation.md) - Summary: Game Services Documentation Package
@@ -375,9 +398,10 @@
 - [PLAN-2025-00001](RFC-INDEX-REPORT.md) - RFC Indexing Synchronization Report
 - [RFC-00004](rfcs\004-agent-infrastructure-enhancement.md) - Agent Infrastructure Enhancement
 
-*...and 12 more*
+_...and 12 more_
 
 ### Fonts (17)
+
 - [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover
 - [ADR-2025-00009](architecture\MAPSUI_INTEGRATION_PLAN.md) - Mapsui/BruTile Integration Plan
 - [GUIDE-00002](terminals\rio\CONFIG.md) - Rio Terminal Configuration — Using the Custom Font
@@ -389,9 +413,10 @@
 - [RFC-00020](rfcs\020-font-pipeline-and-pua-layout.md) - Custom CJK Monospace Game Font — Pipeline and PUA Layout
 - [RFC-00022](rfcs\022-ci-cd-font-and-bundle.md) - CI/CD for Custom Font and Developer Bundle
 
-*...and 7 more*
+_...and 7 more_
 
 ### Guide (13)
+
 - [N/A](_inbox\FMG-cultures-handover.md) - FMG Cultures Generation Handover
 - [GUIDE-00001](guides\architecture-refinement-implementation-guide.md) - Architecture Refinement Implementation Guide
 - [GUIDE-00001](guides\name-generator-enhancement-guide.md) - Name Generator Enhancement Implementation Guide
@@ -403,9 +428,10 @@
 - [GUIDE-2025-00004](dev-notes\BUILD_VERSIONING_AND_LOGGING.md) - Build Versioning and Logging
 - [GUIDE-2025-00005](dev-notes\RELEASE_PLAN.md) - Release Plan: Cross-Platform Bundles
 
-*...and 3 more*
+_...and 3 more_
 
 ### Adr (12)
+
 - [ADR-2025-00001](adr\ADR-0001-historical-vs-canonical-docs.md) - ADR-0001: Historical vs Canonical Documentation for .NET Project Structure
 - [ADR-2025-00002](adr\ADR-0002-rendering-split-shared-vs-content-rendering.md) - ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering
 - [ADR-2025-00003](adr\ADR-0003-ecs-split-shared-vs-content-ecs.md) - ADR-0003: ECS Split Between Shared.ECS and Content.ECS
@@ -417,9 +443,10 @@
 - [ADR-2025-00009](architecture\MAPSUI_INTEGRATION_PLAN.md) - Mapsui/BruTile Integration Plan
 - [ADR-2025-00010](architecture\PLUGIN_SYSTEM_ANALYSIS.md) - Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption
 
-*...and 2 more*
+_...and 2 more_
 
 ### Implementation (7)
+
 - [GUIDE-00001](guides\architecture-refinement-implementation-guide.md) - Architecture Refinement Implementation Guide
 - [GUIDE-00001](guides\name-generator-enhancement-guide.md) - Name Generator Enhancement Implementation Guide
 - [GUIDE-00002](guides\rfc014-scene-management-adjustment-plan.md) - RFC-014 Scene Management: Adjustment Plan
@@ -429,6 +456,7 @@
 - [PLAN-00011](planning\GITHUB_ISSUES.md) - GitHub Issues Breakdown
 
 ### Services (6)
+
 - [ADR-00003](dotnet\architecture\service-tiers.md) - Service Tiers and Category Layout
 - [ADR-00004](dotnet\architecture\services-and-plugins.md) - Services, Shared Libraries, and Plugins
 - [GUIDE-00002](guides\dotnet-tiered-architecture-guide.md) - .NET Tiered Architecture and Layer Implementation Guide
@@ -437,6 +465,7 @@
 - [RFC-00024](rfcs\029-stats-service.md) - Stats Service: Universal Stat Management for Game Entities
 
 ### Spec (5)
+
 - [SPEC-2025-00001](fonts\PATCH-SCRIPT-OUTLINE.md) - FontForge Patch Script — Outline
 - [SPEC-2025-00002](fonts\PUA-LAYOUT.md) - PUA Layout for Map Glyphs
 - [SPEC-2025-00003](fonts\README_SARASA.md) - Sarasa Gothic (更纱黑体 / 更紗黑體 / 更紗ゴシック / 사라사고딕)
@@ -444,6 +473,7 @@
 - [SPEC-2025-00005](terminals\rio\RIO_CONFIG_TROUBLESHOOTING.md) - Rio Terminal Configuration Troubleshooting Guide
 
 ### Refactoring (5)
+
 - [GUIDE-00001](guides\architecture-refinement-implementation-guide.md) - Architecture Refinement Implementation Guide
 - [RFC-00005](rfcs\005-project-structure-reorganization.md) - Project Structure Reorganization
 - [RFC-00013](rfcs\013-plugin-architecture-refinement-tiered.md) - Plugin Architecture Refinement: Tier-Based System
@@ -451,6 +481,7 @@
 - [RFC-00024](rfcs\024-nexus-systems-architecture.md) - Nexus Systems Architecture Refactoring: Move to Engine Layer
 
 ### Library (5)
+
 - [](archive\conversations\023-nexus-input-system.md) - Nexus-Input: Unity-Inspired Input System
 - [](archive\conversations\025-nexus-inventory-system.md) - Nexus-Inventory: RPGCore-Inspired Inventory and Item System
 - [RFC-00019](rfcs\019-nexus-gas-gameplay-ability-system.md) - Nexus-GAS: Gameplay Ability System Implementation
@@ -458,6 +489,7 @@
 - [RFC-00028](rfcs\028-nexus-perception-system.md) - Nexus-Perception: Agent Perception and Awareness System
 
 ### Issue (5)
+
 - [PLAN-00003](rfcs\issues\issue-001-migrate-structure.md) - Issue #1: [RFC-005] Phase 1: Migrate project structure to new organization
 - [PLAN-00004](rfcs\issues\issue-002-create-contracts.md) - Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system
 - [PLAN-00005](rfcs\issues\issue-003-plugin-system.md) - Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure
@@ -465,6 +497,7 @@
 - [PLAN-00007](rfcs\issues\issue-005-rendering-plugin.md) - Issue #5: [RFC-006] Phase 3: Create rendering plugin proof of concept
 
 ### Tiered-Architecture (4)
+
 - [GUIDE-00002](guides\dotnet-tiered-architecture-guide.md) - .NET Tiered Architecture and Layer Implementation Guide
 - [RFC-00013](rfcs\013-plugin-architecture-refinement-tiered.md) - Plugin Architecture Refinement: Tier-Based System
 - [RFC-00023](rfcs\031-game-services-architecture.md) - Game Services Architecture: Stats, Character, Avatar, Animation, Persistence, and World Management

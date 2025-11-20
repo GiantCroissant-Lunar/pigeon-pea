@@ -7,7 +7,16 @@ canonical: false
 created: '2025-11-18'
 tags: ['redirect', 'architecture']
 summary: 'Redirect to new location for architecture documentation'
-related: ['ADR-2025-00001', 'ADR-2025-00002', 'ADR-2025-00003', 'ADR-2025-00004', 'ADR-2025-00005', 'ADR-2025-00006', 'ADR-2025-00007']
+related:
+  [
+    'ADR-2025-00001',
+    'ADR-2025-00002',
+    'ADR-2025-00003',
+    'ADR-2025-00004',
+    'ADR-2025-00005',
+    'ADR-2025-00006',
+    'ADR-2025-00007',
+  ]
 ---
 
 # Architecture Documentation
@@ -17,6 +26,7 @@ related: ['ADR-2025-00001', 'ADR-2025-00002', 'ADR-2025-00003', 'ADR-2025-00004'
 Please update your references to point to the new location.
 
 The following files have been moved:
+
 - [GAME_SCALE_MODES.md](./game-scale-modes.md) → [docs/dotnet/architecture/game-scale-modes.md](../../docs/dotnet/architecture/game-scale-modes.md)
 - [GOAP_PERCEPTION_CHECKLIST.md](./goap-perception-checklist.md) → [docs/dotnet/architecture/goap-perception-checklist.md](../../docs/dotnet/architecture/goap-perception-checklist.md)
 - [OBSERVABLE_COLLECTIONS.md](./observable-collections.md) → [docs/dotnet/architecture/observable-collections.md](../../docs/dotnet/architecture/observable-collections.md)
@@ -26,4 +36,4 @@ The following files have been moved:
 
 ---
 
-*This redirect file preserves existing links while documentation is being reorganized according to RFC-012 standards.*
+_This redirect file preserves existing links while documentation is being reorganized according to RFC-012 standards._

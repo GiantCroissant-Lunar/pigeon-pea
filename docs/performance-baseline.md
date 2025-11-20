@@ -8,8 +8,8 @@ status: active
 summary: 'Date: 2025-11-13 Machine: AMD Ryzen 5 5600X, 32GB RAM, Windows 11 (10.0.26200.7171)'
 supersedes: []
 tags:
-- ecs
-- rfc
+  - ecs
+  - rfc
 title: Performance Baseline (RFC-009 Phase 2)
 ---
 

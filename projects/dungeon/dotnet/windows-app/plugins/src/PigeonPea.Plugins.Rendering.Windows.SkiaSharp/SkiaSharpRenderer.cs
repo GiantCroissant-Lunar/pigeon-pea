@@ -48,7 +48,7 @@ public class SkiaSharpRenderer : IRenderer
         }
 
         _context = context;
-        
+
         try
         {
             // Create the Avalonia SkiaRenderView
@@ -190,10 +190,10 @@ public class SkiaSharpRenderer : IRenderer
         var text = "SkiaSharp Renderer Active";
         var textBounds = new SKRect();
         paint.MeasureText(text, ref textBounds);
-        
+
         var x = (width - textBounds.Width) / 2;
         var y = (height - textBounds.Height) / 2;
-        
+
         canvas.DrawText(text, x, y, paint);
 
         // Draw border

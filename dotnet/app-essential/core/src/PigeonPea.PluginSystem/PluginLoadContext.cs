@@ -9,11 +9,13 @@ namespace PigeonPea.PluginSystem;
 public class PluginLoadContext : AssemblyLoadContext
 {
     private readonly AssemblyDependencyResolver _resolver;
+    private readonly HashSet<string> _sharedAssemblies;
 
-    public PluginLoadContext(string pluginAssemblyPath, bool isCollectible = true)
+    public PluginLoadContext(string pluginAssemblyPath, IEnumerable<string> sharedAssemblies, bool isCollectible = true)
         : base(isCollectible: isCollectible)
     {
         _resolver = new AssemblyDependencyResolver(pluginAssemblyPath);
+        _sharedAssemblies = new HashSet<string>(sharedAssemblies, StringComparer.OrdinalIgnoreCase);
     }
 
     protected override Assembly? Load(AssemblyName assemblyName)
@@ -21,13 +23,7 @@ public class PluginLoadContext : AssemblyLoadContext
         // Important: ensure shared contracts and core game libraries resolve from Default ALC
         // so that types like Arch.Core.Entity and inventory components are identical
         // between host and plugins.
-        if (assemblyName.Name == "PigeonPea.Contracts" ||
-            assemblyName.Name == "PigeonPea.Game.Contracts" ||
-            assemblyName.Name == "PigeonPea.Dungeon.Contracts" ||
-            assemblyName.Name == "PigeonPea.Shared" ||
-            assemblyName.Name == "PigeonPea.Shared.Inventory" ||
-            assemblyName.Name == "PigeonPea.Game.Inventory" ||
-            assemblyName.Name == "Arch")
+        if (assemblyName.Name != null && _sharedAssemblies.Contains(assemblyName.Name))
         {
             return null; // use Default ALC binding for shared assemblies
         }

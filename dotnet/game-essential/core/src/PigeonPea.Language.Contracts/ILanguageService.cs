@@ -9,14 +9,14 @@ public interface ILanguageService
     Task<bool> LoadLanguageAsync(string languageId, string configPath);
     Task<bool> UnloadLanguageAsync(string languageId);
     IReadOnlyList<string> GetLoadedLanguages();
-    
+
     // Translation
     Task<string> TranslateAsync(string text, string sourceLanguage, string targetLanguage);
-    
+
     // Name generation
     string GenerateName(string languageId, NameGenerationOptions options);
     IEnumerable<string> GenerateNames(string languageId, int count, NameGenerationOptions options);
-    
+
     // Text generation
     string GenerateSentence(string languageId, SentenceTemplate template);
     string GenerateParagraph(string languageId, int sentenceCount);

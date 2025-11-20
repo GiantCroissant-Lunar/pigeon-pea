@@ -8,15 +8,15 @@ status: active
 summary: 'Last updated: 2025-11-16'
 supersedes: []
 tags:
-- architecture
-- ci-cd
-- documentation
-- fonts
-- plan
-- plugins
-- rendering
-- terminal
-- testing
+  - architecture
+  - ci-cd
+  - documentation
+  - fonts
+  - plan
+  - plugins
+  - rendering
+  - terminal
+  - testing
 title: Session Handover
 ---
 

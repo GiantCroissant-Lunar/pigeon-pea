@@ -4,23 +4,20 @@ created: '2025-11-10'
 doc_id: PLAN-00005
 doc_type: plan
 related:
-- RFC-00006
-- PLAN-00001
-- PLAN-00004
+  - RFC-00006
+  - PLAN-00001
+  - PLAN-00004
 status: active
 summary: Implement core plugin infrastructure as defined in RFC-006 Phase 1
 supersedes: []
 tags:
-- issue
-- plugin-system
-- rfc-006
-- phase-1
-- infrastructure
+  - issue
+  - plugin-system
+  - rfc-006
+  - phase-1
+  - infrastructure
 title: 'Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure'
 ---
-
-
-
 
 # Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure
 

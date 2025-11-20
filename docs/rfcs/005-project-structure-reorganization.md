@@ -4,23 +4,20 @@ created: '2025-11-10'
 doc_id: RFC-00005
 doc_type: rfc
 related:
-- RFC-00006
+  - RFC-00006
 status: active
 summary: Reorganize the dotnet/ folder structure to support a plugin-based architecture
   with clear separation between application framework, game framework, and platform-specific
   applications
 supersedes: []
 tags:
-- project-structure
-- architecture
-- refactoring
-- plugins
+  - project-structure
+  - architecture
+  - refactoring
+  - plugins
 title: Project Structure Reorganization
 updated: '2025-11-13'
 ---
-
-
-
 
 # RFC-005: Project Structure Reorganization
 

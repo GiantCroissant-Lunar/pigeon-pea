@@ -10,10 +10,10 @@ summary: '> ✅ Status: Implemented via dotnet/Map/PigeonPea.Map.Rendering/ (pos
   map rendering pipeline in detail.'
 supersedes: []
 tags:
-- adr
-- architecture
-- rendering
-- terminal
+  - adr
+  - architecture
+  - rendering
+  - terminal
 title: Map Rendering Architecture (Console + Desktop)
 ---
 

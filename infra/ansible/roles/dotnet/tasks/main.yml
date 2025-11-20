@@ -21,7 +21,9 @@
     - name: Add Microsoft package repository
       become: true
       ansible.builtin.apt_repository:
-        repo: "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-{{ ansible_distribution_release }}-prod {{ ansible_distribution_release }} main"
+        repo: >-
+          deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubuntu-{{ ansible_distribution_release }}-prod
+          {{ ansible_distribution_release }} main
         state: present
 
     - name: Install .NET SDK
@@ -29,7 +31,7 @@
       ansible.builtin.apt:
         name: "dotnet-sdk-{{ dotnet_version }}"
         state: present
-        update_cache: yes
+        update_cache: true
 
 - name: Install .NET SDK (macOS)
   community.general.homebrew_cask:

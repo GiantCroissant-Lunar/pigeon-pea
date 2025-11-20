@@ -23,25 +23,12 @@
     },
     "ExecutableTarget": {
       "type": "string",
-      "enum": [
-        "Clean",
-        "Compile",
-        "Publish",
-        "PublishPlayers",
-        "Restore",
-        "Task",
-        "Test"
-      ]
+      "enum": ["Clean", "Compile", "Publish", "PublishPlayers", "Restore", "Task", "Test"]
     },
     "Verbosity": {
       "type": "string",
       "description": "",
-      "enum": [
-        "Verbose",
-        "Normal",
-        "Minimal",
-        "Quiet"
-      ]
+      "enum": ["Verbose", "Normal", "Minimal", "Quiet"]
     },
     "NukeBuild": {
       "properties": {

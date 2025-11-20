@@ -8,11 +8,11 @@ status: active
 summary: Accepted
 supersedes: []
 tags:
-- adr
-- ecs
-- plugins
-- rendering
-- testing
+  - adr
+  - ecs
+  - plugins
+  - rendering
+  - testing
 title: 'ADR-0003: ECS Split Between Shared.ECS and Content.ECS'
 ---
 

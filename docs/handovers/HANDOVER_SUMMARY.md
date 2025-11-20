@@ -9,13 +9,13 @@ summary: 'Date: 2025-01-12 Session Topic: Graphics rendering in Terminal.Gui v2 
   mode'
 supersedes: []
 tags:
-- architecture
-- documentation
-- ecs
-- rendering
-- spec
-- terminal
-- testing
+  - architecture
+  - documentation
+  - ecs
+  - rendering
+  - spec
+  - terminal
+  - testing
 title: Pigeon Pea - Handover Document
 ---
 

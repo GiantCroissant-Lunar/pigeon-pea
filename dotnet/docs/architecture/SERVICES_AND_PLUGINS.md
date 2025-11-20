@@ -14,7 +14,7 @@ It complements the high-level `ARCHITECTURE.md` and focuses on runtime compositi
 
 - **Plugin system** (loader, ALCs, registry).
 - **Service contracts** and **proxies** in `PigeonPea.Contracts.*`.
-- Shared functionality that is appropriate for *any* host app (console, windows, tools), e.g. input/audio abstractions.
+- Shared functionality that is appropriate for _any_ host app (console, windows, tools), e.g. input/audio abstractions.
 
 ### 1.2 game-essential
 
@@ -175,7 +175,6 @@ Future plugins can reuse the same shared runtime:
   - Exposes the same `IService` contract to the host.
 
 The host/profile then decides which input plugin to load (console, SDL3, etc.).
-
 
 ---
 
