@@ -16,6 +16,8 @@ title: Reactive Stack and R3 Integration
 ---
 
 
+
+
 # Reactive Stack and R3 Integration
 
 > **Note**: This document was originally in `dotnet/docs/architecture/REACTIVE_STACK_AND_R3.md` and has been moved to the new documentation structure with RFC-012 compliant front-matter.

@@ -22,6 +22,8 @@ updated: '2025-11-19'
 ---
 
 
+
+
 # RFC-014: Scene Management with ECS Architecture
 
 - **Status:** Draft

@@ -20,6 +20,8 @@ title: 'Issue #5: [RFC-006] Phase 3: Create rendering plugin proof of concept'
 ---
 
 
+
+
 # Issue #5: [RFC-006] Phase 3: Create rendering plugin proof of concept
 
 **Labels:** `plugin-system`, `rfc-006`, `phase-3`, `rendering`

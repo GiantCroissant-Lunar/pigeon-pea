@@ -18,6 +18,8 @@ title: Services, Shared Libraries, and Plugins
 ---
 
 
+
+
 # Services, Shared Libraries, and Plugins
 
 This document describes how **services**, **shared libraries**, and **plugins** fit together in Pigeon Pea, and how we use them for domains like **audio**, **input**, and (in future) **inventory**.

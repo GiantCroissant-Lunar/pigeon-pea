@@ -20,6 +20,8 @@ updated: '2025-11-13'
 ---
 
 
+
+
 # RFC-005: Project Structure Reorganization
 
 - **Status:** Implemented

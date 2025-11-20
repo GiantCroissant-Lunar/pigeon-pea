@@ -24,6 +24,8 @@ updated: '2025-11-19'
 ---
 
 
+
+
 # RFC-013: Plugin Architecture Refinement: Tier-Based System
 
 - **Status:** Draft

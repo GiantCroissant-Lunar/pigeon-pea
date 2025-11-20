@@ -1,0 +1,21 @@
+{
+  "mode": "apply",
+  "total_files": 1,
+  "renumbered": 0,
+  "format_updated": 0,
+  "successful": 0,
+  "failed": 1,
+  "migrations": [
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\014-adopt-dispose-pattern-generator.md",
+      "old_doc_id": null,
+      "new_doc_id": null,
+      "old_filename": "014-adopt-dispose-pattern-generator.md",
+      "new_filename": null,
+      "renumbered": false,
+      "format_updated": false,
+      "success": false,
+      "error": "No front-matter found"
+    }
+  ]
+}

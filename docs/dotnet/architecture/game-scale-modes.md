@@ -18,6 +18,8 @@ title: Multi-Scale World & Mode System
 ---
 
 
+
+
 # Multi-Scale World & Mode System
 
 This document captures current design for **discrete zoom/mode levels** in Pigeon Pea and how they relate to a shared physical scale (km / m) and to technical concerns like chunking.

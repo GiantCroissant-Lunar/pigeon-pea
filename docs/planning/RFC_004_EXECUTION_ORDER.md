@@ -18,6 +18,8 @@ title: 'RFC-004 Implementation: Execution Order'
 ---
 
 
+
+
 # RFC-004 Implementation: Execution Order
 
 This document provides a clear execution order for implementing RFC-004 issues, showing which can be done in **parallel** vs **serial**.

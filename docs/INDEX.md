@@ -1,5 +1,5 @@
 # Documentation Index
-*Generated: 2025-11-20 08:06:16*
+*Generated: 2025-11-20 09:05:32*
 *Total Documents: 60*
 
 ## Quick Navigation
@@ -61,6 +61,7 @@
 - ✅ **[ADR-00007](dotnet\architecture\reactive-stack-and-r3.md)**: Reactive Stack and R3 Integration
 
 ### Planning Documents (13)
+- ✅ **[PLAN-00001](rfcs\IMPLEMENTATION_PLAN.md)**: Implementation Plan: Project Restructure and Plugin System
 - ✅ **[PLAN-00003](rfcs\issues\issue-001-migrate-structure.md)**: Issue #1: [RFC-005] Phase 1: Migrate project structure to new organization
 - ✅ **[PLAN-00004](rfcs\issues\issue-002-create-contracts.md)**: Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system
 - ✅ **[PLAN-00005](rfcs\issues\issue-003-plugin-system.md)**: Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure
@@ -73,7 +74,6 @@
 - ✅ **[PLAN-00012](planning\LABEL_STRATEGY.md)**: GitHub Label Strategy
 - ✅ **[PLAN-00013](planning\RFC_004_EXECUTION_ORDER.md)**: RFC-004 Implementation: Execution Order
 - ✅ **[PLAN-00014](planning\SELF_REVIEW_RFC_004_PLANNING.md)**: Self-Review: RFC-004 & Issues Planning Quality
-- ✅ **[PLAN-2025-00001](rfcs\IMPLEMENTATION_PLAN.md)**: Implementation Plan: Project Restructure and Plugin System
 
 ### Specifications (1)
 - ✅ **[SPEC-00001](fonts\SVG-SPEC-ANGLES.md)**: SVG Specification — 36 Angle Glyphs
@@ -100,12 +100,12 @@
 - [GUIDE-00002](guides\dotnet-tiered-architecture-guide.md) - .NET Tiered Architecture and Layer Implementation Guide *(guide)*
 - [GUIDE-00002](guides\rfc014-scene-management-adjustment-plan.md) - RFC-014 Scene Management: Adjustment Plan *(guide)*
 - [GUIDE-00002](terminals\rio\CONFIG.md) - Rio Terminal Configuration — Using the Custom Font *(guide)*
+- [PLAN-00001](rfcs\IMPLEMENTATION_PLAN.md) - Implementation Plan: Project Restructure and Plugin System *(plan)*
 - [PLAN-00003](rfcs\issues\issue-001-migrate-structure.md) - Issue #1: [RFC-005] Phase 1: Migrate project structure to new organization *(plan)*
 - [PLAN-00004](rfcs\issues\issue-002-create-contracts.md) - Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system *(plan)*
 - [PLAN-00005](rfcs\issues\issue-003-plugin-system.md) - Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure *(plan)*
 - [PLAN-00006](rfcs\issues\issue-004-game-events.md) - Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system *(plan)*
 - [PLAN-00007](rfcs\issues\issue-005-rendering-plugin.md) - Issue #5: [RFC-006] Phase 3: Create rendering plugin proof of concept *(plan)*
-- [PLAN-00008](planning\AGENT_INFRASTRUCTURE_ISSUES.md) - GitHub Issues: Agent Infrastructure Enhancement *(plan)*
 
 *...and 16 more*
 
@@ -165,6 +165,7 @@
 - [GUIDE-00001](guides\architecture-refinement-implementation-guide.md) - Architecture Refinement Implementation Guide *(5 references)*
 - [RFC-00013](rfcs\013-plugin-architecture-refinement-tiered.md) - Plugin Architecture Refinement: Tier-Based System *(5 references)*
 - [RFC-00004](rfcs\004-agent-infrastructure-enhancement.md) - Agent Infrastructure Enhancement *(5 references)*
+- [PLAN-00001](rfcs\IMPLEMENTATION_PLAN.md) - Implementation Plan: Project Restructure and Plugin System *(5 references)*
 - [RFC-00014](rfcs\014-scene-management-ecs.md) - Scene Management with ECS Architecture *(4 references)*
 - [ADR-00004](dotnet\architecture\services-and-plugins.md) - Services, Shared Libraries, and Plugins *(3 references)*
 - [RFC-00016](rfcs\016-name-generator-json-configuration.md) - Name Generator JSON Configuration System *(3 references)*
@@ -191,7 +192,7 @@
 - [ADR-00003](dotnet\architecture\service-tiers.md) - Service Tiers and Category Layout
 - [ADR-00004](dotnet\architecture\services-and-plugins.md) - Services, Shared Libraries, and Plugins
 - [GUIDE-00002](guides\dotnet-tiered-architecture-guide.md) - .NET Tiered Architecture and Layer Implementation Guide
-- [PLAN-2025-00001](rfcs\IMPLEMENTATION_PLAN.md) - Implementation Plan: Project Restructure and Plugin System
+- [PLAN-00001](rfcs\IMPLEMENTATION_PLAN.md) - Implementation Plan: Project Restructure and Plugin System
 - [RFC-00005](rfcs\005-project-structure-reorganization.md) - Project Structure Reorganization
 - [RFC-00006](rfcs\006-plugin-system-architecture.md) - Plugin System Architecture
 - [RFC-00013](rfcs\013-plugin-architecture-refinement-tiered.md) - Plugin Architecture Refinement: Tier-Based System
@@ -213,9 +214,9 @@
 - [GUIDE-00001](guides\name-generator-enhancement-guide.md) - Name Generator Enhancement Implementation Guide
 - [GUIDE-00002](guides\rfc014-scene-management-adjustment-plan.md) - RFC-014 Scene Management: Adjustment Plan
 - [GUIDE-00002](_inbox\game-services-implementation-guide.md) - Game Services Implementation Guide: Step-by-Step Instructions for Agents
+- [PLAN-00001](rfcs\IMPLEMENTATION_PLAN.md) - Implementation Plan: Project Restructure and Plugin System
 - [PLAN-00008](planning\AGENT_INFRASTRUCTURE_ISSUES.md) - GitHub Issues: Agent Infrastructure Enhancement
 - [PLAN-00011](planning\GITHUB_ISSUES.md) - GitHub Issues Breakdown
-- [PLAN-2025-00001](rfcs\IMPLEMENTATION_PLAN.md) - Implementation Plan: Project Restructure and Plugin System
 
 ### Services (6)
 - [ADR-00003](dotnet\architecture\service-tiers.md) - Service Tiers and Category Layout

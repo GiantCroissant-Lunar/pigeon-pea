@@ -1,5 +1,5 @@
 ---
-doc_id: 'GUIDE-2025-00001'
+doc_id: 'GUIDE-00001'
 title: 'Rio on Windows — Using bundle/config/rio.toml'
 doc_type: 'guide'
 status: 'active'

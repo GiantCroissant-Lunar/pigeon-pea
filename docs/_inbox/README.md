@@ -1,5 +1,5 @@
 ---
-doc_id: 'GUIDE-2025-00004'
+doc_id: 'GUIDE-00004'
 title: 'Documentation Inbox'
 doc_type: 'guide'
 status: 'active'

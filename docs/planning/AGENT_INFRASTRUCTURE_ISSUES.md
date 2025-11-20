@@ -17,6 +17,8 @@ title: 'GitHub Issues: Agent Infrastructure Enhancement'
 ---
 
 
+
+
 # GitHub Issues: Agent Infrastructure Enhancement
 
 This document breaks down RFC-004 into actionable GitHub issues suitable for automated coding agents.

@@ -17,6 +17,8 @@ title: Service Tiers and Category Layout
 ---
 
 
+
+
 # Service Tiers and Category Layout
 
 This document formalizes **4‑tier service architecture** and how it applies to

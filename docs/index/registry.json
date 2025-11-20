@@ -1,316 +1,951 @@
 {
-  "generated_at": "2025-11-14T22:55:17.334126Z",
-  "total_docs": 31,
+  "generated_at": "2025-11-20T01:05:29.538011Z",
+  "total_docs": 64,
   "by_type": {
-    "reference": 3,
+    "reference": 4,
+    "guide": 11,
     "spec": 1,
     "plan": 14,
-    "rfc": 9,
-    "guide": 4
+    "rfc": 27,
+    "adr": 7
   },
   "by_status": {
-    "active": 23,
-    "draft": 8
+    "active": 40,
+    "draft": 23,
+    "archived": 1
   },
   "docs": [
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\DOCUMENTATION-SCHEMA.md",
-      "sha256": "d8bf568c18dfd27827bc2f1f4e80b499cc9d3c3311e6eb078c80fed217147982",
-      "doc_id": "REFERENCE-2025-00001",
+      "sha256": "6a92243af1d3a73e7884c33f2ef399c15829ef06514c7a6e3fa872484e205031",
+      "canonical": true,
+      "created": "2025-11-13",
+      "doc_id": "REFERENCE-00001",
+      "doc_type": "reference",
+      "related": [
+        "RFC-00012"
+      ],
+      "status": "active",
+      "summary": "Reference documentation for YAML front-matter schema required for all documentation files (except inbox drafts)",
+      "supersedes": [],
+      "tags": [
+        "documentation",
+        "schema",
+        "front-matter",
+        "reference",
+        "validation"
+      ],
       "title": "Documentation Front-Matter Schema",
+      "simhash": "14055011941818503888"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\dotnet\\NAVIGATION.md",
+      "sha256": "22cddda954544a3966c046b7c0cf4aaa9052987f4fc5def55b584ae1789eba1d",
+      "canonical": true,
+      "created": "2025-11-18",
+      "doc_id": "GUIDE-00002",
+      "doc_type": "guide",
+      "related": [
+        "REFERENCE-00001",
+        "GUIDE-00001",
+        "ADR-00001"
+      ],
+      "status": "active",
+      "summary": "Comprehensive navigation guide for the .NET documentation with reading paths, cross-references, and quick access",
+      "tags": [
+        "dotnet",
+        "navigation",
+        "documentation",
+        "guide"
+      ],
+      "title": ".NET Documentation Navigation Guide",
+      "simhash": "10960712222495380016"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\dotnet\\README.md",
+      "sha256": "c4f2e2973ae8f1482401ba98ad77143adf5ed958237d44a1c659e63795367157",
+      "doc_id": "REFERENCE-00001",
+      "title": ".NET Documentation Reference",
       "doc_type": "reference",
       "status": "active",
       "canonical": true,
-      "created": "2025-11-13",
-      "tags": ["documentation", "schema", "front-matter", "reference", "validation"],
-      "summary": "Reference documentation for YAML front-matter schema required for all documentation files (except inbox drafts)",
-      "supersedes": [],
-      "related": ["RFC-2025-00012"],
-      "simhash": "9443317092299256532"
+      "created": "2025-11-18",
+      "tags": [
+        "dotnet",
+        "reference",
+        "documentation"
+      ],
+      "summary": "Comprehensive reference to all .NET documentation in the Pigeon Pea project",
+      "related": [
+        "GUIDE-2025-00001",
+        "ADR-2025-00001",
+        "ADR-2025-00002",
+        "ADR-2025-00003",
+        "ADR-2025-00004",
+        "ADR-2025-00005",
+        "ADR-2025-00006",
+        "ADR-2025-00007"
+      ],
+      "simhash": "11032767615375184432"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\fonts\\ANGLE-MAPPING-EXAMPLES.md",
-      "sha256": "5d52067b9e5e4c316970cfa7d51922885a933a5db28151b260664e23ff39db80",
-      "doc_id": "REFERENCE-2025-00002",
-      "title": "Angle → Glyph Mapping Examples",
-      "doc_type": "reference",
-      "status": "active",
+      "sha256": "a0cd6b6c72ee2509d4a0fcf2c9b07757f7a9424f4097f6b6305f617f3748cd20",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": ["fonts", "glyphs", "mapping", "code-examples", "pua"],
+      "doc_id": "REFERENCE-00002",
+      "doc_type": "reference",
+      "related": [
+        "RFC-00020",
+        "SPEC-00001"
+      ],
+      "status": "active",
       "summary": "Code examples for mapping angles to PUA glyph codepoints (36 angle buckets starting at U+E000)",
       "supersedes": [],
-      "related": ["RFC-2025-00020", "SPEC-2025-00001"],
+      "tags": [
+        "fonts",
+        "glyphs",
+        "mapping",
+        "code-examples",
+        "pua"
+      ],
+      "title": "Angle → Glyph Mapping Examples",
       "simhash": "16359906183416317459"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\fonts\\SVG-SPEC-ANGLES.md",
-      "sha256": "a5acdd252c8941dcf1bf7f86d56a988af249fcbb9794bc71e2f7b7892fc7b6b2",
-      "doc_id": "SPEC-2025-00001",
-      "title": "SVG Specification — 36 Angle Glyphs",
-      "doc_type": "spec",
-      "status": "active",
+      "sha256": "196b554ba78627fc1cbd339a9951ac6fc9627df87312ea8587124f3807d3a037",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": ["fonts", "svg", "specification", "pua", "glyphs"],
+      "doc_id": "SPEC-00001",
+      "doc_type": "spec",
+      "related": [
+        "RFC-00020",
+        "SPEC-00002"
+      ],
+      "status": "active",
       "summary": "SVG specification for 36 angle glyphs to be imported into font PUA (Private Use Area) for terminal rendering",
       "supersedes": [],
-      "related": ["RFC-2025-00020", "SPEC-2025-00002"],
+      "tags": [
+        "fonts",
+        "svg",
+        "specification",
+        "pua",
+        "glyphs"
+      ],
+      "title": "SVG Specification — 36 Angle Glyphs",
       "simhash": "11965025844290637544"
     },
     {
-      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\AGENT_INFRASTRUCTURE_ISSUES.md",
-      "sha256": "b5258e93cd8f041a13aeefbd3d325aa5fc5bd32c93497ab0ff76d1c65a0ab25f",
-      "doc_id": "PLAN-2025-00008",
-      "title": "GitHub Issues: Agent Infrastructure Enhancement",
-      "doc_type": "plan",
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\guides\\architecture-refinement-implementation-guide.md",
+      "sha256": "411547c8253e54f918ffff41db41fcd50eb7d5b00fb1bc6c65c22a6c3f86b5f7",
+      "canonical": true,
+      "created": "2025-11-19",
+      "doc_id": "GUIDE-00001",
+      "doc_type": "guide",
+      "related": [
+        "RFC-00013",
+        "RFC-00014"
+      ],
       "status": "active",
+      "summary": "Step-by-step implementation guide for refining plugin architecture and introducing scene management, with incremental steps that keep the console app functional at each stage",
+      "supersedes": [],
+      "tags": [
+        "implementation",
+        "guide",
+        "architecture",
+        "refactoring",
+        "step-by-step"
+      ],
+      "title": "Architecture Refinement Implementation Guide",
+      "updated": "2025-11-19",
+      "simhash": "12107161198080803461"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\guides\\dotnet-tiered-architecture-guide.md",
+      "sha256": "e19634fe4ac7942b463a831b60cf0cc1f2955077c12f1360fc80459106e101d0",
+      "canonical": true,
+      "created": "2025-11-19",
+      "doc_id": "GUIDE-00002",
+      "doc_type": "guide",
+      "related": [
+        "RFC-00013",
+        "RFC-00014",
+        "ADR-00001",
+        "ADR-00003",
+        "ADR-00004"
+      ],
+      "status": "active",
+      "summary": "Comprehensive guide for implementing the four-tier service architecture and domain layering in .NET projects",
+      "tags": [
+        "dotnet",
+        "architecture",
+        "tiered-architecture",
+        "plugins",
+        "layers",
+        "services"
+      ],
+      "title": ".NET Tiered Architecture and Layer Implementation Guide",
+      "updated": "2025-11-19",
+      "simhash": "2955856650866479761"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\guides\\name-generator-enhancement-guide.md",
+      "sha256": "3a7d8c39a5a48c503a3d94cfcc5a1ba885427b3faf225cb77f99caa2ef78bf12",
+      "canonical": true,
+      "created": "2025-11-15",
+      "doc_id": "GUIDE-00001",
+      "doc_type": "guide",
+      "related": [
+        "RFC-00016",
+        "RFC-00017",
+        "RFC-00018",
+        "SPEC-00014"
+      ],
+      "status": "active",
+      "summary": "Step-by-step guide for implementing JSON configuration, CJK languages, and Markov chain mode for the FantasyNameGenerator",
+      "supersedes": [],
+      "tags": [
+        "name-generation",
+        "implementation",
+        "guide",
+        "json",
+        "markov-chain",
+        "cjk"
+      ],
+      "title": "Name Generator Enhancement Implementation Guide",
+      "simhash": "4834021562843480732"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\guides\\rfc014-scene-management-adjustment-plan.md",
+      "sha256": "6fbbc3d58e916fdfacb25476576e112f22ef2225860c864d058aa137dc7fbd11",
+      "canonical": true,
+      "created": "2025-11-19",
+      "doc_id": "GUIDE-00002",
+      "doc_type": "guide",
+      "related": [
+        "RFC-00014",
+        "GUIDE-00001"
+      ],
+      "status": "active",
+      "summary": "Detailed step-by-step adjustment plan to complete RFC-014 Scene Management implementation, addressing interface mismatches, compilation errors, and missing features",
+      "supersedes": [],
+      "tags": [
+        "rfc-014",
+        "scene-management",
+        "ecs",
+        "adjustment",
+        "implementation"
+      ],
+      "title": "RFC-014 Scene Management: Adjustment Plan",
+      "updated": "2025-11-19"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\AGENT_INFRASTRUCTURE_ISSUES.md",
+      "sha256": "726e20841384c6708710b3181e0a1565d2175021f7378daef2da6fc5176835ec",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": ["agent-infrastructure", "rfc-004", "github-issues", "implementation"],
+      "doc_id": "PLAN-00008",
+      "doc_type": "plan",
+      "related": [
+        "RFC-00004"
+      ],
+      "status": "active",
       "summary": "Breakdown of RFC-004 into actionable GitHub issues suitable for automated coding agents",
-      "related": ["RFC-2025-00004"]
+      "tags": [
+        "agent-infrastructure",
+        "rfc-004",
+        "github-issues",
+        "implementation"
+      ],
+      "title": "GitHub Issues: Agent Infrastructure Enhancement"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\CODE_REVIEW_AGENT_INFRASTRUCTURE.md",
-      "sha256": "c7acc2c42cd374fe298f991c85d1b35658b06c358743a2da96344ee1c6659ab4",
-      "doc_id": "PLAN-2025-00009",
-      "title": "Code Review: Agent Infrastructure Implementation",
-      "doc_type": "plan",
-      "status": "active",
+      "sha256": "116072a9c5664b45182fe837c50077dc71aa49c5031e0c8873ef9c41fe163c3b",
       "canonical": true,
       "created": "2025-11-11",
-      "tags": ["agent-infrastructure", "rfc-004", "code-review", "quality-assurance"],
+      "doc_id": "PLAN-00009",
+      "doc_type": "plan",
+      "related": [
+        "RFC-00004",
+        "PLAN-00008"
+      ],
+      "status": "active",
       "summary": "Review of .agent infrastructure implementation against RFC-004 specifications",
-      "related": ["RFC-2025-00004", "PLAN-2025-00008"],
+      "tags": [
+        "agent-infrastructure",
+        "rfc-004",
+        "code-review",
+        "quality-assurance"
+      ],
+      "title": "Code Review: Agent Infrastructure Implementation",
       "simhash": "9389916149494697676"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\ENHANCEMENT_PLAN.md",
-      "sha256": "ddc188572317c7bf283e496b73433e44185f7a534706b89166c2bab912f28f6a",
-      "doc_id": "PLAN-2025-00010",
-      "title": "Pigeon Pea Enhancement Plan",
-      "doc_type": "plan",
-      "status": "active",
+      "sha256": "ec9d01803cbbd22148a57d42307f0a256f847096de38fdcc8319f020e9dd480d",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": ["platform-enhancements", "windows", "console", "rendering", "roadmap"],
+      "doc_id": "PLAN-00010",
+      "doc_type": "plan",
+      "related": [
+        "RFC-00001",
+        "RFC-00020"
+      ],
+      "status": "active",
       "summary": "Platform-specific enhancements for Windows and Console after completing core game logic features",
-      "related": ["RFC-2025-00001", "RFC-2025-00020"],
+      "tags": [
+        "platform-enhancements",
+        "windows",
+        "console",
+        "rendering",
+        "roadmap"
+      ],
+      "title": "Pigeon Pea Enhancement Plan",
       "simhash": "9821453581293671077"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\GITHUB_ISSUES.md",
-      "sha256": "1cdffe3096116cb9804d0af940aceb422538a640d8a6a2bc1f0d4e3b2d059653",
-      "doc_id": "PLAN-2025-00011",
-      "title": "GitHub Issues Breakdown",
-      "doc_type": "plan",
-      "status": "active",
+      "sha256": "fb06798e31bd89fed8b6a931069370c00b8119bb5939d08ff47e1727ddfac0cc",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": ["github-issues", "implementation", "rfcs", "task-breakdown"],
-      "summary": "Comprehensive breakdown of all RFCs into 43 actionable GitHub issues for automated coding agents",
+      "doc_id": "PLAN-00011",
+      "doc_type": "plan",
       "related": [
-        "RFC-2025-00001",
-        "RFC-2025-00002",
-        "RFC-2025-00003",
-        "RFC-2025-00005",
-        "RFC-2025-00006"
-      ]
+        "RFC-00001",
+        "RFC-00002",
+        "RFC-00003",
+        "RFC-00005",
+        "RFC-00006"
+      ],
+      "status": "active",
+      "summary": "Comprehensive breakdown of all RFCs into 43 actionable GitHub issues for automated coding agents",
+      "tags": [
+        "github-issues",
+        "implementation",
+        "rfcs",
+        "task-breakdown"
+      ],
+      "title": "GitHub Issues Breakdown"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\LABEL_STRATEGY.md",
-      "sha256": "6477e7f990940842d68168798c6a959fa672eb16699deb9345688b233fd23854",
-      "doc_id": "PLAN-2025-00012",
-      "title": "GitHub Label Strategy",
-      "doc_type": "plan",
-      "status": "active",
+      "sha256": "750d8b858d386d6889f9c4ee38b51c53f4fe57ec72b68143efa1c7465d4cec0e",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": ["github", "labels", "project-management", "organization"],
+      "doc_id": "PLAN-00012",
+      "doc_type": "plan",
+      "related": [
+        "PLAN-00011"
+      ],
+      "status": "active",
       "summary": "Scalable label strategy for organizing GitHub issues and pull requests in pigeon-pea project",
-      "related": ["PLAN-2025-00011"],
+      "tags": [
+        "github",
+        "labels",
+        "project-management",
+        "organization"
+      ],
+      "title": "GitHub Label Strategy",
       "simhash": "12185664609912828563"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\RFC_004_EXECUTION_ORDER.md",
-      "sha256": "9d362c9f75e97c21ecf74b65c15b192fa25b8a16b5a9058eb4ff1e7e153617a4",
-      "doc_id": "PLAN-2025-00013",
-      "title": "RFC-004 Implementation: Execution Order",
-      "doc_type": "plan",
-      "status": "active",
+      "sha256": "4237522163abd17f3743bf088b7690daea759487a50450d5733eecd1abb08a4f",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": ["rfc-004", "agent-infrastructure", "execution-order", "parallelization"],
+      "doc_id": "PLAN-00013",
+      "doc_type": "plan",
+      "related": [
+        "RFC-00004",
+        "PLAN-00008"
+      ],
+      "status": "active",
       "summary": "Execution order for implementing RFC-004 issues showing parallel vs serial dependencies",
-      "related": ["RFC-2025-00004", "PLAN-2025-00008"],
+      "tags": [
+        "rfc-004",
+        "agent-infrastructure",
+        "execution-order",
+        "parallelization"
+      ],
+      "title": "RFC-004 Implementation: Execution Order",
       "simhash": "10037519603375856215"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\planning\\SELF_REVIEW_RFC_004_PLANNING.md",
-      "sha256": "c246039e62b86ee68e675e7372ecfb50c608fcb8cc0e3796c98d426eaaf44f5f",
-      "doc_id": "PLAN-2025-00014",
-      "title": "Self-Review: RFC-004 & Issues Planning Quality",
-      "doc_type": "plan",
-      "status": "active",
+      "sha256": "0fc9431d4e93176cb225f2fc706223e1a784145f27004bf0916c6ddecfc15ab4",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": ["rfc-004", "self-review", "quality-assurance", "planning"],
+      "doc_id": "PLAN-00014",
+      "doc_type": "plan",
+      "related": [
+        "RFC-00004",
+        "PLAN-00008",
+        "PLAN-00011"
+      ],
+      "status": "active",
       "summary": "Evaluation of the quality and effectiveness of RFC-004 planning and GitHub issues breakdown",
-      "related": ["RFC-2025-00004", "PLAN-2025-00008", "PLAN-2025-00011"],
+      "tags": [
+        "rfc-004",
+        "self-review",
+        "quality-assurance",
+        "planning"
+      ],
+      "title": "Self-Review: RFC-004 & Issues Planning Quality",
       "simhash": "14073379390798781644"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\001-rendering-architecture.md",
-      "sha256": "fffdbe01038ec74c003d218e4e46b25520aafa7437e0fd9169fa76a85627dd8a",
-      "doc_id": "RFC-2025-00001",
-      "title": "Rendering Architecture",
-      "doc_type": "rfc",
-      "status": "draft",
+      "sha256": "bd4596488ed89eb60664aac5c8a769e45394daa3ae967c40acde18c3d402dce2",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": ["rendering", "architecture", "graphics", "terminal", "skiasharp"],
+      "doc_id": "RFC-00001",
+      "doc_type": "rfc",
+      "related": [],
+      "status": "draft",
       "summary": "Unified rendering architecture supporting both high-fidelity desktop graphics (Windows/SkiaSharp) and multi-tier terminal graphics (Console/Kitty/Sixel/Braille/ASCII) with a shared abstraction layer",
       "supersedes": [],
-      "related": [],
+      "tags": [
+        "rendering",
+        "architecture",
+        "graphics",
+        "terminal",
+        "skiasharp"
+      ],
+      "title": "Rendering Architecture",
       "simhash": "11587004959882700199"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\003-testing-verification.md",
-      "sha256": "d11137275402dcc1183aa4cdc81f7c7a66756c4047186dcdf3bb67bb02fb8cdb",
-      "doc_id": "RFC-2025-00003",
-      "title": "Testing and Verification",
-      "doc_type": "rfc",
-      "status": "draft",
+      "sha256": "52de49cd716409f447723f27297d1ac7f82be2a5da3954bf3c01647131df6b41",
       "canonical": true,
       "created": "2025-11-08",
-      "tags": ["testing", "verification", "qa", "visual-regression", "automation"],
+      "doc_id": "RFC-00003",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00001",
+        "RFC-00002"
+      ],
+      "status": "draft",
       "summary": "Comprehensive testing and verification strategies for both console and Windows applications, with special focus on visual regression testing and automated rendering verification",
       "supersedes": [],
-      "related": ["RFC-2025-00001", "RFC-2025-00002"],
+      "tags": [
+        "testing",
+        "verification",
+        "qa",
+        "visual-regression",
+        "automation"
+      ],
+      "title": "Testing and Verification",
       "simhash": "598081441972036775"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\004-agent-infrastructure-enhancement.md",
-      "sha256": "65fa142fbe5cac608f0bcda2881fb26ff5f31920b7d6e40e99e6d642d8d4ba8d",
-      "doc_id": "RFC-2025-00004",
-      "title": "Agent Infrastructure Enhancement",
-      "doc_type": "rfc",
-      "status": "draft",
+      "sha256": "8e7bc9d7455702878b3cf57aa5548fcf88594e49b1ed0f33e15423f55fbb6cff",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": ["agents", "infrastructure", "automation", "skills", "sub-agents"],
+      "doc_id": "RFC-00004",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00012"
+      ],
+      "status": "draft",
       "summary": "Enhance the .agent infrastructure with sub-agents, declarative skills, validation schemas, and coding-focused policies to enable autonomous GitHub Coding Agents to perform complex development tasks",
       "supersedes": [],
-      "related": ["RFC-2025-00012"],
+      "tags": [
+        "agents",
+        "infrastructure",
+        "automation",
+        "skills",
+        "sub-agents"
+      ],
+      "title": "Agent Infrastructure Enhancement",
       "simhash": "9947553267058066364"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\005-project-structure-reorganization.md",
-      "sha256": "8c5a7544708dbbd308f1cf22aba2959eb21795c0df918eea4f4f0c24f0d7ccbc",
-      "doc_id": "RFC-2025-00005",
-      "title": "Project Structure Reorganization",
-      "doc_type": "rfc",
-      "status": "active",
+      "sha256": "00c7b60669937172c0f7107dab70b8d1590c281f3131016dbb8d5e18c372e676",
       "canonical": true,
       "created": "2025-11-10",
-      "updated": "2025-11-13",
-      "tags": ["project-structure", "architecture", "refactoring", "plugins"],
+      "doc_id": "RFC-00005",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00006"
+      ],
+      "status": "active",
       "summary": "Reorganize the dotnet/ folder structure to support a plugin-based architecture with clear separation between application framework, game framework, and platform-specific applications",
       "supersedes": [],
-      "related": ["RFC-2025-00006"],
+      "tags": [
+        "project-structure",
+        "architecture",
+        "refactoring",
+        "plugins"
+      ],
+      "title": "Project Structure Reorganization",
+      "updated": "2025-11-13",
       "simhash": "9801600627675993765"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\006-plugin-system-architecture.md",
-      "sha256": "733c290312c14aacb2a6ae247e9e84cc81f49a39f2ad1c5e9cd7e3847c1f178c",
-      "doc_id": "RFC-2025-00006",
-      "title": "Plugin System Architecture",
-      "doc_type": "rfc",
-      "status": "active",
+      "sha256": "ffa6e1203280e31a21824d351127408ec51e3075b45dd7288f546cd9fe8516a8",
       "canonical": true,
       "created": "2025-11-10",
-      "updated": "2025-11-13",
-      "tags": ["plugins", "architecture", "extensibility", "alc", "modularity"],
+      "doc_id": "RFC-00006",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00005"
+      ],
+      "status": "active",
       "summary": "Plugin system for PigeonPea based on the hyacinth-bean-base architecture, enabling runtime plugin discovery, loading, and lifecycle management with Assembly Load Context (ALC) isolation",
       "supersedes": [],
-      "related": ["RFC-2025-00005"],
+      "tags": [
+        "plugins",
+        "architecture",
+        "extensibility",
+        "alc",
+        "modularity"
+      ],
+      "title": "Plugin System Architecture",
+      "updated": "2025-11-13",
       "simhash": "12160922924603098004"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\012-documentation-organization-management.md",
-      "sha256": "e3c86b5a17fb32313a56e802bf1c62262de553f35b82dcb1529dfafffab3f854",
-      "doc_id": "RFC-2025-00012",
-      "title": "Documentation Organization Management",
-      "doc_type": "rfc",
-      "status": "draft",
+      "sha256": "987d3e8b3f3957dc12ab899107f2cd20e357c87ec686bbe85ff66cabcd85820e",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": ["documentation", "infrastructure", "validation", "registry", "agent-tools"],
+      "doc_id": "RFC-00012",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00004"
+      ],
+      "status": "draft",
       "summary": "Structured documentation management system with validation, registry generation, and inbox workflow to enable autonomous agents to discover, create, and maintain high-quality documentation",
       "supersedes": [],
-      "related": ["RFC-2025-00004"],
+      "tags": [
+        "documentation",
+        "infrastructure",
+        "validation",
+        "registry",
+        "agent-tools"
+      ],
+      "title": "Documentation Organization Management",
       "simhash": "14631400233584495252"
     },
     {
-      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\020-font-pipeline-and-pua-layout.md",
-      "sha256": "253cb86ff9ca00e4eb06694858bdd1a26652fa62994f0c122e292e2767716ca7",
-      "doc_id": "RFC-2025-00020",
-      "title": "Custom CJK Monospace Game Font — Pipeline and PUA Layout",
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\013-plugin-architecture-refinement-tiered.md",
+      "sha256": "dd86e4db089caa650400a454935db23aacc0266e90d14e187b7b0bc59f7b3caf",
+      "canonical": true,
+      "created": "2025-11-19",
+      "doc_id": "RFC-00013",
       "doc_type": "rfc",
+      "related": [
+        "RFC-00006",
+        "RFC-00014"
+      ],
       "status": "draft",
+      "summary": "Refine plugin architecture to follow tier-based system (Tier 1-4) with proper separation between domain plugins and platform plugins, eliminating wrapper projects and establishing correct dependency flow",
+      "supersedes": [],
+      "tags": [
+        "plugins",
+        "architecture",
+        "refactoring",
+        "tiered-architecture",
+        "alc",
+        "dungeon",
+        "rendering"
+      ],
+      "title": "Plugin Architecture Refinement: Tier-Based System",
+      "updated": "2025-11-19",
+      "simhash": "14449033002149204101"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\014-scene-management-ecs.md",
+      "sha256": "a8044d9af4fccf3c3960a69ae2c75a014630fc7e6b66540d362c5f3c7316f86e",
+      "canonical": true,
+      "created": "2025-11-19",
+      "doc_id": "RFC-00014",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00013"
+      ],
+      "status": "draft",
+      "summary": "Introduce scene/space concept where dungeon, player, monsters, and all game objects are entities in ECS worlds, with proper scene lifecycle management and multi-world support",
+      "supersedes": [],
+      "tags": [
+        "ecs",
+        "architecture",
+        "scene-management",
+        "world",
+        "entities",
+        "dungeon"
+      ],
+      "title": "Scene Management with ECS Architecture",
+      "updated": "2025-11-19",
+      "simhash": "3495012105438848542"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\015-fantasy-calendar-real-world-transformation.md",
+      "sha256": "13955590effac9c0c3cd3a3d0f19aca66d0be02aafc4ab296627824fae992ab1",
+      "canonical": true,
+      "created": "2025-11-19",
+      "doc_id": "RFC-00015",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00013"
+      ],
+      "status": "draft",
+      "summary": "Design a system to transform fantasy calendar dates to real-world calendar dates using NodaTime, enabling event logging, scheduling, and configurable time progression for game worlds",
+      "supersedes": [],
+      "tags": [
+        "time",
+        "calendar",
+        "nodatime",
+        "transformation",
+        "scheduling",
+        "logging"
+      ],
+      "title": "Fantasy Calendar to Real-World Time Transformation",
+      "updated": "2025-11-19",
+      "simhash": "3487043801990305309"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\016-name-generator-json-configuration.md",
+      "sha256": "6203ab57428a0c659133ae5e08f0d11f5ac841094f4e0793d6f0993ef9bb6502",
+      "canonical": true,
+      "created": "2025-11-15",
+      "doc_id": "RFC-00016",
+      "doc_type": "rfc",
+      "related": [
+        "SPEC-00014"
+      ],
+      "status": "draft",
+      "summary": "External JSON configuration for language templates to enable user-extensible name generation without code changes",
+      "supersedes": [],
+      "tags": [
+        "name-generation",
+        "json",
+        "configuration",
+        "extensibility",
+        "languages"
+      ],
+      "title": "Name Generator JSON Configuration System",
+      "simhash": "5140807825135454110"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\017-name-generator-cjk-languages.md",
+      "sha256": "9ca49591d58c34e08ee9850a981ef8cf1bae20859a58a107b8e3bf0f2c148227",
+      "canonical": true,
+      "created": "2025-11-15",
+      "doc_id": "RFC-00017",
+      "doc_type": "rfc",
+      "related": [
+        "SPEC-00014",
+        "RFC-00016"
+      ],
+      "status": "draft",
+      "summary": "Add East Asian (Chinese, Japanese, Korean) language templates with proper phonology and writing systems",
+      "supersedes": [],
+      "tags": [
+        "name-generation",
+        "cjk",
+        "japanese",
+        "chinese",
+        "korean",
+        "languages",
+        "i18n"
+      ],
+      "title": "Name Generator CJK Language Support",
+      "simhash": "4689863455424841858"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\018-name-generator-markov-chain-mode.md",
+      "sha256": "24f0404c835e6bd63ec2a0cddcec55842f9136a70da8e958b525c8d1f4fa0576",
+      "canonical": true,
+      "created": "2025-11-15",
+      "doc_id": "RFC-00018",
+      "doc_type": "rfc",
+      "related": [
+        "SPEC-00014",
+        "RFC-00016"
+      ],
+      "status": "draft",
+      "summary": "Add Markov chain statistical name generation mode alongside existing rule-based system for more natural-sounding names learned from real examples",
+      "supersedes": [],
+      "tags": [
+        "name-generation",
+        "markov-chain",
+        "statistical",
+        "machine-learning",
+        "linguistic"
+      ],
+      "title": "Name Generator Markov Chain Mode",
+      "simhash": "8863590937018353301"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\019-nexus-gas-gameplay-ability-system.md",
+      "sha256": "cf404000d722b7a9472b66b028760c15f8716577ae29aa6e9bf27958f2925821",
+      "canonical": true,
+      "created": "2025-01-16",
+      "doc_id": "RFC-00019",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00005",
+        "RFC-00007"
+      ],
+      "status": "active",
+      "summary": "Comprehensive implementation guide for Nexus-GAS, a reusable Gameplay Ability System inspired by Unreal Engine GAS, with engine-agnostic core and Arch ECS integration",
+      "supersedes": [],
+      "tags": [
+        "gameplay",
+        "abilities",
+        "ecs",
+        "architecture",
+        "library",
+        "nexus-gas"
+      ],
+      "title": "Nexus-GAS: Gameplay Ability System Implementation"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\020-font-pipeline-and-pua-layout.md",
+      "sha256": "d248f845b32fb444b3b59a4695e3f547541adb7151b22a17607209136b7f10f3",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": ["fonts", "cjk", "pua", "terminal", "pipeline"],
+      "doc_id": "RFC-00020",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00021",
+        "RFC-00022"
+      ],
+      "status": "draft",
       "summary": "Font pipeline to produce a unified, terminal-friendly CJK monospace font that embeds custom map glyphs (angled lines, junctions, terrain) in the Unicode Private Use Area (PUA)",
       "supersedes": [],
-      "related": ["RFC-2025-00021", "RFC-2025-00022"],
+      "tags": [
+        "fonts",
+        "cjk",
+        "pua",
+        "terminal",
+        "pipeline"
+      ],
+      "title": "Custom CJK Monospace Game Font — Pipeline and PUA Layout",
       "simhash": "18117241011440702119"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\021-terminal-distribution-and-rio-integration.md",
-      "sha256": "503dbc2267002129493eaefdf4e6d5154536e77dfa1476695d83e4cba186e17e",
-      "doc_id": "RFC-2025-00021",
-      "title": "Terminal Distribution — Rio Integration and Bundle Layout",
-      "doc_type": "rfc",
-      "status": "draft",
+      "sha256": "64b03f08d899f2f4251e5258d72e8c785acac2f51647842c26157f89cf43c6a0",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": ["terminal", "distribution", "rio", "bundle", "deployment"],
+      "doc_id": "RFC-00021",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00020",
+        "RFC-00022"
+      ],
+      "status": "draft",
       "summary": "Ship a consistent terminal experience using Rio Terminal with the custom game font, covering development-time setup and guidelines for player bundles without redistributing proprietary binaries",
       "supersedes": [],
-      "related": ["RFC-2025-00020", "RFC-2025-00022"],
+      "tags": [
+        "terminal",
+        "distribution",
+        "rio",
+        "bundle",
+        "deployment"
+      ],
+      "title": "Terminal Distribution — Rio Integration and Bundle Layout",
       "simhash": "817193810909581845"
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\022-ci-cd-font-and-bundle.md",
-      "sha256": "7507e2d8266a588a936dcb44422d26b3f9194dc6329d3a049a4bd356f6d0ee11",
-      "doc_id": "RFC-2025-00022",
-      "title": "CI/CD for Custom Font and Developer Bundle",
-      "doc_type": "rfc",
-      "status": "draft",
+      "sha256": "7e2bf9c1545e8376c1581154ae9a6464b49838ebd606fafe4ba7d6e44d9ec4db",
       "canonical": true,
       "created": "2025-11-13",
-      "tags": ["ci-cd", "fonts", "automation", "build", "deployment"],
+      "doc_id": "RFC-00022",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00020",
+        "RFC-00021"
+      ],
+      "status": "draft",
       "summary": "CI jobs to build patched fonts, validate outputs, and publish versioned artifacts suitable for local development and downstream packaging with Taskfile/Nuke hooks",
       "supersedes": [],
-      "related": ["RFC-2025-00020", "RFC-2025-00021"],
+      "tags": [
+        "ci-cd",
+        "fonts",
+        "automation",
+        "build",
+        "deployment"
+      ],
+      "title": "CI/CD for Custom Font and Developer Bundle",
       "simhash": "598486222950418990"
     },
     {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\027-nexus-goap-ai-system.md",
+      "sha256": "ed353eb92c4b7be977cce8ff8d6495cd1413059120779c38a7c98fa0d03c82d4",
+      "canonical": true,
+      "created": "2025-01-16",
+      "doc_id": "RFC-00027",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00021",
+        "RFC-00019",
+        "RFC-00005"
+      ],
+      "status": "active",
+      "summary": "Comprehensive implementation guide for Nexus-GOAP, a reusable Goal-Oriented Action Planning AI system inspired by FEAR AI, with engine-agnostic core and Arch ECS integration for dungeon crawler NPCs",
+      "supersedes": [],
+      "tags": [
+        "ai",
+        "goap",
+        "planning",
+        "ecs",
+        "architecture",
+        "library",
+        "nexus-goap"
+      ],
+      "title": "Nexus-GOAP: Goal-Oriented Action Planning AI System"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\028-nexus-perception-system.md",
+      "sha256": "44a50dc02f43f4abcd5e99049c8052f347692b310712eccdc4c0568053c7bfb1",
+      "canonical": true,
+      "created": "2025-01-16",
+      "doc_id": "RFC-00028",
+      "doc_type": "rfc",
+      "related": [
+        "RFC-00020",
+        "RFC-00019",
+        "RFC-00005"
+      ],
+      "status": "active",
+      "summary": "Comprehensive implementation guide for Nexus-Perception, a reusable agent perception and awareness system with visual/auditory sensing, knowledge management, and threat assessment for AI systems",
+      "supersedes": [],
+      "tags": [
+        "ai",
+        "perception",
+        "sensors",
+        "fov",
+        "awareness",
+        "ecs",
+        "architecture",
+        "library",
+        "nexus-perception"
+      ],
+      "title": "Nexus-Perception: Agent Perception and Awareness System"
+    },
+    {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\IMPLEMENTATION_PLAN.md",
-      "sha256": "34de0fdb9b7364adb7e4ad6ae4e1590000c408dbda85e8907346c2f8f185ed2c",
-      "doc_id": "PLAN-2025-00001",
+      "sha256": "95e768418dc9acc0cc7c68acc32c7af46c9b9f885a8cb2673973077d92c6ed76",
+      "doc_id": "PLAN-00001",
       "title": "Implementation Plan: Project Restructure and Plugin System",
       "doc_type": "plan",
       "status": "active",
       "canonical": true,
       "created": "2025-11-10",
-      "tags": ["planning", "implementation", "project-structure", "plugins"],
+      "tags": [
+        "planning",
+        "implementation",
+        "project-structure",
+        "plugins"
+      ],
       "summary": "Implementation plan for restructuring the PigeonPea project and adding plugin system support, broken into 5 sequential issues",
       "supersedes": [],
-      "related": ["RFC-2025-00005", "RFC-2025-00006"],
+      "related": [
+        "RFC-2025-00005",
+        "RFC-2025-00006"
+      ],
       "simhash": "9823554688035786405"
-    }
-  ]
-}
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\023-nexus-input-system.md",
+      "sha256": "eb8764b8221b8458000af652724e4b7548428872b3291a4b2530c4821ba90bba",
+      "created": "2025-01-17",
+      "doc_id": "",
+      "doc_type": "rfc",
+      "status": "archived",
+      "summary": "Comprehensive implementation guide for Nexus-Input, a Unity Input System-inspired input management library with action maps, JSON configuration, and engine-agnostic core",
+      "tags": [
+        "input",
+        "controls",
+        "architecture",
+        "library",
+        "nexus-input"
+      ],
+      "title": "Nexus-Input: Unity-Inspired Input System"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\024-nexus-camera2d-system.md",
+      "sha256": "840986d1439f415b27db7f4b90e7030b7f3e7928ccceb6ae27f80dd84bce2cd4",
+      "created": "2025-01-17",
+      "doc_id": "",
+      "doc_type": "rfc",
+      "status": "draft",
+      "summary": "Comprehensive implementation guide for Nexus-Camera2D, a modular 2D camera system inspired by ProCamera2D with extensions for follow, boundaries, shake, zoom, and parallax",
+      "tags": [
+        "camera",
+        "2d",
+        "rendering",
+        "architecture",
+        "library",
+        "nexus-camera2d"
+      ],
+      "title": "Nexus-Camera2D: ProCamera2D-Inspired 2D Camera System"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\025-nexus-inventory-system.md",
+      "sha256": "5377978961f97918cd3d0fba9840ae0e392b55a72232ba7e9a6dcf42bebde122",
+      "created": "2025-01-17",
+      "doc_id": "",
+      "doc_type": "rfc",
+      "status": "draft",
+      "summary": "Comprehensive implementation guide for Nexus-Inventory, a data-driven inventory and item system inspired by RPGCore with modular item behaviors, equipment, crafting, and JSON configuration",
+      "tags": [
+        "inventory",
+        "items",
+        "equipment",
+        "crafting",
+        "architecture",
+        "library",
+        "nexus-inventory"
+      ],
+      "title": "Nexus-Inventory: RPGCore-Inspired Inventory and Item System"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\game-services-architecture.md",
+      "sha256": "2de2eb9ceec027d6ae37bf9e05650c77b579b3be3ee7fcb118caaa9c5960b0f6",
+      "created": "2025-11-20",
+      "doc_id": "RFC-00023",
+      "doc_type": "rfc",
+      "status": "draft",
+      "summary": "Comprehensive architecture for six core game services using tiered plugin architecture with ECS-first design and data-driven configuration",
+      "tags": [
+        "architecture",
+        "services",
+        "game-essential",
+        "ecs",
+        "tiered-architecture"
+      ],
+      "title": "Game Services Architecture: Stats, Character, Avatar, Animation, Persistence, and World Management",
+      "simhash": "16757127808896668341"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\game-services-implementation-guide.md",
+      "sha256": "03a72e9b9150ad1da9621e66f18232f0e3d0aba199be506f8c73049a44e2f86a",
+      "created": "2025-11-20",
+      "doc_id": "GUIDE-00002",
+      "doc_type": "guide",
+      "status": "draft",
+      "summary": "Complete implementation guide for building the six core game services with detailed steps, code examples, and validation criteria",
+      "tags": [
+        "implementation",
+        "guide",
+        "services",
+        "game-essential",
+        "step-by-step"
+      ],
+      "title": "Game Services Implementation Guide: Step-by-Step Instructions for Agents"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\mcp-project-launcher-system.md",
+      "sha256": "4b01473d877b928b0ca71cd55d736e85749ec79e3b9ab211aac1f872d8bc2ad5",
+      "created": 

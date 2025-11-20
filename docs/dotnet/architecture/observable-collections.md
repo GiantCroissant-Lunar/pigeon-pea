@@ -18,6 +18,8 @@ title: Observable Collections and Reactive Patterns
 ---
 
 
+
+
 # Observable Collections and Reactive Patterns
 
 > **Note**: This document was originally in `dotnet/docs/architecture/OBSERVABLE_COLLECTIONS.md` and has been moved to the new documentation structure with RFC-012 compliant front-matter.

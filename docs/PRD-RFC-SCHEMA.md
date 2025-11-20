@@ -12,7 +12,7 @@ Product Requirement Documents (PRDs) and RFCs serve different purposes:
 ## PRD Front-Matter Extension
 ```yaml
 ---
-doc_id: 'PRD-2025-00001'
+doc_id: 'PRD-00001'
 title: 'Fantasy Calendar System'
 doc_type: 'prd'
 status: 'active'
@@ -29,7 +29,7 @@ implementation:
 ## RFC Front-Matter Extension
 ```yaml
 ---
-doc_id: 'RFC-2025-00015'
+doc_id: 'RFC-00015'
 title: 'Fantasy Calendar to Real-World Time Transformation'
 doc_type: 'rfc'
 # ... other fields ...

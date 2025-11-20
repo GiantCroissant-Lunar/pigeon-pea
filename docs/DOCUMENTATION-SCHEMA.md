@@ -19,6 +19,8 @@ title: Documentation Front-Matter Schema
 ---
 
 
+
+
 # Documentation Front-Matter Schema
 
 All documentation (except `_inbox/` drafts) must include YAML front-matter.

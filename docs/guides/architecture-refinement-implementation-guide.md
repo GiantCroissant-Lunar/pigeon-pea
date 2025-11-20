@@ -22,6 +22,8 @@ updated: '2025-11-19'
 ---
 
 
+
+
 # Architecture Refinement Implementation Guide
 
 **For Agent Implementation**

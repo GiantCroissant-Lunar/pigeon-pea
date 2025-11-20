@@ -1,5 +1,5 @@
 ---
-doc_id: 'REFERENCE-2025-00001'
+doc_id: 'REFERENCE-00001'
 title: '.NET Documentation Reference'
 doc_type: 'reference'
 status: 'active'

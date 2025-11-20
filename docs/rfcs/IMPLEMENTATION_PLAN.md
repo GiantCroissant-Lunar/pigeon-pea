@@ -1,5 +1,5 @@
 ---
-doc_id: 'PLAN-2025-00001'
+doc_id: 'PLAN-00001'
 title: 'Implementation Plan: Project Restructure and Plugin System'
 doc_type: 'plan'
 status: 'active'

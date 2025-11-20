@@ -1,5 +1,5 @@
 ---
-doc_id: 'PLAN-2025-00002'
+doc_id: 'PLAN-00002'
 title: 'GitHub Issues for Plugin System Implementation'
 doc_type: 'plan'
 status: 'active'

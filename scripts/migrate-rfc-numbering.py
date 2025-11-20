@@ -233,6 +233,7 @@ def main():
         if any(str(rel_path).startswith(pattern) for pattern in ["index/", "archive/"]):
             continue
         
+        # Skip specific files
         if md_file.name in ["README.md", "IMPLEMENTATION_PLAN.md"]:
             continue
         

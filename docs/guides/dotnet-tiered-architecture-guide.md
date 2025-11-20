@@ -24,6 +24,8 @@ updated: '2025-11-19'
 ---
 
 
+
+
 # .NET Tiered Architecture and Layer Implementation Guide
 
 This guide provides comprehensive instructions for implementing the tiered architecture and domain layering system in Pigeon Pea .NET projects. **All agents working on .NET code MUST follow these rules.**

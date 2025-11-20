@@ -1,5 +1,5 @@
 ﻿---
-doc_id: 'RFC-2025-00014'
+doc_id: 'RFC-00014'
 title: 'Adopt DisposePattern Source Code Generator'
 doc_type: 'rfc'
 status: 'proposed'

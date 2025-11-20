@@ -25,6 +25,8 @@ title: 'Nexus-GOAP: Goal-Oriented Action Planning AI System'
 
 
 
+
+
 # RFC-020: Nexus-GOAP - Goal-Oriented Action Planning AI System
 
 ## Executive Summary

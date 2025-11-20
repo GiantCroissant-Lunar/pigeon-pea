@@ -20,6 +20,8 @@ title: 'Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure'
 ---
 
 
+
+
 # Issue #3: [RFC-006] Phase 1: Implement core plugin infrastructure
 
 **Labels:** `plugin-system`, `rfc-006`, `phase-1`, `infrastructure`

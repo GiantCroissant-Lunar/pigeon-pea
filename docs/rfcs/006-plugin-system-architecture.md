@@ -21,6 +21,8 @@ updated: '2025-11-13'
 ---
 
 
+
+
 # RFC-006: Plugin System Architecture
 
 - **Status:** Implemented

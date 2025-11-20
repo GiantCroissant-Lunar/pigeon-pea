@@ -20,6 +20,8 @@ title: 'Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system'
 ---
 
 
+
+
 # Issue #2: [RFC-005] Phase 2: Create contract projects for plugin system
 
 **Labels:** `contracts`, `rfc-005`, `phase-2`, `infrastructure`

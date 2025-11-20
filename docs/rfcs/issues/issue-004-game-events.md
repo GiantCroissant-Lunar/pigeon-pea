@@ -20,6 +20,8 @@ title: 'Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system'
 ---
 
 
+
+
 # Issue #4: [RFC-006] Phase 2: Integrate game events with plugin system
 
 **Labels:** `plugin-system`, `rfc-006`, `phase-2`, `game-logic`

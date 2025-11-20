@@ -43,8 +43,8 @@ VALID_DOC_TYPES = {
 }
 VALID_STATUSES = {"draft", "active", "superseded", "rejected", "archived"}
 
-# Doc ID format: PREFIX-YYYY-NNNNN
-DOC_ID_PATTERN = re.compile(r"^[A-Z]+-\d{4}-\d{5}$")
+# Doc ID format per RFC-00026: PREFIX-NNNNN (no year)
+DOC_ID_PATTERN = re.compile(r"^[A-Z]+-\d{5}$")
 
 # ISO date format: YYYY-MM-DD
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
