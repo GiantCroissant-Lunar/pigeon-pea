@@ -1,11 +1,20 @@
 ---
-title: 'Nexus-Input: Unity-Inspired Input System'
-doc_type: 'rfc'
-status: 'draft'
 created: '2025-01-17'
-tags: ['input', 'controls', 'architecture', 'library', 'nexus-input']
-summary: 'Comprehensive implementation guide for Nexus-Input, a Unity Input System-inspired input management library with action maps, JSON configuration, and engine-agnostic core'
+doc_id: ''
+doc_type: rfc
+status: archived
+summary: Comprehensive implementation guide for Nexus-Input, a Unity Input System-inspired
+  input management library with action maps, JSON configuration, and engine-agnostic
+  core
+tags:
+- input
+- controls
+- architecture
+- library
+- nexus-input
+title: 'Nexus-Input: Unity-Inspired Input System'
 ---
+
 
 # RFC-023: Nexus-Input - Unity-Inspired Input System
 
@@ -58,15 +67,16 @@ The system provides action maps, rebindable controls, JSON configuration, and cl
 
 ### Input System vs Direct Polling
 
-| Input System | Direct Polling |
-|--------------|----------------|
-| Action-based (logical) | Device-based (physical) |
-| Rebindable, configurable | Hard-coded |
-| Platform-agnostic | Platform-specific |
-| Data-driven (JSON) | Code-driven |
-| Easier to extend (add gamepad) | Requires refactoring |
+| Input System                   | Direct Polling          |
+| ------------------------------ | ----------------------- |
+| Action-based (logical)         | Device-based (physical) |
+| Rebindable, configurable       | Hard-coded              |
+| Platform-agnostic              | Platform-specific       |
+| Data-driven (JSON)             | Code-driven             |
+| Easier to extend (add gamepad) | Requires refactoring    |
 
 **For a roguelike**: Input System is ideal because:
+
 - Players can customize controls
 - Easy to add gamepad support later
 - Clean separation between game logic and input devices
@@ -179,17 +189,20 @@ dotnet/
 **Input Actions** represent logical player intentions (e.g., "Move", "Jump", "Fire").
 
 **Key Properties**:
+
 - **Name**: Unique identifier (e.g., "Move", "Attack")
 - **Type**: Button, Value (float/Vector2)
 - **Bindings**: List of input bindings that trigger this action
 - **Callbacks**: `started`, `performed`, `canceled` events
 
 **Key Types**:
+
 - `InputAction`: Single action definition
 - `InputActionType`: Button, Value, PassThrough
 - `InputActionPhase`: Disabled, Waiting, Started, Performed, Canceled
 
 **Example**:
+
 ```csharp
 var moveAction = new InputAction
 {
@@ -211,18 +224,21 @@ moveAction.OnPerformed(context =>
 **Input Bindings** map physical inputs (keyboard keys, mouse buttons) to actions.
 
 **Key Properties**:
+
 - **Path**: Control path (e.g., "<Keyboard>/w", "<Mouse>/leftButton")
 - **Action**: Target action name
 - **Composite**: Optional composite type (2D Vector, 1D Axis)
 - **Processors**: Optional value transformations (Invert, Scale, Clamp)
 
 **Key Types**:
+
 - `InputBinding`: Binding definition
 - `InputControlPath`: Physical control identifier
 - `BindingComposite`: Multi-binding combiner (WASD → Vector2)
 - `CompositeType`: TwoDVector, OneDAxis, ButtonWithOneModifier
 
 **Example**:
+
 ```csharp
 // Simple binding
 var fireBinding = new InputBinding
@@ -251,15 +267,18 @@ var wasdComposite = new BindingComposite
 **Action Maps** group related actions for different contexts (Gameplay, UI, Menu).
 
 **Key Features**:
+
 - **Enable/Disable**: Only one map active at a time
 - **Action Collection**: All actions in this context
 - **Binding Collection**: All bindings for these actions
 
 **Key Types**:
+
 - `InputActionMap`: Map definition
 - `InputActionAsset`: Container for multiple maps
 
 **Example**:
+
 ```csharp
 var gameplayMap = new InputActionMap
 {
@@ -293,6 +312,7 @@ uiMap.Disable();
 **Input Devices** provide a unified interface for different platforms.
 
 **Key Interface**:
+
 ```csharp
 public interface IInputDevice
 {
@@ -306,12 +326,14 @@ public interface IInputDevice
 ```
 
 **Implementations**:
+
 - `ConsoleKeyboardDevice`: Wraps `Console.ReadKey()`
 - `ConsoleMouseDevice`: Terminal mouse events (if supported)
 - `AvaloniaInputDevice`: Wraps Avalonia keyboard/mouse events
 - `GamepadDevice`: Future gamepad support
 
 **Example**:
+
 ```csharp
 // Platform-agnostic device polling
 public class InputSystem
@@ -339,6 +361,7 @@ public class InputSystem
 **JSON .inputactions files** store action maps, actions, and bindings.
 
 **Format**:
+
 ```json
 {
   "name": "PlayerControls",
@@ -380,6 +403,7 @@ public class InputSystem
 ```
 
 **Loading**:
+
 ```csharp
 var json = File.ReadAllText("PlayerControls.inputactions");
 var asset = InputActionAsset.FromJson(json);
@@ -1319,6 +1343,7 @@ public sealed class InputSystem
 - [ ] Solution builds without errors
 
 **Verification Command**:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\nexus-input
 dotnet build
@@ -1660,16 +1685,19 @@ public sealed class GameWorldInputIntegration
 ## Remaining Phases Summary
 
 **Phase 3: Testing** (Week 1-2)
+
 - Unit tests for InputAction, InputBinding, Composites
 - JSON serialization round-trip tests
 - Integration tests with GameWorld
 
 **Phase 4: Advanced Features** (Week 2-3)
+
 - Rebinding UI (runtime control changes)
 - Input processors (Invert, Scale, Deadzone)
 - Gamepad support (future)
 
 **Phase 5: Integration with DOTween** (Week 3)
+
 - Camera shake triggered by input (uses DOTween)
 - UI animations on button press (uses DOTween)
 - Smooth player movement (uses DOTween)
@@ -1776,4 +1804,4 @@ dotnet sln PigeonPea.sln add game-essential\core\src\PigeonPea.Game.Input\Pigeon
 
 **End of RFC-023: Nexus-Input Implementation Guide**
 
-*This document provides complete implementation instructions for Phase 1-2. The system provides Unity-like input management with JSON configuration, action maps, and clean integration with existing game systems. DOTween is used separately in platform-specific projects for animations and effects.*
+_This document provides complete implementation instructions for Phase 1-2. The system provides Unity-like input management with JSON configuration, action maps, and clean integration with existing game systems. DOTween is used separately in platform-specific projects for animations and effects._

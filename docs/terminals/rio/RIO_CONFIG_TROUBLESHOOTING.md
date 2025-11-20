@@ -1,7 +1,7 @@
 # Rio Terminal Configuration Troubleshooting Guide
 
-**Date:** 2025-11-18  
-**Project:** Pigeon Pea - Dungeon Dev Server  
+**Date:** 2025-11-18
+**Project:** Pigeon Pea - Dungeon Dev Server
 **Purpose:** Document Rio Terminal configuration issues and solutions
 
 ## Overview
@@ -45,6 +45,7 @@ projects/dungeon/rust/
 ### Goal
 
 Launch the dev-tool-server binary in Rio Terminal with:
+
 - Custom configuration per version
 - Proper font loading
 - Clean startup without errors
@@ -57,6 +58,7 @@ Launch the dev-tool-server binary in Rio Terminal with:
 ### Issue 1: Font Configuration Errors
 
 **Error Message:**
+
 ```
 Font(s) not found: [Microsoft JhengHei, Microsoft YaHei, SimSun]
 Rio will proceed with the default configuration
@@ -65,10 +67,12 @@ Rio will proceed with the default configuration
 #### Root Cause
 
 The `extras` array in the Rio config tried to load fonts that didn't exist in:
+
 - Windows system fonts
 - The `additional-dirs` paths specified
 
 **Problem Code:**
+
 ```toml
 extras = [
     { family = "Microsoft YaHei" },     # Not found in system
@@ -87,6 +91,7 @@ When we changed the `working_directory` to the artifacts folder, Rio could no lo
 ### Issue 2: TOML Duplicate Key Error
 
 **Error Message:**
+
 ```
 [[keybindings]] duplicate key
 Rio will proceed with the default configuration
@@ -99,6 +104,7 @@ Rio will proceed with the default configuration
 Invalid TOML structure mixing table and array-of-tables with the same key:
 
 **Problem Code:**
+
 ```toml
 [keybindings]              # ❌ Table header
 # Custom keybindings for development workflow
@@ -109,6 +115,7 @@ action = "NewWindow"
 ```
 
 In TOML, you cannot have both:
+
 - `[keybindings]` (a single table)
 - `[[keybindings]]` (an array of tables)
 
@@ -119,6 +126,7 @@ with the same key name.
 ### Issue 3: TOML Type Error
 
 **Error Message:**
+
 ```
 TOML parse error at line 8, column 15
 decorations = true
@@ -130,6 +138,7 @@ wanted string or table
 The `decorations` property in Rio Terminal expects a **string value**, not a boolean.
 
 **Problem Code:**
+
 ```toml
 [window]
 decorations = true      # ❌ Boolean not allowed
@@ -137,6 +146,7 @@ resizable = true        # ❌ Not a valid Rio option
 ```
 
 **Valid Values:**
+
 - `"Enabled"` (default)
 - `"Disabled"`
 - `"Transparent"`
@@ -185,6 +195,7 @@ extras = [
 **Change:** Remove the `[keybindings]` table header:
 
 **Before:**
+
 ```toml
 [keybindings]              # ❌ Remove this
 # Custom keybindings for development workflow
@@ -194,6 +205,7 @@ key = "Ctrl+Shift+N"
 ```
 
 **After:**
+
 ```toml
 # Custom keybindings for development workflow
 [[keybindings]]            # ✓ Array of tables only
@@ -217,12 +229,14 @@ key = "Ctrl+Shift+T"
 **Changes:**
 
 1. **Fix decorations type:**
+
 ```toml
 [window]
 decorations = "Enabled"  # ✓ String value
 ```
 
 2. **Remove invalid option:**
+
 ```toml
 # Removed: resizable = true  (not a valid Rio config option)
 ```
@@ -238,6 +252,7 @@ decorations = "Enabled"  # ✓ String value
 **Key Change:** Instead of copying config to Rio's default location, use the `RIO_CONFIG_HOME` environment variable to tell Rio where to find the config.
 
 **Before (Problematic):**
+
 ```powershell
 # Copy config to Rio's default location
 $RioConfig = Join-Path $RioDir "config.toml"
@@ -250,6 +265,7 @@ if (Test-Path $RioConfig) {
 ```
 
 **After (Clean):**
+
 ```powershell
 # Save config directly to artifact directory
 $artifactConfigDir = Join-Path $artifactsDir "$Version\dev-tool-server"
@@ -264,6 +280,7 @@ $env:RIO_CONFIG_HOME = $artifactConfigDir
 ```
 
 **Benefits:**
+
 - ✅ Config lives alongside the binary it configures
 - ✅ Each version has its own isolated config
 - ✅ No backup/restore needed
@@ -303,12 +320,14 @@ if ($separator -eq '\') {
 #### Use `$RIO_CONFIG_HOME` for Custom Configs
 
 **DO:**
+
 ```powershell
 $env:RIO_CONFIG_HOME = "D:\path\to\config\directory"
 & rio-portable-x86_64.exe
 ```
 
 **DON'T:**
+
 ```powershell
 # Avoid copying configs to Rio's default location
 Copy-Item $config "D:\tools\rio\config.toml"
@@ -317,12 +336,14 @@ Copy-Item $config "D:\tools\rio\config.toml"
 #### String Values for Window Properties
 
 **DO:**
+
 ```toml
 [window]
 decorations = "Enabled"  # String value
 ```
 
 **DON'T:**
+
 ```toml
 [window]
 decorations = true       # Boolean not allowed
@@ -331,6 +352,7 @@ decorations = true       # Boolean not allowed
 #### Array of Tables for Keybindings
 
 **DO:**
+
 ```toml
 [[keybindings]]
 key = "Ctrl+Shift+N"
@@ -342,6 +364,7 @@ action = "NewTab"
 ```
 
 **DON'T:**
+
 ```toml
 [keybindings]            # ❌ Don't mix table and array-of-tables
 [[keybindings]]
@@ -355,6 +378,7 @@ key = "Ctrl+Shift+N"
 #### Only Include Fonts That Exist
 
 **DO:**
+
 ```toml
 extras = [
     { family = "Consolas" }  # Windows built-in font
@@ -362,6 +386,7 @@ extras = [
 ```
 
 **DON'T:**
+
 ```toml
 extras = [
     { family = "Microsoft YaHei" },     # May not exist
@@ -373,6 +398,7 @@ extras = [
 #### Use Absolute Paths for Font Directories
 
 **DO:**
+
 ```toml
 additional-dirs = [
     "D:\\tools\\rio\\JetBrainsMono",
@@ -381,6 +407,7 @@ additional-dirs = [
 ```
 
 **DON'T:**
+
 ```toml
 additional-dirs = [
     "./JetBrainsMono",              # Breaks when working_directory changes
@@ -395,16 +422,19 @@ additional-dirs = [
 #### Platform-Aware Escaping
 
 **Windows:**
+
 ```toml
 working_directory = "D:\\path\\to\\directory"  # Escape backslashes
 ```
 
 **Linux/macOS:**
+
 ```toml
 working_directory = "/path/to/directory"  # No escaping needed
 ```
 
 **PowerShell Implementation:**
+
 ```powershell
 $separator = [System.IO.Path]::DirectorySeparatorChar
 if ($separator -eq '\') {
@@ -421,6 +451,7 @@ if ($separator -eq '\') {
 #### Keep Configs with Artifacts
 
 **Directory Structure:**
+
 ```
 build/_artifacts/
 ├── 0.1.0/
@@ -434,6 +465,7 @@ build/_artifacts/
 ```
 
 **Benefits:**
+
 - Each version has its own config
 - Easy to reproduce specific version behavior
 - No conflicts between versions
@@ -542,6 +574,7 @@ taplo check projects/dungeon/rust/rio-config.toml
 ### Rio Shows Default Config Instead of Custom
 
 **Check:**
+
 1. Is `$RIO_CONFIG_HOME` set correctly?
 2. Does `config.toml` exist in that directory?
 3. Is the TOML syntax valid?
@@ -549,6 +582,7 @@ taplo check projects/dungeon/rust/rio-config.toml
 ### Font Warnings on Startup
 
 **Solutions:**
+
 1. Remove non-existent fonts from `extras` array
 2. Use absolute paths in `additional-dirs`
 3. Verify fonts exist in specified directories
@@ -556,6 +590,7 @@ taplo check projects/dungeon/rust/rio-config.toml
 ### TOML Parse Errors
 
 **Common Issues:**
+
 1. Boolean instead of string for `decorations`
 2. Duplicate key (mixing `[table]` and `[[array]]`)
 3. Unescaped backslashes in Windows paths
@@ -587,6 +622,7 @@ taplo check projects/dungeon/rust/rio-config.toml
 ## Conclusion
 
 Rio Terminal configuration requires careful attention to:
+
 - TOML syntax and types
 - Font availability and paths
 - Config location and loading mechanism
@@ -598,6 +634,6 @@ All configuration errors have been resolved, and Rio Terminal now launches succe
 
 ---
 
-**Last Updated:** 2025-11-18  
-**Status:** ✅ All issues resolved  
+**Last Updated:** 2025-11-18
+**Status:** ✅ All issues resolved
 **Next Review:** When adding new Rio configuration features

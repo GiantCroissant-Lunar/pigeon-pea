@@ -1,14 +1,22 @@
 ---
-doc_id: 'ADR-2025-00004'
-title: 'Services, Shared Libraries, and Plugins'
-doc_type: 'adr'
-status: 'active'
 canonical: true
 created: '2025-11-18'
-tags: ['architecture', 'services', 'plugins', 'shared-libraries']
-summary: 'How services, shared libraries, and plugins fit together in Pigeon Pea for runtime composition'
-related: ['ADR-2025-00001', 'ADR-2025-00003']
+doc_id: ADR-00004
+doc_type: adr
+related:
+- ADR-00001
+- ADR-00003
+status: active
+summary: How services, shared libraries, and plugins fit together in Pigeon Pea for
+  runtime composition
+tags:
+- architecture
+- services
+- plugins
+- shared-libraries
+title: Services, Shared Libraries, and Plugins
 ---
+
 
 # Services, Shared Libraries, and Plugins
 
@@ -26,7 +34,7 @@ It complements the high-level [architecture overview](./overview.md) and focuses
 
 - **Plugin system** (loader, ALCs, registry).
 - **Service contracts** and **proxies** in `PigeonPea.Contracts.*`.
-- Shared functionality that is appropriate for *any* host app (console, windows, tools), e.g. input/audio abstractions.
+- Shared functionality that is appropriate for _any_ host app (console, windows, tools), e.g. input/audio abstractions.
 
 ### 1.2 game-essential
 

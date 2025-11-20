@@ -1,16 +1,24 @@
 ---
-doc_id: 'RFC-2025-00005'
-title: 'Project Structure Reorganization'
-doc_type: 'rfc'
-status: 'active'
 canonical: true
 created: '2025-11-10'
-updated: '2025-11-13'
-tags: ['project-structure', 'architecture', 'refactoring', 'plugins']
-summary: 'Reorganize the dotnet/ folder structure to support a plugin-based architecture with clear separation between application framework, game framework, and platform-specific applications'
+doc_id: RFC-00005
+doc_type: rfc
+related:
+- RFC-00006
+status: active
+summary: Reorganize the dotnet/ folder structure to support a plugin-based architecture
+  with clear separation between application framework, game framework, and platform-specific
+  applications
 supersedes: []
-related: ['RFC-2025-00006']
+tags:
+- project-structure
+- architecture
+- refactoring
+- plugins
+title: Project Structure Reorganization
+updated: '2025-11-13'
 ---
+
 
 # RFC-005: Project Structure Reorganization
 

@@ -1,11 +1,22 @@
 ---
-title: 'Nexus-Inventory: RPGCore-Inspired Inventory and Item System'
-doc_type: 'rfc'
-status: 'draft'
 created: '2025-01-17'
-tags: ['inventory', 'items', 'equipment', 'crafting', 'architecture', 'library', 'nexus-inventory']
-summary: 'Comprehensive implementation guide for Nexus-Inventory, a data-driven inventory and item system inspired by RPGCore with modular item behaviors, equipment, crafting, and JSON configuration'
+doc_id: ''
+doc_type: rfc
+status: draft
+summary: Comprehensive implementation guide for Nexus-Inventory, a data-driven inventory
+  and item system inspired by RPGCore with modular item behaviors, equipment, crafting,
+  and JSON configuration
+tags:
+- inventory
+- items
+- equipment
+- crafting
+- architecture
+- library
+- nexus-inventory
+title: 'Nexus-Inventory: RPGCore-Inspired Inventory and Item System'
 ---
+
 
 # RFC-025: Nexus-Inventory - Modular Inventory and Item System
 
@@ -63,16 +74,17 @@ The system provides data-driven item definitions, modular item behaviors, equipm
 
 ### RPGCore Inventory vs Simple List
 
-| RPGCore Inventory | Simple List |
-|-------------------|-------------|
-| Data-driven item definitions | Entities as items |
-| Stacking (10 potions/slot) | Each potion = separate entry |
-| Modular behaviors | Hard-coded item logic |
-| Equipment slots | No equipment tracking |
-| Crafting recipes | No crafting |
-| Rarity/quality tiers | All items the same |
+| RPGCore Inventory            | Simple List                  |
+| ---------------------------- | ---------------------------- |
+| Data-driven item definitions | Entities as items            |
+| Stacking (10 potions/slot)   | Each potion = separate entry |
+| Modular behaviors            | Hard-coded item logic        |
+| Equipment slots              | No equipment tracking        |
+| Crafting recipes             | No crafting                  |
+| Rarity/quality tiers         | All items the same           |
 
 **For a roguelike**: Data-driven inventory is ideal because:
+
 - Easy to add new items (JSON editing, no code changes)
 - Stacking saves inventory space
 - Equipment system essential for RPG mechanics
@@ -239,6 +251,7 @@ dotnet/
 **ItemDefinition** is a template defining item properties (data-driven).
 
 **Key Properties**:
+
 - **Id**: Unique identifier (e.g., "health_potion_small")
 - **Name**: Display name (e.g., "Small Health Potion")
 - **Description**: Flavor text
@@ -250,6 +263,7 @@ dotnet/
 - **Behaviors**: List of behaviors (what the item does)
 
 **Example**:
+
 ```csharp
 var healthPotionDef = new ItemDefinition
 {
@@ -279,6 +293,7 @@ var healthPotionDef = new ItemDefinition
 **ItemInstance** is a runtime instance of an item (has state).
 
 **Key Properties**:
+
 - **DefinitionId**: Reference to ItemDefinition
 - **Quantity**: Stack count
 - **Durability**: Current durability (for equipment)
@@ -286,6 +301,7 @@ var healthPotionDef = new ItemDefinition
 - **UniqueId**: Unique instance ID (for tracking)
 
 **Example**:
+
 ```csharp
 var healthPotionInstance = new ItemInstance
 {
@@ -312,12 +328,14 @@ var ironSwordInstance = new ItemInstance
 **Inventory** manages item slots, stacking, and capacity.
 
 **Key Features**:
+
 - **Slots**: Fixed-size slots (e.g., 20-slot backpack)
 - **Stacking**: Automatically stack identical items
 - **Weight Limit**: Total weight constraint
 - **Transactions**: Add, Remove, Move, Swap operations
 
 **Example**:
+
 ```csharp
 var inventory = new Inventory
 {
@@ -344,11 +362,13 @@ var potions = inventory.GetItemsByType(ItemType.Consumable);
 **EquipmentSet** manages equipped items by slot.
 
 **Key Features**:
+
 - **Slots**: Head, Chest, Legs, Weapon, OffHand, Ring, Amulet, etc.
 - **Requirements**: Level, class, attribute restrictions
 - **Stat Modifiers**: Equipment modifies entity attributes
 
 **Example**:
+
 ```csharp
 var equipment = new EquipmentSet();
 
@@ -370,6 +390,7 @@ var totalDefense = equipment.GetTotalModifier("Defense"); // +5 from helmet
 **Item Behaviors** define what items do (modular, composable).
 
 **Key Interface**:
+
 ```csharp
 public interface IItemBehavior
 {
@@ -380,11 +401,13 @@ public interface IItemBehavior
 ```
 
 **Built-in Behaviors**:
+
 - `ConsumableBehavior`: Item is consumed on use, applies effects
 - `EquipmentBehavior`: Item can be equipped, provides stat bonuses
 - `QuestItemBehavior`: Item is quest-related, can't be dropped
 
 **Example**:
+
 ```csharp
 // Healing potion behavior
 var consumable = new ConsumableBehavior
@@ -419,6 +442,7 @@ var equipment = new EquipmentBehavior
 **Item Effects** are applied when items are used/equipped.
 
 **Key Interface**:
+
 ```csharp
 public interface IItemEffect
 {
@@ -428,12 +452,14 @@ public interface IItemEffect
 ```
 
 **Built-in Effects**:
+
 - `HealEffect`: Restores HP
 - `StatModifierEffect`: Modifies attributes (temporary or permanent)
 - `BuffEffect`: Applies a buff/debuff
 - `DamageEffect`: Deals damage (for thrown items)
 
 **Example**:
+
 ```csharp
 // Heal effect
 var healEffect = new HealEffect { Amount = 50 };
@@ -454,12 +480,14 @@ strModifier.Apply(playerEntity, item);
 **Crafting Recipes** define item combinations.
 
 **Key Features**:
+
 - **Ingredients**: Required items (with quantities)
 - **Results**: Produced items
 - **Station**: Required crafting station (Forge, Alchemy Table)
 - **Skill Requirements**: Minimum skill levels
 
 **Example**:
+
 ```csharp
 var ironSwordRecipe = new CraftingRecipe
 {
@@ -496,6 +524,7 @@ public enum ItemRarity
 ```
 
 **Rarity Colors** (for UI):
+
 - Common: `#FFFFFF` (white)
 - Uncommon: `#1EFF00` (green)
 - Rare: `#0070DD` (blue)
@@ -508,11 +537,13 @@ public enum ItemRarity
 **Stacking** combines identical items into a single slot.
 
 **Stacking Rules**:
+
 1. Items with same `DefinitionId` can stack
 2. Stack cannot exceed `MaxStack` from definition
 3. Items with different modifiers don't stack (unique equipment)
 
 **Example**:
+
 ```csharp
 // Add 5 health potions
 inventory.AddItem(new ItemInstance { DefinitionId = "health_potion", Quantity = 5 });
@@ -528,6 +559,7 @@ inventory.AddItem(new ItemInstance { DefinitionId = "health_potion", Quantity = 
 **Item Database** loads item definitions from JSON.
 
 **JSON Format**:
+
 ```json
 {
   "items": [
@@ -581,6 +613,7 @@ inventory.AddItem(new ItemInstance { DefinitionId = "health_potion", Quantity = 
 ```
 
 **Loading**:
+
 ```csharp
 var json = File.ReadAllText("ItemDatabase.json");
 var database = ItemDatabase.FromJson(json);
@@ -1607,6 +1640,7 @@ public sealed class CraftingResult
 - [ ] Solution builds without errors
 
 **Verification Command**:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\nexus-inventory
 dotnet build
@@ -1619,27 +1653,32 @@ Expected output: `Build succeeded. 0 Warning(s). 0 Error(s).`
 ## Remaining Phases Summary
 
 **Phase 2: JSON Serialization** (Week 1)
+
 - ItemDatabase JSON loader
 - RecipeDatabase JSON loader
 - Save/load inventory state
 
 **Phase 3: ECS Integration** (Week 2)
+
 - InventoryComponent (ECS)
 - EquipmentComponent (ECS)
 - InventoryManagementSystem (ECS system)
 - EquipmentSystem (ECS system)
 
 **Phase 4: Nexus-GAS Integration** (Week 2-3)
+
 - Stat modifier adapter
 - Equipment modifies AttributeSet
 - Consumables trigger abilities
 
 **Phase 5: Crafting System Integration** (Week 3)
+
 - CraftingSystem (ECS)
 - Recipe validation
 - Ingredient consumption
 
 **Phase 6: Testing** (Week 3-4)
+
 - Unit tests for all systems
 - Integration tests with ECS
 - JSON round-trip tests
@@ -1696,4 +1735,4 @@ dotnet sln PigeonPea.sln add game-essential\core\src\PigeonPea.Game.Items\Pigeon
 
 **End of RFC-025: Nexus-Inventory Implementation Guide**
 
-*This document provides complete implementation instructions for Phase 1. The system provides RPGCore-like data-driven inventory management with stacking, equipment, crafting, and clean integration with Arch ECS and Nexus-GAS for stat modifiers.*
+_This document provides complete implementation instructions for Phase 1. The system provides RPGCore-like data-driven inventory management with stacking, equipment, crafting, and clean integration with Arch ECS and Nexus-GAS for stat modifiers._

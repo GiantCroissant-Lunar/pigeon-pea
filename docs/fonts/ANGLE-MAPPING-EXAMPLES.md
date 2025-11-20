@@ -1,15 +1,24 @@
 ---
-doc_id: 'REFERENCE-2025-00002'
-title: 'Angle → Glyph Mapping Examples'
-doc_type: 'reference'
-status: 'active'
 canonical: true
 created: '2025-11-13'
-tags: ['fonts', 'glyphs', 'mapping', 'code-examples', 'pua']
-summary: 'Code examples for mapping angles to PUA glyph codepoints (36 angle buckets starting at U+E000)'
+doc_id: REFERENCE-00002
+doc_type: reference
+related:
+- RFC-00020
+- SPEC-00001
+status: active
+summary: Code examples for mapping angles to PUA glyph codepoints (36 angle buckets
+  starting at U+E000)
 supersedes: []
-related: ['RFC-2025-00020', 'SPEC-2025-00001']
+tags:
+- fonts
+- glyphs
+- mapping
+- code-examples
+- pua
+title: Angle → Glyph Mapping Examples
 ---
+
 
 # Angle → Glyph Mapping Examples
 

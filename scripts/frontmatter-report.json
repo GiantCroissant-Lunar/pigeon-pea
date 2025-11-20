@@ -1,0 +1,1431 @@
+{
+  "generated_at": "2025-11-19T23:45:56.344569",
+  "mode": "dry-run",
+  "total_processed": 57,
+  "by_type": {
+    "rfc": 30,
+    "guide": 8,
+    "adr": 12,
+    "plan": 2,
+    "spec": 5
+  },
+  "files": [
+    {
+      "path": "docs\\determinism-reference.md",
+      "front_matter": {
+        "title": "Determinism Test Suite Reference",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "rfc",
+          "testing"
+        ],
+        "summary": "This document provides reference information for the RFC-008 Determinism Test Suite implementation.",
+        "doc_id": "RFC-2025-00002",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Determinism Test Suite Reference",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00002"
+    },
+    {
+      "path": "docs\\GITHUB_ISSUES_DEVTOOLS.md",
+      "front_matter": {
+        "title": "DevTools GitHub Issues - Creation Summary",
+        "doc_type": "guide",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "guide",
+          "testing"
+        ],
+        "summary": "Successfully created 12 GitHub issues for the pigeon-pea DevTools system, organized by priority and milestone.",
+        "doc_id": "GUIDE-2025-00003",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "DevTools GitHub Issues - Creation Summary",
+      "doc_type": "guide",
+      "doc_id": "GUIDE-2025-00003"
+    },
+    {
+      "path": "docs\\performance-baseline.md",
+      "front_matter": {
+        "title": "Performance Baseline (RFC-009 Phase 2)",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "ecs",
+          "rfc"
+        ],
+        "summary": "Date: 2025-11-13 Machine: AMD Ryzen 5 5600X, 32GB RAM, Windows 11 (10.0.26200.7171)",
+        "doc_id": "RFC-2025-00007",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Performance Baseline (RFC-009 Phase 2)",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00007"
+    },
+    {
+      "path": "docs\\README.md",
+      "front_matter": {
+        "title": "Pigeon Pea Documentation",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "plugins",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Welcome to the Pigeon Pea documentation! This directory contains planning documents, RFCs, and technical discussions for the project.",
+        "doc_id": "RFC-2025-00008",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Pigeon Pea Documentation",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00008"
+    },
+    {
+      "path": "docs\\adr\\ADR-0001-historical-vs-canonical-docs.md",
+      "front_matter": {
+        "title": "ADR-0001: Historical vs Canonical Documentation for .NET Project Structure",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "architecture",
+          "documentation",
+          "terminal",
+          "testing"
+        ],
+        "summary": "- Status: Accepted - Date: 2025-11-14",
+        "doc_id": "ADR-2025-00008",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "ADR-0001: Historical vs Canonical Documentation for .NET Project Structure",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00008"
+    },
+    {
+      "path": "docs\\adr\\ADR-0002-rendering-split-shared-vs-content-rendering.md",
+      "front_matter": {
+        "title": "ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "ecs",
+          "plugins",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Accepted",
+        "doc_id": "ADR-2025-00009",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "ADR-0002: Rendering Split Between Shared.Rendering and Content.Rendering",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00009"
+    },
+    {
+      "path": "docs\\adr\\ADR-0003-ecs-split-shared-vs-content-ecs.md",
+      "front_matter": {
+        "title": "ADR-0003: ECS Split Between Shared.ECS and Content.ECS",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "ecs",
+          "plugins",
+          "rendering",
+          "testing"
+        ],
+        "summary": "Accepted",
+        "doc_id": "ADR-2025-00010",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "ADR-0003: ECS Split Between Shared.ECS and Content.ECS",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00010"
+    },
+    {
+      "path": "docs\\adr\\ADR-0004-mapsui-zoomable-world-and-external-map-stacks.md",
+      "front_matter": {
+        "title": "ADR-0004: Mapsui Integration, Zoomable World, and External Map Stacks",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "agents",
+          "architecture",
+          "ecs",
+          "plugins",
+          "rendering",
+          "terminal"
+        ],
+        "summary": "Accepted",
+        "doc_id": "ADR-2025-00011",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "ADR-0004: Mapsui Integration, Zoomable World, and External Map Stacks",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00011"
+    },
+    {
+      "path": "docs\\architecture\\ARCHITECTURE_MAP_RENDERING.md",
+      "front_matter": {
+        "title": "Map Rendering Architecture (Console + Desktop)",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "architecture",
+          "rendering",
+          "terminal"
+        ],
+        "summary": "> ✅ Status: Implemented via dotnet/Map/PigeonPea.Map.Rendering/ (post RFC-007). For the big-picture structure see Domain Organization. This document explains the map rendering pipeline in detail.",
+        "doc_id": "ADR-2025-00012",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Map Rendering Architecture (Console + Desktop)",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00012"
+    },
+    {
+      "path": "docs\\architecture\\ARCHITECTURE_PLAN.md",
+      "front_matter": {
+        "title": "Pigeon Pea Architecture Plan",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "> ⚠️ Historical: This plan captures early thinking. For the current architecture, start with: >",
+        "doc_id": "ADR-2025-00013",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Pigeon Pea Architecture Plan",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00013"
+    },
+    {
+      "path": "docs\\architecture\\domain-organization.md",
+      "front_matter": {
+        "title": "Domain-Driven Architecture Organization",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "agents",
+          "architecture",
+          "documentation",
+          "ecs",
+          "rendering",
+          "terminal"
+        ],
+        "summary": "Last Updated: 2025-11-13 Status: Current (Post RFC-007 implementation)",
+        "doc_id": "ADR-2025-00014",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Domain-Driven Architecture Organization",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00014"
+    },
+    {
+      "path": "docs\\architecture\\GRAPHICS_PROTOCOL_NOTES.md",
+      "front_matter": {
+        "title": "Graphics Protocol Notes for WezTerm on Windows",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "documentation",
+          "rendering",
+          "terminal"
+        ],
+        "summary": "- Tested: Yes (see testkitty\\.py files) - Result: Does not render on WezTerm Windows build 20240203",
+        "doc_id": "ADR-2025-00015",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Graphics Protocol Notes for WezTerm on Windows",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00015"
+    },
+    {
+      "path": "docs\\architecture\\MAPSUI_INTEGRATION_PLAN.md",
+      "front_matter": {
+        "title": "Mapsui/BruTile Integration Plan",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "architecture",
+          "ecs",
+          "fonts",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Date: 2025-01-12 Status: Planning Phase",
+        "doc_id": "ADR-2025-00016",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Mapsui/BruTile Integration Plan",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00016"
+    },
+    {
+      "path": "docs\\architecture\\PLUGIN_SYSTEM_ANALYSIS.md",
+      "front_matter": {
+        "title": "Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "plugins",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Date: 2025-11-10 Source Repository: hyacinth-bean-base",
+        "doc_id": "ADR-2025-00017",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Plugin System Analysis: Hyacinth-Bean-Base to Pigeon-Pea Adoption",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00017"
+    },
+    {
+      "path": "docs\\architecture\\RFC_IMPLEMENTATION_REVIEW.md",
+      "front_matter": {
+        "title": "RFC-005 & RFC-006 Implementation Review",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "plugins",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Date: 2025-11-13 Reviewer: Claude Agent",
+        "doc_id": "ADR-2025-00018",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-005 & RFC-006 Implementation Review",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00018"
+    },
+    {
+      "path": "docs\\architecture\\RIVER_GENERATION_INVESTIGATION.md",
+      "front_matter": {
+        "title": "River Generation Investigation - Handover Document",
+        "doc_type": "adr",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "adr",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "The Fantasy Map Generator C# port generates 0 rivers despite having complete river generation code. All other features work correctly:",
+        "doc_id": "ADR-2025-00019",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "River Generation Investigation - Handover Document",
+      "doc_type": "adr",
+      "doc_id": "ADR-2025-00019"
+    },
+    {
+      "path": "docs\\dev-notes\\ARTIFACTS_LAYOUT.md",
+      "front_matter": {
+        "title": "Artifacts Layout",
+        "doc_type": "guide",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "ci-cd",
+          "documentation",
+          "guide",
+          "rendering",
+          "terminal"
+        ],
+        "summary": "This document describes where build, runtime, and benchmark artifacts are written in the PigeonPea repository. The goal is to centralize generated outputs under build/artifacts so they are easy to dis",
+        "doc_id": "GUIDE-2025-00005",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Artifacts Layout",
+      "doc_type": "guide",
+      "doc_id": "GUIDE-2025-00005"
+    },
+    {
+      "path": "docs\\dev-notes\\BUILD_VERSIONING_AND_LOGGING.md",
+      "front_matter": {
+        "title": "Build Versioning and Logging",
+        "doc_type": "guide",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "ci-cd",
+          "guide",
+          "terminal"
+        ],
+        "summary": "This note summarizes how we plan to version builds and organize logs under build/artifacts/{version}/.",
+        "doc_id": "GUIDE-2025-00006",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Build Versioning and Logging",
+      "doc_type": "guide",
+      "doc_id": "GUIDE-2025-00006"
+    },
+    {
+      "path": "docs\\dev-notes\\PR_DESCRIPTION.md",
+      "front_matter": {
+        "title": "Implement RFC-005 and RFC-006: Plugin System Architecture",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "plugins",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "This PR implements the complete plugin system architecture for PigeonPea, including project structure reorganization and a production-ready plugin infrastructure with Assembly Load Context (ALC) isola",
+        "doc_id": "RFC-2025-00009",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Implement RFC-005 and RFC-006: Plugin System Architecture",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00009"
+    },
+    {
+      "path": "docs\\dev-notes\\RELEASE_PLAN.md",
+      "front_matter": {
+        "title": "Release Plan: Cross-Platform Bundles",
+        "doc_type": "guide",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "ci-cd",
+          "ecs",
+          "fonts",
+          "guide",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "This document describes how we plan to ship self-contained bundles of PigeonPea for different platforms, including:",
+        "doc_id": "GUIDE-2025-00007",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Release Plan: Cross-Platform Bundles",
+      "doc_type": "guide",
+      "doc_id": "GUIDE-2025-00007"
+    },
+    {
+      "path": "docs\\dev-notes\\SESSION_HANDOVER.md",
+      "front_matter": {
+        "title": "Session Handover",
+        "doc_type": "plan",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "fonts",
+          "plan",
+          "plugins",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Last updated: 2025-11-16",
+        "doc_id": "PLAN-2025-00015",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Session Handover",
+      "doc_type": "plan",
+      "doc_id": "PLAN-2025-00015"
+    },
+    {
+      "path": "docs\\dev-notes\\temp-commit-editorconfig.md",
+      "front_matter": {
+        "title": "Temporary Commit Documentation: .editorconfig Configuration",
+        "doc_type": "guide",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "documentation",
+          "guide",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "- File: dotnet/.editorconfig - Date: 2025-11-13",
+        "doc_id": "GUIDE-2025-00008",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Temporary Commit Documentation: .editorconfig Configuration",
+      "doc_type": "guide",
+      "doc_id": "GUIDE-2025-00008"
+    },
+    {
+      "path": "docs\\dev-notes\\TEMP_COMMITS.md",
+      "front_matter": {
+        "title": "Temporary Commit Plan (Safe to delete after use)",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "- Message: docs: document domain-driven architecture and RFC-007 - Key files:",
+        "doc_id": "RFC-2025-00010",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Temporary Commit Plan (Safe to delete after use)",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00010"
+    },
+    {
+      "path": "docs\\examples\\ecs-usage.md",
+      "front_matter": {
+        "title": "ECS Usage Examples",
+        "doc_type": "guide",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "documentation",
+          "ecs",
+          "fonts",
+          "guide",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "A practical reference for working with the Arch ECS setup in PigeonPea. The examples below cover dungeon + map worlds, rendering, queries, events, tests, and performance tips. There are more than 15 f",
+        "doc_id": "GUIDE-2025-00009",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "ECS Usage Examples",
+      "doc_type": "guide",
+      "doc_id": "GUIDE-2025-00009"
+    },
+    {
+      "path": "docs\\fonts\\PATCH-SCRIPT-OUTLINE.md",
+      "front_matter": {
+        "title": "FontForge Patch Script — Outline",
+        "doc_type": "spec",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "documentation",
+          "fonts",
+          "spec"
+        ],
+        "summary": "Outline of a FontForge Python script to import SVG angle glyphs into PUA of the base Sarasa font. This is documentation-first; actual script can live under fonts/scripts/ later.",
+        "doc_id": "SPEC-2025-00002",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "FontForge Patch Script — Outline",
+      "doc_type": "spec",
+      "doc_id": "SPEC-2025-00002"
+    },
+    {
+      "path": "docs\\fonts\\PUA-LAYOUT.md",
+      "front_matter": {
+        "title": "PUA Layout for Map Glyphs",
+        "doc_type": "spec",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "fonts",
+          "spec"
+        ],
+        "summary": "This document enumerates the Private Use Area (PUA) codepoints used by the project.",
+        "doc_id": "SPEC-2025-00003",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "PUA Layout for Map Glyphs",
+      "doc_type": "spec",
+      "doc_id": "SPEC-2025-00003"
+    },
+    {
+      "path": "docs\\fonts\\README_SARASA.md",
+      "front_matter": {
+        "title": "Sarasa Gothic (更纱黑体 / 更紗黑體 / 更紗ゴシック / 사라사고딕)",
+        "doc_type": "spec",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "ci-cd",
+          "ecs",
+          "fonts",
+          "spec"
+        ],
+        "summary": "This is SARASA GOTHIC, a CJK composite font based on Inter, Iosevka and Source Han Sans.",
+        "doc_id": "SPEC-2025-00004",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Sarasa Gothic (更纱黑体 / 更紗黑體 / 更紗ゴシック / 사라사고딕)",
+      "doc_type": "spec",
+      "doc_id": "SPEC-2025-00004"
+    },
+    {
+      "path": "docs\\handovers\\HANDOVER_SUMMARY.md",
+      "front_matter": {
+        "title": "Pigeon Pea - Handover Document",
+        "doc_type": "spec",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "documentation",
+          "ecs",
+          "rendering",
+          "spec",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Date: 2025-01-12 Session Topic: Graphics rendering in Terminal.Gui v2 HUD mode",
+        "doc_id": "SPEC-2025-00005",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Pigeon Pea - Handover Document",
+      "doc_type": "spec",
+      "doc_id": "SPEC-2025-00005"
+    },
+    {
+      "path": "docs\\migrations\\fmg-rendering-to-map-rendering.md",
+      "front_matter": {
+        "title": "Migration: FantasyMapGenerator.Rendering → PigeonPea.Map.Rendering",
+        "doc_type": "guide",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "documentation",
+          "ecs",
+          "guide",
+          "rendering"
+        ],
+        "summary": "This guide helps you move from the deprecated FMG rendering stack to the modern Map domain rendering components.",
+        "doc_id": "GUIDE-2025-00010",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Migration: FantasyMapGenerator.Rendering → PigeonPea.Map.Rendering",
+      "doc_type": "guide",
+      "doc_id": "GUIDE-2025-00010"
+    },
+    {
+      "path": "docs\\migrations\\sharedapp-to-domains.md",
+      "front_matter": {
+        "title": "Migration: SharedApp.Rendering → Domain-Specific Projects",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal"
+        ],
+        "summary": "Audience: Developers who previously used dotnet/shared-app/Rendering/ or SharedApp.Rendering APIs. Date: 2025-11-13 (RFC-007 Phase 6)",
+        "doc_id": "RFC-2025-00011",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Migration: SharedApp.Rendering → Domain-Specific Projects",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00011"
+    },
+    {
+      "path": "docs\\rfcs\\002-ui-framework-integration.md",
+      "front_matter": {
+        "title": "002 Ui Framework Integration",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "rfc"
+        ],
+        "summary": "Documentation for 002 Ui Framework Integration",
+        "doc_id": "RFC-2025-00025",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "002 Ui Framework Integration",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00025"
+    },
+    {
+      "path": "docs\\rfcs\\007-consolidate-rendering-projects.md",
+      "front_matter": {
+        "title": "RFC-007: Domain-Driven Architecture Reorganization (Map & Dungeon)",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "plugins",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Status: Proposed (Revised 2025-11-13) Created: 2025-11-13",
+        "doc_id": "RFC-2025-00026",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-007: Domain-Driven Architecture Reorganization (Map & Dungeon)",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00026"
+    },
+    {
+      "path": "docs\\rfcs\\008-determinism-test-suite.md",
+      "front_matter": {
+        "title": "RFC-008: Determinism Test Suite for Fantasy Map Generation",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Status: Proposed Created: 2025-11-13",
+        "doc_id": "RFC-2025-00027",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-008: Determinism Test Suite for Fantasy Map Generation",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00027"
+    },
+    {
+      "path": "docs\\rfcs\\009-performance-benchmarking.md",
+      "front_matter": {
+        "title": "RFC-009: Performance Benchmarking Infrastructure",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Status: Proposed Created: 2025-11-13",
+        "doc_id": "RFC-2025-00028",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-009: Performance Benchmarking Infrastructure",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00028"
+    },
+    {
+      "path": "docs\\rfcs\\010-color-scheme-configuration-PHASE-2-DETAILED-PLAN.md",
+      "front_matter": {
+        "title": "RFC-010 Phase 2: Detailed Implementation Plan",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Goal: Integrate the ColorScheme system with SkiaMapRasterizer and MapColor to replace hardcoded colors with the new color scheme provider.",
+        "doc_id": "RFC-2025-00029",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-010 Phase 2: Detailed Implementation Plan",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00029"
+    },
+    {
+      "path": "docs\\rfcs\\010-color-scheme-configuration-PHASE-2-INSTRUCTIONS.md",
+      "front_matter": {
+        "title": "RFC-010 Phase 2: Integration with SkiaMapRasterizer",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Goal: Integrate the ColorScheme system (Phase 1) with the map rendering pipeline by modifying SkiaMapRasterizer and MapColor classes to use the new ColorSchemes provider instead of hardcoded colors.",
+        "doc_id": "RFC-2025-00030",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-010 Phase 2: Integration with SkiaMapRasterizer",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00030"
+    },
+    {
+      "path": "docs\\rfcs\\010-color-scheme-configuration-PHASE-3-DETAILED-PLAN.md",
+      "front_matter": {
+        "title": "RFC-010 Phase 3: ViewModel Integration - Detailed Implementation Plan",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Status: Ready for Implementation Phase: 3 of 5",
+        "doc_id": "RFC-2025-00031",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-010 Phase 3: ViewModel Integration - Detailed Implementation Plan",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00031"
+    },
+    {
+      "path": "docs\\rfcs\\010-color-scheme-configuration-PHASE-3-REVIEW.md",
+      "front_matter": {
+        "title": "RFC-010 Phase 3 Implementation Review",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "documentation",
+          "rendering",
+          "rfc",
+          "testing"
+        ],
+        "summary": "Review Date: 2025-11-13 Reviewer: Claude Code",
+        "doc_id": "RFC-2025-00032",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-010 Phase 3 Implementation Review",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00032"
+    },
+    {
+      "path": "docs\\rfcs\\010-color-scheme-configuration-PHASE-4-DETAILED-PLAN.md",
+      "front_matter": {
+        "title": "RFC-010 Phase 4: UI Controls - Detailed Implementation Plan",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Status: Ready for Implementation Created: 2025-11-14",
+        "doc_id": "RFC-2025-00033",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-010 Phase 4: UI Controls - Detailed Implementation Plan",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00033"
+    },
+    {
+      "path": "docs\\rfcs\\010-color-scheme-configuration.md",
+      "front_matter": {
+        "title": "RFC-010: Color Scheme Configuration System",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "documentation",
+          "ecs",
+          "plugins",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Status: Proposed Created: 2025-11-13",
+        "doc_id": "RFC-2025-00034",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-010: Color Scheme Configuration System",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00034"
+    },
+    {
+      "path": "docs\\rfcs\\011-water-shimmer-animation.md",
+      "front_matter": {
+        "title": "RFC-011: Water Shimmer Animation Feature",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Status: Proposed Created: 2025-11-13",
+        "doc_id": "RFC-2025-00035",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-011: Water Shimmer Animation Feature",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00035"
+    },
+    {
+      "path": "docs\\rfcs\\013-yazi-integrated-rust-cli.md",
+      "front_matter": {
+        "title": "RFC-013: Yazi-integrated Rust GM CLI",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "plugins",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Status: Proposed Created: 2025-11-13",
+        "doc_id": "RFC-2025-00036",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-013: Yazi-integrated Rust GM CLI",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00036"
+    },
+    {
+      "path": "docs\\rfcs\\014-adopt-dispose-pattern-generator.md",
+      "front_matter": {
+        "title": "RFC-014: Adopt DisposePattern Source Code Generator",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "plugins",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "﻿--- docid: 'RFC-2025-00014'",
+        "doc_id": "RFC-2025-00037",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-014: Adopt DisposePattern Source Code Generator",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00037"
+    },
+    {
+      "path": "docs\\rfcs\\README.md",
+      "front_matter": {
+        "title": "Request for Comments (RFCs)",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "plugins",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "This directory contains RFCs (Request for Comments) for architectural decisions, feature proposals, and significant changes to the Pigeon Pea project.",
+        "doc_id": "RFC-2025-00038",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Request for Comments (RFCs)",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00038"
+    },
+    {
+      "path": "docs\\rfcs\\RFC-007-PHASE-4-INSTRUCTIONS.md",
+      "front_matter": {
+        "title": "RFC-007 Phase 4: Dungeon Domain Implementation - Detailed Instructions",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Created: 2025-11-13 For: Agent implementing Phase 4 of RFC-007",
+        "doc_id": "RFC-2025-00039",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-007 Phase 4: Dungeon Domain Implementation - Detailed Instructions",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00039"
+    },
+    {
+      "path": "docs\\rfcs\\RFC-007-PHASE-5-INSTRUCTIONS.md",
+      "front_matter": {
+        "title": "RFC-007 Phase 5: Arch ECS Integration - Detailed Instructions",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Created: 2025-11-13 For: Agent implementing Phase 5 of RFC-007",
+        "doc_id": "RFC-2025-00040",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-007 Phase 5: Arch ECS Integration - Detailed Instructions",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00040"
+    },
+    {
+      "path": "docs\\rfcs\\RFC-007-PHASE-6-INSTRUCTIONS.md",
+      "front_matter": {
+        "title": "RFC-007 Phase 6: Deprecation and Documentation - Detailed Instructions",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "architecture",
+          "ci-cd",
+          "documentation",
+          "ecs",
+          "rendering",
+          "rfc",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Created: 2025-11-13 For: Agent implementing Phase 6 of RFC-007",
+        "doc_id": "RFC-2025-00041",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "RFC-007 Phase 6: Deprecation and Documentation - Detailed Instructions",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00041"
+    },
+    {
+      "path": "docs\\_inbox\\FMG-cultures-handover.md",
+      "front_matter": {
+        "title": "FMG Cultures Generation Handover",
+        "doc_type": "guide",
+        "status": "draft",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "ecs",
+          "fonts",
+          "guide",
+          "plugins",
+          "rendering",
+          "terminal",
+          "testing"
+        ],
+        "summary": "This note summarizes the current state of the FantasyMapGenerator (FMG) integration as used by the map HUD sandbox (PigeonPea.MapHud) and documents a crash in the cultures generation phase."
+      },
+      "title": "FMG Cultures Generation Handover",
+      "doc_type": "guide",
+      "doc_id": "N/A"
+    },
+    {
+      "path": "docs\\_inbox\\memory-system-validation-plan.md",
+      "front_matter": {
+        "title": "Memory System Validation Plan",
+        "doc_type": "plan",
+        "status": "draft",
+        "created": "2025-11-19",
+        "tags": [
+          "agents",
+          "ecs",
+          "plan",
+          "testing"
+        ],
+        "summary": "Previous attempts at agent memory failed because:"
+      },
+      "title": "Memory System Validation Plan",
+      "doc_type": "plan",
+      "doc_id": "N/A"
+    },
+    {
+      "path": "docs\\terminals\\rio\\RIO_CONFIG_TROUBLESHOOTING.md",
+      "front_matter": {
+        "title": "Rio Terminal Configuration Troubleshooting Guide",
+        "doc_type": "spec",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "documentation",
+          "ecs",
+          "fonts",
+          "spec",
+          "terminal",
+          "testing"
+        ],
+        "summary": "Date: 2025-11-18 Project: Pigeon Pea - Dungeon Dev Server",
+        "doc_id": "SPEC-2025-00006",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Rio Terminal Configuration Troubleshooting Guide",
+      "doc_type": "spec",
+      "doc_id": "SPEC-2025-00006"
+    },
+    {
+      "path": "docs\\issues\\rfc-013\\issue-44.md",
+      "front_matter": {
+        "title": "Scaffold dev-tool crate (Foundation)",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "rfc"
+        ],
+        "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
+        "doc_id": "RFC-2025-00042",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Scaffold dev-tool crate (Foundation)",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00042"
+    },
+    {
+      "path": "docs\\issues\\rfc-013\\issue-45.md",
+      "front_matter": {
+        "title": "WebSocket client and JSON envelope types",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "rfc"
+        ],
+        "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
+        "doc_id": "RFC-2025-00043",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "WebSocket client and JSON envelope types",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00043"
+    },
+    {
+      "path": "docs\\issues\\rfc-013\\issue-46.md",
+      "front_matter": {
+        "title": "Core commands: spawn, tp, reload, regen-map",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "rfc"
+        ],
+        "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
+        "doc_id": "RFC-2025-00044",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Core commands: spawn, tp, reload, regen-map",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00044"
+    },
+    {
+      "path": "docs\\issues\\rfc-013\\issue-47.md",
+      "front_matter": {
+        "title": "Streaming: state --watch, log --watch",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "rfc"
+        ],
+        "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
+        "doc_id": "RFC-2025-00045",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Streaming: state --watch, log --watch",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00045"
+    },
+    {
+      "path": "docs\\issues\\rfc-013\\issue-48.md",
+      "front_matter": {
+        "title": "Resilience & configuration (reconnect/backoff, timeouts, exit codes)",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "rfc"
+        ],
+        "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
+        "doc_id": "RFC-2025-00046",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Resilience & configuration (reconnect/backoff, timeouts, exit codes)",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00046"
+    },
+    {
+      "path": "docs\\issues\\rfc-013\\issue-49.md",
+      "front_matter": {
+        "title": "Integration tests with mock WebSocket server",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "ci-cd",
+          "rfc"
+        ],
+        "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
+        "doc_id": "RFC-2025-00047",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Integration tests with mock WebSocket server",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00047"
+    },
+    {
+      "path": "docs\\issues\\rfc-013\\issue-50.md",
+      "front_matter": {
+        "title": "Yazi integration doc + packaging pipeline",
+        "doc_type": "rfc",
+        "status": "active",
+        "created": "2025-11-19",
+        "tags": [
+          "ci-cd",
+          "documentation",
+          "rfc",
+          "terminal"
+        ],
+        "summary": "RFC Reference: RFC-013: Yazi-integrated Rust CLI",
+        "doc_id": "RFC-2025-00048",
+        "canonical": true,
+        "supersedes": [],
+        "related": []
+      },
+      "title": "Yazi integration doc + packaging pipeline",
+      "doc_type": "rfc",
+      "doc_id": "RFC-2025-00048"
+    }
+  ]
+}

@@ -1,14 +1,21 @@
 ---
-doc_id: 'PLAN-2025-00012'
-title: 'GitHub Label Strategy'
-doc_type: 'plan'
-status: 'active'
 canonical: true
 created: '2025-11-08'
-tags: ['github', 'labels', 'project-management', 'organization']
-summary: 'Scalable label strategy for organizing GitHub issues and pull requests in pigeon-pea project'
-related: ['PLAN-2025-00011']
+doc_id: PLAN-00012
+doc_type: plan
+related:
+- PLAN-00011
+status: active
+summary: Scalable label strategy for organizing GitHub issues and pull requests in
+  pigeon-pea project
+tags:
+- github
+- labels
+- project-management
+- organization
+title: GitHub Label Strategy
 ---
+
 
 # GitHub Label Strategy
 

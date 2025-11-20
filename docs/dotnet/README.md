@@ -7,7 +7,17 @@ canonical: true
 created: '2025-11-18'
 tags: ['dotnet', 'reference', 'documentation']
 summary: 'Comprehensive reference to all .NET documentation in the Pigeon Pea project'
-related: ['GUIDE-2025-00001', 'ADR-2025-00001', 'ADR-2025-00002', 'ADR-2025-00003', 'ADR-2025-00004', 'ADR-2025-00005', 'ADR-2025-00006', 'ADR-2025-00007']
+related:
+  [
+    'GUIDE-2025-00001',
+    'ADR-2025-00001',
+    'ADR-2025-00002',
+    'ADR-2025-00003',
+    'ADR-2025-00004',
+    'ADR-2025-00005',
+    'ADR-2025-00006',
+    'ADR-2025-00007',
+  ]
 ---
 
 # .NET Documentation Reference
@@ -17,16 +27,19 @@ This document provides a comprehensive reference to all .NET documentation in th
 ## 🚀 Quick Start
 
 ### For New Developers
+
 1. **[Getting Started Guide](./guides/getting-started.md)** - Set up your development environment and run your first application
 2. **[Architecture Overview](./architecture/overview.md)** - Understand the high-level system design
 3. **[Service Tiers](./architecture/service-tiers.md)** - Learn about the four-tier architecture
 
 ### For Architects
+
 1. **[Architecture Overview](./architecture/overview.md)** - High-level ECS design, rendering pipeline, and plugin system
 2. **[Multi-Scale World System](./architecture/game-scale-modes.md)** - Discrete zoom/mode levels design
 3. **[Services and Plugins](./architecture/services-and-plugins.md)** - Plugin system integration
 
 ### For Plugin Developers
+
 1. **[Services and Plugins](./architecture/services-and-plugins.md)** - How services, shared libraries, and plugins fit together
 2. **[Getting Started Guide](./guides/getting-started.md)** - Development setup and project structure
 
@@ -52,14 +65,17 @@ docs/dotnet/
 ## 🏗️ Architecture Documentation
 
 ### High-Level Architecture
+
 - **[overview.md](./architecture/overview.md)** - High-level architecture overview of Pigeon Pea with ECS design, rendering pipeline, and plugin system
 
 ### Design Decisions
+
 - **[game-scale-modes.md](./architecture/game-scale-modes.md)** - Design for discrete zoom/mode levels in Pigeon Pea with physical scale and chunking
 - **[service-tiers.md](./architecture/service-tiers.md)** - Four-tier service architecture for app-level and game-level features
 - **[services-and-plugins.md](./architecture/services-and-plugins.md)** - How services, shared libraries, and plugins fit together
 
 ### Technical Implementation
+
 - **[goap-perception-checklist.md](./architecture/goap-perception-checklist.md)** - Implementation checklist for GOAP and perception systems integration
 - **[observable-collections.md](./architecture/observable-collections.md)** - Guidelines for using observable collections and reactive extensions
 - **[reactive-stack-and-r3.md](./architecture/reactive-stack-and-r3.md)** - Guidelines for integrating reactive extensions and R3
@@ -67,6 +83,7 @@ docs/dotnet/
 ## 📖 Guides
 
 ### Getting Started
+
 - **[getting-started.md](./guides/getting-started.md)** - Comprehensive guide to setting up and running Pigeon Pea .NET applications
 - **[NAVIGATION.md](./guides/NAVIGATION.md)** - Role-based navigation guide and learning paths
 
@@ -77,6 +94,7 @@ docs/dotnet/
 ## 🗺️ Document Map & Relationships
 
 ### Document Dependencies
+
 ```mermaid
 graph TD
     A[Architecture Overview] --> B[Game Scale Modes]
@@ -105,17 +123,20 @@ graph TD
 ## 🔗 Cross-References to Main Documentation
 
 ### Related RFCs
+
 - **[RFC-005: Project Structure Reorganization](../rfcs/005-project-structure-reorganization.md)** - Plugin-based architecture foundation
 - **[RFC-006: Plugin System Architecture](../rfcs/006-plugin-system-architecture.md)** - Plugin loading and lifecycle management
 - **[RFC-012: Documentation Organization Management](../rfcs/012-documentation-organization-management.md)** - Documentation structure and validation
 
 ### Related Architecture Documents
+
 - **[Rendering Architecture](../architecture/ARCHITECTURE_MAP_RENDERING.md)** - Map rendering design and implementation
 - **[Plugin System Analysis](../architecture/PLUGIN_SYSTEM_ANALYSIS.md)** - Original plugin system analysis
 
 ## 🏷️ Tags Index
 
 ### By Topic
+
 - **architecture**: [overview](./architecture/overview.md), [game-scale-modes](./architecture/game-scale-modes.md), [service-tiers](./architecture/service-tiers.md), [services-and-plugins](./architecture/services-and-plugins.md)
 - **ecs**: [overview](./architecture/overview.md)
 - **rendering**: [overview](./architecture/overview.md)
@@ -125,6 +146,7 @@ graph TD
 - **getting-started**: [getting-started](./guides/getting-started.md)
 
 ### By Document Type
+
 - **ADR (Architecture Decision Records)**: All documents in `architecture/` directory
 - **GUIDE**: [getting-started.md](./guides/getting-started.md)
 - **REFERENCE**: This document
@@ -133,8 +155,8 @@ graph TD
 
 The following legacy documentation has been moved and redirect files created:
 
-- **[dotnet/ARCHITECTURE.md](../dotnet/ARCHITECTURE.md) - Redirects to architecture overview
-- **[dotnet/docs/architecture/](../dotnet/docs/architecture/) - Redirects to new architecture documentation structure
+- \*\*[dotnet/ARCHITECTURE.md](../dotnet/ARCHITECTURE.md) - Redirects to architecture overview
+- \*\*[dotnet/docs/architecture/](../dotnet/docs/architecture/) - Redirects to new architecture documentation structure
 
 ## Document IDs
 

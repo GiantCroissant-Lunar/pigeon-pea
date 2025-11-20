@@ -1,15 +1,24 @@
 ---
-doc_id: 'RFC-2025-00004'
-title: 'Agent Infrastructure Enhancement'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-10'
-tags: ['agents', 'infrastructure', 'automation', 'skills', 'sub-agents']
-summary: 'Enhance the .agent infrastructure with sub-agents, declarative skills, validation schemas, and coding-focused policies to enable autonomous GitHub Coding Agents to perform complex development tasks'
+doc_id: RFC-00004
+doc_type: rfc
+related:
+- RFC-00012
+status: draft
+summary: Enhance the .agent infrastructure with sub-agents, declarative skills, validation
+  schemas, and coding-focused policies to enable autonomous GitHub Coding Agents to
+  perform complex development tasks
 supersedes: []
-related: ['RFC-2025-00012']
+tags:
+- agents
+- infrastructure
+- automation
+- skills
+- sub-agents
+title: Agent Infrastructure Enhancement
 ---
+
 
 # RFC-004: Agent Infrastructure Enhancement
 

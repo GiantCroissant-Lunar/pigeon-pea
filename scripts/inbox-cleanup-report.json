@@ -1,0 +1,139 @@
+{
+  "timestamp": "2025-11-19T23:46:46.412987",
+  "mode": "dry-run",
+  "retention_days": 30,
+  "summary": {
+    "keep": 5,
+    "graduate": 0,
+    "archive": 4,
+    "warn": 2,
+    "total": 11
+  },
+  "details": {
+    "keep": [
+      {
+        "path": "docs\\_inbox\\024-nexus-camera2d-system.md",
+        "name": "024-nexus-camera2d-system.md",
+        "age_days": 0,
+        "has_frontmatter": true,
+        "is_conversation_dump": false,
+        "status": "keep",
+        "reason": "",
+        "suggested_action": "",
+        "doc_type": "rfc"
+      },
+      {
+        "path": "docs\\_inbox\\025-nexus-inventory-system.md",
+        "name": "025-nexus-inventory-system.md",
+        "age_days": 0,
+        "has_frontmatter": true,
+        "is_conversation_dump": false,
+        "status": "keep",
+        "reason": "",
+        "suggested_action": "",
+        "doc_type": "rfc"
+      },
+      {
+        "path": "docs\\_inbox\\mcp-project-launcher-system.md",
+        "name": "mcp-project-launcher-system.md",
+        "age_days": 0,
+        "has_frontmatter": true,
+        "is_conversation_dump": false,
+        "status": "keep",
+        "reason": "",
+        "suggested_action": "",
+        "doc_type": "guide"
+      },
+      {
+        "path": "docs\\_inbox\\rfc-023-input-system-architecture-refactoring.md",
+        "name": "rfc-023-input-system-architecture-refactoring.md",
+        "age_days": 0,
+        "has_frontmatter": true,
+        "is_conversation_dump": false,
+        "status": "keep",
+        "reason": "",
+        "suggested_action": "",
+        "doc_type": "rfc"
+      },
+      {
+        "path": "docs\\_inbox\\rfc-024-nexus-systems-architecture-refactoring.md",
+        "name": "rfc-024-nexus-systems-architecture-refactoring.md",
+        "age_days": 0,
+        "has_frontmatter": true,
+        "is_conversation_dump": false,
+        "status": "keep",
+        "reason": "",
+        "suggested_action": "",
+        "doc_type": "rfc"
+      }
+    ],
+    "graduate": [],
+    "archive": [
+      {
+        "path": "docs\\_inbox\\023-nexus-input-system.md",
+        "name": "023-nexus-input-system.md",
+        "age_days": 0,
+        "has_frontmatter": true,
+        "is_conversation_dump": true,
+        "status": "archive",
+        "reason": "Conversation dump",
+        "suggested_action": "Move to docs/archive/conversations/",
+        "doc_type": "rfc"
+      },
+      {
+        "path": "docs\\_inbox\\2025-11-19-caveat-the-messages-below-were-generated-by-the-u-001.txt",
+        "name": "2025-11-19-caveat-the-messages-below-were-generated-by-the-u-001.txt",
+        "age_days": 0,
+        "has_frontmatter": false,
+        "is_conversation_dump": true,
+        "status": "archive",
+        "reason": "Conversation dump (.txt)",
+        "suggested_action": "Move to docs/archive/conversations/"
+      },
+      {
+        "path": "docs\\_inbox\\2025-11-19-caveat-the-messages-below-were-generated-by-the-u-002.txt",
+        "name": "2025-11-19-caveat-the-messages-below-were-generated-by-the-u-002.txt",
+        "age_days": 0,
+        "has_frontmatter": false,
+        "is_conversation_dump": true,
+        "status": "archive",
+        "reason": "Conversation dump (.txt)",
+        "suggested_action": "Move to docs/archive/conversations/"
+      },
+      {
+        "path": "docs\\_inbox\\2025-11-19-caveat-the-messages-below-were-generated-by-the-u-003.txt",
+        "name": "2025-11-19-caveat-the-messages-below-were-generated-by-the-u-003.txt",
+        "age_days": 0,
+        "has_frontmatter": false,
+        "is_conversation_dump": true,
+        "status": "archive",
+        "reason": "Conversation dump (.txt)",
+        "suggested_action": "Move to docs/archive/conversations/"
+      }
+    ],
+    "warn": [
+      {
+        "path": "docs\\_inbox\\FMG-cultures-handover.md",
+        "name": "FMG-cultures-handover.md",
+        "age_days": 0,
+        "has_frontmatter": false,
+        "is_conversation_dump": false,
+        "status": "warn",
+        "reason": "Missing front-matter",
+        "suggested_action": "Add front-matter or archive",
+        "doc_type": null
+      },
+      {
+        "path": "docs\\_inbox\\memory-system-validation-plan.md",
+        "name": "memory-system-validation-plan.md",
+        "age_days": 0,
+        "has_frontmatter": false,
+        "is_conversation_dump": false,
+        "status": "warn",
+        "reason": "Missing front-matter",
+        "suggested_action": "Add front-matter or archive",
+        "doc_type": null
+      }
+    ]
+  }
+}

@@ -1,15 +1,25 @@
 ---
-doc_id: 'RFC-2025-00019'
-title: 'Nexus-GAS: Gameplay Ability System Implementation'
-doc_type: 'rfc'
-status: 'active'
 canonical: true
 created: '2025-01-16'
-tags: ['gameplay', 'abilities', 'ecs', 'architecture', 'library', 'nexus-gas']
-summary: 'Comprehensive implementation guide for Nexus-GAS, a reusable Gameplay Ability System inspired by Unreal Engine GAS, with engine-agnostic core and Arch ECS integration'
+doc_id: RFC-00019
+doc_type: rfc
+related:
+- RFC-00005
+- RFC-00007
+status: active
+summary: Comprehensive implementation guide for Nexus-GAS, a reusable Gameplay Ability
+  System inspired by Unreal Engine GAS, with engine-agnostic core and Arch ECS integration
 supersedes: []
-related: ['RFC-2025-00005', 'RFC-2025-00007']
+tags:
+- gameplay
+- abilities
+- ecs
+- architecture
+- library
+- nexus-gas
+title: 'Nexus-GAS: Gameplay Ability System Implementation'
 ---
+
 
 # RFC-019: Nexus-GAS - Gameplay Ability System Implementation
 

@@ -1,15 +1,25 @@
 ---
-doc_id: 'RFC-2025-00020'
-title: 'Custom CJK Monospace Game Font — Pipeline and PUA Layout'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-13'
-tags: ['fonts', 'cjk', 'pua', 'terminal', 'pipeline']
-summary: 'Font pipeline to produce a unified, terminal-friendly CJK monospace font that embeds custom map glyphs (angled lines, junctions, terrain) in the Unicode Private Use Area (PUA)'
+doc_id: RFC-00020
+doc_type: rfc
+related:
+- RFC-00021
+- RFC-00022
+status: draft
+summary: Font pipeline to produce a unified, terminal-friendly CJK monospace font
+  that embeds custom map glyphs (angled lines, junctions, terrain) in the Unicode
+  Private Use Area (PUA)
 supersedes: []
-related: ['RFC-2025-00021', 'RFC-2025-00022']
+tags:
+- fonts
+- cjk
+- pua
+- terminal
+- pipeline
+title: Custom CJK Monospace Game Font — Pipeline and PUA Layout
 ---
+
 
 # RFC-020: Custom CJK Monospace Game Font — Pipeline and PUA Layout
 

@@ -1,16 +1,28 @@
 ---
-doc_id: 'RFC-2025-00013'
-title: 'Plugin Architecture Refinement: Tier-Based System'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-19'
-updated: '2025-11-19'
-tags: ['plugins', 'architecture', 'refactoring', 'tiered-architecture', 'alc', 'dungeon', 'rendering']
-summary: 'Refine plugin architecture to follow tier-based system (Tier 1-4) with proper separation between domain plugins and platform plugins, eliminating wrapper projects and establishing correct dependency flow'
+doc_id: RFC-00013
+doc_type: rfc
+related:
+- RFC-00006
+- RFC-00014
+status: draft
+summary: Refine plugin architecture to follow tier-based system (Tier 1-4) with proper
+  separation between domain plugins and platform plugins, eliminating wrapper projects
+  and establishing correct dependency flow
 supersedes: []
-related: ['RFC-2025-00006', 'RFC-2025-00014']
+tags:
+- plugins
+- architecture
+- refactoring
+- tiered-architecture
+- alc
+- dungeon
+- rendering
+title: 'Plugin Architecture Refinement: Tier-Based System'
+updated: '2025-11-19'
 ---
+
 
 # RFC-013: Plugin Architecture Refinement: Tier-Based System
 
@@ -23,6 +35,7 @@ related: ['RFC-2025-00006', 'RFC-2025-00014']
 ## Summary
 
 Refine the plugin architecture to correctly implement a tier-based system (Tier 1-4) with clear separation between:
+
 - **Domain plugins** (know WHAT to render/do)
 - **Platform plugins** (know HOW to render/execute)
 
@@ -135,6 +148,7 @@ This eliminates unnecessary wrapper projects, fixes Assembly Load Context (ALC) 
 ### Dependency Rules
 
 **Allowed:**
+
 - Tier 2 → Tier 1 ✅
 - Tier 3 → Tier 1 ✅
 - Tier 4 → Tier 1, Tier 3 ✅
@@ -142,6 +156,7 @@ This eliminates unnecessary wrapper projects, fixes Assembly Load Context (ALC) 
 - project → app-essential, game-essential ✅
 
 **Not Allowed:**
+
 - Tier 1 → Any other tier ❌
 - Tier 3 → Tier 2 ❌ (except via registry)
 - Tier 4 → Tier 2 ❌
@@ -203,6 +218,7 @@ This eliminates unnecessary wrapper projects, fixes Assembly Load Context (ALC) 
 **Actions:**
 
 1. **Decide on unified location:**
+
    ```
    Recommendation: dotnet/game-essential/core/src/PigeonPea.Rendering.Contracts/
 
@@ -210,6 +226,7 @@ This eliminates unnecessary wrapper projects, fixes Assembly Load Context (ALC) 
    ```
 
 2. **Merge IRenderer interfaces:**
+
    ```csharp
    // Unified interface
    namespace PigeonPea.Rendering.Contracts;
@@ -238,6 +255,7 @@ This eliminates unnecessary wrapper projects, fixes Assembly Load Context (ALC) 
 ### Phase 2: Remove Wrapper Projects
 
 **Projects to DELETE:**
+
 ```
 ❌ dotnet/game-essential/core/src/PigeonPea.Dungeon.Core/
 ❌ dotnet/game-essential/core/src/PigeonPea.Dungeon.Rendering/
@@ -245,12 +263,14 @@ This eliminates unnecessary wrapper projects, fixes Assembly Load Context (ALC) 
 ```
 
 **Projects to KEEP:**
+
 ```
 ✅ dotnet/game-essential/core/src/PigeonPea.Dungeon.Contracts/
    └─ Tier 1 contracts only
 ```
 
 **Impact Analysis:**
+
 - Find all projects referencing deleted ones
 - Update or remove references
 - Move any useful utilities to appropriate locations
@@ -258,11 +278,13 @@ This eliminates unnecessary wrapper projects, fixes Assembly Load Context (ALC) 
 ### Phase 3: Create Dungeon Generation Plugin
 
 **New project:**
+
 ```
 projects/dungeon/dotnet/console-app/plugins/PigeonPea.Plugin.Dungeon.ModernEdgar/
 ```
 
 **Structure:**
+
 ```
 PigeonPea.Plugin.Dungeon.ModernEdgar/
 ├─ ModernEdgarDungeonGenerator.cs
@@ -271,6 +293,7 @@ PigeonPea.Plugin.Dungeon.ModernEdgar/
 ```
 
 **Dependencies:**
+
 ```xml
 <ProjectReference Include="dotnet/game-essential/.../PigeonPea.Dungeon.Contracts" />
 <!-- Use modern-edgar-dotnet from _lib directly, NO wrapper -->
@@ -278,6 +301,7 @@ PigeonPea.Plugin.Dungeon.ModernEdgar/
 ```
 
 **Implementation:**
+
 ```csharp
 public class ModernEdgarDungeonGenerator : IDungeonGenerator
 {
@@ -313,11 +337,13 @@ public class ModernEdgarDungeonGenerator : IDungeonGenerator
 ### Phase 4: Create Dungeon Rendering Plugin
 
 **New project:**
+
 ```
 projects/dungeon/dotnet/console-app/plugins/PigeonPea.Plugin.Dungeon.Rendering/
 ```
 
 **Structure:**
+
 ```
 PigeonPea.Plugin.Dungeon.Rendering/
 ├─ DungeonRenderer.cs
@@ -326,6 +352,7 @@ PigeonPea.Plugin.Dungeon.Rendering/
 ```
 
 **Dependencies:**
+
 ```xml
 <ProjectReference Include="dotnet/game-essential/.../PigeonPea.Dungeon.Contracts" />
 <ProjectReference Include="dotnet/game-essential/.../PigeonPea.Rendering.Contracts" />
@@ -333,6 +360,7 @@ PigeonPea.Plugin.Dungeon.Rendering/
 ```
 
 **Implementation:**
+
 ```csharp
 public class DungeonRenderer
 {
@@ -399,6 +427,7 @@ public class DungeonRenderer
 ```
 
 **ANSIRenderer.cs:**
+
 ```csharp
 public class ANSIRenderer : IRenderer
 {
@@ -443,6 +472,7 @@ public class ANSIRenderer : IRenderer
 ```
 
 **Same pattern for:**
+
 - `PigeonPea.Plugin.Rendering.Terminal.Braille`
 - `PigeonPea.Plugin.Rendering.Windows.SkiaSharp`
 
@@ -451,6 +481,7 @@ public class ANSIRenderer : IRenderer
 **Goal:** Replace hardcoded assembly list with configuration
 
 **New configuration file:**
+
 ```json
 // appsettings.json or plugin-config.json
 {
@@ -468,6 +499,7 @@ public class ANSIRenderer : IRenderer
 ```
 
 **PluginLoadContext refactoring:**
+
 ```csharp
 public class PluginLoadContext : AssemblyLoadContext
 {
@@ -501,6 +533,7 @@ public class PluginLoadContext : AssemblyLoadContext
 ```
 
 **Update PluginLoader:**
+
 ```csharp
 public class PluginLoader
 {
@@ -525,18 +558,21 @@ public class PluginLoader
 ### Phase 7: Fix PigeonPea.Shared
 
 **Analysis needed:**
+
 ```bash
 # Categorize contents
 ls dotnet/game-essential/core/src/PigeonPea.Shared/
 ```
 
 **Refactoring strategy:**
+
 1. **Dungeon-specific code** → Move to `Dungeon.Contracts` or delete (if duplicates `.Core`)
 2. **Map-specific code** → Move to `Map.Contracts`
 3. **Truly shared utilities** → Keep in appropriate shared assembly
 4. **Game logic** → Might belong in a new `PigeonPea.Game.Core` (if needed)
 
 **Potential outcome:**
+
 - Delete `PigeonPea.Shared` entirely, or
 - Reduce to minimal truly-shared utilities
 
@@ -603,6 +639,7 @@ ls dotnet/game-essential/core/src/PigeonPea.Shared/
 ### Validation Checkpoints
 
 **After each week:**
+
 - [ ] Console app starts without errors
 - [ ] Dungeon generates and displays correctly
 - [ ] Player movement works
@@ -615,6 +652,7 @@ ls dotnet/game-essential/core/src/PigeonPea.Shared/
 ### Unit Tests
 
 1. **Plugin Loading:**
+
    ```csharp
    [Test]
    public async Task DungeonGenerator_LoadsSuccessfully()
@@ -629,6 +667,7 @@ ls dotnet/game-essential/core/src/PigeonPea.Shared/
    ```
 
 2. **Dungeon Generation:**
+
    ```csharp
    [Test]
    public void DungeonGenerator_ProducesDungeonView()
@@ -643,6 +682,7 @@ ls dotnet/game-essential/core/src/PigeonPea.Shared/
    ```
 
 3. **Rendering:**
+
    ```csharp
    [Test]
    public void DungeonRenderer_CallsPlatformRenderer()
@@ -661,6 +701,7 @@ ls dotnet/game-essential/core/src/PigeonPea.Shared/
 ### Integration Tests
 
 1. **Full Plugin Stack:**
+
    ```csharp
    [Test]
    public async Task FullStack_GeneratesAndRenders()
@@ -712,6 +753,7 @@ ls dotnet/game-essential/core/src/PigeonPea.Shared/
 ### For Future Features
 
 **Adding new domain (e.g., Map):**
+
 ```
 1. Create Map.Contracts (Tier 1)
 2. Create Plugin.Map.Generator (Tier 3)
@@ -720,6 +762,7 @@ ls dotnet/game-essential/core/src/PigeonPea.Shared/
 ```
 
 **Adding new platform (e.g., Sixel):**
+
 ```
 1. Create Plugin.Rendering.Terminal.Sixel
 2. Implement IRenderer interface
@@ -909,11 +952,7 @@ Separation: Domain and platform plugins don't know about each other!
       "PigeonPea.Shared.Inventory",
       "Arch"
     ],
-    "PluginPaths": [
-      "plugins",
-      "~/PigeonPea/Plugins",
-      "C:/ProgramData/PigeonPea/Plugins"
-    ]
+    "PluginPaths": ["plugins", "~/PigeonPea/Plugins", "C:/ProgramData/PigeonPea/Plugins"]
   }
 }
 ```

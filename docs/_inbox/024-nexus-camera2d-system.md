@@ -1,11 +1,21 @@
 ---
-title: 'Nexus-Camera2D: ProCamera2D-Inspired 2D Camera System'
-doc_type: 'rfc'
-status: 'draft'
 created: '2025-01-17'
-tags: ['camera', '2d', 'rendering', 'architecture', 'library', 'nexus-camera2d']
-summary: 'Comprehensive implementation guide for Nexus-Camera2D, a modular 2D camera system inspired by ProCamera2D with extensions for follow, boundaries, shake, zoom, and parallax'
+doc_id: ''
+doc_type: rfc
+status: draft
+summary: Comprehensive implementation guide for Nexus-Camera2D, a modular 2D camera
+  system inspired by ProCamera2D with extensions for follow, boundaries, shake, zoom,
+  and parallax
+tags:
+- camera
+- 2d
+- rendering
+- architecture
+- library
+- nexus-camera2d
+title: 'Nexus-Camera2D: ProCamera2D-Inspired 2D Camera System'
 ---
+
 
 # RFC-024: Nexus-Camera2D - Modular 2D Camera System
 
@@ -60,16 +70,17 @@ The system provides extensible camera behaviors (follow, boundaries, shake, zoom
 
 ### ProCamera2D vs Basic Camera
 
-| ProCamera2D | Basic Camera |
-|-------------|--------------|
-| Modular extensions | Monolithic class |
-| Smooth movement (damping) | Instant follow |
-| Camera shake, zoom effects | No effects |
-| Multi-target support | Single target |
-| Parallax scrolling | No parallax |
-| Pixel-perfect rendering | No grid snapping |
+| ProCamera2D                | Basic Camera     |
+| -------------------------- | ---------------- |
+| Modular extensions         | Monolithic class |
+| Smooth movement (damping)  | Instant follow   |
+| Camera shake, zoom effects | No effects       |
+| Multi-target support       | Single target    |
+| Parallax scrolling         | No parallax      |
+| Pixel-perfect rendering    | No grid snapping |
 
 **For a roguelike**: Modular camera is ideal because:
+
 - Smooth follow feels more polished than instant snap
 - Camera shake adds impact to attacks/spells
 - Pixel-perfect ensures crisp tile rendering
@@ -217,6 +228,7 @@ dotnet/
 **Camera2D** is the main camera controller that manages targets, extensions, and transforms.
 
 **Key Properties**:
+
 - **Transform**: Position, rotation (for 2D usually 0)
 - **Zoom**: Scale factor (1.0 = normal, 2.0 = 2x zoom in)
 - **ViewportSize**: Rendering viewport dimensions
@@ -224,11 +236,13 @@ dotnet/
 - **Extensions**: Modular behaviors
 
 **Key Types**:
+
 - `Camera2D`: Main camera controller
 - `CameraTransform`: Position + rotation + zoom
 - `CameraUpdateMode`: Update, LateUpdate, FixedUpdate, Manual
 
 **Example**:
+
 ```csharp
 var camera = new Camera2D
 {
@@ -254,12 +268,14 @@ camera.Update(deltaTime);
 **Camera Targets** define entities the camera should follow, with weighted influence.
 
 **Key Properties**:
+
 - **Position**: Target world position
 - **Weight**: Influence on final camera position (0-1)
 - **Offset**: Position offset from target
 - **Enabled**: Whether this target is active
 
 **Example**:
+
 ```csharp
 // Follow player only
 camera.AddTarget(playerPosition, weight: 1.0f);
@@ -278,6 +294,7 @@ camera.AddTarget(enemyPosition, weight: 0.2f);
 **Extensions** add modular behaviors to the camera.
 
 **Key Interface**:
+
 ```csharp
 public interface ICameraExtension
 {
@@ -292,11 +309,13 @@ public interface ICameraExtension
 ```
 
 **Update Order**:
+
 1. **PreUpdate**: Prepare state (e.g., read targets)
 2. **Update**: Modify camera transform (e.g., apply follow)
 3. **PostUpdate**: Finalize state (e.g., apply boundaries)
 
 **Example**:
+
 ```csharp
 public class FollowExtension : ICameraExtension
 {
@@ -334,11 +353,13 @@ public class FollowExtension : ICameraExtension
 **FollowExtension** smoothly follows targets using various damping algorithms.
 
 **Key Features**:
+
 - **Damping Types**: Linear (lerp), Exponential, Spring
 - **Smoothness**: Control response time
 - **Look-Ahead**: Anticipate player movement direction
 
 **Example**:
+
 ```csharp
 var followExt = new FollowExtension
 {
@@ -354,11 +375,13 @@ camera.AddExtension(followExt);
 **BoundariesExtension** constrains camera to level bounds.
 
 **Key Features**:
+
 - **Bounds**: Rectangular area camera can't leave
 - **Soft Boundaries**: Camera slows down near edges
 - **Animated Transitions**: Smooth transition when bounds change
 
 **Example**:
+
 ```csharp
 var boundariesExt = new BoundariesExtension
 {
@@ -373,12 +396,14 @@ camera.AddExtension(boundariesExt);
 **ShakeExtension** adds procedural camera shake for impact feedback.
 
 **Key Features**:
+
 - **Intensity**: Shake magnitude
 - **Duration**: How long shake lasts
 - **Frequency**: Oscillation speed
 - **Damping**: Exponential decay
 
 **Example**:
+
 ```csharp
 var shakeExt = new ShakeExtension();
 camera.AddExtension(shakeExt);
@@ -398,11 +423,13 @@ shakeExt.Shake(intensity: 2.0f, duration: 0.2f);  // Small hit
 **ZoomExtension** provides smooth zoom in/out.
 
 **Key Features**:
+
 - **Target Zoom**: Desired zoom level
 - **Zoom Speed**: Transition speed
 - **Min/Max Zoom**: Constraints
 
 **Example**:
+
 ```csharp
 var zoomExt = new ZoomExtension
 {
@@ -424,11 +451,13 @@ zoomExt.SetTargetZoom(0.8f);
 **ParallaxExtension** manages multi-layer parallax scrolling.
 
 **Key Features**:
+
 - **Layers**: Multiple background layers
 - **Speed Multipliers**: Each layer moves at different speed (0 = static, 1 = same as camera)
 - **Infinite Scrolling**: Loop layers for endless backgrounds
 
 **Example**:
+
 ```csharp
 var parallaxExt = new ParallaxExtension();
 parallaxExt.AddLayer("sky", speedMultiplier: 0.1f);      // Slow (far)
@@ -451,10 +480,12 @@ foreach (var layer in parallaxExt.Layers)
 **PixelPerfectExtension** snaps camera to pixel grid for crisp 2D rendering.
 
 **Key Features**:
+
 - **Pixels Per Unit**: How many pixels = 1 world unit
 - **Snap To Grid**: Round position to nearest pixel
 
 **Example**:
+
 ```csharp
 var pixelPerfectExt = new PixelPerfectExtension
 {
@@ -470,10 +501,12 @@ camera.AddExtension(pixelPerfectExt);
 **DeadzoneExtension** creates an area where player can move without camera following.
 
 **Key Features**:
+
 - **Deadzone Size**: Size of center "dead" area
 - **Soft Edge**: Gradual follow near deadzone edge
 
 **Example**:
+
 ```csharp
 var deadzoneExt = new DeadzoneExtension
 {
@@ -1354,6 +1387,7 @@ public sealed class PixelPerfectExtension : ICameraExtension
 - [ ] Solution builds without errors
 
 **Verification Command**:
+
 ```bash
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\nexus-camera2d
 dotnet build
@@ -1461,21 +1495,25 @@ DOTweenShakeAdapter.ShakeRotation(camera, duration: 0.2f, strength: 5f);
 ## Remaining Phases Summary
 
 **Phase 3: ECS Integration** (Week 1-2)
+
 - CameraComponent (ECS component)
 - CameraSystem (updates camera each frame)
 - CameraTargetComponent (for entities camera follows)
 
 **Phase 4: Parallax System** (Week 2)
+
 - ParallaxExtension implementation
 - ParallaxLayer rendering
 - Integration with dungeon/map rendering
 
 **Phase 5: Triggers** (Week 3)
+
 - ICameraTrigger interface
 - BoundaryTrigger (change behavior when entering area)
 - ZoomTrigger (zoom when entering area)
 
 **Phase 6: Testing** (Week 3)
+
 - Unit tests for all extensions
 - Integration tests with ECS
 - Performance profiling
@@ -1530,4 +1568,4 @@ dotnet sln PigeonPea.sln add game-essential\core\src\PigeonPea.Game.Camera\Pigeo
 
 **End of RFC-024: Nexus-Camera2D Implementation Guide**
 
-*This document provides complete implementation instructions for Phase 1-2. The system provides ProCamera2D-like modular camera extensions with smooth movement, shake, zoom, boundaries, and pixel-perfect rendering. DOTween is integrated for advanced shake patterns and cinematic effects.*
+_This document provides complete implementation instructions for Phase 1-2. The system provides ProCamera2D-like modular camera extensions with smooth movement, shake, zoom, boundaries, and pixel-perfect rendering. DOTween is integrated for advanced shake patterns and cinematic effects._

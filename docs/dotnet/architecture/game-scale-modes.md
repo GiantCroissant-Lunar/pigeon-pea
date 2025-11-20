@@ -1,14 +1,22 @@
 ---
-doc_id: 'ADR-2025-00002'
-title: 'Multi-Scale World & Mode System'
-doc_type: 'adr'
-status: 'active'
 canonical: true
 created: '2025-11-18'
-tags: ['architecture', 'scale', 'modes', 'world', 'dungeon']
-summary: 'Design for discrete zoom/mode levels in Pigeon Pea with physical scale and chunking'
-related: ['ADR-2025-00001']
+doc_id: ADR-00002
+doc_type: adr
+related:
+- ADR-00001
+status: active
+summary: Design for discrete zoom/mode levels in Pigeon Pea with physical scale and
+  chunking
+tags:
+- architecture
+- scale
+- modes
+- world
+- dungeon
+title: Multi-Scale World & Mode System
 ---
+
 
 # Multi-Scale World & Mode System
 
@@ -27,12 +35,12 @@ The core idea:
 We define two base units:
 
 - **World scale** (FMG map)
-  - `1 world unit = 1 km`  
+  - `1 world unit = 1 km`
   - FMG archipelago demo: 800×600 world units → **800 km × 600 km** region.
   - `WorldPosition` is interpreted as `(xWorldUnits * 1 km, yWorldUnits * 1 km)`.
 
 - **Dungeon scale** (grid-based dungeons)
-  - **Fine** dungeon tiles: `1 tile = 2 m`  
+  - **Fine** dungeon tiles: `1 tile = 2 m`
   - **Coarse** dungeon tiles (optional): `1 tile = 5 m` (e.g. macro-dungeon overview).
   - `DungeonData` coordinates live in tile space and can be mapped to meters:
     - `meters = tile * metersPerTile`.
@@ -97,13 +105,13 @@ One possible schema for a scale definition:
 
 ```jsonc
 {
-  "id": "world",                // unique string identifier
-  "environment": "world",      // world | town | interior | dungeon | vehicle
-  "metersPerCell": 1000.0,      // resolution of one cell/tile at this scale
-  "minZoom": 0.5,               // min allowed zoom factor in this scale
-  "maxZoom": 2.0,               // max allowed zoom factor in this scale
-  "chunkSizeCells": 16,         // chunking granularity in cells/tiles
-  "description": "Overland world view (1km per cell)"
+  "id": "world", // unique string identifier
+  "environment": "world", // world | town | interior | dungeon | vehicle
+  "metersPerCell": 1000.0, // resolution of one cell/tile at this scale
+  "minZoom": 0.5, // min allowed zoom factor in this scale
+  "maxZoom": 2.0, // max allowed zoom factor in this scale
+  "chunkSizeCells": 16, // chunking granularity in cells/tiles
+  "description": "Overland world view (1km per cell)",
 }
 ```
 
@@ -126,7 +134,7 @@ More metadata can be added as needed:
       "minZoom": 0.75,
       "maxZoom": 2.0,
       "chunkSizeCells": 32,
-      "description": "Overland map (1 km per cell)"
+      "description": "Overland map (1 km per cell)",
     },
     {
       "id": "town",
@@ -135,7 +143,7 @@ More metadata can be added as needed:
       "minZoom": 0.75,
       "maxZoom": 2.0,
       "chunkSizeCells": 64,
-      "description": "Town/block view (20 m per cell)"
+      "description": "Town/block view (20 m per cell)",
     },
     {
       "id": "dungeon-coarse",
@@ -144,7 +152,7 @@ More metadata can be added as needed:
       "minZoom": 1.0,
       "maxZoom": 2.0,
       "chunkSizeCells": 64,
-      "description": "Dungeon overview (5 m per tile)"
+      "description": "Dungeon overview (5 m per tile)",
     },
     {
       "id": "dungeon-fine",
@@ -153,7 +161,7 @@ More metadata can be added as needed:
       "minZoom": 1.0,
       "maxZoom": 1.5,
       "chunkSizeCells": 64,
-      "description": "Dungeon gameplay (2 m per tile)"
+      "description": "Dungeon gameplay (2 m per tile)",
     },
     {
       "id": "vehicle-fast",
@@ -162,9 +170,9 @@ More metadata can be added as needed:
       "minZoom": 0.8,
       "maxZoom": 1.5,
       "chunkSizeCells": 64,
-      "description": "Fast travel with mount/vehicle (100 m per cell)"
-    }
-  ]
+      "description": "Fast travel with mount/vehicle (100 m per cell)",
+    },
+  ],
 }
 ```
 
@@ -180,9 +188,9 @@ Transitions are also configurable. A transition describes how game moves from on
 
 ```jsonc
 {
-  "from": "world",             // source scale id
-  "to": "dungeon-coarse",      // target scale id
-  "trigger": "enter_dungeon"   // logical trigger name
+  "from": "world", // source scale id
+  "to": "dungeon-coarse", // target scale id
+  "trigger": "enter_dungeon", // logical trigger name
 }
 ```
 
@@ -191,12 +199,12 @@ Example transitions.json:
 ```jsonc
 {
   "transitions": [
-    { "from": "world",         "to": "dungeon-coarse", "trigger": "enter_dungeon" },
-    { "from": "dungeon-coarse", "to": "dungeon-fine",   "trigger": "enter_boss_room" },
-    { "from": "town",          "to": "dungeon-fine",   "trigger": "enter_house" },
-    { "from": "world",         "to": "vehicle-fast",   "trigger": "mount_vehicle" },
-    { "from": "vehicle-fast",  "to": "world",         "trigger": "dismount_vehicle" }
-  ]
+    { "from": "world", "to": "dungeon-coarse", "trigger": "enter_dungeon" },
+    { "from": "dungeon-coarse", "to": "dungeon-fine", "trigger": "enter_boss_room" },
+    { "from": "town", "to": "dungeon-fine", "trigger": "enter_house" },
+    { "from": "world", "to": "vehicle-fast", "trigger": "mount_vehicle" },
+    { "from": "vehicle-fast", "to": "world", "trigger": "dismount_vehicle" },
+  ],
 }
 ```
 

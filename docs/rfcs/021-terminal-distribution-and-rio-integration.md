@@ -1,15 +1,25 @@
 ---
-doc_id: 'RFC-2025-00021'
-title: 'Terminal Distribution — Rio Integration and Bundle Layout'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-13'
-tags: ['terminal', 'distribution', 'rio', 'bundle', 'deployment']
-summary: 'Ship a consistent terminal experience using Rio Terminal with the custom game font, covering development-time setup and guidelines for player bundles without redistributing proprietary binaries'
+doc_id: RFC-00021
+doc_type: rfc
+related:
+- RFC-00020
+- RFC-00022
+status: draft
+summary: Ship a consistent terminal experience using Rio Terminal with the custom
+  game font, covering development-time setup and guidelines for player bundles without
+  redistributing proprietary binaries
 supersedes: []
-related: ['RFC-2025-00020', 'RFC-2025-00022']
+tags:
+- terminal
+- distribution
+- rio
+- bundle
+- deployment
+title: Terminal Distribution — Rio Integration and Bundle Layout
 ---
+
 
 # RFC-021: Terminal Distribution — Rio Integration and Bundle Layout
 

@@ -1,14 +1,21 @@
 ---
-doc_id: 'PLAN-2025-00009'
-title: 'Code Review: Agent Infrastructure Implementation'
-doc_type: 'plan'
-status: 'active'
 canonical: true
 created: '2025-11-11'
-tags: ['agent-infrastructure', 'rfc-004', 'code-review', 'quality-assurance']
-summary: 'Review of .agent infrastructure implementation against RFC-004 specifications'
-related: ['RFC-2025-00004', 'PLAN-2025-00008']
+doc_id: PLAN-00009
+doc_type: plan
+related:
+- RFC-00004
+- PLAN-00008
+status: active
+summary: Review of .agent infrastructure implementation against RFC-004 specifications
+tags:
+- agent-infrastructure
+- rfc-004
+- code-review
+- quality-assurance
+title: 'Code Review: Agent Infrastructure Implementation'
 ---
+
 
 # Code Review: Agent Infrastructure Implementation
 

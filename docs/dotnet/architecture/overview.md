@@ -1,14 +1,26 @@
 ---
-doc_id: 'ADR-2025-00001'
-title: 'Architecture Overview'
-doc_type: 'adr'
-status: 'active'
 canonical: true
 created: '2025-11-18'
-tags: ['architecture', 'ecs', 'rendering', 'plugins']
-summary: 'High-level architecture overview of Pigeon Pea with ECS design, rendering pipeline, and plugin system'
-related: ['ADR-2025-00002', 'ADR-2025-00003', 'ADR-2025-00004', 'GUIDE-2025-00001', 'RFC-2025-00005', 'RFC-2025-00006']
+doc_id: ADR-00001
+doc_type: adr
+related:
+- ADR-00002
+- ADR-00003
+- ADR-00004
+- GUIDE-00001
+- RFC-00005
+- RFC-00006
+status: active
+summary: High-level architecture overview of Pigeon Pea with ECS design, rendering
+  pipeline, and plugin system
+tags:
+- architecture
+- ecs
+- rendering
+- plugins
+title: Architecture Overview
 ---
+
 
 # Architecture Overview
 
@@ -195,7 +207,7 @@ To add a new platform (e.g., mobile, web):
 ## Performance Considerations
 
 - **Arch ECS**: Zero-allocation queries, cache-friendly memory layout
-- **GoRogue**: Optimized algorithms (recursive shadowcasting, A*, etc.)
+- **GoRogue**: Optimized algorithms (recursive shadowcasting, A\*, etc.)
 - **SkiaSharp**: Hardware-accelerated GPU rendering
 - **Terminal.Gui**: Minimal redraws, efficient text rendering
 
@@ -335,6 +347,7 @@ This ensures type identity across ALCs for interface types while maintaining plu
 ## Related Documents
 
 ### Architecture Documents
+
 - **[Service Tiers](./service-tiers.md)** - Four-tier service architecture that builds on this overview
 - **[Services and Plugins](./services-and-plugins.md)** - Detailed plugin system implementation
 - **[Game Scale Modes](./game-scale-modes.md)** - Multi-scale world design
@@ -343,14 +356,17 @@ This ensures type identity across ALCs for interface types while maintaining plu
 - **[Reactive Stack and R3](./reactive-stack-and-r3.md)** - Reactive extensions integration
 
 ### Guides
+
 - **[Getting Started](../guides/getting-started.md)** - Practical setup and usage guide
 - **[Navigation Guide](../NAVIGATION.md)** - Comprehensive navigation for all .NET documentation
 
 ### RFCs
+
 - **[RFC-005: Project Structure Reorganization](../../rfcs/005-project-structure-reorganization.md)** - Foundation for current architecture
 - **[RFC-006: Plugin System Architecture](../../rfcs/006-plugin-system-architecture.md)** - Plugin system design
 - **[RFC-012: Documentation Organization Management](../../rfcs/012-documentation-organization-management.md)** - Documentation standards
 
 ### Main Documentation
+
 - **[.NET Documentation Reference](../README.md)** - Comprehensive index of all .NET docs
 - **[Main Documentation Index](../../README.md)** - Project-wide documentation

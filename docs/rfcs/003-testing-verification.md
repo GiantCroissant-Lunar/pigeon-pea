@@ -1,15 +1,25 @@
 ---
-doc_id: 'RFC-2025-00003'
-title: 'Testing and Verification'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-08'
-tags: ['testing', 'verification', 'qa', 'visual-regression', 'automation']
-summary: 'Comprehensive testing and verification strategies for both console and Windows applications, with special focus on visual regression testing and automated rendering verification'
+doc_id: RFC-00003
+doc_type: rfc
+related:
+- RFC-00001
+- RFC-00002
+status: draft
+summary: Comprehensive testing and verification strategies for both console and Windows
+  applications, with special focus on visual regression testing and automated rendering
+  verification
 supersedes: []
-related: ['RFC-2025-00001', 'RFC-2025-00002']
+tags:
+- testing
+- verification
+- qa
+- visual-regression
+- automation
+title: Testing and Verification
 ---
+
 
 # RFC-003: Testing and Verification
 

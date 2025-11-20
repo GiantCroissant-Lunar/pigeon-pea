@@ -1,14 +1,25 @@
 ---
-doc_id: 'PLAN-2025-00011'
-title: 'GitHub Issues Breakdown'
-doc_type: 'plan'
-status: 'active'
 canonical: true
 created: '2025-11-08'
-tags: ['github-issues', 'implementation', 'rfcs', 'task-breakdown']
-summary: 'Comprehensive breakdown of all RFCs into 43 actionable GitHub issues for automated coding agents'
-related: ['RFC-2025-00001', 'RFC-2025-00002', 'RFC-2025-00003', 'RFC-2025-00005', 'RFC-2025-00006']
+doc_id: PLAN-00011
+doc_type: plan
+related:
+- RFC-00001
+- RFC-00002
+- RFC-00003
+- RFC-00005
+- RFC-00006
+status: active
+summary: Comprehensive breakdown of all RFCs into 43 actionable GitHub issues for
+  automated coding agents
+tags:
+- github-issues
+- implementation
+- rfcs
+- task-breakdown
+title: GitHub Issues Breakdown
 ---
+
 
 # GitHub Issues Breakdown
 

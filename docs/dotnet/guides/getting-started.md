@@ -1,14 +1,24 @@
 ---
-doc_id: 'GUIDE-2025-00001'
-title: 'Getting Started with Pigeon Pea .NET'
-doc_type: 'guide'
-status: 'active'
 canonical: true
 created: '2025-11-18'
-tags: ['dotnet', 'getting-started', 'setup', 'development']
-summary: 'Comprehensive guide to setting up and running Pigeon Pea .NET applications'
-related: ['ADR-2025-00001', 'ADR-2025-00003', 'ADR-2025-00004', 'REFERENCE-2025-00001', 'GUIDE-2025-00002']
+doc_id: GUIDE-00001
+doc_type: guide
+related:
+- ADR-00001
+- ADR-00003
+- ADR-00004
+- REFERENCE-00001
+- GUIDE-00002
+status: active
+summary: Comprehensive guide to setting up and running Pigeon Pea .NET applications
+tags:
+- dotnet
+- getting-started
+- setup
+- development
+title: Getting Started with Pigeon Pea .NET
 ---
+
 
 # Pigeon Pea - 2D Dungeon Crawler
 
@@ -166,26 +176,31 @@ MIT
 ## Related Documents
 
 ### Architecture Documentation
+
 - **[Architecture Overview](../architecture/overview.md)** - High-level system design and ECS patterns
 - **[Service Tiers](../architecture/service-tiers.md)** - Four-tier architecture understanding
 - **[Services and Plugins](../architecture/services-and-plugins.md)** - Plugin system for extensibility
 
 ### Technical Implementation
+
 - **[Game Scale Modes](../architecture/game-scale-modes.md)** - Multi-scale world considerations
 - **[Observable Collections](../architecture/observable-collections.md)** - Reactive patterns for UI
 - **[Reactive Stack and R3](../architecture/reactive-stack-and-r3.md)** - Reactive extensions integration
 - **[GOAP Perception Checklist](../architecture/goap-perception-checklist.md)** - AI system implementation
 
 ### Navigation and Reference
+
 - **[.NET Documentation Reference](../README.md)** - Comprehensive index of all .NET documentation
 - **[Navigation Guide](../NAVIGATION.md)** - Role-based navigation and learning paths
 
 ### Main Project Documentation
+
 - **[Main Documentation Index](../../README.md)** - Project-wide documentation
 - **[RFC-005: Project Structure Reorganization](../../rfcs/005-project-structure-reorganization.md)** - Foundation for current structure
 - **[RFC-006: Plugin System Architecture](../../rfcs/006-plugin-system-architecture.md)** - Plugin system design
 
 ### External Resources
+
 - **[Arch ECS](https://github.com/genaray/Arch)** - Entity Component System framework
 - **[GoRogue](https://github.com/Chris3606/GoRogue)** - Roguelike algorithms library
 - **[Avalonia UI](https://avaloniaui.net/)** - Cross-platform UI framework

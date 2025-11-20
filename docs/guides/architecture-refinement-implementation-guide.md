@@ -1,16 +1,26 @@
 ---
-doc_id: 'GUIDE-2025-00001'
-title: 'Architecture Refinement Implementation Guide'
-doc_type: 'guide'
-status: 'active'
 canonical: true
 created: '2025-11-19'
-updated: '2025-11-19'
-tags: ['implementation', 'guide', 'architecture', 'refactoring', 'step-by-step']
-summary: 'Step-by-step implementation guide for refining plugin architecture and introducing scene management, with incremental steps that keep the console app functional at each stage'
+doc_id: GUIDE-00001
+doc_type: guide
+related:
+- RFC-00013
+- RFC-00014
+status: active
+summary: Step-by-step implementation guide for refining plugin architecture and introducing
+  scene management, with incremental steps that keep the console app functional at
+  each stage
 supersedes: []
-related: ['RFC-2025-00013', 'RFC-2025-00014']
+tags:
+- implementation
+- guide
+- architecture
+- refactoring
+- step-by-step
+title: Architecture Refinement Implementation Guide
+updated: '2025-11-19'
 ---
+
 
 # Architecture Refinement Implementation Guide
 
@@ -51,16 +61,19 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Create new project:**
+
    ```bash
    dotnet new classlib -n PigeonPea.Rendering.Contracts -o dotnet/game-essential/core/src/PigeonPea.Rendering.Contracts
    ```
 
 2. **Add to solution:**
+
    ```bash
    dotnet sln add dotnet/game-essential/core/src/PigeonPea.Rendering.Contracts/PigeonPea.Rendering.Contracts.csproj
    ```
 
 3. **Copy interfaces from Shared.Rendering:**
+
    ```
    PigeonPea.Rendering.Contracts/
    ├─ IRenderer.cs (merge both IRenderer interfaces)
@@ -73,6 +86,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 4. **Unified IRenderer.cs:**
+
    ```csharp
    namespace PigeonPea.Rendering.Contracts;
 
@@ -104,6 +118,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] Project compiles
 - [ ] No errors in solution
 - [ ] Console app still runs (unchanged)
@@ -117,12 +132,14 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Create plugin project:**
+
    ```bash
    dotnet new classlib -n PigeonPea.Plugin.Dungeon.ModernEdgar \
      -o projects/dungeon/dotnet/console-app/plugins/PigeonPea.Plugin.Dungeon.ModernEdgar
    ```
 
 2. **Add references:**
+
    ```xml
    <!-- PigeonPea.Plugin.Dungeon.ModernEdgar.csproj -->
    <ItemGroup>
@@ -133,6 +150,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 3. **Implement IDungeonGenerator:**
+
    ```csharp
    // ModernEdgarDungeonGenerator.cs
    using Edgar.Core;
@@ -216,6 +234,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 4. **Create plugin.json:**
+
    ```json
    {
      "id": "dungeon-generator-modern-edgar",
@@ -231,6 +250,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 5. **Post-build copy to plugins:**
+
    ```xml
    <Target Name="CopyPluginToConsoleApp" AfterTargets="Build">
      <PropertyGroup>
@@ -251,6 +271,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] Plugin compiles
 - [ ] Plugin copies to console app plugins directory
 - [ ] Console app still runs (doesn't use new plugin yet)
@@ -264,16 +285,18 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Add to appsettings.json:**
+
    ```json
    {
      "DungeonSystem": {
-       "UseNewPluginArchitecture": false,  // Start with false (old code)
+       "UseNewPluginArchitecture": false, // Start with false (old code)
        "GeneratorPluginId": "dungeon-generator-modern-edgar"
      }
    }
    ```
 
 2. **Update Program.cs to support both:**
+
    ```csharp
    var useNewArch = configuration.GetValue<bool>("DungeonSystem:UseNewPluginArchitecture");
 
@@ -294,6 +317,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] App runs with `UseNewPluginArchitecture: false` (old way)
 - [ ] App loads but doesn't crash with `UseNewPluginArchitecture: true` (new way)
 
@@ -308,12 +332,14 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Create plugin project:**
+
    ```bash
    dotnet new classlib -n PigeonPea.Plugin.Dungeon.Rendering \
      -o projects/dungeon/dotnet/console-app/plugins/PigeonPea.Plugin.Dungeon.Rendering
    ```
 
 2. **Add references:**
+
    ```xml
    <ItemGroup>
      <ProjectReference Include="../../../../../../dotnet/game-essential/core/src/PigeonPea.Dungeon.Contracts/PigeonPea.Dungeon.Contracts.csproj" />
@@ -322,6 +348,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 3. **Implement DungeonRenderer:**
+
    ```csharp
    // DungeonRenderer.cs
    using PigeonPea.Dungeon.Contracts.Models;
@@ -380,6 +407,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] Plugin compiles
 - [ ] No dependencies on Dungeon.Core or old Dungeon.Rendering
 
@@ -392,6 +420,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Update ANSIRenderer.csproj:**
+
    ```diff
    - <ProjectReference Include="PigeonPea.Dungeon.Core" />
    - <ProjectReference Include="PigeonPea.Dungeon.Rendering" />
@@ -400,6 +429,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 2. **Simplify ANSIRenderer.cs:**
+
    ```csharp
    // Remove all dungeon-specific code
    // Keep only IRenderer implementation
@@ -459,6 +489,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] ANSIRenderer compiles
 - [ ] No dungeon-specific code remains
 - [ ] Implements IRenderer interface only
@@ -472,6 +503,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Update Program.cs:**
+
    ```csharp
    if (useNewArch)
    {
@@ -497,6 +529,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 2. **Test with new architecture:**
+
    ```json
    // appsettings.json
    {
@@ -512,6 +545,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] App starts without errors
 - [ ] Dungeon displays (even if simple test pattern)
 - [ ] Player '@' visible
@@ -529,6 +563,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Add to appsettings.json:**
+
    ```json
    {
      "PluginSystem": {
@@ -545,6 +580,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 2. **Refactor PluginLoadContext.cs:**
+
    ```csharp
    public class PluginLoadContext : AssemblyLoadContext
    {
@@ -577,6 +613,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 3. **Update PluginLoader to read config:**
+
    ```csharp
    public async Task<int> DiscoverAndLoadAsync(IEnumerable<string> pluginPaths, string profile, CancellationToken ct)
    {
@@ -600,6 +637,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] Plugins load successfully
 - [ ] No ALC type identity errors
 - [ ] Can add/remove shared assemblies via config
@@ -614,6 +652,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Update appsettings.json:**
+
    ```diff
    {
      "DungeonSystem": {
@@ -639,6 +678,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] App runs on new architecture by default
 - [ ] Can still switch to old architecture via config
 - [ ] Dungeon renders correctly
@@ -656,6 +696,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Verify nothing references them:**
+
    ```bash
    # Search for project references
    grep -r "Dungeon.Core" dotnet/ projects/ --include="*.csproj"
@@ -664,6 +705,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 2. **Remove from solution:**
+
    ```bash
    dotnet sln remove dotnet/game-essential/core/src/PigeonPea.Dungeon.Core/PigeonPea.Dungeon.Core.csproj
    dotnet sln remove dotnet/game-essential/core/src/PigeonPea.Dungeon.Rendering/PigeonPea.Dungeon.Rendering.csproj
@@ -671,6 +713,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 3. **Delete directories:**
+
    ```bash
    rm -rf dotnet/game-essential/core/src/PigeonPea.Dungeon.Core/
    rm -rf dotnet/game-essential/core/src/PigeonPea.Dungeon.Rendering/
@@ -678,6 +721,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 4. **Remove old architecture code from Program.cs:**
+
    ```diff
    - if (useNewArch)
    - {
@@ -702,6 +746,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] Solution builds
 - [ ] No broken references
 - [ ] Console app runs
@@ -716,6 +761,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **List contents:**
+
    ```bash
    find dotnet/game-essential/core/src/PigeonPea.Shared/ -name "*.cs" | head -20
    ```
@@ -726,6 +772,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    - **Truly shared:** Keep in appropriate place
 
 3. **Example refactoring:**
+
    ```bash
    # If Shared has dungeon utilities that are now obsolete:
    git rm dotnet/game-essential/core/src/PigeonPea.Shared/DungeonHelpers.cs
@@ -742,6 +789,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] All useful code moved to appropriate locations
 - [ ] No orphaned code
 - [ ] Solution builds
@@ -756,6 +804,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Remove Game.Contracts.Rendering.IRenderer:**
+
    ```bash
    rm dotnet/game-essential/core/src/PigeonPea.Game.Contracts/Rendering/IRenderer.cs
    # Or delete entire Rendering/ directory if empty
@@ -767,6 +816,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    - **Option B:** Keep if other code uses it (migrate gradually)
 
 3. **Update all using statements:**
+
    ```csharp
    // Old
    - using PigeonPea.Game.Contracts.Rendering;
@@ -777,6 +827,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] Single IRenderer interface exists
 - [ ] All code references new contract
 - [ ] Solution builds
@@ -790,6 +841,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Actions:**
 
 1. **Full regression testing:**
+
    ```bash
    # Run all tests
    dotnet test
@@ -815,6 +867,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    - Update plugin loading instructions
 
 4. **Git commit:**
+
    ```bash
    git add .
    git commit -m "feat: refine plugin architecture to tier-based system
@@ -830,6 +883,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
    ```
 
 **Validation:**
+
 - [ ] All tests pass
 - [ ] Console app fully functional
 - [ ] No ALC errors
@@ -842,6 +896,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 ## Success Criteria Checklist
 
 ### Plugin Architecture
+
 - [ ] No wrapper projects exist (Dungeon.Core, Dungeon.Rendering, Control deleted)
 - [ ] Plugins reference only Tier 1 contracts
 - [ ] Dungeon generation uses modern-edgar-dotnet directly
@@ -851,6 +906,7 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 - [ ] PigeonPea.Shared eliminated or minimized
 
 ### Functional Requirements
+
 - [ ] Console app starts without errors
 - [ ] Dungeon generates correctly
 - [ ] Dungeon displays in ANSI mode
@@ -861,12 +917,14 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 - [ ] No ALC type identity errors in logs
 
 ### Code Quality
+
 - [ ] Solution builds without warnings
 - [ ] All tests pass
 - [ ] No TODO comments left unaddressed
 - [ ] Code follows project conventions
 
 ### Documentation
+
 - [ ] Architecture docs updated
 - [ ] CLAUDE.md reflects new structure
 - [ ] RFC success criteria met
@@ -881,12 +939,14 @@ This guide provides step-by-step instructions for implementing RFC-013 (Plugin A
 **Symptom:** Plugin not found in registry
 
 **Check:**
+
 1. Plugin built successfully: `dotnet build <plugin-project>`
 2. Plugin copied to output: Check `bin/Debug/net9.0/plugins/<plugin-name>/`
 3. plugin.json exists and is valid JSON
 4. Post-build copy target executed (check build output)
 
 **Fix:**
+
 ```bash
 # Manually copy if post-build failed
 cp -r projects/.../bin/Debug/net9.0/* \
@@ -900,17 +960,19 @@ cp -r projects/.../bin/Debug/net9.0/* \
 **Symptom:** `typeof(DungeonView) != typeof(DungeonView)` error
 
 **Check:**
+
 1. Dungeon.Contracts in SharedAssemblies config
 2. PluginLoadContext using config correctly
 3. Host and plugin both reference same Dungeon.Contracts version
 
 **Fix:**
+
 ```json
 // appsettings.json
 {
   "PluginSystem": {
     "SharedAssemblies": [
-      "PigeonPea.Dungeon.Contracts"  // ← Add this
+      "PigeonPea.Dungeon.Contracts" // ← Add this
     ]
   }
 }
@@ -923,12 +985,14 @@ cp -r projects/.../bin/Debug/net9.0/* \
 **Symptom:** Dungeon not displaying or garbled output
 
 **Check:**
+
 1. ANSI renderer BeginFrame() called
 2. DrawTile() receiving correct coordinates
 3. EndFrame() flushing output
 4. Console encoding set to UTF-8
 
 **Debug:**
+
 ```csharp
 // Add logging to DungeonRenderer
 _logger.LogInformation("Rendering {Width}x{Height} dungeon", dungeon.Width, dungeon.Height);
@@ -975,6 +1039,7 @@ After completing this refactoring:
 ## Appendix: Quick Reference Commands
 
 ### Build and Run
+
 ```bash
 # Build entire solution
 dotnet build
@@ -990,6 +1055,7 @@ dotnet test
 ```
 
 ### Plugin Development
+
 ```bash
 # Create new plugin
 dotnet new classlib -n PigeonPea.Plugin.<Name> -o projects/.../plugins/PigeonPea.Plugin.<Name>
@@ -1002,6 +1068,7 @@ dotnet build && <post-build-target-runs>
 ```
 
 ### Git
+
 ```bash
 # Check status
 git status

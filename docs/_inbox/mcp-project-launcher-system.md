@@ -1,9 +1,11 @@
 ---
-title: 'MCP Project Launcher System'
+created: 2025-01-15
+doc_id: ''
 doc_type: guide
 status: draft
-created: 2025-01-15
+title: MCP Project Launcher System
 ---
+
 
 # MCP Project Launcher System
 

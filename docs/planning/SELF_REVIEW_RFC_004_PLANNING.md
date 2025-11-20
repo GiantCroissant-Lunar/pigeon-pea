@@ -1,14 +1,23 @@
 ---
-doc_id: 'PLAN-2025-00014'
-title: 'Self-Review: RFC-004 & Issues Planning Quality'
-doc_type: 'plan'
-status: 'active'
 canonical: true
 created: '2025-11-10'
-tags: ['rfc-004', 'self-review', 'quality-assurance', 'planning']
-summary: 'Evaluation of the quality and effectiveness of RFC-004 planning and GitHub issues breakdown'
-related: ['RFC-2025-00004', 'PLAN-2025-00008', 'PLAN-2025-00011']
+doc_id: PLAN-00014
+doc_type: plan
+related:
+- RFC-00004
+- PLAN-00008
+- PLAN-00011
+status: active
+summary: Evaluation of the quality and effectiveness of RFC-004 planning and GitHub
+  issues breakdown
+tags:
+- rfc-004
+- self-review
+- quality-assurance
+- planning
+title: 'Self-Review: RFC-004 & Issues Planning Quality'
 ---
+
 
 # Self-Review: RFC-004 & Issues Planning Quality
 

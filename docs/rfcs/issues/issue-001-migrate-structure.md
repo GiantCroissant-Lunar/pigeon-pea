@@ -1,15 +1,24 @@
 ---
-doc_id: 'PLAN-2025-00003'
-title: 'Issue #1: [RFC-005] Phase 1: Migrate project structure to new organization'
-doc_type: 'plan'
-status: 'active'
 canonical: true
 created: '2025-11-10'
-tags: ['issue', 'restructure', 'rfc-005', 'phase-1', 'breaking-change']
-summary: 'Migrate existing projects from flat structure to new tiered organization as defined in RFC-005'
+doc_id: PLAN-00003
+doc_type: plan
+related:
+- RFC-00005
+- PLAN-00001
+status: active
+summary: Migrate existing projects from flat structure to new tiered organization
+  as defined in RFC-005
 supersedes: []
-related: ['RFC-2025-00005', 'PLAN-2025-00001']
+tags:
+- issue
+- restructure
+- rfc-005
+- phase-1
+- breaking-change
+title: 'Issue #1: [RFC-005] Phase 1: Migrate project structure to new organization'
 ---
+
 
 # Issue #1: [RFC-005] Phase 1: Migrate project structure to new organization
 

@@ -1,26 +1,31 @@
 ---
-doc_id: 'RFC-2025-00021'
-title: 'Nexus-Perception: Agent Perception and Awareness System'
-doc_type: 'rfc'
-status: 'active'
 canonical: true
 created: '2025-01-16'
-tags:
-  [
-    'ai',
-    'perception',
-    'sensors',
-    'fov',
-    'awareness',
-    'ecs',
-    'architecture',
-    'library',
-    'nexus-perception',
-  ]
-summary: 'Comprehensive implementation guide for Nexus-Perception, a reusable agent perception and awareness system with visual/auditory sensing, knowledge management, and threat assessment for AI systems'
+doc_id: RFC-00028
+doc_type: rfc
+related:
+- RFC-00020
+- RFC-00019
+- RFC-00005
+status: active
+summary: Comprehensive implementation guide for Nexus-Perception, a reusable agent
+  perception and awareness system with visual/auditory sensing, knowledge management,
+  and threat assessment for AI systems
 supersedes: []
-related: ['RFC-2025-00020', 'RFC-2025-00019', 'RFC-2025-00005']
+tags:
+- ai
+- perception
+- sensors
+- fov
+- awareness
+- ecs
+- architecture
+- library
+- nexus-perception
+title: 'Nexus-Perception: Agent Perception and Awareness System'
 ---
+
+
 
 # RFC-021: Nexus-Perception - Agent Perception and Awareness System
 

@@ -1,14 +1,21 @@
 ---
-doc_id: 'PLAN-2025-00008'
-title: 'GitHub Issues: Agent Infrastructure Enhancement'
-doc_type: 'plan'
-status: 'active'
 canonical: true
 created: '2025-11-10'
-tags: ['agent-infrastructure', 'rfc-004', 'github-issues', 'implementation']
-summary: 'Breakdown of RFC-004 into actionable GitHub issues suitable for automated coding agents'
-related: ['RFC-2025-00004']
+doc_id: PLAN-00008
+doc_type: plan
+related:
+- RFC-00004
+status: active
+summary: Breakdown of RFC-004 into actionable GitHub issues suitable for automated
+  coding agents
+tags:
+- agent-infrastructure
+- rfc-004
+- github-issues
+- implementation
+title: 'GitHub Issues: Agent Infrastructure Enhancement'
 ---
+
 
 # GitHub Issues: Agent Infrastructure Enhancement
 

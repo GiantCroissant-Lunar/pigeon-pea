@@ -1,14 +1,21 @@
 ---
-doc_id: 'ADR-2025-00005'
-title: 'GOAP Perception Checklist'
-doc_type: 'adr'
-status: 'active'
 canonical: true
 created: '2025-11-18'
-tags: ['architecture', 'goap', 'perception', 'ai', 'checklist']
-summary: 'Implementation checklist for GOAP and perception systems integration'
-related: ['ADR-2025-00003']
+doc_id: ADR-00005
+doc_type: adr
+related:
+- ADR-00003
+status: active
+summary: Implementation checklist for GOAP and perception systems integration
+tags:
+- architecture
+- goap
+- perception
+- ai
+- checklist
+title: GOAP Perception Checklist
 ---
+
 
 # GOAP Perception Checklist
 

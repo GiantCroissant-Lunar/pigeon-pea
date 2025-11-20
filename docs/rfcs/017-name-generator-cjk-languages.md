@@ -1,15 +1,26 @@
 ---
-doc_id: 'RFC-2025-00017'
-title: 'Name Generator CJK Language Support'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-15'
-tags: ['name-generation', 'cjk', 'japanese', 'chinese', 'korean', 'languages', 'i18n']
-summary: 'Add East Asian (Chinese, Japanese, Korean) language templates with proper phonology and writing systems'
+doc_id: RFC-00017
+doc_type: rfc
+related:
+- SPEC-00014
+- RFC-00016
+status: draft
+summary: Add East Asian (Chinese, Japanese, Korean) language templates with proper
+  phonology and writing systems
 supersedes: []
-related: ['SPEC-2025-00014', 'RFC-2025-00016']
+tags:
+- name-generation
+- cjk
+- japanese
+- chinese
+- korean
+- languages
+- i18n
+title: Name Generator CJK Language Support
 ---
+
 
 # RFC 017: Name Generator CJK Language Support
 

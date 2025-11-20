@@ -1,16 +1,26 @@
 ---
-doc_id: 'RFC-2025-00014'
-title: 'Scene Management with ECS Architecture'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-19'
-updated: '2025-11-19'
-tags: ['ecs', 'architecture', 'scene-management', 'world', 'entities', 'dungeon']
-summary: 'Introduce scene/space concept where dungeon, player, monsters, and all game objects are entities in ECS worlds, with proper scene lifecycle management and multi-world support'
+doc_id: RFC-00014
+doc_type: rfc
+related:
+- RFC-00013
+status: draft
+summary: Introduce scene/space concept where dungeon, player, monsters, and all game
+  objects are entities in ECS worlds, with proper scene lifecycle management and multi-world
+  support
 supersedes: []
-related: ['RFC-2025-00013']
+tags:
+- ecs
+- architecture
+- scene-management
+- world
+- entities
+- dungeon
+title: Scene Management with ECS Architecture
+updated: '2025-11-19'
 ---
+
 
 # RFC-014: Scene Management with ECS Architecture
 
@@ -296,6 +306,7 @@ public class DungeonRenderingSystem : ISystem
 ### Multi-World vs Single-World
 
 **Option A: One World Per Scene**
+
 ```csharp
 Scene mainGameplay = new Scene
 {
@@ -311,15 +322,18 @@ Scene inventoryUI = new Scene
 ```
 
 **Pros:**
+
 - Clear isolation between scenes
 - Easy to load/unload entire scenes
 - Independent system execution
 
 **Cons:**
+
 - Cross-scene queries are harder
 - More memory overhead (multiple worlds)
 
 **Option B: Single World, Scene Tags**
+
 ```csharp
 World mainWorld = new World();
 
@@ -341,11 +355,13 @@ var gameplayQuery = new QueryDescription()
 ```
 
 **Pros:**
+
 - Cross-scene queries easy
 - Single world management
 - Lower memory footprint
 
 **Cons:**
+
 - Scene isolation requires discipline
 - Harder to unload scenes cleanly
 
@@ -354,6 +370,7 @@ var gameplayQuery = new QueryDescription()
 ### Dungeon Entity Design
 
 **Current (DTO-based):**
+
 ```csharp
 public class DungeonView
 {
@@ -369,6 +386,7 @@ dungeonRenderer.Render(dungeonView, playerPos);
 ```
 
 **Proposed (Entity-based):**
+
 ```csharp
 // Dungeon is an entity
 var dungeonEntity = world.Create(
@@ -387,6 +405,7 @@ world.Query(in dungeonQuery, (Entity dungeonEntity, ref DungeonMapComponent dung
 ```
 
 **Migration Strategy:**
+
 - Phase 1: Keep `DungeonView` as DTO, add `DungeonMapComponent` wrapper
 - Phase 2: Systems query `DungeonMapComponent` instead of receiving `DungeonView`
 - Phase 3: Remove `DungeonView` entirely
@@ -416,6 +435,7 @@ await sceneManager.TransitionToSceneAsync("Dungeon_Level1", new FadeTransition
 ### FOV and Dungeon Queries
 
 **FOV as a System:**
+
 ```csharp
 public class FOVSystem : ISystem
 {
@@ -446,6 +466,7 @@ public class FOVSystem : ISystem
 ```
 
 **Rendering uses FOV:**
+
 ```csharp
 public class DungeonRenderingSystem : ISystem
 {
@@ -472,6 +493,7 @@ public class DungeonRenderingSystem : ISystem
 ### Door Entities
 
 **Option A: Doors as separate entities**
+
 ```csharp
 // Each door is its own entity
 var doorEntity = world.Create(
@@ -512,6 +534,7 @@ public class DoorSystem : ISystem
 ```
 
 **Option B: Doors as dungeon map data**
+
 ```csharp
 // Doors stored in DungeonMapComponent
 public struct DungeonMapComponent
@@ -548,6 +571,7 @@ public class DoorSystem : ISystem
 **Week 1:**
 
 1. **Create Scene infrastructure:**
+
    ```csharp
    // PigeonPea.Scene.Contracts/
    public interface ISceneManager { /* ... */ }
@@ -556,6 +580,7 @@ public class DoorSystem : ISystem
    ```
 
 2. **Implement SceneManager service:**
+
    ```csharp
    // PigeonPea.Plugin.Scene.Manager/
    public class SceneManager : ISceneManager
@@ -604,6 +629,7 @@ public class DoorSystem : ISystem
 **Week 2:**
 
 1. **Define DungeonMapComponent:**
+
    ```csharp
    // PigeonPea.Shared.ECS/Components/DungeonMapComponent.cs
    public struct DungeonMapComponent
@@ -618,6 +644,7 @@ public class DoorSystem : ISystem
    ```
 
 2. **Dungeon generation creates entity:**
+
    ```csharp
    // In dungeon generation plugin
    public DungeonEntity Generate(World world, DungeonGenerationOptions options)
@@ -645,6 +672,7 @@ public class DoorSystem : ISystem
    ```
 
 3. **Update rendering to query dungeon entity:**
+
    ```csharp
    // In dungeon rendering plugin
    public void Render(World world)
@@ -673,6 +701,7 @@ public class DoorSystem : ISystem
 **Week 3:**
 
 1. **Create player entity:**
+
    ```csharp
    var playerEntity = world.Create(
        new PositionComponent { X = startX, Y = startY },
@@ -684,6 +713,7 @@ public class DoorSystem : ISystem
    ```
 
 2. **Create monster entities:**
+
    ```csharp
    for (int i = 0; i < monsterCount; i++)
    {
@@ -698,6 +728,7 @@ public class DoorSystem : ISystem
    ```
 
 3. **Movement system:**
+
    ```csharp
    public class MovementSystem : ISystem
    {
@@ -745,6 +776,7 @@ public class DoorSystem : ISystem
 **Week 4:**
 
 1. **Define system execution order:**
+
    ```csharp
    public class GameLoop
    {
@@ -778,6 +810,7 @@ public class DoorSystem : ISystem
    ```
 
 2. **Scene-specific systems:**
+
    ```csharp
    public class Scene
    {

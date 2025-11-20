@@ -1,15 +1,29 @@
 ---
-doc_id: 'RFC-2025-00020'
-title: 'Nexus-GOAP: Goal-Oriented Action Planning AI System'
-doc_type: 'rfc'
-status: 'active'
 canonical: true
 created: '2025-01-16'
-tags: ['ai', 'goap', 'planning', 'ecs', 'architecture', 'library', 'nexus-goap']
-summary: 'Comprehensive implementation guide for Nexus-GOAP, a reusable Goal-Oriented Action Planning AI system inspired by FEAR AI, with engine-agnostic core and Arch ECS integration for dungeon crawler NPCs'
+doc_id: RFC-00027
+doc_type: rfc
+related:
+- RFC-00021
+- RFC-00019
+- RFC-00005
+status: active
+summary: Comprehensive implementation guide for Nexus-GOAP, a reusable Goal-Oriented
+  Action Planning AI system inspired by FEAR AI, with engine-agnostic core and Arch
+  ECS integration for dungeon crawler NPCs
 supersedes: []
-related: ['RFC-2025-00021', 'RFC-2025-00019', 'RFC-2025-00005']
+tags:
+- ai
+- goap
+- planning
+- ecs
+- architecture
+- library
+- nexus-goap
+title: 'Nexus-GOAP: Goal-Oriented Action Planning AI System'
 ---
+
+
 
 # RFC-020: Nexus-GOAP - Goal-Oriented Action Planning AI System
 

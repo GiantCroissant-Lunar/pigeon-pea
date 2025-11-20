@@ -1,15 +1,24 @@
 ---
-doc_id: 'SPEC-2025-00001'
-title: 'SVG Specification — 36 Angle Glyphs'
-doc_type: 'spec'
-status: 'active'
 canonical: true
 created: '2025-11-13'
-tags: ['fonts', 'svg', 'specification', 'pua', 'glyphs']
-summary: 'SVG specification for 36 angle glyphs to be imported into font PUA (Private Use Area) for terminal rendering'
+doc_id: SPEC-00001
+doc_type: spec
+related:
+- RFC-00020
+- SPEC-00002
+status: active
+summary: SVG specification for 36 angle glyphs to be imported into font PUA (Private
+  Use Area) for terminal rendering
 supersedes: []
-related: ['RFC-2025-00020', 'SPEC-2025-00002']
+tags:
+- fonts
+- svg
+- specification
+- pua
+- glyphs
+title: SVG Specification — 36 Angle Glyphs
 ---
+
 
 # SVG Specification — 36 Angle Glyphs
 

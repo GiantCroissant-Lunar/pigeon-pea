@@ -1,15 +1,23 @@
 ---
-doc_id: 'RFC-2025-00016'
-title: 'Name Generator JSON Configuration System'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-15'
-tags: ['name-generation', 'json', 'configuration', 'extensibility', 'languages']
-summary: 'External JSON configuration for language templates to enable user-extensible name generation without code changes'
+doc_id: RFC-00016
+doc_type: rfc
+related:
+- SPEC-00014
+status: draft
+summary: External JSON configuration for language templates to enable user-extensible
+  name generation without code changes
 supersedes: []
-related: ['SPEC-2025-00014']
+tags:
+- name-generation
+- json
+- configuration
+- extensibility
+- languages
+title: Name Generator JSON Configuration System
 ---
+
 
 # RFC 016: Name Generator JSON Configuration System
 

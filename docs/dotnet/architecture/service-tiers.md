@@ -1,14 +1,21 @@
 ---
-doc_id: 'ADR-2025-00003'
-title: 'Service Tiers and Category Layout'
-doc_type: 'adr'
-status: 'active'
 canonical: true
 created: '2025-11-18'
-tags: ['architecture', 'services', 'plugins', 'tiers']
-summary: 'Four-tier service architecture for app-level and game-level features in Pigeon Pea'
-related: ['ADR-2025-00001']
+doc_id: ADR-00003
+doc_type: adr
+related:
+- ADR-00001
+status: active
+summary: Four-tier service architecture for app-level and game-level features in Pigeon
+  Pea
+tags:
+- architecture
+- services
+- plugins
+- tiers
+title: Service Tiers and Category Layout
 ---
+
 
 # Service Tiers and Category Layout
 
@@ -25,11 +32,11 @@ The goal is to:
 
 ## 1. Four tiers per service category
 
-Each *category* (Audio, Input, Inventory, GAS, Perception, AI, etc.) is modeled as
+Each _category_ (Audio, Input, Inventory, GAS, Perception, AI, etc.) is modeled as
 up to four tiers:
 
 1. **Tier 1 – Service interface (contract)**
-   - Defines *what* capability does.
+   - Defines _what_ capability does.
    - No implementation detail, no plugin knowledge.
    - Examples:
      - `PigeonPea.Contracts.Audio.Services.IService`
@@ -104,6 +111,7 @@ Examples today:
   - Perception/awareness core (ported from `nexus-perception`).
 
 > **Guideline:**
+>
 > - DTOs / views that cross the service boundary belong with **Contracts**.
 > - Rich domain models & algorithms belong in **Shared** libraries.
 
@@ -230,7 +238,7 @@ following rule:
   game‑level).
 - Tier‑4 providers are optional and are internal to Tier‑3.
 
-Categories that *only* have `PigeonPea.Shared.*` libraries and no
+Categories that _only_ have `PigeonPea.Shared.*` libraries and no
 `...Contracts.<Category>.Services` yet are considered **internal mechanics** and
 are not exposed as services (yet).
 

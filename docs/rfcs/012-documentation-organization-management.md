@@ -1,15 +1,24 @@
 ---
-doc_id: 'RFC-2025-00012'
-title: 'Documentation Organization Management'
-doc_type: 'rfc'
-status: 'draft'
 canonical: true
 created: '2025-11-13'
-tags: ['documentation', 'infrastructure', 'validation', 'registry', 'agent-tools']
-summary: 'Structured documentation management system with validation, registry generation, and inbox workflow to enable autonomous agents to discover, create, and maintain high-quality documentation'
+doc_id: RFC-00012
+doc_type: rfc
+related:
+- RFC-00004
+status: draft
+summary: Structured documentation management system with validation, registry generation,
+  and inbox workflow to enable autonomous agents to discover, create, and maintain
+  high-quality documentation
 supersedes: []
-related: ['RFC-2025-00004']
+tags:
+- documentation
+- infrastructure
+- validation
+- registry
+- agent-tools
+title: Documentation Organization Management
 ---
+
 
 # RFC-012: Documentation Organization Management
 
@@ -155,7 +164,7 @@ All documentation (except `_inbox/`) must include YAML front-matter:
 
 ```yaml
 ---
-doc_id: 'RFC-2025-00042' # Format: PREFIX-YYYY-NNNNN
+doc_id: 'RFC-00042' # Format: PREFIX-YYYY-NNNNN
 title: 'Documentation Title'
 doc_type: 'rfc' # spec|rfc|adr|plan|finding|guide|glossary|reference
 status: 'active' # draft|active|superseded|rejected|archived
@@ -173,14 +182,14 @@ related: [] # Optional: list of related doc_ids
 
 | Prefix       | Document Type                | Example                |
 | ------------ | ---------------------------- | ---------------------- |
-| `RFC-`       | Request for Comments         | `RFC-2025-00012`       |
-| `ADR-`       | Architecture Decision Record | `ADR-2025-00001`       |
-| `GUIDE-`     | How-to Guide                 | `GUIDE-2025-00001`     |
-| `PLAN-`      | Planning Document            | `PLAN-2025-00001`      |
-| `FIND-`      | Finding/Analysis             | `FIND-2025-00001`      |
-| `SPEC-`      | Specification                | `SPEC-2025-00001`      |
-| `GLOSSARY-`  | Glossary/Terminology         | `GLOSSARY-2025-00001`  |
-| `REFERENCE-` | Reference Documentation      | `REFERENCE-2025-00001` |
+| `RFC-`       | Request for Comments         | `RFC-00012`       |
+| `ADR-`       | Architecture Decision Record | `ADR-00001`       |
+| `GUIDE-`     | How-to Guide                 | `GUIDE-00001`     |
+| `PLAN-`      | Planning Document            | `PLAN-00001`      |
+| `FIND-`      | Finding/Analysis             | `FIND-00001`      |
+| `SPEC-`      | Specification                | `SPEC-00001`      |
+| `GLOSSARY-`  | Glossary/Terminology         | `GLOSSARY-00001`  |
+| `REFERENCE-` | Reference Documentation      | `REFERENCE-00001` |
 
 #### Valid Values
 
@@ -244,7 +253,7 @@ Dependencies:
   "docs": [
     {
       "path": "docs/rfcs/012-documentation-organization-management.md",
-      "doc_id": "RFC-2025-00012",
+      "doc_id": "RFC-00012",
       "title": "Documentation Organization Management",
       "doc_type": "rfc",
       "status": "draft",
@@ -253,7 +262,7 @@ Dependencies:
       "created": "2025-11-13",
       "summary": "Structured documentation management with validation and registry",
       "supersedes": [],
-      "related": ["RFC-2025-00004"],
+      "related": ["RFC-00004"],
       "sha256": "abc123...",
       "simhash": "1234567890"
     }
@@ -539,7 +548,7 @@ All documentation (except `_inbox/` drafts) must include YAML front-matter.
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
-| `doc_id` | string | Unique ID (format: `PREFIX-YYYY-NNNNN`) | `RFC-2025-00012` |
+| `doc_id` | string | Unique ID (format: `PREFIX-YYYY-NNNNN`) | `RFC-00012` |
 | `title` | string | Document title | `"Documentation Organization"` |
 | `doc_type` | enum | Type of document | `rfc` (see valid values below) |
 | `status` | enum | Lifecycle status | `active` (see valid values below) |
@@ -554,8 +563,8 @@ All documentation (except `_inbox/` drafts) must include YAML front-matter.
 |-------|------|-------------|---------|
 | `updated` | date | Last update date | `2025-11-14` |
 | `author` | string | Primary author | `"Development Team"` |
-| `supersedes` | array | List of doc_ids this replaces | `["RFC-2025-00001"]` |
-| `related` | array | List of related doc_ids | `["RFC-2025-00004"]` |
+| `supersedes` | array | List of doc_ids this replaces | `["RFC-00001"]` |
+| `related` | array | List of related doc_ids | `["RFC-00004"]` |
 
 ## Valid Values
 
@@ -582,20 +591,20 @@ All documentation (except `_inbox/` drafts) must include YAML front-matter.
 
 | Prefix | Document Type | Example |
 |--------|--------------|---------|
-| `RFC-` | Request for Comments | `RFC-2025-00012` |
-| `ADR-` | Architecture Decision Record | `ADR-2025-00001` |
-| `GUIDE-` | How-to Guide | `GUIDE-2025-00001` |
-| `PLAN-` | Planning Document | `PLAN-2025-00001` |
-| `FIND-` | Finding/Analysis | `FIND-2025-00001` |
-| `SPEC-` | Specification | `SPEC-2025-00001` |
-| `GLOSSARY-` | Glossary/Terminology | `GLOSSARY-2025-00001` |
-| `REFERENCE-` | Reference Documentation | `REFERENCE-2025-00001` |
+| `RFC-` | Request for Comments | `RFC-00012` |
+| `ADR-` | Architecture Decision Record | `ADR-00001` |
+| `GUIDE-` | How-to Guide | `GUIDE-00001` |
+| `PLAN-` | Planning Document | `PLAN-00001` |
+| `FIND-` | Finding/Analysis | `FIND-00001` |
+| `SPEC-` | Specification | `SPEC-00001` |
+| `GLOSSARY-` | Glossary/Terminology | `GLOSSARY-00001` |
+| `REFERENCE-` | Reference Documentation | `REFERENCE-00001` |
 
 ## Example
 
 ```yaml
 ---
-doc_id: "RFC-2025-00012"
+doc_id: "RFC-00012"
 title: "Documentation Organization Management"
 doc_type: "rfc"
 status: "draft"
@@ -606,7 +615,7 @@ author: "Development Team"
 tags: ["infrastructure", "documentation", "agent-tools"]
 summary: "Structured documentation management system with validation, registry, and inbox workflow"
 supersedes: []
-related: ["RFC-2025-00004"]
+related: ["RFC-00004"]
 ---
 ````text
 
@@ -792,7 +801,7 @@ mv docs/_inbox/test-rfc.md docs/rfcs/999-test-rfc.md
 python scripts/validate-docs.py
 
 # 6. Check registry
-cat docs/index/registry.json | jq '.docs[] | select(.doc_id == "RFC-2025-00999")'
+cat docs/index/registry.json | jq '.docs[] | select(.doc_id == "RFC-00999")'
 ```text
 
 ### Pre-commit Hook Tests
@@ -809,7 +818,7 @@ git commit -m "test"
 
 # Fix and retry
 echo "---
-doc_id: DOC-2025-00001
+doc_id: DOC-00001
 title: Test
 doc_type: guide
 status: draft
@@ -1026,7 +1035,7 @@ pre-commit install
 
 ```yaml
 ---
-doc_id: 'RFC-2025-00012'
+doc_id: 'RFC-00012'
 title: 'Documentation Organization Management'
 doc_type: 'rfc'
 status: 'draft'
@@ -1037,7 +1046,7 @@ author: 'Development Team'
 tags: ['infrastructure', 'documentation', 'agent-tools', 'automation']
 summary: 'Structured documentation management system with validation, registry generation, and inbox workflow for autonomous agents'
 supersedes: []
-related: ['RFC-2025-00004']
+related: ['RFC-00004']
 ---
 # RFC-012: Documentation Organization Management
 
@@ -1069,7 +1078,7 @@ TODO:
 
 ```yaml
 ---
-doc_id: "RFC-2025-00001"
+doc_id: "RFC-00001"
 title: "Initial Rendering Architecture (Superseded)"
 doc_type: "rfc"
 status: "superseded"
@@ -1077,9 +1086,9 @@ canonical: false
 created: "2025-01-15"
 updated: "2025-03-20"
 tags: ["rendering", "architecture", "superseded"]
-summary: "Original rendering architecture proposal (superseded by RFC-2025-00008)"
+summary: "Original rendering architecture proposal (superseded by RFC-00008)"
 supersedes: []
-related: ["RFC-2025-00008"]
+related: ["RFC-00008"]
 ---
 
 **Note**: This RFC has been superseded by [RFC-008: Enhanced Rendering Architecture](../rfcs/008-enhanced-rendering-architecture.md).
