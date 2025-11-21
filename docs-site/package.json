@@ -1,0 +1,18 @@
+{
+  "name": "pigeon-pea-docs-site",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "docs:sync": "python ../scripts/docs_mgmt/generate_starlight_wrappers.py"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@astrojs/mdx": "^3.0.0",
+    "@astrojs/starlight": "*",
+    "astro": "^4.0.0"
+  }
+}

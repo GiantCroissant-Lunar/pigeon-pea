@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/DocsLayout.astro';
+import { getDocsGroupedByType } from '../../lib/registry.js';
+
+const { registry, groups } = getDocsGroupedByType();
+
+const typeLabels = {
+  rfc: 'RFCs',
+  guide: 'Guides',
+  adr: 'Architecture Decision Records',
+  plan: 'Plans',
+  spec: 'Specifications',
+  reference: 'Reference Docs',
+  finding: 'Findings',
+};
+---
+
+<Layout title="Documentation Index">
+  <h1>Documentation Index</h1>
+  <p>Total documents: {registry.total_docs}</p>
+
+  {Object.entries(groups).map(([type, docs]) => (
+    <section>
+      <h2>{typeLabels[type] ?? type}</h2>
+      <ul>
+        {docs.map((doc) => (
+          <li>
+            <a href={`/docs/${doc.doc_id}/`}>
+              <strong>{doc.doc_id}</strong>
+              {' '}{doc.title}
+            </a>
+            {doc.status && <span> ({doc.status})</span>}
+          </li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</Layout>
