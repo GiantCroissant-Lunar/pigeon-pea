@@ -1,6 +1,6 @@
 ---
-created: '2025-11-20'
 canonical: true
+created: '2025-11-20'
 doc_id: RFC-00025
 doc_type: rfc
 status: draft

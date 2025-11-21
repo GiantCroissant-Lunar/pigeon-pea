@@ -1,29 +1,30 @@
 ---
-doc_id: RFC-00032
-title: Remove Delaunator Dependency from Fantasy Map Generator
-doc_type: rfc
-status: draft
 canonical: true
 created: '2025-11-20'
+dependencies:
+  blocks: []
+  external:
+    - spade-port
+  rfcs: []
+doc_id: RFC-00032
+doc_type: rfc
+implementation:
+  completion: 0
+  issues: []
+  status: not-started
+  tasks: []
+related:
+  - RFC-00006
+status: draft
+summary: Remove the Delaunator JavaScript port dependency now that all functionality
+  has been replaced with Spade
 tags:
   - dependencies
   - cleanup
   - spade
   - fantasy-map-generator
   - geometry
-summary: Remove the Delaunator JavaScript port dependency now that all functionality has been replaced with Spade
-related:
-  - RFC-00006
-implementation:
-  status: not-started
-  completion: 0
-  tasks: []
-  issues: []
-dependencies:
-  rfcs: []
-  external:
-    - spade-port
-  blocks: []
+title: Remove Delaunator Dependency from Fantasy Map Generator
 ---
 
 # RFC-032: Remove Delaunator Dependency from Fantasy Map Generator

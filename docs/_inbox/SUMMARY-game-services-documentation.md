@@ -1,5 +1,6 @@
 ---
 created: '2025-11-20'
+doc_id: ''
 doc_type: rfc
 status: draft
 summary: 'Created: 2025-11-20 For: Implementation by AI agents'

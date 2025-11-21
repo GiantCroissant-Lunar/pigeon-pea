@@ -1,7 +1,7 @@
 ---
+canonical: false
 created: '2025-01-17'
 doc_id: ''
-canonical: false
 doc_type: rfc
 status: draft
 summary: Comprehensive implementation guide for Nexus-Inventory, a data-driven inventory

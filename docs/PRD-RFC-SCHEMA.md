@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: RFC-2025-00007
+doc_id: RFC-00007
 doc_type: rfc
 related: []
 status: active
@@ -40,7 +40,7 @@ created: '2025-11-20'
 tags: ['product', 'calendar', 'time-system']
 summary: 'Product requirements for fantasy calendar system'
 implementation:
-  rfcs: ['RFC-2025-00015'] # RFCs that implement this PRD
+  rfcs: ['RFC-00015'] # RFCs that implement this PRD
   status: 'in-progress'
 ---
 ```
@@ -53,9 +53,9 @@ doc_id: 'RFC-00015'
 title: 'Fantasy Calendar to Real-World Time Transformation'
 doc_type: 'rfc'
 # ... other fields ...
-implements: 'PRD-2025-00001' # PRD this RFC implements
+implements: 'PRD-00001' # PRD this RFC implements
 dependencies:
-  rfcs: ['RFC-2025-00013'] # Other RFCs this depends on
+  rfcs: ['RFC-00013'] # Other RFCs this depends on
   prds: [] # Additional PRDs (if implementing multiple)
 ---
 ```

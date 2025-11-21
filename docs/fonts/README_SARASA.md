@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: SPEC-2025-00003
+doc_id: SPEC-00003
 doc_type: spec
 related: []
 status: active

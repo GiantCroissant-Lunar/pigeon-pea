@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: ADR-2025-00012
+doc_id: ADR-00012
 doc_type: adr
 related: []
 status: active

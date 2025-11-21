@@ -1,5 +1,6 @@
 ---
 created: '2025-11-20'
+doc_id: ''
 doc_type: plan
 status: draft
 summary: 'Previous attempts at agent memory failed because:'

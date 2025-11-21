@@ -1,11 +1,11 @@
 ---
+canonical: true
 created: '2025-11-20'
 doc_id: RFC-00026
 doc_type: rfc
 status: draft
 summary: Establish clear RFC numbering rules, resolve filename vs doc_id conflicts,
   and define allocation strategy for document identifiers
-canonical: true
 tags:
   - documentation
   - rfc

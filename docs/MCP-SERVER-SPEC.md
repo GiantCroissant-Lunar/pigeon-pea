@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: RFC-2025-00005
+doc_id: RFC-00005
 doc_type: rfc
 related: []
 status: active
@@ -455,7 +455,7 @@ All tools should return structured errors:
     "details": {
       "field": "doc_id",
       "expected": "PREFIX-NNNNN",
-      "received": "RFC-2025-00042"
+      "received": "RFC-00042"
     }
   }
 }

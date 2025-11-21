@@ -33,9 +33,9 @@ def load_rfc_metadata(rfc_file: Path) -> Optional[Dict]:
         filename_match = re.match(r"(\d{3})-", rfc_file.name)
         filename_number = int(filename_match.group(1)) if filename_match else None
 
-        # Extract doc_id number (e.g., "00015" from "RFC-2025-00015")
+        # Extract doc_id number (e.g., "00015" from "RFC-00015")
         doc_id = front_matter.get("doc_id", "")
-        doc_id_match = re.match(r"RFC-\d{4}-(\d{5})", doc_id)
+        doc_id_match = re.match(r"RFC-(\d{5})$", doc_id)
         doc_id_number = int(doc_id_match.group(1)) if doc_id_match else None
 
         return {

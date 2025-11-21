@@ -144,9 +144,14 @@ docs/
 └── README.md                        # Main documentation index
 
 scripts/
-└── validate-docs.py                 # Validation & registry generator
+├── docs_mgmt/                       # Documentation management tooling
+│   └── validate-docs.py             # Validation & registry generator
+├── assets/                          # Asset and image generation helpers
+├── devtools/                        # Developer tooling and utilities
+└── reports/                         # Long-lived JSON reports
 
 .agent/
+├── scripts/                         # Agent infrastructure helpers
 ├── rules/
 │   └── documentation-management.md  # Agent rules for docs
 └── commands/
@@ -204,7 +209,7 @@ related: [] # Optional: list of related doc_ids
 
 ### Validation Script
 
-**File**: `scripts/validate-docs.py`
+**File**: `scripts/docs_mgmt/validate-docs.py`
 
 Features:
 
@@ -216,10 +221,10 @@ Features:
 
 ```bash
 # Manual validation
-python scripts/validate-docs.py
+python scripts/docs_mgmt/validate-docs.py
 
 # Pre-commit mode (validation only, no registry regen)
-python scripts/validate-docs.py --pre-commit
+python scripts/docs_mgmt/validate-docs.py --pre-commit
 ```text
 
 Dependencies:
@@ -292,7 +297,7 @@ Dependencies:
 # → Edit, refine, add content
 
 # 3. Validate and check for duplicates
-python scripts/validate-docs.py
+python scripts/docs_mgmt/validate-docs.py
 # → Shows warnings if similar docs exist
 
 # 4. Complete front-matter
@@ -381,7 +386,7 @@ summary: ""
 
 3. **Run validation before finalizing**:
    ```bash
-   python scripts/validate-docs.py
+   python scripts/docs_mgmt/validate-docs.py
 ````text
 
 - Check for duplicate warnings
@@ -434,7 +439,7 @@ inbox  final loc  archive/
 
 ## Pre-commit Hook
 
-The pre-commit hook runs `python scripts/validate-docs.py --pre-commit` to:
+The pre-commit hook runs `python scripts/docs_mgmt/validate-docs.py --pre-commit` to:
 
 - Validate front-matter of all docs (except inbox)
 - Check canonical uniqueness
@@ -623,7 +628,7 @@ related: ["RFC-00004"]
 Run validation script:
 
 ```bash
-python scripts/validate-docs.py
+python scripts/docs_mgmt/validate-docs.py
 ```text
 
 Checks:
@@ -641,7 +646,7 @@ The pre-commit hook automatically validates documentation on commit:
 
 ```bash
 git commit -m "docs: add new RFC"
-# → Runs: python scripts/validate-docs.py --pre-commit
+# → Runs: python scripts/docs_mgmt/validate-docs.py --pre-commit
 # → Fails commit if validation errors found
 ```text
 

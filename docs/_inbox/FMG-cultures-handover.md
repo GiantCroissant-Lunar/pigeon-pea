@@ -1,5 +1,6 @@
 ---
 created: '2025-11-20'
+doc_id: ''
 doc_type: guide
 status: draft
 summary: This note summarizes the current state of the FantasyMapGenerator (FMG) integration

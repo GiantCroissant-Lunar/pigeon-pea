@@ -1,34 +1,35 @@
 ---
-doc_id: RFC-00034
-title: Spade Integration Test Suite for Fantasy Map Generator
-doc_type: rfc
-status: draft
 canonical: true
 created: '2025-11-20'
+dependencies:
+  blocks: []
+  external:
+    - spade-port
+    - xUnit
+    - Verify
+  rfcs:
+    - RFC-00003
+doc_id: RFC-00034
+doc_type: rfc
+implementation:
+  completion: 0
+  issues: []
+  status: not-started
+  tasks: []
+related:
+  - RFC-00032
+  - RFC-00033
+  - RFC-00003
+status: draft
+summary: Comprehensive integration test suite to ensure Spade-based geometry operations
+  work correctly across all fantasy map generation scenarios
 tags:
   - testing
   - integration
   - spade
   - quality-assurance
   - fantasy-map-generator
-summary: Comprehensive integration test suite to ensure Spade-based geometry operations work correctly across all fantasy map generation scenarios
-related:
-  - RFC-00032
-  - RFC-00033
-  - RFC-00003
-implementation:
-  status: not-started
-  completion: 0
-  tasks: []
-  issues: []
-dependencies:
-  rfcs:
-    - RFC-00003
-  external:
-    - spade-port
-    - xUnit
-    - Verify
-  blocks: []
+title: Spade Integration Test Suite for Fantasy Map Generator
 ---
 
 # RFC-034: Spade Integration Test Suite for Fantasy Map Generator

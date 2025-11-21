@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: GUIDE-2025-00008
+doc_id: GUIDE-00008
 doc_type: guide
 related: []
 status: active

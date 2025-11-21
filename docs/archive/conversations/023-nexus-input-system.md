@@ -1,7 +1,7 @@
 ---
+canonical: false
 created: '2025-01-17'
 doc_id: ''
-canonical: false
 doc_type: rfc
 status: archived
 summary: Comprehensive implementation guide for Nexus-Input, a Unity Input System-inspired
