@@ -29,7 +29,7 @@ public partial class DungeonMappers
         return result;
     }
 
-    private byte[,] CloneDoorGrid(DoorState[,] source)
+    private byte[,] CloneDoorGrid(PigeonPea.Dungeon.Contracts.DoorState[,] source)
     {
         var height = source.GetLength(0);
         var width = source.GetLength(1);
