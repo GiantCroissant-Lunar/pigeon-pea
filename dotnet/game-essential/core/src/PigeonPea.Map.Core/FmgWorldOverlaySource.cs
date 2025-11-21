@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PigeonPea.Overlays;
+using PigeonPea.Shared.Scale;
 
 namespace PigeonPea.Map.Core;
 
@@ -8,9 +9,17 @@ namespace PigeonPea.Map.Core;
 /// Produces world-space overlay features (capitals, dungeon entrances, etc.)
 /// from a generated map. Rendering layers can consume these overlay features
 /// without depending directly on FantasyMapGenerator internals.
+/// Supports scale-aware filtering when IScaleManager is provided.
 /// </summary>
 public sealed class FmgWorldOverlaySource : IOverlaySource<MapData, WorldPosition>
 {
+    private readonly IScaleManager? _scaleManager;
+
+    public FmgWorldOverlaySource(IScaleManager? scaleManager = null)
+    {
+        _scaleManager = scaleManager;
+    }
+
     public IEnumerable<IOverlayFeature<WorldPosition>> GetOverlays(MapData map)
     {
         if (map.Burgs is not null)
@@ -20,7 +29,7 @@ public sealed class FmgWorldOverlaySource : IOverlaySource<MapData, WorldPositio
             // Capitals layer (kept for backward compatibility and dedicated styling)
             foreach (var burg in burgs.Where(b => b.IsCapital))
             {
-                yield return new WorldOverlayFeature(
+                var feature = new WorldOverlayFeature(
                     LayerId: "world.capitals",
                     Position: new WorldPosition(burg.Position.X, burg.Position.Y),
                     Kind: "capital_city",
@@ -31,6 +40,11 @@ public sealed class FmgWorldOverlaySource : IOverlaySource<MapData, WorldPositio
                         ["population"] = burg.Population,
                         ["isPort"] = burg.IsPort
                     });
+
+                if (IsFeatureVisible(feature))
+                {
+                    yield return feature;
+                }
             }
 
             // Non-capital settlements (cities / towns / villages) for LOD-aware rendering
@@ -42,7 +56,7 @@ public sealed class FmgWorldOverlaySource : IOverlaySource<MapData, WorldPositio
                     continue;
                 }
 
-                yield return new WorldOverlayFeature(
+                var feature = new WorldOverlayFeature(
                     LayerId: "world.settlements",
                     Position: new WorldPosition(burg.Position.X, burg.Position.Y),
                     Kind: tier,
@@ -54,6 +68,11 @@ public sealed class FmgWorldOverlaySource : IOverlaySource<MapData, WorldPositio
                         ["isPort"] = burg.IsPort,
                         ["tier"] = tier
                     });
+
+                if (IsFeatureVisible(feature))
+                {
+                    yield return feature;
+                }
             }
         }
 
@@ -61,7 +80,7 @@ public sealed class FmgWorldOverlaySource : IOverlaySource<MapData, WorldPositio
         {
             foreach (var dungeon in map.Dungeons)
             {
-                yield return new WorldOverlayFeature(
+                var feature = new WorldOverlayFeature(
                     LayerId: "world.dungeons",
                     Position: new WorldPosition(dungeon.Origin.X, dungeon.Origin.Y),
                     Kind: "dungeon_entrance",
@@ -73,8 +92,55 @@ public sealed class FmgWorldOverlaySource : IOverlaySource<MapData, WorldPositio
                         ["width"] = dungeon.Width,
                         ["height"] = dungeon.Height
                     });
+
+                if (IsFeatureVisible(feature))
+                {
+                    yield return feature;
+                }
             }
         }
+    }
+
+    private bool IsFeatureVisible(WorldOverlayFeature feature)
+    {
+        if (_scaleManager == null)
+        {
+            return true;
+        }
+
+        var activeScale = _scaleManager.ActiveScale;
+        var currentZoom = _scaleManager.CurrentZoom;
+
+        if (activeScale.OverlayLayers != null && !activeScale.OverlayLayers.Contains(feature.LayerId))
+        {
+            return false;
+        }
+
+        if (activeScale.OverlayRules != null && 
+            activeScale.OverlayRules.TryGetValue(feature.LayerId, out var rule))
+        {
+            if (currentZoom < rule.MinZoom || currentZoom > rule.MaxZoom)
+            {
+                return false;
+            }
+
+            if (rule.Filter != null)
+            {
+                return EvaluateFilter(rule.Filter, feature);
+            }
+        }
+
+        return true;
+    }
+
+    private static bool EvaluateFilter(string filter, WorldOverlayFeature feature)
+    {
+        if (filter == "tier == 'city'" && feature.Metadata.TryGetValue("tier", out var tier))
+        {
+            return tier?.ToString() == "city";
+        }
+
+        return true;
     }
 
     private static string? ClassifySettlementTier(double populationThousands)

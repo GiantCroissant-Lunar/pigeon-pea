@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Arch.Core;
 using Microsoft.Extensions.Logging;
+using PigeonPea.Shared.Scale;
 using SceneContracts = PigeonPea.Scene.Contracts;
 
 namespace PigeonPea.Plugin.Scene.Manager;
@@ -7,7 +12,52 @@ namespace PigeonPea.Plugin.Scene.Manager;
 public class SceneManager : SceneContracts.ISceneManager
 {
     private readonly Dictionary<Guid, SceneContracts.Scene> _scenes = new();
+    private readonly IScaleManager? _scaleManager;
+    private readonly ILogger<SceneManager>? _logger;
     private Guid? _activeSceneId;
+
+    public SceneManager(IScaleManager? scaleManager = null, ILogger<SceneManager>? logger = null)
+    {
+        _scaleManager = scaleManager;
+        _logger = logger;
+
+        if (_scaleManager != null)
+        {
+            _scaleManager.ScaleChanged += OnScaleChanged;
+        }
+    }
+
+    private void OnScaleChanged(object? sender, ScaleChangedEventArgs e)
+    {
+        if (e.PreviousScale.Environment == e.NewScale.Environment)
+        {
+            return;
+        }
+
+        _logger?.LogInformation(
+            "Scale environment changed: {PreviousEnv} → {NewEnv}, triggering scene transition",
+            e.PreviousScale.Environment, e.NewScale.Environment);
+
+        var sceneName = e.NewScale.Environment switch
+        {
+            "dungeon" => "DungeonScene",
+            "world" => "WorldMapScene",
+            "vehicle" => "VehicleScene",
+            _ => "WorldMapScene"
+        };
+
+        Task.Run(async () =>
+        {
+            try
+            {
+                await LoadSceneAsync(sceneName, SceneContracts.SceneLoadMode.Single);
+            }
+            catch (Exception ex)
+            {
+                _logger?.LogError(ex, "Failed to transition to scene {SceneName}", sceneName);
+            }
+        });
+    }
 
     public async Task<SceneContracts.Scene> LoadSceneAsync(string sceneName, SceneContracts.SceneLoadMode mode)
     {

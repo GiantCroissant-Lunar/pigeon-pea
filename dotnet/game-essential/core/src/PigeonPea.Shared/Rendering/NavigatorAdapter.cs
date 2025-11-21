@@ -1,20 +1,24 @@
 using PigeonPea.Rendering.Contracts;
+using PigeonPea.Shared.Scale;
 
 namespace PigeonPea.SharedApp.Rendering;
 
 /// <summary>
 /// Thin navigation adapter with Mapsui-like semantics without taking a direct dependency.
 /// Maintains a world-space center and a zoom factor (world cells per screen cell).
+/// Integrates with IScaleManager for per-scale zoom bounds enforcement.
 /// </summary>
 public sealed class NavigatorAdapter
 {
     private readonly int _worldWidth;
     private readonly int _worldHeight;
+    private readonly IScaleManager? _scaleManager;
 
-    public NavigatorAdapter(int worldWidth, int worldHeight)
+    public NavigatorAdapter(int worldWidth, int worldHeight, IScaleManager? scaleManager = null)
     {
         _worldWidth = worldWidth;
         _worldHeight = worldHeight;
+        _scaleManager = scaleManager;
         CenterX = worldWidth / 2.0;
         CenterY = worldHeight / 2.0;
         Zoom = 1.0; // world cells per screen cell (smaller => zoom in)
@@ -32,7 +36,15 @@ public sealed class NavigatorAdapter
 
     public void SetZoom(double zoom)
     {
-        Zoom = System.Math.Clamp(zoom, 0.1, 16.0);
+        if (_scaleManager != null)
+        {
+            _scaleManager.SetZoom(zoom);
+            Zoom = _scaleManager.CurrentZoom;
+        }
+        else
+        {
+            Zoom = System.Math.Clamp(zoom, 0.1, 16.0);
+        }
     }
 
     public void ZoomByFactor(double factor)
