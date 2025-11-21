@@ -1,4 +1,5 @@
 using System.Numerics;
+using System.Text.Json;
 using Arch.Core;
 using Edgar.Core;
 using Edgar.Core.Generation;
@@ -158,6 +159,7 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
         var doorStates = new byte[width * height];
         var walkableArray = new System.Collections.BitArray(width * height);
         var opaqueArray = new System.Collections.BitArray(width * height);
+        var doorMetadataList = new List<DoorMetadata>();
 
         for (int y = 0; y < height; y++)
         {
@@ -168,8 +170,23 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
                 doorStates[index] = doors[y, x];
                 walkableArray[index] = walkable[y, x];
                 opaqueArray[index] = opaque[y, x];
+
+                // Extract door metadata
+                if (doors[y, x] != 0)
+                {
+                    doorMetadataList.Add(new DoorMetadata(
+                        x, y,
+                        (PigeonPea.Dungeon.Contracts.Models.DoorState)doors[y, x],
+                        Locked: false,
+                        Orientation: DetectDoorOrientation(walkable, width, height, x, y)));
+                }
             }
         }
+
+        var featureMetadata = new Dictionary<string, object>
+        {
+            ["doors"] = JsonSerializer.Serialize(doorMetadataList)
+        };
 
         // Create dungeon entity in the world
         return world.Create(
@@ -180,7 +197,8 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
                 TileData = tileData,
                 DoorStates = doorStates,
                 Walkable = walkableArray,
-                Opaque = opaqueArray
+                Opaque = opaqueArray,
+                FeatureMetadata = featureMetadata
             },
             new PositionComponent { X = 0, Y = 0, Z = 0 },
             new RenderableComponent
@@ -191,6 +209,13 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
                 Layer = RenderLayer.Floor
             }
         );
+    }
+
+    private string DetectDoorOrientation(bool[,] walkable, int width, int height, int x, int y)
+    {
+        bool hasEastWest = (x > 0 && walkable[y, x - 1]) || (x < width - 1 && walkable[y, x + 1]);
+        bool hasNorthSouth = (y > 0 && walkable[y - 1, x]) || (y < height - 1 && walkable[y + 1, x]);
+        return hasEastWest && !hasNorthSouth ? "horizontal" : "vertical";
     }
 
     private void CarveRect(bool[,] walkable, bool[,] opaque, int width, int height, int x, int y, int w, int h)

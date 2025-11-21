@@ -20,13 +20,16 @@
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="6.12.2" />
     <PackageReference Include="Verify.Xunit" Version="31.6.0" />
+    <PackageReference Include="Arch" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Dungeon.ModernEdgar\PigeonPea.Plugin.Dungeon.ModernEdgar.csproj" />
+    <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Dungeon.Basic\PigeonPea.Plugin.Dungeon.Basic.csproj" />
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Dungeon.Rendering\PigeonPea.Plugin.Dungeon.Rendering.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Control\PigeonPea.Map.Control.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
+    <ProjectReference Include="..\..\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
   </ItemGroup>
 </Project>

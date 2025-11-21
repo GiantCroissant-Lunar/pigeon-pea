@@ -10,6 +10,8 @@
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
     <ProjectReference Include="..\..\..\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
     <ProjectReference Include="..\..\..\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Overlays\PigeonPea.Overlays.csproj" />
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

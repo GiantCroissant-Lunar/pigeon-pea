@@ -42,6 +42,7 @@
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
     <ProjectReference Include="..\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
     <ProjectReference Include="..\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+    <ProjectReference Include="..\PigeonPea.Overlays\PigeonPea.Overlays.csproj" />
   </ItemGroup>
 
   <!-- Use rendering primitives from PigeonPea.Shared.Rendering instead of local duplicates -->

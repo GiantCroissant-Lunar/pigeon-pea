@@ -21,9 +21,21 @@ public record DungeonMapComponent
     public int Width { get; init; }
     public int Height { get; init; }
     public byte[] TileData { get; init; } = Array.Empty<byte>();
-    public byte[] DoorStates { get; init; } = Array.Empty<byte>();
+    
+    /// <summary>
+    /// Legacy door states array. Deprecated in favor of FeatureMetadata.
+    /// </summary>
+    public byte[]? DoorStates { get; init; }
+    
     public System.Collections.BitArray Walkable { get; init; } = new System.Collections.BitArray(0);
     public System.Collections.BitArray Opaque { get; init; } = new System.Collections.BitArray(0);
+    
+    /// <summary>
+    /// Feature metadata for overlays (doors, traps, spawn points, treasure, stairs, etc.)
+    /// Keys: "doors", "traps", "spawn_points", "treasure", "stairs"
+    /// Values: JSON-serialized arrays of feature metadata
+    /// </summary>
+    public System.Collections.Generic.Dictionary<string, object>? FeatureMetadata { get; init; }
 }
 
 /// <summary>

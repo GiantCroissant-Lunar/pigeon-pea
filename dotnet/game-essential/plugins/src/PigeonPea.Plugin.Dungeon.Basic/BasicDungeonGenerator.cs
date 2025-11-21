@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Arch.Core;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Plugin;
@@ -178,19 +179,34 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
         var doorStates = new byte[d.Width * d.Height];
         var walkable = new System.Collections.BitArray(d.Width * d.Height);
         var opaque = new System.Collections.BitArray(d.Width * d.Height);
+        var doorMetadataList = new List<DoorMetadata>();
 
         for (int y = 0; y < d.Height; y++)
         {
             for (int x = 0; x < d.Width; x++)
             {
                 int index = y * d.Width + x;
-                // Determine tile type based on walkable/opaque state
-                tileData[index] = (byte)(d.Walkable[y, x] ? 1 : 0); // 1 for floor, 0 for wall
+                tileData[index] = (byte)(d.Walkable[y, x] ? 1 : 0);
                 doorStates[index] = (byte)d.Doors[y, x];
                 walkable[index] = d.Walkable[y, x];
                 opaque[index] = d.Opaque[y, x];
+
+                // Extract door metadata
+                if (d.Doors[y, x] != 0)
+                {
+                    doorMetadataList.Add(new DoorMetadata(
+                        x, y,
+                        (PigeonPea.Dungeon.Contracts.Models.DoorState)d.Doors[y, x],
+                        Locked: false,
+                        Orientation: DetectDoorOrientation(d, x, y)));
+                }
             }
         }
+
+        var featureMetadata = new Dictionary<string, object>
+        {
+            ["doors"] = JsonSerializer.Serialize(doorMetadataList)
+        };
 
         return world.Create(
             new DungeonMapComponent
@@ -200,7 +216,8 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
                 TileData = tileData,
                 DoorStates = doorStates,
                 Walkable = walkable,
-                Opaque = opaque
+                Opaque = opaque,
+                FeatureMetadata = featureMetadata
             },
             new PositionComponent { X = 0, Y = 0, Z = 0 },
             new RenderableComponent
@@ -211,5 +228,14 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
                 Layer = RenderLayer.Floor
             }
         );
+    }
+
+    private static string DetectDoorOrientation(DungeonData d, int x, int y)
+    {
+        bool hasEastWest = (d.InBounds(x - 1, y) && d.IsWalkable(x - 1, y)) || 
+                          (d.InBounds(x + 1, y) && d.IsWalkable(x + 1, y));
+        bool hasNorthSouth = (d.InBounds(x, y - 1) && d.IsWalkable(x, y - 1)) || 
+                            (d.InBounds(x, y + 1) && d.IsWalkable(x, y + 1));
+        return hasEastWest && !hasNorthSouth ? "horizontal" : "vertical";
     }
 }
