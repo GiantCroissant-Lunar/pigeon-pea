@@ -39,6 +39,24 @@
 
     <!-- Engine-level rendering primitives (IRenderer, IRenderTarget, Tile, Viewport, RendererCapabilities) -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    
+    <!-- New RFC-032 Rendering Contracts -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+    
+    <!-- Scene Management (for BackendGameLoop) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Scene.Contracts\PigeonPea.Scene.Contracts.csproj" />
+    
+    <!-- Dungeon Contracts (for BackendGameLoop) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\domain\dungeon\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
+    
+    <!-- Game Contracts (for IGameplayLoop) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    
+    <!-- Plugin Contracts (for IRegistry) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+    
+    <!-- SkiaSharp Backend Plugin (Phase 4) -->
+    <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugins.Rendering.Windows.SkiaSharp\PigeonPea.Plugins.Rendering.Windows.SkiaSharp.csproj" />
   </ItemGroup>
 
 </Project>

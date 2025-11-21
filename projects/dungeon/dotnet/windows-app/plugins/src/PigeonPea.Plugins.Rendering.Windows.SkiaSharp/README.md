@@ -2,6 +2,8 @@
 
 This plugin provides hardware-accelerated SkiaSharp-based rendering for Windows desktop applications using Avalonia UI integration.
 
+**Phase 4 Implementation**: This plugin implements the SkiaSharp backend as defined in RFC-032 (Multi-Backend Rendering Architecture).
+
 ## Features
 
 - Hardware-accelerated 2D graphics rendering via SkiaSharp

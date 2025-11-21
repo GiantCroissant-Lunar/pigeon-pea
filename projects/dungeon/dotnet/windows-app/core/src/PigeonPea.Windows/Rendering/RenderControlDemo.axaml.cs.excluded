@@ -1,0 +1,207 @@
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Threading;
+using PigeonPea.Plugins.Rendering.Windows.SkiaSharp;
+using SadRogue.Primitives;
+using System;
+using System.Diagnostics;
+
+namespace PigeonPea.Windows.Rendering;
+
+/// <summary>
+/// Demo window showing the new SkiaSharpBackend in action.
+/// Demonstrates Phase 5 integration with Avalonia.
+/// </summary>
+public partial class RenderControlDemo : Window
+{
+    private SkiaSharpBackend? _backend;
+    private DispatcherTimer? _renderTimer;
+    private Stopwatch _fpsWatch = new();
+    private int _frameCount;
+    private double _animationTime;
+    
+    public RenderControlDemo()
+    {
+        InitializeComponent();
+        Loaded += OnLoaded;
+        Closing += OnClosing;
+    }
+    
+    private void OnLoaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        InitializeRendering();
+        StartRenderLoop();
+    }
+    
+    private void OnClosing(object? sender, System.ComponentModel.CancelEventArgs e)
+    {
+        StopRenderLoop();
+        _backend?.Dispose();
+        RenderControl.Dispose();
+    }
+    
+    private void InitializeRendering()
+    {
+        try
+        {
+            // Create new SkiaSharpBackend (from Phase 4)
+            _backend = new SkiaSharpBackend();
+            
+            // Initialize the render control
+            RenderControl.Initialize(_backend);
+            
+            StatusText.Text = $"Initialized - Backend: {_backend.Id}";
+            _fpsWatch.Start();
+        }
+        catch (Exception ex)
+        {
+            StatusText.Text = $"Error: {ex.Message}";
+        }
+    }
+    
+    private void StartRenderLoop()
+    {
+        // Create timer for 60 FPS
+        _renderTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(1000.0 / 60.0)
+        };
+        _renderTimer.Tick += OnRenderTick;
+        _renderTimer.Start();
+    }
+    
+    private void StopRenderLoop()
+    {
+        _renderTimer?.Stop();
+        _renderTimer = null;
+    }
+    
+    private void OnRenderTick(object? sender, EventArgs e)
+    {
+        if (_backend == null || !RenderControl.IsInitialized) return;
+        
+        try
+        {
+            // Render a demo frame
+            RenderControl.RenderFrame(commandList =>
+            {
+                // Begin frame
+                commandList.BeginFrame();
+                
+                // Clear to dark background
+                commandList.Clear(new Color(30, 30, 30, 255));
+                
+                // Set viewport
+                commandList.SetViewport(new PigeonPea.Rendering.Contracts.Viewport(0, 0, 80, 45));
+                
+                // Animate camera
+                _animationTime += 0.016;
+                var zoom = 1.0 + Math.Sin(_animationTime) * 0.2;
+                commandList.SetCamera(0, 0, zoom);
+                
+                // Draw some text
+                commandList.DrawText(10, 5, "RFC-032 Phase 5 - SkiaSharp Backend Demo", 
+                    new Color(100, 200, 255, 255), 
+                    new Color(30, 30, 30, 255));
+                
+                commandList.DrawText(10, 7, $"Backend ID: {_backend.Id}", 
+                    new Color(150, 150, 150, 255), 
+                    new Color(30, 30, 30, 255));
+                
+                commandList.DrawText(10, 8, $"Resolution: {RenderControl.RenderWidth}x{RenderControl.RenderHeight}", 
+                    new Color(150, 150, 150, 255), 
+                    new Color(30, 30, 30, 255));
+                
+                commandList.DrawText(10, 9, $"Zoom: {zoom:F2}x (animated)", 
+                    new Color(150, 150, 150, 255), 
+                    new Color(30, 30, 30, 255));
+                
+                // Draw a grid pattern
+                for (int y = 12; y < 40; y++)
+                {
+                    for (int x = 10; x < 70; x++)
+                    {
+                        var glyph = ((x + y) % 2 == 0) ? '█' : '▒';
+                        var hue = (x + y + (int)(_animationTime * 10)) % 360;
+                        var color = ColorFromHSV(hue, 0.6f, 0.8f);
+                        
+                        commandList.DrawText(x, y, glyph.ToString(), 
+                            color, 
+                            new Color(30, 30, 30, 255));
+                    }
+                }
+                
+                // Draw border
+                DrawBox(commandList, 9, 4, 71, 37, new Color(100, 100, 100, 255));
+                
+                // End frame
+                commandList.EndFrame();
+            });
+            
+            // Update FPS
+            _frameCount++;
+            if (_fpsWatch.ElapsedMilliseconds >= 1000)
+            {
+                var fps = _frameCount / (_fpsWatch.ElapsedMilliseconds / 1000.0);
+                FpsText.Text = $"FPS: {fps:F1}";
+                _frameCount = 0;
+                _fpsWatch.Restart();
+            }
+        }
+        catch (Exception ex)
+        {
+            StatusText.Text = $"Render Error: {ex.Message}";
+            StopRenderLoop();
+        }
+    }
+    
+    private void DrawBox(PigeonPea.Rendering.Contracts.IRenderCommandList commandList, 
+                         int x, int y, int width, int height, Color color)
+    {
+        var bg = new Color(30, 30, 30, 255);
+        
+        // Top border
+        for (int i = 0; i < width; i++)
+            commandList.DrawText(x + i, y, "─", color, bg);
+        
+        // Bottom border
+        for (int i = 0; i < width; i++)
+            commandList.DrawText(x + i, y + height, "─", color, bg);
+        
+        // Left border
+        for (int i = 0; i < height; i++)
+            commandList.DrawText(x, y + i, "│", color, bg);
+        
+        // Right border
+        for (int i = 0; i < height; i++)
+            commandList.DrawText(x + width, y + i, "│", color, bg);
+        
+        // Corners
+        commandList.DrawText(x, y, "┌", color, bg);
+        commandList.DrawText(x + width, y, "┐", color, bg);
+        commandList.DrawText(x, y + height, "└", color, bg);
+        commandList.DrawText(x + width, y + height, "┘", color, bg);
+    }
+    
+    private Color ColorFromHSV(float hue, float saturation, float value)
+    {
+        int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
+        double f = hue / 60 - Math.Floor(hue / 60);
+
+        value = value * 255;
+        byte v = Convert.ToByte(value);
+        byte p = Convert.ToByte(value * (1 - saturation));
+        byte q = Convert.ToByte(value * (1 - f * saturation));
+        byte t = Convert.ToByte(value * (1 - (1 - f) * saturation));
+
+        return hi switch
+        {
+            0 => new Color(v, t, p, 255),
+            1 => new Color(q, v, p, 255),
+            2 => new Color(p, v, t, 255),
+            3 => new Color(p, q, v, 255),
+            4 => new Color(t, p, v, 255),
+            _ => new Color(v, p, q, 255),
+        };
+    }
+}

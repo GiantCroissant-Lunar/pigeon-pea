@@ -6,14 +6,24 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Temporarily exclude legacy renderer while we focus on new backend -->
+    <Compile Remove="SkiaSharpRenderer.cs" />
+    <Compile Remove="SkiaSharpRendererPlugin.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <!-- Core Plugin Contracts -->
-    <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
 
     <!-- Game Contracts for IRenderer -->
-    <ProjectReference Include="..\..\..\..\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+
+    <!-- Rendering Contracts for IRenderBackend and IRenderCommandList -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
 
     <!-- Avalonia UI for Windows integration -->
     <PackageReference Include="Avalonia" />
@@ -24,6 +34,9 @@
 
     <!-- Logging -->
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    
+    <!-- Direct reference to primitives (workaround for transitive reference issue) -->
+    <PackageReference Include="TheSadRogue.Primitives" />
   </ItemGroup>
 
   <ItemGroup>

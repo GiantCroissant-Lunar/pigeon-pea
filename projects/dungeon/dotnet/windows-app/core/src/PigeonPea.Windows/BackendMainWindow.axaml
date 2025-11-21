@@ -1,0 +1,53 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="PigeonPea.Windows.BackendMainWindow"
+        Title="PigeonPea Dungeon - Multi-Backend Rendering"
+        Width="1280" Height="720">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Game Canvas -->
+        <Border Grid.Row="0" 
+                Background="Black"
+                BorderBrush="DarkGray"
+                BorderThickness="1">
+            <Image x:Name="GameCanvas"
+                   Stretch="Uniform"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+        </Border>
+        
+        <!-- Status Bar -->
+        <Border Grid.Row="1"
+                Background="#2D2D2D"
+                BorderBrush="DarkGray"
+                BorderThickness="0,1,0,0"
+                Padding="10,5">
+            <StackPanel Orientation="Horizontal" Spacing="20">
+                <TextBlock Foreground="White">
+                    <Run Text="Backend: "/>
+                    <Run x:Name="BackendText" Text="SkiaSharp" FontWeight="Bold"/>
+                </TextBlock>
+                <TextBlock Foreground="White">
+                    <Run Text="FPS: "/>
+                    <Run x:Name="FpsText" Text="0" FontWeight="Bold"/>
+                </TextBlock>
+                <TextBlock Foreground="White">
+                    <Run Text="Position: "/>
+                    <Run x:Name="PositionText" Text="(0, 0)" FontWeight="Bold"/>
+                </TextBlock>
+                <TextBlock Foreground="White">
+                    <Run Text="Controls: "/>
+                    <Run Text="WASD/Arrows to move, ESC to quit" Foreground="Gray"/>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

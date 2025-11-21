@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Plugin;
 using PigeonPea.Game.Contracts.Rendering;
+using PigeonPea.Rendering.Contracts;
 
 namespace PigeonPea.Plugins.Rendering.Windows.SkiaSharp;
 
@@ -11,6 +12,7 @@ public class SkiaSharpRendererPlugin : IPlugin
 {
     private ILogger? _logger;
     private SkiaSharpRenderer? _renderer;
+    private SkiaSharpBackend? _backend;
 
     /// <inheritdoc/>
     public string Id => "rendering-windows-skiasharp";
@@ -34,10 +36,10 @@ public class SkiaSharpRendererPlugin : IPlugin
 
         try
         {
-            // Create renderer instance
+            // Create renderer instance (legacy)
             _renderer = new SkiaSharpRenderer(_logger);
 
-            // Register renderer in service registry
+            // Register legacy renderer in service registry
             context.Registry.Register<IRenderer>(
                 _renderer,
                 new ServiceMetadata
@@ -61,7 +63,21 @@ public class SkiaSharpRendererPlugin : IPlugin
                 }
             );
 
-            _logger.LogInformation("SkiaSharp Windows renderer registered successfully");
+            // Create and register new backend architecture
+            _backend = new SkiaSharpBackend(_logger);
+            
+            context.Registry.Register<IRenderBackend>(
+                _backend,
+                new ServiceMetadata
+                {
+                    Priority = 100,
+                    Name = "SkiaSharpBackend",
+                    Version = Version,
+                    PluginId = Id
+                }
+            );
+
+            _logger.LogInformation("SkiaSharp Windows renderer and backend registered successfully");
         }
         catch (Exception ex)
         {
@@ -85,8 +101,14 @@ public class SkiaSharpRendererPlugin : IPlugin
         if (_renderer != null)
         {
             _renderer.Shutdown();
-            _logger?.LogInformation("SkiaSharp renderer plugin stopped");
         }
+        
+        if (_backend != null)
+        {
+            _backend.Dispose();
+        }
+        
+        _logger?.LogInformation("SkiaSharp renderer plugin stopped");
         return Task.CompletedTask;
     }
 }

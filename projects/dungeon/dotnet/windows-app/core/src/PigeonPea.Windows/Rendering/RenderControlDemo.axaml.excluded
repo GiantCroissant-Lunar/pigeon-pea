@@ -1,0 +1,51 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="using:PigeonPea.Windows.Rendering"
+        mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="720"
+        x:Class="PigeonPea.Windows.Rendering.RenderControlDemo"
+        Title="SkiaSharp Backend Demo - RFC-032 Phase 5"
+        Width="1280" Height="720"
+        Background="#1e1e1e">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Render Control -->
+        <local:SkiaSharpRenderControl x:Name="RenderControl"
+                                      Grid.Row="0"
+                                      HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Stretch"
+                                      RenderWidth="1280"
+                                      RenderHeight="720"/>
+        
+        <!-- Status Bar -->
+        <Border Grid.Row="1" 
+                Background="#2d2d30" 
+                BorderBrush="#3e3e42" 
+                BorderThickness="0,1,0,0"
+                Padding="10,5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" 
+                          x:Name="StatusText"
+                          Foreground="#cccccc"
+                          Text="Ready"/>
+                
+                <TextBlock Grid.Column="2"
+                          x:Name="FpsText"
+                          Foreground="#cccccc"
+                          Text="FPS: 0"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
