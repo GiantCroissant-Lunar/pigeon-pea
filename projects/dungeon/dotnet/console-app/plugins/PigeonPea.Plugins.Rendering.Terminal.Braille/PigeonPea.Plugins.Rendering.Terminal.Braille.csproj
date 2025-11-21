@@ -10,7 +10,9 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
   </ItemGroup>
 

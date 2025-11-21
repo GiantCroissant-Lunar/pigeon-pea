@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: RFC-00024
+doc_id: RFC-00042
 doc_type: rfc
 status: draft
 summary: Universal stat management service for any entity type (characters, weapons,

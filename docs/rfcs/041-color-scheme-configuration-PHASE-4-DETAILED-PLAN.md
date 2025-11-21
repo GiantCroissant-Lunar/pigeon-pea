@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: RFC-00023
+doc_id: RFC-00041
 doc_type: rfc
 related: []
 status: active
@@ -648,8 +648,8 @@ dotnet run --project dotnet/console-app/ -- --screenshot --scheme Realistic
 
 ## References
 
-- **RFC-010 Main Document**: `docs/rfcs/010-color-scheme-configuration.md`
-- **Phase 3 Instructions**: `docs/rfcs/010-color-scheme-configuration-PHASE-3-DETAILED-PLAN.md`
+- **RFC-010 Main Document**: `docs/rfcs/036-color-scheme-configuration.md`
+- **Phase 3 Instructions**: `docs/rfcs/039-color-scheme-configuration-PHASE-3-DETAILED-PLAN.md`
 - **Terminal.Gui Docs**: https://gui-cs.github.io/Terminal.Gui/
 - **Avalonia Docs**: https://docs.avaloniaui.net/
 - **ReactiveUI Docs**: https://www.reactiveui.net/

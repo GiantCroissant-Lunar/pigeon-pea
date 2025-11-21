@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
+    <ProjectReference Include="..\..\_lib\fantasy-map-generator-port\dotnet\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
+    <ProjectReference Include="..\..\_lib\spade-port\dotnet\src\Spade.Advanced\Spade.Advanced.csproj" />
   </ItemGroup>
 </Project>

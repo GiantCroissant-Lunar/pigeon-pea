@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: RFC-00024
+doc_id: RFC-00036
 doc_type: rfc
 related: []
 status: active
@@ -16,10 +16,10 @@ tags:
   - rfc
   - terminal
   - testing
-title: 'RFC-010: Color Scheme Configuration System'
+title: 'RFC-036: Color Scheme Configuration System'
 ---
 
-# RFC-010: Color Scheme Configuration System
+# RFC-036: Color Scheme Configuration System
 
 ## Status
 

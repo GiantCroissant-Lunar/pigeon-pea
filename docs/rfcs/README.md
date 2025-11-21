@@ -107,7 +107,7 @@ See existing RFCs (001-004 in main branch, 005-006 in other branch).
 - UI controls for console (Terminal.Gui) and desktop (Avalonia)
 - Unified `ColorSchemes` class replaces hardcoded color logic
 
-**Implementation**: [010-color-scheme-configuration.md](./010-color-scheme-configuration.md)
+**Implementation**: [036-color-scheme-configuration.md](./036-color-scheme-configuration.md)
 
 ---
 
@@ -127,11 +127,11 @@ See existing RFCs (001-004 in main branch, 005-006 in other branch).
 - <5% performance overhead
 - Foundation for future time-based effects (river flow, day/night)
 
-**Implementation**: [011-water-shimmer-animation.md](./011-water-shimmer-animation.md)
+**Implementation**: [043-water-shimmer-animation.md](./043-water-shimmer-animation.md)
 
 ---
 
-### RFC-013: Yazi-integrated Rust GM CLI
+### RFC-045: Yazi-integrated Rust GM CLI
 
 **Status**: Proposed
 **Created**: 2025-11-13
@@ -139,7 +139,7 @@ See existing RFCs (001-004 in main branch, 005-006 in other branch).
 
 **Summary**: Define a Rust CLI integrated with Yazi workflows to send GM commands and stream events over WebSocket, enabling a Play/Edit/GM workflow across local or remote machines.
 
-**Implementation**: [013-yazi-integrated-rust-cli.md](./013-yazi-integrated-rust-cli.md)
+**Implementation**: [045-yazi-integrated-rust-cli.md](./045-yazi-integrated-rust-cli.md)
 
 ---
 

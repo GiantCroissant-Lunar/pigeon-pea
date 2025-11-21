@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: RFC-00021
+doc_id: RFC-00039
 doc_type: rfc
 related: []
 status: active
@@ -782,7 +782,7 @@ After Phase 3 completion, proceed to:
 
 ## References
 
-- [RFC-010 Main Document](./010-color-scheme-configuration.md)
+- [RFC-010 Main Document](./036-color-scheme-configuration.md)
 - [RFC-007 Domain Organization](../architecture/domain-organization.md)
 - [ReactiveUI Documentation](https://www.reactiveui.net/docs/)
 - [Terminal.Gui Documentation](https://gui-cs.github.io/Terminal.Gui/)

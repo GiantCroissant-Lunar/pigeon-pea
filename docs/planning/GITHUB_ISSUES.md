@@ -2419,7 +2419,7 @@ Create BenchmarkDotNet benchmarks for rendering performance.
 
   ***
 
-# RFC-013: Yazi-integrated Rust GM CLI Issues
+# RFC-045: Yazi-integrated Rust GM CLI Issues
 
 ## Phase 1: Foundation (Week 1)
 
@@ -2429,7 +2429,7 @@ Create BenchmarkDotNet benchmarks for rendering performance.
 
 **Labels**: `enhancement`, `tooling`, `rust`, `rfc-013`, `phase-1`
 
-**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+**RFC Reference**: [RFC-045: Yazi-integrated Rust CLI](rfcs/045-yazi-integrated-rust-cli.md)
 
 **Dependencies**: None
 
@@ -2475,7 +2475,7 @@ struct Cli {
 
 **Labels**: `enhancement`, `networking`, `rust`, `rfc-013`, `phase-1`
 
-**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+**RFC Reference**: [RFC-045: Yazi-integrated Rust CLI](rfcs/045-yazi-integrated-rust-cli.md)
 
 **Dependencies**: Issue #44
 
@@ -2517,7 +2517,7 @@ struct Envelope<T> {
 
 **Labels**: `feature`, `cli`, `rust`, `rfc-013`, `phase-2`
 
-**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+**RFC Reference**: [RFC-045: Yazi-integrated Rust CLI](rfcs/045-yazi-integrated-rust-cli.md)
 
 **Dependencies**: Issue #45
 
@@ -2546,7 +2546,7 @@ Implement the core subcommands. Construct `gm.command` envelopes with appropriat
 
 **Labels**: `feature`, `streaming`, `rust`, `rfc-013`, `phase-2`
 
-**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+**RFC Reference**: [RFC-045: Yazi-integrated Rust CLI](rfcs/045-yazi-integrated-rust-cli.md)
 
 **Dependencies**: Issue #45
 
@@ -2575,7 +2575,7 @@ Implement watch subcommands that subscribe to state and log events. Print as lin
 
 **Labels**: `enhancement`, `stability`, `rust`, `rfc-013`, `phase-3`
 
-**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+**RFC Reference**: [RFC-045: Yazi-integrated Rust CLI](rfcs/045-yazi-integrated-rust-cli.md)
 
 **Dependencies**: Issues #45–#47
 
@@ -2601,7 +2601,7 @@ Add exponential backoff reconnects for watch commands, request timeouts for one-
 
 **Labels**: `testing`, `integration`, `rust`, `rfc-013`, `phase-3`
 
-**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+**RFC Reference**: [RFC-045: Yazi-integrated Rust CLI](rfcs/045-yazi-integrated-rust-cli.md)
 
 **Dependencies**: Issues #45–#47
 
@@ -2627,7 +2627,7 @@ Create a lightweight mock WS server for tests to validate envelopes and replies.
 
 **Labels**: `documentation`, `yazi`, `ci`, `release`, `rust`, `rfc-013`, `phase-3`
 
-**RFC Reference**: [RFC-013: Yazi-integrated Rust CLI](rfcs/013-yazi-integrated-rust-cli.md)
+**RFC Reference**: [RFC-045: Yazi-integrated Rust CLI](rfcs/045-yazi-integrated-rust-cli.md)
 
 **Dependencies**: Issues #44–#49
 
@@ -2655,7 +2655,7 @@ Total: **50 issues** across 4 RFCs
 - **RFC-001 (Rendering)**: 18 issues
 - **RFC-002 (UI Integration)**: 13 issues
 - **RFC-003 (Testing)**: 12 issues
-- **RFC-013 (Yazi-integrated Rust CLI)**: 7 issues
+- **RFC-045 (Yazi-integrated Rust CLI)**: 7 issues
 
 Each issue is:
 

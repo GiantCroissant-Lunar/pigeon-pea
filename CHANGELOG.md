@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added (RFC-032 Implementation)
+
+- Multi-backend rendering architecture with command-based abstraction
+  - `IRenderCommandList` interface for backend-agnostic command submission
+  - `IRenderBackend` interface for platform-specific rendering backends
+  - `IDomainRenderer` interface for domain-specific renderers
+  - `RenderingCapabilities` system for backend feature detection
+  - `RenderContext` and `RenderOptions` for configuration
+- ANSI Terminal Backend (`ANSIBackend`)
+  - Tile-based character rendering with ANSI escape sequences
+  - Delta rendering optimization (only updates changed cells)
+  - Support for 24-bit true color
+- Braille Terminal Backend (`BrailleBackend`)
+  - High-density buffer-based rendering with 2×4 sub-pixel resolution
+  - Each console character encodes 8 pixels using Braille Unicode (U+2800–U+28FF)
+  - Tile-to-pixel rasterization for backward compatibility
+  - RGBA pixel buffer support for direct buffer rendering
+  - Optimal for world maps and high-detail graphics in console
+- Comprehensive documentation in `PigeonPea.Rendering.Contracts/README.md`
+- Unit tests: 11 tests covering command lists and backend capabilities
+
 ### Added (RFC-007 Implementation)
 
 - Domain-driven architecture with independent Map and Dungeon domains (Core / Control / Rendering trinity)

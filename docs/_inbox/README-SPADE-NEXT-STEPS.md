@@ -8,7 +8,7 @@ The fantasy-map-generator-port has been fully migrated to use Spade for all Voro
 
 ## RFCs Created
 
-### RFC-032: Remove Delaunator Dependency
+### RFC-048: Remove Delaunator Dependency
 
 **Status:** Draft
 **File:** `032-remove-delaunator-dependency.md`
@@ -34,7 +34,7 @@ The fantasy-map-generator-port has been fully migrated to use Spade for all Voro
 
 ---
 
-### RFC-033: Spade Performance Benchmarking Suite
+### RFC-046: Spade Performance Benchmarking Suite
 
 **Status:** Draft
 **File:** `033-spade-performance-benchmarks.md`
@@ -64,7 +64,7 @@ The fantasy-map-generator-port has been fully migrated to use Spade for all Voro
 
 ---
 
-### RFC-034: Spade Integration Test Suite
+### RFC-047: Spade Integration Test Suite
 
 **Status:** Draft
 **File:** `034-spade-integration-tests.md`
@@ -104,7 +104,7 @@ The fantasy-map-generator-port has been fully migrated to use Spade for all Voro
 
 ### Phase 2: Optimization (Week 3-4)
 
-**Implement RFC-033: Performance Benchmarks**
+**Implement RFC-046: Performance Benchmarks**
 
 - Quantify performance improvements
 - Identify optimization opportunities
@@ -114,7 +114,7 @@ The fantasy-map-generator-port has been fully migrated to use Spade for all Voro
 
 ### Phase 3: Cleanup (Week 5)
 
-**Execute RFC-032: Remove Delaunator**
+**Execute RFC-048: Remove Delaunator**
 
 - Clean up dependencies
 - Remove dead code
@@ -187,21 +187,21 @@ RFC-032 (Remove Delaunator)
 
 ## Expected Outcomes
 
-### After RFC-032 (Delaunator Removal)
+### After RFC-048 (Delaunator Removal)
 
 - ✅ Cleaner dependency graph
 - ✅ Smaller binaries (~50KB reduction)
 - ✅ No deprecated packages
 - ✅ Updated documentation
 
-### After RFC-033 (Performance Benchmarks)
+### After RFC-046 (Performance Benchmarks)
 
 - ✅ Quantified performance improvements (10-20% faster)
 - ✅ Established baseline metrics
 - ✅ Automated performance regression detection
 - ✅ Optimization roadmap based on data
 
-### After RFC-034 (Integration Tests)
+### After RFC-047 (Integration Tests)
 
 - ✅ 100+ integration tests
 - ✅ >80% code coverage
@@ -252,9 +252,9 @@ If you have questions about implementing these RFCs:
 
 | RFC                  | Duration    | Effort     | Priority |
 | -------------------- | ----------- | ---------- | -------- |
-| RFC-034 (Tests)      | 2 weeks     | 12-16h     | High     |
-| RFC-033 (Benchmarks) | 2 weeks     | 8-12h      | High     |
-| RFC-032 (Cleanup)    | 1 week      | 2-3h       | Medium   |
+| RFC-047 (Tests)      | 2 weeks     | 12-16h     | High     |
+| RFC-046 (Benchmarks) | 2 weeks     | 8-12h      | High     |
+| RFC-048 (Cleanup)    | 1 week      | 2-3h       | Medium   |
 | **Total**            | **5 weeks** | **22-31h** | -        |
 
 ## Next Actions

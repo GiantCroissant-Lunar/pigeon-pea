@@ -60,8 +60,8 @@ git commit -m "docs: document domain-driven architecture and RFC-007"
   - `docs/GITHUB_ISSUES_DEVTOOLS.md`
   - `docs/issues/**`
   - `docs/rfcs/README.md`
-  - `docs/rfcs/010-color-scheme-configuration-*.md`
-  - `docs/rfcs/013-yazi-integrated-rust-cli.md`
+  - `docs/rfcs/036-color-scheme-configuration-*.md`
+  - `docs/rfcs/045-yazi-integrated-rust-cli.md`
   - `docs/determinism-reference.md`
   - `.github/workflows/determinism-tests.yml`
 
@@ -71,8 +71,8 @@ Suggested command (example):
 git add .github/issue-templates \
   docs/GITHUB_ISSUES.md docs/GITHUB_ISSUES_DEVTOOLS.md \
   docs/issues \
-  docs/rfcs/README.md docs/rfcs/010-color-scheme-configuration-*.md \
-  docs/rfcs/013-yazi-integrated-rust-cli.md \
+  docs/rfcs/README.md docs/rfcs/036-color-scheme-configuration-*.md \
+  docs/rfcs/045-yazi-integrated-rust-cli.md \
   docs/determinism-reference.md \
   .github/workflows/determinism-tests.yml
 # pre-commit run --all-files

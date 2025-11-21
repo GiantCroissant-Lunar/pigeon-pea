@@ -1801,7 +1801,7 @@
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\032-remove-delaunator-dependency.md",
       "sha256": "35592b7107c95609c322c793434b76bd2d4ca11f7549263ed6550a4a9c1bd452",
-      "doc_id": "RFC-00032",
+      "doc_id": "RFC-00048",
       "title": "Remove Delaunator Dependency from Fantasy Map Generator",
       "doc_type": "rfc",
       "status": "draft",
@@ -1826,7 +1826,7 @@
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\033-spade-performance-benchmarks.md",
       "sha256": "06bfd0129c302862e3f7d8e1edb8dd4b1eb7ba0d1ebf50bfac48f63f874794d4",
-      "doc_id": "RFC-00033",
+      "doc_id": "RFC-00046",
       "title": "Spade Performance Benchmarking Suite",
       "doc_type": "rfc",
       "status": "draft",
@@ -1857,7 +1857,7 @@
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\034-spade-integration-tests.md",
       "sha256": "56414359e1478c35253466cef335b956c06acabf7a75f79399c0da0eed9d02f7",
-      "doc_id": "RFC-00034",
+      "doc_id": "RFC-00047",
       "title": "Spade Integration Test Suite for Fantasy Map Generator",
       "doc_type": "rfc",
       "status": "draft",
@@ -1865,7 +1865,7 @@
       "created": "2025-11-20",
       "tags": ["testing", "integration", "spade", "quality-assurance", "fantasy-map-generator"],
       "summary": "Comprehensive integration test suite to ensure Spade-based geometry operations work correctly across all fantasy map generation scenarios",
-      "related": ["RFC-00032", "RFC-00033", "RFC-00003"],
+      "related": ["RFC-00032", "RFC-00046", "RFC-00003"],
       "implementation": {
         "status": "not-started",
         "completion": 0,

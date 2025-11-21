@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: RFC-00019
+doc_id: RFC-00037
 doc_type: rfc
 related: []
 status: active

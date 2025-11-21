@@ -6,7 +6,7 @@ dependencies:
   external:
     - spade-port
   rfcs: []
-doc_id: RFC-00032
+doc_id: RFC-00048
 doc_type: rfc
 implementation:
   completion: 0
@@ -27,7 +27,7 @@ tags:
 title: Remove Delaunator Dependency from Fantasy Map Generator
 ---
 
-# RFC-032: Remove Delaunator Dependency from Fantasy Map Generator
+# RFC-048: Remove Delaunator Dependency from Fantasy Map Generator
 
 ## Status
 
@@ -78,7 +78,7 @@ The fantasy-map-generator-port project currently includes both Delaunator (JavaS
 
 - Removing NetTopologySuite (still needed for GeoJSON, boundaries, etc.)
 - Removing Triangle.NET (still needed for constrained triangulation)
-- Performance optimization (handled separately in RFC-033)
+- Performance optimization (handled separately in RFC-046)
 
 ## Design
 

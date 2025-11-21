@@ -38,6 +38,9 @@
     <PackageVersion Include="SkiaSharp" Version="3.116.1" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.116.1" />
     <PackageVersion Include="Plate.SCG.General.DisposePattern" Version="0.1.0" />
+    
+    <!-- Rendering / Primitives -->
+    <PackageVersion Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
 
     <!-- Reactive / Fody -->
     <PackageVersion Include="ReactiveUI" Version="20.1.1" />

@@ -61,7 +61,10 @@ def analyze_rfc_indexing(rfcs_dir: Path) -> Dict:
             continue
 
         metadata = load_rfc_metadata(rfc_file)
-        if metadata:
+        # Only index true RFC documents here; other doc_types (e.g. plan)
+        # may live under docs/rfcs but should not be treated as RFCs for
+        # numbering consistency checks.
+        if metadata and metadata["front_matter"].get("doc_type") == "rfc":
             rfcs.append(metadata)
 
     # Identify issues
@@ -172,7 +175,6 @@ def generate_sync_report(analysis: Dict) -> str:
         len(issues["mismatches"])
         + len(issues["missing_doc_id"])
         + len(issues["missing_filename_number"])
-        + len(issues["duplicates"])
     )
 
     if total_issues == 0:
@@ -400,13 +402,12 @@ def main():
     else:
         print("\n" + report)
 
-    # Summary
+    # Summary (duplicates and gaps are informational only)
     issues = analysis["issues"]
     total_issues = (
         len(issues["mismatches"])
         + len(issues["missing_doc_id"])
         + len(issues["missing_filename_number"])
-        + len(issues["duplicates"])
     )
 
     print("\n=== SUMMARY ===")

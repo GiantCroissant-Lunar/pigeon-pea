@@ -1,7 +1,7 @@
 ---
 canonical: true
 created: '2025-11-20'
-doc_id: RFC-00026
+doc_id: RFC-00045
 doc_type: rfc
 related: []
 status: active
@@ -15,10 +15,10 @@ tags:
   - rfc
   - terminal
   - testing
-title: 'RFC-013: Yazi-integrated Rust GM CLI'
+title: 'RFC-045: Yazi-integrated Rust GM CLI'
 ---
 
-# RFC-013: Yazi-integrated Rust GM CLI
+# RFC-045: Yazi-integrated Rust GM CLI
 
 ## Status
 

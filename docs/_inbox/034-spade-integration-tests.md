@@ -9,7 +9,7 @@ dependencies:
     - Verify
   rfcs:
     - RFC-00003
-doc_id: RFC-00034
+doc_id: RFC-00047
 doc_type: rfc
 implementation:
   completion: 0
@@ -18,7 +18,7 @@ implementation:
   tasks: []
 related:
   - RFC-00032
-  - RFC-00033
+  - RFC-00046
   - RFC-00003
 status: draft
 summary: Comprehensive integration test suite to ensure Spade-based geometry operations
@@ -32,14 +32,14 @@ tags:
 title: Spade Integration Test Suite for Fantasy Map Generator
 ---
 
-# RFC-034: Spade Integration Test Suite for Fantasy Map Generator
+# RFC-047: Spade Integration Test Suite for Fantasy Map Generator
 
 ## Status
 
 - **Status:** Draft
 - **Author:** Claude Agent
 - **Date:** 2025-11-20
-- **Related:** RFC-003 (Testing & Verification), RFC-032 (Remove Delaunator), RFC-033 (Performance Benchmarks)
+- **Related:** RFC-003 (Testing & Verification), RFC-032 (Remove Delaunator), RFC-046 (Performance Benchmarks)
 
 ## Summary
 
@@ -83,7 +83,7 @@ The fantasy-map-generator-port has migrated to Spade but lacks dedicated integra
 ### Non-Goals
 
 - Unit testing Spade library (already covered)
-- Performance testing (covered in RFC-033)
+- Performance testing (covered in RFC-046)
 - UI/rendering testing (separate concern)
 - Full FMG compatibility testing (too broad)
 

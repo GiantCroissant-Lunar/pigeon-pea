@@ -72,12 +72,12 @@ Are these gaps intentional (reserved ranges) or accidental?
 ### Problem 4: Phase/Variant Files
 
 ```
-010-color-scheme-configuration.md
-010-color-scheme-configuration-PHASE-2-DETAILED-PLAN.md
-010-color-scheme-configuration-PHASE-2-INSTRUCTIONS.md
-010-color-scheme-configuration-PHASE-3-DETAILED-PLAN.md
-010-color-scheme-configuration-PHASE-3-REVIEW.md
-010-color-scheme-configuration-PHASE-4-DETAILED-PLAN.md
+036-color-scheme-configuration.md
+037-color-scheme-configuration-PHASE-2-DETAILED-PLAN.md
+038-color-scheme-configuration-PHASE-2-INSTRUCTIONS.md
+039-color-scheme-configuration-PHASE-3-DETAILED-PLAN.md
+040-color-scheme-configuration-PHASE-3-REVIEW.md
+041-color-scheme-configuration-PHASE-4-DETAILED-PLAN.md
 ```
 
 Should these be separate RFCs or sub-documents?
@@ -137,7 +137,7 @@ Should these be separate RFCs or sub-documents?
   - `RFC-00024` - Color Scheme Configuration Phase 3 Plan
 
 - **Option B:** Use sub-document structure in one RFC
-  - Single `010-color-scheme-configuration.md`
+  - Single `036-color-scheme-configuration.md`
   - Contains all phases as sections
   - No separate files
 
@@ -208,7 +208,7 @@ Should these be separate RFCs or sub-documents?
 
    ```
    OLD: 013-yazi-integrated-rust-cli.md
-   NEW: 030-yazi-integrated-rust-cli.md
+   NEW: 045-yazi-integrated-rust-cli.md
 
    OLD: 014-scene-management-ecs.md
    NEW: 031-scene-management-ecs.md

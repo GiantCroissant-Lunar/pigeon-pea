@@ -1,5 +1,5 @@
 ---
-doc_id: RFC-00033
+doc_id: RFC-00046
 title: Spade Performance Benchmarking Suite
 doc_type: rfc
 status: draft
@@ -30,7 +30,7 @@ external:
 blocks: []
 ---
 
-# RFC-033: Spade Performance Benchmarking Suite
+# RFC-046: Spade Performance Benchmarking Suite
 
 ## Status
 

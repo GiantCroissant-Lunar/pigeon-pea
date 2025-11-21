@@ -66,7 +66,7 @@ _Total Documents: 124_
 - ✅ **[RFC-2025-00023](rfcs\010-color-scheme-configuration-PHASE-4-DETAILED-PLAN.md)**: RFC-010 Phase 4: UI Controls - Detailed Implementation Plan
 - ✅ **[RFC-2025-00024](rfcs\010-color-scheme-configuration.md)**: RFC-010: Color Scheme Configuration System
 - ✅ **[RFC-2025-00025](rfcs\011-water-shimmer-animation.md)**: RFC-011: Water Shimmer Animation Feature
-- ✅ **[RFC-2025-00026](rfcs\013-yazi-integrated-rust-cli.md)**: RFC-013: Yazi-integrated Rust GM CLI
+- ✅ **[RFC-2025-00026](rfcs\045-yazi-integrated-rust-cli.md)**: RFC-045: Yazi-integrated Rust GM CLI
 - ✅ **[RFC-2025-00029](rfcs\RFC-007-PHASE-4-INSTRUCTIONS.md)**: RFC-007 Phase 4: Dungeon Domain Implementation - Detailed Instructions
 - ✅ **[RFC-2025-00030](rfcs\RFC-007-PHASE-5-INSTRUCTIONS.md)**: RFC-007 Phase 5: Arch ECS Integration - Detailed Instructions
 - ✅ **[RFC-2025-00031](rfcs\RFC-007-PHASE-6-INSTRUCTIONS.md)**: RFC-007 Phase 6: Deprecation and Documentation - Detailed Instructions
