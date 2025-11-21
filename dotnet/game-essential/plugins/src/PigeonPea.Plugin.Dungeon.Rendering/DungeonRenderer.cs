@@ -5,6 +5,7 @@ using PigeonPea.Dungeon.Contracts.Models;
 using PigeonPea.Overlays;
 using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Components;
+using PigeonPea.Shared.Scale;
 using SadRogue.Primitives;
 using RenderTile = PigeonPea.Rendering.Contracts.Tile;
 
@@ -49,11 +50,17 @@ public class DungeonRendererPlugin : IPlugin
 public class DungeonRenderer : IDungeonRenderer
 {
     private IRenderer? _platformRenderer;
+    private IScaleManager? _scaleManager;
     private bool _debugMode;
 
     public void Initialize(IRenderer renderer)
     {
         _platformRenderer = renderer;
+    }
+
+    public void SetScaleManager(IScaleManager scaleManager)
+    {
+        _scaleManager = scaleManager;
     }
 
     public void RenderWithOverlays(int width, int height, System.Collections.BitArray walkable, 
@@ -77,12 +84,16 @@ public class DungeonRenderer : IDungeonRenderer
             }
         }
 
+        // Get current zoom from scale manager if available
+        var currentZoom = _scaleManager?.CurrentZoom ?? scale;
+        var activeScale = _scaleManager?.ActiveScale;
+
         // Render overlays (doors, traps, treasure, etc.)
         foreach (var overlay in overlays)
         {
-            if (ShouldRenderOverlay(overlay, scale))
+            if (ShouldRenderOverlay(overlay, currentZoom, activeScale))
             {
-                var tile = GetOverlayTile(overlay, scale);
+                var tile = GetOverlayTile(overlay, (int)currentZoom);
                 if (tile != null)
                 {
                     _platformRenderer.DrawTile(overlay.Position.X, overlay.Position.Y, tile.Value);
@@ -145,17 +156,54 @@ public class DungeonRenderer : IDungeonRenderer
         return new RenderTile('.', Color.DarkGray, Color.Black);
     }
 
-    private bool ShouldRenderOverlay(IOverlayFeature<GridPosition> overlay, int scale)
+    private bool ShouldRenderOverlay(IOverlayFeature<GridPosition> overlay, double currentZoom, 
+        ScaleConfig? activeScale)
     {
-        // Scale-aware LOD: hide certain features at small scales
-        if (scale < 2)
+        // Check scale-based overlay rules if ScaleManager is available
+        if (activeScale != null && activeScale.OverlayRules != null)
         {
-            // At small scales, only show essential features
-            if (overlay.Kind == "trap" && !_debugMode)
-                return false; // Hide undiscovered traps at small scales
+            // Map overlay kind to layer ID (e.g., "trap" -> "dungeon.traps")
+            var layerId = overlay.LayerId;
+            
+            if (activeScale.OverlayRules.TryGetValue(layerId, out var rule))
+            {
+                // Check if current zoom is within the rule's zoom range
+                if (currentZoom < rule.MinZoom || currentZoom > rule.MaxZoom)
+                {
+                    return false; // Outside visible zoom range
+                }
+
+                // Apply filter rules if specified
+                if (!string.IsNullOrEmpty(rule.Filter))
+                {
+                    if (rule.Filter == "discovered" && overlay.Kind == "trap")
+                    {
+                        if (overlay.Metadata.TryGetValue("discovered", out var discovered))
+                        {
+                            if (discovered is bool d && !d)
+                                return false; // Hide undiscovered traps
+                        }
+                    }
+                }
+            }
+            // If no specific rule, check if layer is in allowed layers list
+            else if (activeScale.OverlayLayers != null && !activeScale.OverlayLayers.Contains(layerId))
+            {
+                return false; // Layer not enabled for this scale
+            }
+        }
+        else
+        {
+            // Fallback to legacy scale-based LOD if no ScaleManager
+            if (currentZoom < 2)
+            {
+                // At small scales, only show essential features
+                if (overlay.Kind == "trap" && !_debugMode)
+                    return false;
+            }
         }
 
-        // Visibility rules
+        // State-based visibility rules (always applied)
         if (overlay.Kind == "trap" && !_debugMode)
         {
             if (overlay.Metadata.TryGetValue("discovered", out var discovered))

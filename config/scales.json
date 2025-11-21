@@ -36,19 +36,63 @@
       "id": "dungeon-coarse",
       "environment": "dungeon",
       "metersPerCell": 5.0,
-      "minZoom": 1.0,
-      "maxZoom": 2.0,
+      "minZoom": 0.5,
+      "maxZoom": 1.5,
       "chunkSizeCells": 64,
-      "description": "Dungeon overview (5 m per tile)"
+      "description": "Dungeon overview (5 m per tile)",
+      "overlayLayers": ["dungeon.doors", "dungeon.stairs"],
+      "overlayRules": {
+        "dungeon.doors": {
+          "minZoom": 0.5,
+          "maxZoom": 10.0
+        },
+        "dungeon.stairs": {
+          "minZoom": 0.5,
+          "maxZoom": 10.0
+        },
+        "dungeon.treasure": {
+          "minZoom": 1.0,
+          "maxZoom": 10.0
+        },
+        "dungeon.traps": {
+          "minZoom": 1.2,
+          "maxZoom": 10.0,
+          "filter": "discovered"
+        }
+      }
     },
     {
       "id": "dungeon-fine",
       "environment": "dungeon",
       "metersPerCell": 2.0,
       "minZoom": 1.0,
-      "maxZoom": 1.5,
+      "maxZoom": 4.0,
       "chunkSizeCells": 64,
-      "description": "Dungeon gameplay (2 m per tile)"
+      "description": "Dungeon gameplay (2 m per tile)",
+      "overlayLayers": ["dungeon.doors", "dungeon.stairs", "dungeon.treasure", "dungeon.traps"],
+      "overlayRules": {
+        "dungeon.doors": {
+          "minZoom": 0.5,
+          "maxZoom": 10.0
+        },
+        "dungeon.stairs": {
+          "minZoom": 0.5,
+          "maxZoom": 10.0
+        },
+        "dungeon.treasure": {
+          "minZoom": 0.8,
+          "maxZoom": 10.0
+        },
+        "dungeon.traps": {
+          "minZoom": 1.0,
+          "maxZoom": 10.0,
+          "filter": "discovered"
+        },
+        "dungeon.spawn_points": {
+          "minZoom": 2.0,
+          "maxZoom": 10.0
+        }
+      }
     },
     {
       "id": "vehicle-fast",

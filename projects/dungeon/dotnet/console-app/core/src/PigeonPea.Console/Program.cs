@@ -516,8 +516,12 @@ static class GameEntrypoint
                     {
                         var dungeonRenderer = registry.Get<PigeonPea.Dungeon.Contracts.IDungeonRenderer>();
                         var platformRenderer = registry.Get<PigeonPea.Rendering.Contracts.IRenderer>();
-                        pluginRenderer = new RendererAdapter(dungeonRenderer, platformRenderer);
-                        logger.LogInformation("Using NEW plugin architecture renderer adapter");
+                        var scaleManager = registry.IsRegistered<PigeonPea.Shared.Scale.IScaleManager>() 
+                            ? registry.Get<PigeonPea.Shared.Scale.IScaleManager>() 
+                            : null;
+                        pluginRenderer = new RendererAdapter(dungeonRenderer, platformRenderer, scaleManager);
+                        logger.LogInformation("Using NEW plugin architecture renderer adapter with ScaleManager: {HasScaleManager}", 
+                            scaleManager != null);
                     }
                     else
                     {
