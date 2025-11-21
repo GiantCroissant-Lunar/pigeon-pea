@@ -7,6 +7,7 @@ using PigeonPea.Dungeon.Contracts;
 using PigeonPea.Game.Contracts.Models;
 using PigeonPea.Shared.Components;
 using Arch.Core;
+using RenderTile = PigeonPea.Rendering.Contracts.Tile;
 
 namespace PigeonPea.Console;
 
@@ -201,7 +202,7 @@ public class BackendGameLoop
         var query = new Arch.Core.QueryDescription().WithAll<DungeonMapComponent>();
         world.Query(in query, (ref DungeonMapComponent dungeon) =>
         {
-            // Render floor tiles
+            // Render tiles from tile data
             for (int y = 0; y < dungeon.Height && y < _height; y++)
             {
                 for (int x = 0; x < dungeon.Width && x < _width; x++)
@@ -223,7 +224,7 @@ public class BackendGameLoop
         {
             if (pos.X >= 0 && pos.X < _width && pos.Y >= 0 && pos.Y < _height)
             {
-                var tile = new Tile(
+                var tile = new RenderTile(
                     renderable.Glyph,
                     renderable.Foreground,
                     renderable.Background
@@ -233,22 +234,27 @@ public class BackendGameLoop
         });
     }
 
-    private Tile GetTileForCell(DungeonMapComponent dungeon, int x, int y)
+    private RenderTile GetTileForCell(DungeonMapComponent dungeon, int x, int y)
     {
         var index = y * dungeon.Width + x;
-        if (index < 0 || index >= dungeon.Tiles.Length)
+        if (index < 0 || index >= dungeon.TileData.Length)
         {
-            return new Tile('.', SadRogue.Primitives.Color.Gray, SadRogue.Primitives.Color.Black);
+            return new RenderTile(' ', SadRogue.Primitives.Color.Black, SadRogue.Primitives.Color.Black);
         }
 
-        var tileType = dungeon.Tiles[index];
-        return tileType switch
+        var tileValue = dungeon.TileData[index];
+        
+        // Basic tile interpretation:
+        // 0 = empty/void
+        // 1 = floor
+        // 2 = wall
+        // 3+ = other features
+        return tileValue switch
         {
-            TileType.Floor => new Tile('.', SadRogue.Primitives.Color.Gray, SadRogue.Primitives.Color.Black),
-            TileType.Wall => new Tile('#', SadRogue.Primitives.Color.White, SadRogue.Primitives.Color.Black),
-            TileType.Door => new Tile('+', SadRogue.Primitives.Color.Brown, SadRogue.Primitives.Color.Black),
-            TileType.Corridor => new Tile('.', SadRogue.Primitives.Color.DarkGray, SadRogue.Primitives.Color.Black),
-            _ => new Tile(' ', SadRogue.Primitives.Color.Black, SadRogue.Primitives.Color.Black)
+            0 => new RenderTile(' ', SadRogue.Primitives.Color.Black, SadRogue.Primitives.Color.Black),
+            1 => new RenderTile('.', SadRogue.Primitives.Color.Gray, SadRogue.Primitives.Color.Black),
+            2 => new RenderTile('#', SadRogue.Primitives.Color.White, SadRogue.Primitives.Color.Black),
+            _ => new RenderTile('?', SadRogue.Primitives.Color.Yellow, SadRogue.Primitives.Color.Black)
         };
     }
 

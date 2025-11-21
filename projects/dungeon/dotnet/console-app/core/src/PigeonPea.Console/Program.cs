@@ -508,6 +508,9 @@ static class GameEntrypoint
                 // Try to use the new architecture if enabled
                 if (useNewArch)
                 {
+                    // NOTE: RendererAdapter removed - use --backend option for new architecture
+                    logger.LogWarning("New architecture requested but RendererAdapter disabled. Use --backend option instead.");
+                    /*
                     if (registry.IsRegistered<PigeonPea.Dungeon.Contracts.IDungeonRenderer>() &&
                         registry.IsRegistered<PigeonPea.Rendering.Contracts.IRenderer>())
                     {
@@ -520,6 +523,7 @@ static class GameEntrypoint
                     {
                         logger.LogWarning("New renderer plugins not found, falling back to legacy.");
                     }
+                    */
                 }
 
                 // Fallback or legacy mode
@@ -683,6 +687,9 @@ static class GameEntrypoint
             // Try to use the new architecture if enabled
             if (useNewArch)
             {
+                // NOTE: RendererAdapter removed - use --backend option for new architecture
+                logger.LogWarning("New architecture requested but RendererAdapter disabled in HUD mode. Use --backend option instead.");
+                /*
                 if (registry.IsRegistered<PigeonPea.Dungeon.Contracts.IDungeonRenderer>() &&
                     registry.IsRegistered<PigeonPea.Rendering.Contracts.IRenderer>())
                 {
@@ -695,6 +702,7 @@ static class GameEntrypoint
                 {
                     logger.LogWarning("New renderer plugins not found, falling back to legacy.");
                 }
+                */
             }
 
             // Fallback or legacy mode

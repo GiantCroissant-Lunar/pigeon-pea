@@ -48,4 +48,15 @@
   <ItemGroup>
   </ItemGroup>
 
+  <!-- Temporarily exclude map rendering files that depend on FantasyMapGenerator -->
+  <!-- These are only needed for world map HUD features, not for dungeon rendering -->
+  <ItemGroup>
+    <Compile Remove="Rendering\MapDataRenderer.cs" />
+    <Compile Remove="Rendering\SkiaMapRasterizer.cs" />
+    <Compile Remove="Rendering\Tiles\BruTileBackedTileSource.cs" />
+    <Compile Remove="Rendering\Tiles\ITileSource.cs" />
+    <Compile Remove="Rendering\Tiles\SkiaTileSource.cs" />
+    <Compile Remove="Rendering\Tiles\TileAssembler.cs" />
+  </ItemGroup>
+
 </Project>

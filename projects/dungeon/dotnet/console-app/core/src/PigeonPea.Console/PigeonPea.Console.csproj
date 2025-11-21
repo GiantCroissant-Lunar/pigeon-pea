@@ -103,6 +103,8 @@
     <Compile Remove="Views\MapPanelView.cs" />
     <Compile Remove="Views\PixelMapPanelView.cs" />
     <Compile Remove="Views\DungeonPanelView.cs" />
+    <!-- Exclude legacy renderer adapter (replaced by backend architecture) -->
+    <Compile Remove="RendererAdapter.cs" />
   </ItemGroup>
 
   <Target Name="AddPluginsToPublish" AfterTargets="ComputeFilesToPublish">
