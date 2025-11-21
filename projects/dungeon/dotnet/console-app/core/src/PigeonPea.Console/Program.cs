@@ -68,6 +68,11 @@ static class GameEntrypoint
             Description = "Renderer to use (auto, kitty, sixel, braille, ascii, plugin, plugin-hud, hud)",
         };
 
+        var backendOption = new Option<string>("--backend")
+        {
+            Description = "Rendering backend (auto, ansi, braille) - uses new RFC-032 architecture",
+        };
+
         var debugOption = new Option<bool>("--debug")
         {
             Description = "Enable debug mode"
@@ -90,6 +95,7 @@ static class GameEntrypoint
 
         var rootCommand = new RootCommand("Pigeon Pea - Roguelike Dungeon Crawler");
         rootCommand.Add(rendererOption);
+        rootCommand.Add(backendOption);
         rootCommand.Add(debugOption);
         rootCommand.Add(widthOption);
         rootCommand.Add(heightOption);
@@ -98,6 +104,7 @@ static class GameEntrypoint
         rootCommand.SetAction((parseResult) =>
         {
             var rendererArg = parseResult.GetValue(rendererOption);
+            var backendArg = parseResult.GetValue(backendOption);
             var debug = parseResult.GetValue(debugOption);
             var width = parseResult.GetValue(widthOption);
             var height = parseResult.GetValue(heightOption);
@@ -105,6 +112,13 @@ static class GameEntrypoint
 
             var configRenderer = baseConfig["Game:Renderer"];
             var configDungeonGen = baseConfig["Game:DungeonGen"];
+
+            // If --backend is specified, use new architecture
+            if (!string.IsNullOrWhiteSpace(backendArg))
+            {
+                RunGameWithBackend(backendArg, debug, width, height, dungeonGenArg ?? configDungeonGen ?? "modern-edgar");
+                return;
+            }
 
             var renderer = !string.IsNullOrWhiteSpace(rendererArg)
                 ? rendererArg
@@ -122,6 +136,99 @@ static class GameEntrypoint
         });
 
         return rootCommand.Parse(args).Invoke();
+    }
+
+    static void RunGameWithBackend(string backendName, bool debug, int? width, int? height, string dungeonGen)
+    {
+        RuntimeLog($"RunGameWithBackend backend={backendName}, debug={debug}, width={width}, height={height}");
+
+        // Build host with plugin system
+        var builder = Host.CreateApplicationBuilder();
+
+        builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
+        {
+            ["Game:Renderer"] = "backend",
+            ["Game:DungeonGen"] = dungeonGen,
+            ["DungeonSystem:UseNewPluginArchitecture"] = "true",
+            ["DungeonSystem:GeneratorPluginId"] = "dungeon-generator-modern-edgar",
+        });
+
+        var appSettingsPath = Path.Combine(AppContext.BaseDirectory, "appsettings.json");
+        if (File.Exists(appSettingsPath))
+        {
+            builder.Configuration.AddJsonFile(appSettingsPath, optional: false, reloadOnChange: false);
+        }
+
+        builder.Logging.ClearProviders();
+        builder.Logging.AddSerilog();
+
+        builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddConfigServiceProxy();
+        builder.Services.AddPigeonPeaServices();
+
+        builder.Services.Scan(scan => scan
+            .FromAssemblyOf<ConsoleAssemblyMarker>()
+            .AddClasses()
+            .AsImplementedInterfaces()
+            .WithSingletonLifetime());
+
+        var host = builder.Build();
+        var logger = host.Services.GetRequiredService<ILogger<ConsoleAssemblyMarker>>();
+
+        try
+        {
+            host.StartAsync().Wait();
+
+            var registry = host.Services.GetRequiredService<IRegistry>();
+
+            // Get Scene Manager
+            if (!registry.IsRegistered<ISceneManager>())
+            {
+                System.Console.WriteLine("Error: No Scene Manager plugin loaded!");
+                logger.LogError("No Scene Manager plugin loaded.");
+                return;
+            }
+
+            var sceneManager = registry.Get<ISceneManager>();
+            logger.LogInformation("Scene Manager loaded: {SceneManagerType}", sceneManager.GetType().FullName);
+
+            // Create backend
+            var backendDetector = new BackendDetector(host.Services.GetService<ILogger<BackendDetector>>());
+            
+            if (debug)
+            {
+                System.Console.WriteLine(BackendDetector.GetBackendInfo());
+            }
+
+            var backend = backendDetector.CreateBackend(backendName);
+            logger.LogInformation("Created backend: {BackendId} ({BackendType})", backend.Id, backend.GetType().Name);
+
+            System.Console.WriteLine($"Backend: {backend.Id}");
+            System.Console.WriteLine($"  Capabilities:");
+            System.Console.WriteLine($"    - Tiles: {backend.Capabilities.SupportsTiles}");
+            System.Console.WriteLine($"    - Buffers: {backend.Capabilities.SupportsBuffers}");
+            System.Console.WriteLine($"    - Mode: {backend.Capabilities.Mode}");
+            System.Console.WriteLine($"    - Max Size: {backend.Capabilities.MaxWidth}×{backend.Capabilities.MaxHeight}");
+
+            // Determine render dimensions
+            var renderWidth = width ?? 80;
+            var renderHeight = height ?? 24;
+
+            // Run game loop with backend
+            var gameLoop = new BackendGameLoop(host, backend, sceneManager, renderWidth, renderHeight);
+            gameLoop.RunAsync(dungeonGen).Wait();
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unhandled exception in backend game loop");
+            System.Console.WriteLine($"Error: {ex.Message}");
+            throw;
+        }
+        finally
+        {
+            host.StopAsync().Wait();
+            host.Dispose();
+        }
     }
 
     static void RunGame(string renderer, bool debug, int? width, int? height, string dungeonGen)

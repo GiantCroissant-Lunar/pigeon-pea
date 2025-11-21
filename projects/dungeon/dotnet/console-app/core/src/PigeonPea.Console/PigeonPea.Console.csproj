@@ -71,8 +71,11 @@
 
     <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Hud.TerminalGui\PigeonPea.Plugins.Hud.TerminalGui.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
 
-    <!-- ANSI terminal renderer plugin (build-time only; runtime via plugin system) -->
-    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
+    <!-- ANSI terminal renderer backend (direct reference for backend detection) -->
+    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" />
+    
+    <!-- Braille terminal renderer backend (direct reference for backend detection) -->
+    <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Rendering.Terminal.Braille\PigeonPea.Plugins.Rendering.Terminal.Braille.csproj" />
 
     <!-- Modern Edgar Dungeon Generator Plugin -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugin.Dungeon.ModernEdgar\PigeonPea.Plugin.Dungeon.ModernEdgar.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
