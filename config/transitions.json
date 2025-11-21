@@ -1,0 +1,53 @@
+{
+  "$schema": "./transition-config-schema.json",
+  "transitions": [
+    {
+      "id": "world-to-town-zoom",
+      "from": "world",
+      "to": "town",
+      "trigger": "zoom_threshold",
+      "threshold": 2.0,
+      "direction": "zoom_in",
+      "description": "Zoom in on world transitions to town view"
+    },
+    {
+      "id": "town-to-world-zoom",
+      "from": "town",
+      "to": "world",
+      "trigger": "zoom_threshold",
+      "threshold": 0.75,
+      "direction": "zoom_out",
+      "description": "Zoom out on town transitions to world view"
+    },
+    {
+      "id": "world-to-dungeon",
+      "from": "world",
+      "to": "dungeon-coarse",
+      "trigger": "enter_dungeon",
+      "description": "Enter dungeon from world map"
+    },
+    {
+      "id": "dungeon-coarse-to-fine",
+      "from": "dungeon-coarse",
+      "to": "dungeon-fine",
+      "trigger": "zoom_threshold",
+      "threshold": 2.0,
+      "direction": "zoom_in",
+      "description": "Zoom in on dungeon overview for detailed view"
+    },
+    {
+      "id": "world-to-vehicle",
+      "from": "world",
+      "to": "vehicle-fast",
+      "trigger": "mount_vehicle",
+      "description": "Mount vehicle for fast travel"
+    },
+    {
+      "id": "vehicle-to-world",
+      "from": "vehicle-fast",
+      "to": "world",
+      "trigger": "dismount_vehicle",
+      "description": "Dismount vehicle and return to normal travel"
+    }
+  ]
+}

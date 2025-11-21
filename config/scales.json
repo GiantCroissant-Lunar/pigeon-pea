@@ -1,0 +1,63 @@
+{
+  "$schema": "./scale-config-schema.json",
+  "scales": [
+    {
+      "id": "world",
+      "environment": "world",
+      "metersPerCell": 1000.0,
+      "minZoom": 0.75,
+      "maxZoom": 2.0,
+      "chunkSizeCells": 32,
+      "description": "Overland map (1 km per cell)",
+      "overlayLayers": ["world.capitals", "world.settlements", "world.dungeons"],
+      "overlayRules": {
+        "world.settlements": {
+          "minZoom": 0.0,
+          "maxZoom": 0.6,
+          "filter": "tier == 'city'"
+        },
+        "world.dungeons": {
+          "minZoom": 0.0,
+          "maxZoom": 0.7
+        }
+      }
+    },
+    {
+      "id": "town",
+      "environment": "world",
+      "metersPerCell": 20.0,
+      "minZoom": 0.75,
+      "maxZoom": 2.0,
+      "chunkSizeCells": 64,
+      "description": "Town/block view (20 m per cell)",
+      "overlayLayers": ["town.buildings", "town.roads", "town.npcs"]
+    },
+    {
+      "id": "dungeon-coarse",
+      "environment": "dungeon",
+      "metersPerCell": 5.0,
+      "minZoom": 1.0,
+      "maxZoom": 2.0,
+      "chunkSizeCells": 64,
+      "description": "Dungeon overview (5 m per tile)"
+    },
+    {
+      "id": "dungeon-fine",
+      "environment": "dungeon",
+      "metersPerCell": 2.0,
+      "minZoom": 1.0,
+      "maxZoom": 1.5,
+      "chunkSizeCells": 64,
+      "description": "Dungeon gameplay (2 m per tile)"
+    },
+    {
+      "id": "vehicle-fast",
+      "environment": "vehicle",
+      "metersPerCell": 100.0,
+      "minZoom": 0.8,
+      "maxZoom": 1.5,
+      "chunkSizeCells": 64,
+      "description": "Fast travel with mount/vehicle (100 m per cell)"
+    }
+  ]
+}

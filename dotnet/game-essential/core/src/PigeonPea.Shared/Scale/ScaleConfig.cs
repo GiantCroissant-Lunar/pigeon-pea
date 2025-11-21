@@ -17,7 +17,17 @@ public sealed record ScaleConfig(
     double MinZoom,
     double MaxZoom,
     int ChunkSizeCells,
-    string? Description);
+    string? Description,
+    IReadOnlyList<string>? OverlayLayers = null,
+    IReadOnlyDictionary<string, OverlayRule>? OverlayRules = null);
+
+/// <summary>
+/// Visibility rule for an overlay layer at a specific scale
+/// </summary>
+public sealed record OverlayRule(
+    double MinZoom,
+    double MaxZoom,
+    string? Filter = null);
 
 /// <summary>
 /// Registry for scale configurations. For now this is a simple static loader
@@ -82,9 +92,39 @@ public sealed class ScaleRegistry
                             description = descEl.GetString();
                         }
 
+                        List<string>? overlayLayers = null;
+                        if (el.TryGetProperty("overlayLayers", out var layersEl) && layersEl.ValueKind == JsonValueKind.Array)
+                        {
+                            overlayLayers = new List<string>();
+                            foreach (var layer in layersEl.EnumerateArray())
+                            {
+                                if (layer.ValueKind == JsonValueKind.String && layer.GetString() is { } layerStr)
+                                {
+                                    overlayLayers.Add(layerStr);
+                                }
+                            }
+                        }
+
+                        Dictionary<string, OverlayRule>? overlayRules = null;
+                        if (el.TryGetProperty("overlayRules", out var rulesEl) && rulesEl.ValueKind == JsonValueKind.Object)
+                        {
+                            overlayRules = new Dictionary<string, OverlayRule>();
+                            foreach (var ruleProp in rulesEl.EnumerateObject())
+                            {
+                                var layerId = ruleProp.Name;
+                                var ruleObj = ruleProp.Value;
+                                var minZ = ruleObj.GetProperty("minZoom").GetDouble();
+                                var maxZ = ruleObj.GetProperty("maxZoom").GetDouble();
+                                var filter = ruleObj.TryGetProperty("filter", out var f) && f.ValueKind == JsonValueKind.String 
+                                    ? f.GetString() 
+                                    : null;
+                                overlayRules[layerId] = new OverlayRule(minZ, maxZ, filter);
+                            }
+                        }
+
                         if (!string.IsNullOrWhiteSpace(id))
                         {
-                            scales.Add(new ScaleConfig(id, environment, metersPerCell, minZoom, maxZoom, chunkSizeCells, description));
+                            scales.Add(new ScaleConfig(id, environment, metersPerCell, minZoom, maxZoom, chunkSizeCells, description, overlayLayers, overlayRules));
                         }
                     }
 

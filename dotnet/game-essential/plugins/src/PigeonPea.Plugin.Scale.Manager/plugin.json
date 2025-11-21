@@ -1,0 +1,11 @@
+{
+  "id": "scale-manager",
+  "name": "Scale Manager",
+  "version": "1.0.0",
+  "author": "PigeonPea",
+  "description": "Manages discrete scale/zoom modes with automatic transitions",
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugin.Scale.Manager.dll,PigeonPea.Plugin.Scale.Manager.ScaleManagerPlugin"
+  },
+  "dependencies": []
+}
