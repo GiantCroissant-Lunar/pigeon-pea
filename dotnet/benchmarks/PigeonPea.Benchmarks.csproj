@@ -19,6 +19,9 @@
 
   <ItemGroup>
     <ProjectReference Include="../game-essential/core/src/PigeonPea.Shared/PigeonPea.Shared.csproj" />
+    <ProjectReference Include="../game-essential/core/src/PigeonPea.Rendering.Contracts/PigeonPea.Rendering.Contracts.csproj" />
+    <ProjectReference Include="../../projects/dungeon/dotnet/console-app/plugins/PigeonPea.Plugins.Rendering.Terminal.ANSI/PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" />
+    <ProjectReference Include="../../projects/dungeon/dotnet/console-app/plugins/PigeonPea.Plugins.Rendering.Terminal.Braille/PigeonPea.Plugins.Rendering.Terminal.Braille.csproj" />
   </ItemGroup>
 
   <ItemGroup>
