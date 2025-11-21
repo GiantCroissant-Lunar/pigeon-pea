@@ -203,9 +203,18 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
             }
         }
 
+        var trapMetadataList = GenerateTraps(d);
+        var treasureMetadataList = GenerateTreasure(d);
+        var spawnMetadataList = GenerateSpawnPoints(d);
+        var stairMetadataList = GenerateStairs(d);
+
         var featureMetadata = new Dictionary<string, object>
         {
-            ["doors"] = JsonSerializer.Serialize(doorMetadataList)
+            ["doors"] = JsonSerializer.Serialize(doorMetadataList),
+            ["traps"] = JsonSerializer.Serialize(trapMetadataList),
+            ["treasure"] = JsonSerializer.Serialize(treasureMetadataList),
+            ["spawn_points"] = JsonSerializer.Serialize(spawnMetadataList),
+            ["stairs"] = JsonSerializer.Serialize(stairMetadataList)
         };
 
         return world.Create(
@@ -228,6 +237,148 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
                 Layer = RenderLayer.Floor
             }
         );
+    }
+
+    private static List<TrapMetadata> GenerateTraps(DungeonData d)
+    {
+        var traps = new List<TrapMetadata>();
+        var rng = new Random();
+        var trapTypes = new[] { "spike", "arrow", "poison_gas", "pit", "fire" };
+        
+        int trapCount = Math.Max(2, (d.Width * d.Height) / 300);
+        var placed = new HashSet<(int, int)>();
+
+        for (int attempts = 0; attempts < trapCount * 10 && traps.Count < trapCount; attempts++)
+        {
+            int x = rng.Next(1, d.Width - 1);
+            int y = rng.Next(1, d.Height - 1);
+
+            if (!d.IsWalkable(x, y) || d.IsDoor(x, y) || placed.Contains((x, y)))
+                continue;
+
+            traps.Add(new TrapMetadata(
+                X: x,
+                Y: y,
+                Type: trapTypes[rng.Next(trapTypes.Length)],
+                Damage: rng.Next(5, 20),
+                Radius: rng.Next(1, 4),
+                Discovered: false,
+                Triggered: false));
+
+            placed.Add((x, y));
+        }
+
+        return traps;
+    }
+
+    private static List<TreasureMetadata> GenerateTreasure(DungeonData d)
+    {
+        var treasures = new List<TreasureMetadata>();
+        var rng = new Random();
+        var containerTypes = new[] { "Chest", "Barrel", "Crate", "Sarcophagus" };
+        
+        int treasureCount = Math.Max(1, (d.Width * d.Height) / 400);
+        var placed = new HashSet<(int, int)>();
+
+        for (int attempts = 0; attempts < treasureCount * 10 && treasures.Count < treasureCount; attempts++)
+        {
+            int x = rng.Next(1, d.Width - 1);
+            int y = rng.Next(1, d.Height - 1);
+
+            if (!d.IsWalkable(x, y) || d.IsDoor(x, y) || placed.Contains((x, y)))
+                continue;
+
+            treasures.Add(new TreasureMetadata(
+                X: x,
+                Y: y,
+                ContainerType: containerTypes[rng.Next(containerTypes.Length)],
+                Items: new[] { "potion", "scroll", "gem" },
+                Gold: rng.Next(50, 500),
+                Opened: false,
+                Locked: rng.NextDouble() < 0.3,
+                TrapType: rng.NextDouble() < 0.2 ? "poison_needle" : null));
+
+            placed.Add((x, y));
+        }
+
+        return treasures;
+    }
+
+    private static List<SpawnPointMetadata> GenerateSpawnPoints(DungeonData d)
+    {
+        var spawns = new List<SpawnPointMetadata>();
+        var rng = new Random();
+        var monsterTypes = new[] { "goblin", "orc", "skeleton", "spider", "rat" };
+        
+        int spawnCount = Math.Max(3, (d.Width * d.Height) / 250);
+        var placed = new HashSet<(int, int)>();
+
+        for (int attempts = 0; attempts < spawnCount * 10 && spawns.Count < spawnCount; attempts++)
+        {
+            int x = rng.Next(1, d.Width - 1);
+            int y = rng.Next(1, d.Height - 1);
+
+            if (!d.IsWalkable(x, y) || d.IsDoor(x, y) || placed.Contains((x, y)))
+                continue;
+
+            bool isBoss = spawns.Count == 0 && rng.NextDouble() < 0.15;
+            
+            spawns.Add(new SpawnPointMetadata(
+                X: x,
+                Y: y,
+                SpawnType: isBoss ? "boss" : "normal",
+                MonsterId: monsterTypes[rng.Next(monsterTypes.Length)],
+                Level: rng.Next(1, 10),
+                IsBoss: isBoss));
+
+            placed.Add((x, y));
+        }
+
+        return spawns;
+    }
+
+    private static List<StairMetadata> GenerateStairs(DungeonData d)
+    {
+        var stairs = new List<StairMetadata>();
+        var rng = new Random();
+
+        var walkablePositions = new List<(int x, int y)>();
+        for (int y = 1; y < d.Height - 1; y++)
+        {
+            for (int x = 1; x < d.Width - 1; x++)
+            {
+                if (d.IsWalkable(x, y) && !d.IsDoor(x, y))
+                    walkablePositions.Add((x, y));
+            }
+        }
+
+        if (walkablePositions.Count > 0)
+        {
+            var upStairPos = walkablePositions[rng.Next(walkablePositions.Count)];
+            stairs.Add(new StairMetadata(
+                X: upStairPos.x,
+                Y: upStairPos.y,
+                Direction: "up",
+                DestinationLevel: -1,
+                DestinationX: 0,
+                DestinationY: 0));
+
+            walkablePositions.Remove(upStairPos);
+        }
+
+        if (walkablePositions.Count > 0)
+        {
+            var downStairPos = walkablePositions[rng.Next(walkablePositions.Count)];
+            stairs.Add(new StairMetadata(
+                X: downStairPos.x,
+                Y: downStairPos.y,
+                Direction: "down",
+                DestinationLevel: 1,
+                DestinationX: 0,
+                DestinationY: 0));
+        }
+
+        return stairs;
     }
 
     private static string DetectDoorOrientation(DungeonData d, int x, int y)
