@@ -18,11 +18,12 @@ from pathlib import Path
 import pytest
 
 # Add scripts directory to path
-sys.path.insert(0, str(Path(__file__).parent.parent / "scripts"))
+sys.path.insert(0, str(Path(__file__).parent.parent / "scripts" / "docs_mgmt"))
 
 # Import with proper module name (underscore in filename)
 spec = importlib.util.spec_from_file_location(
-    "validate_docs", str(Path(__file__).parent.parent / "scripts" / "validate-docs.py")
+    "validate_docs",
+    str(Path(__file__).parent.parent / "scripts" / "docs_mgmt" / "validate-docs.py"),
 )
 validate_docs = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(validate_docs)

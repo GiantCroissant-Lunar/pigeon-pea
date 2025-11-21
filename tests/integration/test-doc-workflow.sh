@@ -116,7 +116,7 @@ assert_file_exists "$TEST_DOCS_DIR/_inbox/test-workflow.md"
 
 # Test 2: Validate inbox document (should pass with minimal fields)
 log_info "Test 2: Validating inbox document with minimal fields"
-python3 scripts/validate-docs.py --docs-dir "$TEST_DOCS_DIR" > /tmp/validation1.log 2>&1
+python3 scripts/docs_mgmt/validate-docs.py --docs-dir "$TEST_DOCS_DIR" > /tmp/validation1.log 2>&1
 if grep -q "Validation PASSED" /tmp/validation1.log; then
     assert_success "Inbox validation passed"
 else
@@ -157,7 +157,7 @@ assert_file_exists "$TEST_DOCS_DIR/_inbox/test-workflow.md"
 
 # Test 4: Validate with complete front-matter
 log_info "Test 4: Validating document with complete front-matter"
-python3 scripts/validate-docs.py --docs-dir "$TEST_DOCS_DIR" > /tmp/validation2.log 2>&1
+python3 scripts/docs_mgmt/validate-docs.py --docs-dir "$TEST_DOCS_DIR" > /tmp/validation2.log 2>&1
 if grep -q "Validation PASSED" /tmp/validation2.log; then
     assert_success "Complete validation passed"
 else
@@ -173,7 +173,7 @@ assert_file_exists "$TEST_DOCS_DIR/rfcs/999-test-workflow.md"
 
 # Test 6: Validate in final location
 log_info "Test 6: Validating document in final location"
-python3 scripts/validate-docs.py --docs-dir "$TEST_DOCS_DIR" --registry "$TEST_DOCS_DIR/index/registry.json" > /tmp/validation3.log 2>&1
+python3 scripts/docs_mgmt/validate-docs.py --docs-dir "$TEST_DOCS_DIR" --registry "$TEST_DOCS_DIR/index/registry.json" > /tmp/validation3.log 2>&1
 if grep -q "Validation PASSED" /tmp/validation3.log; then
     assert_success "Final validation passed"
 else
@@ -203,7 +203,7 @@ assert_file_contains "$TEST_DOCS_DIR/index/registry.json" "docs"
 log_info "Test 10: Testing pre-commit mode"
 REGISTRY_MTIME_BEFORE=$(stat -c %Y "$TEST_DOCS_DIR/index/registry.json" 2>/dev/null || stat -f %m "$TEST_DOCS_DIR/index/registry.json")
 sleep 1
-python3 scripts/validate-docs.py --pre-commit --docs-dir "$TEST_DOCS_DIR" > /tmp/validation4.log 2>&1
+python3 scripts/docs_mgmt/validate-docs.py --pre-commit --docs-dir "$TEST_DOCS_DIR" > /tmp/validation4.log 2>&1
 REGISTRY_MTIME_AFTER=$(stat -c %Y "$TEST_DOCS_DIR/index/registry.json" 2>/dev/null || stat -f %m "$TEST_DOCS_DIR/index/registry.json")
 
 if [ "$REGISTRY_MTIME_BEFORE" -eq "$REGISTRY_MTIME_AFTER" ]; then
@@ -230,7 +230,7 @@ summary: "A document with similar title and content"
 
 This document has a very similar title to the existing document.
 EOF
-python3 scripts/validate-docs.py --docs-dir "$TEST_DOCS_DIR" > /tmp/validation5.log 2>&1
+python3 scripts/docs_mgmt/validate-docs.py --docs-dir "$TEST_DOCS_DIR" > /tmp/validation5.log 2>&1
 if grep -q "Near-duplicate detected" /tmp/validation5.log; then
     assert_success "Duplicate detection works"
 else

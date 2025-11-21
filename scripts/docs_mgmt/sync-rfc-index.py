@@ -368,7 +368,7 @@ def main():
     args = parser.parse_args()
 
     # Resolve paths
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     rfcs_dir = args.rfcs_dir or repo_root / "docs" / "rfcs"
 
     if args.generate_prd_schema:

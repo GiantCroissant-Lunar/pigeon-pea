@@ -27,7 +27,7 @@ public class MultiCalendarExample
         Console.WriteLine();
 
         var harptosDate = new FantasyDate(1372, 1, 15, 14, 30, 0);
-        
+
         // Show the same moment in different representations
         Console.WriteLine("Same Moment in Different Representations:");
         var realDate = _calendarService.ToRealWorld(harptosDate, "harptos", DateTimeZone.Utc);

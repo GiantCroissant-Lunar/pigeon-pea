@@ -459,7 +459,7 @@ def main():
     args = parser.parse_args()
 
     # Resolve paths
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     docs_dir = args.docs_dir or repo_root / "docs"
     output_file = args.output or docs_dir / "index" / "quality-report.md"
 

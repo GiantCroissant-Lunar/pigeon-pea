@@ -74,7 +74,7 @@ public class CameraUpdateSystem
         // Renderers can access it by querying for CameraComponent and reading
         // camera.Transform.Position, camera.Transform.Zoom, etc.
     }
-    
+
     /// <summary>
     /// Gets the current viewport from the camera system.
     /// This is a convenience method for renderers to get the viewport without
@@ -88,7 +88,7 @@ public class CameraUpdateSystem
     {
         return world.GetMainCameraViewport(screenWidth, screenHeight);
     }
-    
+
     /// <summary>
     /// Gets the current viewport from the camera System with custom zoom calculation.
     /// </summary>

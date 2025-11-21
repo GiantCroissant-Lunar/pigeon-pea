@@ -25,18 +25,18 @@ public static class CameraViewportConverter
         // The camera position represents the center of the view, so we need to offset it
         // to get the top-left corner of the viewport
         float zoom = transform.Zoom;
-        
+
         // Calculate the world space dimensions of the viewport
         float worldWidth = screenWidth / zoom;
         float worldHeight = screenHeight / zoom;
-        
+
         // Calculate the top-left corner of the viewport in world coordinates
         int viewportX = (int)(transform.Position.X - worldWidth / 2);
         int viewportY = (int)(transform.Position.Y - worldHeight / 2);
-        
+
         return new Viewport(viewportX, viewportY, screenWidth, screenHeight);
     }
-    
+
     /// <summary>
     /// Converts a CameraTransform to a Viewport for rendering with custom zoom calculation.
     /// </summary>
@@ -49,14 +49,14 @@ public static class CameraViewportConverter
     {
         // Calculate zoom as world units per screen cell
         float zoom = baseTileSize / transform.Zoom;
-        
+
         // Calculate the top-left corner of the viewport in world coordinates
         int viewportX = (int)(transform.Position.X - screenWidth * zoom / 2);
         int viewportY = (int)(transform.Position.Y - screenHeight * zoom / 2);
-        
+
         return new Viewport(viewportX, viewportY, screenWidth, screenHeight);
     }
-    
+
     /// <summary>
     /// Gets the current viewport from the main camera in the world.
     /// </summary>
@@ -69,10 +69,10 @@ public static class CameraViewportConverter
         var cameraComponent = world.GetMainCameraComponent();
         if (cameraComponent == null)
             return null;
-            
+
         return cameraComponent.Camera.Transform.ToViewport(screenWidth, screenHeight);
     }
-    
+
     /// <summary>
     /// Gets the current viewport from the main camera in the world with custom zoom calculation.
     /// </summary>
@@ -86,10 +86,10 @@ public static class CameraViewportConverter
         var cameraComponent = world.GetMainCameraComponent();
         if (cameraComponent == null)
             return null;
-            
+
         return cameraComponent.Camera.Transform.ToViewport(screenWidth, screenHeight, baseTileSize);
     }
-    
+
     /// <summary>
     /// Converts world coordinates to screen coordinates relative to the camera viewport.
     /// </summary>
@@ -102,7 +102,7 @@ public static class CameraViewportConverter
         int screenY = (int)(worldPos.Y - viewport.Y);
         return (screenX, screenY);
     }
-    
+
     /// <summary>
     /// Converts screen coordinates to world coordinates relative to the camera viewport.
     /// </summary>
@@ -114,7 +114,7 @@ public static class CameraViewportConverter
     {
         return new Vector2(viewport.X + screenX, viewport.Y + screenY);
     }
-    
+
     /// <summary>
     /// Checks if a world position is visible within the camera viewport.
     /// </summary>
@@ -123,9 +123,9 @@ public static class CameraViewportConverter
     /// <returns>True if the position is visible, false otherwise.</returns>
     public static bool IsVisible(this Vector2 worldPos, PigeonPea.Rendering.Contracts.Viewport viewport)
     {
-        return worldPos.X >= viewport.X && 
+        return worldPos.X >= viewport.X &&
                worldPos.X < viewport.X + viewport.Width &&
-               worldPos.Y >= viewport.Y && 
+               worldPos.Y >= viewport.Y &&
                worldPos.Y < viewport.Y + viewport.Height;
     }
 }

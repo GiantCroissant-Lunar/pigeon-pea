@@ -99,7 +99,7 @@ repos:
     hooks:
       - id: validate-skills
         name: Validate agent skills
-        entry: python scripts/validate_skills.py
+        entry: python .agent/scripts/validate_skills.py
         language: python
         files: '^\.agent/skills/.*\.md$'
         additional_dependencies:
@@ -108,7 +108,7 @@ repos:
 
       - id: validate-agents
         name: Validate agent manifests
-        entry: python scripts/validate_agents.py
+        entry: python .agent/scripts/validate_agents.py
         language: python
         files: '^\.agent/agents/.*\.yaml$'
         additional_dependencies:
@@ -117,7 +117,7 @@ repos:
 
       - id: generate-registry
         name: Generate agent registry
-        entry: python scripts/generate_registry.py
+        entry: python .agent/scripts/generate_registry.py
         language: python
         files: '^\.agent/(agents|skills)/.*\.(yaml|md)$'
         pass_filenames: false
@@ -126,7 +126,7 @@ repos:
 
       - id: validate-docs
         name: Validate documentation
-        entry: python scripts/validate-docs.py --pre-commit
+        entry: python scripts/docs_mgmt/validate-docs.py --pre-commit
         language: python
         files: '^docs/.*\.md$'
         exclude: '^docs/(_inbox|index)/'

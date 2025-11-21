@@ -28,13 +28,13 @@
   <ItemGroup>
     <!-- Plugin System -->
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Contracts.Plugin\PigeonPea.Contracts.Plugin.csproj" />
-    
+
     <!-- Shared ECS Components -->
     <ProjectReference Include="..\..\..\engine\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
-    
+
     <!-- Game Contracts -->
     <ProjectReference Include="..\..\..\engine\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
-    
+
     <!-- Input Contracts -->
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts.Input\PigeonPea.Contracts.Input.csproj" />
   </ItemGroup>

@@ -26,7 +26,7 @@ public class HarptosCalendarTests
     // Actually, ToWorldTick takes a date. If I pass an invalid date (Shieldmeet in non-leap), what happens?
     // My implementation of ToWorldTick assumes valid input or calculates blindly.
     // Let's test valid leap year shieldmeet.
-    [InlineData(4, 16, 1, 213 + 3 * 365)] // Year 4 (Leap), Shieldmeet. 
+    [InlineData(4, 16, 1, 213 + 3 * 365)] // Year 4 (Leap), Shieldmeet.
     // Year 1, 2, 3 are 365 days. Year 4 is leap.
     // Days before Year 4: 365 * 3 = 1095.
     // Days in Year 4 before Shieldmeet: Hammer(30)+Midwinter(1)+Alturiak(30)+Ches(30)+Tarsakh(30)+Greengrass(1)+Mirtul(30)+Kythorn(30)+Flamerule(30)+Midsummer(1) = 213.

@@ -29,6 +29,7 @@ public readonly record struct FantasyDate(
 ```
 
 **Example:**
+
 ```csharp
 // Harptos Year 1372, Hammer 15, 2:30 PM
 var date = new FantasyDate(1372, 1, 15, 14, 30, 0);
@@ -62,6 +63,7 @@ public interface ICalendarDefinition
 ```
 
 **Implementations:**
+
 - `HarptosCalendar` - Forgotten Realms calendar (365 days, 12 months + 5 special days)
 - `ConfigurableCalendar` - Custom calendar via configuration
 
@@ -100,8 +102,8 @@ calendarService.RegisterCalendar("harptos", new HarptosCalendar());
 ```csharp
 var fantasyDate = new FantasyDate(1372, 1, 15, 14, 30, 0);
 var realDate = calendarService.ToRealWorld(
-    fantasyDate, 
-    "harptos", 
+    fantasyDate,
+    "harptos",
     DateTimeZone.Utc
 );
 
@@ -124,8 +126,8 @@ calendarService.RegisterCalendar("gregorian", new GregorianCalendar());
 
 var harptosDate = new FantasyDate(1372, 1, 15, 14, 30, 0);
 var gregorianDate = calendarService.Convert(
-    harptosDate, 
-    "harptos", 
+    harptosDate,
+    "harptos",
     "gregorian"
 );
 ```
@@ -152,8 +154,8 @@ Schedule in-game events to real-world times:
 ```csharp
 var festivalDate = new FantasyDate(1372, 15, 1, 0, 0, 0); // Midsummer
 var realStartTime = calendarService.ToRealWorld(
-    festivalDate, 
-    "harptos", 
+    festivalDate,
+    "harptos",
     DateTimeZoneProviders.Tzdb["America/Los_Angeles"]
 );
 

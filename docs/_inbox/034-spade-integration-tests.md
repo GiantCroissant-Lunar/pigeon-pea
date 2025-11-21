@@ -6,16 +6,16 @@ status: draft
 canonical: true
 created: '2025-11-20'
 tags:
-- testing
-- integration
-- spade
-- quality-assurance
-- fantasy-map-generator
+  - testing
+  - integration
+  - spade
+  - quality-assurance
+  - fantasy-map-generator
 summary: Comprehensive integration test suite to ensure Spade-based geometry operations work correctly across all fantasy map generation scenarios
 related:
-- RFC-00032
-- RFC-00033
-- RFC-00003
+  - RFC-00032
+  - RFC-00033
+  - RFC-00003
 implementation:
   status: not-started
   completion: 0
@@ -23,17 +23,18 @@ implementation:
   issues: []
 dependencies:
   rfcs:
-  - RFC-00003
+    - RFC-00003
   external:
-  - spade-port
-  - xUnit
-  - Verify
+    - spade-port
+    - xUnit
+    - Verify
   blocks: []
 ---
 
 # RFC-034: Spade Integration Test Suite for Fantasy Map Generator
 
 ## Status
+
 - **Status:** Draft
 - **Author:** Claude Agent
 - **Date:** 2025-11-20
@@ -48,6 +49,7 @@ Create a comprehensive integration test suite specifically for Spade-based geome
 ### Current State
 
 The fantasy-map-generator-port has migrated to Spade but lacks dedicated integration tests for:
+
 - Voronoi diagram generation correctness
 - Lloyd relaxation quality validation
 - Edge case handling (degenerate geometry, boundary conditions)
@@ -55,6 +57,7 @@ The fantasy-map-generator-port has migrated to Spade but lacks dedicated integra
 - Regression detection for geometry operations
 
 **Existing Tests:**
+
 - Spade library has 18 unit tests (all passing)
 - fantasy-map-generator-port has some tests (with compilation errors)
 - No specific Spade integration tests
@@ -612,36 +615,42 @@ jobs:
 ## Implementation Plan
 
 ### Phase 1: Project Setup (Week 1)
+
 - [ ] Create `FantasyMapGenerator.Integration.Tests` project
 - [ ] Add necessary packages (xUnit, Verify, SkiaSharp for visual tests)
 - [ ] Set up test infrastructure and helpers
 - [ ] Configure CI/CD pipeline
 
 ### Phase 2: Core Tests (Week 2)
+
 - [ ] Implement Voronoi correctness tests
 - [ ] Implement topology validation tests
 - [ ] Implement neighbor consistency tests
 - [ ] Document baseline behavior
 
 ### Phase 3: Quality Tests (Week 3)
+
 - [ ] Implement Lloyd relaxation tests
 - [ ] Add quality metric calculations
 - [ ] Test convergence behavior
 - [ ] Create visual quality comparisons
 
 ### Phase 4: Edge Cases (Week 4)
+
 - [ ] Implement degenerate geometry tests
 - [ ] Test boundary conditions
 - [ ] Add stress tests (large point counts)
 - [ ] Verify safety check behavior
 
 ### Phase 5: Integration & Regression (Week 5)
+
 - [ ] Implement end-to-end tests
 - [ ] Add snapshot tests for known-good maps
 - [ ] Create visual regression tests
 - [ ] Set up automated verification
 
 ### Phase 6: Documentation (Week 6)
+
 - [ ] Document test strategy
 - [ ] Create test running guide
 - [ ] Document quality metrics
@@ -660,12 +669,12 @@ jobs:
 
 ## Risks and Mitigation
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Flaky tests | High | Use deterministic seeds, fixed point sets |
-| Snapshot drift | Medium | Clear update process, review diffs |
-| Test maintenance | Medium | Helper functions, test data generators |
-| Long test duration | Low | Parallel execution, selective running |
+| Risk               | Impact | Mitigation                                |
+| ------------------ | ------ | ----------------------------------------- |
+| Flaky tests        | High   | Use deterministic seeds, fixed point sets |
+| Snapshot drift     | Medium | Clear update process, review diffs        |
+| Test maintenance   | Medium | Helper functions, test data generators    |
+| Long test duration | Low    | Parallel execution, selective running     |
 
 ## Deliverables
 

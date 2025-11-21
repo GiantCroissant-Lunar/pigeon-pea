@@ -235,7 +235,7 @@ def main():
     args = parser.parse_args()
 
     # Resolve paths
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     inbox_dir = args.inbox_dir or repo_root / "docs" / "_inbox"
     archive_dir = args.archive_dir or repo_root / "docs" / "archive"
 

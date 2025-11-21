@@ -401,7 +401,7 @@ public static class FantasyDateExtensions
     /// <remarks>
     /// This method assumes a simple month addition without calendar-specific month length calculations.
     /// It adds to the month field and adjusts the year when crossing year boundaries.
-    /// Note: This assumes 12 months per year. For calendars with different structures, 
+    /// Note: This assumes 12 months per year. For calendars with different structures,
     /// consider using day-based arithmetic instead.
     /// </remarks>
     public static FantasyDate AddMonths(this FantasyDate date, ICalendarDefinition calendar, int months)

@@ -1,7 +1,0 @@
-Add Spade performance benchmarks and Julia reference
-
-- Refine RFC-033 (Spade Performance Benchmarking Suite) to reflect existing FantasyMapGenerator.Benchmarks project and clarify informal performance hypotheses
-- Add shared BenchmarkConfig for FantasyMapGenerator.Benchmarks using BenchmarkDotNet (Core90 runtime, memory diagnoser, multi-format exporters)
-- Implement VoronoiGenerationBenchmarks (Spade vs NTS) and LloydRelaxationBenchmarks using real FantasyMapGenerator.Core geometry APIs
-- Align MapGenerationBenchmarks with shared BenchmarkConfig while preserving existing benchmark scenarios
-- Add DelaunayTriangulation.jl as an MIT-licensed reference implementation for advanced Delaunay/Voronoi features and future validation work

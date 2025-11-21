@@ -5,7 +5,7 @@ on:
     branches: [main, master, develop]
     paths:
       - 'docs/**/*.md'
-      - 'scripts/validate-docs.py'
+      - 'scripts/docs_mgmt/validate-docs.py'
       - 'tests/test_validate_docs.py'
       - 'tests/integration/test-doc-workflow.sh'
       - '.github/workflows/docs-validation.yml'
@@ -13,7 +13,7 @@ on:
     branches: [main, master, develop]
     paths:
       - 'docs/**/*.md'
-      - 'scripts/validate-docs.py'
+      - 'scripts/docs_mgmt/validate-docs.py'
       - 'tests/test_validate_docs.py'
       - 'tests/integration/test-doc-workflow.sh'
       - '.github/workflows/docs-validation.yml'
@@ -38,7 +38,7 @@ jobs:
 
       - name: Run documentation validation
         run: |
-          python scripts/validate-docs.py
+          python scripts/docs_mgmt/validate-docs.py
 
       - name: Upload registry artifact
         uses: actions/upload-artifact@v4
@@ -51,7 +51,7 @@ jobs:
       - name: Check for duplicate warnings
         id: check-warnings
         run: |
-          if python scripts/validate-docs.py 2>&1 | grep -q "Near-duplicate detected"; then
+          if python scripts/docs_mgmt/validate-docs.py 2>&1 | grep -q "Near-duplicate detected"; then
             echo "has_duplicates=true" >> "$GITHUB_OUTPUT"
           else
             echo "has_duplicates=false" >> "$GITHUB_OUTPUT"
@@ -63,7 +63,7 @@ jobs:
         with:
           script: |
             const execModule = require('@actions/exec');
-            const output = await execModule.getExecOutput('python', ['scripts/validate-docs.py']);
+            const output = await execModule.getExecOutput('python', ['scripts/docs_mgmt/validate-docs.py']);
             const warnings = output.stdout.match(/\[WARNING\].*Near-duplicate detected:[\s\S]*?(?=\n\[|$)/g) || [];
 
             if (warnings.length > 0) {

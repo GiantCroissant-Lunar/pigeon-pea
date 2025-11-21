@@ -5,6 +5,7 @@ Example console application demonstrating the Fantasy Calendar Time System from 
 ## Overview
 
 This application demonstrates all four use cases from RFC-015:
+
 1. **Event Logging** - Log game events with fantasy and real-world timestamps
 2. **Scheduled Events** - Schedule in-game events to real-world times
 3. **Time Scaling** - Control game time speed (real-time, accelerated, slowed)
@@ -41,22 +42,26 @@ dotnet run
 ### 1. Event Logging (`EventLoggingExample.cs`)
 
 Demonstrates logging player actions with both fantasy dates and real-world timestamps:
+
 - Boss defeats
 - Quest completions
 - Item discoveries
 
 **Key Features:**
+
 - Dual timestamp logging (fantasy + real-world)
 - Useful for game analytics and debugging
 
 ### 2. Scheduled Events (`ScheduledEventsExample.cs`)
 
 Shows how to schedule in-game events to real-world times:
+
 - Festival notifications
 - Quest deadlines
 - Time zone support for different players
 
 **Key Features:**
+
 - Multi-timezone support
 - Real-world notification scheduling
 - Player-specific timing
@@ -64,12 +69,14 @@ Shows how to schedule in-game events to real-world times:
 ### 3. Time Scaling (`TimeScalingExample.cs`)
 
 Demonstrates different time progression speeds:
+
 - Real-time (1:1)
 - 10× speed
 - 60× speed (1 real minute = 1 game hour)
 - 1440× speed (1 real minute = 1 game day)
 
 **Key Features:**
+
 - Configurable time multipliers
 - Elapsed time calculations
 - Useful for testing and different gameplay modes
@@ -77,11 +84,13 @@ Demonstrates different time progression speeds:
 ### 4. Multi-Calendar Conversion (`MultiCalendarExample.cs`)
 
 Shows conversion between different fantasy calendars:
+
 - Harptos (Forgotten Realms)
 - Elven calendar (custom example)
 - Round-trip conversion validation
 
 **Key Features:**
+
 - Calendar-to-calendar conversion
 - Same moment across different calendars
 - Conversion accuracy verification

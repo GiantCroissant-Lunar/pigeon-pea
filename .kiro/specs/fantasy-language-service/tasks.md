@@ -42,15 +42,15 @@
     - Validate consonant clusters
     - _Requirements: 4.1_
 
-  - [ ]* 2.6 Write property test for phoneme inventory validation
+  - [ ]\* 2.6 Write property test for phoneme inventory validation
     - **Property 1: Phoneme inventory validation accepts all valid inventories**
     - **Validates: Requirements 1.1**
 
-  - [ ]* 2.7 Write property test for syllable template validation
+  - [ ]\* 2.7 Write property test for syllable template validation
     - **Property 2: Syllable template validation correctly identifies valid patterns**
     - **Validates: Requirements 1.2**
 
-  - [ ]* 2.8 Write property test for generated syllables
+  - [ ]\* 2.8 Write property test for generated syllables
     - **Property 15: Generated names follow phonotactic constraints**
     - **Validates: Requirements 4.1**
 
@@ -75,12 +75,12 @@
     - Handle file I/O errors gracefully
     - _Requirements: 2.5, 8.1, 8.3_
 
-  - [ ]* 3.4 Write property test for lexicon round-trip
+  - [ ]\* 3.4 Write property test for lexicon round-trip
     - **Property 6: Lexicon entry round-trip preserves mappings**
     - **Property 10: Lexicon serialization round-trip**
     - **Validates: Requirements 2.1, 2.5, 8.1, 8.3**
 
-  - [ ]* 3.5 Write property test for lexicon queries
+  - [ ]\* 3.5 Write property test for lexicon queries
     - **Property 8: Lexicon query returns all matching entries**
     - **Validates: Requirements 2.3**
 
@@ -110,11 +110,11 @@
     - Support different compound types (Noun_Noun, Adjective_Noun, etc.)
     - _Requirements: 3.3_
 
-  - [ ]* 4.5 Write property test for word order transformations
+  - [ ]\* 4.5 Write property test for word order transformations
     - **Property 11: Word order transformation correctness**
     - **Validates: Requirements 3.1, 3.4**
 
-  - [ ]* 4.6 Write property test for compound formation
+  - [ ]\* 4.6 Write property test for compound formation
     - **Property 13: Compound word formation follows rules**
     - **Validates: Requirements 3.3**
 
@@ -144,15 +144,15 @@
     - Maintain phonological consistency
     - _Requirements: 4.4_
 
-  - [ ]* 5.5 Write property test for name length constraints
+  - [ ]\* 5.5 Write property test for name length constraints
     - **Property 16: Name length respects syllable constraints**
     - **Validates: Requirements 4.2**
 
-  - [ ]* 5.6 Write property test for deterministic generation
+  - [ ]\* 5.6 Write property test for deterministic generation
     - **Property 19: Seeded name generation is deterministic**
     - **Validates: Requirements 4.5**
 
-  - [ ]* 5.7 Write property test for name diversity
+  - [ ]\* 5.7 Write property test for name diversity
     - **Property 18: Name generation produces diverse yet consistent output**
     - **Validates: Requirements 4.4**
 
@@ -190,12 +190,12 @@
     - Preserve unknown words
     - _Requirements: 6.1, 6.2, 6.3, 6.4_
 
-  - [ ]* 6.6 Write property test for tokenization
+  - [ ]\* 6.6 Write property test for tokenization
     - **Property 20: English tokenization correctness**
     - **Property 24: Fantasy language tokenization respects morphology**
     - **Validates: Requirements 5.1, 6.1**
 
-  - [ ]* 6.7 Write property test for translation round-trip
+  - [ ]\* 6.7 Write property test for translation round-trip
     - Test English → Fantasy → English preserves meaning
     - **Property 22: Grammar transformation applies word order correctly**
     - **Property 26: Reverse grammar transformation to English SVO**
@@ -208,7 +208,7 @@
 
   - [ ] 7.2 Implement sound change rule parsing
     - Parse sound change rule patterns
-    - Support context specifications (e.g., "_a" for "before 'a'")
+    - Support context specifications (e.g., "\_a" for "before 'a'")
     - Validate rule structure
     - _Requirements: 7.1_
 
@@ -232,11 +232,11 @@
     - Maintain phonological validity
     - _Requirements: 7.4, 8.4_
 
-  - [ ]* 7.6 Write property test for sound change order
+  - [ ]\* 7.6 Write property test for sound change order
     - **Property 29: Sound change application order correctness**
     - **Validates: Requirements 7.2**
 
-  - [ ]* 7.7 Write property test for contextual application
+  - [ ]\* 7.7 Write property test for contextual application
     - **Property 30: Contextual sound change application**
     - **Validates: Requirements 7.3**
 
@@ -271,7 +271,7 @@
     - Notify subscribers of reload events
     - _Requirements: 8.5_
 
-  - [ ]* 8.6 Write property test for configuration round-trip
+  - [ ]\* 8.6 Write property test for configuration round-trip
     - **Property 10: Lexicon serialization round-trip** (already covered in 3.4)
     - **Property 33: Language inheritance and derivation**
     - **Validates: Requirements 8.1, 8.3, 8.4**
@@ -308,7 +308,7 @@
     - Use grammar engine and lexicon
     - _Requirements: 10.1, 10.2, 10.3, 10.5_
 
-  - [ ]* 9.6 Write property test for language isolation
+  - [ ]\* 9.6 Write property test for language isolation
     - **Property 4: Language isolation maintains independence**
     - **Validates: Requirements 1.4**
 
@@ -339,11 +339,11 @@
     - Provide detailed error messages
     - _Requirements: 9.5_
 
-  - [ ]* 10.6 Write property test for plugin discovery
+  - [ ]\* 10.6 Write property test for plugin discovery
     - **Property 34: Plugin discovery completeness**
     - **Validates: Requirements 9.1**
 
-  - [ ]* 10.7 Write property test for plugin resilience
+  - [ ]\* 10.7 Write property test for plugin resilience
     - **Property 38: Plugin load failure resilience**
     - **Validates: Requirements 9.5**
 
@@ -386,20 +386,20 @@
   - Ensure all tests pass, ask the user if questions arise.
 
 - [ ] 13. Create integration tests and examples
-  - [ ]* 13.1 Write integration test for full translation pipeline
+  - [ ]\* 13.1 Write integration test for full translation pipeline
     - Load language, translate English to fantasy, translate back
     - Verify meaning preservation
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 6.1, 6.2, 6.3, 6.4, 6.5_
 
-  - [ ]* 13.2 Write integration test for name generation pipeline
+  - [ ]\* 13.2 Write integration test for name generation pipeline
     - Load language, generate names, validate phonotactics
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-  - [ ]* 13.3 Write integration test for language derivation
+  - [ ]\* 13.3 Write integration test for language derivation
     - Load parent language, apply sound changes, verify daughter language
     - _Requirements: 7.1, 7.2, 7.3, 7.4, 8.4_
 
-  - [ ]* 13.4 Write integration test for plugin system
+  - [ ]\* 13.4 Write integration test for plugin system
     - Discover plugins, load languages, perform operations
     - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
 

@@ -218,7 +218,7 @@ def main() -> int:
         Exit code (0 for success, 1 for error)
     """
     # Define paths
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     agents_dir = repo_root / ".agent" / "agents"
     skills_dir = repo_root / ".agent" / "skills"
     agents_md = repo_root / "AGENTS.md"

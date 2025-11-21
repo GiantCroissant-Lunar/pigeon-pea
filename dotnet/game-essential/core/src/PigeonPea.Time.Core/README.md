@@ -37,6 +37,7 @@ service.RegisterCalendar("gregorian", new GregorianCalendar());
 ```
 
 **Features:**
+
 - Case-insensitive calendar IDs
 - Thread-safe registration and access
 - Calendar discovery (`GetRegisteredCalendarIds()`, `IsCalendarRegistered()`)
@@ -79,6 +80,7 @@ formatter.FormatReadable(date);     // "Hammer 15, 1372 14:30"
 ```
 
 **Supported Patterns:**
+
 - `yyyy`, `yy`, `y` - Year
 - `MMMM`, `MMM`, `MM`, `M` - Month
 - `dd`, `d` - Day
@@ -176,8 +178,8 @@ public class GameEventLogger
     {
         var fantasyDate = _calendarService.Now("harptos");
         var realDate = _calendarService.ToRealWorld(
-            fantasyDate, 
-            "harptos", 
+            fantasyDate,
+            "harptos",
             DateTimeZone.Utc
         );
 
@@ -214,7 +216,7 @@ public class QuestTimer
         var now = _calendarService.Now("harptos");
         var nowTick = _calendar.ToWorldTick(now);
         var deadlineTick = _calendar.ToWorldTick(deadline);
-        
+
         return nowTick > deadlineTick;
     }
 }
@@ -237,7 +239,7 @@ public class FestivalScheduler
     {
         // Midsummer is month 15 in Harptos
         var festivalDate = new FantasyDate(year, 15, 1, 0, 0, 0);
-        
+
         // Convert to player's local time
         var playerTimeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
         var realStartTime = _calendarService.ToRealWorld(
@@ -268,13 +270,13 @@ public class GameTimeManager
         // 1.0 = real-time
         // 60.0 = 60× speed (1 real minute = 1 game hour)
         // 0.5 = half speed
-        
+
         var epoch = Instant.FromUtc(2025, 1, 1, 0, 0);
         _worldClock = new WorldClock(
             epoch,
             realSecondsPerGameSecond: 1.0 / multiplier
         );
-        
+
         // Re-register calendars with new clock
         _calendarService = new CalendarService(_worldClock);
         _calendarService.RegisterCalendar("harptos", new HarptosCalendar());
@@ -304,7 +306,7 @@ public class CalendarConverter
     {
         var clock = new WorldClock(Instant.FromUtc(2025, 1, 1, 0, 0));
         _calendarService = new CalendarService(clock);
-        
+
         _calendarService.RegisterCalendar("harptos", new HarptosCalendar());
         _calendarService.RegisterCalendar("elven", new ElvenCalendar());
         _calendarService.RegisterCalendar("dwarvish", new DwarvishCalendar());
@@ -313,10 +315,10 @@ public class CalendarConverter
     public void ShowDateInAllCalendars(FantasyDate harptosDate)
     {
         Console.WriteLine($"Harptos: {harptosDate}");
-        
+
         var elvenDate = _calendarService.Convert(harptosDate, "harptos", "elven");
         Console.WriteLine($"Elven:   {elvenDate}");
-        
+
         var dwarvishDate = _calendarService.Convert(harptosDate, "harptos", "dwarvish");
         Console.WriteLine($"Dwarvish: {dwarvishDate}");
     }
@@ -328,7 +330,7 @@ public class CalendarConverter
 ### 1. Use Dependency Injection
 
 ```csharp
-services.AddSingleton<WorldClock>(sp => 
+services.AddSingleton<WorldClock>(sp =>
     new WorldClock(Instant.FromUtc(2025, 1, 1, 0, 0)));
 services.AddSingleton<ICalendarService, CalendarService>();
 ```
@@ -363,7 +365,7 @@ var deadline = calendar.FromWorldTick(tick3);
 
 ```csharp
 // Create once, reuse many times
-private readonly FantasyDateFormatter _formatter = 
+private readonly FantasyDateFormatter _formatter =
     new FantasyDateFormatter(new HarptosCalendar());
 ```
 

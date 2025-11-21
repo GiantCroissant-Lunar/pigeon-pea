@@ -316,7 +316,7 @@ def main():
     args = parser.parse_args()
 
     # Resolve paths
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     docs_dir = args.docs_dir or repo_root / "docs"
     tasks_file = args.tasks_file or repo_root / ".taskmaster" / "tasks.json"
 

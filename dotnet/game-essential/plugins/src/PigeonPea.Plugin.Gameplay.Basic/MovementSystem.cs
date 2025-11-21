@@ -32,7 +32,7 @@ public class MovementSystem
             _logger.LogWarning("No dungeon map found for movement system.");
             return;
         }
-        
+
         ref var dungeonMap = ref world.Get<DungeonMapComponent>(dungeonEntity);
 
         // Query for all blocking entities (walls, monsters)
@@ -70,7 +70,7 @@ public class MovementSystem
                 // Normalize and apply movement
                 var moveX = (int)Math.Round(moveDirection.X);
                 var moveY = (int)Math.Round(moveDirection.Y);
-                
+
                 var newPosition = new Point(position.Point.X + moveX, position.Point.Y + moveY);
 
                 // Check bounds

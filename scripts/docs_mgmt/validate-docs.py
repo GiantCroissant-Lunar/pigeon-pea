@@ -347,7 +347,8 @@ def collect_documents(
     for md_file in docs_dir.rglob("*.md"):
         # Skip excluded patterns
         rel_path = md_file.relative_to(docs_dir)
-        if any(str(rel_path).startswith(pattern) for pattern in exclude_patterns):
+        rel_str = str(rel_path).replace("\\", "/")
+        if any(rel_str.startswith(pattern) for pattern in exclude_patterns):
             continue
 
         front_matter, content = extract_front_matter(md_file)
@@ -453,7 +454,7 @@ def main():
     args = parser.parse_args()
 
     # Resolve paths relative to repo root
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     docs_dir = args.docs_dir or repo_root / "docs"
     registry_path = args.registry or repo_root / "docs" / "index" / "registry.json"
 

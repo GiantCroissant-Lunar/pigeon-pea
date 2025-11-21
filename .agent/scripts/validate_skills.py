@@ -99,7 +99,7 @@ def validate_skill(skill_path, schema):
 
 def main():
     # Resolve paths relative to repo root to support execution from any CWD
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     skills_dir = repo_root / ".agent" / "skills"
     schema_path = repo_root / ".agent" / "schemas" / "skill.schema.json"
 

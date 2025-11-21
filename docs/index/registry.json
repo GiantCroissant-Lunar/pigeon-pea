@@ -1,8 +1,8 @@
 {
-  "generated_at": "2025-11-20T14:17:41.807982Z",
-  "total_docs": 132,
+  "generated_at": "2025-11-21T03:32:37.099677Z",
+  "total_docs": 136,
   "by_type": {
-    "rfc": 66,
+    "rfc": 70,
     "guide": 20,
     "reference": 4,
     "plan": 17,
@@ -11,7 +11,7 @@
   },
   "by_status": {
     "active": 103,
-    "draft": 28,
+    "draft": 32,
     "archived": 1
   },
   "docs": [
@@ -1584,6 +1584,109 @@
       "simhash": "16757127808896668341"
     },
     {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\032-multi-backend-rendering-architecture.md",
+      "sha256": "2bdc1d1520a8d71616d644712ecd9bccb836ae3bb0cefdb7ec5c0745bc667194",
+      "canonical": true,
+      "created": "2025-11-21",
+      "doc_id": "RFC-00032",
+      "doc_type": "rfc",
+      "related": ["RFC-00014", "RFC-00007", "RFC-00001"],
+      "status": "draft",
+      "summary": "Unified multi-backend rendering architecture supporting both tile-based (console ANSI/Braille) and buffer-based (Windows SkiaSharp) rendering through command-based abstraction",
+      "supersedes": [],
+      "tags": ["rendering", "architecture", "multi-backend", "console", "windows", "abstraction"],
+      "title": "Multi-Backend Rendering Architecture",
+      "updated": "2025-11-21",
+      "implementation": {
+        "status": "not-started",
+        "completion": 0,
+        "tasks": [],
+        "issues": []
+      },
+      "dependencies": {
+        "rfcs": ["RFC-00014"],
+        "external": ["SkiaSharp", "Terminal.Gui v2", "Avalonia"]
+      },
+      "simhash": "14433446877250680741"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\033-scale-config-system-implementation.md",
+      "sha256": "eaf440b51acd005cd076ca4cb5f960611d255876251352533f5a76337ace6e84",
+      "canonical": true,
+      "created": "2025-11-21",
+      "doc_id": "RFC-00033",
+      "doc_type": "rfc",
+      "related": ["ADR-00002", "RFC-00014", "RFC-00032"],
+      "status": "draft",
+      "summary": "Implement config-driven discrete scale/zoom system with runtime loading, per-scale zoom bounds, and automatic mode transitions (world → town → dungeon)",
+      "supersedes": [],
+      "tags": ["scale", "zoom", "configuration", "modes", "world", "dungeon", "architecture"],
+      "title": "Scale Config System Implementation",
+      "updated": "2025-11-21",
+      "implementation": {
+        "status": "not-started",
+        "completion": 0,
+        "tasks": [],
+        "issues": []
+      },
+      "dependencies": {
+        "rfcs": ["RFC-00014"],
+        "external": ["System.Text.Json"]
+      }
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\034-unified-dungeon-overlay-system.md",
+      "sha256": "c75b23c549818d6216da58611235d16b6566a3d42355988fabe9d0fc75df3d74",
+      "canonical": true,
+      "created": "2025-11-21",
+      "doc_id": "RFC-00034",
+      "doc_type": "rfc",
+      "related": ["RFC-00032", "RFC-00033", "RFC-00014"],
+      "status": "draft",
+      "summary": "Extend the overlay abstraction (IOverlaySource) to dungeons, enabling doors, traps, spawn points, and treasure to be represented as overlay features instead of flat arrays",
+      "supersedes": [],
+      "tags": ["overlay", "dungeon", "architecture", "rendering", "ecs"],
+      "title": "Unified Dungeon Overlay System",
+      "updated": "2025-11-21",
+      "implementation": {
+        "status": "not-started",
+        "completion": 0,
+        "tasks": [],
+        "issues": []
+      },
+      "dependencies": {
+        "rfcs": ["RFC-00014"],
+        "external": []
+      },
+      "simhash": "12395884159442834389"
+    },
+    {
+      "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\035-rfc014-scene-management-completion.md",
+      "sha256": "7404c6373b552f2fa51ed57b147340ad0608e0a46497eaa03afcc3a7c81c6aa3",
+      "canonical": true,
+      "created": "2025-11-21",
+      "doc_id": "RFC-00035",
+      "doc_type": "rfc",
+      "related": ["RFC-00014", "GUIDE-00002", "RFC-00032", "RFC-00033"],
+      "status": "draft",
+      "summary": "Complete RFC-014 Scene Management implementation by fixing interface mismatches, updating generators to return entities, integrating scene manager into console app, and implementing scene transitions",
+      "supersedes": [],
+      "tags": ["scene-management", "ecs", "implementation", "rfc-014", "completion"],
+      "title": "RFC-014 Scene Management Completion",
+      "updated": "2025-11-21",
+      "implementation": {
+        "status": "not-started",
+        "completion": 0,
+        "tasks": [],
+        "issues": []
+      },
+      "dependencies": {
+        "rfcs": ["RFC-00014"],
+        "external": ["Arch"]
+      },
+      "simhash": "15565784974427422364"
+    },
+    {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\rfcs\\IMPLEMENTATION_PLAN.md",
       "sha256": "95e768418dc9acc0cc7c68acc32c7af46c9b9f885a8cb2673973077d92c6ed76",
       "doc_id": "PLAN-00001",
@@ -1697,7 +1800,7 @@
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\032-remove-delaunator-dependency.md",
-      "sha256": "4143945dc92fe9e39dcdf5646752aa8caf04b265f4e5f38bc0bcdeb1c0827307",
+      "sha256": "35592b7107c95609c322c793434b76bd2d4ca11f7549263ed6550a4a9c1bd452",
       "doc_id": "RFC-00032",
       "title": "Remove Delaunator Dependency from Fantasy Map Generator",
       "doc_type": "rfc",
@@ -1722,7 +1825,7 @@
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\033-spade-performance-benchmarks.md",
-      "sha256": "30b3fd5e24bea6dc5102f204c5dcfcc09baeee4f5a65e34b44dacd0653bc446d",
+      "sha256": "06bfd0129c302862e3f7d8e1edb8dd4b1eb7ba0d1ebf50bfac48f63f874794d4",
       "doc_id": "RFC-00033",
       "title": "Spade Performance Benchmarking Suite",
       "doc_type": "rfc",
@@ -1753,7 +1856,7 @@
     },
     {
       "path": "D:\\lunar-snake\\personal-work\\yokan-projects\\pigeon-pea\\docs\\_inbox\\034-spade-integration-tests.md",
-      "sha256": "e1d4fde1ed1e6215f1cb21d24a9ad4ae8ae341d20b26137cb210a00549866578",
+      "sha256": "56414359e1478c35253466cef335b956c06acabf7a75f79399c0da0eed9d02f7",
       "doc_id": "RFC-00034",
       "title": "Spade Integration Test Suite for Fantasy Map Generator",
       "doc_type": "rfc",

@@ -9,17 +9,17 @@ tasks:
   skills:validate:
     desc: Validate all agent skills
     cmds:
-      - python scripts/validate_skills.py
+      - python .agent/scripts/validate_skills.py
 
   agents:validate:
     desc: Validate all agent manifests
     cmds:
-      - python scripts/validate_agents.py
+      - python .agent/scripts/validate_agents.py
 
   registry:generate:
     desc: Generate AGENTS.md registry from manifests
     cmds:
-      - python scripts/generate_registry.py
+      - python .agent/scripts/generate_registry.py
 
   check:
     desc: Run all validations
@@ -92,32 +92,32 @@ tasks:
   env:check-terminal:
     desc: Check terminal environment and WezTerm info (Windows)
     cmds:
-      - scripts\\check-terminal.bat
+      - scripts\\devtools\\check-terminal.bat
 
   env:which-wezterm:
     desc: Locate wezterm and test imgcat (Windows)
     cmds:
-      - scripts\\which-wezterm.bat
+      - scripts\\devtools\\which-wezterm.bat
 
   env:test-with-env:
     desc: Run console app with kitty env vars (Windows)
     cmds:
-      - scripts\\test-with-env.bat
+      - scripts\\devtools\\test-with-env.bat
 
   wezterm:launch:
     desc: Launch pinned WezTerm instance (Windows)
     cmds:
-      - scripts\\launch-new-wezterm.bat
+      - scripts\\devtools\\launch-new-wezterm.bat
 
   dev:setup-pre-commit:win:
     desc: Setup pre-commit hooks (Windows PowerShell)
     cmds:
-      - pwsh -File scripts/setup-pre-commit.ps1
+      - pwsh -File scripts/devtools/setup-pre-commit.ps1
 
   dev:setup-pre-commit:unix:
     desc: Setup pre-commit hooks (bash)
     cmds:
-      - bash scripts/setup-pre-commit.sh
+      - bash scripts/devtools/setup-pre-commit.sh
 
   # MCP (Model Context Protocol) setup helpers
   mcp:detect-ides:
@@ -183,12 +183,12 @@ tasks:
   images:create-battle:
     desc: Generate sample battle image (Pillow)
     cmds:
-      - python3 scripts/create_battle_image.py
+      - python3 scripts/assets/create_battle_image.py
 
   images:create-test:
     desc: Generate 32x32 red test image (Pillow)
     cmds:
-      - python3 scripts/create_test_image.py
+      - python3 scripts/assets/create_test_image.py
 
   python:install-dev:
     desc: Install Python dev dependencies

@@ -6,16 +6,16 @@ status: draft
 canonical: true
 created: '2025-11-20'
 tags:
-- performance
-- benchmarking
-- spade
-- testing
-- optimization
-- fantasy-map-generator
+  - performance
+  - benchmarking
+  - spade
+  - testing
+  - optimization
+  - fantasy-map-generator
 summary: Comprehensive performance benchmarking suite to measure and validate Spade performance improvements over previous geometry libraries
 related:
-- RFC-00032
-- RFC-00009
+  - RFC-00032
+  - RFC-00009
 implementation:
   status: in-progress
   completion: 0.1
@@ -23,16 +23,17 @@ implementation:
 issues: []
 dependencies:
 rfcs:
-- RFC-00009
+  - RFC-00009
 external:
-- BenchmarkDotNet
-- spade-port
+  - BenchmarkDotNet
+  - spade-port
 blocks: []
 ---
 
 # RFC-033: Spade Performance Benchmarking Suite
 
 ## Status
+
 - **Status:** Draft
 - **Author:** Claude Agent
 - **Date:** 2025-11-20
@@ -48,6 +49,7 @@ Create a comprehensive benchmarking suite using BenchmarkDotNet to measure and v
 ### Current State
 
 The fantasy-map-generator-port has been fully migrated to use Spade for all geometric operations. Informal, ad-hoc tests suggest:
+
 - ~10-15% faster Voronoi generation
 - ~20-25% less memory allocation during Lloyd relaxation
 - <1% overhead from safety checks (subject to measurement)
@@ -100,18 +102,21 @@ However, these are anecdotal observations without rigorous measurement.
 #### 1. Voronoi Generation Benchmarks
 
 **Test Cases:**
+
 - Small maps (100 points)
 - Medium maps (1,000 points)
 - Large maps (10,000 points)
 - Very large maps (100,000 points)
 
 **Metrics:**
+
 - Time per operation
 - Memory allocated
 - GC collections
 - Cache misses (optional)
 
 **Comparisons:**
+
 - Spade vs NetTopologySuite
 - Spade vs Delaunator (before removal)
 - Different point distributions (uniform, Poisson, jittered)
@@ -119,14 +124,17 @@ However, these are anecdotal observations without rigorous measurement.
 #### 2. Lloyd Relaxation Benchmarks
 
 **Test Cases:**
+
 - 1 iteration
 - 3 iterations (typical)
 - 10 iterations (maximum)
 
 **Point Counts:**
+
 - 100, 500, 1000, 5000 points
 
 **Metrics:**
+
 - Time per iteration
 - Total relaxation time
 - Memory allocation per iteration
@@ -135,11 +143,13 @@ However, these are anecdotal observations without rigorous measurement.
 #### 3. Edge Traversal Benchmarks
 
 **Test Safety Check Overhead:**
+
 - With safety checks enabled (current)
 - Without safety checks (theoretical baseline)
 - Measure overhead of cycle detection
 
 **Scenarios:**
+
 - Normal geometry (no issues)
 - Degenerate geometry (triggers safety checks)
 - Large face counts
@@ -147,14 +157,17 @@ However, these are anecdotal observations without rigorous measurement.
 #### 4. End-to-End Map Generation
 
 **Full Pipeline:**
+
 - Point generation → Voronoi → Lloyd → Height → Biomes → Rivers → States
 
 **Map Sizes:**
+
 - Small: 1024x1024, 100 points
 - Medium: 2048x2048, 1000 points
 - Large: 4096x4096, 10000 points
 
 **Metrics:**
+
 - Total generation time
 - Per-phase timing breakdown
 - Memory peak usage
@@ -418,7 +431,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: '0 0 * * 0'  # Weekly on Sunday
+    - cron: '0 0 * * 0' # Weekly on Sunday
 
 jobs:
   benchmark:
@@ -453,59 +466,67 @@ jobs:
 
 ### Baseline Targets
 
-| Operation | Point Count | Target Time | Memory |
-|-----------|-------------|-------------|---------|
-| Voronoi (Spade) | 100 | <1ms | <50KB |
-| Voronoi (Spade) | 1,000 | <10ms | <500KB |
-| Voronoi (Spade) | 10,000 | <100ms | <5MB |
-| Lloyd (1 iter) | 1,000 | <15ms | <1MB |
-| Lloyd (3 iter) | 1,000 | <45ms | <3MB |
-| Full Map | Small | <100ms | <10MB |
-| Full Map | Medium | <1s | <50MB |
+| Operation       | Point Count | Target Time | Memory |
+| --------------- | ----------- | ----------- | ------ |
+| Voronoi (Spade) | 100         | <1ms        | <50KB  |
+| Voronoi (Spade) | 1,000       | <10ms       | <500KB |
+| Voronoi (Spade) | 10,000      | <100ms      | <5MB   |
+| Lloyd (1 iter)  | 1,000       | <15ms       | <1MB   |
+| Lloyd (3 iter)  | 1,000       | <45ms       | <3MB   |
+| Full Map        | Small       | <100ms      | <10MB  |
+| Full Map        | Medium      | <1s         | <50MB  |
 
 ### Comparison Expectations
 
 **Spade vs NetTopologySuite:**
+
 - Expected: 10-20% faster for Voronoi generation
 - Reason: Native C# implementation vs NTS overhead
 
 **Safety Check Overhead:**
+
 - Expected: <2% overhead for normal geometry
 - Worst case: 5% overhead for complex geometry
 
 ## Implementation Plan
 
 ### Phase 1: Project Setup
+
 - [x] Create `FantasyMapGenerator.Benchmarks` project
 - [x] Add BenchmarkDotNet package
 - [ ] Configure benchmark settings
 - [ ] Set up project references
 
 ### Phase 2: Core Benchmarks
+
 - [ ] Implement Voronoi generation benchmarks
 - [ ] Implement Lloyd relaxation benchmarks
 - [ ] Implement edge traversal benchmarks
 - [ ] Verify benchmarks run correctly
 
 ### Phase 3: Comparison Benchmarks
+
 - [ ] Add NTS comparison benchmarks
 - [ ] Add Delaunator comparison (if not removed)
 - [ ] Add point distribution comparisons
 - [ ] Document baseline results
 
 ### Phase 4: End-to-End Benchmarks
+
 - [ ] Implement full map generation benchmarks
 - [ ] Add per-phase breakdown benchmarks
 - [ ] Add rendering benchmarks
 - [ ] Create performance dashboard
 
 ### Phase 5: CI/CD Integration
+
 - [ ] Set up GitHub Actions workflow
 - [ ] Configure artifact storage
 - [ ] Set up PR result comments
 - [ ] Create performance regression alerts
 
 ### Phase 6: Documentation
+
 - [ ] Document how to run benchmarks
 - [ ] Publish initial results
 - [ ] Create performance optimization guide
@@ -523,12 +544,12 @@ jobs:
 
 ## Risks and Mitigation
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Benchmark noise | High | Multiple iterations, statistical analysis |
+| Risk                    | Impact | Mitigation                                  |
+| ----------------------- | ------ | ------------------------------------------- |
+| Benchmark noise         | High   | Multiple iterations, statistical analysis   |
 | Environment differences | Medium | Consistent CI environment, local guidelines |
-| Misleading results | High | Peer review, multiple test cases |
-| Benchmark maintenance | Medium | Automated CI checks |
+| Misleading results      | High   | Peer review, multiple test cases            |
+| Benchmark maintenance   | Medium | Automated CI checks                         |
 
 ## Deliverables
 

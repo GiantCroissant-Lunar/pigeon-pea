@@ -35,7 +35,7 @@ def validate_agent(agent_path, schema, agent_type):
 
 def main():
     # Resolve paths relative to repo root to support execution from any CWD
-    repo_root = Path(__file__).parent.parent
+    repo_root = Path(__file__).resolve().parents[2]
     agents_dir = repo_root / ".agent" / "agents"
     schemas_dir = repo_root / ".agent" / "schemas"
     skills_dir = repo_root / ".agent" / "skills"

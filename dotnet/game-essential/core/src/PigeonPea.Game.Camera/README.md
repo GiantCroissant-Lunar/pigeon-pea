@@ -28,10 +28,10 @@ public class MyRenderer
             // No camera found - use default viewport
             viewport = new Viewport(0, 0, screenWidth, screenHeight);
         }
-        
+
         // Set the viewport on the renderer
         renderer.SetViewport(viewport.Value);
-        
+
         // Render your content using the viewport
         RenderContent(renderer, viewport.Value);
     }
@@ -46,16 +46,16 @@ using PigeonPea.Game.Camera.Systems;
 public class MyRenderingSystem
 {
     private readonly CameraUpdateSystem _cameraSystem = new();
-    
+
     public void Render(World world, IRenderer renderer, int screenWidth, int screenHeight)
     {
         // Update camera first
         _cameraSystem.Update(world, deltaTime);
-        
+
         // Get viewport
         var viewport = CameraUpdateSystem.GetCurrentViewport(world, screenWidth, screenHeight);
         if (!viewport.HasValue) return;
-        
+
         // Use viewport for rendering
         renderer.SetViewport(viewport.Value);
         // ... render content
@@ -116,11 +116,11 @@ The `MapDataRenderer` already accepts a `Viewport` parameter, so integration is 
 public void RenderMap(IRenderer renderer, MapData map, World world, int screenWidth, int screenHeight)
 {
     var viewport = world.GetMainCameraViewport(screenWidth, screenHeight) ?? new Viewport(0, 0, screenWidth, screenHeight);
-    
+
     // Calculate zoom based on camera zoom
     var cameraComponent = world.GetMainCameraComponent();
     double zoom = cameraComponent?.Camera.Transform.Zoom ?? 1.0;
-    
+
     MapDataRenderer.Draw(renderer, map, viewport, showDungeonOverlay: true, zoom: zoom);
 }
 ```
@@ -137,19 +137,19 @@ public class CustomRenderer
         // Get viewport
         var viewport = world.GetMainCameraViewport(screenWidth, screenHeight);
         if (!viewport.HasValue) return;
-        
+
         renderer.SetViewport(viewport.Value);
-        
+
         // Query for renderable entities
         var renderableQuery = new QueryDescription()
             .WithAll<PositionComponent, RenderableComponent>();
-        
+
         world.Query(in renderableQuery, (Entity entity, ref PositionComponent pos, ref RenderableComponent rend) =>
         {
             // Convert world position to screen coordinates
             var worldPos = new Vector2(pos.X, pos.Y);
             var (screenX, screenY) = worldPos.WorldToScreen(viewport.Value);
-            
+
             // Only render if visible
             if (worldPos.IsVisible(viewport.Value))
             {
@@ -209,15 +209,18 @@ playerEntity.Add(new CameraTargetComponent(
 ## Troubleshooting
 
 ### Camera Not Found
+
 - Ensure you've created a camera entity using `world.SetMainCamera()`
 - Check that the camera entity hasn't been destroyed
 
 ### Incorrect Viewport Coordinates
+
 - Verify you're using the correct screen dimensions
 - Check if zoom is affecting your calculations as expected
 - Ensure coordinate conversion is done in the right direction
 
 ### Performance Issues
+
 - Implement viewport culling to avoid rendering off-screen entities
 - Consider using spatial partitioning for large worlds
 - Profile your rendering queries to identify bottlenecks

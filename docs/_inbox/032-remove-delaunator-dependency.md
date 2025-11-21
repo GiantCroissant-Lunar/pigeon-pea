@@ -6,14 +6,14 @@ status: draft
 canonical: true
 created: '2025-11-20'
 tags:
-- dependencies
-- cleanup
-- spade
-- fantasy-map-generator
-- geometry
+  - dependencies
+  - cleanup
+  - spade
+  - fantasy-map-generator
+  - geometry
 summary: Remove the Delaunator JavaScript port dependency now that all functionality has been replaced with Spade
 related:
-- RFC-00006
+  - RFC-00006
 implementation:
   status: not-started
   completion: 0
@@ -22,13 +22,14 @@ implementation:
 dependencies:
   rfcs: []
   external:
-  - spade-port
+    - spade-port
   blocks: []
 ---
 
 # RFC-032: Remove Delaunator Dependency from Fantasy Map Generator
 
 ## Status
+
 - **Status:** Draft
 - **Author:** Claude Agent
 - **Date:** 2025-11-20
@@ -45,11 +46,13 @@ Remove the Delaunator JavaScript port dependency from the fantasy-map-generator-
 The fantasy-map-generator-port project currently includes both Delaunator (JavaScript port) and Spade for geometric operations:
 
 **Dependencies in FantasyMapGenerator.Core.csproj:**
+
 ```xml
 <PackageReference Include="Delaunator" Version="..." />
 ```
 
 **Previous Usage:**
+
 - MapRenderer.cs - Used Delaunator for rendering (REPLACED with Spade)
 - MapExporter.cs - Used Delaunator for SVG export (REPLACED with Spade)
 - Voronoi.cs - Wrapper that could use Delaunator (NOW uses NTS/Spade)
@@ -81,12 +84,14 @@ The fantasy-map-generator-port project currently includes both Delaunator (JavaS
 ### Phase 1: Dependency Analysis
 
 **Tasks:**
+
 1. Search for any remaining `using Delaunator` statements
 2. Check all `.csproj` files for Delaunator package references
 3. Verify no test code uses Delaunator
 4. Check if Voronoi.cs constructor still accepts Delaunator
 
 **Expected Findings:**
+
 - No code usage (already migrated to Spade)
 - Package reference in `FantasyMapGenerator.Core.csproj`
 - Package reference in `FantasyMapGenerator.Rendering.csproj` (transitive)
@@ -95,6 +100,7 @@ The fantasy-map-generator-port project currently includes both Delaunator (JavaS
 ### Phase 2: Remove Package References
 
 **Files to Modify:**
+
 ```
 dotnet/_lib/fantasy-map-generator-port/
   ├── src/FantasyMapGenerator.Core/FantasyMapGenerator.Core.csproj
@@ -103,6 +109,7 @@ dotnet/_lib/fantasy-map-generator-port/
 ```
 
 **Changes:**
+
 ```xml
 <!-- REMOVE this line -->
 <PackageReference Include="Delaunator" Version="..." />
@@ -113,6 +120,7 @@ dotnet/_lib/fantasy-map-generator-port/
 **Files to Check:**
 
 1. **Voronoi.cs** - Constructor that takes Delaunator
+
    ```csharp
    // REMOVE or DEPRECATE
    public Voronoi(Delaunator delaunay, Point[] points, int pointsN)
@@ -125,6 +133,7 @@ dotnet/_lib/fantasy-map-generator-port/
 2. **Any adapter classes** - If there are Delaunator-specific adapters
 
 **Decision:**
+
 - Option A: Remove code entirely (clean break)
 - Option B: Mark as `[Obsolete]` for one release cycle
 - **Recommendation:** Option A (no known external consumers)
@@ -150,6 +159,7 @@ dotnet/_lib/fantasy-map-generator-port/
 **Testing Steps:**
 
 1. **Build Verification**
+
    ```bash
    dotnet clean
    dotnet restore
@@ -157,6 +167,7 @@ dotnet/_lib/fantasy-map-generator-port/
    ```
 
 2. **Test Execution**
+
    ```bash
    dotnet test --no-build
    ```
@@ -176,32 +187,38 @@ dotnet/_lib/fantasy-map-generator-port/
 ## Implementation Plan
 
 ### Step 1: Pre-removal Verification
+
 - [ ] Run full test suite to establish baseline
 - [ ] Document current binary sizes
 - [ ] Create backup branch
 
 ### Step 2: Remove Package References
+
 - [ ] Remove from `FantasyMapGenerator.Core.csproj`
 - [ ] Remove from `FantasyMapGenerator.Rendering.csproj`
 - [ ] Remove from any test projects
 
 ### Step 3: Remove Legacy Code
+
 - [ ] Remove Delaunator constructor from `Voronoi.cs`
 - [ ] Remove any Delaunator imports
 - [ ] Remove any related adapter code
 
 ### Step 4: Build and Test
+
 - [ ] Run `dotnet clean && dotnet build`
 - [ ] Run all unit tests
 - [ ] Run integration tests
 - [ ] Verify no broken references
 
 ### Step 5: Documentation Updates
+
 - [ ] Update SPADE_ADOPTION.md
 - [ ] Update README.md
 - [ ] Update dependency documentation
 
 ### Step 6: Final Verification
+
 - [ ] Compare binary sizes (should be smaller)
 - [ ] Generate test maps and verify output
 - [ ] Check for any NuGet restore warnings
@@ -211,6 +228,7 @@ dotnet/_lib/fantasy-map-generator-port/
 ### For Maintainers
 
 **Before:**
+
 ```csharp
 using Delaunator;
 var delaunay = new Delaunator(flattenedPoints);
@@ -218,6 +236,7 @@ var voronoi = new Voronoi(delaunay, points, points.Length);
 ```
 
 **After:**
+
 ```csharp
 using FantasyMapGenerator.Core.Geometry;
 var voronoi = SpadeAdapter.GenerateVoronoi(points, width, height);
@@ -228,6 +247,7 @@ var voronoi = SpadeAdapter.GenerateVoronoi(points, width, height);
 If any external projects depend on fantasy-map-generator-port and use Delaunator:
 
 1. **Update to Spade:**
+
    ```csharp
    // Old code
    var voronoi = new Voronoi(delaunator, points, count);
@@ -253,26 +273,29 @@ If any external projects depend on fantasy-map-generator-port and use Delaunator
 
 ## Risks and Mitigation
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Breaking change for external users | High | Provide migration guide, version bump |
-| Hidden Delaunator usage | Medium | Comprehensive grep/search before removal |
-| Test failures | Medium | Run full test suite before and after |
-| Build errors | Low | Clean build verification |
+| Risk                               | Impact | Mitigation                               |
+| ---------------------------------- | ------ | ---------------------------------------- |
+| Breaking change for external users | High   | Provide migration guide, version bump    |
+| Hidden Delaunator usage            | Medium | Comprehensive grep/search before removal |
+| Test failures                      | Medium | Run full test suite before and after     |
+| Build errors                       | Low    | Clean build verification                 |
 
 ## Alternatives Considered
 
 ### Alternative 1: Keep Delaunator as Optional
+
 **Pros:** Backward compatibility
 **Cons:** Maintenance burden, confusion
 **Decision:** Rejected - no known external users
 
 ### Alternative 2: Deprecation Period
+
 **Pros:** Gradual migration path
 **Cons:** Delays cleanup, not needed
 **Decision:** Rejected - internal project only
 
 ### Alternative 3: Keep for Tests Only
+
 **Pros:** Can compare Delaunator vs Spade
 **Cons:** Maintenance burden remains
 **Decision:** Rejected - Spade tests are sufficient

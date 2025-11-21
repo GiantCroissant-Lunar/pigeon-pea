@@ -26,7 +26,7 @@ Validates skill manifests against schemas and size limits.
 **Usage**:
 
 ```bash
-python3 scripts/validate_skills.py
+python3 .agent/scripts/validate_skills.py
 ```
 
 **What it validates**:
@@ -45,7 +45,7 @@ Validates agent manifests with two-phase cross-validation.
 **Usage**:
 
 ```bash
-python3 scripts/validate_agents.py
+python3 .agent/scripts/validate_agents.py
 ```
 
 **What it validates**:
@@ -68,7 +68,7 @@ This script reads all agent YAML files and skill SKILL.md files, extracts their 
 ### Usage
 
 ```bash
-python3 scripts/generate_registry.py
+python3 .agent/scripts/generate_registry.py
 ```
 
 The script automatically:
@@ -157,10 +157,10 @@ Validates documentation front-matter and generates the registry (RFC-012).
 
 ```bash
 # Full validation and registry generation
-python scripts/validate-docs.py
+python scripts/docs_mgmt/validate-docs.py
 
 # Pre-commit mode (validation only)
-python scripts/validate-docs.py --pre-commit
+python scripts/docs_mgmt/validate-docs.py --pre-commit
 ```
 
 ### generate-frontmatter.py
@@ -171,13 +171,13 @@ Automatically generates YAML front-matter for markdown files that lack it.
 
 ```bash
 # Preview (dry-run)
-python scripts/generate-frontmatter.py
+python scripts/docs_mgmt/generate-frontmatter.py
 
 # Apply front-matter
-python scripts/generate-frontmatter.py --apply
+python scripts/docs_mgmt/generate-frontmatter.py --apply
 
 # Save report
-python scripts/generate-frontmatter.py --output scripts/frontmatter-report.json
+python scripts/docs_mgmt/generate-frontmatter.py --output scripts/reports/frontmatter-report.json
 ```
 
 ### migrate-docs.py
@@ -188,10 +188,10 @@ Relocates files to correct directories based on doc_type and updates cross-refer
 
 ```bash
 # Preview migrations
-python scripts/migrate-docs.py --report scripts/frontmatter-report.json
+python scripts/docs_mgmt/migrate-docs.py --report scripts/reports/frontmatter-report.json
 
 # Apply migrations
-python scripts/migrate-docs.py --report scripts/frontmatter-report.json --apply
+python scripts/docs_mgmt/migrate-docs.py --report scripts/reports/frontmatter-report.json --apply
 ```
 
 ### cleanup-inbox.py
@@ -202,13 +202,13 @@ Enforces inbox retention policy and auto-archives conversation dumps.
 
 ```bash
 # Preview cleanup
-python scripts/cleanup-inbox.py
+python scripts/docs_mgmt/cleanup-inbox.py
 
 # Apply cleanup (30-day retention)
-python scripts/cleanup-inbox.py --apply
+python scripts/docs_mgmt/cleanup-inbox.py --apply
 
 # Custom retention period
-python scripts/cleanup-inbox.py --retention-days 14 --apply
+python scripts/docs_mgmt/cleanup-inbox.py --retention-days 14 --apply
 ```
 
 **See also**: [Documentation Organization Enhancement Plan](../docs/rfcs/012-documentation-organization-management.md)
@@ -223,13 +223,13 @@ Synchronizes RFC implementation status with task-master tasks.
 
 ```bash
 # Preview sync (requires .taskmaster/tasks.json)
-python scripts/sync-tasks.py
+python scripts/docs_mgmt/sync-tasks.py
 
 # Apply updates to RFCs
-python scripts/sync-tasks.py --apply
+python scripts/docs_mgmt/sync-tasks.py --apply
 
 # Generate RFC-task mapping
-python scripts/sync-tasks.py --generate-map
+python scripts/docs_mgmt/sync-tasks.py --generate-map
 ```
 
 **Features**:
@@ -247,10 +247,10 @@ Generates comprehensive RFC implementation dashboard.
 
 ```bash
 # Generate dashboard
-python scripts/generate-dashboard.py
+python scripts/docs_mgmt/generate-dashboard.py
 
 # Custom output location
-python scripts/generate-dashboard.py --output docs/STATUS.md
+python scripts/docs_mgmt/generate-dashboard.py --output docs/STATUS.md
 ```
 
 **Features**:
@@ -273,10 +273,10 @@ Generates comprehensive quality reports with scoring metrics.
 
 ```bash
 # Generate full quality report
-python scripts/generate-quality-report.py
+python scripts/docs_mgmt/generate-quality-report.py
 
 # Filter by minimum score
-python scripts/generate-quality-report.py --min-score 60
+python scripts/docs_mgmt/generate-quality-report.py --min-score 60
 ```
 
 **Quality Metrics** (0-100 each):
@@ -306,10 +306,10 @@ Generates comprehensive documentation index with hierarchical navigation.
 
 ```bash
 # Generate main index
-python scripts/generate-index.py
+python scripts/docs_mgmt/generate-index.py
 
 # Generate with directory READMEs
-python scripts/generate-index.py --generate-dir-readmes
+python scripts/docs_mgmt/generate-index.py --generate-dir-readmes
 ```
 
 **Features**:
@@ -330,7 +330,7 @@ Creates Mermaid dependency visualizations.
 
 ```bash
 # Generate dependency diagrams
-python scripts/visualize-deps.py
+python scripts/docs_mgmt/visualize-deps.py
 ```
 
 **Features**:
