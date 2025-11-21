@@ -36,7 +36,9 @@ public class SkiaSharpBackend : IRenderBackend
 
     public RenderingCapabilities Capabilities => _capabilities;
 
-    public SkiaSharpBackend(ILogger<SkiaSharpBackend>? logger = null)
+    public SkiaSharpBackend() : this(null) { }
+
+    public SkiaSharpBackend(ILogger<SkiaSharpBackend>? logger)
     {
         _logger = logger;
         _capabilities = new RenderingCapabilities(
