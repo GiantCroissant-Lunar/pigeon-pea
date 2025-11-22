@@ -8,7 +8,7 @@ public sealed class MapGenerationSettings
 {
     public int Width { get; set; }
     public int Height { get; set; }
-    public int NumPoints { get; set; }
+    public int NumPoints { get; set; } = 10000;
     public int Seed { get; set; }
     public string SeedString { get; set; } = "";
     public bool ReseedAtPhaseStart { get; set; }

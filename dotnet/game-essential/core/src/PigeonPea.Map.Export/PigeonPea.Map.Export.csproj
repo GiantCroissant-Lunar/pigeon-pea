@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
+    <ProjectReference Include="..\PigeonPea.Map.Encoding\PigeonPea.Map.Encoding.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BruTile.MbTiles" Version="6.0.0" />
+  </ItemGroup>
+
+</Project>

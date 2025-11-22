@@ -6,8 +6,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\_lib\fantasy-map-generator-port\dotnet\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
     <ProjectReference Include="..\..\..\..\_lib\modern-edgar-dotnet\src\Edgar.Core\Edgar.Core.csproj" />
     <ProjectReference Include="..\PigeonPea.Overlays\PigeonPea.Overlays.csproj" />
+    <!-- Temporarily removed PigeonPea.Shared reference due to transitive dependency issues -->
+    <!-- <ProjectReference Include="..\PigeonPea.Shared\PigeonPea.Shared.csproj" /> -->
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Temporarily exclude FmgWorldOverlaySource which depends on PigeonPea.Shared -->
+    <Compile Remove="FmgWorldOverlaySource.cs" />
   </ItemGroup>
 </Project>
