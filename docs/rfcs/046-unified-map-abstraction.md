@@ -796,7 +796,7 @@ public async Task EndToEnd_FmgProvider_To_BrailleRenderer()
    - `VectorTileMapProvider` for OSM/Mapbox tiles
    - Semantic mapping (OSM tags → `FeatureKind`)
 
-3. **RFC-049: Composition Providers**
+3. **RFC-048: Composition Providers**
    - `RegionalMapProvider` (route by region)
    - `LayeredMapProvider` (merge feature layers)
    - `ZoomAwareMapProvider` (switch by zoom)
