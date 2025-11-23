@@ -184,13 +184,13 @@ public sealed class AsciinemaExporter
         try
         {
             var lines = await File.ReadAllLinesAsync(filePath);
-            
+
             // Parse header
             var header = JsonSerializer.Deserialize<JsonElement>(lines[0]);
-            var durationSeconds = lines.Length > 1 
+            var durationSeconds = lines.Length > 1
                 ? JsonSerializer.Deserialize<JsonElement>(lines[^1])[0].GetDouble()
                 : 0.0;
-            
+
             var metadata = new AsciinemaMetadata
             {
                 Version = header.GetProperty("version").GetInt32(),

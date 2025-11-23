@@ -19,14 +19,7 @@
     "showCursor": true,
     "captureDesktop": true
   },
-  "capabilities": [
-    "visual-recording",
-    "screen-capture",
-    "video-encoding",
-    "cross-platform"
-  ],
-  "externalDependencies": [
-    "ffmpeg"
-  ],
+  "capabilities": ["visual-recording", "screen-capture", "video-encoding", "cross-platform"],
+  "externalDependencies": ["ffmpeg"],
   "tags": ["recording", "ffmpeg", "video", "gui", "avalonia", "screen-capture"]
 }

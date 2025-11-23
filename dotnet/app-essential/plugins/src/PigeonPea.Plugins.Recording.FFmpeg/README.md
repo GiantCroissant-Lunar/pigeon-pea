@@ -7,24 +7,24 @@ High-quality screen/video recording plugin for Avalonia GUI applications using F
 This plugin provides visual recording capabilities for PigeonPea GUI applications by leveraging FFmpeg's powerful video encoding and platform-specific screen capture methods. It's designed for creating professional-quality video recordings suitable for:
 
 - **Bug reports**: Visual documentation of rendering/UI issues
-- **Marketing**: High-quality demos and trailers  
+- **Marketing**: High-quality demos and trailers
 - **Tutorials**: Step-by-step video guides
 - **User testing**: Recording user sessions for UX analysis
 
 ## Platform Support
 
-| Platform | Capture Method | Status |
-|-----------|----------------|--------|
-| Windows | `gdigrab` (Windows GDI) | ✅ Full Support |
-| Linux | `x11grab` (X11 Screen) | ✅ Full Support |
-| macOS | `avfoundation` (AVFoundation) | ✅ Full Support |
+| Platform | Capture Method                | Status          |
+| -------- | ----------------------------- | --------------- |
+| Windows  | `gdigrab` (Windows GDI)       | ✅ Full Support |
+| Linux    | `x11grab` (X11 Screen)        | ✅ Full Support |
+| macOS    | `avfoundation` (AVFoundation) | ✅ Full Support |
 
 ## Requirements
 
 ### System Requirements
 
 - **FFmpeg**: Must be installed and available in PATH
-- **Permissions**: 
+- **Permissions**:
   - Windows: No special permissions required
   - Linux: X11 display access
   - macOS: Screen recording permissions in System Preferences
@@ -32,6 +32,7 @@ This plugin provides visual recording capabilities for PigeonPea GUI application
 ### Installing FFmpeg
 
 #### Windows
+
 ```powershell
 # Using winget
 winget install ffmpeg
@@ -44,6 +45,7 @@ scoop install ffmpeg
 ```
 
 #### Linux
+
 ```bash
 # Debian/Ubuntu
 sudo apt update && sudo apt install ffmpeg
@@ -56,6 +58,7 @@ sudo pacman -S ffmpeg
 ```
 
 #### macOS
+
 ```bash
 # Using Homebrew
 brew install ffmpeg
@@ -104,6 +107,7 @@ await recorder.StartAsync("demo.mp4");
 ### Platform-Specific Examples
 
 #### Windows - Desktop Capture
+
 ```csharp
 var options = new FFmpegRecordingOptions
 {
@@ -114,6 +118,7 @@ var options = new FFmpegRecordingOptions
 ```
 
 #### Windows - Window Capture
+
 ```csharp
 var options = new FFmpegRecordingOptions
 {
@@ -126,6 +131,7 @@ var options = new FFmpegRecordingOptions
 ```
 
 #### Linux - Display Capture
+
 ```csharp
 var options = new FFmpegRecordingOptions
 {
@@ -138,6 +144,7 @@ var options = new FFmpegRecordingOptions
 ```
 
 #### macOS - Screen Capture
+
 ```csharp
 var options = new FFmpegRecordingOptions
 {
@@ -152,61 +159,61 @@ var options = new FFmpegRecordingOptions
 
 ### Capture Settings
 
-| Option | Type | Default | Description |
-|---------|------|---------|-------------|
-| `FrameRate` | `int` | `30` | Frames per second (1-120) |
-| `Resolution` | `string` | `null` | Video resolution (e.g., "1920x1080") |
-| `ShowCursor` | `bool` | `true` | Show mouse cursor in recording |
+| Option       | Type     | Default | Description                          |
+| ------------ | -------- | ------- | ------------------------------------ |
+| `FrameRate`  | `int`    | `30`    | Frames per second (1-120)            |
+| `Resolution` | `string` | `null`  | Video resolution (e.g., "1920x1080") |
+| `ShowCursor` | `bool`   | `true`  | Show mouse cursor in recording       |
 
 ### Windows-Specific
 
-| Option | Type | Default | Description |
-|---------|------|---------|-------------|
-| `CaptureDesktop` | `bool` | `true` | Capture entire desktop vs specific window |
-| `WindowTitle` | `string` | `null` | Window title for window capture |
-| `OffsetX` | `int?` | `null` | X offset for capture area |
-| `OffsetY` | `int?` | `null` | Y offset for capture area |
+| Option           | Type     | Default | Description                               |
+| ---------------- | -------- | ------- | ----------------------------------------- |
+| `CaptureDesktop` | `bool`   | `true`  | Capture entire desktop vs specific window |
+| `WindowTitle`    | `string` | `null`  | Window title for window capture           |
+| `OffsetX`        | `int?`   | `null`  | X offset for capture area                 |
+| `OffsetY`        | `int?`   | `null`  | Y offset for capture area                 |
 
 ### Linux-Specific
 
-| Option | Type | Default | Description |
-|---------|------|---------|-------------|
-| `Display` | `string` | `":0.0"` | X11 display to capture |
-| `FollowMouse` | `bool` | `false` | Follow mouse cursor movement |
+| Option        | Type     | Default  | Description                  |
+| ------------- | -------- | -------- | ---------------------------- |
+| `Display`     | `string` | `":0.0"` | X11 display to capture       |
+| `FollowMouse` | `bool`   | `false`  | Follow mouse cursor movement |
 
 ### macOS-Specific
 
-| Option | Type | Default | Description |
-|---------|------|---------|-------------|
-| `ScreenDevice` | `int` | `1` | Screen device index |
-| `CaptureMouse` | `bool` | `true` | Capture mouse movements |
-| `CaptureClicks` | `bool` | `false` | Capture mouse clicks |
+| Option          | Type   | Default | Description             |
+| --------------- | ------ | ------- | ----------------------- |
+| `ScreenDevice`  | `int`  | `1`     | Screen device index     |
+| `CaptureMouse`  | `bool` | `true`  | Capture mouse movements |
+| `CaptureClicks` | `bool` | `false` | Capture mouse clicks    |
 
 ### Encoding Settings
 
-| Option | Type | Default | Description |
-|---------|------|---------|-------------|
-| `VideoCodec` | `string` | `"libx264"` | Video codec for encoding |
-| `Preset` | `string` | `"medium"` | Encoding preset (ultrafast to veryslow) |
-| `CRF` | `int` | `23` | Quality (0-51, lower is better) |
-| `PixelFormat` | `string` | `"yuv420p"` | Pixel format for output |
+| Option        | Type     | Default     | Description                             |
+| ------------- | -------- | ----------- | --------------------------------------- |
+| `VideoCodec`  | `string` | `"libx264"` | Video codec for encoding                |
+| `Preset`      | `string` | `"medium"`  | Encoding preset (ultrafast to veryslow) |
+| `CRF`         | `int`    | `23`        | Quality (0-51, lower is better)         |
+| `PixelFormat` | `string` | `"yuv420p"` | Pixel format for output                 |
 
 ### Output Settings
 
-| Option | Type | Default | Description |
-|---------|------|---------|-------------|
-| `MaxDuration` | `int?` | `null` | Maximum recording duration (seconds) |
-| `ShowFFmpegOutput` | `bool` | `false` | Show FFmpeg console output |
-| `CustomArgs` | `string[]` | `null` | Additional FFmpeg arguments |
+| Option             | Type       | Default | Description                          |
+| ------------------ | ---------- | ------- | ------------------------------------ |
+| `MaxDuration`      | `int?`     | `null`  | Maximum recording duration (seconds) |
+| `ShowFFmpegOutput` | `bool`     | `false` | Show FFmpeg console output           |
+| `CustomArgs`       | `string[]` | `null`  | Additional FFmpeg arguments          |
 
 ## Performance Characteristics
 
-| Preset | CPU Usage | File Size | Quality | Best For |
-|--------|-----------|-----------|---------|-----------|
-| `ultrafast` | ~5% | ~100MB/min | Low | Development/debugging |
-| `fast` | ~10% | ~80MB/min | Medium | Quick previews |
-| `medium` | ~15% | ~50MB/min | Medium | General use |
-| `slow` | ~30% | ~80MB/min | High | Marketing/demos |
+| Preset      | CPU Usage | File Size  | Quality | Best For              |
+| ----------- | --------- | ---------- | ------- | --------------------- |
+| `ultrafast` | ~5%       | ~100MB/min | Low     | Development/debugging |
+| `fast`      | ~10%      | ~80MB/min  | Medium  | Quick previews        |
+| `medium`    | ~15%      | ~50MB/min  | Medium  | General use           |
+| `slow`      | ~30%      | ~80MB/min  | High    | Marketing/demos       |
 
 ## Output Formats
 
@@ -224,7 +231,8 @@ The plugin supports all video formats that FFmpeg can encode:
 
 **Error**: `FFmpeg is not available on this system`
 
-**Solution**: 
+**Solution**:
+
 1. Install FFmpeg using the methods above
 2. Ensure FFmpeg is in your system PATH
 3. Restart your application
@@ -239,6 +247,7 @@ ffmpeg -version
 **Error**: Screen recording fails on macOS
 
 **Solution**:
+
 1. Open **System Preferences** → **Security & Privacy** → **Screen Recording**
 2. Add your application or terminal to the allowed list
 3. Restart the application
@@ -248,6 +257,7 @@ ffmpeg -version
 **Error**: Cannot connect to display
 
 **Solution**:
+
 1. Ensure X11 server is running: `echo $DISPLAY`
 2. Check permissions: `xhost +local:`
 3. Verify FFmpeg has X11 support: `ffmpeg -formats | grep x11grab`
@@ -257,6 +267,7 @@ ffmpeg -version
 **Symptoms**: Laggy recording, high CPU usage
 
 **Solutions**:
+
 1. Use faster preset: `Preset = "ultrafast"`
 2. Lower frame rate: `FrameRate = 15`
 3. Reduce resolution: `Resolution = "1280x720"`
@@ -269,7 +280,7 @@ ffmpeg -version
 ```csharp
 var options = new FFmpegRecordingOptions
 {
-    CustomArgs = new[] 
+    CustomArgs = new[]
     {
         "-tune", "zerolatency",  // Optimize for streaming
         "-g", "30",              // Keyframe interval
@@ -297,13 +308,13 @@ var options = new FFmpegRecordingOptions
 public class App : Application
 {
     private IVisualRecorder? _recorder;
-    
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
         _recorder = Host.Services.GetService<IVisualRecorder>();
     }
-    
+
     protected override void OnLaunched(ApplicationLaunchedEventArgs e)
     {
         // Start recording when app launches
@@ -311,10 +322,10 @@ public class App : Application
         {
             await _recorder!.StartAsync($"recordings/session_{DateTime.Now:yyyyMMdd_HHmmss}.mp4");
         });
-        
+
         base.OnLaunched(e);
     }
-    
+
     protected override void OnExiting(ControlledApplicationLifetimeExitEventArgs e)
     {
         // Stop recording when app exits
@@ -325,7 +336,7 @@ public class App : Application
                 await _recorder.StopAsync();
             }
         });
-        
+
         base.OnExiting(e);
     }
 }
@@ -359,16 +370,16 @@ public class FFmpegRecordingOptions
     public int FrameRate { get; set; } = 30;
     public string? Resolution { get; set; }
     public bool ShowCursor { get; set; } = true;
-    
+
     // Platform-specific settings (see table above)
     // ...
-    
+
     // Encoding settings
     public string VideoCodec { get; set; } = "libx264";
     public string Preset { get; set; } = "medium";
     public int CRF { get; set; } = 23;
     public string PixelFormat { get; set; } = "yuv420p";
-    
+
     // Validation and utilities
     public bool IsValid();
     public string GetDescription();

@@ -10,4 +10,3 @@ public interface IService
     void AddExperience(World world, Entity entity, int amount);
     void LevelUp(World world, Entity entity);
 }
-

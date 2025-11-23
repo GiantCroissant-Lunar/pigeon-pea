@@ -10,7 +10,7 @@ public class RegionalMapProviderTests
     {
         var provider1 = new MockMapProvider("provider1");
         var provider2 = new MockMapProvider("provider2");
-        
+
         var regional = new RegionalMapProvider(
             routes: new List<RegionRoute>
             {
@@ -19,10 +19,10 @@ public class RegionalMapProviderTests
             },
             fallback: provider1
         );
-        
+
         // Request in provider2's region
         var map = await regional.GetMapAsync(new BoundingBox(600, 100, 100, 100));
-        
+
         if (map is MockMapData mockMap)
         {
             Assert.Equal("provider2", mockMap.SourceId);
@@ -51,7 +51,7 @@ public class RegionalMapProviderTests
         var map = await regional.GetMapAsync(new BoundingBox(400, 0, 200, 100)); // 400-600 x 0-100
 
         Assert.IsType<CompositeMapData>(map);
-        
+
         Assert.Contains("mock:provider1", map.MapId);
         Assert.Contains("mock:fallback", map.MapId);
     }

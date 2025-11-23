@@ -93,7 +93,7 @@ public sealed class AdvancedInventoryService : IService
     public bool TryEquip(Entity entity, int fromSlotIndex, string equipmentSlotId)
     {
         if (!entity.Has<InventoryComponent>()) return false;
-        
+
         EnsureEquipment(entity);
         ref var invComp = ref entity.Get<InventoryComponent>();
         ref var equipComp = ref entity.Get<EquipmentComponent>();
@@ -102,7 +102,7 @@ public sealed class AdvancedInventoryService : IService
         if (slot?.Item is null) return false;
 
         var item = slot.Item;
-        
+
         // Check if slot is already occupied
         if (equipComp.Slots.ContainsKey(equipmentSlotId))
         {
@@ -117,7 +117,7 @@ public sealed class AdvancedInventoryService : IService
         // But we know the index.
         // We can manually manipulate the slot if we are careful.
         // Or use TryRemove if we don't care which stack it comes from (but we do, user selected a slot).
-        
+
         // For simplicity, let's assume we remove 1 from the specific slot.
         if (item.Quantity > 1)
         {
@@ -251,7 +251,7 @@ public sealed class AdvancedInventoryService : IService
         {
             if (!entity.Has<StatModifiers>()) entity.Add(new StatModifiers());
             ref var mods = ref entity.Get<StatModifiers>();
-            
+
             foreach (var mod in modifiers)
             {
                 mods.Modifiers.Add(new ActiveModifier
@@ -277,10 +277,10 @@ public sealed class AdvancedInventoryService : IService
         // Note: This assumes SourceId is unique per item type, which works for this simple implementation.
         // In a real system, we'd use the ItemInstance ID or similar.
         // But here we used definitionId as SourceId in InitializeItemStats.
-        
+
         // Wait, in InitializeItemStats I used "sword_iron" as SourceId.
         // So removing by SourceId works.
-        
+
         for (int i = mods.Modifiers.Count - 1; i >= 0; i--)
         {
             if (mods.Modifiers[i].SourceId == definitionId)

@@ -23,20 +23,20 @@ public static class AnalyticsLoggerExtensions
     {
         if (builder == null)
             throw new ArgumentNullException(nameof(builder));
-            
+
         if (analytics == null)
             throw new ArgumentNullException(nameof(analytics));
-        
+
         var options = new AnalyticsLoggerOptions();
         configureOptions?.Invoke(options);
-        
+
         builder.Services.AddSingleton<IAnalyticsService>(analytics);
         builder.Services.AddSingleton(options);
         builder.Services.AddSingleton<ILoggerProvider, AnalyticsLoggerProvider>();
-        
+
         return builder;
     }
-    
+
     /// <summary>
     /// Adds analytics logger sink to the logging builder using DI.
     /// </summary>
@@ -49,20 +49,20 @@ public static class AnalyticsLoggerExtensions
     {
         if (builder == null)
             throw new ArgumentNullException(nameof(builder));
-        
+
         var options = new AnalyticsLoggerOptions();
         configureOptions?.Invoke(options);
-        
+
         // Register options
         builder.Services.AddSingleton(options);
-        
+
         // Register the provider with a factory that resolves IAnalyticsService from DI
         builder.Services.AddSingleton<ILoggerProvider>(serviceProvider =>
         {
             var analytics = serviceProvider.GetRequiredService<IAnalyticsService>();
             return new AnalyticsLoggerProvider(analytics, options);
         });
-        
+
         return builder;
     }
 }

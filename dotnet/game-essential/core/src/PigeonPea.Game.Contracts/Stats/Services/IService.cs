@@ -34,4 +34,3 @@ public interface IService
 
     bool SetStats(World world, Entity entity, Dictionary<string, float> stats);
 }
-

@@ -23,20 +23,20 @@ public static class ProfilingLoggerExtensions
     {
         if (builder == null)
             throw new ArgumentNullException(nameof(builder));
-            
+
         if (profiling == null)
             throw new ArgumentNullException(nameof(profiling));
-        
+
         var options = new ProfilingLoggerOptions();
         configureOptions?.Invoke(options);
-        
+
         builder.Services.AddSingleton<IProfilingService>(profiling);
         builder.Services.AddSingleton(options);
         builder.Services.AddSingleton<ILoggerProvider, ProfilingLoggerProvider>();
-        
+
         return builder;
     }
-    
+
     /// <summary>
     /// Adds profiling logger sink to the logging builder using DI.
     /// </summary>
@@ -49,20 +49,20 @@ public static class ProfilingLoggerExtensions
     {
         if (builder == null)
             throw new ArgumentNullException(nameof(builder));
-        
+
         var options = new ProfilingLoggerOptions();
         configureOptions?.Invoke(options);
-        
+
         // Register options
         builder.Services.AddSingleton(options);
-        
+
         // Register the provider with a factory that resolves IProfilingService from DI
         builder.Services.AddSingleton<ILoggerProvider>(serviceProvider =>
         {
             var profiling = serviceProvider.GetRequiredService<IProfilingService>();
             return new ProfilingLoggerProvider(profiling, options);
         });
-        
+
         return builder;
     }
 }

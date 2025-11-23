@@ -17,27 +17,27 @@ public record DiffResult
     /// Whether the recordings are identical.
     /// </summary>
     public bool Identical { get; init; }
-    
+
     /// <summary>
     /// Index where the recordings first diverge (0-based).
     /// </summary>
     public int DivergencePoint { get; init; } = -1;
-    
+
     /// <summary>
     /// Event from the first recording at divergence point.
     /// </summary>
     public GameEvent? Event1 { get; init; }
-    
+
     /// <summary>
     /// Event from the second recording at divergence point.
     /// </summary>
     public GameEvent? Event2 { get; init; }
-    
+
     /// <summary>
     /// Human-readable description of the difference.
     /// </summary>
     public string Description { get; init; } = string.Empty;
-    
+
     /// <summary>
     /// Summary statistics about the comparison.
     /// </summary>
@@ -53,17 +53,17 @@ public record DiffStatistics
     /// Number of events in first recording.
     /// </summary>
     public int EventCount1 { get; init; }
-    
+
     /// <summary>
     /// Number of events in second recording.
     /// </summary>
     public int EventCount2 { get; init; }
-    
+
     /// <summary>
     /// Number of matching events up to divergence point.
     /// </summary>
     public int MatchingEvents { get; init; }
-    
+
     /// <summary>
     /// Percentage of events that match.
     /// </summary>
@@ -103,7 +103,7 @@ public class EventDiff
     /// <summary>
     /// Compares two already-loaded recordings.
     /// </summary>
-    public DiffResult CompareRecordings(RecordedSession recording1, RecordedSession recording2, 
+    public DiffResult CompareRecordings(RecordedSession recording1, RecordedSession recording2,
         string? name1 = null, string? name2 = null)
     {
         name1 ??= "Recording 1";
@@ -143,7 +143,7 @@ public class EventDiff
             }
             else
             {
-                return CreateDivergenceResult(events1[i], events2[i], i, 
+                return CreateDivergenceResult(events1[i], events2[i], i,
                     events1.Count, events2.Count, matchingEvents, name1, name2);
             }
         }
@@ -296,7 +296,7 @@ public class EventDiff
         {
             var list1 = enumerable1.ToList();
             var list2 = enumerable2.ToList();
-            
+
             if (list1.Count != list2.Count)
                 return false;
 

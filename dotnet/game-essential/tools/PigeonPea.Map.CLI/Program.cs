@@ -47,9 +47,9 @@ class Program
         var provider = new FmgMapProvider(generator);
 
         var bounds = new BoundingBox(0, 0, width, height);
-        
+
         Console.WriteLine("Exporting to MBTiles...");
-        
+
         var encoder = new VectorTileEncoder();
         var options = new MBTilesOptions
         {

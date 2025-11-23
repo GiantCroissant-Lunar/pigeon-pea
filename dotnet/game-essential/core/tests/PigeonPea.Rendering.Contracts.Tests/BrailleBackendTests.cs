@@ -24,7 +24,7 @@ public class BrailleBackendTests
     {
         // Arrange
         var backend = new MockBrailleBackend();
-        
+
         // Act
         backend.Initialize(new RenderContext(80, 40));
 

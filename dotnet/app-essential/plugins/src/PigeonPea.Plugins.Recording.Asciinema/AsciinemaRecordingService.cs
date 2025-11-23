@@ -233,7 +233,7 @@ public sealed class AsciinemaRecordingService : IVisualRecorder, IService, IDisp
 
         var exporter = new AsciinemaExporter(_logger);
         var asciinemaMetadata = await exporter.GetMetadataAsync(path);
-        
+
         if (asciinemaMetadata == null)
             throw new FileNotFoundException($"Could not load metadata for recording file: {path}");
 

@@ -37,15 +37,15 @@ public class MBTilesMapProvider : IMapProvider
         _filePath = filePath;
         _decoder = decoder ?? new VectorTileDecoder();
         _screenWidth = screenWidth;
-        
+
         // Use BruTile to read MBTiles
         _tileSource = new MbTilesTileSource(new SQLite.SQLiteConnectionString(filePath, false));
-        
+
         ProviderId = $"mbtiles:{Path.GetFileNameWithoutExtension(filePath)}";
 
         var extent = _tileSource.Schema.Extent;
         _bounds = new BoundingBox(extent.MinX, extent.MinY, extent.Width, extent.Height);
-        
+
         // BruTile schema resolutions are usually sorted high to low (zoomed out to zoomed in? or vice versa?)
         // Actually resolutions are dictionary int -> Resolution.
         var levels = _tileSource.Schema.Resolutions.Keys.Select(k => Convert.ToInt32(k)).ToList();
@@ -130,12 +130,12 @@ public class MBTilesMapProvider : IMapProvider
         // Find the resolution that best matches the requested bounds width
         // Assuming we want to see the whole bounds in roughly one screen width
         // This is a heuristic.
-        
+
         // Simple heuristic: find zoom level where tile width is closest to bounds width / 4
         // (meaning we load ~4x4 tiles)
-        
+
         var targetRes = bounds.Width / (double)_screenWidth;
-        
+
         // Find closest resolution in schema
         var closestZoom = _minZoom;
         var minDiff = double.MaxValue;

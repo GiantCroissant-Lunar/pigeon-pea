@@ -67,12 +67,14 @@ await Task.WhenAll(
 **When available:** Linux/macOS systems with `asciinema` installed
 
 **Advantages:**
+
 - ✅ Full fidelity recording
 - ✅ Tested and proven implementation
 - ✅ Minimal CPU overhead
 - ✅ Perfect ANSI escape sequence handling
 
 **Installation:**
+
 ```bash
 # Linux (Ubuntu/Debian)
 sudo apt-get install asciinema
@@ -89,11 +91,13 @@ asciinema --version
 **When used:** Windows systems or when asciinema binary is unavailable
 
 **Advantages:**
+
 - ✅ Works everywhere, no dependencies
 - ✅ Direct Terminal.Gui buffer access
 - ✅ Automatic color and attribute capture
 
 **Limitations:**
+
 - ⚠️ Slightly higher CPU usage (~1-2%)
 - ⚠️ May miss complex VT sequences
 - ⚠️ Color fidelity depends on Terminal.Gui driver
@@ -111,12 +115,12 @@ The plugin generates asciinema v2 format files:
 
 ### File Characteristics
 
-| Metric | Value |
-|---------|--------|
-| **File size** | ~50MB/hour (vs ~500MB/hour for video) |
-| **CPU overhead** | ~1-2% (fallback) / ~0% (binary) |
-| **Memory usage** | ~5-10MB (in-memory frames) |
-| **Frame rate** | On-change (deduplicated) |
+| Metric           | Value                                 |
+| ---------------- | ------------------------------------- |
+| **File size**    | ~50MB/hour (vs ~500MB/hour for video) |
+| **CPU overhead** | ~1-2% (fallback) / ~0% (binary)       |
+| **Memory usage** | ~5-10MB (in-memory frames)            |
+| **Frame rate**   | On-change (deduplicated)              |
 
 ## Sharing and Playback
 
@@ -197,11 +201,13 @@ The plugin uses intelligent frame capture:
 ### Platform-Specific Optimizations
 
 **Linux/macOS (Binary):**
+
 - Native process isolation
 - Zero memory impact on application
 - Perfect ANSI sequence capture
 
 **Windows (Fallback):**
+
 - Direct Terminal.Gui buffer access
 - Optimized ANSI code generation
 - Minimal GC pressure
@@ -211,15 +217,18 @@ The plugin uses intelligent frame capture:
 ### Common Issues
 
 **"Asciinema binary not found"**
+
 - Install asciinema: `sudo apt-get install asciinema` (Linux) or `brew install asciinema` (macOS)
 - Plugin will automatically fallback to pure C# implementation
 
 **"Recording produces empty file"**
+
 - Ensure Terminal.Gui is initialized before starting recording
 - Check that `Application.Driver` is available
 - Verify output directory permissions
 
 **"Colors not captured correctly"**
+
 - Terminal.Gui driver must support color attributes
 - Some complex escape sequences may not be captured in fallback mode
 - Try using native asciinema binary for best results
@@ -264,7 +273,7 @@ public class AsciinemaRecordingService : IVisualRecorder
     public bool IsRecording { get; }
     public string GetStrategyInfo();
     public static bool IsAsciinemaBinaryAvailable();
-    
+
     public Task StartAsync(string outputPath);
     public Task StopAsync();
 }
@@ -279,7 +288,7 @@ public sealed class TerminalFrame
     public int Width { get; init; }
     public int Height { get; init; }
     public string Content { get; init; }
-    
+
     public bool HasSameContent(TerminalFrame? other);
     public int GetContentHash();
 }
@@ -319,5 +328,5 @@ See the main Pigeon Pea repository for contribution guidelines.
 ## Related RFCs
 
 - **RFC-00052** - Base recording system architecture
-- **RFC-00053** - Event recording implementation  
+- **RFC-00053** - Event recording implementation
 - **RFC-00055** - FFmpeg recording for GUI applications

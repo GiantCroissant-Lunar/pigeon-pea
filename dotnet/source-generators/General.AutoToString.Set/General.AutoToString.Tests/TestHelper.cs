@@ -59,7 +59,7 @@ public static class TestHelper
         var generatedFiles = generatedTrees
             .ToDictionary(
                 tree => Path.GetFileName(tree.FilePath) ?? $"generated_{generatedTrees.IndexOf(tree)}.cs",
-                tree => tree.ToString());            
+                tree => tree.ToString());
 
         UseProjectRelativeDirectory("snapshots");
 

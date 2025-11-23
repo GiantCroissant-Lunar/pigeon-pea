@@ -65,7 +65,7 @@ public class SourceGenerator : IIncrementalGenerator
 
         var autoPropertyConfig = GetAutoPropertyConfiguration(typeSymbol);
         var fieldsToGenerate = GetFieldsToGenerateProperties(typeSymbol, autoPropertyConfig);
-        
+
         var properties = GenerateProperties(fieldsToGenerate, autoPropertyConfig);
 
         var sb = new StringBuilder();
@@ -79,12 +79,12 @@ public class SourceGenerator : IIncrementalGenerator
         sb.AppendLine(typeDeclarationLine);
         sb.AppendLine("{");
         sb.Append(indentedAttributes);
-        
+
         foreach (var property in properties)
         {
             sb.AppendLine(property);
         }
-        
+
         sb.AppendLine("}");
 
         return sb.ToString();
@@ -93,9 +93,9 @@ public class SourceGenerator : IIncrementalGenerator
     private static AutoPropertyConfiguration GetAutoPropertyConfiguration(ITypeSymbol typeSymbol)
     {
         var config = new AutoPropertyConfiguration();
-        
+
         var autoPropertyAttribute = typeSymbol.GetAttributes()
-            .FirstOrDefault(a => a.AttributeClass?.Name == AutoProperty || 
+            .FirstOrDefault(a => a.AttributeClass?.Name == AutoProperty ||
                                a.AttributeClass?.Name == AutoPropertyAttribute);
 
         if (autoPropertyAttribute != null)
@@ -125,7 +125,7 @@ public class SourceGenerator : IIncrementalGenerator
     }
 
     private static List<FieldPropertyInfo> GetFieldsToGenerateProperties(
-        ITypeSymbol typeSymbol, 
+        ITypeSymbol typeSymbol,
         AutoPropertyConfiguration config)
     {
         var privateFields = GetPrivateFields(typeSymbol);
@@ -134,11 +134,11 @@ public class SourceGenerator : IIncrementalGenerator
         foreach (var field in privateFields)
         {
             var generatePropertyAttribute = field.GetAttributes()
-                .FirstOrDefault(a => a.AttributeClass?.Name == GenerateProperty || 
+                .FirstOrDefault(a => a.AttributeClass?.Name == GenerateProperty ||
                                    a.AttributeClass?.Name == GeneratePropertyAttribute);
 
             var skipPropertyAttribute = field.GetAttributes()
-                .FirstOrDefault(a => a.AttributeClass?.Name == SkipProperty || 
+                .FirstOrDefault(a => a.AttributeClass?.Name == SkipProperty ||
                                    a.AttributeClass?.Name == SkipPropertyAttribute);
 
             // Skip if explicitly marked to skip
@@ -164,8 +164,8 @@ public class SourceGenerator : IIncrementalGenerator
     }
 
     private static string GetPropertyName(
-        IFieldSymbol field, 
-        AttributeData? generatePropertyAttribute, 
+        IFieldSymbol field,
+        AttributeData? generatePropertyAttribute,
         AutoPropertyConfiguration config)
     {
         // Check if property name is explicitly specified
@@ -362,7 +362,7 @@ public class SourceGenerator : IIncrementalGenerator
             return fieldName;
 
         var propertyName = fieldName;
-        
+
         // Remove prefix if it exists
         if (!string.IsNullOrEmpty(fieldPrefix) && propertyName.StartsWith(fieldPrefix))
         {

@@ -1,0 +1,32 @@
+---
+title: 'Getting started'
+description: 'How to run the Pigeon Pea docs site locally.'
+---
+
+## Run the docs site
+
+From the repository root:
+
+```bash
+cd docs-site
+npm install
+npm run dev
+```
+
+Then open the URL printed by Astro (usually `http://localhost:4321`).
+
+## Build for production
+
+```bash
+cd docs-site
+npm run build
+```
+
+The static site will be generated into the `docs-site/dist/` directory.
+
+## Next steps
+
+- Add more pages under `src/content/docs/`.
+- Cross-link to existing markdown docs in `docs/`.
+- Optionally, add navigation groups in `astro.config.mjs` using the
+  `sidebar` configuration.

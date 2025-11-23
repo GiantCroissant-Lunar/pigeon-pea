@@ -27,8 +27,8 @@ public class WindowsCaptureStrategy : ICaptureStrategy
         // Add offset for partial screen capture
         if (_options.OffsetX.HasValue && _options.OffsetY.HasValue)
         {
-            args.AddRange(new[] 
-            { 
+            args.AddRange(new[]
+            {
                 "-offset_x", _options.OffsetX.Value.ToString(),
                 "-offset_y", _options.OffsetY.Value.ToString()
             });

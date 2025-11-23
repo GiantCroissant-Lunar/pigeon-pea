@@ -23,7 +23,7 @@ public class ZoomAwareMapProviderTests
         });
 
         var map = await zoomAware.GetMapAsync(new BoundingBox(0, 0, 100, 100));
-        
+
         // Zoom 5 -> Low detail
         var lowFeatures = map.GetFeatures(map.Bounds, 5).ToList();
         Assert.Contains(lowFeatures, f => f.Kind == FeatureKind.CountryBorder);

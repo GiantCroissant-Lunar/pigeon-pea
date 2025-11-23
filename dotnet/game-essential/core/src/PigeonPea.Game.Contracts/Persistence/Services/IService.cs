@@ -10,4 +10,3 @@ public interface IService
     SaveResult SaveEntity(World world, Entity entity);
     Entity LoadEntity(World world, string serializedEntity);
 }
-

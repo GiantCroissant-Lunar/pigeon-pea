@@ -10,6 +10,3 @@ public partial class Service : IService
     private readonly IRegistry _registry;
     public Service(IRegistry registry) => _registry = registry;
 }
-
-
-

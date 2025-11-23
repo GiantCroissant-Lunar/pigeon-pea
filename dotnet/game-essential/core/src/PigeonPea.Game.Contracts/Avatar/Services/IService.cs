@@ -10,4 +10,3 @@ public interface IService
     void EquipCosmetic(World world, Entity entity, string slot, string itemId);
     void SetDisplayInfo(World world, Entity entity, string displayName, string title);
 }
-

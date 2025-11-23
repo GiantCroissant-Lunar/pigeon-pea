@@ -17,13 +17,13 @@ public class RecordingLoggerProvider : ILoggerProvider
         _recorder = recorder ?? throw new ArgumentNullException(nameof(recorder));
         _options = options ?? new RecordingLoggerOptions();
     }
-    
+
     public ILogger CreateLogger(string categoryName)
     {
         return new RecordingLogger(_recorder, categoryName, _options);
     }
-    
-    public void Dispose() 
+
+    public void Dispose()
     {
         // No resources to dispose
     }
@@ -38,22 +38,22 @@ public class RecordingLoggerOptions
     /// Gets or sets whether to log all categories or only specific ones.
     /// </summary>
     public bool LogAllCategories { get; set; } = true;
-    
+
     /// <summary>
     /// Gets or sets the specific categories to log when LogAllCategories is false.
     /// </summary>
     public HashSet<string> AllowedCategories { get; set; } = new();
-    
+
     /// <summary>
     /// Gets or sets the minimum log level to record.
     /// </summary>
     public LogLevel MinimumLevel { get; set; } = LogLevel.Information;
-    
+
     /// <summary>
     /// Gets or sets whether to include the log level as event data.
     /// </summary>
     public bool IncludeLogLevel { get; set; } = true;
-    
+
     /// <summary>
     /// Gets or sets whether to include the category as event data.
     /// </summary>

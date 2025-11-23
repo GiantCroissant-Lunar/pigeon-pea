@@ -163,7 +163,7 @@ public class LanguageToFMGAdapterTests
         // Assert
         Assert.NotNull(templates);
         Assert.NotEmpty(templates);
-        
+
         var templateList = templates.ToList();
         Assert.Contains("germanic", templateList);
         Assert.Contains("elvish", templateList);
@@ -192,7 +192,7 @@ public class LanguageToFMGAdapterTests
         Assert.NotNull(personName);
         Assert.NotNull(placeName);
         Assert.NotNull(clanName);
-        
+
         // Names should generally be different (though could occasionally be same by chance)
         Assert.NotEqual(personName, placeName);
         Assert.NotEqual(personName, clanName);
@@ -219,7 +219,7 @@ public class LanguageToFMGAdapterTests
         Assert.NotNull(ruleBasedName);
         Assert.NotNull(markovName);
         Assert.NotNull(hybridName);
-        
+
         Assert.NotEmpty(ruleBasedName);
         Assert.NotEmpty(markovName);
         Assert.NotEmpty(hybridName);

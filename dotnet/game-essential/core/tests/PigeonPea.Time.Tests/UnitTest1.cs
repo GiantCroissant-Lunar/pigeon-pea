@@ -1,4 +1,4 @@
-﻿namespace PigeonPea.Time.Tests;
+namespace PigeonPea.Time.Tests;
 
 public class UnitTest1
 {

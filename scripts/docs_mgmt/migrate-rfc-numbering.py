@@ -13,7 +13,6 @@ from typing import Dict, Tuple
 
 import yaml
 
-
 # Duplicate resolution plan
 DUPLICATE_REASSIGNMENTS = {
     # RFC-00014 duplicates

@@ -16,7 +16,7 @@ public class NameGeneratorBridgeExample
 
         // Set up dependency injection
         var services = new ServiceCollection();
-        
+
         // Add logging
         services.AddLogging(builder =>
         {
@@ -48,8 +48,8 @@ public class NameGeneratorBridgeExample
             for (int i = 0; i < 5; i++)
             {
                 var townName = languageService.GenerateNameFromTemplate(
-                    "germanic", 
-                    NameType.Place, 
+                    "germanic",
+                    NameType.Place,
                     GenerationMode.RuleBased);
                 Console.WriteLine($"   {townName}");
             }
@@ -60,8 +60,8 @@ public class NameGeneratorBridgeExample
             for (int i = 0; i < 5; i++)
             {
                 var elvishName = languageService.GenerateNameFromTemplate(
-                    "elvish", 
-                    NameType.Personal, 
+                    "elvish",
+                    NameType.Personal,
                     GenerationMode.RuleBased);
                 Console.WriteLine($"   {elvishName}");
             }
@@ -72,8 +72,8 @@ public class NameGeneratorBridgeExample
             for (int i = 0; i < 5; i++)
             {
                 var dwarvenName = languageService.GenerateNameFromTemplate(
-                    "dwarvish", 
-                    NameType.Place, 
+                    "dwarvish",
+                    NameType.Place,
                     GenerationMode.RuleBased);
                 Console.WriteLine($"   {dwarvenName}");
             }
@@ -84,8 +84,8 @@ public class NameGeneratorBridgeExample
             for (int i = 0; i < 5; i++)
             {
                 var orcishName = languageService.GenerateNameFromTemplate(
-                    "orcish", 
-                    NameType.Clan, 
+                    "orcish",
+                    NameType.Clan,
                     GenerationMode.RuleBased);
                 Console.WriteLine($"   {orcishName}");
             }
@@ -96,8 +96,8 @@ public class NameGeneratorBridgeExample
             for (int i = 0; i < 5; i++)
             {
                 var japaneseName = languageService.GenerateNameFromTemplate(
-                    "japanese", 
-                    NameType.Place, 
+                    "japanese",
+                    NameType.Place,
                     GenerationMode.RuleBased);
                 Console.WriteLine($"   {japaneseName}");
             }
@@ -108,8 +108,8 @@ public class NameGeneratorBridgeExample
             for (int i = 0; i < 5; i++)
             {
                 var markovName = languageService.GenerateNameFromTemplate(
-                    "elvish", 
-                    NameType.Personal, 
+                    "elvish",
+                    NameType.Personal,
                     GenerationMode.MarkovChain);
                 Console.WriteLine($"   {markovName}");
             }
@@ -120,8 +120,8 @@ public class NameGeneratorBridgeExample
             for (int i = 0; i < 5; i++)
             {
                 var hybridName = languageService.GenerateNameFromTemplate(
-                    "dwarvish", 
-                    NameType.Personal, 
+                    "dwarvish",
+                    NameType.Personal,
                     GenerationMode.Hybrid);
                 Console.WriteLine($"   {hybridName}");
             }

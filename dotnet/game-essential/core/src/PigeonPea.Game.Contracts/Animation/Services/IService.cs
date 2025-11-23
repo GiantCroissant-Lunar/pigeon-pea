@@ -10,4 +10,3 @@ public interface IService
     AnimationView GetCurrentAnimation(World world, Entity entity);
     void Update(World world, float deltaTime);
 }
-

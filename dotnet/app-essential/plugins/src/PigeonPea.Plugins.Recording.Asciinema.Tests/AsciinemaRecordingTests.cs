@@ -79,7 +79,7 @@ public class AsciinemaRecordingTests
 
         // Assert
         Assert.IsTrue(File.Exists(outputPath));
-        
+
         var content = await File.ReadAllLinesAsync(outputPath);
         Assert.IsTrue(content.Length >= 3); // Header + 2 frames
 

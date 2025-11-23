@@ -44,7 +44,7 @@ public class EventPlayer
         var json = await File.ReadAllTextAsync(path);
         _recording = JsonSerializer.Deserialize<RecordedSession>(json, _jsonOptions)
                    ?? throw new InvalidOperationException("Failed to deserialize recording");
-        
+
         _currentIndex = 0;
 
         _logger.LogInformation("Loaded recording with {EventCount} events from {Path}",
@@ -102,7 +102,7 @@ public class EventPlayer
         }
 
         var evt = _recording.Events[_currentIndex];
-        
+
         // Apply event (in a real implementation, this would interact with the game engine)
         _currentIndex++;
 

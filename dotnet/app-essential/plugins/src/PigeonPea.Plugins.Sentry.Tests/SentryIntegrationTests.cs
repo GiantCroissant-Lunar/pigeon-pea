@@ -195,7 +195,7 @@ public class SentryIntegrationTests : IDisposable
         // Assert
         _mockRegistry.Verify(r => r.Register<PigeonPea.Contracts.Diagnostic.Services.IService>(
             It.IsAny<SentryDiagnosticService>(),
-            It.Is<ServiceMetadata>(m => 
+            It.Is<ServiceMetadata>(m =>
                 m.PluginId == "pigeon-pea.diagnostic.sentry" &&
                 m.Name == "SentryDiagnosticService"), Times.Once);
 
@@ -222,7 +222,7 @@ public class SentryIntegrationTests : IDisposable
         // Assert
         _mockRegistry.Verify(r => r.Register<PigeonPea.Contracts.Profiling.Services.IService>(
             It.IsAny<SentryProfilingService>(),
-            It.Is<ServiceMetadata>(m => 
+            It.Is<ServiceMetadata>(m =>
                 m.PluginId == "pigeon-pea.profiling.sentry" &&
                 m.Name == "SentryProfilingService"), Times.Once);
 

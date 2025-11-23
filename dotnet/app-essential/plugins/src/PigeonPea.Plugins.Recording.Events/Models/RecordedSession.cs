@@ -11,17 +11,17 @@ public record RecordedSession
     /// Version of the recording format.
     /// </summary>
     public string Version { get; init; } = "1.0";
-    
+
     /// <summary>
     /// Metadata about the recording session.
     /// </summary>
     public SessionMetadata Metadata { get; init; } = new();
-    
+
     /// <summary>
     /// List of all recorded events.
     /// </summary>
     public List<GameEvent> Events { get; init; } = new();
-    
+
     /// <summary>
     /// Embedded profiling data (optional).
     /// </summary>
@@ -37,27 +37,27 @@ public record SessionMetadata
     /// When the recording started.
     /// </summary>
     public DateTime StartTime { get; init; }
-    
+
     /// <summary>
     /// Version of the game that was recorded.
     /// </summary>
     public string GameVersion { get; init; } = string.Empty;
-    
+
     /// <summary>
     /// Random seed used for deterministic replay.
     /// </summary>
     public int Seed { get; init; }
-    
+
     /// <summary>
     /// Platform where the recording was made.
     /// </summary>
     public string Platform { get; init; } = Environment.OSVersion.ToString();
-    
+
     /// <summary>
     /// Application type (console, gui, etc.).
     /// </summary>
     public string Application { get; init; } = string.Empty;
-    
+
     /// <summary>
     /// Custom metadata provided by the application.
     /// </summary>

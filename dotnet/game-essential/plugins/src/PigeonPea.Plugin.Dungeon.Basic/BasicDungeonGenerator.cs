@@ -244,7 +244,7 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
         var traps = new List<TrapMetadata>();
         var rng = new Random();
         var trapTypes = new[] { "spike", "arrow", "poison_gas", "pit", "fire" };
-        
+
         int trapCount = Math.Max(2, (d.Width * d.Height) / 300);
         var placed = new HashSet<(int, int)>();
 
@@ -276,7 +276,7 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
         var treasures = new List<TreasureMetadata>();
         var rng = new Random();
         var containerTypes = new[] { "Chest", "Barrel", "Crate", "Sarcophagus" };
-        
+
         int treasureCount = Math.Max(1, (d.Width * d.Height) / 400);
         var placed = new HashSet<(int, int)>();
 
@@ -309,7 +309,7 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
         var spawns = new List<SpawnPointMetadata>();
         var rng = new Random();
         var monsterTypes = new[] { "goblin", "orc", "skeleton", "spider", "rat" };
-        
+
         int spawnCount = Math.Max(3, (d.Width * d.Height) / 250);
         var placed = new HashSet<(int, int)>();
 
@@ -322,7 +322,7 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
                 continue;
 
             bool isBoss = spawns.Count == 0 && rng.NextDouble() < 0.15;
-            
+
             spawns.Add(new SpawnPointMetadata(
                 X: x,
                 Y: y,
@@ -383,9 +383,9 @@ public sealed class BasicDungeonGenerator : IPlugin, IDungeonGenerator
 
     private static string DetectDoorOrientation(DungeonData d, int x, int y)
     {
-        bool hasEastWest = (d.InBounds(x - 1, y) && d.IsWalkable(x - 1, y)) || 
+        bool hasEastWest = (d.InBounds(x - 1, y) && d.IsWalkable(x - 1, y)) ||
                           (d.InBounds(x + 1, y) && d.IsWalkable(x + 1, y));
-        bool hasNorthSouth = (d.InBounds(x, y - 1) && d.IsWalkable(x, y - 1)) || 
+        bool hasNorthSouth = (d.InBounds(x, y - 1) && d.IsWalkable(x, y - 1)) ||
                             (d.InBounds(x, y + 1) && d.IsWalkable(x, y + 1));
         return hasEastWest && !hasNorthSouth ? "horizontal" : "vertical";
     }

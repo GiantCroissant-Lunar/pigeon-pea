@@ -19,23 +19,23 @@ public class RecordingLogger : ILogger
         _category = category ?? throw new ArgumentNullException(nameof(category));
         _options = options ?? throw new ArgumentNullException(nameof(options));
     }
-    
+
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
         => null; // Recording doesn't support scopes
-    
+
     public bool IsEnabled(LogLevel logLevel)
     {
         // Check if recording is active and level meets minimum threshold
         if (!_recorder.IsRecording || logLevel < _options.MinimumLevel)
             return false;
-            
+
         // Check category filtering
         if (!_options.LogAllCategories && !_options.AllowedCategories.Contains(_category))
             return false;
-            
+
         return true;
     }
-    
+
     public void Log<TState>(
         LogLevel logLevel,
         EventId eventId,
@@ -45,17 +45,17 @@ public class RecordingLogger : ILogger
     {
         if (!IsEnabled(logLevel))
             return;
-        
+
         // Extract structured data from the log state
         var data = ExtractData(state);
-        
+
         // Add metadata about the log entry itself
         if (_options.IncludeLogLevel)
             data["LogLevel"] = logLevel.ToString();
-            
+
         if (_options.IncludeCategory)
             data["LoggerCategory"] = _category;
-            
+
         // Add exception information if present
         if (exception != null)
         {
@@ -64,7 +64,7 @@ public class RecordingLogger : ILogger
             if (!string.IsNullOrEmpty(exception.StackTrace))
                 data["StackTrace"] = exception.StackTrace;
         }
-        
+
         // Create the GameEvent
         var gameEvent = new GameEvent
         {
@@ -73,18 +73,18 @@ public class RecordingLogger : ILogger
             Category = DetermineCategoryFromEventId(eventId.Id),
             Data = data
         };
-        
+
         // Record the event
         _recorder.RecordEvent(gameEvent);
     }
-    
+
     /// <summary>
     /// Extracts structured data from the log state.
     /// </summary>
     private static Dictionary<string, object> ExtractData<TState>(TState state)
     {
         var data = new Dictionary<string, object>();
-        
+
         // Handle the standard logger state format
         if (state is IReadOnlyList<KeyValuePair<string, object>> kvps)
         {
@@ -123,10 +123,10 @@ public class RecordingLogger : ILogger
                 }
             }
         }
-        
+
         return data;
     }
-    
+
     /// <summary>
     /// Determines the event category based on the event ID range.
     /// </summary>

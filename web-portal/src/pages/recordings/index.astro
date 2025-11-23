@@ -1,0 +1,32 @@
+---
+// src/pages/recordings/index.astro
+const title = 'Recordings Gallery';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <link rel="stylesheet" href="/styles/portal.css">
+</head>
+<body>
+  <div class="container">
+    <h1>{title}</h1>
+    <p>Watch gameplay recordings.</p>
+    
+    <div class="gallery">
+      <p>No recordings available yet.</p>
+    </div>
+  </div>
+</body>
+</html>
+
+<style>
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+</style>

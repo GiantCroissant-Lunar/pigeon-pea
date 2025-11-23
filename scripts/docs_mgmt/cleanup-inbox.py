@@ -15,7 +15,6 @@ from typing import Dict, Optional
 
 import yaml
 
-
 # Inbox retention policy
 DEFAULT_RETENTION_DAYS = 30
 

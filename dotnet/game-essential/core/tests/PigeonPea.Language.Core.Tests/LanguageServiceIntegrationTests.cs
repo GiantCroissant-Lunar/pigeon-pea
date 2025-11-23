@@ -21,7 +21,7 @@ public class LanguageServiceIntegrationTests
     {
         // Set up dependency injection
         var services = new ServiceCollection();
-        
+
         // Add logging
         services.AddLogging(builder =>
         {
@@ -48,7 +48,7 @@ public class LanguageServiceIntegrationTests
         // Act & Assert
         Assert.NotNull(_languageService);
         Assert.IsType<LanguageService>(_languageService);
-        
+
         var adapter = _serviceProvider.GetService<INameGeneratorAdapter>();
         Assert.NotNull(adapter);
         Assert.IsType<LanguageToFMGAdapter>(adapter);
@@ -59,7 +59,7 @@ public class LanguageServiceIntegrationTests
     {
         // Arrange - This would normally be loaded from a file, but for testing we'll create a mock
         // In a real scenario, you'd call: await _languageService.LoadLanguageAsync("elvish", "path/to/elvish.json")
-        
+
         // For this test, we'll use template-based generation instead
         var templateName = "elvish";
 
@@ -70,7 +70,7 @@ public class LanguageServiceIntegrationTests
         Assert.NotNull(result);
         Assert.NotEmpty(result);
         Assert.True(result.Length > 2);
-        
+
         // Should look somewhat Elvish
         Assert.True(ContainsElvishCharacters(result));
     }
@@ -86,7 +86,7 @@ public class LanguageServiceIntegrationTests
         foreach (var template in templates.Take(5)) // Test first 5 to keep test fast
         {
             var name = _languageService.GenerateNameFromTemplate(template, NameType.Personal);
-            
+
             Assert.NotNull(name);
             Assert.NotEmpty(name);
             Assert.True(name.Length > 1);
@@ -108,11 +108,11 @@ public class LanguageServiceIntegrationTests
         Assert.NotNull(personName);
         Assert.NotNull(placeName);
         Assert.NotNull(clanName);
-        
+
         Assert.NotEmpty(personName);
         Assert.NotEmpty(placeName);
         Assert.NotEmpty(clanName);
-        
+
         // Names should generally be different
         Assert.NotEqual(personName, placeName);
     }
@@ -132,7 +132,7 @@ public class LanguageServiceIntegrationTests
         Assert.NotNull(ruleBasedName);
         Assert.NotNull(markovName);
         Assert.NotNull(hybridName);
-        
+
         Assert.NotEmpty(ruleBasedName);
         Assert.NotEmpty(markovName);
         Assert.NotEmpty(hybridName);
@@ -147,7 +147,7 @@ public class LanguageServiceIntegrationTests
         // Assert
         Assert.NotNull(templates);
         Assert.NotEmpty(templates);
-        
+
         var templateList = templates.ToList();
         Assert.Contains("germanic", templateList);
         Assert.Contains("elvish", templateList);
@@ -188,12 +188,12 @@ public class LanguageServiceIntegrationTests
         Assert.NotNull(dwarvishName);
         Assert.NotNull(orcishName);
         Assert.NotNull(japaneseName);
-        
+
         // Names should generally be different
         var allNames = new[] { elvishName, dwarvishName, orcishName, japaneseName };
         var uniqueNames = allNames.Distinct().ToArray();
         Assert.Equal(allNames.Length, uniqueNames.Length);
-        
+
         // Should have some characteristic differences
         Assert.True(ContainsElvishCharacters(elvishName));
         Assert.True(ContainsDwarvishCharacters(dwarvishName));
@@ -205,7 +205,7 @@ public class LanguageServiceIntegrationTests
         // Arrange
         var services = new ServiceCollection();
         services.AddLogging();
-        
+
         services.AddPigeonPeaLanguage(config =>
         {
             config.CustomTemplateMappings = new Dictionary<string, string>
@@ -232,13 +232,13 @@ public class LanguageServiceIntegrationTests
     public void ErrorHandling_InvalidInputs_ThrowsAppropriateExceptions()
     {
         // Act & Assert
-        Assert.Throws<ArgumentException>(() => 
+        Assert.Throws<ArgumentException>(() =>
             _languageService.GenerateNameFromTemplate("", NameType.Personal));
-        
-        Assert.Throws<ArgumentException>(() => 
+
+        Assert.Throws<ArgumentException>(() =>
             _languageService.GenerateNameFromTemplate(null!, NameType.Personal));
-        
-        Assert.Throws<ArgumentException>(() => 
+
+        Assert.Throws<ArgumentException>(() =>
             _languageService.GenerateNameFromTemplate("   ", NameType.Personal));
     }
 
@@ -265,8 +265,8 @@ public class LanguageServiceIntegrationTests
     {
         // Elvish names often contain: l, r, v, th, el, ia, on
         var lowerName = name.ToLowerInvariant();
-        return lowerName.Contains('l') && lowerName.Contains('r') && 
-               (lowerName.Contains('v') || lowerName.Contains("th") || 
+        return lowerName.Contains('l') && lowerName.Contains('r') &&
+               (lowerName.Contains('v') || lowerName.Contains("th") ||
                 lowerName.Contains("el") || lowerName.Contains("ia") || lowerName.Contains("on"));
     }
 
@@ -275,7 +275,7 @@ public class LanguageServiceIntegrationTests
         // Dwarvish names often contain: k, r, d, g, ur, im, dor
         var lowerName = name.ToLowerInvariant();
         return (lowerName.Contains('k') || lowerName.Contains('d') || lowerName.Contains('g')) &&
-               (lowerName.Contains('r') || lowerName.Contains("ur") || 
+               (lowerName.Contains('r') || lowerName.Contains("ur") ||
                 lowerName.Contains("im") || lowerName.Contains("dor"));
     }
 }

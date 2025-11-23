@@ -15,74 +15,74 @@ from pathlib import Path
 
 
 def load_registry(registry_path: Path) -> dict:
-  data = json.loads(registry_path.read_text(encoding="utf-8"))
-  if not isinstance(data, dict):
-    raise ValueError("Registry JSON must be an object at the top level")
-  return data
+    data = json.loads(registry_path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError("Registry JSON must be an object at the top level")
+    return data
 
 
 def escape_yaml(value: str) -> str:
-  """Escape a string for use in double-quoted YAML scalars."""
-  return value.replace("\\", "\\\\").replace("\"", "\\\"")
+    """Escape a string for use in double-quoted YAML scalars."""
+    return value.replace("\\", "\\\\").replace('"', '\\"')
 
 
 def main() -> int:
-  repo_root = Path(__file__).resolve().parents[2]
-  docs_dir = repo_root / "docs"
-  registry_path = docs_dir / "index" / "registry.json"
+    repo_root = Path(__file__).resolve().parents[2]
+    docs_dir = repo_root / "docs"
+    registry_path = docs_dir / "index" / "registry.json"
 
-  if not registry_path.exists():
-    raise SystemExit(f"Registry not found: {registry_path}")
+    if not registry_path.exists():
+        raise SystemExit(f"Registry not found: {registry_path}")
 
-  docs_site_dir = repo_root / "docs-site"
-  content_root = docs_site_dir / "src" / "content" / "docs"
+    docs_site_dir = repo_root / "web-portal"
+    content_root = docs_site_dir / "src" / "content" / "docs"
 
-  registry = load_registry(registry_path)
-  docs = registry.get("docs", [])
+    registry = load_registry(registry_path)
+    docs = registry.get("docs", [])
 
-  generated = 0
+    generated = 0
 
-  for doc in docs:
-    if not doc.get("canonical"):
-      continue
+    for doc in docs:
+        if not doc.get("canonical"):
+            continue
 
-    doc_type = str(doc.get("doc_type", "other")).lower()
-    doc_id = doc.get("doc_id")
-    title = (doc.get("title") or doc_id or "Untitled").strip()
-    summary = (doc.get("summary") or title).replace("\n", " ").strip()
+        doc_type = str(doc.get("doc_type", "other")).lower()
+        doc_id = doc.get("doc_id")
+        title = (doc.get("title") or doc_id or "Untitled").strip()
+        summary = (doc.get("summary") or title).replace("\n", " ").strip()
 
-    if not doc_id:
-      # Skip malformed entries
-      continue
+        if not doc_id:
+            # Skip malformed entries
+            continue
 
-    # Group wrappers by doc_type
-    target_dir = content_root / doc_type
-    target_dir.mkdir(parents=True, exist_ok=True)
+        # Group wrappers by doc_type
+        target_dir = content_root / doc_type
+        target_dir.mkdir(parents=True, exist_ok=True)
 
-    target_path = target_dir / f"{doc_id}.mdx"
+        target_path = target_dir / f"{doc_id}.mdx"
 
-    rel_import = "../../../components/ExternalDoc.astro"
+        rel_import = "../../../components/ExternalDoc.astro"
 
-    frontmatter = (
-      "---\n"
-      f"title: \"{escape_yaml(title)}\"\n"
-      f"description: \"{escape_yaml(summary)}\"\n"
-      "sidebar:\n"
-      f"  label: \"{escape_yaml(doc_id)}\"\n"
-      "---\n\n"
-    )
+        frontmatter = (
+            "---\n"
+            f'title: "{escape_yaml(title)}"\n'
+            f'description: "{escape_yaml(summary)}"\n'
+            "sidebar:\n"
+            f'  label: "{escape_yaml(doc_id)}"\n'
+            "---\n\n"
+        )
 
-    body = (
-      f"import ExternalDoc from '{rel_import}';\n\n"
-      f"<ExternalDoc docId=\"{escape_yaml(doc_id)}\" />\n"
-    )
+        body = (
+            f"import ExternalDoc from '{rel_import}';\n\n"
+            f'<ExternalDoc docId="{escape_yaml(doc_id)}" />\n'
+        )
 
-    target_path.write_text(frontmatter + body, encoding="utf-8")
-    generated += 1
+        target_path.write_text(frontmatter + body, encoding="utf-8")
+        generated += 1
 
-  print(f"Generated {generated} Starlight wrapper docs in {content_root}")
-  return 0
+    print(f"Generated {generated} Starlight wrapper docs in {content_root}")
+    return 0
 
 
 if __name__ == "__main__":  # pragma: no cover
-  raise SystemExit(main())
+    raise SystemExit(main())

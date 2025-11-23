@@ -37,7 +37,7 @@ public class FFmpegRecordingTests
     public void Constructor_NullLogger_ShouldThrowArgumentNullException()
     {
         // Arrange & Act & Assert
-        Assert.ThrowsException<ArgumentNullException>(() => 
+        Assert.ThrowsException<ArgumentNullException>(() =>
             new FFmpegRecordingService(null!, _testOptions));
     }
 
@@ -52,7 +52,7 @@ public class FFmpegRecordingTests
         };
 
         // Act & Assert
-        Assert.ThrowsException<ArgumentException>(() => 
+        Assert.ThrowsException<ArgumentException>(() =>
             new FFmpegRecordingService(_mockLogger.Object, invalidOptions));
     }
 
@@ -67,7 +67,7 @@ public class FFmpegRecordingTests
 
         // Assert
         Assert.IsNotNull(strategyInfo);
-        
+
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             Assert.IsTrue(strategyInfo.Contains("Windows"));
@@ -107,7 +107,7 @@ public class FFmpegRecordingTests
         var service = new FFmpegRecordingService(_mockLogger.Object, _testOptions);
 
         // Act & Assert
-        Assert.ThrowsExceptionAsync<ArgumentException>(async () => 
+        Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
             await service.StartAsync(null!));
     }
 
@@ -118,7 +118,7 @@ public class FFmpegRecordingTests
         var service = new FFmpegRecordingService(_mockLogger.Object, _testOptions);
 
         // Act & Assert
-        Assert.ThrowsExceptionAsync<ArgumentException>(async () => 
+        Assert.ThrowsExceptionAsync<ArgumentException>(async () =>
             await service.StartAsync(""));
     }
 
@@ -145,7 +145,7 @@ public class FFmpegRecordingTests
             // Act - Stop
             var stopTask = service.StopAsync();
             Task.WaitAll(new[] { startTask, stopTask }, TimeSpan.FromSeconds(10));
-            
+
             // Assert
             Assert.IsFalse(service.IsRecording);
             Assert.IsTrue(File.Exists(tempFile));
@@ -171,18 +171,18 @@ public class FFmpegRecordingTests
 
         var tempFile1 = Path.GetTempFileName();
         var tempFile2 = Path.GetTempFileName();
-        
+
         try
         {
             var service = new FFmpegRecordingService(_mockLogger.Object, _testOptions);
-            
+
             // Act - Start first recording
             var startTask1 = service.StartAsync(tempFile1);
             Thread.Sleep(100);
             Assert.IsTrue(service.IsRecording);
 
             // Act & Assert - Try to start second recording
-            Assert.ThrowsExceptionAsync<InvalidOperationException>(async () => 
+            Assert.ThrowsExceptionAsync<InvalidOperationException>(async () =>
                 await service.StartAsync(tempFile2));
 
             // Cleanup

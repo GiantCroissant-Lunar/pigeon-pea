@@ -18,23 +18,23 @@ public class ProfilingLogger : ILogger
         _category = category ?? throw new ArgumentNullException(nameof(category));
         _options = options ?? throw new ArgumentNullException(nameof(options));
     }
-    
+
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
         => null; // Profiling doesn't support scopes
-    
+
     public bool IsEnabled(LogLevel logLevel)
     {
         // Check if profiling is enabled and level meets minimum threshold
         if (_profiling.Mode == ProfilerMode.Disabled || logLevel < _options.MinimumLevel)
             return false;
-            
+
         // Check category filtering
         if (!_options.LogAllCategories && !_options.AllowedCategories.Contains(_category))
             return false;
-            
+
         return true;
     }
-    
+
     public void Log<TState>(
         LogLevel logLevel,
         EventId eventId,
@@ -44,17 +44,17 @@ public class ProfilingLogger : ILogger
     {
         if (!IsEnabled(logLevel))
             return;
-        
+
         // Extract structured data from the log state
         var data = ExtractData(state);
-        
+
         // Add metadata about the log entry itself
         if (_options.IncludeLogLevel)
             data["LogLevel"] = logLevel.ToString();
-            
+
         if (_options.IncludeCategory)
             data["LoggerCategory"] = _category;
-        
+
         // Add exception information if present
         if (exception != null)
         {
@@ -63,21 +63,21 @@ public class ProfilingLogger : ILogger
             if (!string.IsNullOrEmpty(exception.StackTrace))
                 data["StackTrace"] = exception.StackTrace;
         }
-        
+
         // Create profiling span if enabled
         if (_options.CreateSpans)
         {
             var spanName = $"{_options.SpanNamePrefix}{eventId.Name ?? $"Event{eventId.Id}"}";
             using var scope = _profiling.BeginScope(spanName);
-            
+
             // Add log level as scope metadata
             scope.AddMetadata("log.level", logLevel.ToString());
             scope.AddMetadata("log.category", _category);
             scope.AddMetadata("log.event_id", eventId.Id.ToString());
-            
+
             if (eventId.Name != null)
                 scope.AddMetadata("log.event_name", eventId.Name);
-            
+
             // Add exception metadata if present
             if (exception != null)
             {
@@ -85,21 +85,21 @@ public class ProfilingLogger : ILogger
                 scope.AddMetadata("exception.message", exception.Message);
             }
         }
-        
+
         // Track performance metrics if enabled
         if (_options.TrackPerformanceMetrics)
         {
             TrackPerformanceMetrics(logLevel);
         }
     }
-    
+
     /// <summary>
     /// Extracts structured data from the log state.
     /// </summary>
     private static Dictionary<string, object> ExtractData<TState>(TState state)
     {
         var data = new Dictionary<string, object>();
-        
+
         // Handle the standard logger state format
         if (state is IReadOnlyList<KeyValuePair<string, object>> kvps)
         {
@@ -138,10 +138,10 @@ public class ProfilingLogger : ILogger
                 }
             }
         }
-        
+
         return data;
     }
-    
+
     /// <summary>
     /// Tracks performance metrics based on log levels.
     /// </summary>
@@ -158,9 +158,9 @@ public class ProfilingLogger : ILogger
             LogLevel.None => "LogNoneCount",
             _ => "LogUnknownCount"
         };
-        
+
         _profiling.RecordCounter(metricName, 1);
-        
+
         // Track category-specific metrics
         if (!string.IsNullOrEmpty(_category))
         {
@@ -168,7 +168,7 @@ public class ProfilingLogger : ILogger
             _profiling.RecordCounter(categoryMetricName, 1);
         }
     }
-    
+
     /// <summary>
     /// Sanitizes category name for use in metric names.
     /// </summary>

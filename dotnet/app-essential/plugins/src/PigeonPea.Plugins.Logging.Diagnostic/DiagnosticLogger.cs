@@ -18,7 +18,7 @@ public class DiagnosticLogger : ILogger
         _category = category ?? throw new ArgumentNullException(nameof(category));
         _options = options ?? throw new ArgumentNullException(nameof(options));
     }
-    
+
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
     {
         // Create diagnostic session if enabled
@@ -28,23 +28,23 @@ public class DiagnosticLogger : ILogger
             var sessionName = $"{_options.EventNamePrefix}Scope_{_category}";
             return _diagnostic.CreateSession(sessionName, context);
         }
-        
+
         return null;
     }
-    
+
     public bool IsEnabled(LogLevel logLevel)
     {
         // Check if diagnostics is enabled and level meets minimum threshold
         if (!_diagnostic.IsEnabled || logLevel < _options.MinimumLevel)
             return false;
-            
+
         // Check category filtering
         if (!_options.LogAllCategories && !_options.AllowedCategories.Contains(_category))
             return false;
-            
+
         return true;
     }
-    
+
     public void Log<TState>(
         LogLevel logLevel,
         EventId eventId,
@@ -54,21 +54,21 @@ public class DiagnosticLogger : ILogger
     {
         if (!IsEnabled(logLevel))
             return;
-        
+
         // Extract structured data from the log state
         var data = ExtractData(state);
-        
+
         // Add metadata about the log entry itself
         if (_options.IncludeLogLevel)
             data["LogLevel"] = logLevel.ToString();
-            
+
         if (_options.IncludeCategory)
             data["LoggerCategory"] = _category;
-        
+
         data["EventId"] = eventId.Id;
         if (eventId.Name != null)
             data["EventName"] = eventId.Name;
-        
+
         // Handle different log levels
         switch (logLevel)
         {
@@ -79,7 +79,7 @@ public class DiagnosticLogger : ILogger
                     _diagnostic.ReportWarning(message, data);
                 }
                 break;
-                
+
             case LogLevel.Error:
             case LogLevel.Critical:
                 if (_options.TrackErrors && exception != null)
@@ -88,25 +88,25 @@ public class DiagnosticLogger : ILogger
                     _diagnostic.ReportError(exception, data, severity);
                 }
                 break;
-                
+
             default:
                 // Track informational events
                 var infoMessage = formatter(state, exception);
                 _diagnostic.ReportInfo(infoMessage, data);
                 break;
         }
-        
+
         // Track health metrics based on log level
         TrackHealthMetrics(logLevel);
     }
-    
+
     /// <summary>
     /// Extracts structured data from the log state.
     /// </summary>
     private static Dictionary<string, object> ExtractData<TState>(TState state)
     {
         var data = new Dictionary<string, object>();
-        
+
         // Handle the standard logger state format
         if (state is IReadOnlyList<KeyValuePair<string, object>> kvps)
         {
@@ -145,10 +145,10 @@ public class DiagnosticLogger : ILogger
                 }
             }
         }
-        
+
         return data;
     }
-    
+
     /// <summary>
     /// Tracks health metrics based on log levels.
     /// </summary>
@@ -165,22 +165,22 @@ public class DiagnosticLogger : ILogger
             LogLevel.None => $"{_options.MetricPrefix}NoneCount",
             _ => $"{_options.MetricPrefix}UnknownCount"
         };
-        
+
         // Increment counter for this log level
         _diagnostic.ReportHealthMetric(metricName, 1.0, "count");
-        
+
         // Track category-specific metrics
         if (!string.IsNullOrEmpty(_category))
         {
             var categoryMetricName = $"{metricName}_{SanitizeCategoryName(_category)}";
             _diagnostic.ReportHealthMetric(categoryMetricName, 1.0, "count");
         }
-        
+
         // Track overall health score (simplified - higher error counts reduce health)
         var healthScore = logLevel >= LogLevel.Error ? -1.0 : 0.1;
         _diagnostic.ReportHealthMetric($"{_options.MetricPrefix}HealthScore", healthScore, "score");
     }
-    
+
     /// <summary>
     /// Sanitizes category name for use in metric names.
     /// </summary>

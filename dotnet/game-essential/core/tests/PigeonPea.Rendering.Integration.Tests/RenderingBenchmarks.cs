@@ -162,7 +162,7 @@ public class RenderingBenchmarks
     {
         _ansiCommandList!.BeginFrame();
         _ansiCommandList.Clear(Color.Black);
-        
+
         // Draw border
         for (int x = 0; x < Width; x++)
         {

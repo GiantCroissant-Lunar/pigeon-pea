@@ -1,4 +1,5 @@
 # RFC Indexing Synchronization Report
-*Total RFCs: 43*
+
+_Total RFCs: 43_
 
 ✅ **All RFCs are properly indexed!**

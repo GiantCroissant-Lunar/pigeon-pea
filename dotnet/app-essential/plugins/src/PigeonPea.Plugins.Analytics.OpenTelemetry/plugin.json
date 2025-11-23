@@ -4,7 +4,13 @@
   "version": "1.0.0",
   "description": "OpenTelemetry-based analytics service with OTLP export to Jaeger, Prometheus, and Grafana",
   "author": "Pigeon Pea Team",
-  "capabilities": ["analytics", "analytics:service", "analytics:opentelemetry", "analytics:otlp", "analytics:prometheus"],
+  "capabilities": [
+    "analytics",
+    "analytics:service",
+    "analytics:opentelemetry",
+    "analytics:otlp",
+    "analytics:prometheus"
+  ],
   "supportedProfiles": ["dotnet.console"],
   "entryPoint": {
     "dotnet.console": "PigeonPea.Plugins.Analytics.OpenTelemetry.dll,PigeonPea.Plugins.Analytics.OpenTelemetry.AnalyticsPlugin"

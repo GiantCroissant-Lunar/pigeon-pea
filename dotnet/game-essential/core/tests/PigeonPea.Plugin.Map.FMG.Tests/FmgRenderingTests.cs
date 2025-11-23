@@ -27,7 +27,7 @@ public class FmgRenderingTests
         // Assert
         Assert.NotNull(raster);
         Assert.Equal(width * height * 4, raster.Length);
-        
+
         // Check if it's not all empty (alpha should be 255 for opaque)
         bool hasContent = false;
         for (int i = 3; i < raster.Length; i += 4)

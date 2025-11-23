@@ -16,7 +16,7 @@ public static class TestHelper
         var syntaxTree = CSharpSyntaxTree.ParseText(source);
 
         var references = new List<MetadataReference>();
-        
+
         // Add basic references
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         foreach (var assembly in assemblies)
@@ -40,7 +40,7 @@ public static class TestHelper
 
         var verifySettings = new VerifySettings();
         verifySettings.UseDirectory("snapshots");
-        
+
         return Verifier.Verify(driver, verifySettings);
     }
 }

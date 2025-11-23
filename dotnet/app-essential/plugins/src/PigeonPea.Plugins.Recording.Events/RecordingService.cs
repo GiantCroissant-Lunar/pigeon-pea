@@ -230,7 +230,7 @@ public class RecordingService : IService, IEventRecorder
         _activeSessions[sessionId] = session;
 
         _logger.LogInformation("Started event recording session {SessionId} with seed {Seed}", sessionId, seed);
-        
+
         // If profiling embedding is requested, set up the integration
         if (options.EmbedProfiling)
         {
@@ -247,7 +247,7 @@ public class RecordingService : IService, IEventRecorder
     {
         using var sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, useAsync: true);
         using var destinationStream = new FileStream(destinationPath, FileMode.Create, FileAccess.Write, FileShare.None, bufferSize: 4096, useAsync: true);
-        
+
         await sourceStream.CopyToAsync(destinationStream, ct);
     }
 }

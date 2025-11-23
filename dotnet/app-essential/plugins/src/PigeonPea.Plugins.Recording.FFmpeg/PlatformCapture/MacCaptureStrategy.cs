@@ -75,7 +75,7 @@ public class MacCaptureStrategy : ICaptureStrategy
     private string GetInputSource()
     {
         var deviceIndex = _options.ScreenDevice;
-        
+
         // Validate device index by checking available devices
         var availableDevices = GetAvailableDevices();
         if (!availableDevices.Contains(deviceIndex))
@@ -89,7 +89,7 @@ public class MacCaptureStrategy : ICaptureStrategy
     private List<int> GetAvailableDevices()
     {
         var devices = new List<int>();
-        
+
         try
         {
             var psi = new ProcessStartInfo

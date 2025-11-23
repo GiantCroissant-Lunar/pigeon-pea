@@ -103,7 +103,7 @@ public class OpenTelemetryProfilingService : IService, IDisposable
 
         var scopeId = Guid.NewGuid().ToString("N")[..8];
         var scope = new ProfileScopeImpl(scopeId, name, category);
-        
+
         _activeScopes[scopeId] = scope;
 
         var activity = ActivitySource.StartActivity($"Scope: {name}", ActivityKind.Internal);
@@ -115,7 +115,7 @@ public class OpenTelemetryProfilingService : IService, IDisposable
         }
 
         scope.Activity = activity;
-        
+
         _logger?.LogDebug("Started profiling scope: {ScopeId} - {ScopeName} ({Category})", scopeId, name, category);
         _eventCounter.Add(1, new KeyValuePair<string, object?>("event.type", "scope.start"));
 
@@ -174,7 +174,7 @@ public class OpenTelemetryProfilingService : IService, IDisposable
         _isCapturing = true;
         _captureStartTime = DateTime.UtcNow;
         _frameNumber = 0;
-        
+
         lock (_lock)
         {
             _events.Clear();
@@ -192,7 +192,7 @@ public class OpenTelemetryProfilingService : IService, IDisposable
 
         _isCapturing = false;
         var endTime = DateTime.UtcNow;
-        
+
         lock (_lock)
         {
             var capture = new ProfileCapture
@@ -203,9 +203,9 @@ public class OpenTelemetryProfilingService : IService, IDisposable
                 EventCount = _events.Count
             };
 
-            _logger?.LogInformation("Stopped profiling capture: {FrameCount} frames, {EventCount} events", 
+            _logger?.LogInformation("Stopped profiling capture: {FrameCount} frames, {EventCount} events",
                 capture.FrameCount, capture.EventCount);
-            
+
             return capture;
         }
     }
@@ -245,7 +245,7 @@ public class OpenTelemetryProfilingService : IService, IDisposable
             else
                 _enabledCategories.Remove(category);
         }
-        
+
         _logger?.LogDebug("Set category {Category} enabled: {Enabled}", category, enabled);
     }
 
@@ -274,19 +274,19 @@ public class OpenTelemetryProfilingService : IService, IDisposable
         lock (_lock)
         {
             var profileEvents = ConvertToProfileEvents(_events);
-            
+
             switch (format)
             {
                 case ProfileExportFormat.Speedscope:
                     var speedscopeExporter = new SpeedscopeExporter();
                     speedscopeExporter.Export(profileEvents, filePath);
                     break;
-                    
+
                 case ProfileExportFormat.ChromeTrace:
                     var chromeExporter = new ChromeTraceExporter();
                     chromeExporter.Export(profileEvents, filePath);
                     break;
-                    
+
                 default:
                     throw new NotSupportedException($"Export format {format} is not supported");
             }
@@ -394,7 +394,7 @@ public class OpenTelemetryProfilingService : IService, IDisposable
     public void EndFrame()
     {
         _frameNumber++;
-        
+
         // This is a simplified implementation
         // In a real implementation, you would track actual frame timing
         var frameStats = new FrameStats
@@ -407,7 +407,7 @@ public class OpenTelemetryProfilingService : IService, IDisposable
         lock (_lock)
         {
             _frameStats[_frameNumber.ToString()] = frameStats;
-            
+
             // Keep only recent frames
             if (_frameStats.Count > 1000)
             {
@@ -431,7 +431,7 @@ public class OpenTelemetryProfilingService : IService, IDisposable
     private double CalculatePercentile(List<double> values, double percentile)
     {
         if (!values.Any()) return 0;
-        
+
         var sorted = values.OrderBy(x => x).ToList();
         var index = (int)(percentile * (sorted.Count - 1));
         return sorted[Math.Min(index, sorted.Count - 1)];
@@ -498,7 +498,7 @@ internal class ProfileScopeImpl : IProfileScope
     public string Category { get; }
     public DateTime StartTime { get; private set; }
     public Activity? Activity { get; set; }
-    
+
     private readonly Dictionary<string, string> _metadata = new();
 
     public ProfileScopeImpl(string id, string name, string category)

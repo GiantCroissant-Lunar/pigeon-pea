@@ -16,7 +16,7 @@ namespace FantasyMapGenerator.Benchmarks;
 /// </summary>
 [Config(typeof(BenchmarkConfig))]
 [MemoryDiagnoser]
-[BenchmarkCategory("Voronoi", "Power")] 
+[BenchmarkCategory("Voronoi", "Power")]
 public class PowerDiagramBenchmarks
 {
     private const int Width = 1024;

@@ -95,7 +95,7 @@ public class MultiBackendIntegrationTests
         backend.Initialize(context);
 
         var commandList = new RenderCommandList(backend);
-        
+
         // Create a simple 10x10 red buffer
         var bufferSize = 10 * 10 * 4; // RGBA
         var buffer = new byte[bufferSize];
@@ -129,7 +129,7 @@ public class MultiBackendIntegrationTests
         backend.Initialize(context);
 
         var commandList = new RenderCommandList(backend);
-        
+
         // Create batch of tile commands
         var commands = new TileCommand[100];
         for (int i = 0; i < 100; i++)

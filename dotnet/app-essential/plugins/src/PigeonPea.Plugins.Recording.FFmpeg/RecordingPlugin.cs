@@ -34,7 +34,7 @@ public class RecordingPlugin : IPlugin
         if (!ffmpegAvailable)
         {
             _logger.LogWarning("FFmpeg is not available on this system. Plugin functionality will be limited.");
-            
+
             var ffmpegVersion = FFmpegRecordingService.GetFFmpegVersion();
             if (ffmpegVersion != null)
             {
@@ -66,7 +66,7 @@ public class RecordingPlugin : IPlugin
         // Log strategy information
         var strategyInfo = _recordingService.GetStrategyInfo();
         var requirements = _recordingService.GetRequirements();
-        
+
         _logger.LogInformation("FFmpeg recording service registered with strategy: {Strategy}", strategyInfo);
         _logger.LogInformation("Requirements: {Requirements}", string.Join(", ", requirements));
 
@@ -82,7 +82,7 @@ public class RecordingPlugin : IPlugin
     public Task StopAsync(CancellationToken ct = default)
     {
         _logger?.LogInformation("FFmpeg recording plugin stopping");
-        
+
         // Ensure recording is stopped when plugin stops
         if (_recordingService?.IsRecording == true)
         {

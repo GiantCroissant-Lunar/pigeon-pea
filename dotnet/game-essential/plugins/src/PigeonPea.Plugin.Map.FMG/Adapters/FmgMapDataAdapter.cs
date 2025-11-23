@@ -172,7 +172,7 @@ internal class FmgMapDataAdapter : IMapData
             if (_cachedRender == null)
             {
                 System.Diagnostics.Debug.WriteLine("[FmgMapDataAdapter] Rendering full map to cache...");
-                try 
+                try
                 {
                     // Render full map at its native resolution (1 pixel per unit)
                     // This ensures we have a high-quality base to sample from.
@@ -181,21 +181,21 @@ internal class FmgMapDataAdapter : IMapData
                     int mapW = _fmg.Inner.Width;
                     int mapH = _fmg.Inner.Height;
                     System.Diagnostics.Debug.WriteLine($"[FmgMapDataAdapter] Map dimensions: {mapW}x{mapH}");
-                    
+
                     using var surface = renderer.RenderMap(_fmg.Inner, mapW, mapH);
                     using var image = surface.Snapshot();
-                    
+
                     // Explicitly create bitmap with known format to avoid platform-specific defaults issues
                     var info = new SKImageInfo(mapW, mapH, SKColorType.Rgba8888, SKAlphaType.Premul);
                     _cachedRender = new SKBitmap(info);
-                    
+
                     if (!image.ReadPixels(info, _cachedRender.GetPixels(), info.RowBytes, 0, 0))
                     {
                         System.Diagnostics.Debug.WriteLine("[FmgMapDataAdapter] Failed to read pixels from surface snapshot.");
                         _cachedRender = null;
                         return null;
                     }
-                    
+
                     System.Diagnostics.Debug.WriteLine("[FmgMapDataAdapter] Map rendered and cached successfully.");
                 }
                 catch (Exception ex)
@@ -205,7 +205,7 @@ internal class FmgMapDataAdapter : IMapData
                 }
             }
 
-            if (_cachedRender == null) 
+            if (_cachedRender == null)
             {
                 System.Diagnostics.Debug.WriteLine("[FmgMapDataAdapter] _cachedRender is null after attempt.");
                 return null;

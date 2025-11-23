@@ -239,9 +239,9 @@ public partial class MainWindow : Window
 
             // Use the new SkiaSharpBackend
             var renderContext = new RenderContext(widthPx, heightPx);
-            
+
             using var backend = new SkiaSharpBackend(renderContext);
-            
+
             var settings = new WorldMapRenderSettings
             {
                 ColorScheme = ColorScheme.Original,

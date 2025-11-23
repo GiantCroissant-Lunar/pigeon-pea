@@ -35,7 +35,7 @@ public partial class SomeType01
 
     [AddToString]
     private readonly List<int> _values = new List<int>{ 1, 2, 3 };
-    
+
     [AddToString]
     private readonly List<SomeType02> _someType02Values = new List<SomeType02>
     {
@@ -49,7 +49,7 @@ public partial class SomeType02
 {
     [AddToString]
     private float _floatValue = 3.14f;
-    
+
     [AddToString]
     private string _stringValue = "Hello, World!";
 }

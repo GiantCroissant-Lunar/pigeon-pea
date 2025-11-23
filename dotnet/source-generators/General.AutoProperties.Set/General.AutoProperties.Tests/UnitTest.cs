@@ -22,7 +22,7 @@ public partial class TestClass
 {
     [GenerateProperty]
     private string _name;
-    
+
     [GenerateProperty]
     private int _age;
 }";
@@ -43,7 +43,7 @@ public partial class TestClass
 {
     [GenerateProperty(PropertyName = \"FullName\")]
     private string _name;
-    
+
     [GenerateProperty(PropertyName = \"YearsOld\")]
     private int _age;
 }";
@@ -64,10 +64,10 @@ public partial class TestClass
 {
     [GenerateProperty(PropertyKind = PropertyKind.GetterSetter)]
     private string _readWrite;
-    
+
     [GenerateProperty(PropertyKind = PropertyKind.GetterOnly)]
     private string _readOnly;
-    
+
     [GenerateProperty(PropertyKind = PropertyKind.GetterPrivateSetter)]
     private string _privateSetter;
 }";
@@ -88,10 +88,10 @@ public partial class TestClass
 {
     [GenerateProperty(Accessibility = PropertyAccessibility.Public)]
     private string _publicField;
-    
+
     [GenerateProperty(Accessibility = PropertyAccessibility.Internal)]
     private string _internalField;
-    
+
     [GenerateProperty(Accessibility = PropertyAccessibility.Protected)]
     private string _protectedField;
 }";
@@ -112,7 +112,7 @@ public partial class TestClass
 {
     private string _name;
     private int _age;
-    
+
     [SkipProperty(Reason = \"Internal use only\")]
     private string _internal;
 }";
@@ -133,7 +133,7 @@ public partial class TestClass
 {
     [GenerateProperty]
     private string m_name;
-    
+
     [GenerateProperty]
     private int m_age;
 }";

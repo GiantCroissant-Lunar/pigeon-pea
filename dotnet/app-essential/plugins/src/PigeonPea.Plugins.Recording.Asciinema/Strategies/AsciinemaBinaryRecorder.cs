@@ -86,7 +86,7 @@ public sealed class AsciinemaBinaryRecorder : IRecordingStrategy
 
             // Give the process a moment to start
             await Task.Delay(100);
-            
+
             if (_process.HasExited)
             {
                 var error = await _process.StandardError.ReadToEndAsync();
@@ -119,7 +119,7 @@ public sealed class AsciinemaBinaryRecorder : IRecordingStrategy
             {
                 // Send Ctrl+C to gracefully stop asciinema
                 _process.StandardInput.Write("\x03");
-                
+
                 // Wait a bit for graceful shutdown
                 await Task.Delay(500);
 

@@ -15,6 +15,3 @@ public partial class Service : IService
         _registry = registry ?? throw new ArgumentNullException(nameof(registry));
     }
 }
-
-
-

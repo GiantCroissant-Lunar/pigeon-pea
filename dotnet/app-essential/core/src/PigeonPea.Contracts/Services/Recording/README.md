@@ -46,7 +46,7 @@ var visualSession = await recorder.StartRecordingAsync(
 
 // Record events
 var eventRecorder = serviceProvider.GetService<IEventRecorder>();
-eventRecorder.RecordEvent(new GameEvent 
+eventRecorder.RecordEvent(new GameEvent
 {
     Timestamp = 1.5,
     Type = "Input",
@@ -101,10 +101,10 @@ world.OnComponentAdded += (entity, component) =>
         {
             Type = "ComponentAdd",
             Category = "ECS",
-            Data = new Dictionary<string, object> 
-            { 
-                ["entity"] = entity.Id, 
-                ["component"] = component.GetType().Name 
+            Data = new Dictionary<string, object>
+            {
+                ["entity"] = entity.Id,
+                ["component"] = component.GetType().Name
             },
             Timestamp = DateTime.UtcNow.TimeOfDay.TotalSeconds
         });

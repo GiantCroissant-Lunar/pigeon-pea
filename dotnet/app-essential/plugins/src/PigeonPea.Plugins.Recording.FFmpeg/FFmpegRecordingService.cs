@@ -23,29 +23,29 @@ public class FFmpegRecordingService : IVisualRecorder, IService, IDisposable
     private string? _currentSessionId;
     private readonly Dictionary<string, string> _sessions = new();
 
-    public bool IsRecording 
-    { 
-        get 
-        { 
+    public bool IsRecording
+    {
+        get
+        {
             lock (_lockObject)
             {
                 return _isRecording && _ffmpegProcess != null && !_ffmpegProcess.HasExited;
             }
-        } 
+        }
     }
 
     public FFmpegRecordingService(ILogger<FFmpegRecordingService> logger, FFmpegRecordingOptions? options = null)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _options = options ?? FFmpegRecordingOptions.GetPlatformDefaults();
-        
+
         if (!_options.IsValid())
         {
             throw new ArgumentException("Invalid FFmpeg recording options", nameof(options));
         }
 
         _strategy = SelectCaptureStrategy();
-        
+
         _logger.LogInformation("FFmpeg recording service initialized with strategy: {Strategy}", _strategy.GetCaptureMethodName());
         _logger.LogDebug("Recording options: {Options}", _options.GetDescription());
     }
@@ -86,7 +86,7 @@ public class FFmpegRecordingService : IVisualRecorder, IService, IDisposable
                 };
 
                 _ffmpegProcess = Process.Start(psi);
-                
+
                 if (_ffmpegProcess == null)
                 {
                     throw new InvalidOperationException("Failed to start FFmpeg process");
@@ -116,7 +116,7 @@ public class FFmpegRecordingService : IVisualRecorder, IService, IDisposable
     public async Task StopAsync()
     {
         Process? processToStop = null;
-        
+
         lock (_lockObject)
         {
             if (!_isRecording || _ffmpegProcess == null)
@@ -155,7 +155,7 @@ public class FFmpegRecordingService : IVisualRecorder, IService, IDisposable
             }
 
             await processToStop.WaitForExitAsync();
-            
+
             var exitCode = processToStop.ExitCode;
             if (exitCode == 0)
             {
@@ -253,7 +253,7 @@ public class FFmpegRecordingService : IVisualRecorder, IService, IDisposable
             {
                 var output = process.StandardOutput.ReadToEnd();
                 process.WaitForExit();
-                
+
                 if (process.ExitCode == 0)
                 {
                     var lines = output.Split('\n');
@@ -297,8 +297,8 @@ public class FFmpegRecordingService : IVisualRecorder, IService, IDisposable
         try
         {
             // Only log if streams are redirected
-            if (_options.ShowFFmpegOutput && 
-                _ffmpegProcess.StartInfo.RedirectStandardOutput && 
+            if (_options.ShowFFmpegOutput &&
+                _ffmpegProcess.StartInfo.RedirectStandardOutput &&
                 _ffmpegProcess.StartInfo.RedirectStandardError)
             {
                 var stdoutTask = _ffmpegProcess.StandardOutput.ReadToEndAsync();
@@ -337,7 +337,7 @@ public class FFmpegRecordingService : IVisualRecorder, IService, IDisposable
     {
         _isRecording = false;
         _currentSessionId = null;
-        
+
         try
         {
             _ffmpegProcess?.Dispose();
@@ -346,7 +346,7 @@ public class FFmpegRecordingService : IVisualRecorder, IService, IDisposable
         {
             _logger.LogWarning(ex, "Error disposing FFmpeg process");
         }
-        
+
         _ffmpegProcess = null;
     }
 

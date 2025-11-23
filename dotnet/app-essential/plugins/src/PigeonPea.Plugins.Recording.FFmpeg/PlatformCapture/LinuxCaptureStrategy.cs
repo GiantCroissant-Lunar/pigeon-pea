@@ -114,7 +114,7 @@ public class LinuxCaptureStrategy : ICaptureStrategy
     private string GetInputSource()
     {
         var display = _options.Display ?? ":0.0";
-        
+
         // Add offset if specified
         var inputSource = display;
         if (_options.OffsetX.HasValue && _options.OffsetY.HasValue)
@@ -122,7 +122,7 @@ public class LinuxCaptureStrategy : ICaptureStrategy
             var resolution = GetVideoSize();
             var width = int.Parse(resolution.Split('x')[0]);
             var height = int.Parse(resolution.Split('x')[1]);
-            
+
             inputSource += $"+{_options.OffsetX.Value},{_options.OffsetY.Value}";
         }
 

@@ -64,8 +64,8 @@ public sealed class TerminalFrame
     public bool HasSameContent(TerminalFrame? other)
     {
         if (other is null) return false;
-        return Width == other.Width && 
-               Height == other.Height && 
+        return Width == other.Width &&
+               Height == other.Height &&
                Content == other.Content;
     }
 

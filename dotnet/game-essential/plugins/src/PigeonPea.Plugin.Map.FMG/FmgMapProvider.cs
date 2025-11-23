@@ -35,19 +35,19 @@ public class FmgMapProvider : IMapProvider
             return cached;
         }
 
-        try 
+        try
         {
             var settings = CreateSettingsFromBounds(bounds);
             var fmgData = await Task.Run(() => _generator.Generate(settings), ct);
 
             var mapData = new FmgMapDataAdapter(fmgData, bounds);
-            
+
             if (_cache.Count >= MaxCacheSize)
             {
                 var oldestKey = _cacheOrder.Dequeue();
                 _cache.Remove(oldestKey);
             }
-            
+
             _cache[cacheKey] = mapData;
             _cacheOrder.Enqueue(cacheKey);
 

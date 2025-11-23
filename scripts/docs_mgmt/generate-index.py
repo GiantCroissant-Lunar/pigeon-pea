@@ -80,7 +80,7 @@ def count_references(documents: List[Dict]) -> Dict[str, int]:
             ref_counts[ref] += 1
 
         # Count dependency references
-        deps = fm.get("dependencies", {})
+        deps = fm.get("dependencies") or {}
         for ref in deps.get("rfcs", []):
             ref_counts[ref] += 1
 

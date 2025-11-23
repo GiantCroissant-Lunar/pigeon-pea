@@ -78,7 +78,7 @@ public class BasicProfilingServiceTests
         // Arrange
         _service.SetMode(ProfilerMode.Instrumentation);
         _service.StartCapture();
-        
+
         var tempFile = Path.GetTempFileName();
 
         try
@@ -190,7 +190,7 @@ public class BasicProfilingServiceTests
         // Arrange
         _service.SetMode(ProfilerMode.Instrumentation);
         _service.StartCapture();
-        
+
         var tempFile = Path.GetTempFileName();
 
         try
@@ -227,7 +227,7 @@ public class BasicProfilingServiceTests
         // Arrange
         _service.SetMode(ProfilerMode.Instrumentation);
         _service.StartCapture();
-        
+
         var tempFile = Path.GetTempFileName();
 
         try
@@ -251,15 +251,15 @@ public class BasicProfilingServiceTests
             // Assert - Validate JSON structure
             var jsonContent = File.ReadAllText(tempFile);
             var speedscopeData = JsonSerializer.Deserialize<JsonElement>(jsonContent);
-            
+
             Assert.True(speedscopeData.TryGetProperty("schema", out _));
             Assert.True(speedscopeData.TryGetProperty("shared", out var shared));
             Assert.True(shared.TryGetProperty("frames", out var frames));
             Assert.True(frames.GetArrayLength() > 0);
-            
+
             Assert.True(speedscopeData.TryGetProperty("profiles", out var profiles));
             Assert.True(profiles.GetArrayLength() > 0);
-            
+
             var profile = profiles[0];
             Assert.True(profile.TryGetProperty("type", out var type));
             Assert.Equal("evented", type.GetString());
@@ -279,7 +279,7 @@ public class BasicProfilingServiceTests
         // Arrange
         _service.SetMode(ProfilerMode.Instrumentation);
         _service.StartCapture();
-        
+
         var tempFile = Path.GetTempFileName();
 
         try
@@ -299,10 +299,10 @@ public class BasicProfilingServiceTests
             // Assert - Validate JSON structure and process ID
             var jsonContent = File.ReadAllText(tempFile);
             var traceEvents = JsonSerializer.Deserialize<JsonElement[]>(jsonContent);
-            
+
             Assert.NotNull(traceEvents);
             Assert.True(traceEvents.Length > 0);
-            
+
             // Check that process ID is actual process ID, not hardcoded 1
             var expectedPid = Environment.ProcessId;
             foreach (var evt in traceEvents)
@@ -374,7 +374,7 @@ public class BasicProfilingServiceTests
 
         // Assert - Should have captured events from all threads
         Assert.True(capture.EventCount > 0);
-        
+
         // Verify multiple thread IDs are present
         var threadIds = capture.Events?.Select(e => e.ThreadId).Distinct().ToList() ?? new List<int>();
         Assert.True(threadIds.Count > 1);
@@ -402,13 +402,13 @@ public class BasicProfilingServiceTests
         // Arrange
         _service.SetMode(ProfilerMode.Instrumentation);
         _service.StartCapture();
-        
+
         var tempFile = Path.GetTempFileName();
 
         try
         {
             // Act & Assert
-            Assert.Throws<NotSupportedException>(() => 
+            Assert.Throws<NotSupportedException>(() =>
                 _service.Export(tempFile, ProfileExportFormat.Etw));
         }
         finally
@@ -480,7 +480,7 @@ public class BasicProfilingServiceTests
         // Arrange
         _service.SetMode(ProfilerMode.Instrumentation);
         _service.StartCapture();
-        
+
         var tempFile = Path.GetTempFileName();
 
         try
@@ -500,10 +500,10 @@ public class BasicProfilingServiceTests
 
             var jsonContent = File.ReadAllText(tempFile);
             var events = JsonSerializer.Deserialize<JsonElement[]>(jsonContent);
-            
+
             Assert.NotNull(events);
             Assert.True(events.Length > 0);
-            
+
             // Verify event structure
             var firstEvent = events[0];
             Assert.True(firstEvent.TryGetProperty("name", out _));

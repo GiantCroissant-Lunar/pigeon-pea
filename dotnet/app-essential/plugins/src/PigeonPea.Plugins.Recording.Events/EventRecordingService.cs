@@ -189,20 +189,20 @@ public class EventRecordingService : IEventRecorder
         {
             return Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") == "true" ? "container" : "console";
         }
-        
+
         // Check if running as web service
         if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != null)
         {
             return "web";
         }
-        
+
         // Check for common desktop environments
         var sessionId = Environment.GetEnvironmentVariable("SESSIONNAME");
         if (!string.IsNullOrEmpty(sessionId) && sessionId != "Console")
         {
             return "desktop";
         }
-        
+
         return "unknown";
     }
 

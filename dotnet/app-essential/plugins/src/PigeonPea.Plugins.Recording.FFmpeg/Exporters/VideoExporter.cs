@@ -26,15 +26,15 @@ public class VideoExporter
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Task representing the conversion operation.</returns>
     public async Task ConvertFormatAsync(
-        string inputPath, 
-        string outputPath, 
-        RecordingFormat targetFormat, 
-        VideoQuality? quality = null, 
+        string inputPath,
+        string outputPath,
+        RecordingFormat targetFormat,
+        VideoQuality? quality = null,
         CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(inputPath))
             throw new ArgumentException("Input path cannot be null or empty", nameof(inputPath));
-        
+
         if (string.IsNullOrWhiteSpace(outputPath))
             throw new ArgumentException("Output path cannot be null or empty", nameof(outputPath));
 
@@ -44,7 +44,7 @@ public class VideoExporter
         try
         {
             var args = BuildConversionArgs(inputPath, outputPath, targetFormat, quality);
-            _logger.LogInformation("Converting video from {Input} to {Output} with format {Format}", 
+            _logger.LogInformation("Converting video from {Input} to {Output} with format {Format}",
                 inputPath, outputPath, targetFormat);
 
             var psi = new ProcessStartInfo
@@ -120,14 +120,14 @@ public class VideoExporter
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Task representing the extraction operation.</returns>
     public async Task ExtractAudioAsync(
-        string inputPath, 
-        string outputPath, 
-        string audioFormat = "mp3", 
+        string inputPath,
+        string outputPath,
+        string audioFormat = "mp3",
         CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(inputPath))
             throw new ArgumentException("Input path cannot be null or empty", nameof(inputPath));
-        
+
         if (string.IsNullOrWhiteSpace(outputPath))
             throw new ArgumentException("Output path cannot be null or empty", nameof(outputPath));
 
@@ -142,7 +142,7 @@ public class VideoExporter
                 args = $"-i \"{inputPath}\" -vn -acodec pcm_s16le \"{outputPath}\"";
             }
 
-            _logger.LogInformation("Extracting audio from {Input} to {Output} in format {Format}", 
+            _logger.LogInformation("Extracting audio from {Input} to {Output} in format {Format}",
                 inputPath, outputPath, audioFormat);
 
             var psi = new ProcessStartInfo
@@ -204,7 +204,7 @@ public class VideoExporter
         try
         {
             var args = $"-i \"{filePath}\" -hide_banner";
-            
+
             var psi = new ProcessStartInfo
             {
                 FileName = "ffprobe",
@@ -273,7 +273,7 @@ public class VideoExporter
         try
         {
             var info = new VideoInfo();
-            
+
             // Parse duration
             var durationMatch = System.Text.RegularExpressions.Regex.Match(ffprobeOutput, @"Duration: (\d{2}):(\d{2}):(\d{2}\.\d{2})");
             if (durationMatch.Success)

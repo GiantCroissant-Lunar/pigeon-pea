@@ -10,4 +10,3 @@ public interface IService
     World? GetWorld(string worldId);
     void TransferEntity(Entity entity, World sourceWorld, World targetWorld);
 }
-

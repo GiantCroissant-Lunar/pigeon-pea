@@ -18,23 +18,23 @@ public class AnalyticsLogger : ILogger
         _category = category ?? throw new ArgumentNullException(nameof(category));
         _options = options ?? throw new ArgumentNullException(nameof(options));
     }
-    
+
     public IDisposable? BeginScope<TState>(TState state) where TState : notnull
         => null; // Analytics doesn't support scopes
-    
+
     public bool IsEnabled(LogLevel logLevel)
     {
         // Check if analytics is enabled and level meets minimum threshold
         if (!_analytics.IsEnabled || logLevel < _options.MinimumLevel)
             return false;
-            
+
         // Check category filtering
         if (!_options.LogAllCategories && !_options.AllowedCategories.Contains(_category))
             return false;
-            
+
         return true;
     }
-    
+
     public void Log<TState>(
         LogLevel logLevel,
         EventId eventId,
@@ -44,17 +44,17 @@ public class AnalyticsLogger : ILogger
     {
         if (!IsEnabled(logLevel))
             return;
-        
+
         // Extract structured data from the log state
         var data = ExtractData(state);
-        
+
         // Add metadata about the log entry itself
         if (_options.IncludeLogLevel)
             data["LogLevel"] = logLevel.ToString();
-            
+
         if (_options.IncludeCategory)
             data["LoggerCategory"] = _category;
-        
+
         // Add exception information if present
         if (exception != null)
         {
@@ -62,32 +62,32 @@ public class AnalyticsLogger : ILogger
             data["ExceptionMessage"] = exception.Message;
             if (!string.IsNullOrEmpty(exception.StackTrace))
                 data["StackTrace"] = exception.StackTrace;
-                
+
             // Track exception as separate analytics event if enabled
             if (_options.TrackExceptions)
             {
                 TrackException(exception, data);
             }
         }
-        
+
         // Track custom event if enabled
         if (_options.TrackCustomEvents)
         {
             var eventName = $"{_options.EventNamePrefix}{eventId.Name ?? $"Event{eventId.Id}"}";
             _analytics.TrackEvent(eventName, data);
         }
-        
+
         // Track metrics based on log level
         TrackLogLevelMetrics(logLevel);
     }
-    
+
     /// <summary>
     /// Extracts structured data from the log state.
     /// </summary>
     private static Dictionary<string, object> ExtractData<TState>(TState state)
     {
         var data = new Dictionary<string, object>();
-        
+
         // Handle the standard logger state format
         if (state is IReadOnlyList<KeyValuePair<string, object>> kvps)
         {
@@ -126,10 +126,10 @@ public class AnalyticsLogger : ILogger
                 }
             }
         }
-        
+
         return data;
     }
-    
+
     /// <summary>
     /// Tracks an exception as a separate analytics event.
     /// </summary>
@@ -141,15 +141,15 @@ public class AnalyticsLogger : ILogger
             ["ExceptionMessage"] = exception.Message,
             ["ExceptionSource"] = exception.Source ?? "Unknown"
         };
-        
+
         if (!string.IsNullOrEmpty(exception.StackTrace))
         {
             exceptionData["StackTrace"] = exception.StackTrace;
         }
-        
+
         _analytics.TrackEvent("Exception", exceptionData);
     }
-    
+
     /// <summary>
     /// Tracks metrics based on log levels.
     /// </summary>
@@ -166,9 +166,9 @@ public class AnalyticsLogger : ILogger
             LogLevel.None => "LogNoneCount",
             _ => "LogUnknownCount"
         };
-        
+
         _analytics.TrackMetric(metricName, 1);
-        
+
         // Track category-specific metrics
         if (!string.IsNullOrEmpty(_category))
         {
@@ -176,7 +176,7 @@ public class AnalyticsLogger : ILogger
             _analytics.TrackMetric(categoryMetricName, 1);
         }
     }
-    
+
     /// <summary>
     /// Sanitizes category name for use in metric names.
     /// </summary>

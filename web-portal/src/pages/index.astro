@@ -1,0 +1,49 @@
+---
+// src/pages/index.astro
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PigeonPea Portal</title>
+  <link rel="stylesheet" href="/styles/portal.css">
+</head>
+<body>
+  <div class="hero">
+    <h1>PigeonPea</h1>
+    <p>Roguelike Game • Documentation • Interactive Portal</p>
+    <div class="actions">
+      <a href="/play" class="btn">Play Now</a>
+      <a href="/docs/getting-started" class="btn secondary">Read Docs</a>
+    </div>
+  </div>
+</body>
+</html>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+  
+  .actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .btn {
+    padding: 0.75rem 1.5rem;
+    background: #2472c8;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  
+  .btn.secondary {
+    background: #333;
+  }
+</style>

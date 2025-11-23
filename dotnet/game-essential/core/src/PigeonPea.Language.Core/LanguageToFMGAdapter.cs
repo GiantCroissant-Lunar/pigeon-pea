@@ -36,7 +36,7 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
         _phonotacticsCache = new Dictionary<string, PhonotacticRules>();
         _morphologyCache = new Dictionary<string, MorphologyRules>();
         _templateFactory = new LanguageTemplateFactory();
-        
+
         // Map common language IDs to FMG built-in templates
         _languageToTemplateMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
         {
@@ -44,7 +44,7 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
             ["english"] = "germanic",
             ["common-tongue"] = "germanic",
             ["westron"] = "germanic",
-            
+
             // Fantasy languages
             ["elvish"] = "elvish",
             ["sindarin"] = "elvish",
@@ -53,7 +53,7 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
             ["khuzdul"] = "dwarvish",
             ["orcish"] = "orcish",
             ["black-speech"] = "orcish",
-            
+
             // Asian languages
             ["japanese"] = "japanese",
             ["nihongo"] = "japanese",
@@ -61,7 +61,7 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
             ["mandarin"] = "chinese",
             ["korean"] = "korean",
             ["hangul"] = "korean",
-            
+
             // European languages
             ["german"] = "germanic",
             ["french"] = "romance",
@@ -69,7 +69,7 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
             ["italian"] = "romance",
             ["russian"] = "slavic",
             ["polish"] = "slavic",
-            
+
             // Other languages
             ["nordic"] = "nordic",
             ["viking"] = "nordic",
@@ -131,7 +131,7 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
         if (mode != GenerationMode.RuleBased)
         {
             _logger.LogWarning(
-                "Generation mode '{Mode}' not yet supported, falling back to RuleBased", 
+                "Generation mode '{Mode}' not yet supported, falling back to RuleBased",
                 mode);
         }
 
@@ -219,7 +219,7 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
             return cached;
 
         var templates = language.Phonology.SyllableTemplates ?? Array.Empty<SyllableTemplate>();
-        
+
         var phonotactics = new PhonotacticRules
         {
             // Note: FMG PhonotacticRules doesn't have Structures property
@@ -244,7 +244,7 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
             return cached;
 
         var morphologyRules = language.Grammar.MorphologyRules ?? Array.Empty<MorphologyRule>();
-        
+
         var prefixes = morphologyRules
             .Where(r => r.Type == MorphologyType.Prefix)
             .Select(r => new Morpheme
@@ -294,51 +294,51 @@ public partial class LanguageToFMGAdapter : INameGeneratorAdapter
     // Helper methods for extracting phoneme categories
     private string ExtractLiquids(string[] consonants)
     {
-        var liquids = new HashSet<string>(StringComparer.OrdinalIgnoreCase) 
-        { 
-            "l", "r", "w", "y", "ɹ", "ɻ" 
+        var liquids = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "l", "r", "w", "y", "ɹ", "ɻ"
         };
-        
+
         return string.Join("", consonants.Where(c => liquids.Contains(c)));
     }
 
     private string ExtractNasals(string[] consonants)
     {
-        var nasals = new HashSet<string>(StringComparer.OrdinalIgnoreCase) 
-        { 
-            "m", "n", "ŋ", "ɲ", "ɴ", "ng" 
+        var nasals = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "m", "n", "ŋ", "ɲ", "ɴ", "ng"
         };
-        
+
         return string.Join("", consonants.Where(c => nasals.Contains(c)));
     }
 
     private string ExtractFricatives(string[] consonants)
     {
-        var fricatives = new HashSet<string>(StringComparer.OrdinalIgnoreCase) 
-        { 
-            "f", "v", "s", "z", "ʃ", "ʒ", "θ", "ð", "h", "x", "ɣ", "sh", "th", "ch", "zh" 
+        var fricatives = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "f", "v", "s", "z", "ʃ", "ʒ", "θ", "ð", "h", "x", "ɣ", "sh", "th", "ch", "zh"
         };
-        
+
         return string.Join("", consonants.Where(c => fricatives.Contains(c)));
     }
 
     private string ExtractStops(string[] consonants)
     {
-        var stops = new HashSet<string>(StringComparer.OrdinalIgnoreCase) 
-        { 
-            "p", "t", "k", "b", "d", "g", "ʔ", "q", "ɢ" 
+        var stops = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "p", "t", "k", "b", "d", "g", "ʔ", "q", "ɢ"
         };
-        
+
         return string.Join("", consonants.Where(c => stops.Contains(c)));
     }
 
     private string ExtractSibilants(string[] consonants)
     {
-        var sibilants = new HashSet<string>(StringComparer.OrdinalIgnoreCase) 
-        { 
-            "s", "z", "ʃ", "ʒ", "ʦ", "ʧ", "ʨ", "sh", "zh", "ts" 
+        var sibilants = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "s", "z", "ʃ", "ʒ", "ʦ", "ʧ", "ʨ", "sh", "zh", "ts"
         };
-        
+
         return string.Join("", consonants.Where(c => sibilants.Contains(c)));
     }
 

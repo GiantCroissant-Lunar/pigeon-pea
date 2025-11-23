@@ -33,7 +33,7 @@ public class MultiBackendRenderingBenchmarks
     {
         // Create backend based on parameter
         _backend = CreateBackend(Backend);
-        
+
         var context = new RenderContext(ScreenWidth, ScreenHeight);
         _backend.Initialize(context);
 
@@ -266,14 +266,14 @@ public class MultiBackendRenderingBenchmarks
     public void CommandListCreation()
     {
         _commandList.BeginFrame();
-        
+
         // Just create commands, don't execute
         for (int i = 0; i < 100; i++)
         {
             var cmd = _tileCommands[i];
             _commandList.DrawTile(cmd.X, cmd.Y, cmd.Tile);
         }
-        
+
         _commandList.EndFrame();
         // Note: Not executing or presenting to isolate command creation
     }
@@ -286,15 +286,15 @@ public class MultiBackendRenderingBenchmarks
     {
         _commandList.BeginFrame();
         _commandList.Clear(Color.Black);
-        
+
         for (int i = 0; i < 100; i++)
         {
             var cmd = _tileCommands[i];
             _commandList.DrawTile(cmd.X, cmd.Y, cmd.Tile);
         }
-        
+
         _commandList.EndFrame();
-        
+
         // Measure execution + presentation time
         _backend.Execute(_commandList);
         _backend.Present();

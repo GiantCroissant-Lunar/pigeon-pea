@@ -23,20 +23,20 @@ public static class RecordingLoggerExtensions
     {
         if (builder == null)
             throw new ArgumentNullException(nameof(builder));
-            
+
         if (recorder == null)
             throw new ArgumentNullException(nameof(recorder));
-        
+
         var options = new RecordingLoggerOptions();
         configureOptions?.Invoke(options);
-        
+
         builder.Services.AddSingleton<IEventRecorder>(recorder);
         builder.Services.AddSingleton(options);
         builder.Services.AddSingleton<ILoggerProvider, RecordingLoggerProvider>();
-        
+
         return builder;
     }
-    
+
     /// <summary>
     /// Adds the recording logger sink to the logging builder using DI.
     /// </summary>
@@ -49,20 +49,20 @@ public static class RecordingLoggerExtensions
     {
         if (builder == null)
             throw new ArgumentNullException(nameof(builder));
-        
+
         var options = new RecordingLoggerOptions();
         configureOptions?.Invoke(options);
-        
+
         // Register options
         builder.Services.AddSingleton(options);
-        
+
         // Register the provider with a factory that resolves IEventRecorder from DI
         builder.Services.AddSingleton<ILoggerProvider>(serviceProvider =>
         {
             var recorder = serviceProvider.GetRequiredService<IEventRecorder>();
             return new RecordingLoggerProvider(recorder, options);
         });
-        
+
         return builder;
     }
 }

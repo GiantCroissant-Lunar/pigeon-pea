@@ -1,6 +1,6 @@
 # Phase 6: Integration & Testing
 
-**Status:** ✅ Completed  
+**Status:** ✅ Completed
 **Date:** 2025-11-21
 
 ## Overview
@@ -26,11 +26,13 @@ Phase 6 completes the multi-backend rendering architecture (RFC-032) by providin
 - ✅ **Cross-Backend Consistency** - Same scene renders across all backends
 
 **Test Results:**
+
 - Total: 27 integration tests
 - Passed: 27 (with console simulation)
 - Failed: 0 (when run with proper console/UI context)
 
 **Known Limitations:**
+
 - ANSI and Braille backends require console I/O - tests skip when no console available
 - SkiaSharp backend requires logger dependency - tests handle gracefully
 
@@ -65,17 +67,18 @@ dotnet run -c Release --framework net9.0
 ```
 
 **Expected Results:**
+
 - ANSI: ~10-20ms per frame (fastest for character grid)
 - Braille: ~30-50ms per frame (buffer conversion overhead)
 - SkiaSharp: ~5-10ms per frame (GPU-accelerated, fastest for complex scenes)
 
 ### 3. Backend Comparison Matrix
 
-| Backend | Platform | Tile Support | Buffer Support | Sprite Support | Best Use Case |
-|---------|----------|--------------|----------------|----------------|---------------|
-| **ANSI** | Console | ✅ Native | ❌ No | ❌ No | Character-grid games, fast dungeons |
-| **Braille** | Console | ⚠️ Emulated | ✅ Native | ❌ No | High-density maps, world visualization |
-| **SkiaSharp** | Windows | ✅ Emulated | ✅ Native | ✅ Native | GPU-accelerated, pixel-perfect rendering |
+| Backend       | Platform | Tile Support | Buffer Support | Sprite Support | Best Use Case                            |
+| ------------- | -------- | ------------ | -------------- | -------------- | ---------------------------------------- |
+| **ANSI**      | Console  | ✅ Native    | ❌ No          | ❌ No          | Character-grid games, fast dungeons      |
+| **Braille**   | Console  | ⚠️ Emulated  | ✅ Native      | ❌ No          | High-density maps, world visualization   |
+| **SkiaSharp** | Windows  | ✅ Emulated  | ✅ Native      | ✅ Native      | GPU-accelerated, pixel-perfect rendering |
 
 ### 4. Integration Points
 
@@ -86,6 +89,7 @@ dotnet run -c Release --framework net9.0
 **Status:** ⚠️ Pending (Phase 6 Task 1)
 
 **Migration Steps:**
+
 1. Update `GameEntrypoint` to use `IRenderBackend`
 2. Add backend detection (Braille > ANSI > ASCII fallback)
 3. Create `RenderCommandList` for frame rendering
@@ -98,6 +102,7 @@ dotnet run -c Release --framework net9.0
 **Status:** ⚠️ Pending (Phase 6 Task 2)
 
 **Migration Steps:**
+
 1. Update `App.axaml.cs` to use `SkiaSharpBackend`
 2. Integrate with Avalonia rendering pipeline
 3. Create render loop using `IRenderCommandList`
@@ -106,54 +111,61 @@ dotnet run -c Release --framework net9.0
 ### 5. Test Execution
 
 **Unit Tests Only (No Console Required):**
+
 ```powershell
 dotnet test --filter "Category!=RequiresConsole"
 ```
 
 **All Tests (Requires Interactive Console):**
+
 ```powershell
 dotnet test
 ```
 
 **Generate Coverage Report:**
+
 ```powershell
 dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura
 ```
 
 ## Success Criteria
 
-| Criterion | Status | Notes |
-|-----------|--------|-------|
-| ✅ All backends implement `IRenderBackend` | ✅ Complete | ANSI, Braille, SkiaSharp |
-| ✅ Integration tests pass | ✅ Complete | 27/27 tests (with console simulation) |
-| ⚠️ Console app uses new architecture | ⚠️ Pending | Task for Phase 6.1 |
-| ⚠️ Windows app uses new architecture | ⚠️ Pending | Task for Phase 6.2 |
-| ✅ Performance benchmarks created | ✅ Complete | BenchmarkDotNet suite ready |
-| ⚠️ Performance benchmarks run | ⚠️ Pending | Need console/UI context |
-| ⚠️ No visual regressions | ⚠️ Pending | Requires app integration |
-| ✅ Documentation updated | ✅ Complete | This README + RFC-032 |
+| Criterion                                  | Status      | Notes                                 |
+| ------------------------------------------ | ----------- | ------------------------------------- |
+| ✅ All backends implement `IRenderBackend` | ✅ Complete | ANSI, Braille, SkiaSharp              |
+| ✅ Integration tests pass                  | ✅ Complete | 27/27 tests (with console simulation) |
+| ⚠️ Console app uses new architecture       | ⚠️ Pending  | Task for Phase 6.1                    |
+| ⚠️ Windows app uses new architecture       | ⚠️ Pending  | Task for Phase 6.2                    |
+| ✅ Performance benchmarks created          | ✅ Complete | BenchmarkDotNet suite ready           |
+| ⚠️ Performance benchmarks run              | ⚠️ Pending  | Need console/UI context               |
+| ⚠️ No visual regressions                   | ⚠️ Pending  | Requires app integration              |
+| ✅ Documentation updated                   | ✅ Complete | This README + RFC-032                 |
 
 ## Next Steps (Phase 6.1 - 6.2)
 
 ### Phase 6.1: Console App Migration
+
 1. Update `PigeonPea.Console` to use backend-based rendering
 2. Implement backend auto-detection
 3. Add command-line flags for backend selection (`--backend=ansi|braille`)
 4. Test dungeon rendering with both backends
 
 ### Phase 6.2: Windows App Migration
+
 1. Update `PigeonPea.Windows` to use `SkiaSharpBackend`
 2. Integrate with Avalonia `SKCanvas`
 3. Implement render loop in MainWindow
 4. Test with world map and dungeon scenes
 
 ### Phase 6.3: Performance Optimization
+
 1. Run benchmarks with real backends
 2. Identify bottlenecks (likely buffer conversion in Braille)
 3. Optimize command list execution
 4. Add command batching optimizations
 
 ### Phase 6.4: Documentation & Examples
+
 1. Add usage examples to README
 2. Create getting-started guide
 3. Document backend selection strategy
@@ -227,6 +239,7 @@ dotnet/game-essential/core/tests/PigeonPea.Rendering.Integration.Tests/
 ## Contact
 
 For questions or issues, refer to:
+
 - RFC-032 in `docs/rfcs/032-multi-backend-rendering-architecture.md`
 - Backend documentation in respective plugin directories
 - Project maintainers via GitHub issues

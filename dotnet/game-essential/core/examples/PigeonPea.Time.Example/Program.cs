@@ -1,4 +1,4 @@
-﻿using NodaTime;
+using NodaTime;
 using PigeonPea.Time.Contracts;
 using PigeonPea.Time.Core;
 using PigeonPea.Plugin.Time.Harptos;

@@ -23,22 +23,12 @@
     },
     "ExecutableTarget": {
       "type": "string",
-      "enum": [
-        "Clean",
-        "Compile",
-        "Pack",
-        "Restore"
-      ]
+      "enum": ["Clean", "Compile", "Publish", "PublishPlayers", "Restore", "Task", "Test"]
     },
     "Verbosity": {
       "type": "string",
       "description": "",
-      "enum": [
-        "Verbose",
-        "Normal",
-        "Minimal",
-        "Quiet"
-      ]
+      "enum": ["Verbose", "Normal", "Minimal", "Quiet"]
     },
     "NukeBuild": {
       "properties": {
@@ -103,11 +93,23 @@
       "properties": {
         "Configuration": {
           "type": "string",
-          "description": "Configuration to build - Default is 'Debug' (local) or 'Release' (server)",
-          "enum": [
-            "Debug",
-            "Release"
-          ]
+          "description": "Configuration to build"
+        },
+        "Player": {
+          "type": "string",
+          "description": "Player to run from artifacts (console or windows)"
+        },
+        "PlayerArgs": {
+          "type": "string",
+          "description": "Arguments to pass to the player executable"
+        },
+        "Runtime": {
+          "type": "string",
+          "description": "Runtime identifier for publishing"
+        },
+        "Solution": {
+          "type": "string",
+          "description": "Path to a solution file that is automatically loaded. Default is dotnet/PigeonPea.sln"
         }
       }
     },

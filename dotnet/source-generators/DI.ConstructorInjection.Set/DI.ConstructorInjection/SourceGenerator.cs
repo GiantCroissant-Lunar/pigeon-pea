@@ -19,7 +19,7 @@ public sealed class SourceGenerator : IIncrementalGenerator
     private const string ConstructorInjection = "ConstructorInjection";
     private const string ConstructorInjectionAttribute = "ConstructorInjectionAttribute";
     private const string AttributeName = "ResolveInConstructor";
-    
+
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var typeSymbols = context.SyntaxProvider

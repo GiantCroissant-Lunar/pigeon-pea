@@ -46,7 +46,7 @@ public sealed class ScaleManagerPlugin : IPlugin
     }
 
     public Task StartAsync(CancellationToken ct) => Task.CompletedTask;
-    
+
     public Task StopAsync(CancellationToken ct)
     {
         _scaleManager = null;

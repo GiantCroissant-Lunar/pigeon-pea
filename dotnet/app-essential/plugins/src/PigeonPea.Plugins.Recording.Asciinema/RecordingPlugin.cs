@@ -46,7 +46,7 @@ public class RecordingPlugin : IPlugin, IDisposable
         // Log strategy information
         var strategyInfo = _recordingService.GetStrategyInfo();
         var binaryAvailable = AsciinemaRecordingService.IsAsciinemaBinaryAvailable();
-        
+
         _logger.LogInformation("Asciinema recording service registered with strategy: {Strategy}", strategyInfo);
         _logger.LogInformation("Asciinema binary available: {BinaryAvailable}", binaryAvailable);
 
@@ -62,7 +62,7 @@ public class RecordingPlugin : IPlugin, IDisposable
     public Task StopAsync(CancellationToken ct = default)
     {
         _logger?.LogInformation("Asciinema recording plugin stopping");
-        
+
         // Ensure recording is stopped when plugin stops
         if (_recordingService != null && ((IVisualRecorder)_recordingService).IsRecording)
         {

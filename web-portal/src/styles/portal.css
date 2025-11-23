@@ -1,0 +1,16 @@
+/* Portal global styles */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #111;
+  color: #eee;
+}
+
+a {
+  color: #2472c8;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

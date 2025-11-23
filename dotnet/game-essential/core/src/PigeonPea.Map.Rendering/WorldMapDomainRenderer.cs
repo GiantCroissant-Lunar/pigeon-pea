@@ -44,12 +44,12 @@ public sealed class WorldMapDomainRenderer : IDomainRenderer
         int ppc = Math.Max(1, settings.PixelsPerCell);
         int widthPx = Math.Max(1, v.Width * ppc);
         int heightPx = Math.Max(1, v.Height * ppc);
-        
+
         // 1. Setup viewport transform
         commands.BeginFrame();
         commands.SetViewport(new PigeonPea.Rendering.Contracts.Viewport(v.X, v.Y, v.Width, v.Height));
         commands.SetCamera((int)(v.X + v.Width / 2), (int)(v.Y + v.Height / 2), options.Zoom);
-        
+
         // Use ocean blue as background instead of black
         commands.Clear(new Color(53, 111, 163));
 
@@ -69,7 +69,7 @@ public sealed class WorldMapDomainRenderer : IDomainRenderer
         {
             raster = null;
         }
-        
+
         // Debug: Log feature counts
         System.Diagnostics.Debug.WriteLine($"Fetched {features.Count} features");
         foreach (var kind in features.GroupBy(f => f.Kind))
@@ -94,7 +94,7 @@ public sealed class WorldMapDomainRenderer : IDomainRenderer
                     RenderPolygon(commands, poly, v, options.Zoom, ppc, ResolveFillColor(feature, settings));
                 }
             }
-            
+
             var waterFeatures = features.Where(f => f.Kind == FeatureKind.Ocean || f.Kind == FeatureKind.Lake);
             foreach (var feature in waterFeatures)
             {
@@ -152,10 +152,10 @@ public sealed class WorldMapDomainRenderer : IDomainRenderer
         // 6. Render Settlements
         if (settings.ShowSettlements)
         {
-            var settlements = features.Where(f => 
-                f.Kind == FeatureKind.Capital || 
-                f.Kind == FeatureKind.City || 
-                f.Kind == FeatureKind.Town || 
+            var settlements = features.Where(f =>
+                f.Kind == FeatureKind.Capital ||
+                f.Kind == FeatureKind.City ||
+                f.Kind == FeatureKind.Town ||
                 f.Kind == FeatureKind.Village);
 
             foreach (var settlement in settlements)
@@ -182,13 +182,13 @@ public sealed class WorldMapDomainRenderer : IDomainRenderer
         var screenPoints = poly.ExteriorRing
             .Select(p => new Point(WorldToScreenX(p.X, v, zoom, ppc), WorldToScreenY(p.Y, v, zoom, ppc)))
             .ToArray();
-        
+
         System.Diagnostics.Debug.WriteLine($"Rendering polygon with {screenPoints.Length} points, color=({color.R},{color.G},{color.B})");
         if (screenPoints.Length > 0)
         {
             System.Diagnostics.Debug.WriteLine($"  First point: world=({poly.ExteriorRing.First().X},{poly.ExteriorRing.First().Y}) -> screen=({screenPoints[0].X},{screenPoints[0].Y})");
         }
-        
+
         commands.DrawPolygon(screenPoints, color);
     }
 
@@ -239,7 +239,7 @@ public sealed class WorldMapDomainRenderer : IDomainRenderer
         var screenPoints = line.Points
             .Select(p => new Point(WorldToScreenX(p.X, v, zoom, ppc), WorldToScreenY(p.Y, v, zoom, ppc)))
             .ToArray();
-        
+
         commands.DrawPolyline(screenPoints, new Color(30, 144, 200), strokeWidth);
     }
 
@@ -253,11 +253,11 @@ public sealed class WorldMapDomainRenderer : IDomainRenderer
     {
         int screenX = WorldToScreenX(pt.X, v, zoom, ppc);
         int screenY = WorldToScreenY(pt.Y, v, zoom, ppc);
-        
+
         // Simple circle approximation for now using a small polygon or just a sprite if we had them
         // Using a diamond shape for simplicity
         int radius = feature.Kind == FeatureKind.Capital ? Math.Max(4, 3 * ppc) : Math.Max(3, 2 * ppc);
-        
+
         var points = new Point[]
         {
             new(screenX, screenY - radius),

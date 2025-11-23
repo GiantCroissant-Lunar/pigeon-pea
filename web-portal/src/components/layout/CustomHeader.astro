@@ -1,0 +1,43 @@
+---
+// src/components/layout/CustomHeader.astro
+---
+
+<div class="custom-header">
+  <div class="logo">PigeonPea</div>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/play">Play</a>
+    <a href="/recordings">Recordings</a>
+    <a href="/docs/getting-started">Docs</a>
+  </nav>
+</div>
+
+<style>
+  .custom-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    background: #1e1e1e;
+    border-bottom: 1px solid #333;
+  }
+  
+  .logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+  
+  nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  nav a {
+    color: #ccc;
+    text-decoration: none;
+  }
+  
+  nav a:hover {
+    color: #fff;
+  }
+</style>

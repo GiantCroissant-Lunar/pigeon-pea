@@ -83,7 +83,7 @@ while (player.Step())
 {
     var currentEvent = player.CurrentEvent;
     Console.WriteLine($"Step {player.CurrentIndex}: {currentEvent?.Type}");
-    
+
     // Inspect game state, set breakpoints, etc.
 }
 ```

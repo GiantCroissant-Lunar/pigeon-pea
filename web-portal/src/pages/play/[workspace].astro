@@ -1,0 +1,37 @@
+---
+// src/pages/play/[workspace].astro
+import GameTerminal from '../../components/game/GameTerminal.astro';
+import { WorkspaceManager } from '../../components/game/WorkspaceManager';
+
+const { workspace } = Astro.params;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play - {workspace}</title>
+  <link rel="stylesheet" href="/styles/portal.css">
+</head>
+<body>
+  <div class="play-container">
+    <WorkspaceManager client:load />
+    <div class="terminal-wrapper">
+      <GameTerminal workspaceId={workspace} />
+    </div>
+  </div>
+</body>
+</html>
+
+<style>
+  .play-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  .terminal-wrapper {
+    height: 600px;
+    margin: 2rem 0;
+  }
+</style>

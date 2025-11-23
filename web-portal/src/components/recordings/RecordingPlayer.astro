@@ -1,0 +1,54 @@
+---
+// src/components/recordings/RecordingPlayer.astro
+interface Props {
+  recordingUrl: string;
+  autoplay?: boolean;
+}
+
+const { recordingUrl, autoplay = false } = Astro.props;
+---
+
+<div class="recording-player">
+  <div id="player-container"></div>
+  <div class="player-controls">
+    <button id="play-pause">▶️ Play</button>
+    <button id="restart">🔄 Restart</button>
+    <input type="range" id="speed" min="0.5" max="3" step="0.5" value="1" />
+    <span id="speed-label">1x</span>
+  </div>
+</div>
+
+<script define:vars={{ recordingUrl, autoplay }}>
+  import 'asciinema-player/dist/bundle/asciinema-player.css';
+  import * as AsciinemaPlayer from 'asciinema-player';
+  
+  const player = AsciinemaPlayer.create(
+    recordingUrl,
+    document.getElementById('player-container'),
+    {
+      autoPlay: autoplay,
+      loop: false,
+      speed: 1,
+      theme: 'monokai'
+    }
+  );
+  
+  // Control handlers
+  document.getElementById('play-pause').addEventListener('click', () => {
+    if (player.isPlaying()) {
+      player.pause();
+    } else {
+      player.play();
+    }
+  });
+  
+  document.getElementById('restart').addEventListener('click', () => {
+    player.seek(0);
+  });
+  
+  document.getElementById('speed').addEventListener('input', (e) => {
+    const speed = parseFloat(e.target.value);
+    player.setSpeed(speed);
+    document.getElementById('speed-label').textContent = `${speed}x`;
+  });
+</script>

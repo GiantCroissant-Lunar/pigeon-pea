@@ -31,7 +31,7 @@ public class RecordingPlugin : IPlugin
         // Create core services with proper logger types
         var eventRecorderLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger<EventRecordingService>.Instance;
         var recordingServiceLogger = Microsoft.Extensions.Logging.Abstractions.NullLogger<RecordingService>.Instance;
-        
+
         _eventRecorder = new EventRecordingService(eventRecorderLogger);
         _recordingService = new RecordingService(recordingServiceLogger, _eventRecorder);
 

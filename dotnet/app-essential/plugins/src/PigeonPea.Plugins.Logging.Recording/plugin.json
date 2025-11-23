@@ -6,10 +6,7 @@
   "author": "PigeonPea Team",
   "category": "Logging",
   "type": "LoggerSink",
-  "dependencies": [
-    "PigeonPea.Logging",
-    "PigeonPea.Contracts.Recording"
-  ],
+  "dependencies": ["PigeonPea.Logging", "PigeonPea.Contracts.Recording"],
   "configuration": {
     "options": {
       "type": "RecordingLoggerOptions",
