@@ -1,0 +1,36 @@
+{
+  "id": "pigeon-pea.recording.asciinema",
+  "name": "Asciinema Recording Plugin",
+  "version": "1.0.0",
+  "description": "Terminal output recording for Terminal.Gui TUI applications using asciinema format with dual-strategy approach (native binary + pure C# fallback)",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["recording", "recording:visual", "recording:asciinema", "recording:terminal"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Recording.Asciinema.dll,PigeonPea.Plugins.Recording.Asciinema.RecordingPlugin"
+  },
+  "dependencies": [],
+  "priority": 90,
+  "loadStrategy": "eager",
+  "tags": ["asciinema", "terminal", "tui", "recording", "console", "cast"],
+  "requirements": {
+    "platforms": ["linux", "macos", "windows"],
+    "features": ["terminal-gui"],
+    "optional": ["asciinema-binary"]
+  },
+  "features": {
+    "dualStrategy": true,
+    "nativeBinary": true,
+    "pureCSharpFallback": true,
+    "ansiEscapeSequences": true,
+    "frameDeduplication": true,
+    "castFormat": true,
+    "autoStrategySelection": true
+  },
+  "configuration": {
+    "outputFormat": "cast",
+    "defaultExtension": ".cast",
+    "frameCaptureMode": "on-change",
+    "colorSupport": "true"
+  }
+}

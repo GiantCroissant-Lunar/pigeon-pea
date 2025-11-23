@@ -1,0 +1,32 @@
+{
+  "id": "pigeon-pea.recording.ffmpeg",
+  "name": "FFmpeg Recording Plugin",
+  "version": "1.0.0",
+  "description": "Screen/video recording for Avalonia GUI applications using FFmpeg with cross-platform support",
+  "author": "Pigeon Pea Team",
+  "category": "recording",
+  "dependencies": [],
+  "platforms": ["windows", "linux", "macos"],
+  "targetApps": ["gui"],
+  "entryPoint": "PigeonPea.Plugins.Recording.FFmpeg.RecordingPlugin",
+  "priority": 95,
+  "enabled": true,
+  "settings": {
+    "frameRate": 30,
+    "videoCodec": "libx264",
+    "preset": "medium",
+    "crf": 23,
+    "showCursor": true,
+    "captureDesktop": true
+  },
+  "capabilities": [
+    "visual-recording",
+    "screen-capture",
+    "video-encoding",
+    "cross-platform"
+  ],
+  "externalDependencies": [
+    "ffmpeg"
+  ],
+  "tags": ["recording", "ffmpeg", "video", "gui", "avalonia", "screen-capture"]
+}

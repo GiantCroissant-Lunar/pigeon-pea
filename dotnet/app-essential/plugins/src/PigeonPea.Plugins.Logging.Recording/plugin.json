@@ -1,0 +1,55 @@
+{
+  "name": "PigeonPea.Plugins.Logging.Recording",
+  "displayName": "Recording Logger Sink",
+  "description": "Logger sink that routes log entries to the recording service for unified observability",
+  "version": "1.0.0",
+  "author": "PigeonPea Team",
+  "category": "Logging",
+  "type": "LoggerSink",
+  "dependencies": [
+    "PigeonPea.Logging",
+    "PigeonPea.Contracts.Recording"
+  ],
+  "configuration": {
+    "options": {
+      "type": "RecordingLoggerOptions",
+      "properties": {
+        "LogAllCategories": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to log all categories or only specific ones"
+        },
+        "AllowedCategories": {
+          "type": "string[]",
+          "default": [],
+          "description": "Specific categories to log when LogAllCategories is false"
+        },
+        "MinimumLevel": {
+          "type": "string",
+          "default": "Information",
+          "description": "Minimum log level to record",
+          "enum": ["Trace", "Debug", "Information", "Warning", "Error", "Critical"]
+        },
+        "IncludeLogLevel": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to include the log level as event data"
+        },
+        "IncludeCategory": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether to include the logger category as event data"
+        }
+      }
+    }
+  },
+  "capabilities": [
+    "structured-logging",
+    "event-recording",
+    "category-filtering",
+    "level-filtering"
+  ],
+  "supportedFrameworks": ["net8.0"],
+  "entryPoint": "PigeonPea.Plugins.Logging.Recording",
+  "isEnabled": true
+}

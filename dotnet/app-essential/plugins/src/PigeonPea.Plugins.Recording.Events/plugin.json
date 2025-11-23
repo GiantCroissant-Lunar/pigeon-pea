@@ -1,0 +1,16 @@
+{
+  "id": "pigeon-pea.recording.events",
+  "name": "Event Recording Plugin",
+  "version": "1.0.0",
+  "description": "Deterministic event-based recording for game logic replay and debugging",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["recording", "recording:events", "recording:playback", "recording:diff"],
+  "supportedProfiles": ["dotnet.console", "dotnet.gui"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Recording.Events.dll,PigeonPea.Plugins.Recording.Events.RecordingPlugin",
+    "dotnet.gui": "PigeonPea.Plugins.Recording.Events.dll,PigeonPea.Plugins.Recording.Events.RecordingPlugin"
+  },
+  "dependencies": [],
+  "priority": 100,
+  "loadStrategy": "eager"
+}
