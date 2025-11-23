@@ -5,69 +5,66 @@ import node from '@astrojs/node';
 
 export default defineConfig({
   output: 'server', // Required for WebSocket support
-  
+
   adapter: node({
-    mode: 'standalone'
+    mode: 'standalone',
   }),
-  
+
   integrations: [
     react(), // For interactive components (WorkspaceManager, etc.)
-    
+
     starlight({
       title: 'PigeonPea',
       description: 'Roguelike Game • Documentation • Interactive Portal',
-      
-      customCss: [
-        './src/styles/terminal.css',
-        './src/styles/portal.css',
-      ],
-      
+
+      customCss: ['./src/styles/terminal.css', './src/styles/portal.css'],
+
       sidebar: [
         {
           label: '🎮 Play',
           items: [
             { label: 'Browser Terminal', link: '/play' },
             { label: 'Recordings Gallery', link: '/recordings' },
-          ]
+          ],
         },
         {
           label: '📚 Documentation',
           items: [
             { label: 'Getting Started', link: '/docs/getting-started' },
-            { 
-              label: 'RFCs', 
+            {
+              label: 'RFCs',
               autogenerate: { directory: 'rfc' },
-              collapsed: true
+              collapsed: true,
             },
-            { 
-              label: 'Guides', 
+            {
+              label: 'Guides',
               autogenerate: { directory: 'guide' },
-              collapsed: true
+              collapsed: true,
             },
-            { 
-              label: 'ADRs', 
+            {
+              label: 'ADRs',
               autogenerate: { directory: 'adr' },
-              collapsed: true
+              collapsed: true,
             },
-          ]
-        }
+          ],
+        },
       ],
-      
+
       components: {
         Header: './src/components/layout/CustomHeader.astro',
       },
-      
+
       social: {
-        github: 'https://github.com/your-org/pigeon-pea'
+        github: 'https://github.com/your-org/pigeon-pea',
       },
-      
+
       favicon: '/favicon.svg',
     }),
   ],
-  
+
   vite: {
     optimizeDeps: {
-      exclude: ['node-pty']
-    }
-  }
+      exclude: ['node-pty'],
+    },
+  },
 });

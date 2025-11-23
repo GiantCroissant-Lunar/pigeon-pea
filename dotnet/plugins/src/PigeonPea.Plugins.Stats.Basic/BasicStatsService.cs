@@ -278,4 +278,3 @@ public class BasicStatsService : IService, IPlugin
         return true;
     }
 }
-

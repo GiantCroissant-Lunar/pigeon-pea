@@ -95,4 +95,3 @@ public class BasicAvatarService : IService, IPlugin
         display.Title = title;
     }
 }
-

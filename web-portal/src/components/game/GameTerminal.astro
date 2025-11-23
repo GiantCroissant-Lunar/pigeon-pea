@@ -21,12 +21,12 @@ const { workspaceId = 'default' } = Astro.props;
   import { Terminal } from '@xterm/xterm';
   import { FitAddon } from '@xterm/addon-fit';
   import { WebLinksAddon } from '@xterm/addon-web-links';
-  
+
   const terminalEl = document.getElementById('terminal')!;
   const workspaceId = terminalEl.dataset.workspace!;
   const statusEl = document.getElementById('connection-status')!;
   const sizeEl = document.getElementById('terminal-size')!;
-  
+
   // Create terminal
   const term = new Terminal({
     cursorBlink: true,
@@ -48,28 +48,28 @@ const { workspaceId = 'default' } = Astro.props;
     },
     allowProposedApi: true,
   });
-  
+
   const fitAddon = new FitAddon();
   term.loadAddon(fitAddon);
   term.loadAddon(new WebLinksAddon());
-  
+
   term.open(terminalEl);
   fitAddon.fit();
-  
+
   // Update size display
   const updateSize = () => {
     sizeEl.textContent = `${term.cols}×${term.rows}`;
   };
   updateSize();
-  
+
   // WebSocket connection
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
   const ws = new WebSocket(`${protocol}//${window.location.host}/api/pty?workspace=${workspaceId}`);
-  
+
   ws.onopen = () => {
     statusEl.textContent = '🟢 Connected';
     statusEl.style.color = '#0dbc79';
-    
+
     // Send initial size
     ws.send(JSON.stringify({
       type: 'resize',
@@ -77,18 +77,18 @@ const { workspaceId = 'default' } = Astro.props;
       rows: term.rows
     }));
   };
-  
+
   ws.onclose = () => {
     statusEl.textContent = '🔴 Disconnected';
     statusEl.style.color = '#cd3131';
     term.write('\r\n\x1b[1;31mConnection closed.\x1b[0m\r\n');
   };
-  
+
   ws.onerror = () => {
     statusEl.textContent = '⚠️ Error';
     statusEl.style.color = '#e5e510';
   };
-  
+
   // PTY output → Terminal
   ws.onmessage = (event) => {
     if (typeof event.data === 'string') {
@@ -101,17 +101,17 @@ const { workspaceId = 'default' } = Astro.props;
       });
     }
   };
-  
+
   // Terminal input → PTY
   term.onData(data => {
     ws.send(data);
   });
-  
+
   // Handle resize
   const handleResize = () => {
     fitAddon.fit();
     updateSize();
-    
+
     if (ws.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify({
         type: 'resize',
@@ -120,9 +120,9 @@ const { workspaceId = 'default' } = Astro.props;
       }));
     }
   };
-  
+
   window.addEventListener('resize', handleResize);
-  
+
   // Cleanup
   window.addEventListener('beforeunload', () => {
     ws.close();
@@ -139,12 +139,12 @@ const { workspaceId = 'default' } = Astro.props;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
-  
+
   #terminal {
     flex: 1;
     padding: 12px;
   }
-  
+
   .terminal-status {
     display: flex;
     justify-content: space-between;

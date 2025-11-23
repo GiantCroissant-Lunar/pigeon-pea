@@ -172,4 +172,3 @@ public class BasicCharacterService : IService, IPlugin
         }
     }
 }
-

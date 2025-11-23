@@ -21,7 +21,7 @@ const { recordingUrl, autoplay = false } = Astro.props;
 <script define:vars={{ recordingUrl, autoplay }}>
   import 'asciinema-player/dist/bundle/asciinema-player.css';
   import * as AsciinemaPlayer from 'asciinema-player';
-  
+
   const player = AsciinemaPlayer.create(
     recordingUrl,
     document.getElementById('player-container'),
@@ -32,7 +32,7 @@ const { recordingUrl, autoplay = false } = Astro.props;
       theme: 'monokai'
     }
   );
-  
+
   // Control handlers
   document.getElementById('play-pause').addEventListener('click', () => {
     if (player.isPlaying()) {
@@ -41,11 +41,11 @@ const { recordingUrl, autoplay = false } = Astro.props;
       player.play();
     }
   });
-  
+
   document.getElementById('restart').addEventListener('click', () => {
     player.seek(0);
   });
-  
+
   document.getElementById('speed').addEventListener('input', (e) => {
     const speed = parseFloat(e.target.value);
     player.setSpeed(speed);

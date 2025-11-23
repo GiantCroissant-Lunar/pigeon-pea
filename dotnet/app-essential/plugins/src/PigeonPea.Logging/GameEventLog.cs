@@ -9,19 +9,19 @@ namespace PigeonPea.Logging;
 public static partial class GameEventLog
 {
     // ===== Player Events (Event IDs: 1000-1999) =====
-    
+
     /// <summary>
     /// Logs when a player moves from one position to another.
     /// </summary>
     [LoggerMessage(
-        EventId = 1001, 
+        EventId = 1001,
         Level = LogLevel.Information,
         Message = "Player moved from {FromX},{FromY} to {ToX},{ToY}")]
     public static partial void LogPlayerMove(
-        this ILogger logger, 
-        int fromX, int fromY, 
+        this ILogger logger,
+        int fromX, int fromY,
         int toX, int toY);
-    
+
     /// <summary>
     /// Logs when a player attacks a target.
     /// </summary>
@@ -33,7 +33,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string target,
         int damage);
-    
+
     /// <summary>
     /// Logs when a player takes damage.
     /// </summary>
@@ -46,7 +46,7 @@ public static partial class GameEventLog
         int damage,
         string source,
         int health);
-    
+
     /// <summary>
     /// Logs when a player heals.
     /// </summary>
@@ -58,7 +58,7 @@ public static partial class GameEventLog
         this ILogger logger,
         int amount,
         int health);
-    
+
     /// <summary>
     /// Logs when a player dies.
     /// </summary>
@@ -69,7 +69,7 @@ public static partial class GameEventLog
     public static partial void LogPlayerDeath(
         this ILogger logger,
         string cause);
-    
+
     /// <summary>
     /// Logs when a player respawns.
     /// </summary>
@@ -81,9 +81,9 @@ public static partial class GameEventLog
         this ILogger logger,
         int x,
         int y);
-    
+
     // ===== Entity Events (Event IDs: 2000-2999) =====
-    
+
     /// <summary>
     /// Logs when an entity is spawned.
     /// </summary>
@@ -96,7 +96,7 @@ public static partial class GameEventLog
         string entityId,
         int x, int y,
         int componentCount);
-    
+
     /// <summary>
     /// Logs when a component is added to an entity.
     /// </summary>
@@ -108,7 +108,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string componentType,
         string entityId);
-    
+
     /// <summary>
     /// Logs when a component is removed from an entity.
     /// </summary>
@@ -120,7 +120,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string componentType,
         string entityId);
-    
+
     /// <summary>
     /// Logs when an entity is destroyed.
     /// </summary>
@@ -131,9 +131,9 @@ public static partial class GameEventLog
     public static partial void LogEntityDestroyed(
         this ILogger logger,
         string entityId);
-    
+
     // ===== Map Events (Event IDs: 3000-3999) =====
-    
+
     /// <summary>
     /// Logs when map generation starts.
     /// </summary>
@@ -144,7 +144,7 @@ public static partial class GameEventLog
     public static partial void LogMapGenerationStart(
         this ILogger logger,
         int seed);
-    
+
     /// <summary>
     /// Logs when map generation completes.
     /// </summary>
@@ -156,7 +156,7 @@ public static partial class GameEventLog
         this ILogger logger,
         int tileCount,
         int riverCount);
-    
+
     /// <summary>
     /// Logs when a tile is modified.
     /// </summary>
@@ -169,9 +169,9 @@ public static partial class GameEventLog
         int x, int y,
         string oldType,
         string newType);
-    
+
     // ===== AI Events (Event IDs: 4000-4999) =====
-    
+
     /// <summary>
     /// Logs when an AI makes a decision.
     /// </summary>
@@ -184,7 +184,7 @@ public static partial class GameEventLog
         string entityId,
         string decision,
         double score);
-    
+
     /// <summary>
     /// Logs when an AI changes state.
     /// </summary>
@@ -197,7 +197,7 @@ public static partial class GameEventLog
         string entityId,
         string oldState,
         string newState);
-    
+
     /// <summary>
     /// Logs when an AI path is calculated.
     /// </summary>
@@ -211,9 +211,9 @@ public static partial class GameEventLog
         int startX, int startY,
         int endX, int endY,
         int stepCount);
-    
+
     // ===== Performance Events (Event IDs: 5000-5999) =====
-    
+
     /// <summary>
     /// Logs when a frame takes too long.
     /// </summary>
@@ -224,7 +224,7 @@ public static partial class GameEventLog
     public static partial void LogSlowFrame(
         this ILogger logger,
         double frameTimeMs);
-    
+
     /// <summary>
     /// Logs when a system update takes too long.
     /// </summary>
@@ -236,7 +236,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string systemName,
         double updateTimeMs);
-    
+
     /// <summary>
     /// Logs garbage collection events.
     /// </summary>
@@ -250,9 +250,9 @@ public static partial class GameEventLog
         double pauseTimeMs,
         double memoryBeforeMB,
         double memoryAfterMB);
-    
+
     // ===== Input Events (Event IDs: 6000-6999) =====
-    
+
     /// <summary>
     /// Logs keyboard input.
     /// </summary>
@@ -264,7 +264,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string key,
         string action);
-    
+
     /// <summary>
     /// Logs mouse input.
     /// </summary>
@@ -278,7 +278,7 @@ public static partial class GameEventLog
         string action,
         int x,
         int y);
-    
+
     /// <summary>
     /// Logs gamepad input.
     /// </summary>
@@ -291,9 +291,9 @@ public static partial class GameEventLog
         string button,
         string action,
         int controllerId);
-    
+
     // ===== Audio Events (Event IDs: 7000-7999) =====
-    
+
     /// <summary>
     /// Logs when a sound is played.
     /// </summary>
@@ -305,7 +305,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string soundName,
         float volume);
-    
+
     /// <summary>
     /// Logs when music track changes.
     /// </summary>
@@ -317,9 +317,9 @@ public static partial class GameEventLog
         this ILogger logger,
         string? oldTrack,
         string newTrack);
-    
+
     // ===== Network Events (Event IDs: 8000-8999) =====
-    
+
     /// <summary>
     /// Logs when a network connection is established.
     /// </summary>
@@ -331,7 +331,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string serverAddress,
         int port);
-    
+
     /// <summary>
     /// Logs when a network connection is lost.
     /// </summary>
@@ -344,7 +344,7 @@ public static partial class GameEventLog
         string serverAddress,
         int port,
         string reason);
-    
+
     /// <summary>
     /// Logs network packet transmission.
     /// </summary>
@@ -357,9 +357,9 @@ public static partial class GameEventLog
         string packetType,
         string clientId,
         int size);
-    
+
     // ===== Error Events (Event IDs: 9000-9999) =====
-    
+
     /// <summary>
     /// Logs general game errors.
     /// </summary>
@@ -372,7 +372,7 @@ public static partial class GameEventLog
         string system,
         string errorMessage,
         Exception? exception);
-    
+
     /// <summary>
     /// Logs validation errors.
     /// </summary>
@@ -384,7 +384,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string component,
         string validationMessage);
-    
+
     /// <summary>
     /// Logs configuration errors.
     /// </summary>
@@ -395,9 +395,9 @@ public static partial class GameEventLog
     public static partial void LogConfigurationError(
         this ILogger logger,
         string configError);
-    
+
     // ===== System Events (Event IDs: 10000-10999) =====
-    
+
     /// <summary>
     /// Logs when the game starts.
     /// </summary>
@@ -408,7 +408,7 @@ public static partial class GameEventLog
     public static partial void LogGameStarted(
         this ILogger logger,
         string version);
-    
+
     /// <summary>
     /// Logs when the game shuts down.
     /// </summary>
@@ -419,7 +419,7 @@ public static partial class GameEventLog
     public static partial void LogGameShutdown(
         this ILogger logger,
         double uptimeMinutes);
-    
+
     /// <summary>
     /// Logs when a plugin is loaded.
     /// </summary>
@@ -431,7 +431,7 @@ public static partial class GameEventLog
         this ILogger logger,
         string pluginName,
         string version);
-    
+
     /// <summary>
     /// Logs when a plugin is unloaded.
     /// </summary>

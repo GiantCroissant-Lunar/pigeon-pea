@@ -20,15 +20,15 @@ const title = '🎮 Play PigeonPea';
       <h1>{title}</h1>
       <p>Play the roguelike directly in your browser</p>
     </header>
-    
+
     <!-- Workspace switcher -->
     <WorkspaceManager client:load />
-    
+
     <!-- Game terminal -->
     <div class="terminal-wrapper">
       <GameTerminal />
     </div>
-    
+
     <!-- Controls -->
     <div class="controls">
       <button id="start-recording" class="btn">
@@ -44,7 +44,7 @@ const title = '🎮 Play PigeonPea';
         🔄 Reset Session
       </button>
     </div>
-    
+
     <!-- Instructions -->
     <div class="instructions">
       <h3>How to Play</h3>
@@ -56,13 +56,13 @@ const title = '🎮 Play PigeonPea';
       </ul>
     </div>
   </div>
-  
+
   <script>
     // Control button handlers
     document.getElementById('fullscreen')?.addEventListener('click', () => {
       document.querySelector('.terminal-wrapper')?.requestFullscreen();
     });
-    
+
     document.getElementById('reset')?.addEventListener('click', () => {
       if (confirm('Reset game session? This will lose unsaved progress.')) {
         location.reload();
@@ -78,18 +78,18 @@ const title = '🎮 Play PigeonPea';
     margin: 0 auto;
     padding: 2rem;
   }
-  
+
   .terminal-wrapper {
     height: 600px;
     margin: 2rem 0;
   }
-  
+
   .controls {
     display: flex;
     gap: 1rem;
     margin-bottom: 2rem;
   }
-  
+
   .btn {
     padding: 0.75rem 1.5rem;
     border: none;
@@ -100,30 +100,30 @@ const title = '🎮 Play PigeonPea';
     font-size: 14px;
     transition: background 0.2s;
   }
-  
+
   .btn:hover {
     background: #1e5fa8;
   }
-  
+
   .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
-  
+
   .btn-danger {
     background: #cd3131;
   }
-  
+
   .btn-danger:hover {
     background: #a82828;
   }
-  
+
   .instructions {
     background: #f3f3f3;
     padding: 1.5rem;
     border-radius: 8px;
   }
-  
+
   .instructions kbd {
     background: #fff;
     border: 1px solid #ccc;

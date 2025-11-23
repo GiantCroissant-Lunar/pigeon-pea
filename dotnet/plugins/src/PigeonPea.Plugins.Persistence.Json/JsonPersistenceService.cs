@@ -279,4 +279,3 @@ public class JsonPersistenceService : IService, IPlugin
         public uint Background { get; set; }
     }
 }
-

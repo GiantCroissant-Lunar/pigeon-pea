@@ -191,7 +191,7 @@ public class OpenTelemetryProfilingServiceTests : IDisposable
         var filePath = Path.Combine(_tempDirectory, "test.json");
 
         // Act & Assert
-        Assert.Throws<NotSupportedException>(() => 
+        Assert.Throws<NotSupportedException>(() =>
             _service.Export(filePath, (ProfileExportFormat)999));
     }
 
