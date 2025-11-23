@@ -31,7 +31,7 @@ public class RendererAdapter : PigeonPea.Game.Contracts.Rendering.IRenderer
 
         // Wire them up
         _dungeonRenderer.Initialize(_platformRenderer);
-        
+
         // Set scale manager if available (for scale-aware overlay filtering)
         if (_scaleManager != null && _dungeonRenderer is Plugin.Dungeon.Rendering.DungeonRenderer dr)
         {

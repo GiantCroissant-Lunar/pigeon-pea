@@ -23,7 +23,7 @@ public class SkiaSharpBackend : IRenderBackend
     private double _zoom = 1.0;
     private int _cameraX;
     private int _cameraY;
-    
+
     // Rendering resources (cached for performance)
     private SKTypeface? _typeface;
     private SKPaint? _tilePaint;
@@ -283,7 +283,7 @@ public class SkiaSharpBackend : IRenderBackend
         {
             // Create an SKImage from the RGBA buffer
             var imageInfo = new SKImageInfo(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
-            
+
             // Pin the span and create the image
             unsafe
             {
@@ -291,7 +291,7 @@ public class SkiaSharpBackend : IRenderBackend
                 {
                     using var pixmap = new SKPixmap(imageInfo, (IntPtr)ptr, width * 4);
                     using var image = SKImage.FromPixels(pixmap);
-                    
+
                     if (image != null)
                     {
                         // Apply transformations and draw
@@ -415,7 +415,7 @@ public class SkiaSharpBackend : IRenderBackend
 
             using var stream = File.OpenRead(filePath);
             var image = SKImage.FromEncodedData(stream);
-            
+
             if (image == null)
             {
                 _logger?.LogWarning("Failed to load sprite from: {FilePath}", filePath);
@@ -446,21 +446,21 @@ public class SkiaSharpBackend : IRenderBackend
             }
 
             var imageInfo = new SKImageInfo(width, height, SKColorType.Rgba8888, SKAlphaType.Premul);
-            
+
             unsafe
             {
                 fixed (byte* ptr = rgba)
                 {
                     using var pixmap = new SKPixmap(imageInfo, (IntPtr)ptr, width * 4);
                     var image = SKImage.FromPixels(pixmap);
-                    
+
                     if (image == null)
                     {
                         return false;
                     }
 
                     _spriteCache[spriteId] = image;
-                    _logger?.LogInformation("Loaded sprite '{SpriteId}' from raw data ({Width}x{Height})", 
+                    _logger?.LogInformation("Loaded sprite '{SpriteId}' from raw data ({Width}x{Height})",
                         spriteId, width, height);
                     return true;
                 }

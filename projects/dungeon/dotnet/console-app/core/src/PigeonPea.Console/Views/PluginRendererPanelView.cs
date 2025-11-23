@@ -7,6 +7,12 @@ using SharedRenderTarget = PigeonPea.Rendering.Contracts.IRenderTarget;
 using PigeonPea.Contracts.Input.Services;
 using SadRogue.Primitives;
 using Terminal.Gui;
+using Arch.Core;
+using PigeonPea.Shared.Components;
+using IPersistenceService = PigeonPea.Game.Contracts.Persistence.Services.IService;
+using IStatsService = PigeonPea.Game.Contracts.Stats.Services.IService;
+using IAvatarService = PigeonPea.Game.Contracts.Avatar.Services.IService;
+using IInventoryService = PigeonPea.Game.Contracts.Inventory.Services.IService;
 
 namespace PigeonPea.Console;
 
@@ -21,15 +27,34 @@ public partial class PluginRendererPanelView : View
     private readonly IService? _inputService;
     private readonly DungeonInputHandler? _inputHandler;
     private readonly DungeonInputState _inputState = new DungeonInputState();
+    private readonly World? _world;
+    private readonly IPersistenceService? _persistenceService;
+    private readonly IStatsService? _statsService;
+    private readonly IAvatarService? _avatarService;
+    private readonly IInventoryService? _inventoryService;
     private bool _paused;
     private bool _initialized;
 
-    public PluginRendererPanelView(GameRenderer pluginRenderer, GameRenderContext renderContext, GameState gameState, IService? inputService)
+    public PluginRendererPanelView(
+        GameRenderer pluginRenderer,
+        GameRenderContext renderContext,
+        GameState gameState,
+        IService? inputService,
+        World? world = null,
+        IPersistenceService? persistenceService = null,
+        IStatsService? statsService = null,
+        IAvatarService? avatarService = null,
+        IInventoryService? inventoryService = null)
     {
         _pluginRenderer = pluginRenderer;
         _renderContext = renderContext;
         _gameState = gameState;
         _inputService = inputService;
+        _world = world;
+        _persistenceService = persistenceService;
+        _statsService = statsService;
+        _avatarService = avatarService;
+        _inventoryService = inventoryService;
 
         _surfaceRenderer = new TerminalGuiRenderer(new PigeonPea.Console.Rendering.AsciiRenderer(true));
         _renderTarget = new TerminalGuiRenderTarget(this);
@@ -65,6 +90,7 @@ public partial class PluginRendererPanelView : View
 
         // Update player position from input before rendering
         UpdatePlayerFromInput();
+        UpdateGameState();
 
         if (!_initialized)
         {
@@ -94,6 +120,16 @@ public partial class PluginRendererPanelView
         {
             _paused = !_paused;
         }
+
+        if (_inputState.SaveJustPressed && _world != null && _persistenceService != null)
+        {
+            _persistenceService.SaveWorld(_world, "quicksave");
+        }
+
+        if (_inputState.LoadJustPressed && _world != null && _persistenceService != null)
+        {
+            _persistenceService.LoadWorld(_world, "quicksave");
+        }
     }
 
     private void DrawDebugHud()
@@ -104,10 +140,40 @@ public partial class PluginRendererPanelView
         }
 
         var status = _paused ? "PAUSED" : "RUNNING";
-        var text = $"[{status}] Atk:{_inputState.AttackPressed} Int:{_inputState.InteractPressed} Inv:{_inputState.InventoryPressed} Pause:{_inputState.PausePressed}";
+        var text = $"[{status}] Atk:{_inputState.AttackPressed} Int:{_inputState.InteractPressed} Inv:{_inputState.InventoryPressed} Pause:{_inputState.PausePressed} Save:{_inputState.SavePressed} Load:{_inputState.LoadPressed}";
 
         Driver.Move(0, 0);
         Driver.AddStr(text);
+    }
+
+    private void UpdateGameState()
+    {
+        if (_world == null) return;
+
+        // Find player entity
+        var query = new QueryDescription().WithAll<PlayerComponent>();
+        Entity playerEntity = Entity.Null;
+
+        _world.Query(in query, (Entity entity) =>
+        {
+            playerEntity = entity;
+        });
+
+        if (playerEntity != Entity.Null)
+        {
+            if (_statsService != null)
+            {
+                _gameState.Stats = _statsService.GetStats(_world, playerEntity);
+            }
+            if (_avatarService != null)
+            {
+                _gameState.Avatar = _avatarService.GetAvatar(_world, playerEntity);
+            }
+            if (_inventoryService != null)
+            {
+                _gameState.Inventory = _inventoryService.GetInventory(playerEntity);
+            }
+        }
     }
 }
 

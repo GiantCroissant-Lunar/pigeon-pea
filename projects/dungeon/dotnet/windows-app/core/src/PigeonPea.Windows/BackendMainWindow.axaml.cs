@@ -30,7 +30,7 @@ public partial class BackendMainWindow : Window, IDisposable
     private int _frameCount;
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
     private bool _disposed;
-    
+
     // Rendering resources
     private SKBitmap? _bitmap;
     private WriteableBitmap? _writeableBitmap;
@@ -47,15 +47,15 @@ public partial class BackendMainWindow : Window, IDisposable
     public BackendMainWindow(IServiceProvider services)
     {
         _services = services ?? throw new ArgumentNullException(nameof(services));
-        
+
         InitializeComponent();
-        
+
         _logger = services.GetRequiredService<ILogger<BackendMainWindow>>();
-        
+
         // Initialize SkiaSharp backend
         var backendLogger = services.GetRequiredService<ILogger<SkiaSharpBackend>>();
         _backend = new SkiaSharpBackend(backendLogger);
-        
+
         // Create game loop
         var sceneManager = services.GetRequiredService<ISceneManager>();
         var gameplayLoop = services.GetRequiredService<IGameplayLoop>();
@@ -66,10 +66,10 @@ public partial class BackendMainWindow : Window, IDisposable
             gameplayLoop,
             GameWidth,
             GameHeight);
-        
+
         // Initialize rendering resources
         InitializeRenderingResources();
-        
+
         // Initialize game asynchronously
         Dispatcher.UIThread.Post(async () =>
         {
@@ -86,20 +86,20 @@ public partial class BackendMainWindow : Window, IDisposable
                 Close();
             }
         });
-        
+
         // Setup game timer (will be started after initialization)
         _gameTimer = new DispatcherTimer
         {
             Interval = TimeSpan.FromMilliseconds(16) // ~60 FPS
         };
         _gameTimer.Tick += OnGameTick;
-        
+
         // Handle keyboard input
         KeyDown += OnKeyDown;
-        
+
         // Focus for keyboard input
         Loaded += (s, e) => Focus();
-        
+
         _logger.LogInformation("BackendMainWindow initialized");
     }
 
@@ -112,14 +112,14 @@ public partial class BackendMainWindow : Window, IDisposable
             new Vector(96, 96),
             PixelFormat.Bgra8888,
             AlphaFormat.Premul);
-        
+
         // Set as canvas source
         var canvas = this.FindControl<Image>("GameCanvas");
         if (canvas != null)
         {
             canvas.Source = _writeableBitmap;
         }
-        
+
         _logger.LogInformation("Rendering resources initialized: {Width}x{Height}", CanvasWidth, CanvasHeight);
     }
 
@@ -180,7 +180,7 @@ public partial class BackendMainWindow : Window, IDisposable
             // Create a snapshot of the surface
             using var image = surface.Snapshot();
             using var peekPixels = image.PeekPixels();
-            
+
             if (peekPixels != null)
             {
                 // Copy pixels to our bitmap
@@ -249,10 +249,10 @@ public partial class BackendMainWindow : Window, IDisposable
         _gameLoop?.Shutdown();
         _bitmap?.Dispose();
         _writeableBitmap?.Dispose();
-        
+
         _disposed = true;
         GC.SuppressFinalize(this);
-        
+
         _logger.LogInformation("BackendMainWindow disposed");
     }
 

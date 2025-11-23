@@ -1,0 +1,12 @@
+{
+  "cols": 512,
+  "rows": 384,
+  "zoom": 2.0,
+  "pixelsPerCell": 2,
+  "mapWidth": 2048,
+  "mapHeight": 2048,
+  "showSettlements": true,
+  "showRivers": true,
+  "showBorders": false,
+  "showMarkers": true
+}

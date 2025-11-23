@@ -109,7 +109,7 @@ Backend Detection Info:
   Encoding: {encoding}
   TERM: {term}
   Braille Support: {(supportsBraille ? "Yes" : "No")}
-  
+
 Available Backends:
   - ANSI (always available)
   - Braille ({(supportsBraille ? "supported" : "not supported")})

@@ -1,6 +1,6 @@
 # RFC-032 Phase 5 - Avalonia Integration
 
-**Status**: ✅ **COMPLETE**  
+**Status**: ✅ **COMPLETE**
 **Date**: November 21, 2025
 
 ---
@@ -20,6 +20,7 @@ Phase 5 integrates the SkiaSharp rendering backend (from Phase 4) with Avalonia 
 A reusable Avalonia control that wraps the SkiaSharpBackend:
 
 **Features**:
+
 - ✅ Avalonia `Image` control integration
 - ✅ Configurable width, height, and frame rate
 - ✅ Command list rendering support
@@ -29,6 +30,7 @@ A reusable Avalonia control that wraps the SkiaSharpBackend:
 - ✅ Thread-safe UI updates
 
 **Key Methods**:
+
 ```csharp
 // Initialize with backend
 void Initialize(IRenderBackend backend)
@@ -46,10 +48,12 @@ IRenderCommandList CreateCommandList()
 ### 2. Demo Application ✅
 
 **Files**:
+
 - `RenderControlDemo.axaml` - XAML window definition
 - `RenderControlDemo.axaml.cs` - Demo implementation (200 lines)
 
 **Features**:
+
 - ✅ Full-screen rendering
 - ✅ 60 FPS render loop
 - ✅ Animated camera zoom
@@ -148,7 +152,7 @@ renderControl.RenderFrame(commandList =>
 {
     commandList.BeginFrame();
     commandList.Clear(new Color(0, 0, 0, 255));
-    commandList.DrawText(10, 10, "Hello World!", 
+    commandList.DrawText(10, 10, "Hello World!",
         new Color(255, 255, 255, 255),
         new Color(0, 0, 0, 255));
     commandList.EndFrame();
@@ -175,11 +179,11 @@ private void RenderFrame()
     renderControl.RenderFrame(commandList =>
     {
         commandList.BeginFrame();
-        
+
         // Your rendering code here
         commandList.Clear(backgroundColor);
         commandList.DrawText(x, y, text, foreground, background);
-        
+
         commandList.EndFrame();
     });
 }
@@ -193,20 +197,20 @@ private double _time;
 private void RenderFrame()
 {
     _time += 0.016; // ~60 FPS
-    
+
     renderControl.RenderFrame(commandList =>
     {
         commandList.BeginFrame();
         commandList.Clear(new Color(30, 30, 30, 255));
-        
+
         // Animate camera
         var zoom = 1.0 + Math.Sin(_time) * 0.3;
         commandList.SetCamera(0, 0, zoom);
-        
+
         // Draw content
-        commandList.DrawText(10, 10, "Animated!", 
+        commandList.DrawText(10, 10, "Animated!",
             Color.White, Color.Black);
-        
+
         commandList.EndFrame();
     });
 }
@@ -240,7 +244,7 @@ var capabilities = backend.Capabilities;
 ### XAML Definition
 
 ```xml
-<local:SkiaSharpRenderControl 
+<local:SkiaSharpRenderControl
     x:Name="RenderControl"
     RenderWidth="1280"
     RenderHeight="720"
@@ -254,14 +258,14 @@ var capabilities = backend.Capabilities;
 
 ### Benchmarks (Demo Application)
 
-| Metric | Value |
-|--------|-------|
-| **Target FPS** | 60 |
-| **Actual FPS** | 58-60 (stable) |
-| **Frame Time** | ~16.7ms |
-| **Resolution** | 1280×720 |
-| **Render Commands** | ~2500/frame |
-| **Memory** | Stable (no leaks) |
+| Metric              | Value             |
+| ------------------- | ----------------- |
+| **Target FPS**      | 60                |
+| **Actual FPS**      | 58-60 (stable)    |
+| **Frame Time**      | ~16.7ms           |
+| **Resolution**      | 1280×720          |
+| **Render Commands** | ~2500/frame       |
+| **Memory**          | Stable (no leaks) |
 
 ### Optimization Tips
 
@@ -278,12 +282,14 @@ var capabilities = backend.Capabilities;
 ### Manual Testing
 
 1. Build the project:
+
    ```bash
    cd projects/dungeon/dotnet/windows-app/core
    dotnet build src/PigeonPea.Windows/PigeonPea.Windows.csproj
    ```
 
 2. Run the demo:
+
    ```csharp
    // In your Main window or startup code
    var demo = new RenderControlDemo();
@@ -305,9 +311,9 @@ public void RenderControl_Initializes_Successfully()
 {
     var backend = new SkiaSharpBackend();
     var control = new SkiaSharpRenderControl();
-    
+
     control.Initialize(backend);
-    
+
     Assert.True(control.IsInitialized);
     Assert.NotNull(control.Backend);
 }
@@ -318,14 +324,14 @@ public void RenderControl_RendersFrame_WithoutErrors()
     var backend = new SkiaSharpBackend();
     var control = new SkiaSharpRenderControl();
     control.Initialize(backend);
-    
+
     control.RenderFrame(cmd =>
     {
         cmd.BeginFrame();
         cmd.Clear(Color.Black);
         cmd.EndFrame();
     });
-    
+
     // Should not throw
 }
 ```
@@ -337,6 +343,7 @@ public void RenderControl_RendersFrame_WithoutErrors()
 ### From Old SkiaSharpRenderer to New Backend
 
 **Old Code** (Legacy):
+
 ```csharp
 var renderer = new SkiaSharpRenderer();
 var target = new SkiaRenderTarget(canvas, width, height);
@@ -349,6 +356,7 @@ renderer.EndFrame();
 ```
 
 **New Code** (RFC-032):
+
 ```csharp
 var backend = new SkiaSharpBackend();
 renderControl.Initialize(backend);
@@ -378,6 +386,7 @@ renderControl.RenderFrame(cmd =>
 ### Issue: Control doesn't display
 
 **Solution**: Ensure `Initialize()` is called before rendering:
+
 ```csharp
 renderControl.Initialize(backend);
 // Wait for Loaded event
@@ -387,11 +396,13 @@ renderControl.RenderFrame(...);
 ### Issue: Low FPS
 
 **Possible Causes**:
+
 - Too many draw calls per frame
 - Inefficient rendering logic
 - Debug build (use Release for better performance)
 
 **Solution**: Profile and optimize:
+
 ```csharp
 // Batch text drawing
 var text = string.Join("", chars);
@@ -405,6 +416,7 @@ cmd.DrawSprite(x, y, id);
 ### Issue: Memory leak
 
 **Solution**: Dispose properly:
+
 ```csharp
 // In window closing
 renderControl.Dispose();
@@ -436,6 +448,7 @@ PigeonPea.Windows/
 ## ✅ Completion Checklist
 
 ### Implementation
+
 - [x] SkiaSharpRenderControl created
 - [x] Avalonia integration complete
 - [x] Demo application created
@@ -443,6 +456,7 @@ PigeonPea.Windows/
 - [x] Resource management implemented
 
 ### Features
+
 - [x] Frame rendering
 - [x] Command list support
 - [x] Resize handling
@@ -451,6 +465,7 @@ PigeonPea.Windows/
 - [x] FPS monitoring
 
 ### Documentation
+
 - [x] Integration guide
 - [x] Usage examples
 - [x] Migration guide
@@ -458,6 +473,7 @@ PigeonPea.Windows/
 - [x] Performance tips
 
 ### Testing
+
 - [x] Manual testing complete
 - [x] Demo runs successfully
 - [x] No memory leaks
@@ -468,16 +484,19 @@ PigeonPea.Windows/
 ## 🎯 Next Steps
 
 ### Immediate
+
 1. **Test in Main Application**: Integrate with actual game loop
 2. **Performance Profiling**: Benchmark with real game content
 3. **UI Polish**: Add additional demo features
 
 ### Short-Term
+
 1. **Migrate Domain Renderers**: Update DungeonRenderer, WorldMapRenderer
 2. **Add Input Handling**: Mouse/keyboard integration
 3. **Create Examples**: More usage patterns
 
 ### Long-Term
+
 1. **Optimize Performance**: GPU profiling and optimization
 2. **Add Features**: Post-processing effects, shaders
 3. **Multi-Platform**: Test on other OSes
@@ -487,16 +506,19 @@ PigeonPea.Windows/
 ## 🏆 Achievements
 
 ✅ **Avalonia Integration Complete**
+
 - Seamless integration with Avalonia UI framework
 - Clean API for rendering
 - Production-ready control
 
 ✅ **Demo Application Working**
+
 - 60 FPS stable
 - Animated graphics
 - Proper resource management
 
 ✅ **Migration Path Clear**
+
 - Easy transition from legacy renderer
 - Backward compatibility maintained
 - Gradual migration supported
@@ -506,12 +528,15 @@ PigeonPea.Windows/
 ## 📞 Support
 
 ### Issues
+
 - Check project references are correct
 - Ensure SkiaSharp packages are restored
 - Verify Avalonia version compatibility
 
 ### Contributing
+
 To extend the control:
+
 1. Subclass `SkiaSharpRenderControl`
 2. Override rendering methods as needed
 3. Add custom properties/events
@@ -523,6 +548,7 @@ To extend the control:
 **Phase 5 is COMPLETE!**
 
 The SkiaSharp backend is now fully integrated with Avalonia, providing:
+
 - ✅ Production-ready rendering control
 - ✅ Working demo application
 - ✅ Clear migration path
@@ -532,6 +558,6 @@ The SkiaSharp backend is now fully integrated with Avalonia, providing:
 
 ---
 
-*Document Generated: November 21, 2025*  
-*RFC: 032-multi-backend-rendering-architecture*  
-*Phase: 5 - Avalonia Integration Complete ✅*
+_Document Generated: November 21, 2025_
+_RFC: 032-multi-backend-rendering-architecture_
+_Phase: 5 - Avalonia Integration Complete ✅_

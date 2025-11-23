@@ -5,8 +5,10 @@ using PigeonPea.Rendering.Contracts;
 using PigeonPea.Scene.Contracts;
 using PigeonPea.Dungeon.Contracts;
 using PigeonPea.Game.Contracts.Models;
+using PigeonPea.Game.Contracts.Scenes.Models;
 using PigeonPea.Shared.Components;
 using Arch.Core;
+using SceneBootstrapService = PigeonPea.Game.Contracts.Scenes.Services.IService;
 using RenderTile = PigeonPea.Rendering.Contracts.Tile;
 
 namespace PigeonPea.Console;
@@ -80,42 +82,18 @@ public class BackendGameLoop
 
         var world = scene.World ?? throw new InvalidOperationException("Scene has no world");
 
-        // Get dungeon generator from registry
         var registry = _host.Services.GetRequiredService<Contracts.Plugin.IRegistry>();
-        if (!registry.IsRegistered<IDungeonGenerator>())
-        {
-            throw new InvalidOperationException("No dungeon generator registered");
-        }
+        var bootstrapService = registry.Get<SceneBootstrapService>();
 
-        var generator = registry.Get<IDungeonGenerator>();
-        _logger.LogInformation("Using dungeon generator: {GeneratorType}", generator.GetType().Name);
-
-        // Generate dungeon
-        var options = new DungeonGenerationOptions
+        var bootstrapOptions = new DungeonBootstrapOptions
         {
             Width = _width,
             Height = _height,
-            Seed = 12345
+            Seed = 12345,
+            DungeonGeneratorId = dungeonGen
         };
 
-        var dungeonEntity = generator.Generate(world, options);
-        _logger.LogInformation("Dungeon generated. Entity ID: {EntityId}", dungeonEntity);
-
-        // Create player
-        var playerEntity = world.Create(
-            new PositionComponent(_width / 2, _height / 2),
-            new RenderableComponent
-            {
-                Glyph = '@',
-                Foreground = SadRogue.Primitives.Color.Yellow,
-                Background = SadRogue.Primitives.Color.Black,
-                Layer = RenderLayer.Actor
-            },
-            new PlayerComponent("Player"),
-            new PlayerInputComponent(System.Numerics.Vector2.Zero, false)
-        );
-
-        _logger.LogInformation("Player created. Entity ID: {EntityId}", playerEntity);
+        await bootstrapService.InitializeDungeonAsync(world, bootstrapOptions);
     }
 
     private async Task GameLoopAsync()
@@ -243,7 +221,7 @@ public class BackendGameLoop
         }
 
         var tileValue = dungeon.TileData[index];
-        
+
         // Basic tile interpretation:
         // 0 = empty/void
         // 1 = floor

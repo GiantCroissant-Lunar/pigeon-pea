@@ -73,7 +73,7 @@
 
     <!-- ANSI terminal renderer backend (direct reference for backend detection) -->
     <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" />
-    
+
     <!-- Braille terminal renderer backend (direct reference for backend detection) -->
     <ProjectReference Include="..\..\..\plugins\PigeonPea.Plugins.Rendering.Terminal.Braille\PigeonPea.Plugins.Rendering.Terminal.Braille.csproj" />
 

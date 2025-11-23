@@ -82,7 +82,7 @@ public class ANSIBackend : IRenderBackend
         Console.Write("\x1b[0m"); // Reset
         Console.Write("\x1b[2J\x1b[H"); // Clear
         Console.CursorVisible = true;
-        
+
         _screenBuffer = null;
         _previousBuffer = null;
         _initialized = false;
@@ -121,7 +121,7 @@ public class ANSIBackend : IRenderBackend
                     MoveCursor(x, y);
                     SetColors(current.Foreground, current.Background);
                     _buffer.Append(current.Glyph);
-                    
+
                     _previousBuffer[x, y] = current;
                 }
             }
@@ -190,7 +190,7 @@ public class ANSIBackend : IRenderBackend
         if (_screenBuffer == null) return;
 
         var clearTile = new Tile(' ', Color.White, color);
-        
+
         for (int y = 0; y < _height; y++)
         {
             for (int x = 0; x < _width; x++)

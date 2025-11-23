@@ -15,6 +15,9 @@ using PigeonPea.Scene.Contracts;
 using PigeonPea.Game.Contracts;
 using PigeonPea.Game.Contracts.Models;
 using PigeonPea.Game.Contracts.Rendering;
+using PigeonPea.Game.Contracts.Inventory.Extensions;
+using PigeonPea.Game.Contracts.Stats.Extensions;
+using PigeonPea.Game.Contracts.Combat.Extensions;
 using PigeonPea.Contracts.Input.Extensions;
 using PigeonPea.Contracts.Input.Services;
 using PigeonPea.Game.Inventory;
@@ -27,6 +30,10 @@ using Serilog;
 using Terminal.Gui;
 using IInventoryService = PigeonPea.Game.Contracts.Inventory.Services.IService;
 using IConfigService = PigeonPea.Contracts.Config.Services.IService;
+using IStatsService = PigeonPea.Game.Contracts.Stats.Services.IService;
+using IAvatarService = PigeonPea.Game.Contracts.Avatar.Services.IService;
+using IPersistenceService = PigeonPea.Game.Contracts.Persistence.Services.IService;
+using ICombatService = PigeonPea.Game.Contracts.Combat.Services.IService;
 
 namespace PigeonPea.Console;
 
@@ -194,7 +201,7 @@ static class GameEntrypoint
 
             // Create backend
             var backendDetector = new BackendDetector(host.Services.GetService<ILogger<BackendDetector>>());
-            
+
             if (debug)
             {
                 System.Console.WriteLine(BackendDetector.GetBackendInfo());
@@ -257,14 +264,6 @@ static class GameEntrypoint
         }
 
         // Legacy mode: Use existing renderer factory
-        // Set up dependency injection container
-        var services = new ServiceCollection();
-
-        // Add MessagePipe and other Pigeon Pea services
-        services.AddPigeonPeaServices();
-
-        // Build the service provider
-        using var serviceProvider = services.BuildServiceProvider();
 
         // Detect terminal capabilities
         var terminalInfo = TerminalCapabilities.Detect();
@@ -299,17 +298,55 @@ static class GameEntrypoint
             gameRenderer = new TerminalGuiRenderer(asciiRenderer);
         }
 
+        // Build host with plugin system and DI-based GameWorld construction
+        var builder = Host.CreateApplicationBuilder();
+
+        builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddConfigServiceProxy();
+        builder.Services.AddInventoryServiceProxy();
+        builder.Services.AddStatsServiceProxy();
+        builder.Services.AddCombatServiceProxy();
+        builder.Services.AddPigeonPeaServices();
+
+        builder.Services.AddSingleton<GameWorld>(sp =>
+        {
+            var inventoryService = sp.GetService<IInventoryService>();
+            var statsService = sp.GetService<IStatsService>();
+            var combatService = sp.GetService<ICombatService>();
+            var persistenceService = sp.GetService<IPersistenceService>();
+            var logger = sp.GetService<ILogger<GameWorld>>();
+
+            return new GameWorld(
+                width: 80,
+                height: 40,
+                eventBus: null,
+                inventoryService: inventoryService,
+                dungeonGenerator: null,
+                statsService: statsService,
+                animationService: null,
+                persistenceService: persistenceService,
+                combatService: combatService,
+                logger: logger);
+        });
+
+        using var host = builder.Build();
+        host.StartAsync().Wait();
+
+        var gameWorld = host.Services.GetRequiredService<GameWorld>();
+
         // Initialize Terminal.Gui application
         Application.Init();
 
         try
         {
-            var gameApp = new GameApplication(terminalInfo, gameRenderer);
+            var gameApp = new GameApplication(terminalInfo, gameRenderer, gameWorld);
             Application.Run(gameApp);
         }
         finally
         {
             Application.Shutdown();
+            host.StopAsync().Wait();
+            host.Dispose();
         }
     }
 
@@ -342,6 +379,8 @@ static class GameEntrypoint
 
         // Expose config service proxy so components can access configuration via IConfigService
         builder.Services.AddConfigServiceProxy();
+        builder.Services.AddInventoryServiceProxy();
+        builder.Services.AddStatsServiceProxy();
 
         // Add Pigeon Pea services
         builder.Services.AddPigeonPeaServices();
@@ -418,9 +457,10 @@ static class GameEntrypoint
             var sceneManager = registry.Get<PigeonPea.Scene.Contracts.ISceneManager>();
             logger.LogInformation("Scene Manager loaded: {SceneManagerType}", sceneManager.GetType().FullName);
 
-            // Load a dungeon scene using the Scene Manager
+            // Load a dungeon scene using the Scene Manager and bootstrap it via the scene bootstrap service
             var renderWidth = width ?? 80;
             var renderHeight = height ?? 24;
+            Entity playerEntity = default;
 
             try
             {
@@ -437,31 +477,32 @@ static class GameEntrypoint
                     return;
                 }
 
-                // Generate dungeon into the scene's world using the new generator
-                var generationOptions = new DungeonGenerationOptions
+                // Bootstrap the scene via the scene bootstrap service
+                var bootstrapService = registry.Get<PigeonPea.Game.Contracts.Scenes.Services.IService>();
+                var bootstrapOptions = new PigeonPea.Game.Contracts.Scenes.Models.DungeonBootstrapOptions
                 {
                     Width = renderWidth,
                     Height = renderHeight,
-                    Seed = 12345 // Fixed seed for reproducibility
+                    Seed = 12345,
+                    DungeonGeneratorId = dungeonGen
                 };
 
-                var dungeonEntity = selectedGenerator.Generate(sceneWorld, generationOptions);
-                logger.LogInformation("Dungeon generated into scene world. Entity ID: {EntityId}", dungeonEntity);
+                await bootstrapService.InitializeDungeonAsync(sceneWorld, bootstrapOptions);
 
-                // Create a player entity for demonstration
-                var playerEntity = sceneWorld.Create(
-                    new PositionComponent(renderWidth / 2, renderHeight / 2),
-                    new RenderableComponent
+                // Try to locate the player entity created by the bootstrapper
+                var playerQuery = new Arch.Core.QueryDescription().WithAll<PlayerComponent>();
+                sceneWorld.Query(in playerQuery, (Entity entity, ref PlayerComponent _) =>
+                {
+                    if (playerEntity == default)
                     {
-                        Glyph = '@',
-                        Foreground = SadRogue.Primitives.Color.Yellow,
-                        Background = SadRogue.Primitives.Color.Black,
-                        Layer = RenderLayer.Actor
-                    },
-                    new PlayerComponent("Player"),
-                    new PlayerInputComponent(System.Numerics.Vector2.Zero, false)
-                );
-                logger.LogInformation("Player entity created in scene world. Entity ID: {EntityId}", playerEntity);
+                        playerEntity = entity;
+                    }
+                });
+
+                if (playerEntity == default)
+                {
+                    logger.LogWarning("No player entity found in scene world after bootstrap.");
+                }
 
                 // Store the active scene for later use in the game loop
                 var loadedActiveScene = sceneManager.GetActiveScene();
@@ -484,7 +525,7 @@ static class GameEntrypoint
             {
                 using (logger.BeginScope("Subsystem {Subsystem}", "Inventory"))
                 {
-                    var inventoryService = registry.Get<IInventoryService>();
+                    var inventoryService = host.Services.GetRequiredService<IInventoryService>();
                     System.Console.WriteLine($"Inventory service loaded: {inventoryService.GetType().FullName}");
                     logger.LogInformation("Inventory service loaded: {InventoryServiceType}", inventoryService.GetType().FullName);
 
@@ -498,6 +539,20 @@ static class GameEntrypoint
             {
                 System.Console.WriteLine("No inventory service registered.");
                 logger.LogWarning("No inventory service registered in plugin host.");
+            }
+
+            IStatsService? statsService = null;
+            if (registry.IsRegistered<IStatsService>())
+            {
+                using (logger.BeginScope("Subsystem {Subsystem}", "Stats"))
+                {
+                    statsService = host.Services.GetRequiredService<IStatsService>();
+                    logger.LogInformation("Stats service loaded: {StatsServiceType}", statsService.GetType().FullName);
+                }
+            }
+            else
+            {
+                logger.LogWarning("No stats service registered in plugin host.");
             }
 
             // Renderer from plugin system
@@ -516,11 +571,11 @@ static class GameEntrypoint
                     {
                         var dungeonRenderer = registry.Get<PigeonPea.Dungeon.Contracts.IDungeonRenderer>();
                         var platformRenderer = registry.Get<PigeonPea.Rendering.Contracts.IRenderer>();
-                        var scaleManager = registry.IsRegistered<PigeonPea.Shared.Scale.IScaleManager>() 
-                            ? registry.Get<PigeonPea.Shared.Scale.IScaleManager>() 
+                        var scaleManager = registry.IsRegistered<PigeonPea.Shared.Scale.IScaleManager>()
+                            ? registry.Get<PigeonPea.Shared.Scale.IScaleManager>()
                             : null;
                         pluginRenderer = new RendererAdapter(dungeonRenderer, platformRenderer, scaleManager);
-                        logger.LogInformation("Using NEW plugin architecture renderer adapter with ScaleManager: {HasScaleManager}", 
+                        logger.LogInformation("Using NEW plugin architecture renderer adapter with ScaleManager: {HasScaleManager}",
                             scaleManager != null);
                     }
                     else
@@ -612,6 +667,12 @@ static class GameEntrypoint
                 // Update gameplay logic (input, movement, etc.)
                 gameplayLoop.Update(world, deltaTime);
 
+                // Update stats in GameState
+                if (statsService != null && playerEntity != default && world.IsAlive(playerEntity))
+                {
+                    gameState.Stats = statsService.GetStats(world, playerEntity);
+                }
+
                 // Render the frame
                 pluginRenderer.Render(gameState);
 
@@ -665,6 +726,8 @@ static class GameEntrypoint
 
         builder.Services.AddPluginSystem(builder.Configuration);
         builder.Services.AddConfigServiceProxy();
+        builder.Services.AddInventoryServiceProxy();
+        builder.Services.AddStatsServiceProxy();
         builder.Services.AddPigeonPeaServices();
         builder.Services.AddInputServiceProxy();
 
@@ -765,6 +828,52 @@ static class GameEntrypoint
                 logger.LogWarning(ex, "Failed to resolve input service proxy; player movement will be disabled.");
             }
 
+            // Resolve persistence service
+            IPersistenceService? persistenceService = null;
+            if (registry.IsRegistered<IPersistenceService>())
+            {
+                persistenceService = host.Services.GetService<IPersistenceService>();
+                logger.LogInformation("Persistence service loaded: {PersistenceServiceType}", persistenceService?.GetType().FullName);
+            }
+
+            // Resolve stats service
+            IStatsService? statsService = null;
+            if (registry.IsRegistered<IStatsService>())
+            {
+                statsService = host.Services.GetService<IStatsService>();
+                logger.LogInformation("Stats service loaded: {StatsServiceType}", statsService?.GetType().FullName);
+            }
+
+            // Resolve avatar service
+            IAvatarService? avatarService = null;
+            if (registry.IsRegistered<IAvatarService>())
+            {
+                avatarService = host.Services.GetService<IAvatarService>();
+                logger.LogInformation("Avatar service loaded: {AvatarServiceType}", avatarService?.GetType().FullName);
+            }
+
+            // Resolve inventory service
+            IInventoryService? inventoryService = null;
+            if (registry.IsRegistered<IInventoryService>())
+            {
+                inventoryService = host.Services.GetService<IInventoryService>();
+                logger.LogInformation("Inventory service loaded: {InventoryServiceType}", inventoryService?.GetType().FullName);
+            }
+
+            // Load scene to get World
+            Arch.Core.World? world = null;
+            if (registry.IsRegistered<PigeonPea.Scene.Contracts.ISceneManager>())
+            {
+                var sceneManager = registry.Get<PigeonPea.Scene.Contracts.ISceneManager>();
+                var scene = sceneManager.LoadSceneAsync("DungeonScene", PigeonPea.Scene.Contracts.SceneLoadMode.Single).GetAwaiter().GetResult();
+                world = scene.World;
+                logger.LogInformation("Scene loaded for HUD mode. World: {World}", world);
+            }
+            else
+            {
+                logger.LogWarning("No Scene Manager loaded. Save/Load will be disabled.");
+            }
+
             // Generate dungeon and initial player position for plugin-hud mode
             // For this build, create a simple empty DungeonView directly instead of using a generator.
             var dungeonView = new PigeonPea.Dungeon.Contracts.Models.DungeonView
@@ -792,6 +901,62 @@ static class GameEntrypoint
                 }
             }
 
+            // Create a player entity for demonstration
+            if (world != null)
+            {
+                var playerEntity = world.Create(
+                    new PositionComponent(playerX, playerY),
+                    new RenderableComponent
+                    {
+                        Glyph = '@',
+                        Foreground = SadRogue.Primitives.Color.Yellow,
+                        Background = SadRogue.Primitives.Color.Black,
+                        Layer = RenderLayer.Actor
+                    },
+                    new PlayerComponent("Player"),
+                    new PlayerInputComponent(System.Numerics.Vector2.Zero, false),
+                    new PigeonPea.Shared.ECS.Components.Stats(), // Add Stats component
+                    new PigeonPea.Shared.ECS.Components.Character { Name = "Hero", ClassId = "Warrior", Level = 1 } // Add Character component
+                );
+
+                // Initialize stats
+                if (statsService != null)
+                {
+                    statsService.SetStat(world, playerEntity, "health", 100);
+                    statsService.SetStat(world, playerEntity, "max_health", 100);
+                    statsService.SetStat(world, playerEntity, "attack", 10);
+                    statsService.SetStat(world, playerEntity, "defense", 5);
+
+                    // Add a test modifier
+                    statsService.AddModifier(world, playerEntity, new PigeonPea.Game.Contracts.Stats.Models.StatModifier
+                    {
+                        StatId = "attack",
+                        Value = 5,
+                        Type = PigeonPea.Game.Contracts.Stats.Models.ModifierType.Additive,
+                        Duration = 100,
+                        SourceId = "Blessing"
+                    });
+                }
+
+                // Initialize avatar/equipment
+                if (avatarService != null)
+                {
+                    avatarService.EquipCosmetic(world, playerEntity, "Head", "Iron Helmet");
+                    avatarService.EquipCosmetic(world, playerEntity, "Body", "Chainmail");
+                }
+
+                // Initialize inventory
+                if (inventoryService != null)
+                {
+                    inventoryService.TryAddItem(playerEntity, "health_potion_small", 3);
+                    inventoryService.TryAddItem(playerEntity, "sword_iron", 1);
+                    inventoryService.TryAddItem(playerEntity, "shield_wood", 1);
+
+                    // Try to equip if it's the advanced service
+                    inventoryService.TryEquip(playerEntity, 1, "MainHand"); // Assuming sword is at index 1
+                }
+            }
+
             var gameState = new GameState
             {
                 Dungeon = dungeonView,
@@ -816,11 +981,11 @@ static class GameEntrypoint
                     Title = "Plugin Renderer (Terminal.Gui)",
                     X = 0,
                     Y = 0,
-                    Width = Dim.Fill(),
+                    Width = Dim.Fill(30),
                     Height = Dim.Fill()
                 };
 
-                var panel = new PluginRendererPanelView(pluginRenderer, renderContext, gameState, inputService)
+                var panel = new PluginRendererPanelView(pluginRenderer, renderContext, gameState, inputService, world, persistenceService, statsService, avatarService, inventoryService)
                 {
                     X = 0,
                     Y = 0,
@@ -830,6 +995,46 @@ static class GameEntrypoint
 
                 frame.Add(panel);
                 top.Add(frame);
+
+                var statsFrame = new FrameView
+                {
+                    Title = "Stats",
+                    X = Pos.Right(frame),
+                    Y = 0,
+                    Width = 30,
+                    Height = Dim.Fill()
+                };
+
+                var statsView = new PigeonPea.Console.Views.StatsView(gameState)
+                {
+                    X = 0,
+                    Y = 0,
+                    Width = Dim.Fill(),
+                    Height = Dim.Fill()
+                };
+
+                statsFrame.Add(statsView);
+                top.Add(statsFrame);
+
+                var inventoryFrame = new FrameView
+                {
+                    Title = "Inventory",
+                    X = Pos.Right(statsFrame),
+                    Y = 0,
+                    Width = 30,
+                    Height = Dim.Fill()
+                };
+
+                var inventoryView = new PigeonPea.Console.Views.PluginInventoryView(gameState)
+                {
+                    X = 0,
+                    Y = 0,
+                    Width = Dim.Fill(),
+                    Height = Dim.Fill()
+                };
+
+                inventoryFrame.Add(inventoryView);
+                top.Add(inventoryFrame);
 
                 Application.Run(top);
             }

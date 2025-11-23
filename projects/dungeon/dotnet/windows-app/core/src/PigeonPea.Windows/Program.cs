@@ -16,7 +16,7 @@ class Program
             System.Console.WriteLine("Use default mode for now.");
             // TODO: Implement backend mode once dependencies are fixed
         }
-        
+
         BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
     }
 

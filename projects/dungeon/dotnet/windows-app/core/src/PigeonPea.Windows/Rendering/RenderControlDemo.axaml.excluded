@@ -8,13 +8,13 @@
         Title="SkiaSharp Backend Demo - RFC-032 Phase 5"
         Width="1280" Height="720"
         Background="#1e1e1e">
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <!-- Render Control -->
         <local:SkiaSharpRenderControl x:Name="RenderControl"
                                       Grid.Row="0"
@@ -22,11 +22,11 @@
                                       VerticalAlignment="Stretch"
                                       RenderWidth="1280"
                                       RenderHeight="720"/>
-        
+
         <!-- Status Bar -->
-        <Border Grid.Row="1" 
-                Background="#2d2d30" 
-                BorderBrush="#3e3e42" 
+        <Border Grid.Row="1"
+                Background="#2d2d30"
+                BorderBrush="#3e3e42"
                 BorderThickness="0,1,0,0"
                 Padding="10,5">
             <Grid>
@@ -35,12 +35,12 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                
-                <TextBlock Grid.Column="0" 
+
+                <TextBlock Grid.Column="0"
                           x:Name="StatusText"
                           Foreground="#cccccc"
                           Text="Ready"/>
-                
+
                 <TextBlock Grid.Column="2"
                           x:Name="FpsText"
                           Foreground="#cccccc"

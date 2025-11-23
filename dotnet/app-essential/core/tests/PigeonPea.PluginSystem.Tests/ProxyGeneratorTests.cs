@@ -34,11 +34,11 @@ public class ProxyGeneratorTests
 
         var generators = new ISourceGenerator[]
         {
-            new ProxyServiceGenerator(),
-            new DIExtensionsGenerator()
+            new ProxyServiceGenerator().AsSourceGenerator(),
+            new DIExtensionsGenerator().AsSourceGenerator()
         };
 
-        var driver = CSharpGeneratorDriver.Create(generators);
+        GeneratorDriver driver = CSharpGeneratorDriver.Create(generators);
         driver = driver.RunGeneratorsAndUpdateCompilation(compilation, out var outputCompilation, out var diagnostics);
 
         diagnostics.Should().BeEmpty("test input should compile cleanly");

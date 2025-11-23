@@ -24,10 +24,10 @@ public class GameApplication : Toplevel
     private int _frameCount;
     private DateTime _lastFpsUpdate = DateTime.UtcNow;
 
-    public GameApplication(TerminalCapabilities terminalCaps, PigeonPea.Rendering.Contracts.IRenderer renderer)
+    public GameApplication(TerminalCapabilities terminalCaps, PigeonPea.Rendering.Contracts.IRenderer renderer, GameWorld gameWorld)
     {
         _terminalCaps = terminalCaps;
-        _gameWorld = new GameWorld(80, 40);
+        _gameWorld = gameWorld;
 
         // Main game view (80x40 grid)
         _gameView = new GameView(_gameWorld, renderer)

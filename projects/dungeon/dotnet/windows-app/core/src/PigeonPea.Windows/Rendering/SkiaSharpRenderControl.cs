@@ -24,12 +24,12 @@ public class SkiaSharpRenderControl : Image, IDisposable
     private RenderContext? _context;
     private bool _isInitialized;
     private bool _disposed;
-    
+
     // Configurable properties
     private int _width = 1280;
     private int _height = 720;
     private int _targetFrameRate = 60;
-    
+
     /// <summary>
     /// Gets or sets the render width in pixels.
     /// </summary>
@@ -46,7 +46,7 @@ public class SkiaSharpRenderControl : Image, IDisposable
             }
         }
     }
-    
+
     /// <summary>
     /// Gets or sets the render height in pixels.
     /// </summary>
@@ -63,7 +63,7 @@ public class SkiaSharpRenderControl : Image, IDisposable
             }
         }
     }
-    
+
     /// <summary>
     /// Gets or sets the target frame rate.
     /// </summary>
@@ -76,17 +76,17 @@ public class SkiaSharpRenderControl : Image, IDisposable
             _targetFrameRate = value;
         }
     }
-    
+
     /// <summary>
     /// Gets whether the control is initialized.
     /// </summary>
-    public bool IsInitialized => _isInitialized;
-    
+    public new bool IsInitialized => _isInitialized;
+
     /// <summary>
     /// Gets the current render backend.
     /// </summary>
     public IRenderBackend? Backend => _backend;
-    
+
     /// <summary>
     /// Initializes the render control with the specified backend.
     /// </summary>
@@ -95,37 +95,37 @@ public class SkiaSharpRenderControl : Image, IDisposable
     {
         if (_disposed) throw new ObjectDisposedException(nameof(SkiaSharpRenderControl));
         if (backend == null) throw new ArgumentNullException(nameof(backend));
-        
+
         _backend = backend;
-        
+
         // Dispose existing resources
         CleanupResources();
-        
+
         // Create SKSurface for rendering
         var imageInfo = new SKImageInfo(_width, _height, SKColorType.Bgra8888, SKAlphaType.Premul);
         _bitmap = new SKBitmap(imageInfo);
         _surface = SKSurface.Create(imageInfo);
-        
+
         // Create Avalonia WriteableBitmap for display
         _writeableBitmap = new WriteableBitmap(
             new PixelSize(_width, _height),
             new Vector(96, 96),
             PixelFormat.Bgra8888,
             AlphaFormat.Premul);
-        
+
         // Create render context
         _context = new RenderContext(_width, _height, null, _surface);
-        
+
         // Initialize backend
         _backend.Initialize(_context);
-        
+
         // Set as image source
         Source = _writeableBitmap;
         Stretch = Avalonia.Media.Stretch.Uniform;
-        
+
         _isInitialized = true;
     }
-    
+
     /// <summary>
     /// Renders a frame using a command list.
     /// </summary>
@@ -137,20 +137,20 @@ public class SkiaSharpRenderControl : Image, IDisposable
         if (commands == null) throw new ArgumentNullException(nameof(commands));
         if (_backend == null || _surface == null || _writeableBitmap == null)
             return;
-        
+
         // Execute rendering commands
         _backend.Execute(commands);
-        
+
         // Present the frame
         _backend.Present();
-        
+
         // Copy surface to WriteableBitmap for display
         CopySurfaceToWriteableBitmap();
-        
+
         // Invalidate visual to trigger redraw
         Dispatcher.UIThread.Post(InvalidateVisual, DispatcherPriority.Render);
     }
-    
+
     /// <summary>
     /// Renders a frame using a rendering action.
     /// </summary>
@@ -161,17 +161,17 @@ public class SkiaSharpRenderControl : Image, IDisposable
         if (_disposed) throw new ObjectDisposedException(nameof(SkiaSharpRenderControl));
         if (renderAction == null) throw new ArgumentNullException(nameof(renderAction));
         if (_backend == null) return;
-        
+
         // Create command list
         var commandList = CreateCommandList();
-        
+
         // Let caller populate command list
         renderAction(commandList);
-        
+
         // Render the frame
         RenderFrame(commandList);
     }
-    
+
     /// <summary>
     /// Creates a new command list for rendering.
     /// </summary>
@@ -181,58 +181,58 @@ public class SkiaSharpRenderControl : Image, IDisposable
         if (!_isInitialized) throw new InvalidOperationException("Control not initialized. Call Initialize first.");
         if (_disposed) throw new ObjectDisposedException(nameof(SkiaSharpRenderControl));
         if (_backend == null) throw new InvalidOperationException("Backend not available");
-        
+
         // For the SkiaSharpBackend, we need to create SkiaSharpCommandList
         // This requires access to the backend instance
         return new PigeonPea.Plugins.Rendering.Windows.SkiaSharp.SkiaSharpCommandList(
             (PigeonPea.Plugins.Rendering.Windows.SkiaSharp.SkiaSharpBackend)_backend);
     }
-    
+
     /// <summary>
     /// Resizes the render surface.
     /// </summary>
     private void Resize()
     {
         if (!_isInitialized || _backend == null) return;
-        
+
         // Dispose old resources
         CleanupResources();
-        
+
         // Recreate resources with new size
         var imageInfo = new SKImageInfo(_width, _height, SKColorType.Bgra8888, SKAlphaType.Premul);
         _bitmap = new SKBitmap(imageInfo);
         _surface = SKSurface.Create(imageInfo);
-        
+
         _writeableBitmap = new WriteableBitmap(
             new PixelSize(_width, _height),
             new Vector(96, 96),
             PixelFormat.Bgra8888,
             AlphaFormat.Premul);
-        
+
         _context = new RenderContext(_width, _height, null, _surface);
-        
+
         // Re-initialize backend with new context
         _backend.Initialize(_context);
-        
+
         Source = _writeableBitmap;
     }
-    
+
     /// <summary>
     /// Copies the SkiaSharp surface to the Avalonia WriteableBitmap.
     /// </summary>
     private unsafe void CopySurfaceToWriteableBitmap()
     {
         if (_surface == null || _writeableBitmap == null || _bitmap == null) return;
-        
+
         // Get pixels from surface
         using var image = _surface.Snapshot();
         using var data = image.PeekPixels();
-        
+
         if (data == null) return;
-        
+
         // Copy to bitmap first
         data.ReadPixels(_bitmap.Info, _bitmap.GetPixels(), _bitmap.RowBytes, 0, 0);
-        
+
         // Copy to WriteableBitmap
         using var framebuffer = _writeableBitmap.Lock();
         var src = _bitmap.GetPixels();
@@ -240,7 +240,7 @@ public class SkiaSharpRenderControl : Image, IDisposable
         var size = _width * _height * 4; // 4 bytes per pixel (BGRA)
         Buffer.MemoryCopy(src.ToPointer(), dst.ToPointer(), size, size);
     }
-    
+
     /// <summary>
     /// Cleans up rendering resources.
     /// </summary>
@@ -248,26 +248,26 @@ public class SkiaSharpRenderControl : Image, IDisposable
     {
         _surface?.Dispose();
         _surface = null;
-        
+
         _bitmap?.Dispose();
         _bitmap = null;
-        
+
         _writeableBitmap = null;
         _context = null;
     }
-    
+
     /// <summary>
     /// Disposes the control and all resources.
     /// </summary>
     public void Dispose()
     {
         if (_disposed) return;
-        
+
         CleanupResources();
-        
+
         _backend?.Dispose();
         _backend = null;
-        
+
         _disposed = true;
         GC.SuppressFinalize(this);
     }

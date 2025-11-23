@@ -1,3 +1,4 @@
+using System;
 using PigeonPea.Contracts.Plugin;
 
 namespace PigeonPea.PluginSystem;
@@ -16,6 +17,8 @@ public class PluginHost : IPluginHost
         Profile = profile;
         _serviceProvider = serviceProvider;
     }
+
+    public System.IServiceProvider Services => _serviceProvider;
 
     public async Task<bool> RestartPluginAsync(string pluginId, CancellationToken ct = default)
     {

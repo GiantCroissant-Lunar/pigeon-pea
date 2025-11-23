@@ -1,7 +1,7 @@
 using System.IO;
 using System.Text;
 using PigeonPea.Console.Rendering;
-using PigeonPea.Shared.Rendering; // legacy Tile, Viewport, IRenderTarget
+using PigeonPea.Rendering.Contracts; // Tile, Viewport, IRenderTarget
 using SadRogue.Primitives;
 using Xunit;
 
@@ -16,7 +16,7 @@ public class AsciiRendererTests
     /// <summary>
     /// Mock render target for testing.
     /// </summary>
-    private class MockRenderTarget : PigeonPea.Shared.Rendering.IRenderTarget
+    private class MockRenderTarget : IRenderTarget
     {
         public int Width { get; }
         public int Height { get; }

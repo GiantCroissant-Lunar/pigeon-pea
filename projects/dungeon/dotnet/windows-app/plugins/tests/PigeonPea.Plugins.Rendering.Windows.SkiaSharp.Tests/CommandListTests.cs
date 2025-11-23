@@ -77,11 +77,11 @@ public class CommandListTests : IDisposable
         commandList.BeginFrame();
 
         // Act & Assert - Should not throw
-        commandList.DrawText(0, 0, "Line 1", 
-            new SadRogue.Primitives.Color(255, 255, 255), 
+        commandList.DrawText(0, 0, "Line 1",
+            new SadRogue.Primitives.Color(255, 255, 255),
             new SadRogue.Primitives.Color(0, 0, 0));
-        commandList.DrawText(0, 1, "Line 2", 
-            new SadRogue.Primitives.Color(255, 255, 255), 
+        commandList.DrawText(0, 1, "Line 2",
+            new SadRogue.Primitives.Color(255, 255, 255),
             new SadRogue.Primitives.Color(0, 0, 0));
         commandList.EndFrame();
     }
@@ -115,8 +115,8 @@ public class CommandListTests : IDisposable
         commandList.BeginFrame();
 
         // Act & Assert - Should not throw
-        commandList.DrawText(0, 0, "Hello", 
-            new SadRogue.Primitives.Color(255, 255, 255), 
+        commandList.DrawText(0, 0, "Hello",
+            new SadRogue.Primitives.Color(255, 255, 255),
             new SadRogue.Primitives.Color(0, 0, 0));
         commandList.EndFrame();
     }
@@ -128,7 +128,7 @@ public class CommandListTests : IDisposable
         var commandList = new SkiaSharpCommandList(_backend);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => 
+        Assert.Throws<InvalidOperationException>(() =>
             commandList.Clear(new SadRogue.Primitives.Color(0, 0, 0, 255)));
     }
 
@@ -140,7 +140,7 @@ public class CommandListTests : IDisposable
         commandList.BeginFrame();
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => 
+        Assert.Throws<InvalidOperationException>(() =>
             commandList.BeginFrame());
     }
 
@@ -151,7 +151,7 @@ public class CommandListTests : IDisposable
         var commandList = new SkiaSharpCommandList(_backend);
 
         // Act & Assert
-        Assert.Throws<InvalidOperationException>(() => 
+        Assert.Throws<InvalidOperationException>(() =>
             commandList.EndFrame());
     }
 }

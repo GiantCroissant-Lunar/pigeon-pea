@@ -28,6 +28,7 @@ All code has been written and is ready:
 **Solution Applied**: Created isolated solution + fixed project references + enabled unsafe code
 
 **Symptoms**:
+
 ```
 error CS0246: The type or namespace name 'IRenderBackend' could not be found
 error CS0246: The type or namespace name 'IRenderCommandList' could not be found
@@ -39,6 +40,7 @@ etc.
 **Investigation Results**:
 
 ✅ Project references are correct:
+
 - `PigeonPea.Contracts` @ `dotnet\app-essential\core\src\PigeonPea.Contracts\` (netstandard2.1)
 - `PigeonPea.Game.Contracts` @ `dotnet\game-essential\core\src\PigeonPea.Game.Contracts\` (net9.0)
 - `PigeonPea.Rendering.Contracts` @ `dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\` (net9.0)
@@ -54,12 +56,13 @@ etc.
 The main solution (`dotnet\PigeonPea.sln`) has broader build failures in unrelated projects that prevent the full dependency graph from being established. The plugin project itself is configured correctly, but:
 
 1. Some projects in the solution have missing dependencies (FantasyMapGenerator, MapData types)
-2. Test projects have code analyzer compatibility issues  
+2. Test projects have code analyzer compatibility issues
 3. These failures prevent MSBuild from establishing proper assembly references
 
 ### Recommended Resolution Steps
 
 #### Option 1: Fix Solution-Wide Dependencies (Preferred)
+
 ```powershell
 # Navigate to solution root
 cd D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet
@@ -76,16 +79,19 @@ dotnet build PigeonPea.sln --configuration Debug
 ```
 
 #### Option 2: Create Isolated Solution
+
 Create a new solution file with only required projects:
+
 ```xml
 <!-- PigeonPea.Rendering.sln -->
 - PigeonPea.Contracts
-- PigeonPea.Game.Contracts  
+- PigeonPea.Game.Contracts
 - PigeonPea.Rendering.Contracts
 - PigeonPea.Plugins.Rendering.Windows.SkiaSharp
 ```
 
 #### Option 3: Build Dependencies Individually
+
 ```powershell
 # Build in dependency order
 dotnet build dotnet\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj
@@ -108,6 +114,7 @@ dotnet build projects\dungeon\dotnet\windows-app\plugins\src\PigeonPea.Plugins.R
 ### Testing Plan (Once Build Works)
 
 1. **Unit Tests** (Not yet created)
+
    ```csharp
    - SkiaSharpBackendTests.cs
    - SkiaSharpCommandListTests.cs
@@ -125,12 +132,13 @@ dotnet build projects\dungeon\dotnet\windows-app\plugins\src\PigeonPea.Plugins.R
 ### Estimated Time to Resolve
 
 - **Option 1**: 2-4 hours (fix all solution dependencies)
-- **Option 2**: 1 hour (create isolated solution)  
+- **Option 2**: 1 hour (create isolated solution)
 - **Option 3**: 30 minutes (if dependencies build successfully)
 
 ### Dependencies Required
 
 From `.csproj`:
+
 ```xml
 <PackageReference Include="Avalonia" />
 <PackageReference Include="Avalonia.Skia" />
@@ -139,6 +147,7 @@ From `.csproj`:
 ```
 
 From project references:
+
 - `TheSadRogue.Primitives` (via PigeonPea.Rendering.Contracts)
 
 ### Next Developer Actions
@@ -153,7 +162,7 @@ From project references:
 
 The SkiaSharp backend Phase 4 implementation is **code-complete** but requires build environment fixes before it can be compiled and tested. All the rendering logic, command handling, and plugin integration is implemented and ready to use once the build dependencies are resolved.
 
-**Implementation Progress**: 100%  
-**Build Status**: Blocked by solution-wide dependency issues  
-**Testing**: Not yet started (blocked by build)  
+**Implementation Progress**: 100%
+**Build Status**: Blocked by solution-wide dependency issues
+**Testing**: Not yet started (blocked by build)
 **Documentation**: Complete

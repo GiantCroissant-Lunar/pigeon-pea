@@ -65,7 +65,7 @@ public class SkiaSharpRendererPlugin : IPlugin
 
             // Create and register new backend architecture
             _backend = new SkiaSharpBackend(_logger);
-            
+
             context.Registry.Register<IRenderBackend>(
                 _backend,
                 new ServiceMetadata
@@ -102,12 +102,12 @@ public class SkiaSharpRendererPlugin : IPlugin
         {
             _renderer.Shutdown();
         }
-        
+
         if (_backend != null)
         {
             _backend.Dispose();
         }
-        
+
         _logger?.LogInformation("SkiaSharp renderer plugin stopped");
         return Task.CompletedTask;
     }

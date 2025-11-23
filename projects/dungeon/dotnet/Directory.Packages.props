@@ -24,8 +24,8 @@
 
     <!-- Logging and DI -->
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0" />
 
     <!-- Avalonia / Skia / UI -->
     <PackageVersion Include="Avalonia" Version="11.2.2" />
@@ -38,7 +38,7 @@
     <PackageVersion Include="SkiaSharp" Version="3.116.1" />
     <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.116.1" />
     <PackageVersion Include="Plate.SCG.General.DisposePattern" Version="0.1.0" />
-    
+
     <!-- Rendering / Primitives -->
     <PackageVersion Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
 

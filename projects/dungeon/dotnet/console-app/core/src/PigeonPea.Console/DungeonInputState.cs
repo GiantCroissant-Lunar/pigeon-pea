@@ -13,4 +13,10 @@ public sealed class DungeonInputState
 
     public bool PausePressed { get; set; }
     public bool PauseJustPressed { get; set; }
+
+    public bool SavePressed { get; set; }
+    public bool SaveJustPressed { get; set; }
+
+    public bool LoadPressed { get; set; }
+    public bool LoadJustPressed { get; set; }
 }

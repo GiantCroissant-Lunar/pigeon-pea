@@ -49,7 +49,7 @@ public class InventoryViewTests : IDisposable
     {
         // Arrange
         var world = World.Create();
-        var itemEntity = world.Create(new Item { Name = "Sword", Type = ItemType.Equipment });
+        var itemEntity = world.Create(new Item("Sword", ItemType.Equipment));
 
         // Act
         _viewModel.Items.Add(new ItemViewModel
@@ -72,7 +72,7 @@ public class InventoryViewTests : IDisposable
     {
         // Arrange
         var world = World.Create();
-        var itemEntity = world.Create(new Item { Name = "Potion", Type = ItemType.Consumable });
+        var itemEntity = world.Create(new Item("Potion", ItemType.Consumable));
         var itemViewModel = new ItemViewModel
         {
             SourceEntity = itemEntity,
@@ -96,7 +96,7 @@ public class InventoryViewTests : IDisposable
     {
         // Arrange
         var world = World.Create();
-        var itemEntity = world.Create(new Item { Name = "Shield", Type = ItemType.Equipment });
+        var itemEntity = world.Create(new Item("Shield", ItemType.Equipment));
         _viewModel.Items.Add(new ItemViewModel
         {
             SourceEntity = itemEntity,
@@ -127,7 +127,7 @@ public class InventoryViewTests : IDisposable
     {
         // Arrange
         var world = World.Create();
-        var itemEntity = world.Create(new Item { Name = "Ring", Type = ItemType.QuestItem });
+        var itemEntity = world.Create(new Item("Ring", ItemType.QuestItem));
         _viewModel.Items.Add(new ItemViewModel
         {
             SourceEntity = itemEntity,
@@ -150,9 +150,9 @@ public class InventoryViewTests : IDisposable
     {
         // Arrange
         var world = World.Create();
-        var item1 = world.Create(new Item { Name = "Sword", Type = ItemType.Equipment });
-        var item2 = world.Create(new Item { Name = "Potion", Type = ItemType.Consumable });
-        var item3 = world.Create(new Item { Name = "Shield", Type = ItemType.Equipment });
+        var item1 = world.Create(new Item("Sword", ItemType.Equipment));
+        var item2 = world.Create(new Item("Potion", ItemType.Consumable));
+        var item3 = world.Create(new Item("Shield", ItemType.Equipment));
 
         // Act
         _viewModel.Items.Add(new ItemViewModel { SourceEntity = item1, Name = "Sword", Type = ItemType.Equipment });
@@ -190,7 +190,7 @@ public class InventoryViewTests : IDisposable
 
         // Assert - No exception should occur when modifying collection after disposal
         var world = World.Create();
-        var itemEntity = world.Create(new Item { Name = "Test", Type = ItemType.Equipment });
+        var itemEntity = world.Create(new Item("Test", ItemType.Equipment));
         var act = () => viewModel.Items.Add(new ItemViewModel
         {
             SourceEntity = itemEntity,

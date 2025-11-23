@@ -28,6 +28,9 @@
     <!-- SkiaSharp for Custom Rendering -->
     <PackageReference Include="SkiaSharp" />
 
+    <!-- Configuration for plugin system and app settings -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+
     <!-- Source Generators -->
     <PackageReference Include="Plate.SCG.Shared.Attributes" />
     <PackageReference Include="Plate.SCG.General.DisposePattern" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
@@ -39,22 +42,27 @@
 
     <!-- Engine-level rendering primitives (IRenderer, IRenderTarget, Tile, Viewport, RendererCapabilities) -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
-    
+
     <!-- New RFC-032 Rendering Contracts -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
-    
+
     <!-- Scene Management (for BackendGameLoop) -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Scene.Contracts\PigeonPea.Scene.Contracts.csproj" />
-    
+
     <!-- Dungeon Contracts (for BackendGameLoop) -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\domain\dungeon\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
-    
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
+
     <!-- Game Contracts (for IGameplayLoop) -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
-    
+
     <!-- Plugin Contracts (for IRegistry) -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
-    
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+
+    <!-- Plugin System (for AddPluginSystem and IRegistry wiring) -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
+
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugin.Gameplay.Basic\PigeonPea.Plugin.Gameplay.Basic.csproj" />
+
     <!-- SkiaSharp Backend Plugin (Phase 4) -->
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugins.Rendering.Windows.SkiaSharp\PigeonPea.Plugins.Rendering.Windows.SkiaSharp.csproj" />
   </ItemGroup>

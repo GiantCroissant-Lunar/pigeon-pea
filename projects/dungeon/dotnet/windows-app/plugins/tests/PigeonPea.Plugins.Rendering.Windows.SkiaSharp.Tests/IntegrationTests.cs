@@ -16,7 +16,7 @@ public class IntegrationTests : IDisposable
     {
         // Create a test surface
         _testSurface = SKSurface.Create(new SKImageInfo(800, 600));
-        
+
         // Create render context
         _context = new PigeonPea.Rendering.Contracts.RenderContext(800, 600, null, _testSurface);
 

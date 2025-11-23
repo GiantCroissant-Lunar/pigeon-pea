@@ -27,6 +27,7 @@ Mode: Buffer
 ## Resolution Calculation
 
 For a console window of 80×40 characters:
+
 - **Pixel resolution:** 160×160 (80×2 by 40×4)
 - **Each character:** Encodes 8 pixels (2 width × 4 height)
 
@@ -54,15 +55,15 @@ backend.Present();
 
 The backend includes a simple glyph-to-pixel pattern mapper for common characters:
 
-| Character | Pattern | Description |
-|-----------|---------|-------------|
-| `@` | Full block | All pixels on |
-| `#` | Full block | Wall character |
-| `.` | Single dot | Small dot (top-left) |
-| `\|` | Vertical line | Center column |
-| `-` | Horizontal line | Middle row |
-| `+` | Cross | Intersection |
-| `O` | Circle | Rounded outline |
+| Character | Pattern         | Description          |
+| --------- | --------------- | -------------------- |
+| `@`       | Full block      | All pixels on        |
+| `#`       | Full block      | Wall character       |
+| `.`       | Single dot      | Small dot (top-left) |
+| `\|`      | Vertical line   | Center column        |
+| `-`       | Horizontal line | Middle row           |
+| `+`       | Cross           | Intersection         |
+| `O`       | Circle          | Rounded outline      |
 
 Custom glyph patterns can be extended by modifying `GetGlyphPattern()`.
 
@@ -100,22 +101,24 @@ The backend processes these command types:
 
 ## Comparison with Other Backends
 
-| Feature | ANSI | Braille | SkiaSharp |
-|---------|------|---------|-----------|
-| Resolution | 1× (char) | 8× (2×4 px) | Unlimited (GPU) |
-| Memory | Low | Medium | High |
-| Speed | Very Fast | Fast | Medium |
-| Quality | Low | Medium-High | Very High |
-| Platform | All consoles | Unicode consoles | Windows |
+| Feature    | ANSI         | Braille          | SkiaSharp       |
+| ---------- | ------------ | ---------------- | --------------- |
+| Resolution | 1× (char)    | 8× (2×4 px)      | Unlimited (GPU) |
+| Memory     | Low          | Medium           | High            |
+| Speed      | Very Fast    | Fast             | Medium          |
+| Quality    | Low          | Medium-High      | Very High       |
+| Platform   | All consoles | Unicode consoles | Windows         |
 
 ## Terminal Compatibility
 
 Requires a terminal that supports:
+
 - UTF-8 encoding
 - Braille Unicode block (U+2800–U+28FF)
 - ANSI escape sequences
 
 **Compatible Terminals:**
+
 - Windows Terminal ✅
 - iTerm2 ✅
 - Alacritty ✅
@@ -123,6 +126,7 @@ Requires a terminal that supports:
 - Modern Linux terminals ✅
 
 **Incompatible:**
+
 - Windows Command Prompt (legacy) ❌
 - Very old terminal emulators ❌
 
