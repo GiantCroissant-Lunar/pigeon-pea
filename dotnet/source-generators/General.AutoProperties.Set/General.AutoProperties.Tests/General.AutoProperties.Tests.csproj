@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\Set.props" />
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <AssemblyName>Plate.General.AutoProperties.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Description>Tests for Plate General Auto Properties source code generator</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="xunit" Version="2.6.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Verify.SourceGenerators" Version="2.2.0" />
+    <PackageReference Include="Verify.Xunit" Version="22.11.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\General.AutoProperties\General.AutoProperties.csproj" />
+    <ProjectReference Include="..\General.AutoProperties.Attributes\General.AutoProperties.Attributes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Analyzer Include="..\General.AutoProperties\bin\Debug\netstandard2.0\Plate.General.AutoProperties.dll" />
+  </ItemGroup>
+
+</Project>

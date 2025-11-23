@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -36,9 +37,6 @@ public class DIExtensionsGenerator : IIncrementalGenerator
             return false;
 
         if (classDeclaration.AttributeLists.Count == 0)
-            return false;
-
-        if (!classDeclaration.Modifiers.Any(Microsoft.CodeAnalysis.CSharp.SyntaxKind.PartialKeyword))
             return false;
 
         return true;
@@ -103,8 +101,27 @@ public class DIExtensionsGenerator : IIncrementalGenerator
     private static string GetRootNamespace(string fullNamespace)
     {
         var parts = fullNamespace.Split('.');
+
+        if (parts.Length == 0)
+            return fullNamespace;
+
+        // Prefer a pattern of ...<Domain>.Services.Proxy to derive root namespace
+        var servicesIndex = Array.IndexOf(parts, "Services");
+        if (servicesIndex > 0)
+        {
+            var domainIndex = servicesIndex - 1;
+            if (domainIndex >= 1)
+            {
+                // e.g. PigeonPea.Contracts.Config.Services.Proxy -> PigeonPea.Contracts.Config
+                //      PigeonPea.Game.Contracts.Inventory.Services.Proxy -> PigeonPea.Game.Contracts.Inventory
+                return string.Join(".", parts.Take(domainIndex + 1));
+            }
+        }
+
+        // Fallback to original behavior (first three segments) to avoid breaking existing consumers
         if (parts.Length >= 3)
             return string.Join(".", parts.Take(3));
+
         return fullNamespace;
     }
 
@@ -147,7 +164,26 @@ public class DIExtensionsGenerator : IIncrementalGenerator
         var serviceName = proxyClass.ServiceInterfaceShortName.TrimStart('I');
 
         var namespaceParts = proxyClass.ProxyNamespace.Split('.');
-        var domain = namespaceParts.Length >= 3 ? namespaceParts[2] : string.Empty;
+        string domain = string.Empty;
+
+        // Prefer the segment immediately before "Services" as the domain, matching
+        // namespaces like *.Config.Services.Proxy, *.Input.Services.Proxy,
+        // *.Inventory.Services.Proxy, *.Stats.Services.Proxy, etc.
+        var servicesIndex = Array.IndexOf(namespaceParts, "Services");
+        if (servicesIndex > 0)
+        {
+            var domainIndex = servicesIndex - 1;
+            if (domainIndex >= 0 && domainIndex < namespaceParts.Length)
+            {
+                domain = namespaceParts[domainIndex];
+            }
+        }
+
+        // Fallback to the previous heuristic (3rd namespace segment) if needed
+        if (string.IsNullOrWhiteSpace(domain) && namespaceParts.Length >= 3)
+        {
+            domain = namespaceParts[2];
+        }
 
         var methodName = $"Add{domain}{serviceName}Proxy";
 

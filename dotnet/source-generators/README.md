@@ -125,6 +125,12 @@ public partial class GameCanvas : Image
 - ✅ **Null Safety**: Automatic null-checking
 - ✅ **Extensibility**: Partial methods for custom cleanup logic
 
+### Policy and Adoption (RFC-044)
+
+For guidance on when and where to use the DisposePattern generator across the codebase, see:
+
+- [RFC-044: Adopt DisposePattern Source Code Generator](../../docs/rfcs/044-adopt-dispose-pattern-generator.md)
+
 ### Package Source
 
 The DisposePattern generator packages are sourced from the [eco-shared repository](https://github.com/GiantCroissant-Lunar/eco-shared) and stored locally in `../.local-packages/`:
@@ -173,3 +179,79 @@ To add additional source generators from eco-shared:
                      OutputItemType="Analyzer"
                      ReferenceOutputAssembly="false" />
    ```
+
+## AutoProperties Generator
+
+The AutoProperties source generator automatically creates public properties from private fields based on attributes.
+
+### Files (in-repo Set)
+
+- Generator project
+  `dotnet/source-generators/General.AutoProperties.Set/General.AutoProperties/General.AutoProperties.csproj`
+- Generator implementation
+  `dotnet/source-generators/General.AutoProperties.Set/General.AutoProperties/SourceGenerator.cs`
+- Local props for consumers
+  `dotnet/source-generators/AutoProperties.Local.props`
+
+```xml
+<Project>
+  <ItemGroup>
+    <ProjectReference Include="General.AutoProperties.Set\General.AutoProperties\General.AutoProperties.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+    <PackageReference Include="Plate.General.AutoProperties.Attributes" Version="0.1.0" />
+  </ItemGroup>
+</Project>
+```
+
+### Using AutoProperties in a project
+
+1. Import the local props from your `.csproj` (adjust the path as needed):
+
+   ```xml
+   <Import Project="..\..\..\..\source-generators\AutoProperties.Local.props" />
+   ```
+
+2. Add the attributes namespace and mark a partial type:
+
+   ```csharp
+   using Plate.General.AutoProperties.Attributes;
+
+   [AutoProperty]
+   public partial class Example
+   {
+       [GenerateProperty]
+       private int _value;
+   }
+   ```
+
+3. Optionally configure class-level behavior:
+
+   ```csharp
+   [AutoProperty(GenerateForAllFields = true, FieldPrefix = "_")]
+   public partial class Example
+   {
+       private string _name;
+
+       [SkipProperty]
+       private string _internalId;
+   }
+   ```
+
+The generator emits `*.AutoProperties.g.cs` files under `obj/` – do not edit them directly.
+
+## Agent Checklist: Adding a New Generator Set
+
+When integrating another eco-shared or Yokan source generator into this repo:
+
+1. **Create a Set folder** under `dotnet/source-generators`
+   Example: `General.AutoProperties.Set`, `DI.ConstructorInjection.Set`.
+2. **Add the generator project and source**:
+   - `*.csproj` targeting `netstandard2.0`, marked as analyzer (`IsRoslynAnalyzer`, `IsRoslynComponent`).
+   - `SourceGenerator.cs` that uses `Plate.SCG.Shared.Abstractions.Utility` helpers.
+3. **Create a `*.Local.props` file** in `dotnet/source-generators` that:
+   - Adds a `ProjectReference` to the in-repo generator project with `OutputItemType="Analyzer"` and `ReferenceOutputAssembly="false"`.
+   - Adds any required **attributes packages** (e.g., `Plate.SCG.Shared.Attributes`, `Plate.General.AutoProperties.Attributes`).
+4. **Import the local props** from each consuming project via `<Import Project="..\..\..\..\source-generators\Xxx.Local.props" />`, adjusting the relative path.
+5. **Use the documented attributes** in code (e.g., `[DisposePattern]`, `[AutoProperty]`, `[GenerateProperty]`).
+6. **Build and verify** that the analyzer DLL is referenced and the expected `*.g.cs` files are generated without errors.

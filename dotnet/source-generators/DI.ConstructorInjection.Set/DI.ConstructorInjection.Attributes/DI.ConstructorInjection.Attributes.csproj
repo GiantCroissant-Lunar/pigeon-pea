@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>13</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Yokan.SCG.DI.ConstructorInjection.Attributes</AssemblyName>
+    <RootNamespace>Yokan.SCG.DI.ConstructorInjection.Attributes</RootNamespace>
+    <DevelopmentDependency>false</DevelopmentDependency>
+    <IncludeBuildOutput>true</IncludeBuildOutput>
+  </PropertyGroup>
+
+</Project>

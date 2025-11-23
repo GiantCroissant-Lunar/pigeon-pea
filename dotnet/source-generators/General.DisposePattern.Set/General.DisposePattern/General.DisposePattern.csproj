@@ -54,16 +54,12 @@
         <ProjectReference
             Include="..\..\..\shared-lib\Shared.Set\SCG.Shared.Abstractions\SCG.Shared.Abstractions.csproj"
         />
-        <ProjectReference
-            Include="..\..\Shared.Set\Shared.Attributes\Shared.Attributes.csproj"
-        />
     </ItemGroup>
 
     <!-- Use PackageReference for packaging/publishing -->
     <ItemGroup Condition="'$(UseLocalProjectReferences)' != 'true'">
         <PackageReference Include="Plate.Shared.Abstractions" Version="0.1.0" />
         <PackageReference Include="Plate.SCG.Shared.Abstractions" Version="0.1.0" />
-        <PackageReference Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
     </ItemGroup>
 
     <!-- Provide explicit empty lib group to silence NU5128 -->
