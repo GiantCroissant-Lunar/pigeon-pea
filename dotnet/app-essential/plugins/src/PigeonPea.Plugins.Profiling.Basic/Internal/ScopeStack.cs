@@ -47,7 +47,7 @@ internal class ScopeStack
             scope = _stack.Pop();
             return true;
         }
-        
+
         scope = default;
         return false;
     }

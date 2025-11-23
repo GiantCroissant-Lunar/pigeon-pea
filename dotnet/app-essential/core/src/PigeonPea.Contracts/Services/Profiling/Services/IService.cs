@@ -3,6 +3,58 @@ using System.Collections.Generic;
 namespace PigeonPea.Contracts.Profiling.Services;
 
 /// <summary>
+/// Public profile event representation for exported data.
+/// </summary>
+public struct ProfileEvent
+{
+    /// <summary>
+    /// Timestamp in ticks from Stopwatch.GetTimestamp().
+    /// </summary>
+    public long TimestampTicks { get; init; }
+
+    /// <summary>
+    /// Type of the profiling event.
+    /// </summary>
+    public EventType Type { get; init; }
+
+    /// <summary>
+    /// Name of the event/scope.
+    /// </summary>
+    public string Name { get; init; }
+
+    /// <summary>
+    /// Category of the event/scope.
+    /// </summary>
+    public string Category { get; init; }
+
+    /// <summary>
+    /// Thread ID where the event occurred.
+    /// </summary>
+    public int ThreadId { get; init; }
+
+    /// <summary>
+    /// Nesting depth for scope events.
+    /// </summary>
+    public int Depth { get; init; }
+
+    /// <summary>
+    /// Duration in milliseconds (for ScopeEnd events).
+    /// </summary>
+    public double DurationMs { get; init; }
+}
+
+/// <summary>
+/// Types of profiling events.
+/// </summary>
+public enum EventType : byte
+{
+    ScopeBegin,
+    ScopeEnd,
+    Marker,
+    Counter
+}
+
+/// <summary>
 /// Runtime profiling service for performance instrumentation and analysis.
 /// Supports export to speedscope, Chrome Trace, and other visualization tools.
 /// </summary>
@@ -244,6 +296,11 @@ public sealed class ProfileCapture
     /// Number of scope events captured.
     /// </summary>
     public int EventCount { get; init; }
+
+    /// <summary>
+    /// Raw profiling events for export.
+    /// </summary>
+    public IReadOnlyList<ProfileEvent>? Events { get; init; }
 }
 
 /// <summary>

@@ -44,7 +44,7 @@ internal class EventBuffer
         {
             var count = Math.Min(_writeIndex, _events.Length);
             var events = new List<ProfileEvent>(count);
-            
+
             for (int i = 0; i < count; i++)
             {
                 events.Add(_events[i]);

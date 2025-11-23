@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using PigeonPea.Contracts.Profiling.Services;
 
-namespace PigeonPea.Plugins.Profiling.Basic.Export;
+namespace PigeonPea.Plugins.Profiling.OpenTelemetry.Export;
 
 /// <summary>
 /// Exports profiling data to Chrome Trace Event format.
@@ -58,8 +58,8 @@ internal class ChromeTraceExporter
                             ph = "X", // Complete event
                             ts = Math.Round((startTicks - startTimeTicks) / (double)TimeSpan.TicksPerMillisecond * 1000, 3),
                             dur = Math.Round(durationUs, 3),
-                            pid = processId, // Use actual process ID
-                            tid = threadId, // Thread ID
+                            pid = processId,
+                            tid = threadId,
                             args = new { category = evt.Category }
                         });
                     }

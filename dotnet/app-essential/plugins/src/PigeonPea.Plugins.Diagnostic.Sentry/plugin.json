@@ -4,7 +4,13 @@
   "version": "1.0.0",
   "description": "Sentry-based diagnostic service with error tracking, breadcrumbs, and health monitoring",
   "author": "Pigeon Pea Team",
-  "capabilities": ["diagnostic", "diagnostic:service", "diagnostic:sentry", "error-tracking", "health-checks"],
+  "capabilities": [
+    "diagnostic",
+    "diagnostic:service",
+    "diagnostic:sentry",
+    "error-tracking",
+    "health-checks"
+  ],
   "supportedProfiles": ["dotnet.console"],
   "entryPoint": {
     "dotnet.console": "PigeonPea.Plugins.Diagnostic.Sentry.dll,PigeonPea.Plugins.Diagnostic.Sentry.DiagnosticPlugin"

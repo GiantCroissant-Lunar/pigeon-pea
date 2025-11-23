@@ -1,0 +1,15 @@
+{
+  "id": "pigeon-pea.diagnostic.opentelemetry",
+  "name": "OpenTelemetry Diagnostic Plugin",
+  "version": "1.0.0",
+  "description": "OpenTelemetry-based diagnostic service with health checks, error reporting, and system metrics",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["diagnostic", "diagnostic:service", "diagnostic:opentelemetry", "diagnostic:health-checks", "diagnostic:error-reporting"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Diagnostic.OpenTelemetry.dll,PigeonPea.Plugins.Diagnostic.OpenTelemetry.DiagnosticPlugin"
+  },
+  "dependencies": [],
+  "priority": 85,
+  "loadStrategy": "eager"
+}

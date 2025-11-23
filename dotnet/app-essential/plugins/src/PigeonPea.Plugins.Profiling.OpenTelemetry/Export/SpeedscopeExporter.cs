@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Json;
 using PigeonPea.Contracts.Profiling.Services;
 
-namespace PigeonPea.Plugins.Profiling.Basic.Export;
+namespace PigeonPea.Plugins.Profiling.OpenTelemetry.Export;
 
 /// <summary>
 /// Exports profiling data to Speedscope JSON format.
@@ -118,7 +118,7 @@ internal class SpeedscopeExporter
                 case EventType.Marker:
                     speedscopeEvents.Add(new
                     {
-                        type = "I", // Instant event (corrected from "X")
+                        type = "I", // Instant event
                         name = evt.Name,
                         at = Math.Round(timeMs, 6)
                     });

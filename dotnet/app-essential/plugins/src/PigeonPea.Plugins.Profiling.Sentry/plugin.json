@@ -4,7 +4,13 @@
   "version": "1.0.0",
   "description": "Sentry-based profiling service with performance monitoring and transaction tracking",
   "author": "Pigeon Pea Team",
-  "capabilities": ["profiling", "profiling:service", "profiling:sentry", "performance-monitoring", "transactions"],
+  "capabilities": [
+    "profiling",
+    "profiling:service",
+    "profiling:sentry",
+    "performance-monitoring",
+    "transactions"
+  ],
   "supportedProfiles": ["dotnet.console"],
   "entryPoint": {
     "dotnet.console": "PigeonPea.Plugins.Profiling.Sentry.dll,PigeonPea.Plugins.Profiling.Sentry.ProfilingPlugin"

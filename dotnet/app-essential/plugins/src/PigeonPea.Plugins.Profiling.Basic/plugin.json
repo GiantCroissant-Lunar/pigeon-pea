@@ -4,7 +4,12 @@
   "version": "1.0.0",
   "description": "Runtime profiling with speedscope export and low-overhead design",
   "author": "Pigeon Pea Team",
-  "capabilities": ["profiling", "profiling:service", "profiling:speedscope", "profiling:chrome-trace"],
+  "capabilities": [
+    "profiling",
+    "profiling:service",
+    "profiling:speedscope",
+    "profiling:chrome-trace"
+  ],
   "supportedProfiles": ["dotnet.console"],
   "entryPoint": {
     "dotnet.console": "PigeonPea.Plugins.Profiling.Basic.dll,PigeonPea.Plugins.Profiling.Basic.ProfilingPlugin"

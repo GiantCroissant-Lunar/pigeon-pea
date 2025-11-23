@@ -1,0 +1,15 @@
+{
+  "id": "pigeon-pea.profiling.opentelemetry",
+  "name": "OpenTelemetry Profiling Plugin",
+  "version": "1.0.0",
+  "description": "OpenTelemetry-based profiling service with OTLP export to Jaeger and distributed tracing",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["profiling", "profiling:service", "profiling:opentelemetry", "profiling:otlp", "profiling:jaeger"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Profiling.OpenTelemetry.dll,PigeonPea.Plugins.Profiling.OpenTelemetry.ProfilingPlugin"
+  },
+  "dependencies": [],
+  "priority": 95,
+  "loadStrategy": "eager"
+}

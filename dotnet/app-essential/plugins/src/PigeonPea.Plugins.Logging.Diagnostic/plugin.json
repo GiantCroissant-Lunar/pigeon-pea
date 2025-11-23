@@ -1,0 +1,117 @@
+{
+  "name": "PigeonPea.Plugins.Logging.Diagnostic",
+  "displayName": "Diagnostic Logger Sink",
+  "description": "Routes Microsoft.Extensions.Logging entries to the diagnostic service for error tracking and system health monitoring",
+  "version": "1.0.0",
+  "category": "Logging",
+  "author": "PigeonPea Team",
+  "website": "https://github.com/GiantCroissant-Lunar/pigeon-pea",
+  "license": "MIT",
+  "dependencies": [
+    {
+      "name": "Microsoft.Extensions.Logging",
+      "version": "8.0.0"
+    },
+    {
+      "name": "Microsoft.Extensions.DependencyInjection",
+      "version": "8.0.0"
+    },
+    {
+      "name": "PigeonPea.Contracts",
+      "version": "1.0.0"
+    },
+    {
+      "name": "PigeonPea.Logging",
+      "version": "1.0.0"
+    }
+  ],
+  "configurationSchema": {
+    "minimumLevel": {
+      "type": "string",
+      "default": "Warning",
+      "description": "Minimum log level to capture (Trace, Debug, Information, Warning, Error, Critical)",
+      "enum": ["Trace", "Debug", "Information", "Warning", "Error", "Critical"]
+    },
+    "includeLogLevel": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to include log level in diagnostic data"
+    },
+    "includeCategory": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to include logger category in diagnostic data"
+    },
+    "trackWarnings": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to track warnings as diagnostic events"
+    },
+    "trackErrors": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to track errors as diagnostic events"
+    },
+    "createSessions": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to create diagnostic sessions for related events"
+    },
+    "logAllCategories": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether to log all categories or filter them"
+    },
+    "allowedCategories": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": [],
+      "description": "List of allowed categories when LogAllCategories is false"
+    },
+    "eventNamePrefix": {
+      "type": "string",
+      "default": "Log_",
+      "description": "Prefix for diagnostic event names"
+    },
+    "metricPrefix": {
+      "type": "string",
+      "default": "Log",
+      "description": "Prefix for health metric names"
+    }
+  },
+  "capabilities": [
+    "ErrorTracking",
+    "WarningTracking",
+    "HealthMetrics",
+    "DiagnosticSessions",
+    "StructuredLogging",
+    "CategoryFiltering",
+    "DependencyInjection"
+  ],
+  "examples": [
+    {
+      "title": "Basic Diagnostic Logging",
+      "description": "Add diagnostic logger sink with default options",
+      "code": "builder.Logging.AddDiagnostic(diagnosticService);"
+    },
+    {
+      "title": "Custom Diagnostic Configuration",
+      "description": "Configure diagnostic logger with custom options",
+      "code": "builder.Logging.AddDiagnostic(diagnosticService, new DiagnosticLoggerOptions\n{\n    MinimumLevel = LogLevel.Information,\n    TrackWarnings = true,\n    TrackErrors = true,\n    CreateSessions = true\n});"
+    },
+    {
+      "title": "Dependency Injection Setup",
+      "description": "Register diagnostic logger with dependency injection",
+      "code": "builder.Logging.AddDiagnostic(options =>\n{\n    options.MinimumLevel = LogLevel.Warning;\n    options.TrackErrors = true;\n    options.CreateSessions = true;\n});"
+    }
+  ],
+  "notes": [
+    "Provides comprehensive error and warning tracking through the diagnostic service",
+    "Supports diagnostic sessions for grouping related events",
+    "Includes health metrics monitoring and reporting",
+    "Integrates with Microsoft.Extensions.Logging infrastructure",
+    "Supports both direct instance and dependency injection patterns"
+  ]
+}
