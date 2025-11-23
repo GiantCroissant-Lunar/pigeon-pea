@@ -9,19 +9,27 @@ using PigeonPea.Dungeon.Contracts;
 using PigeonPea.Dungeon.Contracts.Models;
 using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Components;
+using PigeonPea.Shared.ECS.Components;
 // using PigeonPea.Shared.Dungeon; // Removed: BasicDungeonGenerator moved to plugin
 using PigeonPea.Shared.Events;
 using SadRogue.Primitives;
 using SadRogue.Primitives.GridViews;
-using Serilog;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using System.Diagnostics.CodeAnalysis;
 using CTile = PigeonPea.Shared.Components.Tile;
 using IInventoryService = PigeonPea.Game.Contracts.Inventory.Services.IService;
+using IStatsService = PigeonPea.Game.Contracts.Stats.Services.IService;
+using ICombatService = PigeonPea.Game.Contracts.Combat.Services.IService;
+using IAnimationService = PigeonPea.Game.Contracts.Animation.Services.IService;
+using IPersistenceService = PigeonPea.Game.Contracts.Persistence.Services.IService;
 using PluginEvents = PigeonPea.Game.Contracts.Events;
 using RTile = PigeonPea.Rendering.Contracts.Tile;
 
 /// <summary>
 /// Core game world managing ECS entities, map, and game state.
 /// </summary>
+[SuppressMessage("Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "GameWorld is an orchestrator that composes many ECS systems and services; high coupling here is intentional.")]
 public class GameWorld
 {
     public World EcsWorld { get; private set; }
@@ -63,6 +71,11 @@ public class GameWorld
     private readonly IEventBus? _eventBus;
     // Optional game-level inventory service (backed by plugins).
     private readonly IInventoryService? _inventoryService;
+    private readonly IStatsService? _statsService;
+    private readonly ICombatService? _combatService;
+    private readonly IAnimationService? _animationService;
+    private readonly IPersistenceService? _persistenceService;
+    private readonly ILogger<GameWorld> _logger;
 
     /// <summary>
     /// Publishes an event to the plugin system synchronously.
@@ -87,15 +100,19 @@ public class GameWorld
             // Log each plugin handler failure individually for visibility
             foreach (var ex in agEx.InnerExceptions)
             {
-                Log.Error(ex, "Plugin handler failed for event {EventType}: {Message}",
-                    typeof(TEvent).FullName, ex.Message);
+                _logger.LogError(ex,
+                    "Plugin handler failed for event {EventType}: {Message}",
+                    typeof(TEvent).FullName,
+                    ex.Message);
             }
         }
         catch (Exception ex)
         {
             // Log single exceptions (shouldn't happen with EventBus, but handle defensively)
-            Log.Error(ex, "Plugin event publish failed for {EventType}: {Message}",
-                typeof(TEvent).FullName, ex.Message);
+            _logger.LogError(ex,
+                "Plugin event publish failed for {EventType}: {Message}",
+                typeof(TEvent).FullName,
+                ex.Message);
         }
     }
 
@@ -103,7 +120,7 @@ public class GameWorld
     /// Creates a new GameWorld with specified dimensions.
     /// For use without dependency injection.
     /// </summary>
-    public GameWorld(int width = 80, int height = 50, IEventBus? eventBus = null, IInventoryService? inventoryService = null, IDungeonGenerator? dungeonGenerator = null)
+    public GameWorld(int width = 80, int height = 50, IEventBus? eventBus = null, IInventoryService? inventoryService = null, IDungeonGenerator? dungeonGenerator = null, IStatsService? statsService = null, IAnimationService? animationService = null, IPersistenceService? persistenceService = null, ICombatService? combatService = null, ILogger<GameWorld>? logger = null)
     {
         Width = width;
         Height = height;
@@ -126,6 +143,11 @@ public class GameWorld
         _stairsDescendedPublisher = null;
         _eventBus = eventBus;
         _inventoryService = inventoryService;
+        _statsService = statsService;
+        _combatService = combatService;
+        _animationService = animationService;
+        _persistenceService = persistenceService;
+        _logger = logger ?? NullLogger<GameWorld>.Instance;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -153,7 +175,12 @@ public class GameWorld
         IPublisher<StairsDescendedEvent> stairsDescendedPublisher,
         IEventBus? eventBus = null,
         IInventoryService? inventoryService = null,
-        IDungeonGenerator? dungeonGenerator = null)
+        IDungeonGenerator? dungeonGenerator = null,
+        IStatsService? statsService = null,
+        IAnimationService? animationService = null,
+        IPersistenceService? persistenceService = null,
+        ICombatService? combatService = null,
+        ILogger<GameWorld>? logger = null)
     {
         Width = width;
         Height = height;
@@ -175,6 +202,9 @@ public class GameWorld
         _stairsDescendedPublisher = stairsDescendedPublisher;
         _eventBus = eventBus;
         _inventoryService = inventoryService;
+        _statsService = statsService;
+        _animationService = animationService;
+        _persistenceService = persistenceService;
 
         // Initialize FOV algorithm (recursive shadowcasting)
         _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
@@ -186,8 +216,8 @@ public class GameWorld
     }
 
     // Compatibility constructor for rendering tests
-    public GameWorld(IRenderer renderer, int width, int height)
-        : this(width, height)
+    public GameWorld(IRenderer renderer, int width, int height, ILogger<GameWorld>? logger = null)
+        : this(width, height, logger: logger)
     {
         _renderer = renderer;
     }
@@ -309,6 +339,8 @@ public class GameWorld
 
         // Calculate initial FOV for player
         UpdateFieldOfView();
+
+        InitializeCombatStats(PlayerEntity, 5, 2);
     }
 
     private Point FindWalkablePosition()
@@ -340,7 +372,7 @@ public class GameWorld
             Point enemyPos = FindRandomWalkablePosition(_random);
 
             // Create enemy entity (goblin)
-            EcsWorld.Create(
+            var enemy = EcsWorld.Create(
                 new Position(enemyPos),
                 new Renderable('g', Color.Green),
                 new Health(20, 20),
@@ -349,6 +381,50 @@ public class GameWorld
                 new ExperienceValue(35),
                 new BlocksMovement()
             );
+
+            InitializeCombatStats(enemy, 3, 1);
+        }
+    }
+
+    private void InitializeCombatStats(Entity entity, int attack, int defense)
+    {
+        if (_statsService == null)
+        {
+            return;
+        }
+
+        _statsService.SetStat(EcsWorld, entity, "attack", attack);
+        _statsService.SetStat(EcsWorld, entity, "defense", defense);
+
+        if (entity.Has<Experience>())
+        {
+            var experience = entity.Get<Experience>();
+            _statsService.SetStat(EcsWorld, entity, "level", experience.Level);
+            _statsService.RecalculateDerivedStats(EcsWorld, entity);
+        }
+    }
+
+    private void LogEntityStats(string label, Entity entity)
+    {
+        if (_statsService == null || !entity.Has<Stats>())
+        {
+            return;
+        }
+
+        try
+        {
+            var statsView = _statsService.GetStats(EcsWorld, entity);
+            var modifiers = _statsService.GetModifiers(EcsWorld, entity);
+
+            _logger.LogDebug("Stats {Label}: Base={BaseStats}, Current={CurrentStats}, Modifiers={Modifiers}",
+                label,
+                statsView.BaseStats,
+                statsView.CurrentStats,
+                modifiers);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Failed to log stats for {Label}", label);
         }
     }
 
@@ -572,6 +648,19 @@ public class GameWorld
             entity.Add(new CombatStats(stats.Attack + 1, stats.Defense + 1));
         }
 
+        if (_statsService != null)
+        {
+            if (entity.Has<CombatStats>())
+            {
+                var updatedStats = entity.Get<CombatStats>();
+                _statsService.SetStat(EcsWorld, entity, "attack", updatedStats.Attack);
+                _statsService.SetStat(EcsWorld, entity, "defense", updatedStats.Defense);
+            }
+
+            _statsService.SetStat(EcsWorld, entity, "level", newLevel);
+            _statsService.RecalculateDerivedStats(EcsWorld, entity);
+        }
+
         // Publish level up event for player
         if (entity.Has<PlayerComponent>() && _playerLevelUpPublisher != null)
         {
@@ -597,97 +686,152 @@ public class GameWorld
     /// </summary>
     private void ResolveMeleeAttack(Entity attacker, Entity defender)
     {
-        // Both entities must have Health and CombatStats
+        if (!TryGetCombatParticipants(attacker, defender,
+                out var attackerHealth,
+                out var attackerStats,
+                out var defenderHealth,
+                out var defenderStats))
+        {
+            return;
+        }
+
+        LogEntityStats("BeforeAttack_Attacker", attacker);
+        LogEntityStats("BeforeAttack_Defender", defender);
+
+        int damage = CalculateDamage(attacker, defender, attackerStats, defenderStats);
+
+        int newHealth = ApplyDamageToDefender(defender, defenderHealth, damage);
+
+        LogEntityStats("AfterAttack_Attacker", attacker);
+        LogEntityStats("AfterAttack_Defender", defender);
+
+        PublishDamageEvents(attacker, defender, damage, newHealth);
+
+        HandleDefenderDeath(attacker, defender, newHealth);
+    }
+
+    private static bool TryGetCombatParticipants(
+        Entity attacker,
+        Entity defender,
+        out Health attackerHealth,
+        out CombatStats attackerStats,
+        out Health defenderHealth,
+        out CombatStats defenderStats)
+    {
+        attackerHealth = default;
+        attackerStats = default;
+        defenderHealth = default;
+        defenderStats = default;
+
         if (!attacker.Has<Health>() || !attacker.Has<CombatStats>() ||
             !defender.Has<Health>() || !defender.Has<CombatStats>())
-            return;
+        {
+            return false;
+        }
 
-        ref var attackerHealth = ref attacker.Get<Health>();
-        ref var attackerStats = ref attacker.Get<CombatStats>();
-        ref var defenderHealth = ref defender.Get<Health>();
-        ref var defenderStats = ref defender.Get<CombatStats>();
+        attackerHealth = attacker.Get<Health>();
+        attackerStats = attacker.Get<CombatStats>();
+        defenderHealth = defender.Get<Health>();
+        defenderStats = defender.Get<CombatStats>();
 
-        // Skip if attacker is dead
-        if (!attackerHealth.IsAlive)
-            return;
+        return attackerHealth.IsAlive;
+    }
 
-        // Calculate damage: Attack - Defense (minimum 1 damage)
-        int damage = Math.Max(1, attackerStats.Attack - defenderStats.Defense);
+    private int CalculateDamage(Entity attacker, Entity defender, CombatStats attackerStats, CombatStats defenderStats)
+    {
+        if (_combatService != null)
+        {
+            var pluginDamage = _combatService.CalculateMeleeDamage(EcsWorld, attacker, defender);
+            if (pluginDamage > 0)
+            {
+                return pluginDamage;
+            }
+        }
 
-        // Apply damage
-        var newHealth = defenderHealth.Current - damage;
-        if (newHealth < 0) newHealth = 0;
+        int attackerAttack = attackerStats.Attack;
+        int defenderDefense = defenderStats.Defense;
 
-        // Create new Health component with updated values
+        if (_statsService != null && attacker.Has<Stats>() && defender.Has<Stats>())
+        {
+            var attackerAttackStat = _statsService.GetStatValue(EcsWorld, attacker, "attack");
+            var defenderDefenseStat = _statsService.GetStatValue(EcsWorld, defender, "defense");
+
+            attackerAttack = (int)Math.Round(attackerAttackStat);
+            defenderDefense = (int)Math.Round(defenderDefenseStat);
+        }
+
+        return Math.Max(1, attackerAttack - defenderDefense);
+    }
+
+    private static int ApplyDamageToDefender(Entity defender, Health defenderHealth, int damage)
+    {
+        int newHealth = Math.Max(0, defenderHealth.Current - damage);
+
         defender.Remove<Health>();
         defender.Add(new Health(newHealth, defenderHealth.Maximum));
 
-        // Publish PlayerDamagedEvent if defender is player
-        if (defender.Has<PlayerComponent>() && _playerDamagedPublisher != null)
-        {
-            // Get attacker name for source
-            string sourceName = "Unknown";
-            if (attacker.Has<AIComponent>())
-            {
-                sourceName = "Enemy"; // Could be enhanced with enemy name component
-            }
+        return newHealth;
+    }
 
+    private void PublishDamageEvents(Entity attacker, Entity defender, int damage, int defenderRemainingHealth)
+    {
+        if (!defender.Has<PlayerComponent>())
+        {
+            return;
+        }
+
+        string sourceName = attacker.Has<AIComponent>() ? "Enemy" : "Unknown";
+
+        if (_playerDamagedPublisher != null)
+        {
             _playerDamagedPublisher.Publish(new PlayerDamagedEvent
             {
                 Damage = damage,
-                RemainingHealth = defenderHealth.Current,
-                Source = sourceName
-            });
-        }
-        // Publish plugin-facing PlayerDamagedEvent
-        if (defender.Has<PlayerComponent>())
-        {
-            string sourceName = attacker.Has<AIComponent>() ? "Enemy" : "Unknown";
-            TryPublishPluginEvent(new PluginEvents.PlayerDamagedEvent
-            {
-                Damage = damage,
-                RemainingHealth = defenderHealth.Current,
+                RemainingHealth = defenderRemainingHealth,
                 Source = sourceName
             });
         }
 
-        // Mark as dead if health reaches 0
-        if (!defenderHealth.IsAlive && !defender.Has<Dead>())
+        TryPublishPluginEvent(new PluginEvents.PlayerDamagedEvent
         {
-            defender.Add(new Dead());
+            Damage = damage,
+            RemainingHealth = defenderRemainingHealth,
+            Source = sourceName
+        });
+    }
 
-            // Publish EnemyDefeatedEvent if defender is an enemy and attacker is player
-            if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>() && _enemyDefeatedPublisher != null)
-            {
-                int xpGained = 0;
-                if (defender.Has<ExperienceValue>())
-                {
-                    xpGained = defender.Get<ExperienceValue>().XP;
-                }
+    private void HandleDefenderDeath(Entity attacker, Entity defender, int defenderRemainingHealth)
+    {
+        if (defenderRemainingHealth > 0 || defender.Has<Dead>())
+        {
+            return;
+        }
 
-                _enemyDefeatedPublisher.Publish(new EnemyDefeatedEvent
-                {
-                    EnemyName = "Enemy", // Could be enhanced with enemy name component
-                    ExperienceGained = xpGained
-                });
-            }
-            // Publish plugin-facing EnemyDefeatedEvent
-            if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>())
-            {
-                int xpGained = defender.Has<ExperienceValue>() ? defender.Get<ExperienceValue>().XP : 0;
-                TryPublishPluginEvent(new PluginEvents.EnemyDefeatedEvent
-                {
-                    EnemyName = "Enemy",
-                    ExperienceGained = xpGained
-                });
-            }
+        defender.Add(new Dead());
 
-            // Award experience to attacker if they killed the defender
-            if (attacker.Has<Experience>() && defender.Has<ExperienceValue>())
+        if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>())
+        {
+            int xpGained = defender.Has<ExperienceValue>()
+                ? defender.Get<ExperienceValue>().XP
+                : 0;
+
+            _enemyDefeatedPublisher?.Publish(new EnemyDefeatedEvent
             {
-                var xpValue = defender.Get<ExperienceValue>();
-                GainExperience(attacker, xpValue.XP);
-            }
+                EnemyName = "Enemy",
+                ExperienceGained = xpGained
+            });
+
+            TryPublishPluginEvent(new PluginEvents.EnemyDefeatedEvent
+            {
+                EnemyName = "Enemy",
+                ExperienceGained = xpGained
+            });
+        }
+
+        if (attacker.Has<Experience>() && defender.Has<ExperienceValue>())
+        {
+            var xpValue = defender.Get<ExperienceValue>();
+            GainExperience(attacker, xpValue.XP);
         }
     }
 
@@ -993,6 +1137,54 @@ public class GameWorld
         UpdateFieldOfView();
         UpdateAI();
         CleanupDeadEntities();
+
+        // Update animations
+        _animationService?.Update(EcsWorld, (float)deltaTime);
+    }
+
+    public void SaveWorld(string saveName)
+    {
+        if (_persistenceService == null)
+        {
+            _logger.LogWarning("Cannot save world: Persistence service not available.");
+            return;
+        }
+
+        var result = _persistenceService.SaveWorld(EcsWorld, saveName);
+        if (result.Success)
+        {
+            _logger.LogInformation("World saved successfully to {FilePath} ({SizeBytes} bytes)", result.FilePath, result.SizeBytes);
+        }
+        else
+        {
+            _logger.LogError("Failed to save world: {ErrorMessage}", result.ErrorMessage);
+        }
+    }
+
+    public void LoadWorld(string saveName)
+    {
+        if (_persistenceService == null)
+        {
+            _logger.LogWarning("Cannot load world: Persistence service not available.");
+            return;
+        }
+
+        var result = _persistenceService.LoadWorld(EcsWorld, saveName);
+        if (result.Success)
+        {
+            _logger.LogInformation("World loaded successfully. {EntitiesLoaded} entities loaded.", result.EntitiesLoaded);
+            // Re-initialize player entity reference if needed
+            // This is tricky because we need to find the player entity again
+            var playerQuery = new QueryDescription().WithAll<PlayerComponent>();
+            EcsWorld.Query(in playerQuery, (Entity entity) =>
+            {
+                PlayerEntity = entity;
+            });
+        }
+        else
+        {
+            _logger.LogError("Failed to load world: {ErrorMessage}", result.ErrorMessage);
+        }
     }
 
     // Compatibility render method for tests using Rendering.IRenderer

@@ -3,23 +3,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Arch.Core;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Shared.Scale;
 using SceneContracts = PigeonPea.Scene.Contracts;
 
 namespace PigeonPea.Plugin.Scene.Manager;
 
-public class SceneManager : SceneContracts.ISceneManager
+public class SceneManager : SceneContracts.ISceneManager, SceneContracts.ISceneServiceProvider
 {
     private readonly Dictionary<Guid, SceneContracts.Scene> _scenes = new();
     private readonly IScaleManager? _scaleManager;
     private readonly ILogger<SceneManager>? _logger;
+    private readonly IServiceProvider? _hostServices;
+    private readonly IServiceScopeFactory? _scopeFactory;
+    private readonly Dictionary<Guid, IServiceProvider> _sceneServices = new();
+    private readonly Dictionary<Guid, IServiceScope> _sceneScopes = new();
     private Guid? _activeSceneId;
 
-    public SceneManager(IScaleManager? scaleManager = null, ILogger<SceneManager>? logger = null)
+    public SceneManager(IScaleManager? scaleManager = null, ILogger<SceneManager>? logger = null, IServiceProvider? hostServices = null)
     {
         _scaleManager = scaleManager;
         _logger = logger;
+        _hostServices = hostServices;
+        _scopeFactory = _hostServices?.GetService<IServiceScopeFactory>();
 
         if (_scaleManager != null)
         {
@@ -61,12 +68,50 @@ public class SceneManager : SceneContracts.ISceneManager
 
     public async Task<SceneContracts.Scene> LoadSceneAsync(string sceneName, SceneContracts.SceneLoadMode mode)
     {
-        var scene = new SceneContracts.Scene(sceneName, World.Create())
+        SceneContracts.SceneRole role;
+        Guid? parentSceneId = null;
+
+        if (mode == SceneContracts.SceneLoadMode.Single)
+        {
+            role = SceneContracts.SceneRole.Main;
+        }
+        else
+        {
+            role = SceneContracts.SceneRole.Sub;
+            parentSceneId = _activeSceneId;
+        }
+
+        var scene = new SceneContracts.Scene(sceneName, World.Create(), role, parentSceneId)
         {
             State = SceneContracts.SceneState.Active
         };
 
         _scenes[scene.Id] = scene;
+
+        if (_scopeFactory != null)
+        {
+            if (role == SceneContracts.SceneRole.Main)
+            {
+                var scope = _scopeFactory.CreateScope();
+                _sceneScopes[scene.Id] = scope;
+                _sceneServices[scene.Id] = scope.ServiceProvider;
+            }
+            else if (parentSceneId.HasValue && _sceneScopes.TryGetValue(parentSceneId.Value, out var parentScope))
+            {
+                _sceneServices[scene.Id] = parentScope.ServiceProvider;
+            }
+        }
+        else if (_hostServices != null)
+        {
+            if (role == SceneContracts.SceneRole.Main)
+            {
+                _sceneServices[scene.Id] = _hostServices;
+            }
+            else if (parentSceneId.HasValue && _sceneServices.TryGetValue(parentSceneId.Value, out var parentServices))
+            {
+                _sceneServices[scene.Id] = parentServices;
+            }
+        }
 
         if (mode == SceneContracts.SceneLoadMode.Single)
         {
@@ -88,6 +133,17 @@ public class SceneManager : SceneContracts.ISceneManager
             scene.State = SceneContracts.SceneState.Unloading;
             // TODO: Clean up world and entities
             _scenes.Remove(sceneId);
+
+            if (_sceneScopes.TryGetValue(sceneId, out var scope))
+            {
+                scope.Dispose();
+                _sceneScopes.Remove(sceneId);
+            }
+
+            if (_sceneServices.ContainsKey(sceneId))
+            {
+                _sceneServices.Remove(sceneId);
+            }
 
             if (_activeSceneId == sceneId)
             {
@@ -115,6 +171,21 @@ public class SceneManager : SceneContracts.ISceneManager
     {
         _scenes.TryGetValue(sceneId, out var scene);
         return scene;
+    }
+
+    public IServiceProvider GetServices(SceneContracts.Scene scene)
+    {
+        if (_sceneServices.TryGetValue(scene.Id, out var services))
+        {
+            return services;
+        }
+
+        if (_hostServices != null)
+        {
+            return _hostServices;
+        }
+
+        throw new InvalidOperationException($"No services available for scene '{scene.Name}' ({scene.Id}).");
     }
 
     public Task TransitionToSceneAsync(string sceneName, SceneContracts.ITransitionEffect transitionEffect)

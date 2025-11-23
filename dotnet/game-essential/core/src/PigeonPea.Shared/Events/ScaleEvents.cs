@@ -12,14 +12,22 @@ public readonly struct ScaleModeChangedEvent
     public ScaleMode OldMode { get; init; }
     public ScaleMode NewMode { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is ScaleModeChangedEvent other
+               && OldMode == other.OldMode
+               && NewMode == other.NewMode;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        unchecked
+        {
+            int hash = 17;
+            hash = (hash * 31) + OldMode.GetHashCode();
+            hash = (hash * 31) + NewMode.GetHashCode();
+            return hash;
+        }
     }
 
     public static bool operator ==(ScaleModeChangedEvent left, ScaleModeChangedEvent right)

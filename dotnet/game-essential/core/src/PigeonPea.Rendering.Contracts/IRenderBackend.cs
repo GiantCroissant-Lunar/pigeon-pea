@@ -17,7 +17,7 @@ public interface IRenderBackend : IDisposable
     RenderingCapabilities Capabilities { get; }
 
     // Lifecycle
-    
+
     /// <summary>
     /// Initialize the backend with the specified render context
     /// </summary>
@@ -29,14 +29,14 @@ public interface IRenderBackend : IDisposable
     void Shutdown();
 
     // Execute command list
-    
+
     /// <summary>
     /// Execute the commands from the render command list
     /// </summary>
     void Execute(IRenderCommandList commands);
 
     // Platform-specific present
-    
+
     /// <summary>
     /// Present the rendered frame to the output device
     /// </summary>

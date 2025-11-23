@@ -9,14 +9,26 @@ public readonly struct ScreenRect
     public ScreenRect(int x, int y, int width, int height)
     { X = x; Y = y; Width = width; Height = height; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is ScreenRect other
+               && X == other.X
+               && Y == other.Y
+               && Width == other.Width
+               && Height == other.Height;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        unchecked
+        {
+            int hash = 17;
+            hash = (hash * 31) + X.GetHashCode();
+            hash = (hash * 31) + Y.GetHashCode();
+            hash = (hash * 31) + Width.GetHashCode();
+            hash = (hash * 31) + Height.GetHashCode();
+            return hash;
+        }
     }
 
     public static bool operator ==(ScreenRect left, ScreenRect right)

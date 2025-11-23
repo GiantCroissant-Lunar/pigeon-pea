@@ -15,6 +15,8 @@ public sealed class DungeonGridOverlaySource : IOverlaySource<DungeonMapComponen
 {
     public IEnumerable<IOverlayFeature<GridPosition>> GetOverlays(DungeonMapComponent dungeon)
     {
+        if (dungeon is null) throw new ArgumentNullException(nameof(dungeon));
+
         foreach (var doorFeature in ExtractDoors(dungeon))
         {
             yield return doorFeature;
@@ -70,7 +72,7 @@ public sealed class DungeonGridOverlaySource : IOverlaySource<DungeonMapComponen
         }
 
         // Option 2: Extract from new metadata (preferred)
-        if (dungeon.FeatureMetadata != null && 
+        if (dungeon.FeatureMetadata != null &&
             dungeon.FeatureMetadata.TryGetValue("doors", out var doorsData))
         {
             var doors = TryDeserialize<DoorMetadata[]>(doorsData);
@@ -97,7 +99,7 @@ public sealed class DungeonGridOverlaySource : IOverlaySource<DungeonMapComponen
 
     private IEnumerable<IOverlayFeature<GridPosition>> ExtractTraps(DungeonMapComponent dungeon)
     {
-        if (dungeon.FeatureMetadata == null || 
+        if (dungeon.FeatureMetadata == null ||
             !dungeon.FeatureMetadata.TryGetValue("traps", out var trapsData))
         {
             yield break;
@@ -126,7 +128,7 @@ public sealed class DungeonGridOverlaySource : IOverlaySource<DungeonMapComponen
 
     private IEnumerable<IOverlayFeature<GridPosition>> ExtractSpawnPoints(DungeonMapComponent dungeon)
     {
-        if (dungeon.FeatureMetadata == null || 
+        if (dungeon.FeatureMetadata == null ||
             !dungeon.FeatureMetadata.TryGetValue("spawn_points", out var spawnsData))
         {
             yield break;
@@ -154,7 +156,7 @@ public sealed class DungeonGridOverlaySource : IOverlaySource<DungeonMapComponen
 
     private IEnumerable<IOverlayFeature<GridPosition>> ExtractTreasure(DungeonMapComponent dungeon)
     {
-        if (dungeon.FeatureMetadata == null || 
+        if (dungeon.FeatureMetadata == null ||
             !dungeon.FeatureMetadata.TryGetValue("treasure", out var treasureData))
         {
             yield break;
@@ -184,7 +186,7 @@ public sealed class DungeonGridOverlaySource : IOverlaySource<DungeonMapComponen
 
     private IEnumerable<IOverlayFeature<GridPosition>> ExtractStairs(DungeonMapComponent dungeon)
     {
-        if (dungeon.FeatureMetadata == null || 
+        if (dungeon.FeatureMetadata == null ||
             !dungeon.FeatureMetadata.TryGetValue("stairs", out var stairsData))
         {
             yield break;
@@ -252,7 +254,7 @@ public sealed class DungeonGridOverlaySource : IOverlaySource<DungeonMapComponen
     {
         // Check adjacent tiles to determine if door is horizontal or vertical
         // Simplified: check if walls are on left/right or top/bottom
-        
+
         bool hasLeftWall = x > 0 && !dungeon.Walkable[y * dungeon.Width + (x - 1)];
         bool hasRightWall = x < dungeon.Width - 1 && !dungeon.Walkable[y * dungeon.Width + (x + 1)];
         bool hasTopWall = y > 0 && !dungeon.Walkable[(y - 1) * dungeon.Width + x];

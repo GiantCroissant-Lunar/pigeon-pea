@@ -1,0 +1,11 @@
+{
+  "id": "combat-basic",
+  "name": "Basic Combat Service",
+  "version": "0.1.0",
+  "author": "PigeonPea",
+  "description": "Basic ECS-backed combat service using CombatStats for melee damage",
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Combat.Basic.dll,PigeonPea.Plugins.Combat.Basic.CombatPlugin"
+  },
+  "dependencies": []
+}

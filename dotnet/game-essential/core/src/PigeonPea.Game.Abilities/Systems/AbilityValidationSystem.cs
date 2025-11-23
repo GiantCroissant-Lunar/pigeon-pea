@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Arch.Core;
 using Arch.Core.Extensions;
-using NexusGas.Abilities;
+using PigeonPea.Gas.Abilities;
 using PigeonPea.Game.Abilities.Components;
 
 namespace PigeonPea.Game.Abilities.Systems;

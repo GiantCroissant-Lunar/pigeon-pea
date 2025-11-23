@@ -1,5 +1,6 @@
 using Arch.Core;
 using FluentAssertions;
+using Arch.Core.Extensions;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.ViewModels;
 using SadRogue.Primitives;
@@ -20,7 +21,7 @@ public class PlayerViewModelTests : IDisposable
         _world = World.Create();
         _playerEntity = _world.Create(
             new Position(new Point(10, 20)),
-            new PlayerComponent { Name = "TestHero" },
+            new PlayerComponent("TestHero"),
             new Health { Current = 75, Maximum = 100 },
             new Experience { Level = 5, CurrentXP = 250, XPToNextLevel = 500 }
         );
@@ -259,9 +260,10 @@ public class PlayerViewModelTests : IDisposable
         viewModel.Update(_world, _playerEntity);
         var firstHealth = viewModel.Health;
 
-        // Modify entity health
-        ref var health = ref _world.Get<Health>(_playerEntity);
-        health.Current = 50;
+        // Modify entity health by recreating the Health component
+        var health = _world.Get<Health>(_playerEntity);
+        _playerEntity.Remove<Health>();
+        _playerEntity.Add(new Health(50, health.Maximum));
 
         // Act - Second update
         viewModel.Update(_world, _playerEntity);

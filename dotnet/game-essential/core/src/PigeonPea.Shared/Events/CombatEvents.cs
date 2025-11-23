@@ -24,14 +24,24 @@ public readonly struct PlayerDamagedEvent
     /// </summary>
     public required string Source { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is PlayerDamagedEvent other
+               && Damage == other.Damage
+               && RemainingHealth == other.RemainingHealth
+               && Source == other.Source;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        unchecked
+        {
+            int hash = 17;
+            hash = (hash * 31) + Damage.GetHashCode();
+            hash = (hash * 31) + RemainingHealth.GetHashCode();
+            hash = (hash * 31) + (Source?.GetHashCode() ?? 0);
+            return hash;
+        }
     }
 
     public static bool operator ==(PlayerDamagedEvent left, PlayerDamagedEvent right)
@@ -64,14 +74,22 @@ public readonly struct EnemyDefeatedEvent
     /// </summary>
     public int ExperienceGained { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is EnemyDefeatedEvent other
+               && EnemyName == other.EnemyName
+               && ExperienceGained == other.ExperienceGained;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        unchecked
+        {
+            int hash = 17;
+            hash = (hash * 31) + (EnemyName?.GetHashCode() ?? 0);
+            hash = (hash * 31) + ExperienceGained.GetHashCode();
+            return hash;
+        }
     }
 
     public static bool operator ==(EnemyDefeatedEvent left, EnemyDefeatedEvent right)

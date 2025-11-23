@@ -97,8 +97,9 @@ public class GameViewModelTests : IDisposable
         var initialName = viewModel.Player.Name;
 
         // Act - Modify player health in the game world
-        ref var health = ref _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
-        health.Current = 50;
+        var health = _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
+        _world.PlayerEntity.Remove<Components.Health>();
+        _world.PlayerEntity.Add(new Components.Health(50, health.Maximum));
 
         // Advance time to trigger another update
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
@@ -172,8 +173,9 @@ public class GameViewModelTests : IDisposable
         propertyChanged = false;
 
         // Act - Modify health
-        ref var health = ref _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
-        health.Current = 75;
+        var health = _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
+        _world.PlayerEntity.Remove<Components.Health>();
+        _world.PlayerEntity.Add(new Components.Health(75, health.Maximum));
 
         // Advance time to trigger update
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
@@ -235,8 +237,10 @@ public class GameViewModelTests : IDisposable
         // Act - Damage player multiple times
         for (int i = 0; i < 5; i++)
         {
-            ref var health = ref _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
-            health.Current = Math.Max(0, health.Current - 10);
+            var health = _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
+            var newCurrent = Math.Max(0, health.Current - 10);
+            _world.PlayerEntity.Remove<Components.Health>();
+            _world.PlayerEntity.Add(new Components.Health(newCurrent, health.Maximum));
             scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
         }
 
@@ -389,8 +393,9 @@ public class GameViewModelTests : IDisposable
         scheduler.AdvanceBy(TimeSpan.FromMilliseconds(16).Ticks);
 
         // Damage player so we can test health restore
-        ref var health = ref _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
-        health.Current = 50;
+        var health = _world.EcsWorld.Get<Components.Health>(_world.PlayerEntity);
+        _world.PlayerEntity.Remove<Components.Health>();
+        _world.PlayerEntity.Add(new Components.Health(50, health.Maximum));
 
         // Add a consumable item to player inventory
         ref var inventory = ref _world.EcsWorld.Get<Components.Inventory>(_world.PlayerEntity);

@@ -51,7 +51,7 @@ public class GameWorldEventTests
         var enemyEntity = gameWorld.EcsWorld.Create(
             new Position(new Point(5, 5)),
             new Health { Current = 20, Maximum = 20 },
-            new CombatStats(attack: 10, defense: 1),
+            new CombatStats(10, 1),
             new AIComponent(AIBehavior.Aggressive)
         );
 
@@ -100,9 +100,9 @@ public class GameWorldEventTests
         var weakEnemyEntity = gameWorld.EcsWorld.Create(
             new Position(enemyPos),
             new Health { Current = 1, Maximum = 1 },
-            new CombatStats(attack: 1, defense: 0),
+            new CombatStats(1, 0),
             new AIComponent(AIBehavior.Aggressive),
-            new ExperienceValue(xp: 50),
+            new ExperienceValue(50),
             new Renderable('E', SadRogue.Primitives.Color.Red)
         );
 
@@ -132,7 +132,7 @@ public class GameWorldEventTests
             new Position(playerPos.Point),
             new Renderable('!', Color.Red),
             new Item("Test Potion", ItemType.Consumable),
-            new Consumable(healthRestore: 25),
+            new Consumable(25),
             new Pickup()
         );
 
@@ -157,7 +157,7 @@ public class GameWorldEventTests
         // Create and add item to player's inventory
         var itemEntity = gameWorld.EcsWorld.Create(
             new Item("Health Potion", ItemType.Consumable),
-            new Consumable(healthRestore: 25)
+            new Consumable(25)
         );
 
         ref var inventory = ref gameWorld.PlayerEntity.Get<Inventory>();
@@ -234,7 +234,7 @@ public class GameWorldEventTests
             new Position(playerPos.Point),
             new Renderable('!', Color.Red),
             new Item("Test Item", ItemType.Consumable),
-            new Consumable(healthRestore: 25),
+            new Consumable(25),
             new Pickup()
         );
 
@@ -254,14 +254,14 @@ public class GameWorldEventTests
         var enemy1 = gameWorld.EcsWorld.Create(
             new Position(new Point(5, 5)),
             new Health { Current = 20, Maximum = 20 },
-            new CombatStats(attack: 10, defense: 1),
+            new CombatStats(10, 1),
             new AIComponent(AIBehavior.Aggressive)
         );
 
         var enemy2 = gameWorld.EcsWorld.Create(
             new Position(new Point(6, 6)),
             new Health { Current = 20, Maximum = 20 },
-            new CombatStats(attack: 10, defense: 1),
+            new CombatStats(10, 1),
             new AIComponent(AIBehavior.Aggressive)
         );
 

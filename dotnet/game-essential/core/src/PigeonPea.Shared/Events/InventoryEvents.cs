@@ -19,14 +19,22 @@ public readonly struct ItemPickedUpEvent
     /// </summary>
     public required string ItemType { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is ItemPickedUpEvent other
+               && ItemName == other.ItemName
+               && ItemType == other.ItemType;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        unchecked
+        {
+            int hash = 17;
+            hash = (hash * 31) + (ItemName?.GetHashCode() ?? 0);
+            hash = (hash * 31) + (ItemType?.GetHashCode() ?? 0);
+            return hash;
+        }
     }
 
     public static bool operator ==(ItemPickedUpEvent left, ItemPickedUpEvent right)
@@ -59,14 +67,22 @@ public readonly struct ItemUsedEvent
     /// </summary>
     public required string ItemType { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is ItemUsedEvent other
+               && ItemName == other.ItemName
+               && ItemType == other.ItemType;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        unchecked
+        {
+            int hash = 17;
+            hash = (hash * 31) + (ItemName?.GetHashCode() ?? 0);
+            hash = (hash * 31) + (ItemType?.GetHashCode() ?? 0);
+            return hash;
+        }
     }
 
     public static bool operator ==(ItemUsedEvent left, ItemUsedEvent right)
@@ -94,14 +110,15 @@ public readonly struct ItemDroppedEvent
     /// </summary>
     public required string ItemName { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is ItemDroppedEvent other
+               && ItemName == other.ItemName;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return ItemName?.GetHashCode() ?? 0;
     }
 
     public static bool operator ==(ItemDroppedEvent left, ItemDroppedEvent right)

@@ -251,8 +251,9 @@ public class MapViewModelTests
         var viewModel = new MapViewModel();
 
         // Kill the player
-        ref var health = ref _gameWorld.EcsWorld.Get<Health>(_gameWorld.PlayerEntity);
-        health.Current = 0;
+        var health = _gameWorld.EcsWorld.Get<Health>(_gameWorld.PlayerEntity);
+        _gameWorld.PlayerEntity.Remove<Health>();
+        _gameWorld.PlayerEntity.Add(new Health(0, health.Maximum));
 
         // Act
         Action act = () => viewModel.Update(_gameWorld);

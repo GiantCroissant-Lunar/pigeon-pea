@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\_lib\nexus-camera2d\src\NexusCamera2D.Core\NexusCamera2D.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Camera2D.Core\NexusCamera2D.Core.csproj" />
     <ProjectReference Include="..\PigeonPea.Shared\PigeonPea.Shared.csproj" />
   </ItemGroup>
 

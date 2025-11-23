@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using Arch.Core;
@@ -73,6 +74,8 @@ public class MapViewModel : ReactiveObject
     /// <param name="gameWorld">The game world to sync from.</param>
     public void Update(GameWorld gameWorld)
     {
+        if (gameWorld is null) throw new ArgumentNullException(nameof(gameWorld));
+
         using (this.DelayChangeNotifications())
         {
             // Update map dimensions

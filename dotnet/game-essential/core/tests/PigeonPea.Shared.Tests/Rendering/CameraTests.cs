@@ -99,7 +99,7 @@ public class CameraTests : IDisposable
     {
         // Arrange
         var camera = new Camera(20, 10);
-        var entity = _world.Create(new Position(50, 50));
+        var entity = _world.Create(new Position(new Point(50, 50)));
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
@@ -118,7 +118,7 @@ public class CameraTests : IDisposable
     {
         // Arrange
         var camera = new Camera(20, 10);
-        var entity = _world.Create(new Position(5, 50)); // Near left edge
+        var entity = _world.Create(new Position(new Point(5, 50))); // Near left edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
@@ -135,7 +135,7 @@ public class CameraTests : IDisposable
     {
         // Arrange
         var camera = new Camera(20, 10);
-        var entity = _world.Create(new Position(50, 3)); // Near top edge
+        var entity = _world.Create(new Position(new Point(50, 3))); // Near top edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
@@ -152,7 +152,7 @@ public class CameraTests : IDisposable
     {
         // Arrange
         var camera = new Camera(20, 10);
-        var entity = _world.Create(new Position(95, 50)); // Near right edge
+        var entity = _world.Create(new Position(new Point(95, 50))); // Near right edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
@@ -169,7 +169,7 @@ public class CameraTests : IDisposable
     {
         // Arrange
         var camera = new Camera(20, 10);
-        var entity = _world.Create(new Position(50, 96)); // Near bottom edge
+        var entity = _world.Create(new Position(new Point(50, 96))); // Near bottom edge
         camera.Follow(entity);
         var mapBounds = new Rectangle(0, 0, 100, 100);
 
@@ -186,7 +186,7 @@ public class CameraTests : IDisposable
     {
         // Arrange
         var camera = new Camera();
-        var entity = _world.Create(new Position(50, 50));
+        var entity = _world.Create(new Position(new Point(50, 50)));
         camera.Follow(entity);
         _world.Destroy(entity); // Kill the entity
         var mapBounds = new Rectangle(0, 0, 100, 100);
@@ -238,7 +238,7 @@ public class CameraTests : IDisposable
     {
         // Arrange
         var camera = new Camera(50, 30);
-        var entity = _world.Create(new Position(10, 10));
+        var entity = _world.Create(new Position(new Point(10, 10)));
         camera.Follow(entity);
         // Map is smaller than viewport
         var mapBounds = new Rectangle(0, 0, 30, 20);
@@ -257,7 +257,7 @@ public class CameraTests : IDisposable
     {
         // Arrange
         var camera = new Camera(20, 10);
-        var entity = _world.Create(new Position(0, 0));
+        var entity = _world.Create(new Position(new Point(0, 0)));
         camera.Follow(entity);
         var mapBounds = new Rectangle(-50, -50, 100, 100);
 

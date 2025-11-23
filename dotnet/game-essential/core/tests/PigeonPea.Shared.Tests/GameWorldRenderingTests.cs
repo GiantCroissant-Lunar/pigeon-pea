@@ -1,6 +1,6 @@
 using Arch.Core.Extensions;
 using PigeonPea.Shared.Components;
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Tests.Mocks;
 using SadRogue.Primitives;
 using Xunit;
@@ -18,7 +18,7 @@ public class GameWorldRenderingTests
         // Arrange
         var mockRenderer = new MockRenderer();
 
-        // Act
+        // Act (compat ctor is GameWorld(IRenderer renderer, int width, int height, ILogger<GameWorld>? logger = null))
         var gameWorld = new GameWorld(mockRenderer, 80, 50);
 
         // Assert

@@ -1,0 +1,90 @@
+{
+  "stats": [
+    {
+      "id": "strength",
+      "displayName": "Strength",
+      "category": "attribute",
+      "minValue": 1,
+      "maxValue": 100,
+      "defaultValue": 10,
+      "description": "Physical power, affects melee damage and carry weight"
+    },
+    {
+      "id": "dexterity",
+      "displayName": "Dexterity",
+      "category": "attribute",
+      "minValue": 1,
+      "maxValue": 100,
+      "defaultValue": 10,
+      "description": "Agility and reflexes, affects accuracy and dodge"
+    },
+    {
+      "id": "constitution",
+      "displayName": "Constitution",
+      "category": "attribute",
+      "minValue": 1,
+      "maxValue": 100,
+      "defaultValue": 10,
+      "description": "Physical toughness, affects health and stamina"
+    },
+    {
+      "id": "weapon_damage",
+      "displayName": "Damage",
+      "category": "weapon",
+      "minValue": 1,
+      "maxValue": 999,
+      "defaultValue": 10,
+      "description": "Base weapon damage"
+    },
+    {
+      "id": "critical_chance",
+      "displayName": "Critical Chance",
+      "category": "weapon",
+      "minValue": 0.0,
+      "maxValue": 1.0,
+      "defaultValue": 0.05,
+      "description": "Chance to deal critical damage (0.0 to 1.0)"
+    },
+    {
+      "id": "trap_damage",
+      "displayName": "Trap Damage",
+      "category": "trap",
+      "minValue": 1,
+      "maxValue": 999,
+      "defaultValue": 10,
+      "description": "Damage dealt when trap is triggered"
+    },
+    {
+      "id": "trap_trigger_radius",
+      "displayName": "Trigger Radius",
+      "category": "trap",
+      "minValue": 1.0,
+      "maxValue": 10.0,
+      "defaultValue": 2.0,
+      "description": "Distance at which trap triggers"
+    }
+  ],
+  "derived_stats": [
+    {
+      "id": "max_health",
+      "displayName": "Max Health",
+      "category": "derived",
+      "formula": "constitution * 10 + level * 5",
+      "description": "Maximum health points"
+    },
+    {
+      "id": "melee_damage",
+      "displayName": "Melee Damage",
+      "category": "derived",
+      "formula": "strength * 0.5 + weapon_damage",
+      "description": "Total melee damage output"
+    },
+    {
+      "id": "dodge_chance",
+      "displayName": "Dodge Chance",
+      "category": "derived",
+      "formula": "dexterity * 0.001 + 0.05",
+      "description": "Chance to dodge attacks (5% base + 0.1% per DEX)"
+    }
+  ]
+}

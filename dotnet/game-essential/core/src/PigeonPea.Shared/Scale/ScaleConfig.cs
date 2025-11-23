@@ -115,8 +115,8 @@ public sealed class ScaleRegistry
                                 var ruleObj = ruleProp.Value;
                                 var minZ = ruleObj.GetProperty("minZoom").GetDouble();
                                 var maxZ = ruleObj.GetProperty("maxZoom").GetDouble();
-                                var filter = ruleObj.TryGetProperty("filter", out var f) && f.ValueKind == JsonValueKind.String 
-                                    ? f.GetString() 
+                                var filter = ruleObj.TryGetProperty("filter", out var f) && f.ValueKind == JsonValueKind.String
+                                    ? f.GetString()
                                     : null;
                                 overlayRules[layerId] = new OverlayRule(minZ, maxZ, filter);
                             }

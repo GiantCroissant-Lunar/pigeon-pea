@@ -14,4 +14,9 @@
     <ProjectReference Include="../../../../app-essential/core/src/PigeonPea.Contracts/PigeonPea.Contracts.csproj" />
     <ProjectReference Include="..\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\source-generators\PigeonPea.SourceGenerators.Proxy\PigeonPea.SourceGenerators.Proxy.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false" />
+  </ItemGroup>
 </Project>

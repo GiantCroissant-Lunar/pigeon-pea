@@ -1,4 +1,4 @@
-using NexusCamera2D.Core;
+using PigeonPea.Camera2D.Core;
 using PigeonPea.Rendering.Contracts;
 using Arch.Core;
 using Arch.Core.Extensions;

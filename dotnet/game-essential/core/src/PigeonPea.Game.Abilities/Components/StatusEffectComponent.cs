@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using NexusGas.Tags;
+using PigeonPea.Gas.Tags;
 
 namespace PigeonPea.Game.Abilities.Components;
 

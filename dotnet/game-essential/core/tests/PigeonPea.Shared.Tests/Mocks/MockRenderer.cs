@@ -1,4 +1,4 @@
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 
 namespace PigeonPea.Shared.Tests.Mocks;
@@ -11,6 +11,8 @@ public class MockRenderer : IRenderer
 {
     private Viewport _viewport;
     private IRenderTarget? _renderTarget;
+
+    public string Id => "mock";
 
     /// <summary>
     /// Gets the list of tiles drawn during rendering.
@@ -66,6 +68,10 @@ public class MockRenderer : IRenderer
     public void Initialize(IRenderTarget target)
     {
         _renderTarget = target;
+    }
+
+    public void Shutdown()
+    {
     }
 
     /// <summary>

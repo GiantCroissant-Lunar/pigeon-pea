@@ -1,7 +1,7 @@
 using Arch.Core;
 using Arch.Core.Extensions;
-using NexusPerception.Core.Enums;
-using NexusPerception.Core.Awareness;
+using PigeonPea.Perception.Enums;
+using PigeonPea.Perception.Awareness;
 using PigeonPea.Game.Perception.Components;
 using PigeonPea.Shared.ECS.Components;
 using Serilog;

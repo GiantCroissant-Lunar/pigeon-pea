@@ -11,4 +11,10 @@ public class GameState
     public int PlayerX { get; set; }
 
     public int PlayerY { get; set; }
+
+    public PigeonPea.Game.Contracts.Stats.Models.StatsView? Stats { get; set; }
+
+    public PigeonPea.Game.Contracts.Avatar.Models.AvatarView? Avatar { get; set; }
+
+    public PigeonPea.Game.Contracts.Inventory.Services.InventoryView? Inventory { get; set; }
 }

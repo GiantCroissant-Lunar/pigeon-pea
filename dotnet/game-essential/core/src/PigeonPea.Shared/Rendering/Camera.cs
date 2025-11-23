@@ -1,3 +1,4 @@
+using System;
 using Arch.Core;
 using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Components;
@@ -55,6 +56,8 @@ public class Camera
     /// <param name="mapBounds">The bounds of the map to clamp the camera within.</param>
     public void Update(World world, Rectangle mapBounds)
     {
+        if (world is null) throw new ArgumentNullException(nameof(world));
+
         if (FollowTarget.HasValue && world.IsAlive(FollowTarget.Value))
         {
             // Get the target entity's position

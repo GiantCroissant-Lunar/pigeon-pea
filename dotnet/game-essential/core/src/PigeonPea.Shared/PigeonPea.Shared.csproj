@@ -38,7 +38,8 @@
   <ItemGroup>
     <ProjectReference Include="../PigeonPea.Game.Contracts/PigeonPea.Game.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj"
+                     Condition="Exists('..\..\..\..\_lib\fantasy-map-generator-port\src\FantasyMapGenerator.Core\FantasyMapGenerator.Core.csproj')" />
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
     <ProjectReference Include="..\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
     <ProjectReference Include="..\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
@@ -47,6 +48,7 @@
 
   <!-- Use rendering primitives from PigeonPea.Shared.Rendering instead of local duplicates -->
   <ItemGroup>
+    <ProjectReference Include="..\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
   </ItemGroup>
 
   <!-- Temporarily exclude map rendering files that depend on FantasyMapGenerator -->

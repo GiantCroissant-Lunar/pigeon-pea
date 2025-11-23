@@ -1,4 +1,4 @@
-using PigeonPea.Shared.Rendering;
+using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Tests.Mocks;
 using SadRogue.Primitives;
 using Xunit;

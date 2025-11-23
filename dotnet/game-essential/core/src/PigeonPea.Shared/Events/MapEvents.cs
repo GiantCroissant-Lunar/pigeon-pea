@@ -16,14 +16,14 @@ public readonly struct DoorOpenedEvent
     /// </summary>
     public Point Position { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is DoorOpenedEvent other && Position.Equals(other.Position);
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return Position.GetHashCode();
     }
 
     public static bool operator ==(DoorOpenedEvent left, DoorOpenedEvent right)
@@ -51,14 +51,14 @@ public readonly struct StairsDescendedEvent
     /// </summary>
     public int NewFloor { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is StairsDescendedEvent other && NewFloor == other.NewFloor;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return NewFloor.GetHashCode();
     }
 
     public static bool operator ==(StairsDescendedEvent left, StairsDescendedEvent right)

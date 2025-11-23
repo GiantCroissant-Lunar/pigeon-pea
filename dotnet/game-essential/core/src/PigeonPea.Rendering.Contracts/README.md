@@ -6,9 +6,9 @@ Multi-backend rendering architecture for PigeonPea. This package provides the co
 
 The rendering architecture consists of three layers:
 
-1. **Domain Layer**: Domain-specific renderers (world map, dungeon, UI) that know *what* to render
+1. **Domain Layer**: Domain-specific renderers (world map, dungeon, UI) that know _what_ to render
 2. **Abstraction Layer**: Command-based interface (`IRenderCommandList`) that bridges domain and backend
-3. **Backend Layer**: Platform-specific implementations (ANSI, Braille, SkiaSharp) that know *how* to render
+3. **Backend Layer**: Platform-specific implementations (ANSI, Braille, SkiaSharp) that know _how_ to render
 
 ## Core Interfaces
 
@@ -20,17 +20,17 @@ Backend-agnostic rendering command list. Domain renderers submit commands to thi
 public interface IRenderCommandList
 {
     RenderingCapabilities Capabilities { get; }
-    
+
     void BeginFrame();
     void EndFrame();
     void Clear(Color color);
-    
+
     void DrawTile(int x, int y, Tile tile);
     void DrawTiles(ReadOnlySpan<TileCommand> commands);
     void DrawBuffer(int x, int y, int width, int height, ReadOnlySpan<byte> rgba);
     void DrawSprite(int x, int y, string spriteId, Color? tint = null);
     void DrawText(int x, int y, string text, Color foreground, Color background);
-    
+
     void SetViewport(Viewport viewport);
     void SetCamera(int centerX, int centerY, double zoom);
 }
@@ -45,7 +45,7 @@ public interface IRenderBackend : IDisposable
 {
     string Id { get; }
     RenderingCapabilities Capabilities { get; }
-    
+
     void Initialize(RenderContext context);
     void Shutdown();
     void Execute(IRenderCommandList commands);
@@ -85,7 +85,7 @@ while (running)
 {
     HandleInput();
     UpdateGameLogic();
-    
+
     // Render
     dungeonRenderer.Render(world, commandList, renderOptions);
     backend.Execute(commandList);
@@ -101,13 +101,13 @@ backend.Shutdown();
 public class SimpleDungeonRenderer : IDomainRenderer
 {
     public string Id => "simple-dungeon-renderer";
-    
+
     public void Render(object world, IRenderCommandList commands, RenderOptions options)
     {
         commands.BeginFrame();
         commands.Clear(Color.Black);
         commands.SetViewport(options.Viewport);
-        
+
         // Draw dungeon tiles
         for (int y = 0; y < height; y++)
         {
@@ -117,10 +117,10 @@ public class SimpleDungeonRenderer : IDomainRenderer
                 commands.DrawTile(x, y, tile);
             }
         }
-        
+
         // Draw player
         commands.DrawTile(playerX, playerY, playerTile);
-        
+
         commands.EndFrame();
     }
 }
@@ -130,11 +130,11 @@ public class SimpleDungeonRenderer : IDomainRenderer
 
 Different backends support different rendering features:
 
-| Backend | Tile | Buffer | Sprite | Antialiasing | Mode |
-|---------|------|--------|--------|--------------|------|
-| ANSI | ✅ Native | ❌ No | ❌ No | ❌ No | Tile |
-| Braille | ⚠️ Emulated | ✅ Native | ❌ No | ❌ No | Buffer |
-| SkiaSharp | ✅ Emulated | ✅ Native | ✅ Native | ✅ Yes | Hybrid |
+| Backend   | Tile        | Buffer    | Sprite    | Antialiasing | Mode   |
+| --------- | ----------- | --------- | --------- | ------------ | ------ |
+| ANSI      | ✅ Native   | ❌ No     | ❌ No     | ❌ No        | Tile   |
+| Braille   | ⚠️ Emulated | ✅ Native | ❌ No     | ❌ No        | Buffer |
+| SkiaSharp | ✅ Emulated | ✅ Native | ✅ Native | ✅ Yes       | Hybrid |
 
 Domain renderers can query `commands.Capabilities` to determine the optimal rendering strategy for each backend.
 

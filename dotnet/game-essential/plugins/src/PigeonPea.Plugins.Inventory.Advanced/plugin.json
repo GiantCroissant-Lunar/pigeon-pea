@@ -1,0 +1,15 @@
+{
+  "id": "inventory-advanced",
+  "name": "Advanced Inventory Service",
+  "version": "0.1.0",
+  "description": "Advanced ECS-backed inventory service with equipment support.",
+  "author": "Pigeon Pea Team",
+  "capabilities": ["inventory", "inventory:advanced"],
+  "supportedProfiles": ["dotnet.console"],
+  "entryPoint": {
+    "dotnet.console": "PigeonPea.Plugins.Inventory.Advanced.dll,PigeonPea.Plugins.Inventory.Advanced.InventoryAdvancedPlugin"
+  },
+  "dependencies": [],
+  "priority": 300,
+  "loadStrategy": "eager"
+}

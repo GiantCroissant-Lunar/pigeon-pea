@@ -27,13 +27,13 @@
 
   <ItemGroup>
     <!-- Core GOAP planner (shared) -->
-    <ProjectReference Include="..\PigeonPea.Shared.Goap\PigeonPea.Shared.Goap.csproj" />
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Goap.Core\NexusGoap.Core.csproj" />
 
-    <!-- Ability system core (shared GAS) -->
-    <ProjectReference Include="..\PigeonPea.Shared.Gas\PigeonPea.Shared.Gas.csproj" />
+    <!-- Ability system core (GAS engine lib) -->
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Gas.Core\NexusGas.Core.csproj" />
 
     <!-- Perception core (shared) -->
-    <ProjectReference Include="..\PigeonPea.Shared.Perception\PigeonPea.Shared.Perception.csproj" />
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Perception.Core\NexusPerception.Core.csproj" />
 
     <!-- Shared ECS components -->
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />

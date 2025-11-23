@@ -15,14 +15,15 @@ public struct InventoryComponent
         Inventory = new SharedInventoryCore(maxSlots, maxWeight);
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is InventoryComponent other
+               && Equals(Inventory, other.Inventory);
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        return Inventory?.GetHashCode() ?? 0;
     }
 
     public static bool operator ==(InventoryComponent left, InventoryComponent right)

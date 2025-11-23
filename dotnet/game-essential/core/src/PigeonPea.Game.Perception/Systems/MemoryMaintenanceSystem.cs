@@ -94,7 +94,7 @@ public sealed class MemoryMaintenanceSystem
     /// Removes last-known positions that are too old.
     /// </summary>
     private void CleanupOldPositions(
-        NexusPerception.Core.Models.KnowledgeData knowledge,
+        PigeonPea.Perception.Models.KnowledgeData knowledge,
         float currentTime,
         float maxAge)
     {
@@ -113,7 +113,7 @@ public sealed class MemoryMaintenanceSystem
     /// Removes known item locations that are too old.
     /// </summary>
     private void CleanupOldItems(
-        NexusPerception.Core.Models.KnowledgeData knowledge,
+        PigeonPea.Perception.Models.KnowledgeData knowledge,
         float currentTime,
         float maxAge)
     {

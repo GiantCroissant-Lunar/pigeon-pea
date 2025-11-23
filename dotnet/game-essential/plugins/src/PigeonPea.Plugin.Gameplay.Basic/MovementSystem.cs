@@ -1,5 +1,7 @@
+using System;
 using System.Numerics;
 using Arch.Core;
+using Arch.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Shared.Components;
 using SadRogue.Primitives;
@@ -20,20 +22,32 @@ public class MovementSystem
 
     public void Update(World world, float deltaTime)
     {
+        if (world is null) throw new ArgumentNullException(nameof(world));
+
         // Query for all entities that can move (player or AI)
         var movableQuery = new QueryDescription()
             .WithAll<Position>()
             .WithAny<PlayerInputComponent, AIComponent>();
 
         // Get the dungeon map to check for collisions
-        Entity dungeonEntity = world.QueryFirst().WithAll<DungeonMapComponent>().Build();
-        if (!dungeonEntity.IsAlive())
+        var dungeonQuery = new QueryDescription().WithAll<DungeonMapComponent>();
+        DungeonMapComponent dungeonMap = null!; // will be set if hasDungeon is true
+        var hasDungeon = false;
+
+        world.Query(in dungeonQuery, (ref DungeonMapComponent map) =>
+        {
+            if (!hasDungeon)
+            {
+                dungeonMap = map; // copy value, avoid capturing ref in lambdas below
+                hasDungeon = true;
+            }
+        });
+
+        if (!hasDungeon)
         {
             _logger.LogWarning("No dungeon map found for movement system.");
             return;
         }
-
-        ref var dungeonMap = ref world.Get<DungeonMapComponent>(dungeonEntity);
 
         // Query for all blocking entities (walls, monsters)
         var blockingQuery = new QueryDescription()
@@ -53,10 +67,11 @@ public class MovementSystem
             // Check for player input
             if (world.Has<PlayerInputComponent>(entity))
             {
-                ref var input = ref world.Get<PlayerInputComponent>(entity);
+                var input = world.Get<PlayerInputComponent>(entity);
                 moveDirection = input.MoveDirection;
-                // Reset input after consuming it
-                input.MoveDirection = Vector2.Zero;
+                // Reset input after consuming it by replacing the component
+                entity.Remove<PlayerInputComponent>();
+                entity.Add(new PlayerInputComponent(Vector2.Zero, input.ActionPressed));
             }
             // TODO: Add AI movement logic here if AIComponent is present
             // else if (world.Has<AIComponent>(entity))
@@ -84,8 +99,9 @@ public class MovementSystem
                     // Check for blocking entities
                     if (isWalkable && !blockingPositions.Contains(newPosition))
                     {
-                        // Move the entity
-                        position.Point = newPosition;
+                        // Move the entity by replacing the Position component
+                        entity.Remove<Position>();
+                        entity.Add(new Position(newPosition));
                         _logger.LogDebug($"Moved entity to {newPosition}");
                     }
                     else

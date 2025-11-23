@@ -33,7 +33,7 @@ public sealed class ScaleConfigLoader
         {
             var json = File.ReadAllText(path);
             var doc = JsonDocument.Parse(json);
-            
+
             if (!doc.RootElement.TryGetProperty("scales", out var scalesElement) ||
                 scalesElement.ValueKind != JsonValueKind.Array)
             {
@@ -71,7 +71,7 @@ public sealed class ScaleConfigLoader
         var minZoom = el.GetProperty("minZoom").GetDouble();
         var maxZoom = el.GetProperty("maxZoom").GetDouble();
         var chunkSizeCells = el.GetProperty("chunkSizeCells").GetInt32();
-        
+
         string? description = null;
         if (el.TryGetProperty("description", out var descEl) && descEl.ValueKind == JsonValueKind.String)
         {
@@ -101,14 +101,14 @@ public sealed class ScaleConfigLoader
                 var ruleObj = ruleProp.Value;
                 var minZ = ruleObj.GetProperty("minZoom").GetDouble();
                 var maxZ = ruleObj.GetProperty("maxZoom").GetDouble();
-                var filter = ruleObj.TryGetProperty("filter", out var f) && f.ValueKind == JsonValueKind.String 
-                    ? f.GetString() 
+                var filter = ruleObj.TryGetProperty("filter", out var f) && f.ValueKind == JsonValueKind.String
+                    ? f.GetString()
                     : null;
                 overlayRules[layerId] = new OverlayRule(minZ, maxZ, filter);
             }
         }
 
-        return new ScaleConfig(id, environment, metersPerCell, minZoom, maxZoom, chunkSizeCells, 
+        return new ScaleConfig(id, environment, metersPerCell, minZoom, maxZoom, chunkSizeCells,
             description, overlayLayers, overlayRules);
     }
 
@@ -123,7 +123,7 @@ public sealed class ScaleConfigLoader
         {
             var json = File.ReadAllText(path);
             var doc = JsonDocument.Parse(json);
-            
+
             if (!doc.RootElement.TryGetProperty("transitions", out var transitionsElement) ||
                 transitionsElement.ValueKind != JsonValueKind.Array)
             {

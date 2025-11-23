@@ -1,9 +1,9 @@
 using Arch.Core;
 using Arch.Core.Extensions;
 using GoRogue.FOV;
-using NexusPerception.Core.Models;
-using NexusPerception.Core.Auditory;
-using NexusPerception.Core.Visual;
+using PigeonPea.Perception.Models;
+using PigeonPea.Perception.Auditory;
+using PigeonPea.Perception.Visual;
 using PigeonPea.Game.Perception.Components;
 using PigeonPea.Game.Perception.Sensors;
 using PigeonPea.Game.Perception.Integration;

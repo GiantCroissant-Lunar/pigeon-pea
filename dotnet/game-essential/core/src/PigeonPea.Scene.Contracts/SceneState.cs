@@ -7,3 +7,9 @@ public enum SceneState
     Paused,
     Unloading
 }
+
+public enum SceneRole
+{
+    Main,
+    Sub
+}

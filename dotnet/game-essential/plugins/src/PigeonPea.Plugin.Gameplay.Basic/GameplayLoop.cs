@@ -15,15 +15,18 @@ public class GameplayLoop : IGameplayLoop
 {
     private readonly PlayerInputSystem _playerInputSystem;
     private readonly MovementSystem _movementSystem;
+    private readonly PigeonPea.Game.Contracts.Stats.Services.IService _statsService;
     private readonly ILogger<GameplayLoop> _logger;
 
     public GameplayLoop(
         PlayerInputSystem playerInputSystem,
         MovementSystem movementSystem,
+        PigeonPea.Game.Contracts.Stats.Services.IService statsService,
         ILogger<GameplayLoop> logger)
     {
         _playerInputSystem = playerInputSystem;
         _movementSystem = movementSystem;
+        _statsService = statsService;
         _logger = logger;
     }
 

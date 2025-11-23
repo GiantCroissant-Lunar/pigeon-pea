@@ -118,6 +118,31 @@ public class RenderCommandList : IRenderCommandList
         });
     }
 
+    public void DrawPolygon(ReadOnlySpan<Point> points, Color fillColor, Color? strokeColor = null, int strokeWidth = 1)
+    {
+        var pts = points.ToArray();
+        _commands.Add(new RenderCommand
+        {
+            Type = RenderCommandType.DrawPolygon,
+            Points = pts,
+            FillColor = fillColor,
+            StrokeColor = strokeColor,
+            StrokeWidth = strokeWidth
+        });
+    }
+
+    public void DrawPolyline(ReadOnlySpan<Point> points, Color strokeColor, int strokeWidth = 1)
+    {
+        var pts = points.ToArray();
+        _commands.Add(new RenderCommand
+        {
+            Type = RenderCommandType.DrawPolyline,
+            Points = pts,
+            StrokeColor = strokeColor,
+            StrokeWidth = strokeWidth
+        });
+    }
+
     /// <summary>
     /// Get the list of commands for backend execution.
     /// Public API for backends.
@@ -131,32 +156,38 @@ public class RenderCommandList : IRenderCommandList
 public class RenderCommand
 {
     public RenderCommandType Type { get; set; }
-    
+
     // Position and dimensions
     public int X { get; set; }
     public int Y { get; set; }
     public int Width { get; set; }
     public int Height { get; set; }
-    
+
+    // Vector commands
+    public Point[]? Points { get; set; }
+    public Color FillColor { get; set; }
+    public Color? StrokeColor { get; set; }
+    public int StrokeWidth { get; set; }
+
     // Tile commands
     public Tile Tile { get; set; }
     public TileCommand[]? TileCommands { get; set; }
-    
+
     // Buffer commands
     public byte[]? BufferData { get; set; }
-    
+
     // Sprite commands
     public string? SpriteId { get; set; }
     public Color? SpriteTint { get; set; }
-    
+
     // Text commands
     public string? Text { get; set; }
     public Color Foreground { get; set; }
     public Color Background { get; set; }
-    
+
     // Clear command
     public Color ClearColor { get; set; }
-    
+
     // Viewport/Camera
     public Viewport Viewport { get; set; }
     public int CameraX { get; set; }
@@ -177,6 +208,8 @@ public enum RenderCommandType
     DrawBuffer,
     DrawSprite,
     DrawText,
+    DrawPolygon,
+    DrawPolyline,
     SetViewport,
     SetCamera
 }

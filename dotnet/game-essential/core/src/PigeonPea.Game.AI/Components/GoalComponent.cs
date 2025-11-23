@@ -1,4 +1,4 @@
-using NexusGoap.Goals;
+using PigeonPea.Goap.Goals;
 
 namespace PigeonPea.Game.AI.Components;
 

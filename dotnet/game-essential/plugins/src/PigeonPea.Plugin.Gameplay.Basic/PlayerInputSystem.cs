@@ -1,8 +1,12 @@
+using System;
 using System.Numerics;
 using Arch.Core;
+using Arch.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Input.Services;
 using PigeonPea.Shared.Components;
+
+using InputService = PigeonPea.Contracts.Input.Services.IService;
 
 namespace PigeonPea.Plugin.Gameplay.Basic.Systems;
 
@@ -11,10 +15,10 @@ namespace PigeonPea.Plugin.Gameplay.Basic.Systems;
 /// </summary>
 public class PlayerInputSystem
 {
-    private readonly IInputService _inputService;
+    private readonly InputService _inputService;
     private readonly ILogger<PlayerInputSystem> _logger;
 
-    public PlayerInputSystem(IInputService inputService, ILogger<PlayerInputSystem> logger)
+    public PlayerInputSystem(InputService inputService, ILogger<PlayerInputSystem> logger)
     {
         _inputService = inputService;
         _logger = logger;
@@ -22,6 +26,8 @@ public class PlayerInputSystem
 
     public void Update(World world, float deltaTime)
     {
+        if (world is null) throw new ArgumentNullException(nameof(world));
+
         // Query for the player entity
         var playerQuery = new QueryDescription()
             .WithAll<PlayerComponent, PlayerInputComponent>();
@@ -34,8 +40,8 @@ public class PlayerInputSystem
             var actionPressed = _inputService.IsActionPressed("Action");
 
             // Update the input component
-            input.MoveDirection = new Vector2(horizontal, vertical);
-            input.ActionPressed = actionPressed;
+            entity.Remove<PlayerInputComponent>();
+            entity.Add(new PlayerInputComponent(new Vector2(horizontal, vertical), actionPressed));
         });
     }
 }

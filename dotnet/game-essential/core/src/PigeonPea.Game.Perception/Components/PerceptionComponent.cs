@@ -1,4 +1,4 @@
-using NexusPerception.Core.Models;
+using PigeonPea.Perception.Models;
 
 namespace PigeonPea.Game.Perception.Components;
 

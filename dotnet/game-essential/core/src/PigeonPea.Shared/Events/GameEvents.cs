@@ -19,14 +19,22 @@ public readonly struct GameStateChangedEvent
     /// </summary>
     public required string PreviousState { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is GameStateChangedEvent other
+               && NewState == other.NewState
+               && PreviousState == other.PreviousState;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        unchecked
+        {
+            int hash = 17;
+            hash = (hash * 31) + (NewState?.GetHashCode() ?? 0);
+            hash = (hash * 31) + (PreviousState?.GetHashCode() ?? 0);
+            return hash;
+        }
     }
 
     public static bool operator ==(GameStateChangedEvent left, GameStateChangedEvent right)

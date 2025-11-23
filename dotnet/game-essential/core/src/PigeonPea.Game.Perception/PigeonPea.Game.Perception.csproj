@@ -27,7 +27,7 @@
 
   <ItemGroup>
     <!-- Reference NexusPerception.Core library -->
-    <ProjectReference Include="..\..\..\..\_lib\nexus-perception\src\NexusPerception.Core\NexusPerception.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Perception.Core\NexusPerception.Core.csproj" />
 
     <!-- Reference shared ECS components -->
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />

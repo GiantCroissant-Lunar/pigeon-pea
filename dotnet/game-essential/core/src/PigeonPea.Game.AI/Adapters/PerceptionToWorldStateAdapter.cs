@@ -1,10 +1,10 @@
 using System.Linq;
 using Arch.Core;
 using Arch.Core.Extensions;
-using NexusGoap.WorldState;
-using NexusPerception.Core.Enums;
-using NexusPerception.Core.Models;
-using NexusGas.Attributes;
+using PigeonPea.Goap.WorldState;
+using PigeonPea.Perception.Enums;
+using PigeonPea.Perception.Models;
+using PigeonPea.Gas.Attributes;
 using PigeonPea.Game.Abilities.Components;
 using PigeonPea.Game.Perception.Components;
 using PigeonPea.Shared.ECS.Components;

@@ -87,6 +87,8 @@ public class InventoryViewModel : ReactiveObject, IDisposable
     /// <param name="playerEntity">The player entity to sync from.</param>
     public void Update(World world, Entity playerEntity)
     {
+        if (world is null) throw new ArgumentNullException(nameof(world));
+
         if (!world.IsAlive(playerEntity))
         {
             return;

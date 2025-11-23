@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using NexusGoap.Actions;
-using NexusGoap.Goals;
+using PigeonPea.Goap.Actions;
+using PigeonPea.Goap.Goals;
 
 namespace PigeonPea.Game.AI.Components;
 

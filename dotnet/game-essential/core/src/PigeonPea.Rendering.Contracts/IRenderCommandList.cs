@@ -14,7 +14,7 @@ public interface IRenderCommandList
     RenderingCapabilities Capabilities { get; }
 
     // Frame management
-    
+
     /// <summary>
     /// Begin a new rendering frame. Call before submitting commands.
     /// </summary>
@@ -31,7 +31,7 @@ public interface IRenderCommandList
     void Clear(Color color);
 
     // Tile-based commands (for console/grid rendering)
-    
+
     /// <summary>
     /// Draw a single tile at the specified grid position
     /// </summary>
@@ -43,7 +43,7 @@ public interface IRenderCommandList
     void DrawTiles(ReadOnlySpan<TileCommand> commands);
 
     // Buffer-based commands (for pixel-perfect rendering)
-    
+
     /// <summary>
     /// Draw an RGBA pixel buffer at the specified position
     /// </summary>
@@ -64,14 +64,14 @@ public interface IRenderCommandList
     void DrawSprite(int x, int y, string spriteId, Color? tint = null);
 
     // Text commands (available on all backends)
-    
+
     /// <summary>
     /// Draw text at the specified position
     /// </summary>
     void DrawText(int x, int y, string text, Color foreground, Color background);
 
     // Viewport/camera
-    
+
     /// <summary>
     /// Set the viewport for subsequent rendering commands
     /// </summary>
@@ -84,4 +84,21 @@ public interface IRenderCommandList
     /// <param name="centerY">Camera center Y coordinate</param>
     /// <param name="zoom">Zoom level (1.0 = normal)</param>
     void SetCamera(int centerX, int centerY, double zoom);
+
+    // Vector commands
+
+    /// <summary>
+    /// Draw a filled polygon
+    /// </summary>
+    void DrawPolygon(ReadOnlySpan<Point> points, Color fillColor, Color? strokeColor = null, int strokeWidth = 1);
+
+    /// <summary>
+    /// Draw a polyline (unfilled connected lines)
+    /// </summary>
+    void DrawPolyline(ReadOnlySpan<Point> points, Color strokeColor, int strokeWidth = 1);
+
+    /// <summary>
+    /// Get the list of commands for backend execution.
+    /// </summary>
+    IReadOnlyList<RenderCommand> GetCommands();
 }

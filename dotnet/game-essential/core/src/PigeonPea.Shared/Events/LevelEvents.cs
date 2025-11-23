@@ -19,14 +19,22 @@ public readonly struct PlayerLevelUpEvent
     /// </summary>
     public int HealthIncrease { get; init; }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
-        throw new NotImplementedException();
+        return obj is PlayerLevelUpEvent other
+               && NewLevel == other.NewLevel
+               && HealthIncrease == other.HealthIncrease;
     }
 
     public override int GetHashCode()
     {
-        throw new NotImplementedException();
+        unchecked
+        {
+            int hash = 17;
+            hash = (hash * 31) + NewLevel.GetHashCode();
+            hash = (hash * 31) + HealthIncrease.GetHashCode();
+            return hash;
+        }
     }
 
     public static bool operator ==(PlayerLevelUpEvent left, PlayerLevelUpEvent right)

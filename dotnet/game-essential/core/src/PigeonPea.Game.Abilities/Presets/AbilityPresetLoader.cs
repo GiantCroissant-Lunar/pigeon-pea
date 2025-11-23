@@ -3,10 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using NexusGas.Abilities;
-using NexusGas.Attributes;
-using NexusGas.Effects;
-using NexusGas.Tags;
+using PigeonPea.Gas.Abilities;
+using PigeonPea.Gas.Attributes;
+using PigeonPea.Gas.Effects;
+using PigeonPea.Gas.Tags;
 
 namespace PigeonPea.Game.Abilities.Presets;
 

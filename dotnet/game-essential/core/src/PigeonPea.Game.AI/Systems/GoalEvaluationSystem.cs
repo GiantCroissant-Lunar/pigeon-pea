@@ -1,7 +1,7 @@
 using System;
 using Arch.Core;
 using Arch.Core.Extensions;
-using NexusGoap.Goals;
+using PigeonPea.Goap.Goals;
 using PigeonPea.Game.AI.Adapters;
 using PigeonPea.Game.AI.Components;
 using PigeonPea.Game.Perception.Components;

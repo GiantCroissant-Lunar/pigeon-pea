@@ -17,6 +17,7 @@
 
     <!-- Logging -->
     <PackageReference Include="Serilog" Version="4.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
 
     <!-- Event Publishing -->
     <PackageReference Include="MessagePipe" Version="1.8.0" />
@@ -26,17 +27,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Plugin System -->
-    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Contracts.Plugin\PigeonPea.Contracts.Plugin.csproj" />
+    <!-- Plugin System and contracts -->
+    <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
 
     <!-- Shared ECS Components -->
-    <ProjectReference Include="..\..\..\engine\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
 
     <!-- Game Contracts -->
-    <ProjectReference Include="..\..\..\engine\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
-
-    <!-- Input Contracts -->
-    <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts.Input\PigeonPea.Contracts.Input.csproj" />
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -22,6 +22,18 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<PlayerInputSystem>();
         services.AddSingleton<MovementSystem>();
 
+        services.AddSingleton<PigeonPea.Game.Contracts.Stats.Services.IService>(sp =>
+        {
+            var registry = sp.GetRequiredService<PigeonPea.Contracts.Plugin.IRegistry>();
+            return new PigeonPea.Game.Contracts.Stats.Services.Proxy.Service(registry);
+        });
+
+        services.AddSingleton<PigeonPea.Game.Contracts.Combat.Services.IService>(sp =>
+        {
+            var registry = sp.GetRequiredService<PigeonPea.Contracts.Plugin.IRegistry>();
+            return new PigeonPea.Game.Contracts.Combat.Services.Proxy.Service(registry);
+        });
+
         // Register the main gameplay loop
         services.AddSingleton<IGameplayLoop, GameplayLoop>();
 
