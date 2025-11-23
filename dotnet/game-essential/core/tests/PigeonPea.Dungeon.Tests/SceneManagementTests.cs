@@ -228,7 +228,7 @@ public class SceneManagementTests : IDisposable
 
         // Act
         var dungeonEntity = generator.Generate(_world, options);
-        
+
         // Query for dungeon
         var query = new QueryDescription().WithAll<DungeonMapComponent>();
         var foundEntity = Entity.Null;

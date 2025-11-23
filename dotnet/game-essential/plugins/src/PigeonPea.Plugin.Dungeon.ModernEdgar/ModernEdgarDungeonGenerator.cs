@@ -21,6 +21,11 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
 
     public Task InitializeAsync(IPluginContext context, CancellationToken ct)
     {
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
         _logger = context.Logger;
         _logger.LogInformation("ModernEdgar dungeon generator initialized");
 
@@ -40,6 +45,16 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
 
     public Entity Generate(World world, DungeonGenerationOptions options)
     {
+        if (world is null)
+        {
+            throw new ArgumentNullException(nameof(world));
+        }
+
+        if (options is null)
+        {
+            throw new ArgumentNullException(nameof(options));
+        }
+
         _logger.LogInformation("Generating dungeon with Edgar: {Width}x{Height}", options.Width, options.Height);
 
         try
@@ -108,9 +123,10 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
                 {
                     mapDescription.AddConnection(from, to);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Ignore duplicate connection errors
+                    _logger.LogError(ex, "Error adding extra connection between rooms {From} and {To}", from, to);
+                    throw;
                 }
             }
         }
@@ -225,7 +241,7 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
         var traps = new List<TrapMetadata>();
         var rng = new Random();
         var trapTypes = new[] { "spike", "arrow", "poison_gas", "pit", "fire" };
-        
+
         int trapCount = Math.Max(2, (width * height) / 300);
         var placed = new HashSet<(int, int)>();
 
@@ -258,7 +274,7 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
         var treasures = new List<TreasureMetadata>();
         var rng = new Random();
         var containerTypes = new[] { "Chest", "Barrel", "Crate", "Sarcophagus" };
-        
+
         int treasureCount = Math.Max(1, (width * height) / 400);
         var placed = new HashSet<(int, int)>();
 
@@ -292,7 +308,7 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
         var spawns = new List<SpawnPointMetadata>();
         var rng = new Random();
         var monsterTypes = new[] { "goblin", "orc", "skeleton", "spider", "rat" };
-        
+
         int spawnCount = Math.Max(3, (width * height) / 250);
         var placed = new HashSet<(int, int)>();
 
@@ -306,7 +322,7 @@ public class ModernEdgarDungeonGenerator : IPlugin, IDungeonGenerator
                 continue;
 
             bool isBoss = spawns.Count == 0 && rng.NextDouble() < 0.15;
-            
+
             spawns.Add(new SpawnPointMetadata(
                 X: x,
                 Y: y,

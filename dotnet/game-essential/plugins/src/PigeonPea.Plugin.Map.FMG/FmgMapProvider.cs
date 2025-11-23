@@ -63,15 +63,25 @@ public class FmgMapProvider : IMapProvider
 
     private MapGenerationSettings CreateSettingsFromBounds(BoundingBox bounds)
     {
-        // Use reasonable defaults for map size
+        // Use reasonable defaults for map size and generation parameters,
+        // aligned with the console MapHud demo configuration.
         var width = Math.Max(1024, (int)bounds.Width);
         var height = Math.Max(1024, (int)bounds.Height);
-        
+
         return new MapGenerationSettings
         {
             Seed = HashBounds(bounds),
             Width = width,
-            Height = height
+            Height = height,
+            NumPoints = 2000,
+            RNGMode = RNGMode.Alea,
+            SeedString = "fmg-demo",
+            ReseedAtPhaseStart = true,
+            GridMode = GridMode.Jittered,
+            VoronoiBackend = VoronoiBackend.Nts,
+            HeightmapMode = HeightmapMode.Template,
+            UseAdvancedNoise = false,
+            HeightmapTemplate = "continents"
         };
     }
 

@@ -35,14 +35,14 @@ public class FmgIntegrationTests
         // Assert
         Assert.NotNull(mapData);
         Assert.NotEmpty(features);
-        
+
         // Verify we have different types of features
         var kinds = features.Select(f => f.Kind).Distinct().ToList();
         Assert.Contains(FeatureKind.River, kinds);
-        var hasSettlement = kinds.Any(k => 
-            k == FeatureKind.Capital || 
-            k == FeatureKind.City || 
-            k == FeatureKind.Town || 
+        var hasSettlement = kinds.Any(k =>
+            k == FeatureKind.Capital ||
+            k == FeatureKind.City ||
+            k == FeatureKind.Town ||
             k == FeatureKind.Village);
         Assert.True(hasSettlement, "Should have at least one settlement feature");
     }
@@ -57,9 +57,9 @@ public class FmgIntegrationTests
 
         // Act
         var settlements = mapData.GetFeatures(bounds, ZoomLevel.Region)
-            .Where(f => f.Kind == FeatureKind.Capital || 
-                        f.Kind == FeatureKind.City || 
-                        f.Kind == FeatureKind.Town || 
+            .Where(f => f.Kind == FeatureKind.Capital ||
+                        f.Kind == FeatureKind.City ||
+                        f.Kind == FeatureKind.Town ||
                         f.Kind == FeatureKind.Village)
             .ToList();
 
@@ -69,11 +69,11 @@ public class FmgIntegrationTests
         {
             Assert.NotNull(settlement.Geometry);
             Assert.IsType<GeometryPoint>(settlement.Geometry);
-            
+
             var point = (GeometryPoint)settlement.Geometry;
             Assert.InRange(point.X, bounds.MinX, bounds.MaxX);
             Assert.InRange(point.Y, bounds.MinY, bounds.MaxY);
-            
+
             Assert.NotNull(settlement.Name);
             Assert.NotEmpty(settlement.Name);
         }
@@ -98,10 +98,10 @@ public class FmgIntegrationTests
         {
             Assert.NotNull(river.Geometry);
             Assert.IsType<GeometryLine>(river.Geometry);
-            
+
             var line = (GeometryLine)river.Geometry;
             Assert.True(line.Points.Count >= 2, "Rivers should have at least 2 points");
-            
+
             // Verify points exist and are reasonable
             foreach (var point in line.Points)
             {
@@ -125,10 +125,10 @@ public class FmgIntegrationTests
             var point = new GeoPoint(
                 bounds.MinX + (bounds.MaxX - bounds.MinX) * i / 10.0,
                 bounds.MinY + (bounds.MaxY - bounds.MinY) * i / 10.0);
-            
+
             var terrain = mapData.GetTerrain(point);
             var elevation = mapData.GetElevation(point);
-            
+
             Assert.True(terrain.HasValue, $"Terrain should be available at {point}");
             Assert.True(elevation.HasValue, $"Elevation should be available at {point}");
             Assert.InRange(elevation.Value, 0, 255);
@@ -152,7 +152,7 @@ public class FmgIntegrationTests
         Assert.NotEmpty(wideZoom);
         Assert.NotEmpty(mediumZoom);
         Assert.NotEmpty(closeZoom);
-        
+
         // Wide zoom should show fewer features
         Assert.True(wideZoom.Count <= mediumZoom.Count,
             $"Wide zoom ({wideZoom.Count}) should show same or fewer features than medium zoom ({mediumZoom.Count})");
@@ -189,7 +189,7 @@ public class FmgIntegrationTests
         // Act
         var map1 = await provider.GetMapAsync(bounds);
         var map2 = await provider.GetMapAsync(bounds);
-        
+
         var features1 = map1.GetFeatures(bounds, 5).ToList();
         var features2 = map2.GetFeatures(bounds, 5).ToList();
 
@@ -217,7 +217,7 @@ public class FmgIntegrationTests
         foreach (var settlement in settlements)
         {
             Assert.NotEmpty(settlement.Metadata);
-            Assert.True(settlement.Metadata.ContainsKey("population"), 
+            Assert.True(settlement.Metadata.ContainsKey("population"),
                 $"Settlement '{settlement.Name}' should have population metadata");
         }
     }

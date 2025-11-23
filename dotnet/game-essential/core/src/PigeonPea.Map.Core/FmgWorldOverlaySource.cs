@@ -116,7 +116,7 @@ public sealed class FmgWorldOverlaySource : IOverlaySource<MapData, WorldPositio
             return false;
         }
 
-        if (activeScale.OverlayRules != null && 
+        if (activeScale.OverlayRules != null &&
             activeScale.OverlayRules.TryGetValue(feature.LayerId, out var rule))
         {
             if (currentZoom < rule.MinZoom || currentZoom > rule.MaxZoom)

@@ -33,6 +33,19 @@ internal class FmgRiverAdapter : IMapFeature
 
     private IGeometry CreateLineString()
     {
+        // Prefer the FMG river's meandered path when available for smoother
+        // rendering, fall back to the raw cell path otherwise.
+        if (_river.MeanderedPath is { Count: >= 2 })
+        {
+            var meanderPoints = new List<GeoPoint>(_river.MeanderedPath.Count);
+            foreach (var p in _river.MeanderedPath)
+            {
+                meanderPoints.Add(new GeoPoint(p.X, p.Y));
+            }
+
+            return new LineString(meanderPoints);
+        }
+
         if (_river.Cells.Count < 2)
         {
             return new LineString(Array.Empty<GeoPoint>());

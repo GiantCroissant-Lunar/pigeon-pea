@@ -40,7 +40,7 @@ public class MBTilesExporter
         }
 
         using var db = new SQLiteConnection(outputPath);
-        
+
         // Create tables
         db.CreateTable<MbTileMetadata>();
         db.CreateTable<MbTile>();
@@ -92,10 +92,10 @@ public class MBTilesExporter
         var tileBatch = new List<MbTile>();
         var batchLock = new object();
 
-        await Parallel.ForEachAsync(tiles, new ParallelOptions 
-        { 
+        await Parallel.ForEachAsync(tiles, new ParallelOptions
+        {
             MaxDegreeOfParallelism = _options.MaxParallelism,
-            CancellationToken = ct 
+            CancellationToken = ct
         }, async (tile, token) =>
         {
             var (z, x, y) = tile;
@@ -105,12 +105,12 @@ public class MBTilesExporter
             {
                 // MBTiles uses TMS (Y goes up from bottom).
                 var tmsY = (1 << z) - 1 - y;
-                
+
                 var mbTile = new MbTile
                 {
                     ZoomLevel = z,
                     TileColumn = x,
-                    TileRow = tmsY, 
+                    TileRow = tmsY,
                     TileData = tileData
                 };
 

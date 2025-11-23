@@ -107,7 +107,7 @@ public class MBTilesIntegrationTests : IDisposable
         // Assert - Features
         importedFeatures.Should().NotBeEmpty();
         var importedFeature = importedFeatures.First();
-        
+
         // Note: VectorTileEncoder maps FeatureKind.Forest to "land" layer (or similar, check VectorTileEncoder)
         // Let's check what it maps to.
         // FeatureKind.Forest -> VectorTileLayers.Land (default) or specific?
@@ -121,12 +121,12 @@ public class MBTilesIntegrationTests : IDisposable
         // "FeatureKind.CountryBorder ... => Borders"
         // "FeatureKind.Dungeon ... => Markers"
         // Default => VectorTileLayers.Land
-        
+
         // So it should be "land" layer.
         // But wait, importedFeature.Kind might be reconstructed from tags?
         // The decoder needs to reconstruct FeatureKind from tags.
         // Let's check VectorTileDecoder.cs to see how it reconstructs FeatureKind.
-        
+
         // For now, I'll assert on Metadata which should be preserved.
         importedFeature.Metadata.Should().ContainKey("type");
         importedFeature.Metadata["type"].ToString().Should().Be("grass");

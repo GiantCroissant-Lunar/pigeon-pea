@@ -19,7 +19,8 @@ public enum FeatureKind
     River,
     Stream,
 
-    // Terrain
+    //Terrain
+    Land,      // General land/terrain
     Mountain,
     Hill,
     Forest,

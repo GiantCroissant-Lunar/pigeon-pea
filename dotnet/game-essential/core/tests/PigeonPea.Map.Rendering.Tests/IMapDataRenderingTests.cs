@@ -19,7 +19,7 @@ public class IMapDataRenderingTests
         var provider = new FmgMapProvider(generator);
         var bounds = new BoundingBox(0, 0, 800, 600);
         var mapData = await provider.GetMapAsync(bounds);
-        
+
         var viewport = new Viewport(0, 0, 100, 100);
         double zoom = 1.0;
         int ppc = 4;
@@ -52,7 +52,7 @@ public class IMapDataRenderingTests
         var provider = new FmgMapProvider(generator);
         var bounds = new BoundingBox(0, 0, 800, 600);
         var mapData = await provider.GetMapAsync(bounds);
-        
+
         var viewport = new Viewport(0, 0, 40, 30);
         double zoom = 2.0;
         int ppc = 4;
@@ -90,11 +90,11 @@ public class IMapDataRenderingTests
         };
         var generator = new FantasyMapGeneratorAdapter();
         var legacyMap = generator.Generate(settings);
-        
+
         var provider = new FmgMapProvider(generator);
         var bounds = new BoundingBox(0, 0, 800, 600);
         var abstractMap = await provider.GetMapAsync(bounds);
-        
+
         var viewport = new Viewport(0, 0, 100, 100);
         double zoom = 1.0;
         int ppc = 4;
@@ -111,7 +111,7 @@ public class IMapDataRenderingTests
             colorScheme: ColorScheme.Original,
             showCapitals: true,
             showDungeons: true);
-            
+
         var abstractRaster = SkiaMapRasterizer.Render(
             abstractMap,
             viewport,
@@ -137,7 +137,7 @@ public class IMapDataRenderingTests
         var provider = new FmgMapProvider(generator);
         var bounds = new BoundingBox(0, 0, 800, 600);
         var mapData = await provider.GetMapAsync(bounds);
-        
+
         var viewport = new Viewport(0, 0, 100, 100);
         double zoom = 1.0;
         int ppc = 4;
@@ -182,7 +182,7 @@ public class IMapDataRenderingTests
         var provider = new FmgMapProvider(generator);
         var bounds = new BoundingBox(0, 0, 800, 600);
         var mapData = await provider.GetMapAsync(bounds);
-        
+
         var viewport = new Viewport(0, 0, 100, 100);
         int ppc = 4;
 
@@ -190,11 +190,11 @@ public class IMapDataRenderingTests
         var wideZoom = SkiaMapRasterizer.Render(
             mapData, viewport, zoom: 3.0, ppc,
             colorScheme: ColorScheme.Original);
-            
+
         var mediumZoom = SkiaMapRasterizer.Render(
             mapData, viewport, zoom: 1.0, ppc,
             colorScheme: ColorScheme.Original);
-            
+
         var closeZoom = SkiaMapRasterizer.Render(
             mapData, viewport, zoom: 0.5, ppc,
             colorScheme: ColorScheme.Original);
@@ -203,7 +203,7 @@ public class IMapDataRenderingTests
         Assert.NotNull(wideZoom);
         Assert.NotNull(mediumZoom);
         Assert.NotNull(closeZoom);
-        
+
         // All should have same pixel dimensions
         Assert.Equal(400, wideZoom.WidthPx);
         Assert.Equal(400, mediumZoom.WidthPx);

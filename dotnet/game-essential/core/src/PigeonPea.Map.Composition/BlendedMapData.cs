@@ -22,7 +22,7 @@ public class BlendedMapData : IMapData
             var maxX = layers.Max(l => l.map.Bounds.MaxX);
             var maxY = layers.Max(l => l.map.Bounds.MaxY);
             Bounds = new BoundingBox(minX, minY, maxX - minX, maxY - minY);
-            
+
             var minZoom = layers.Max(l => l.map.SupportedZoom.MinZoom);
             var maxZoom = layers.Min(l => l.map.SupportedZoom.MaxZoom);
             SupportedZoom = new ZoomRange(minZoom, maxZoom);

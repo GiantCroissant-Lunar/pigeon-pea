@@ -1,0 +1,42 @@
+[
+  {
+    "id": "Health",
+    "displayName": "Health",
+    "defaultValue": 100,
+    "minValue": 0,
+    "maxValue": 9999,
+    "category": "Vitals"
+  },
+  {
+    "id": "MaxHealth",
+    "displayName": "Max Health",
+    "defaultValue": 100,
+    "minValue": 1,
+    "maxValue": 9999,
+    "category": "Vitals"
+  },
+  {
+    "id": "Attack",
+    "displayName": "Attack",
+    "defaultValue": 10,
+    "minValue": 0,
+    "maxValue": 999,
+    "category": "Combat"
+  },
+  {
+    "id": "Defense",
+    "displayName": "Defense",
+    "defaultValue": 0,
+    "minValue": 0,
+    "maxValue": 999,
+    "category": "Combat"
+  },
+  {
+    "id": "Speed",
+    "displayName": "Speed",
+    "defaultValue": 100,
+    "minValue": 0,
+    "maxValue": 500,
+    "category": "Combat"
+  }
+]

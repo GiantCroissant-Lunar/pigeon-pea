@@ -15,7 +15,7 @@ public class CompositeMapData : IMapData
     public CompositeMapData(List<(IMapData map, BoundingBox region)> maps)
     {
         _maps = maps;
-        
+
         // Calculate total bounds
         if (maps.Count > 0)
         {
@@ -95,6 +95,6 @@ public class CompositeMapData : IMapData
 
     public byte[]? GetRasterData(BoundingBox bounds, int width, int height)
     {
-        return null; 
+        return null;
     }
 }

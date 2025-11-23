@@ -1,4 +1,4 @@
-﻿using System.CommandLine;
+using System.CommandLine;
 using PigeonPea.Map.Contracts.Spatial;
 using PigeonPea.Map.Core.Adapters;
 using PigeonPea.Map.Encoding;

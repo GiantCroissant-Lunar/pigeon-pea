@@ -1,0 +1,38 @@
+[
+  {
+    "id": "Warrior",
+    "name": "Warrior",
+    "description": "A strong melee fighter.",
+    "startingStats": {
+      "Health": 150,
+      "MaxHealth": 150,
+      "Attack": 15,
+      "Defense": 10,
+      "Speed": 90
+    }
+  },
+  {
+    "id": "Rogue",
+    "name": "Rogue",
+    "description": "A fast and agile fighter.",
+    "startingStats": {
+      "Health": 100,
+      "MaxHealth": 100,
+      "Attack": 20,
+      "Defense": 5,
+      "Speed": 120
+    }
+  },
+  {
+    "id": "Mage",
+    "name": "Mage",
+    "description": "A master of arcane arts.",
+    "startingStats": {
+      "Health": 80,
+      "MaxHealth": 80,
+      "Attack": 25,
+      "Defense": 2,
+      "Speed": 100
+    }
+  }
+]

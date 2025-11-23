@@ -9,17 +9,17 @@ public class ZoomAwareMapData : IMapData
 {
     private readonly Dictionary<int, IMapData> _maps;
     private readonly BoundingBox _bounds;
-    
+
     public string MapId => "zoom-aware";
     public BoundingBox Bounds => _bounds;
     public ZoomRange SupportedZoom => new(0, 20);
-    
+
     public ZoomAwareMapData(Dictionary<int, IMapData> maps, BoundingBox bounds)
     {
         _maps = maps;
         _bounds = bounds;
     }
-    
+
     public IEnumerable<IMapFeature> GetFeatures(BoundingBox bounds, ZoomLevel zoom)
     {
         var map = GetMapForZoom(zoom);
@@ -31,12 +31,12 @@ public class ZoomAwareMapData : IMapData
         var map = GetMapForZoom(zoom);
         return map.GetFeatures<T>(bounds, zoom);
     }
-    
+
     private IMapData GetMapForZoom(int zoom)
     {
         IMapData? map = null;
         int bestThreshold = -1;
-        
+
         foreach (var threshold in _maps.Keys)
         {
             if (zoom >= threshold && threshold > bestThreshold)
@@ -45,7 +45,7 @@ public class ZoomAwareMapData : IMapData
                 map = _maps[threshold];
             }
         }
-        
+
         return map ?? _maps.Values.First();
     }
 

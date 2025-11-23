@@ -7,6 +7,7 @@ using PigeonPea.Rendering.Contracts;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Scale;
 using SadRogue.Primitives;
+using System;
 using RenderTile = PigeonPea.Rendering.Contracts.Tile;
 
 namespace PigeonPea.Plugin.Dungeon.Rendering;
@@ -25,6 +26,11 @@ public class DungeonRendererPlugin : IPlugin
 
     public Task InitializeAsync(IPluginContext context, CancellationToken ct)
     {
+        if (context is null)
+        {
+            throw new ArgumentNullException(nameof(context));
+        }
+
         _logger = context.Logger;
         _logger.LogInformation("DungeonRenderer domain plugin initialized");
 
@@ -63,9 +69,19 @@ public class DungeonRenderer : IDungeonRenderer
         _scaleManager = scaleManager;
     }
 
-    public void RenderWithOverlays(int width, int height, System.Collections.BitArray walkable, 
+    public void RenderWithOverlays(int width, int height, System.Collections.BitArray walkable,
         IEnumerable<IOverlayFeature<GridPosition>> overlays, int playerX, int playerY, int scale = 1)
     {
+        if (walkable is null)
+        {
+            throw new ArgumentNullException(nameof(walkable));
+        }
+
+        if (overlays is null)
+        {
+            throw new ArgumentNullException(nameof(overlays));
+        }
+
         if (_platformRenderer == null)
         {
             throw new InvalidOperationException("DungeonRenderer not initialized with platform renderer.");
@@ -114,6 +130,11 @@ public class DungeonRenderer : IDungeonRenderer
     [Obsolete("Use the overlay-based Render method instead")]
     public void Render(DungeonView dungeon, int playerX, int playerY)
     {
+        if (dungeon is null)
+        {
+            throw new ArgumentNullException(nameof(dungeon));
+        }
+
         if (_platformRenderer == null)
         {
             throw new InvalidOperationException("DungeonRenderer not initialized with platform renderer.");
@@ -156,7 +177,7 @@ public class DungeonRenderer : IDungeonRenderer
         return new RenderTile('.', Color.DarkGray, Color.Black);
     }
 
-    private bool ShouldRenderOverlay(IOverlayFeature<GridPosition> overlay, double currentZoom, 
+    private bool ShouldRenderOverlay(IOverlayFeature<GridPosition> overlay, double currentZoom,
         ScaleConfig? activeScale)
     {
         // Check scale-based overlay rules if ScaleManager is available
@@ -164,7 +185,7 @@ public class DungeonRenderer : IDungeonRenderer
         {
             // Map overlay kind to layer ID (e.g., "trap" -> "dungeon.traps")
             var layerId = overlay.LayerId;
-            
+
             if (activeScale.OverlayRules.TryGetValue(layerId, out var rule))
             {
                 // Check if current zoom is within the rule's zoom range

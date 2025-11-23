@@ -23,37 +23,37 @@ public record BlendLayer(
 public class TileBlendingProvider : IMapProvider
 {
     private readonly List<BlendLayer> _layers;
-    
+
     public string ProviderId => $"blended:{_layers.Count}-layers";
-    
+
     public MapProviderCapabilities Capabilities =>
         _layers.Aggregate(MapProviderCapabilities.None,
             (caps, layer) => caps | layer.Provider.Capabilities);
-    
+
     public TileBlendingProvider(IEnumerable<BlendLayer> layers)
     {
         _layers = layers.OrderBy(l => l.ZIndex).ToList();
     }
-    
+
     public async Task<IMapData> GetMapAsync(BoundingBox bounds, CancellationToken ct = default)
     {
         var layerMaps = new System.Collections.Concurrent.ConcurrentBag<(IMapData map, BlendMode mode, double opacity, int zIndex)>();
-        
+
         await Parallel.ForEachAsync(_layers, ct, async (layer, token) =>
         {
             var map = await layer.Provider.GetMapAsync(bounds, token);
             layerMaps.Add((map, layer.Mode, layer.Opacity, layer.ZIndex));
         });
-        
+
         // Re-sort by Z-Index after parallel loading
         var sortedLayers = layerMaps
             .OrderBy(l => l.zIndex)
             .Select(l => (l.map, l.mode, l.opacity))
             .ToList();
-        
+
         return new BlendedMapData(sortedLayers);
     }
-    
+
     public bool CanServe(BoundingBox bounds) =>
         _layers.All(l => l.Provider.CanServe(bounds));
 }

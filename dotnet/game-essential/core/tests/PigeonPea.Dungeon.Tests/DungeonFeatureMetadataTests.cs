@@ -20,7 +20,7 @@ public class DungeonFeatureMetadataTests
         // Arrange
         var world = World.Create();
         var generator = new BasicDungeonGenerator();
-        
+
         // Act
         var dungeonEntity = generator.Generate(world, new DungeonGenerationOptions
         {
@@ -31,20 +31,20 @@ public class DungeonFeatureMetadataTests
 
         // Assert
         var dungeonMap = world.Get<DungeonMapComponent>(dungeonEntity);
-        
+
         Assert.NotNull(dungeonMap.FeatureMetadata);
         Assert.True(dungeonMap.FeatureMetadata.ContainsKey("doors"));
         Assert.True(dungeonMap.FeatureMetadata.ContainsKey("traps"));
         Assert.True(dungeonMap.FeatureMetadata.ContainsKey("treasure"));
         Assert.True(dungeonMap.FeatureMetadata.ContainsKey("spawn_points"));
         Assert.True(dungeonMap.FeatureMetadata.ContainsKey("stairs"));
-        
+
         // Verify doors
         var doors = JsonSerializer.Deserialize<DoorMetadata[]>(
             dungeonMap.FeatureMetadata["doors"].ToString()!);
         Assert.NotNull(doors);
         Assert.NotEmpty(doors);
-        
+
         // Verify traps
         var traps = JsonSerializer.Deserialize<TrapMetadata[]>(
             dungeonMap.FeatureMetadata["traps"].ToString()!);
@@ -56,7 +56,7 @@ public class DungeonFeatureMetadataTests
             Assert.True(trap.Y >= 0 && trap.Y < dungeonMap.Height);
             Assert.NotEmpty(trap.Type);
         });
-        
+
         // Verify treasure
         var treasure = JsonSerializer.Deserialize<TreasureMetadata[]>(
             dungeonMap.FeatureMetadata["treasure"].ToString()!);
@@ -68,7 +68,7 @@ public class DungeonFeatureMetadataTests
             Assert.True(t.Y >= 0 && t.Y < dungeonMap.Height);
             Assert.NotEmpty(t.ContainerType);
         });
-        
+
         // Verify spawn points
         var spawns = JsonSerializer.Deserialize<SpawnPointMetadata[]>(
             dungeonMap.FeatureMetadata["spawn_points"].ToString()!);
@@ -80,7 +80,7 @@ public class DungeonFeatureMetadataTests
             Assert.True(spawn.Y >= 0 && spawn.Y < dungeonMap.Height);
             Assert.NotNull(spawn.MonsterId);
         });
-        
+
         // Verify stairs
         var stairs = JsonSerializer.Deserialize<StairMetadata[]>(
             dungeonMap.FeatureMetadata["stairs"].ToString()!);
@@ -102,28 +102,28 @@ public class DungeonFeatureMetadataTests
             Height = 96,
             Seed = 42
         });
-        
+
         var dungeonMap = world.Get<DungeonMapComponent>(dungeonEntity);
         var overlaySource = new DungeonGridOverlaySource();
-        
+
         // Act
         var overlays = overlaySource.GetOverlays(dungeonMap).ToList();
-        
+
         // Assert
         Assert.NotEmpty(overlays);
-        
+
         var doorOverlays = overlays.Where(o => o.LayerId == "dungeon.doors").ToList();
         var trapOverlays = overlays.Where(o => o.LayerId == "dungeon.traps").ToList();
         var treasureOverlays = overlays.Where(o => o.LayerId == "dungeon.treasure").ToList();
         var spawnOverlays = overlays.Where(o => o.LayerId == "dungeon.spawn_points").ToList();
         var stairOverlays = overlays.Where(o => o.LayerId == "dungeon.stairs").ToList();
-        
+
         Assert.NotEmpty(doorOverlays);
         Assert.NotEmpty(trapOverlays);
         Assert.NotEmpty(treasureOverlays);
         Assert.NotEmpty(spawnOverlays);
         Assert.NotEmpty(stairOverlays);
-        
+
         // Verify trap overlays have proper metadata
         Assert.All(trapOverlays, overlay =>
         {
@@ -131,7 +131,7 @@ public class DungeonFeatureMetadataTests
             Assert.True(overlay.Metadata.ContainsKey("radius"));
             Assert.True(overlay.Metadata.ContainsKey("discovered"));
         });
-        
+
         // Verify treasure overlays have proper metadata
         Assert.All(treasureOverlays, overlay =>
         {
@@ -147,7 +147,7 @@ public class DungeonFeatureMetadataTests
         // Arrange
         var world = World.Create();
         var generator = new ModernEdgarDungeonGenerator();
-        
+
         // Act
         var dungeonEntity = generator.Generate(world, new DungeonGenerationOptions
         {
@@ -158,7 +158,7 @@ public class DungeonFeatureMetadataTests
 
         // Assert
         var dungeonMap = world.Get<DungeonMapComponent>(dungeonEntity);
-        
+
         Assert.NotNull(dungeonMap.FeatureMetadata);
         Assert.True(dungeonMap.FeatureMetadata.ContainsKey("doors"));
         Assert.True(dungeonMap.FeatureMetadata.ContainsKey("traps"));

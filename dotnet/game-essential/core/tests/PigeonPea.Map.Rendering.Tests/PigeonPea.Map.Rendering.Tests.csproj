@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Map.FMG\PigeonPea.Plugin.Map.FMG.csproj" />
   </ItemGroup>
 
 </Project>

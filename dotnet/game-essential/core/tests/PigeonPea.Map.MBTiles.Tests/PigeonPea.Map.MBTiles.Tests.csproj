@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PigeonPea.Map.Export\PigeonPea.Map.Export.csproj" />
-    <ProjectReference Include="..\..\src\PigeonPea.Plugin.Map.MBTiles\PigeonPea.Plugin.Map.MBTiles.csproj" />
+    <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Map.MBTiles\PigeonPea.Plugin.Map.MBTiles.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Encoding\PigeonPea.Map.Encoding.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
   </ItemGroup>

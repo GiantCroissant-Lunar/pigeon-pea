@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PigeonPea.Plugin.Map.FMG\PigeonPea.Plugin.Map.FMG.csproj" />
+    <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Map.FMG\PigeonPea.Plugin.Map.FMG.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
   </ItemGroup>

@@ -6,14 +6,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SkiaSharp" Version="2.88.7" />
+    <PackageReference Include="SkiaSharp" Version="2.88.8" />
     <PackageReference Include="Arch" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
     <ProjectReference Include="..\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
     <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
     <ProjectReference Include="..\..\..\..\content-authoring\core\src\PigeonPea.Content.ECS\PigeonPea.Content.ECS.csproj" />
     <ProjectReference Include="..\..\..\..\content-authoring\core\src\PigeonPea.Content.Rendering\PigeonPea.Content.Rendering.csproj" />
+    <ProjectReference Include="..\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Tiles\**" />
+    <Compile Remove="MapEntityRenderer.cs" />
   </ItemGroup>
 </Project>
