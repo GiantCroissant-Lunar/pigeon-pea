@@ -1,16 +1,14 @@
 using Microsoft.Extensions.Logging;
 using PigeonPea.Language.Contracts.Grammar;
+using Yokan.SCG.DI.ConstructorInjection.Attributes;
 
 namespace PigeonPea.Language.Core;
 
-public class GrammarEngine : IGrammarEngine
+[ConstructorInjection]
+public partial class GrammarEngine : IGrammarEngine
 {
+    [ResolveInConstructor]
     private readonly ILogger<GrammarEngine> _logger;
-
-    public GrammarEngine(ILogger<GrammarEngine> logger)
-    {
-        _logger = logger;
-    }
 
     public string[] ApplyWordOrder(string[] words, WordOrder order)
     {

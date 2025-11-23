@@ -8,10 +8,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PigeonPea.Language.Contracts\PigeonPea.Language.Contracts.csproj" />
+    <ProjectReference Include="D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\fantasy-map-generator-port\dotnet\src\FantasyNameGenerator\FantasyNameGenerator.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
   </ItemGroup>
+  <Import Project="..\..\..\..\source-generators\AutoProperties.Local.props" />
+  <Import Project="..\..\..\..\source-generators\DI.ConstructorInjection.Local.props" />
+  <Import Project="..\..\..\..\source-generators\AutoToString.Local.props" />
 
 </Project>

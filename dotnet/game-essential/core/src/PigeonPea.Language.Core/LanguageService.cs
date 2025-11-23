@@ -1,41 +1,35 @@
 using Microsoft.Extensions.Logging;
 using PigeonPea.Language.Contracts;
 using PigeonPea.Language.Contracts.Models;
+using Yokan.SCG.DI.ConstructorInjection.Attributes;
 
 namespace PigeonPea.Language.Core;
 
-public class LanguageService : ILanguageService
+[ConstructorInjection]
+public partial class LanguageService : ILanguageService
 {
+    [ResolveInConstructor]
     private readonly LanguageDefinitionRepository _repository;
+    [ResolveInConstructor]
     private readonly PhonologyEngine _phonologyEngine;
+    [ResolveInConstructor]
     private readonly LexiconManager _lexiconManager;
+    [ResolveInConstructor]
     private readonly GrammarEngine _grammarEngine;
+    [ResolveInConstructor]
     private readonly SoundChangeEngine _soundChangeEngine;
-    private readonly ILogger<LanguageService> _logger;
+    [ResolveInConstructor]
+    private readonly INameGeneratorAdapter _nameAdapter;
+    [ResolveInConstructor]
     private readonly ILoggerFactory _loggerFactory;
+    [ResolveInConstructor]
+    private readonly ILogger<LanguageService> _logger;
 
     // Cache of name generators per language
     private readonly Dictionary<string, NameGenerator> _nameGenerators = new();
 
     // Cache of translation engines per language pair
     private readonly Dictionary<string, TranslationEngine> _translationEngines = new();
-
-    public LanguageService(
-        LanguageDefinitionRepository repository,
-        PhonologyEngine phonologyEngine,
-        LexiconManager lexiconManager,
-        GrammarEngine grammarEngine,
-        SoundChangeEngine soundChangeEngine,
-        ILoggerFactory loggerFactory)
-    {
-        _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-        _phonologyEngine = phonologyEngine ?? throw new ArgumentNullException(nameof(phonologyEngine));
-        _lexiconManager = lexiconManager ?? throw new ArgumentNullException(nameof(lexiconManager));
-        _grammarEngine = grammarEngine ?? throw new ArgumentNullException(nameof(grammarEngine));
-        _soundChangeEngine = soundChangeEngine ?? throw new ArgumentNullException(nameof(soundChangeEngine));
-        _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
-        _logger = loggerFactory.CreateLogger<LanguageService>();
-    }
 
     public async Task<bool> LoadLanguageAsync(string languageId, string configPath)
     {
@@ -357,5 +351,70 @@ public class LanguageService : ILanguageService
         }
 
         return string.Join(". ", sentences) + ".";
+    }
+
+    // NEW: Enhanced name generation with adapter
+    public string GenerateNameAdvanced(
+        string languageId,
+        NameType nameType,
+        GenerationMode mode = GenerationMode.RuleBased)
+    {
+        if (string.IsNullOrWhiteSpace(languageId))
+        {
+            throw new ArgumentException("Language ID cannot be null or empty", nameof(languageId));
+        }
+
+        try
+        {
+            // Get language definition
+            var language = _repository.GetLoadedLanguage(languageId);
+            if (language == null)
+            {
+                throw new InvalidOperationException($"Language '{languageId}' is not loaded");
+            }
+
+            // Use the adapter for generation
+            return _nameAdapter.GenerateName(language, nameType, mode);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to generate advanced name for language '{LanguageId}'", languageId);
+            throw;
+        }
+    }
+
+    public string GenerateNameFromTemplate(
+        string templateName,
+        NameType nameType,
+        GenerationMode mode = GenerationMode.RuleBased)
+    {
+        if (string.IsNullOrWhiteSpace(templateName))
+        {
+            throw new ArgumentException("Template name cannot be null or empty", nameof(templateName));
+        }
+
+        try
+        {
+            // Use the adapter for template-based generation
+            return _nameAdapter.GenerateFromTemplate(templateName, nameType, mode);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to generate name from template '{TemplateName}'", templateName);
+            throw;
+        }
+    }
+
+    public IReadOnlyList<string> GetAvailableNameGenerationTemplates()
+    {
+        try
+        {
+            return _nameAdapter.GetBuiltInTemplates();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to get available name generation templates");
+            return new List<string>();
+        }
     }
 }

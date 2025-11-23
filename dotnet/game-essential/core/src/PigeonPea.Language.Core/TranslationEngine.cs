@@ -3,27 +3,21 @@ using PigeonPea.Language.Contracts.Grammar;
 using PigeonPea.Language.Contracts.Lexicon;
 using PigeonPea.Language.Contracts.Models;
 using System.Text.RegularExpressions;
+using Yokan.SCG.DI.ConstructorInjection.Attributes;
 
 namespace PigeonPea.Language.Core;
 
-public class TranslationEngine
+[ConstructorInjection]
+public partial class TranslationEngine
 {
+    [ResolveInConstructor]
     private readonly LexiconManager _lexiconManager;
+    [ResolveInConstructor]
     private readonly GrammarEngine _grammarEngine;
+    [ResolveInConstructor]
     private readonly NameGenerator _nameGenerator;
+    [ResolveInConstructor]
     private readonly ILogger<TranslationEngine> _logger;
-
-    public TranslationEngine(
-        LexiconManager lexiconManager,
-        GrammarEngine grammarEngine,
-        NameGenerator nameGenerator,
-        ILogger<TranslationEngine> logger)
-    {
-        _lexiconManager = lexiconManager ?? throw new ArgumentNullException(nameof(lexiconManager));
-        _grammarEngine = grammarEngine ?? throw new ArgumentNullException(nameof(grammarEngine));
-        _nameGenerator = nameGenerator ?? throw new ArgumentNullException(nameof(nameGenerator));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-    }
 
     public string TranslateToFantasy(string englishText, string targetLanguageId, LanguageDefinition targetLanguage)
     {

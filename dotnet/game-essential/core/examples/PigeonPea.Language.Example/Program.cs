@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging;
 using PigeonPea.Language.Contracts;
 using PigeonPea.Language.Contracts.Models;
 using PigeonPea.Language.Core;

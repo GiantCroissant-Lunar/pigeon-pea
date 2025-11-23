@@ -17,6 +17,19 @@ public interface ILanguageService
     string GenerateName(string languageId, NameGenerationOptions options);
     IEnumerable<string> GenerateNames(string languageId, int count, NameGenerationOptions options);
 
+    // NEW: Enhanced name generation with adapter
+    string GenerateNameAdvanced(
+        string languageId,
+        NameType nameType,
+        GenerationMode mode = GenerationMode.RuleBased);
+
+    string GenerateNameFromTemplate(
+        string templateName,
+        NameType nameType,
+        GenerationMode mode = GenerationMode.RuleBased);
+
+    IReadOnlyList<string> GetAvailableNameGenerationTemplates();
+
     // Text generation
     string GenerateSentence(string languageId, SentenceTemplate template);
     string GenerateParagraph(string languageId, int sentenceCount);
