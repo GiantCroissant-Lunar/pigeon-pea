@@ -6,12 +6,11 @@ status: draft
 summary: Follow-up housekeeping tasks after reorganizing automation scripts and documentation
   tooling.
 tags:
-- housekeeping
-- automation
-- scripts
+  - housekeeping
+  - automation
+  - scripts
 title: Script & Infrastructure Housekeeping – Follow-up Plan
 ---
-
 
 # Script & Infrastructure Housekeeping – Follow-up Plan
 

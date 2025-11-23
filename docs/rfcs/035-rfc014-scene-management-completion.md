@@ -3,9 +3,9 @@ canonical: true
 created: '2025-11-21'
 dependencies:
   external:
-  - Arch
+    - Arch
   rfcs:
-  - RFC-00014
+    - RFC-00014
 doc_id: RFC-00035
 doc_type: rfc
 implementation:
@@ -14,25 +14,24 @@ implementation:
   status: not-started
   tasks: []
 related:
-- RFC-00014
-- GUIDE-00002
-- RFC-00032
-- RFC-00033
+  - RFC-00014
+  - GUIDE-00002
+  - RFC-00032
+  - RFC-00033
 status: draft
 summary: Complete RFC-014 Scene Management implementation by fixing interface mismatches,
   updating generators to return entities, integrating scene manager into console app,
   and implementing scene transitions
 supersedes: []
 tags:
-- scene-management
-- ecs
-- implementation
-- rfc-014
-- completion
+  - scene-management
+  - ecs
+  - implementation
+  - rfc-014
+  - completion
 title: RFC-014 Scene Management Completion
 updated: '2025-11-21'
 ---
-
 
 # RFC-035: RFC-014 Scene Management Completion
 
@@ -51,11 +50,13 @@ Complete the implementation of RFC-014 Scene Management by following the detaile
 ### Current State (60% Complete)
 
 **What Works:**
+
 - ✅ Scene infrastructure (`ISceneManager`, `Scene`, `SceneManager` plugin)
 - ✅ ECS components defined (`DungeonMapComponent`, `SceneComponent`, `PositionComponent`, etc.)
 - ✅ Multi-world support (each scene has own `Arch.Core.World`)
 
 **What's Broken:**
+
 - ❌ `IDungeonGenerator` interface returns `DungeonView` DTO (should return `Entity`)
 - ❌ Console app doesn't use `SceneManager` (still uses old DTO flow)
 - ❌ No scene transitions (world ↔ dungeon)
@@ -158,6 +159,7 @@ This RFC follows the detailed implementation plan in **GUIDE-00002** (`docs/guid
 **File:** `dotnet/game-essential/core/src/PigeonPea.Dungeon.Contracts/IDungeonGenerator.cs`
 
 **Changes:**
+
 ```csharp
 // BEFORE
 public interface IDungeonGenerator
@@ -185,6 +187,7 @@ public interface IDungeonGenerator
 **File:** `dotnet/game-essential/core/src/PigeonPea.Dungeon.Contracts/PigeonPea.Dungeon.Contracts.csproj`
 
 **Add:**
+
 ```xml
 <ItemGroup>
   <PackageReference Include="Arch" Version="2.0.0" />
@@ -196,6 +199,7 @@ public interface IDungeonGenerator
 **File:** `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Dungeon.Basic/BasicDungeonGenerator.cs`
 
 **Changes:**
+
 1. Update method signature to match interface
 2. Add `CreateDungeonEntity()` helper method
 3. Replace `return ToView(d);` with `return CreateDungeonEntity(world, d);`
@@ -207,6 +211,7 @@ public interface IDungeonGenerator
 **File:** `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Dungeon.ModernEdgar/ModernEdgarDungeonGenerator.cs`
 
 **Changes:**
+
 1. Update method signature to match interface
 2. Add `CreateDungeonEntity()` helper method
 3. Replace `return ConvertToDungeonView(result);` with `return CreateDungeonEntity(world, result);`
@@ -216,6 +221,7 @@ public interface IDungeonGenerator
 #### Task 1.5: Verify Compilation
 
 **Command:**
+
 ```bash
 # Build contracts
 dotnet build dotnet/game-essential/core/src/PigeonPea.Dungeon.Contracts/
@@ -240,6 +246,7 @@ dotnet build
 **File:** `projects/dungeon/dotnet/console-app/core/src/PigeonPea.Console/PigeonPea.Console.csproj`
 
 **Add:**
+
 ```xml
 <ItemGroup>
   <!-- Scene Management -->
@@ -255,6 +262,7 @@ dotnet build
 **File:** `projects/dungeon/dotnet/console-app/core/src/PigeonPea.Console/PigeonPea.Console.csproj`
 
 **Add:**
+
 ```xml
 <ItemGroup>
   <!-- Scene Manager Plugin -->
@@ -267,6 +275,7 @@ dotnet build
 **File:** `projects/dungeon/dotnet/console-app/core/src/PigeonPea.Console/Program.cs`
 
 **Major Changes:**
+
 1. Load `SceneManager` from registry
 2. Create `MainGameplay` scene with `SceneLoadMode.Single`
 3. Generate dungeon as entity in scene's world
@@ -276,6 +285,7 @@ dotnet build
 **Reference:** See GUIDE-00002 lines 536-603 for complete implementation
 
 **Example:**
+
 ```csharp
 // After plugin loading, before main loop
 var sceneManager = registry.Get<ISceneManager>();
@@ -324,6 +334,7 @@ while (running)
 **File:** `projects/dungeon/dotnet/console-app/core/src/PigeonPea.Console/InputHandler.cs` (NEW)
 
 **Implementation:**
+
 - Handle WASD/arrow keys
 - Query player entity from world
 - Update `PositionComponent`
@@ -343,6 +354,7 @@ while (running)
 **Purpose:** Manage transitions between scenes (world ↔ dungeon)
 
 **Key Methods:**
+
 ```csharp
 public class SceneTransitionManager
 {
@@ -379,11 +391,13 @@ private void OnScaleChanged(object? sender, ScaleChangedEventArgs e)
 #### Task 3.3: World ↔ Dungeon Transitions
 
 **Transitions to Implement:**
+
 1. **World → Dungeon:** User clicks dungeon marker on world map
 2. **Dungeon → World:** User exits dungeon (stairs up)
 3. **Entity Transfer:** Player entity moves between worlds
 
 **Example:**
+
 ```csharp
 // User clicks dungeon entrance at (100, 200) on world map
 var worldScene = sceneManager.GetActiveScene();
@@ -415,10 +429,12 @@ dungeonScene.World.Get<PositionComponent>(dungeonPlayerEntity).Y = 5;
 #### Task 4.1: Unit Tests
 
 **Files to Create:**
+
 - `dotnet/game-essential/core/tests/PigeonPea.Scene.Tests/SceneManagerTests.cs`
 - `dotnet/game-essential/plugins/tests/PigeonPea.Plugin.Dungeon.Tests/DungeonGeneratorTests.cs`
 
 **Test Coverage:**
+
 - Scene loading/unloading
 - Entity creation in scenes
 - Dungeon generation returns entity
@@ -431,6 +447,7 @@ dungeonScene.World.Get<PositionComponent>(dungeonPlayerEntity).Y = 5;
 **File:** `projects/dungeon/dotnet/console-app/core/tests/PigeonPea.Console.Tests/SceneIntegrationTests.cs`
 
 **Test:**
+
 - Full stack scene creation
 - Dungeon entity + player entity in same world
 - Query entities from world
@@ -441,6 +458,7 @@ dungeonScene.World.Get<PositionComponent>(dungeonPlayerEntity).Y = 5;
 #### Task 4.3: Manual Testing
 
 **Console App Testing:**
+
 1. Run console app
 2. Verify scene loads
 3. Verify dungeon entity created
@@ -449,6 +467,7 @@ dungeonScene.World.Get<PositionComponent>(dungeonPlayerEntity).Y = 5;
 6. Verify rendering from scene world
 
 **Success Criteria:**
+
 - Console app starts without errors
 - Dungeon renders on screen
 - Player '@' visible
@@ -463,6 +482,7 @@ dungeonScene.World.Get<PositionComponent>(dungeonPlayerEntity).Y = 5;
 #### Task 5.1: Update Documentation
 
 **Files to Update:**
+
 - `docs/rfcs/014-scene-management-ecs.md` - Mark as "Implemented"
 - `docs/guides/rfc014-scene-management-adjustment-plan.md` - Update progress
 - `CHANGELOG.md` - Add entry for RFC-014 completion
@@ -470,6 +490,7 @@ dungeonScene.World.Get<PositionComponent>(dungeonPlayerEntity).Y = 5;
 #### Task 5.2: Code Cleanup
 
 **Tasks:**
+
 - Remove or deprecate `DungeonView` DTO (if no longer used)
 - Remove old DTO-based rendering code
 - Clean up unused imports
@@ -480,6 +501,7 @@ dungeonScene.World.Get<PositionComponent>(dungeonPlayerEntity).Y = 5;
 Use this checklist to track progress:
 
 ### Phase 1: Critical Fixes
+
 - [ ] Update `IDungeonGenerator` interface signature
 - [ ] Add `Arch` package to `Dungeon.Contracts`
 - [ ] Fix `BasicDungeonGenerator` dependencies
@@ -490,6 +512,7 @@ Use this checklist to track progress:
 - [ ] Run unit tests
 
 ### Phase 2: Scene Integration
+
 - [ ] Add Scene.Contracts reference to Console app
 - [ ] Add Arch package to Console app
 - [ ] Register Scene Manager plugin
@@ -501,6 +524,7 @@ Use this checklist to track progress:
 - [ ] Test rendering from scene world
 
 ### Phase 3: Scene Transitions
+
 - [ ] Implement `SceneTransitionManager`
 - [ ] Integrate with `ScaleManager`
 - [ ] Implement world → dungeon transition
@@ -509,6 +533,7 @@ Use this checklist to track progress:
 - [ ] Test all transitions
 
 ### Phase 4: Testing
+
 - [ ] Write unit tests for scene manager
 - [ ] Write unit tests for dungeon generators
 - [ ] Write integration tests
@@ -516,6 +541,7 @@ Use this checklist to track progress:
 - [ ] Performance testing
 
 ### Phase 5: Cleanup
+
 - [ ] Update RFC-014 status to "Implemented"
 - [ ] Update adjustment plan progress
 - [ ] Clean up deprecated code

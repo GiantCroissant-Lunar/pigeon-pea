@@ -3,8 +3,9 @@
 ## Current Situation
 
 Attempted to profile the full console application with `dotnet-trace`, but encountered:
+
 1. **Plugin loading issues**: Scene Manager and other plugins not found in expected paths
-2. **Application exits early**: Can't complete full rendering loop profiling  
+2. **Application exits early**: Can't complete full rendering loop profiling
 3. **Trace data shows startup overhead**: Most samples are from logging/initialization, not rendering
 
 ## Revised Strategy
@@ -42,6 +43,7 @@ Create benchmarks for specific rendering operations:
 ### Phase B: Real App Profiling (Session 4)
 
 Once plugins are properly deployed:
+
 1. Fix plugin paths and deployment
 2. Run full app with `dotnet-trace` CPU sampling
 3. Capture allocation profiles with `dotnet-gcdump`
@@ -50,13 +52,15 @@ Once plugins are properly deployed:
 ### Phase C: Optimization (Session 5)
 
 Based on benchmark and profile data:
+
 1. Optimize identified hot paths
-2. Re-run benchmarks to validate improvements  
+2. Re-run benchmarks to validate improvements
 3. Profile full app again to confirm gains
 
 ## Immediate Next Steps
 
 **Session 3 Tasks:**
+
 1. ✅ Create profiling plan document (this file)
 2. ⏳ Create targeted micro-benchmarks for:
    - Backend command execution
@@ -66,6 +70,7 @@ Based on benchmark and profile data:
 4. ⏳ Document performance hotspots
 
 **Success Criteria:**
+
 - Have baseline performance numbers for key operations
 - Identify top 3-5 optimization opportunities
 - Create focused optimization plan for Session 4
@@ -107,6 +112,7 @@ Based on benchmark and profile data:
 ## Expected Outcomes
 
 By end of Session 3:
+
 - Baseline performance numbers documented
 - Hot path candidates identified
 - Optimization priorities established

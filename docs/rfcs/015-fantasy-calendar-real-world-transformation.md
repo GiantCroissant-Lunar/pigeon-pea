@@ -213,6 +213,8 @@ public interface ICalendarService
 }
 ```
 
+All calendars managed by `ICalendarService` share a common `WorldTick` epoch and timeline. `RegisterCalendar` throws if the identifier is already registered, to avoid accidental calendar replacement.
+
 ### 3. CalendarService Implementation
 
 ```csharp
@@ -296,19 +298,20 @@ public class FantasyDateFormatter
 
     public string Format(FantasyDate date, string format = "YYYY-MM-DD HH:mm:ss")
     {
-        var result = format
+        var result = format;
+
+        if (_monthNames.TryGetValue(date.Month, out var monthName))
+        {
+            result = result.Replace("MMMM", monthName);
+        }
+
+        result = result
             .Replace("YYYY", date.Year.ToString())
             .Replace("MM", date.Month.ToString("D2"))
             .Replace("DD", date.Day.ToString("D2"))
             .Replace("HH", date.Hour.ToString("D2"))
             .Replace("mm", date.Minute.ToString("D2"))
             .Replace("ss", date.Second.ToString("D2"));
-
-        // Replace month name if available
-        if (_monthNames.TryGetValue(date.Month, out var monthName))
-        {
-            result = result.Replace("MMMM", monthName);
-        }
 
         return result;
     }
@@ -355,8 +358,8 @@ notificationService.Schedule(
 ```csharp
 // Setup
 var epoch = Instant.FromUtc(2025, 1, 1, 0, 0);
-var clock = new WorldClock(epoch, realSecondsPerGameSecond: 1.0 / 60.0);
-var service = new CalendarService(clock);
+var worldClock = new WorldClock(epoch, realSecondsPerGameSecond: 1.0 / 60.0);
+var service = new CalendarService(worldClock);
 service.RegisterCalendar("harptos", new HarptosCalendar());
 
 // After 10 real minutes
@@ -424,9 +427,9 @@ var elvenDate = service.Convert(harptosDate, "harptos", "elven");
 public void CalendarBridge_RoundTrip_PreservesDate()
 {
     var epoch = Instant.FromUtc(2025, 1, 1, 0, 0);
-    var clock = new WorldClock(epoch);
+    var worldClock = new WorldClock(epoch);
     var harptos = new HarptosCalendar();
-    var bridge = new CalendarBridge(harptos, clock);
+    var bridge = new CalendarBridge(harptos, worldClock);
 
     var original = new FantasyDate(1372, 1, 15, 14, 30, 0);
     var real = bridge.ToRealWorld(original, DateTimeZone.Utc);
@@ -499,6 +502,10 @@ public async Task EventScheduling_WorksWithRealTime()
 4. **Calendar Events**
    - Recurring events (daily, weekly, monthly)
    - Holiday/festival definitions
+
+5. **Injectable Clocks for Testing**
+   - Allow `CalendarService` / `CalendarBridge` to accept an `IClock` abstraction
+   - Improve testability by avoiding direct `SystemClock.Instance` usage
 
 ## References
 

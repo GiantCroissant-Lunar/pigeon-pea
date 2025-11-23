@@ -3,9 +3,9 @@ canonical: true
 created: '2025-11-21'
 dependencies:
   external:
-  - System.Text.Json
+    - System.Text.Json
   rfcs:
-  - RFC-00014
+    - RFC-00014
 doc_id: RFC-00033
 doc_type: rfc
 implementation:
@@ -14,25 +14,24 @@ implementation:
   status: not-started
   tasks: []
 related:
-- ADR-00002
-- RFC-00014
-- RFC-00032
+  - ADR-00002
+  - RFC-00014
+  - RFC-00032
 status: draft
 summary: Implement config-driven discrete scale/zoom system with runtime loading,
   per-scale zoom bounds, and automatic mode transitions (world → town → dungeon)
 supersedes: []
 tags:
-- scale
-- zoom
-- configuration
-- modes
-- world
-- dungeon
-- architecture
+  - scale
+  - zoom
+  - configuration
+  - modes
+  - world
+  - dungeon
+  - architecture
 title: Scale Config System Implementation
 updated: '2025-11-21'
 ---
-
 
 # RFC-033: Scale Config System Implementation
 
@@ -719,6 +718,7 @@ public class SceneManager : ISceneManager
 ### Phase 1: Core Models & Loader (Week 1)
 
 **Files to Create:**
+
 - `dotnet/game-essential/core/src/PigeonPea.Shared/Rendering/ScaleConfig.cs`
 - `dotnet/game-essential/core/src/PigeonPea.Shared/Rendering/ScaleTransition.cs`
 - `dotnet/game-essential/core/src/PigeonPea.Shared/Rendering/ScaleConfigLoader.cs`
@@ -727,6 +727,7 @@ public class SceneManager : ISceneManager
 - `config/transitions.json`
 
 **Tasks:**
+
 1. Define all data models
 2. Implement JSON loader with validation
 3. Write unit tests for loader
@@ -735,10 +736,12 @@ public class SceneManager : ISceneManager
 ### Phase 2: ScaleManager Service (Week 1-2)
 
 **Files to Create:**
+
 - `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Scale.Manager/ScaleManager.cs`
 - `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Scale.Manager/ScaleManagerPlugin.cs`
 
 **Tasks:**
+
 1. Implement `IScaleManager` service
 2. Implement zoom clamping
 3. Implement transition detection
@@ -748,9 +751,11 @@ public class SceneManager : ISceneManager
 ### Phase 3: NavigatorAdapter Integration (Week 2)
 
 **Files to Update:**
+
 - `dotnet/game-essential/core/src/PigeonPea.Shared/Rendering/NavigatorAdapter.cs`
 
 **Tasks:**
+
 1. Add `IScaleManager` dependency
 2. Delegate zoom management to scale manager
 3. Remove hardcoded zoom bounds
@@ -759,9 +764,11 @@ public class SceneManager : ISceneManager
 ### Phase 4: Overlay Integration (Week 2-3)
 
 **Files to Update:**
+
 - `dotnet/game-essential/core/src/PigeonPea.Map.Core/FmgWorldOverlaySource.cs`
 
 **Tasks:**
+
 1. Add scale-aware overlay visibility
 2. Implement filter expression evaluation
 3. Test LOD (level of detail) overlay rendering
@@ -770,9 +777,11 @@ public class SceneManager : ISceneManager
 ### Phase 5: Scene Manager Integration (Week 3)
 
 **Files to Update:**
+
 - `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Scene.Manager/SceneManager.cs`
 
 **Tasks:**
+
 1. Subscribe to `ScaleChanged` events
 2. Implement automatic scene transitions
 3. Test world → dungeon transitions
@@ -781,6 +790,7 @@ public class SceneManager : ISceneManager
 ### Phase 6: Testing & Polish (Week 3-4)
 
 **Tasks:**
+
 1. Integration tests for all transitions
 2. Console app testing (zoom in/out, observe transitions)
 3. Windows app testing (smooth zoom, scene changes)

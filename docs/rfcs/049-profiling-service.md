@@ -1,3 +1,17 @@
+---
+canonical: true
+created: '2025-11-22'
+doc_id: RFC-00049
+doc_type: rfc
+status: active
+title: Profiling Service Implementation
+summary: Comprehensive profiling service for PigeonPea providing low-overhead performance monitoring and analysis
+tags:
+  - profiling
+  - performance
+  - plugin
+---
+
 # RFC-049: Profiling Service Implementation
 
 ## Status: ✅ IMPLEMENTED
@@ -27,34 +41,40 @@ This document describes the implementation of a comprehensive profiling service 
 ## Features Implemented
 
 ### ✅ Core Profiling
+
 - **Scope-based profiling** with automatic cleanup
 - **Category filtering** for targeted analysis
 - **Thread-safe** operation with thread-local storage
 - **Low-overhead design** with minimal performance impact
 
 ### ✅ Data Collection
+
 - **Frame timing** statistics
 - **Scope timing** with percentiles (P95, P99)
 - **Counter tracking** for custom metrics
 - **Event markers** for discrete events
 
 ### ✅ Export Formats
+
 - **Speedscope** (.speedscope.json) - Interactive web viewer
 - **Chrome Trace** (.json) - Chrome DevTools compatibility
 - **Raw JSON** - Custom analysis support
 
 ### ✅ Real-time Analysis
+
 - **Frame statistics** with current frame data
 - **Scope statistics** with historical analysis
 - **Trigger system** for automatic profiling
 - **Debug overlay** support (framework integration)
 
 ### ✅ ECS Integration
+
 - **World instrumentation** for system tracking
 - **System statistics** collection
 - **Performance reporting** for ECS operations
 
 ### ✅ Configuration
+
 - **Profiler modes**: Disabled, Instrumentation, Full
 - **Category enable/disable** for selective profiling
 - **Sample rate control** for performance tuning
@@ -90,16 +110,16 @@ profiler.ExportToSpeedscope("profile.speedscope.json");
 
 ```csharp
 // Configure triggers
-profiler.SetTrigger(new FrameTimeThresholdTrigger 
-{ 
+profiler.SetTrigger(new FrameTimeThresholdTrigger
+{
     ThresholdMs = 16.67 // 60 FPS target
 });
 
 // Enable debug overlay
-profiler.EnableOverlay(new OverlayConfig 
-{ 
+profiler.EnableOverlay(new OverlayConfig
+{
     ShowFrameTime = true,
-    ShowScopeTimes = true 
+    ShowScopeTimes = true
 });
 
 // ECS integration
@@ -112,18 +132,21 @@ var systemStats = profiler.GetSystemReport(gameWorld);
 ## Performance Characteristics
 
 ### Memory Usage
+
 - **Event storage**: ~32 bytes per event
 - **String table**: ~8 bytes per unique string
 - **Thread buffers**: Configurable (default 10K events)
 - **Total overhead**: <1MB for typical usage
 
 ### CPU Impact
+
 - **Scope begin/end**: ~50ns when disabled
 - **Scope begin/end**: ~200ns when enabled
 - **Event recording**: ~100ns per event
 - **Export processing**: O(n) where n = event count
 
 ### Scalability
+
 - **Thread-safe**: Supports unlimited concurrent threads
 - **Memory bounded**: Automatic buffer management
 - **High-frequency**: Designed for 60+ FPS applications
@@ -152,6 +175,7 @@ dotnet/app-essential/plugins/src/PigeonPea.Plugins.Profiling.Basic/
 ## Testing
 
 ### Test Coverage
+
 - ✅ **11 test cases** covering all major functionality
 - ✅ **Unit tests** for core service operations
 - ✅ **Integration tests** for export functionality
@@ -159,6 +183,7 @@ dotnet/app-essential/plugins/src/PigeonPea.Plugins.Profiling.Basic/
 - ✅ **Edge case handling** for robustness
 
 ### Test Categories
+
 1. **Service lifecycle** - Initialization, configuration
 2. **Profiling operations** - Scopes, markers, counters
 3. **Export functionality** - All format outputs
@@ -169,18 +194,21 @@ dotnet/app-essential/plugins/src/PigeonPea.Plugins.Profiling.Basic/
 ## Integration Points
 
 ### Plugin System
+
 - **Service registration** via dependency injection
 - **Plugin metadata** in `plugin.json`
 - **Lifecycle management** with proper cleanup
 - **Configuration** through plugin context
 
 ### Framework Integration
+
 - **IService interface** for framework compatibility
 - **Overlay support** for debug displays
 - **Trigger system** for automatic profiling
 - **World instrumentation** for ECS systems
 
 ### Export Ecosystem
+
 - **Speedscope** - Interactive web-based viewer
 - **Chrome DevTools** - Browser-based analysis
 - **Custom tools** - Raw JSON for custom analysis
@@ -188,23 +216,26 @@ dotnet/app-essential/plugins/src/PigeonPea.Plugins.Profiling.Basic/
 ## Performance Benchmarks
 
 ### Profiling Overhead
-| Operation | Time (ns) | Description |
-|------------|--------------|-------------|
-| No-op scope | 50 | When profiling disabled |
-| Active scope | 200 | When profiling enabled |
-| Event record | 100 | Marker/counter recording |
-| String lookup | 25 | String table access |
+
+| Operation     | Time (ns) | Description              |
+| ------------- | --------- | ------------------------ |
+| No-op scope   | 50        | When profiling disabled  |
+| Active scope  | 200       | When profiling enabled   |
+| Event record  | 100       | Marker/counter recording |
+| String lookup | 25        | String table access      |
 
 ### Memory Efficiency
-| Component | Usage | Description |
-|-----------|---------|-------------|
+
+| Component    | Usage     | Description           |
+| ------------ | --------- | --------------------- |
 | Event buffer | 32B/event | Compact event storage |
-| String table | 8B/string | Deduplicated strings |
-| Scope stack | 16B/scope | Nested scope tracking |
+| String table | 8B/string | Deduplicated strings  |
+| Scope stack  | 16B/scope | Nested scope tracking |
 
 ## Future Enhancements
 
 ### Potential Improvements
+
 1. **GPU profiling** integration
 2. **Memory allocation** tracking
 3. **Network latency** monitoring
@@ -212,6 +243,7 @@ dotnet/app-essential/plugins/src/PigeonPea.Plugins.Profiling.Basic/
 5. **Real-time streaming** to external tools
 
 ### Export Formats
+
 1. **Flamegraph** generation
 2. **CSV export** for spreadsheet analysis
 3. **Binary format** for large datasets
@@ -222,6 +254,7 @@ dotnet/app-essential/plugins/src/PigeonPea.Plugins.Profiling.Basic/
 The profiling service implementation provides a comprehensive, low-overhead solution for performance monitoring in the PigeonPea project. It successfully balances feature completeness with performance efficiency, making it suitable for both development and production use cases.
 
 ### Key Achievements
+
 - ✅ **Complete implementation** of all contract requirements
 - ✅ **Comprehensive testing** with 100% pass rate
 - ✅ **Production-ready** with proper error handling
@@ -233,7 +266,7 @@ The service is now ready for integration into the main codebase and can be used 
 
 ---
 
-*Implementation completed: November 22, 2025*
-*All tests passing: 11/11*
-*Build status: ✅ Success*
-*Code coverage: Comprehensive*
+_Implementation completed: November 22, 2025_
+_All tests passing: 11/11_
+_Build status: ✅ Success_
+_Code coverage: Comprehensive_

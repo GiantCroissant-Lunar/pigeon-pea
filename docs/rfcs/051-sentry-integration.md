@@ -40,26 +40,26 @@ This complements RFC-00050 (OpenTelemetry) by providing specialized error tracki
 
 ### Why Sentry?
 
-| Benefit | Description |
-|---------|-------------|
-| **Error-focused** | Purpose-built for error tracking with rich context |
-| **Breadcrumbs** | Automatic capture of events leading to errors |
-| **User context** | Associate errors with users and sessions |
-| **Performance** | Transaction-based performance monitoring |
-| **Releases** | Track errors by version and deployment |
-| **Alerts** | Built-in alerting and notification system |
-| **Dashboard** | Production-ready UI without self-hosting complexity |
+| Benefit           | Description                                         |
+| ----------------- | --------------------------------------------------- |
+| **Error-focused** | Purpose-built for error tracking with rich context  |
+| **Breadcrumbs**   | Automatic capture of events leading to errors       |
+| **User context**  | Associate errors with users and sessions            |
+| **Performance**   | Transaction-based performance monitoring            |
+| **Releases**      | Track errors by version and deployment              |
+| **Alerts**        | Built-in alerting and notification system           |
+| **Dashboard**     | Production-ready UI without self-hosting complexity |
 
 ### Sentry vs OpenTelemetry
 
-| Aspect | Sentry | OpenTelemetry |
-|--------|--------|---------------|
-| **Primary focus** | Error tracking | Distributed tracing |
-| **Best for** | Production monitoring | Debugging & optimization |
-| **User context** | First-class support | Manual tagging |
-| **Breadcrumbs** | Automatic | Manual events |
-| **Hosting** | SaaS (or self-hosted) | Self-hosted backends |
-| **Cost** | Free tier + paid | Free (backend costs) |
+| Aspect            | Sentry                | OpenTelemetry            |
+| ----------------- | --------------------- | ------------------------ |
+| **Primary focus** | Error tracking        | Distributed tracing      |
+| **Best for**      | Production monitoring | Debugging & optimization |
+| **User context**  | First-class support   | Manual tagging           |
+| **Breadcrumbs**   | Automatic             | Manual events            |
+| **Hosting**       | SaaS (or self-hosted) | Self-hosted backends     |
+| **Cost**          | Free tier + paid      | Free (backend costs)     |
 
 **Recommendation:** Use both - Sentry for production error monitoring, OpenTelemetry for development profiling and traces.
 
@@ -91,13 +91,13 @@ dotnet/app-essential/plugins/
 
 ### Sentry Mapping
 
-| Service Contract | Sentry Feature |
-|-----------------|----------------|
-| `IDiagnosticService.ReportError()` | `SentrySdk.CaptureException()` |
-| `IDiagnosticService.ReportWarning()` | Breadcrumb with level=warning |
-| `IDiagnosticService.CreateSnapshot()` | Custom event with diagnostics |
-| `IProfilingService.BeginScope()` | `ISpan` / `ITransaction` |
-| `IProfilingService.RecordMarker()` | Breadcrumb |
+| Service Contract                      | Sentry Feature                 |
+| ------------------------------------- | ------------------------------ |
+| `IDiagnosticService.ReportError()`    | `SentrySdk.CaptureException()` |
+| `IDiagnosticService.ReportWarning()`  | Breadcrumb with level=warning  |
+| `IDiagnosticService.CreateSnapshot()` | Custom event with diagnostics  |
+| `IProfilingService.BeginScope()`      | `ISpan` / `ITransaction`       |
+| `IProfilingService.RecordMarker()`    | Breadcrumb                     |
 
 ## Service Implementations
 
@@ -979,15 +979,15 @@ public async Task Diagnostic_SendsToSentry()
 
 ## Comparison with OpenTelemetry
 
-| Feature | Sentry Plugin | OpenTelemetry Plugin |
-|---------|--------------|---------------------|
-| Error tracking | Excellent | Basic (logs) |
-| Breadcrumbs | Automatic | Manual |
-| User context | First-class | Manual tags |
-| Performance | Transactions | Traces |
-| Dashboards | Built-in | Need Grafana/Jaeger |
-| Alerting | Built-in | Need external |
-| Self-hosted | Optional | Required |
+| Feature        | Sentry Plugin | OpenTelemetry Plugin |
+| -------------- | ------------- | -------------------- |
+| Error tracking | Excellent     | Basic (logs)         |
+| Breadcrumbs    | Automatic     | Manual               |
+| User context   | First-class   | Manual tags          |
+| Performance    | Transactions  | Traces               |
+| Dashboards     | Built-in      | Need Grafana/Jaeger  |
+| Alerting       | Built-in      | Need external        |
+| Self-hosted    | Optional      | Required             |
 
 **Recommendation**: Use Sentry for production monitoring and OpenTelemetry for development profiling.
 

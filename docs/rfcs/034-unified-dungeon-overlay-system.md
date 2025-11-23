@@ -4,7 +4,7 @@ created: '2025-11-21'
 dependencies:
   external: []
   rfcs:
-  - RFC-00014
+    - RFC-00014
 doc_id: RFC-00034
 doc_type: rfc
 implementation:
@@ -13,24 +13,23 @@ implementation:
   status: not-started
   tasks: []
 related:
-- RFC-00032
-- RFC-00033
-- RFC-00014
+  - RFC-00032
+  - RFC-00033
+  - RFC-00014
 status: draft
 summary: Extend the overlay abstraction (IOverlaySource) to dungeons, enabling doors,
   traps, spawn points, and treasure to be represented as overlay features instead
   of flat arrays
 supersedes: []
 tags:
-- overlay
-- dungeon
-- architecture
-- rendering
-- ecs
+  - overlay
+  - dungeon
+  - architecture
+  - rendering
+  - ecs
 title: Unified Dungeon Overlay System
 updated: '2025-11-21'
 ---
-
 
 # RFC-034: Unified Dungeon Overlay System
 
@@ -709,13 +708,16 @@ public class DungeonDomainRenderer : IDomainRenderer
 ### Phase 1: Core Overlay Contracts (Week 1)
 
 **Files to Create:**
+
 - `dotnet/game-essential/core/src/PigeonPea.Dungeon.Core/DungeonGridOverlaySource.cs`
 - `dotnet/game-essential/core/src/PigeonPea.Dungeon.Core/FeatureMetadata.cs`
 
 **Files to Update:**
+
 - `dotnet/game-essential/core/src/PigeonPea.Shared/Components.cs` (add FeatureMetadata to DungeonMapComponent)
 
 **Tasks:**
+
 1. Implement `DungeonGridOverlaySource`
 2. Define metadata models (TrapMetadata, SpawnPointMetadata, etc.)
 3. Write unit tests for overlay extraction
@@ -723,10 +725,12 @@ public class DungeonDomainRenderer : IDomainRenderer
 ### Phase 2: Generator Integration (Week 1-2)
 
 **Files to Update:**
+
 - `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Dungeon.ModernEdgar/ModernEdgarDungeonGenerator.cs`
 - `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Dungeon.Basic/BasicDungeonGenerator.cs`
 
 **Tasks:**
+
 1. Update generators to populate FeatureMetadata
 2. Maintain backward compatibility with DoorStates
 3. Add procedural trap/treasure placement
@@ -735,9 +739,11 @@ public class DungeonDomainRenderer : IDomainRenderer
 ### Phase 3: Renderer Integration (Week 2)
 
 **Files to Update:**
+
 - `dotnet/game-essential/plugins/src/PigeonPea.Plugin.Dungeon.Rendering/DungeonDomainRenderer.cs`
 
 **Tasks:**
+
 1. Add overlay rendering to dungeon renderer
 2. Implement visibility rules (discovered traps, debug spawn points)
 3. Add scale-based LOD (hide minor features at coarse scale)
@@ -746,6 +752,7 @@ public class DungeonDomainRenderer : IDomainRenderer
 ### Phase 4: Testing & Polish (Week 2-3)
 
 **Tasks:**
+
 1. Unit tests for all feature types
 2. Integration tests (generation → overlay extraction → rendering)
 3. Visual tests (ensure overlays render correctly)
@@ -845,25 +852,87 @@ Deprecate `DoorStates` after migration complete.
 ```json
 {
   "doors": [
-    {"x": 10, "y": 5, "state": "closed", "locked": false, "orientation": "horizontal"},
-    {"x": 20, "y": 15, "state": "locked", "locked": true, "orientation": "vertical"}
+    { "x": 10, "y": 5, "state": "closed", "locked": false, "orientation": "horizontal" },
+    { "x": 20, "y": 15, "state": "locked", "locked": true, "orientation": "vertical" }
   ],
   "traps": [
-    {"x": 12, "y": 8, "type": "spike", "damage": 5, "radius": 1, "discovered": false, "triggered": false},
-    {"x": 25, "y": 20, "type": "poison_gas", "damage": 3, "radius": 3, "discovered": true, "triggered": false}
+    {
+      "x": 12,
+      "y": 8,
+      "type": "spike",
+      "damage": 5,
+      "radius": 1,
+      "discovered": false,
+      "triggered": false
+    },
+    {
+      "x": 25,
+      "y": 20,
+      "type": "poison_gas",
+      "damage": 3,
+      "radius": 3,
+      "discovered": true,
+      "triggered": false
+    }
   ],
   "spawn_points": [
-    {"x": 5, "y": 5, "spawn_type": "player", "monster_id": null, "level": 1, "is_boss": false},
-    {"x": 40, "y": 40, "spawn_type": "boss", "monster_id": "dragon", "level": 10, "is_boss": true},
-    {"x": 15, "y": 20, "spawn_type": "monster", "monster_id": "goblin", "level": 2, "is_boss": false}
+    { "x": 5, "y": 5, "spawn_type": "player", "monster_id": null, "level": 1, "is_boss": false },
+    {
+      "x": 40,
+      "y": 40,
+      "spawn_type": "boss",
+      "monster_id": "dragon",
+      "level": 10,
+      "is_boss": true
+    },
+    {
+      "x": 15,
+      "y": 20,
+      "spawn_type": "monster",
+      "monster_id": "goblin",
+      "level": 2,
+      "is_boss": false
+    }
   ],
   "treasure": [
-    {"x": 30, "y": 25, "container_type": "chest", "items": ["sword", "potion"], "gold": 100, "opened": false, "locked": true, "trap_type": "poison_needle"},
-    {"x": 18, "y": 12, "container_type": "pile", "items": [], "gold": 20, "opened": true, "locked": false, "trap_type": null}
+    {
+      "x": 30,
+      "y": 25,
+      "container_type": "chest",
+      "items": ["sword", "potion"],
+      "gold": 100,
+      "opened": false,
+      "locked": true,
+      "trap_type": "poison_needle"
+    },
+    {
+      "x": 18,
+      "y": 12,
+      "container_type": "pile",
+      "items": [],
+      "gold": 20,
+      "opened": true,
+      "locked": false,
+      "trap_type": null
+    }
   ],
   "stairs": [
-    {"x": 2, "y": 2, "direction": "up", "destination_level": 0, "destination_x": 50, "destination_y": 50},
-    {"x": 48, "y": 48, "direction": "down", "destination_level": 2, "destination_x": 5, "destination_y": 5}
+    {
+      "x": 2,
+      "y": 2,
+      "direction": "up",
+      "destination_level": 0,
+      "destination_x": 50,
+      "destination_y": 50
+    },
+    {
+      "x": 48,
+      "y": 48,
+      "direction": "down",
+      "destination_level": 2,
+      "destination_x": 5,
+      "destination_y": 5
+    }
   ]
 }
 ```

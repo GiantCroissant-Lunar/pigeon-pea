@@ -72,7 +72,7 @@ This note captures the remaining work on the RFC numbering and cross-reference a
   - `docs/_inbox/README-SPADE-NEXT-STEPS.md` has been updated in headings, textual sections, and timeline summary to reflect 046/047/048.
   - `docs/index/registry.json` entries for these three `_inbox` RFCs now use 046/047/048.
 - **Remaining work:**
-  - [ ] Tidy up any *embedded diagrams or prose* that still show old numbers:
+  - [ ] Tidy up any _embedded diagrams or prose_ that still show old numbers:
     - Example: the ASCII dependency diagram in `README-SPADE-NEXT-STEPS.md` still references `RFC-034`, `RFC-033`, `RFC-032` for the phases; this should be updated to 047/046/048 (or at least annotated) when you next touch this doc.
   - [ ] Run a targeted search to confirm there are no lingering references to the old Spade RFC numbers (especially `RFC-00033` when it should mean the benchmarks suite, now 046).
 

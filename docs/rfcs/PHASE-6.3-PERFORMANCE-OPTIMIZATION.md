@@ -1,8 +1,8 @@
 # RFC-032 Phase 6.3: Performance Optimization
 
-**Created:** 2025-11-21  
-**Status:** In Progress  
-**Prerequisites:** Phase 6.1 (Console App Migration) ✅ Complete  
+**Created:** 2025-11-21
+**Status:** In Progress
+**Prerequisites:** Phase 6.1 (Console App Migration) ✅ Complete
 
 ## Overview
 
@@ -23,6 +23,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 **Goal:** Establish performance baselines before optimization
 
 **Subtasks:**
+
 1. Create profiling test scenarios:
    - Large map rendering (100×100 tiles)
    - Rapid screen updates (animation simulation)
@@ -37,6 +38,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 4. Document baseline metrics
 
 **Deliverables:**
+
 - `PERFORMANCE-BASELINE.md` with metrics
 - Profiling scripts/tools
 - Test scenarios in console app
@@ -48,6 +50,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 **Goal:** Improve efficiency of batch operations
 
 **Subtasks:**
+
 1. Analyze `DrawTiles` batch execution
 2. Implement optimizations:
    - Pre-allocate buffers for batch operations
@@ -57,6 +60,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 4. Measure improvement
 
 **Deliverables:**
+
 - Optimized batch execution code
 - Performance comparison benchmarks
 - Documentation of batching strategies
@@ -68,6 +72,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 **Goal:** Implement intelligent region invalidation
 
 **Subtasks:**
+
 1. Design dirty region tracking system:
    - Region-based invalidation
    - Integrate with viewport/camera
@@ -79,6 +84,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 4. Measure reduction in rendering work
 
 **Deliverables:**
+
 - Dirty region tracking implementation
 - Viewport culling logic
 - Performance metrics
@@ -90,6 +96,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 **Goal:** Optimize Braille buffer-to-character conversion
 
 **Subtasks:**
+
 1. Profile current Braille conversion:
    - Pixel buffer → Braille patterns
    - Pattern → Unicode lookup
@@ -101,6 +108,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 4. Validate visual correctness
 
 **Deliverables:**
+
 - Optimized Braille conversion code
 - Performance benchmarks
 - Visual regression tests
@@ -112,6 +120,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 **Goal:** Reduce ANSI output overhead
 
 **Subtasks:**
+
 1. Profile escape sequence generation:
    - Color changes
    - Cursor positioning
@@ -124,6 +133,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 4. Validate rendering correctness
 
 **Deliverables:**
+
 - Optimized ANSI generation
 - Output size comparisons
 - Performance metrics
@@ -135,6 +145,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 **Goal:** Reduce memory allocations and GC pressure
 
 **Subtasks:**
+
 1. Profile memory usage:
    - Allocation hot paths
    - GC frequency and duration
@@ -146,6 +157,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 3. Measure GC impact reduction
 
 **Deliverables:**
+
 - Memory profiling reports
 - Object pooling implementations
 - GC pressure reduction metrics
@@ -157,6 +169,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 **Goal:** Validate optimizations with comprehensive benchmarks
 
 **Subtasks:**
+
 1. Run full benchmark suite:
    - Compare baseline vs optimized
    - Test all backends
@@ -166,6 +179,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 4. Add continuous performance testing
 
 **Deliverables:**
+
 - Performance comparison report
 - Benchmark results dashboard
 - Continuous performance tests
@@ -177,12 +191,14 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 **Goal:** Document optimization techniques and results
 
 **Subtasks:**
+
 1. Update `PigeonPea.Rendering.Contracts/README.md`
 2. Create performance optimization guide
 3. Document backend-specific strategies
 4. Add troubleshooting tips
 
 **Deliverables:**
+
 - Updated documentation
 - Performance optimization guide
 - Best practices document
@@ -191,31 +207,34 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 
 ## Success Criteria
 
-| Criterion | Target | Status |
-|-----------|--------|--------|
-| Frame time improvement | >20% faster | ⏳ |
-| Memory allocations | >30% reduction | ⏳ |
-| Output size (ANSI) | >15% smaller | ⏳ |
-| GC frequency | >40% reduction | ⏳ |
-| Baseline documented | Yes | ⏳ |
-| Benchmarks passing | 100% | ⏳ |
-| Documentation complete | Yes | ⏳ |
+| Criterion              | Target         | Status |
+| ---------------------- | -------------- | ------ |
+| Frame time improvement | >20% faster    | ⏳     |
+| Memory allocations     | >30% reduction | ⏳     |
+| Output size (ANSI)     | >15% smaller   | ⏳     |
+| GC frequency           | >40% reduction | ⏳     |
+| Baseline documented    | Yes            | ⏳     |
+| Benchmarks passing     | 100%           | ⏳     |
+| Documentation complete | Yes            | ⏳     |
 
 ## Testing Strategy
 
 ### Console App Testing
+
 - Run with `--backend ansi` for ANSI optimization validation
 - Run with `--backend braille` for Braille optimization validation
 - Test with real game scenarios (dungeon, world map)
 - Measure on different terminal emulators
 
 ### Benchmark Testing
+
 - Use BenchmarkDotNet for micro-benchmarks
 - Integration benchmarks with full rendering pipeline
 - Profile with different workloads (small/medium/large)
 - Test on different hardware profiles
 
 ### Regression Testing
+
 - Visual regression tests (no visual changes)
 - Functional tests (behavior unchanged)
 - Performance regression tests (no slowdowns)
@@ -223,6 +242,7 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 ## Architecture Considerations
 
 ### Optimization Principles
+
 1. **Measure first** - Profile before optimizing
 2. **Prioritize hot paths** - Focus on frequently-called code
 3. **Maintain correctness** - Never sacrifice visual accuracy
@@ -232,18 +252,21 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 ### Backend-Specific Strategies
 
 **ANSI Backend:**
+
 - Minimize escape sequences
 - Optimize color state transitions
 - Reduce cursor movements
 - Batch adjacent writes
 
 **Braille Backend:**
+
 - Cache pattern conversions
 - Optimize buffer rasterization
 - Reduce string allocations
 - Pre-compute glyph patterns
 
 **Both:**
+
 - Delta rendering (only changed regions)
 - Viewport culling (skip off-screen)
 - Command batching (reduce call overhead)
@@ -251,12 +274,12 @@ Phase 6.3 focuses on profiling and optimizing the multi-backend rendering system
 
 ## Risk Mitigation
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Premature optimization | Medium | Profile first, optimize hot paths only |
-| Visual regressions | High | Comprehensive visual regression tests |
-| Complexity increase | Medium | Keep optimizations simple and documented |
-| Platform-specific issues | Medium | Test on multiple terminals/platforms |
+| Risk                     | Impact | Mitigation                               |
+| ------------------------ | ------ | ---------------------------------------- |
+| Premature optimization   | Medium | Profile first, optimize hot paths only   |
+| Visual regressions       | High   | Comprehensive visual regression tests    |
+| Complexity increase      | Medium | Keep optimizations simple and documented |
+| Platform-specific issues | Medium | Test on multiple terminals/platforms     |
 
 ## Estimated Timeline
 
@@ -276,24 +299,28 @@ Total:                 [████████] 25-35 hours (3-5 days)
 ## Phase 6.3 Execution Plan
 
 ### Session 1: Baseline & Profiling (Today)
+
 1. Create performance test scenarios
 2. Run baseline benchmarks
 3. Profile ANSI and Braille backends
 4. Document current performance
 
 ### Session 2: Command Optimization
+
 1. Optimize batch operations
 2. Implement dirty region tracking
 3. Add viewport culling
 4. Benchmark improvements
 
 ### Session 3: Backend Optimization
+
 1. Optimize Braille conversion
 2. Optimize ANSI escape sequences
 3. Memory profiling
 4. Implement object pooling
 
 ### Session 4: Validation & Documentation
+
 1. Run comprehensive benchmarks
 2. Validate no regressions
 3. Document optimizations
@@ -316,6 +343,7 @@ Total:                 [████████] 25-35 hours (3-5 days)
 ## Next Steps
 
 **Immediate Actions:**
+
 1. ✅ Create this execution plan
 2. ⏳ Set up profiling infrastructure
 3. ⏳ Create performance test scenarios
@@ -324,6 +352,6 @@ Total:                 [████████] 25-35 hours (3-5 days)
 
 ---
 
-**Phase 6.3 Status:** 🚀 Ready to Begin  
-**Confidence Level:** High (console app infrastructure proven)  
+**Phase 6.3 Status:** 🚀 Ready to Begin
+**Confidence Level:** High (console app infrastructure proven)
 **Risk Level:** Low (optimizing working code, not new features)

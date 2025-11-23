@@ -66,6 +66,7 @@ BrailleMapRenderer.RenderToBraille(mapData); // Expects FMG MapData
 **Scenario**: Add OpenStreetMap support
 
 Without abstraction:
+
 ```csharp
 // BAD: Explosion of conditional paths
 if (source == "FMG") {
@@ -300,24 +301,24 @@ public record BoundingBox(double X, double Y, double Width, double Height)
     public double MinY => Y;
     public double MaxX => X + Width;
     public double MaxY => Y + Height;
-    
-    public bool Contains(GeoPoint point) => 
-        point.X >= MinX && point.X <= MaxX && 
+
+    public bool Contains(GeoPoint point) =>
+        point.X >= MinX && point.X <= MaxX &&
         point.Y >= MinY && point.Y <= MaxY;
-    
+
     public bool Intersects(BoundingBox other) =>
         MinX < other.MaxX && MaxX > other.MinX &&
         MinY < other.MaxY && MaxY > other.MinY;
-    
+
     public BoundingBox? Intersection(BoundingBox other)
     {
         if (!Intersects(other)) return null;
-        
+
         var minX = Math.Max(MinX, other.MinX);
         var minY = Math.Max(MinY, other.MinY);
         var maxX = Math.Min(MaxX, other.MaxX);
         var maxY = Math.Min(MaxY, other.MaxY);
-        
+
         return new BoundingBox(minX, minY, maxX - minX, maxY - minY);
     }
 }
@@ -333,7 +334,7 @@ public record ZoomLevel(int Level)
     public static ZoomLevel Region => new(8);
     public static ZoomLevel City => new(12);
     public static ZoomLevel Street => new(16);
-    
+
     public static implicit operator int(ZoomLevel z) => z.Level;
     public static implicit operator ZoomLevel(int i) => new(i);
 }
@@ -364,41 +365,41 @@ public class FmgMapProvider : IMapProvider
 {
     private readonly MapGenerator _generator;
     private readonly MapCache _cache;
-    
+
     public string ProviderId => "fmg";
-    
-    public MapProviderCapabilities Capabilities => 
-        MapProviderCapabilities.Fantasy | 
+
+    public MapProviderCapabilities Capabilities =>
+        MapProviderCapabilities.Fantasy |
         MapProviderCapabilities.Generative |
         MapProviderCapabilities.Offline;
-    
+
     public FmgMapProvider(MapGenerator generator, MapCache cache)
     {
         _generator = generator;
         _cache = cache;
     }
-    
+
     public async Task<IMapData> GetMapAsync(BoundingBox bounds, CancellationToken ct)
     {
         // Check cache
         if (_cache.TryGet(bounds, out var cached))
             return cached;
-        
+
         // Generate or retrieve FMG map
         var settings = CreateSettingsFromBounds(bounds);
         var fmgData = await _generator.GenerateAsync(settings, ct);
-        
+
         // Wrap in adapter
         var mapData = new FmgMapDataAdapter(fmgData, bounds);
-        
+
         // Cache for reuse
         _cache.Set(bounds, mapData);
-        
+
         return mapData;
     }
-    
+
     public bool CanServe(BoundingBox bounds) => true; // Can generate anywhere
-    
+
     private MapGenerationSettings CreateSettingsFromBounds(BoundingBox bounds)
     {
         return new MapGenerationSettings
@@ -421,22 +422,22 @@ internal class FmgMapDataAdapter : IMapData
 {
     private readonly FantasyMapGenerator.Core.Models.MapData _fmg;
     private readonly BoundingBox _bounds;
-    
+
     public string MapId => $"fmg-{_fmg.Seed}";
     public BoundingBox Bounds => _bounds;
     public ZoomRange SupportedZoom => new(0, 14);
-    
+
     public FmgMapDataAdapter(FantasyMapGenerator.Core.Models.MapData fmg, BoundingBox bounds)
     {
         _fmg = fmg;
         _bounds = bounds;
     }
-    
+
     public IEnumerable<IMapFeature> GetFeatures(BoundingBox bounds, ZoomLevel zoom)
     {
         // Filter by zoom level
         var features = new List<IMapFeature>();
-        
+
         // Convert FMG burgs to settlements
         if (zoom >= 2)
         {
@@ -445,7 +446,7 @@ internal class FmgMapDataAdapter : IMapData
                 features.Add(new FmgSettlementAdapter(burg));
             }
         }
-        
+
         // Convert FMG rivers to waterways
         if (zoom >= 4)
         {
@@ -454,7 +455,7 @@ internal class FmgMapDataAdapter : IMapData
                 features.Add(new FmgRiverAdapter(river));
             }
         }
-        
+
         // Convert FMG state borders
         if (zoom >= 4)
         {
@@ -463,27 +464,27 @@ internal class FmgMapDataAdapter : IMapData
                 features.Add(new FmgBorderAdapter(state));
             }
         }
-        
+
         // Convert FMG markers (dungeons, etc.)
         foreach (var marker in _fmg.Markers.Where(m => bounds.Contains(new GeoPoint(m.X, m.Y))))
         {
             features.Add(new FmgMarkerAdapter(marker));
         }
-        
+
         return features;
     }
-    
+
     public double? GetElevation(GeoPoint point)
     {
         var cell = FindCellAtPoint(point);
         return cell?.Height;
     }
-    
+
     public TerrainType? GetTerrain(GeoPoint point)
     {
         var cell = FindCellAtPoint(point);
         if (cell == null) return null;
-        
+
         return cell.Biome switch
         {
             0 => TerrainType.Ocean,
@@ -493,12 +494,12 @@ internal class FmgMapDataAdapter : IMapData
             _ => TerrainType.Plains
         };
     }
-    
+
     private Cell? FindCellAtPoint(GeoPoint point)
     {
         // Use FMG's spatial index or nearest neighbor search
-        return _fmg.Cells.MinBy(c => 
-            Math.Pow(c.Center.X - point.X, 2) + 
+        return _fmg.Cells.MinBy(c =>
+            Math.Pow(c.Center.X - point.X, 2) +
             Math.Pow(c.Center.Y - point.Y, 2));
     }
 }
@@ -510,25 +511,25 @@ internal class FmgMapDataAdapter : IMapData
 internal class FmgSettlementAdapter : IMapFeature
 {
     private readonly Burg _burg;
-    
+
     public FmgSettlementAdapter(Burg burg) => _burg = burg;
-    
+
     public string FeatureId => $"burg-{_burg.Id}";
-    
+
     public FeatureKind Kind => _burg.Capital switch
     {
         1 => FeatureKind.Capital,
-        _ => _burg.Population > 10000 ? FeatureKind.City : 
+        _ => _burg.Population > 10000 ? FeatureKind.City :
              _burg.Population > 1000 ? FeatureKind.Town : FeatureKind.Village
     };
-    
+
     public string? Name => _burg.Name;
-    
+
     public IGeometry Geometry => new Point(_burg.Position.X, _burg.Position.Y);
-    
-    public ZoomLevel MinZoom => _burg.Capital == 1 ? 2 : 
+
+    public ZoomLevel MinZoom => _burg.Capital == 1 ? 2 :
                                  _burg.Population > 10000 ? 6 : 10;
-    
+
     public IReadOnlyDictionary<string, object> Metadata => new Dictionary<string, object>
     {
         ["population"] = _burg.Population,
@@ -541,24 +542,24 @@ internal class FmgSettlementAdapter : IMapFeature
 internal class FmgRiverAdapter : IMapFeature
 {
     private readonly River _river;
-    
+
     public FmgRiverAdapter(River river) => _river = river;
-    
+
     public string FeatureId => $"river-{_river.Id}";
     public FeatureKind Kind => FeatureKind.River;
     public string? Name => _river.Name;
-    
+
     public IGeometry Geometry => CreateLineString(_river.Cells);
-    
+
     public ZoomLevel MinZoom => _river.Width > 5 ? 4 : 8;
-    
+
     public IReadOnlyDictionary<string, object> Metadata => new Dictionary<string, object>
     {
         ["width"] = _river.Width,
         ["length"] = _river.Length,
         ["flux"] = _river.Cells?.Count ?? 0
     };
-    
+
     private IGeometry CreateLineString(List<int>? cellIds)
     {
         // Convert FMG river cell IDs to coordinate path
@@ -584,26 +585,26 @@ public static class SkiaMapRasterizer
         RenderOptions options)
     {
         var image = new RasterImage(viewport.Width, viewport.Height);
-        
+
         // 1. Render terrain (if available)
         if (options.ShowTerrain && map.GetElevation(new GeoPoint(0, 0)) != null)
         {
             RenderTerrain(image, map, viewport);
         }
-        
+
         // 2. Get features for viewport
         var features = map.GetFeatures(viewport.Bounds, viewport.Zoom);
-        
+
         // 3. Render by layer order
         foreach (var layer in GetLayerOrder())
         {
             var layerFeatures = features.Where(f => MatchesLayer(f.Kind, layer));
             RenderFeatures(image, layerFeatures, viewport, options);
         }
-        
+
         return image;
     }
-    
+
     // LEGACY: Keep for backward compatibility (delegates to new method)
     public static RasterImage Render(
         FantasyMapGenerator.Core.Models.MapData legacyMap,
@@ -614,7 +615,7 @@ public static class SkiaMapRasterizer
         // Wrap legacy FMG MapData in adapter
         var adapter = new FmgMapDataAdapter(legacyMap, viewport.Bounds);
         var options = new RenderOptions { /* ... */ };
-        
+
         return Render(adapter, viewport, options);
     }
 }
@@ -636,6 +637,7 @@ public static class SkiaMapRasterizer
    - Zero breaking changes
 
 **Acceptance Criteria**:
+
 - [ ] `PigeonPea.Map.Contracts` compiles
 - [ ] All contracts have XML documentation
 - [ ] Zero changes to existing projects
@@ -659,6 +661,7 @@ public static class SkiaMapRasterizer
    - `FmgMarkerAdapter` (Marker → IMapFeature)
 
 **Acceptance Criteria**:
+
 - [ ] `FmgMapProvider` generates maps
 - [ ] Adapter correctly exposes FMG features
 - [ ] Feature filtering by zoom works
@@ -681,6 +684,7 @@ public static class SkiaMapRasterizer
    - Update tests
 
 **Acceptance Criteria**:
+
 - [ ] Renderers work with `IMapData`
 - [ ] Legacy code still compiles
 - [ ] Visual output unchanged
@@ -698,6 +702,7 @@ public static class SkiaMapRasterizer
    - Examples
 
 **Acceptance Criteria**:
+
 - [ ] All integration tests pass
 - [ ] Performance is equivalent to legacy code
 - [ ] Documentation complete
@@ -713,10 +718,10 @@ public async Task FmgMapProvider_GeneratesValidMap()
     var generator = new MapGenerator();
     var cache = new MapCache();
     var provider = new FmgMapProvider(generator, cache);
-    
+
     var bounds = new BoundingBox(0, 0, 1024, 1024);
     var map = await provider.GetMapAsync(bounds);
-    
+
     Assert.NotNull(map);
     Assert.Equal(bounds, map.Bounds);
     Assert.NotEmpty(map.GetFeatures(bounds, ZoomLevel.Region));
@@ -727,12 +732,12 @@ public void FmgMapDataAdapter_FiltersFeaturesByZoom()
 {
     var fmgData = CreateTestMapData();
     var adapter = new FmgMapDataAdapter(fmgData, new BoundingBox(0, 0, 1024, 1024));
-    
+
     // At low zoom, only capitals
     var zoom2 = adapter.GetFeatures(adapter.Bounds, 2).ToList();
     Assert.All(zoom2.Where(f => f.Kind == FeatureKind.City || f.Kind == FeatureKind.Capital),
         f => Assert.True(f.MinZoom <= 2));
-    
+
     // At high zoom, all features
     var zoom12 = adapter.GetFeatures(adapter.Bounds, 12).ToList();
     Assert.True(zoom12.Count > zoom2.Count);
@@ -744,9 +749,9 @@ public void SkiaMapRasterizer_RendersIMapData()
     var map = CreateMockMapData();
     var viewport = new Viewport(0, 0, 512, 512);
     var options = new RenderOptions();
-    
+
     var result = SkiaMapRasterizer.Render(map, viewport, options);
-    
+
     Assert.NotNull(result);
     Assert.Equal(512, result.Width);
     Assert.Equal(512, result.Height);
@@ -763,11 +768,11 @@ public async Task EndToEnd_FmgProvider_To_BrailleRenderer()
     var provider = CreateFmgProvider();
     var bounds = new BoundingBox(0, 0, 1024, 1024);
     var map = await provider.GetMapAsync(bounds);
-    
+
     // Render
     var viewport = new Viewport(0, 0, 512, 512);
     var braille = BrailleMapRenderer.RenderToBraille(map, viewport);
-    
+
     // Verify
     Assert.NotEmpty(braille);
     Assert.Contains("⠿", braille); // Contains Braille characters
@@ -807,6 +812,7 @@ public async Task EndToEnd_FmgProvider_To_BrailleRenderer()
 ### For Existing Code
 
 **Before** (current):
+
 ```csharp
 var generator = new MapGenerator();
 var map = await generator.GenerateAsync(settings);
@@ -814,6 +820,7 @@ var rendered = SkiaMapRasterizer.Render(map, viewport, zoom, ppc);
 ```
 
 **After** (new abstraction):
+
 ```csharp
 var provider = new FmgMapProvider(generator, cache);
 var map = await provider.GetMapAsync(bounds);
@@ -821,6 +828,7 @@ var rendered = SkiaMapRasterizer.Render(map, viewport, options);
 ```
 
 **During Transition**:
+
 ```csharp
 // Legacy overload still works!
 var rendered = SkiaMapRasterizer.Render(legacyMap, viewport, zoom, ppc);

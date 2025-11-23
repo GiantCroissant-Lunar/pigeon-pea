@@ -9,19 +9,17 @@ summary: Adopt and standardize the use of DisposePattern source code generator a
   all projects that need IDisposable implementation
 supersedes: []
 tags:
-- agents
-- architecture
-- ci-cd
-- documentation
-- ecs
-- plugins
-- rfc
-- terminal
-- testing
+  - agents
+  - architecture
+  - ci-cd
+  - documentation
+  - ecs
+  - plugins
+  - rfc
+  - terminal
+  - testing
 title: 'RFC-014: Adopt DisposePattern Source Code Generator'
 ---
-
-
 
 ﻿---
 doc_id: 'RFC-00014'

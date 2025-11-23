@@ -1,6 +1,6 @@
 # RFC-034 Unified Dungeon Overlay System - Implementation Status
 
-**Date:** 2025-11-21  
+**Date:** 2025-11-21
 **Status:** Phase 4 Complete (Testing & Documentation)
 
 ## What Was Implemented
@@ -8,10 +8,11 @@
 ### Phase 1: Core Overlay Contracts ✅
 
 **Files Created:**
+
 - ` PigeonPea.Dungeon.Contracts/Models/FeatureMetadata.cs` - All feature metadata models:
   - TrapMetadata
   - SpawnPointMetadata
-  - TreasureMetadata  
+  - TreasureMetadata
   - StairMetadata
   - DoorMetadata
   - DoorState enum
@@ -19,11 +20,13 @@
 - `PigeonPea.Shared/Dungeon/DungeonGridOverlaySource.cs` - Overlay extraction implementation
 
 **Files Modified:**
+
 - `PigeonPea.Shared/Components.cs` - Added FeatureMetadata field to DungeonMapComponent
 - `PigeonPea.Dungeon.Contracts.csproj` - Added Overlays reference
 - `PigeonPea.Shared.csproj` - Added Overlays reference
 
 **Key Features:**
+
 - ✅ Unified IOverlaySource pattern for dungeons (same as world maps)
 - ✅ Support for 5 feature types: doors, traps, spawn points, treasure, stairs
 - ✅ Backward compatibility with legacy DoorStates array
@@ -34,6 +37,7 @@
 ### Phase 2: Generator Integration ✅
 
 **Files Modified:**
+
 - `PigeonPea.Plugin.Dungeon.Basic/BasicDungeonGenerator.cs`
   - Added System.Text.Json using directive
   - Extract door positions from DungeonData
@@ -48,6 +52,7 @@
   - Added DetectDoorOrientation helper method
 
 **Key Features:**
+
 - ✅ Both generators now populate FeatureMetadata["doors"] with JSON
 - ✅ Smart door orientation detection (horizontal/vertical)
 - ✅ Maintains backward compatibility with DoorStates array
@@ -55,6 +60,7 @@
 - ✅ Builds successfully with no errors
 
 **Next Steps:**
+
 - Add trap placement to generators (Phase 2 extension)
 - Add treasure placement to generators (Phase 2 extension)
 - Add spawn point placement to generators (Phase 2 extension)
@@ -63,6 +69,7 @@
 ### Phase 3: Renderer Integration ✅
 
 **Files Modified:**
+
 - `PigeonPea.Dungeon.Contracts/IDungeonRenderer.cs`
   - Added `RenderWithOverlays` method accepting overlays
   - Kept legacy `Render(DungeonView)` method for backward compatibility
@@ -79,6 +86,7 @@
   - Added references to Overlays and Shared projects
 
 **Key Features:**
+
 - ✅ New `RenderWithOverlays` method consumes overlay features
 - ✅ Renders base tiles (walls, floors) from walkable BitArray
 - ✅ Renders overlay features on top (doors, traps, treasure, stairs, spawn points)
@@ -96,6 +104,7 @@
 ### Phase 4: Testing & Documentation ✅
 
 **Files Created:**
+
 - `PigeonPea.Dungeon.Tests/DungeonOverlayRenderingTests.cs`
   - Comprehensive integration tests for overlay rendering
   - Tests for generator metadata production
@@ -117,6 +126,7 @@
   - Performance considerations
 
 **Key Features:**
+
 - ✅ Full integration test suite covering generator → overlay → renderer flow
 - ✅ Unit tests for each component
 - ✅ Mock renderer for headless testing
@@ -137,6 +147,7 @@ All 4 phases of RFC-034 have been successfully implemented:
 ## Next Steps (Optional Enhancements)
 
 ### Future Improvements
+
 - Add public debug mode API to DungeonRenderer
 - Implement custom feature renderers via plugins
 - Add dynamic overlay filtering capabilities
@@ -148,6 +159,7 @@ All 4 phases of RFC-034 have been successfully implemented:
 ## Architecture
 
 The implementation follows the same pattern as world map overlays:
+
 - `DungeonMapComponent` stores feature metadata
 - `DungeonGridOverlaySource` extracts features as overlay instances
 - Renderers consume overlays via `IOverlayFeature<GridPosition>`

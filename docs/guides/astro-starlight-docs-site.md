@@ -6,11 +6,11 @@ doc_type: guide
 status: active
 summary: 'How to run and maintain the Astro Starlight-based documentation site that presents canonical docs from docs/ via the registry.'
 tags:
-- documentation
-- guide
-- astro
-- starlight
-- docs-site
+  - documentation
+  - guide
+  - astro
+  - starlight
+  - docs-site
 title: Astro Starlight Docs Site
 ---
 
@@ -27,7 +27,7 @@ The docs site lives under:
 - `docs-site/` — Astro project using the Starlight theme
 - `docs-site/src/content/docs/` — Starlight content collection
 - `docs-site/src/components/ExternalDoc.astro` — Renders real markdown
-docs from `docs/`
+  docs from `docs/`
 - `scripts/docs_mgmt/generate_starlight_wrappers.py` — Generates
   Starlight wrapper pages from the documentation registry
 
@@ -43,7 +43,6 @@ presentation layer on top of that corpus.
 2. `scripts/docs_mgmt/generate_starlight_wrappers.py` reads the
    registry and creates one **wrapper MDX file** for each
    **canonical** document:
-
    - Output directory: `docs-site/src/content/docs/<doc_type>/`
    - File name: `<doc_id>.mdx` (for example
      `docs-site/src/content/docs/rfc/RFC-00012.mdx`)
@@ -103,7 +102,7 @@ sidebar: [
   { label: 'Plans', autogenerate: { directory: 'plan' } },
   { label: 'Specifications', autogenerate: { directory: 'spec' } },
   { label: 'Reference', autogenerate: { directory: 'reference' } },
-]
+];
 ```
 
 The order of this array controls the section ordering in the sidebar.

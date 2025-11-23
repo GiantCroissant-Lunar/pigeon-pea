@@ -1,7 +1,7 @@
 # Phase 6.3 - Session 2 Summary: Console Safety & Benchmark Validation
 
-**Date:** 2025-11-21  
-**Duration:** ~1.5 hours  
+**Date:** 2025-11-21
+**Duration:** ~1.5 hours
 **Status:** ✅ Infrastructure Fixed
 
 ## Overview
@@ -11,7 +11,9 @@ Session 2 focused on running baseline benchmarks but encountered console access 
 ## Problem Encountered
 
 ### Initial Issue
+
 When running benchmarks with BenchmarkDotNet:
+
 ```
 System.IO.IOException: 控制代碼無效。
   at System.ConsolePal.set_CursorVisible(Boolean value)
@@ -21,7 +23,9 @@ System.IO.IOException: 控制代碼無效。
 **Root Cause**: BenchmarkDotNet runs benchmarks in isolated subprocess without a real console handle. Both ANSI and Braille backends attempted direct console manipulation (`Console.CursorVisible`, `Console.Write`) which threw `IOException`.
 
 ### Why This Matters
+
 Performance benchmarking requires running rendering logic **without** actual terminal output. The backends need to:
+
 1. Execute all rendering calculations (the performance target)
 2. Skip console I/O when unavailable (benchmarking scenario)
 3. Still work normally in real applications (console available)
@@ -63,7 +67,9 @@ catch (IOException)
 ### Files Modified
 
 #### 1. ANSIBackend.cs
+
 **Changes**:
+
 - `Initialize()`: Try-catch for `Console.WindowWidth/Height`
 - `Initialize()`: Try-catch for console setup operations
 - `Present()`: Try-catch for `Console.Write/Flush`
@@ -72,9 +78,11 @@ catch (IOException)
 **Result**: ANSI backend executes all rendering logic even without console
 
 #### 2. BrailleBackend.cs
+
 **Changes**:
+
 - `Initialize()`: Try-catch for `Console.WindowWidth/Height`
-- `Initialize()`: Try-catch for console setup operations  
+- `Initialize()`: Try-catch for console setup operations
 - `Present()`: Try-catch for `Console.Write/Flush`
 - `Shutdown()`: Try-catch for console cleanup
 
@@ -93,21 +101,23 @@ catch (IOException)
 
 Running a single benchmark scenario (`--filter *SparseRendering*`) confirmed:
 
-✅ **Backends Initialize Successfully**: No more `IOException`  
-✅ **Rendering Logic Executes**: Benchmarks run to completion  
-✅ **Performance Measured**: BenchmarkDotNet captures timing correctly  
+✅ **Backends Initialize Successfully**: No more `IOException`
+✅ **Rendering Logic Executes**: Benchmarks run to completion
+✅ **Performance Measured**: BenchmarkDotNet captures timing correctly
 ⚠️ **Massive Terminal Output**: Backends still write ANSI codes (expected)
 
 ### Output Observation
 
 Benchmarks produced enormous amounts of terminal escape sequences:
+
 ```
 ?[0m?[0m?[0m?[0m?[0m?[0m... (thousands of lines)
 ```
 
 **Why**: Even with console I/O in try-catch, the backends build escape sequence buffers during `Present()`. The buffer construction is part of the rendering logic being benchmarked (desired!), but the output is still sent to our terminal (undesired but harmless).
 
-**Impact**: 
+**Impact**:
+
 - Performance measurements are valid ✅
 - Output is just verbose (can be redirected) ✅
 - Proves rendering logic is executing ✅
@@ -115,16 +125,19 @@ Benchmarks produced enormous amounts of terminal escape sequences:
 ## Accomplishments
 
 ### 1. Console Safety Implementation ✅
+
 - Both backends handle missing console gracefully
 - Rendering logic preserved for benchmarking
 - Real console apps unaffected
 
 ### 2. Benchmark Infrastructure Validated ✅
+
 - BenchmarkDotNet integration works
 - Backends initialize and execute
 - Performance data can be collected
 
 ### 3. Architecture Improvements ✅
+
 - Separation of rendering logic from I/O
 - Better error handling
 - More robust for non-console scenarios
@@ -132,12 +145,15 @@ Benchmarks produced enormous amounts of terminal escape sequences:
 ## Benchmark Strategy Insights
 
 ### Challenge
+
 Running all 72 benchmark combinations (9 scenarios × 2 backends × 2 sizes × 2 variations) produces:
+
 - **Hours of execution time**
 - **Gigabytes of terminal output**
 - **Risk of overwhelming the environment**
 
 ### Better Approach for Future
+
 Instead of full benchmark suite, focus on:
 
 1. **Targeted Micro-Benchmarks**
@@ -174,9 +190,11 @@ Changes:
 ## Technical Decisions
 
 ### Why Not Suppress Output at Benchmark Level?
+
 **Considered**: Redirecting `Console.SetOut(TextWriter.Null)` in benchmark setup
 
 **Rejected Because**:
+
 - Loses ability to debug benchmark issues
 - Hides errors in rendering logic
 - BenchmarkDotNet needs console for progress reporting
@@ -184,17 +202,21 @@ Changes:
 **Better Solution**: Fix backends to handle missing console (what we did)
 
 ### Why Catch IOException Specifically?
+
 **Decision**: Only catch `IOException` in console operations
 
 **Rationale**:
+
 - Other exceptions indicate real bugs
 - `IOException` is expected when console unavailable
 - Preserves error visibility for actual problems
 
 ### Why Keep Buffer Construction?
+
 **Decision**: Don't skip buffer building in benchmarks
 
 **Rationale**:
+
 - Buffer construction IS the rendering work being measured
 - String concatenation and escape sequence generation are hot paths
 - Skipping it would make benchmarks meaningless
@@ -209,19 +231,20 @@ Changes:
 
 ## Status Update
 
-| Aspect | Status | Notes |
-|--------|--------|-------|
-| Console Safety | ✅ Complete | Both backends handle missing console |
-| Benchmark Infrastructure | ✅ Validated | Benchmarks execute successfully |
-| Baseline Measurements | ⏸️ Deferred | Output volume too high for full suite |
-| Hot Path Identification | ⏳ Next Phase | Use profiling instead of benchmarks |
-| Optimization Work | ⏳ Pending | Need profiling data first |
+| Aspect                   | Status        | Notes                                 |
+| ------------------------ | ------------- | ------------------------------------- |
+| Console Safety           | ✅ Complete   | Both backends handle missing console  |
+| Benchmark Infrastructure | ✅ Validated  | Benchmarks execute successfully       |
+| Baseline Measurements    | ⏸️ Deferred   | Output volume too high for full suite |
+| Hot Path Identification  | ⏳ Next Phase | Use profiling instead of benchmarks   |
+| Optimization Work        | ⏳ Pending    | Need profiling data first             |
 
 ## Recommendations
 
 ### Immediate Next Steps
 
 1. **Profile Real Console App**
+
    ```bash
    dotnet-trace collect --process-name PigeonPea.Dungeon.ConsoleApp \
      --providers Microsoft-DotNETCore-SampleProfiler
@@ -240,6 +263,7 @@ Changes:
 ### Alternative: Simplified Benchmark Approach
 
 Create a **mock backend** for pure performance testing:
+
 ```csharp
 public class MockBackend : IRenderBackend
 {
@@ -250,6 +274,7 @@ public class MockBackend : IRenderBackend
 ```
 
 Benefits:
+
 - No console output
 - Pure rendering logic measurement
 - Fast execution
@@ -257,11 +282,13 @@ Benefits:
 ## Phase 6.3 Progress
 
 ### Completed
+
 - ✅ Session 1: Benchmark infrastructure created
 - ✅ Session 2: Console safety implemented
 - ✅ Benchmark validation confirmed
 
 ### Pending
+
 - ⏳ Profiling real application
 - ⏳ Hot path identification
 - ⏳ Optimization implementation
@@ -269,9 +296,11 @@ Benefits:
 - ⏳ Documentation updates
 
 ### Adjusted Approach
+
 Instead of micro-benchmarks first → Profile real app first → Then optimize hot paths
 
-**Rationale**: 
+**Rationale**:
+
 - Real-world profiling reveals actual bottlenecks
 - Micro-benchmarks can mislead (optimize wrong things)
 - Console app usage patterns guide optimization priorities
@@ -288,6 +317,6 @@ The better path forward is **profiling real application usage** rather than exha
 
 ---
 
-**Session 2 Status**: ✅ Complete  
-**Next Session**: Profile console app with dotnet-trace  
+**Session 2 Status**: ✅ Complete
+**Next Session**: Profile console app with dotnet-trace
 **Phase 6.3 Progress**: 25% (Infrastructure complete, optimization pending)

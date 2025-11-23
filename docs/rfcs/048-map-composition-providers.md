@@ -6,7 +6,7 @@ doc_type: rfc
 related:
   - RFC-00046
   - RFC-00047
-status: implemented
+status: active
 summary: Implement composition providers that blend multiple map sources (regional routing, layer merging, zoom-based switching) enabling hybrid worlds
 supersedes: []
 tags:
@@ -44,6 +44,7 @@ Implement **composition providers** that blend multiple map sources to create hy
 ### Current State
 
 After RFC-046, we have single-source providers:
+
 - `FmgMapProvider` - Generates fantasy maps
 - `MBTilesMapProvider` - Loads container maps
 - Future: `VectorTileProvider` (OSM), `HeightmapProvider`, etc.
@@ -51,6 +52,7 @@ After RFC-046, we have single-source providers:
 ### Problem
 
 Cannot easily blend sources:
+
 ```csharp
 // Want: Fantasy terrain + OSM cities + Custom dungeons
 // Current: Only one source at a time
@@ -100,6 +102,7 @@ var map = await hybrid.GetMapAsync(bounds);
 ### Composability
 
 Composition providers **are** `IMapProvider`, so they can be:
+
 - Used anywhere a provider is expected
 - Nested (compose compositions)
 - Cached, exported to MBTiles, etc.
@@ -137,13 +140,13 @@ public class RegionalMapProvider : IMapProvider
 {
     private readonly List<RegionRoute> _routes;
     private readonly IMapProvider _fallback;
-    
+
     public string ProviderId => $"regional:{_routes.Count}-regions";
-    
-    public MapProviderCapabilities Capabilities => 
-        _routes.Aggregate(_fallback.Capabilities, 
+
+    public MapProviderCapabilities Capabilities =>
+        _routes.Aggregate(_fallback.Capabilities,
             (caps, route) => caps | route.Provider.Capabilities);
-    
+
     public RegionalMapProvider(
         IEnumerable<RegionRoute> routes,
         IMapProvider fallback)
@@ -151,23 +154,23 @@ public class RegionalMapProvider : IMapProvider
         _routes = routes.OrderByDescending(r => r.Priority).ToList();
         _fallback = fallback;
     }
-    
+
     public async Task<IMapData> GetMapAsync(BoundingBox bounds, CancellationToken ct = default)
     {
         // Find all regions that intersect bounds
         var intersecting = _routes
             .Where(r => r.Region.Intersects(bounds))
             .ToList();
-        
+
         // Simple case: Single provider covers entire request
         if (intersecting.Count == 1 && intersecting[0].Region.Contains(bounds))
         {
             return await intersecting[0].Provider.GetMapAsync(bounds, ct);
         }
-        
+
         // Complex case: Multiple providers or partial coverage
         var maps = new List<(IMapData map, BoundingBox region)>();
-        
+
         foreach (var route in intersecting)
         {
             var intersection = bounds.Intersection(route.Region);
@@ -177,38 +180,38 @@ public class RegionalMapProvider : IMapProvider
                 maps.Add((map, intersection));
             }
         }
-        
+
         // Fill gaps with fallback
         var covered = new List<BoundingBox>(maps.Select(m => m.region));
         var gaps = CalculateGaps(bounds, covered);
-        
+
         foreach (var gap in gaps)
         {
             var fallbackMap = await _fallback.GetMapAsync(gap, ct);
             maps.Add((fallbackMap, gap));
         }
-        
+
         // Merge all maps
         return new CompositeMapData(maps);
     }
-    
+
     public bool CanServe(BoundingBox bounds)
     {
         // Can serve if any route or fallback can serve
         return _routes.Any(r => r.Region.Intersects(bounds) && r.Provider.CanServe(bounds)) ||
                _fallback.CanServe(bounds);
     }
-    
+
     private IEnumerable<BoundingBox> CalculateGaps(
         BoundingBox total,
         List<BoundingBox> covered)
     {
         // Spatial subdivision to find uncovered areas
         // Simplified implementation - production would use R-tree or similar
-        
+
         var gaps = new List<BoundingBox>();
         var grid = SubdivideGrid(total, 16); // 16x16 grid
-        
+
         foreach (var cell in grid)
         {
             if (!covered.Any(c => c.Contains(cell)))
@@ -216,7 +219,7 @@ public class RegionalMapProvider : IMapProvider
                 gaps.Add(cell);
             }
         }
-        
+
         return MergeAdjacentBoxes(gaps); // Merge continuous gaps
     }
 }
@@ -250,13 +253,13 @@ public class LayeredMapProvider : IMapProvider
 {
     private readonly Dictionary<FeatureKindSet, IMapProvider> _layers;
     private readonly LayerMergeStrategy _strategy;
-    
+
     public string ProviderId => $"layered:{_layers.Count}-layers";
-    
+
     public MapProviderCapabilities Capabilities =>
         _layers.Values.Aggregate(MapProviderCapabilities.None,
             (caps, provider) => caps | provider.Capabilities);
-    
+
     public LayeredMapProvider(
         Dictionary<FeatureKindSet, IMapProvider> layers,
         LayerMergeStrategy strategy = LayerMergeStrategy.Overlay)
@@ -264,11 +267,11 @@ public class LayeredMapProvider : IMapProvider
         _layers = layers;
         _strategy = strategy;
     }
-    
+
     public async Task<IMapData> GetMapAsync(BoundingBox bounds, CancellationToken ct = default)
     {
         var layerData = new Dictionary<FeatureKindSet, IMapData>();
-        
+
         // Fetch from all providers in parallel
         await Parallel.ForEachAsync(
             _layers,
@@ -281,11 +284,11 @@ public class LayeredMapProvider : IMapProvider
                     layerData[kvp.Key] = map;
                 }
             });
-        
+
         // Merge according to strategy
         return new LayeredMapData(layerData, _strategy);
     }
-    
+
     public bool CanServe(BoundingBox bounds) =>
         _layers.Values.All(p => p.CanServe(bounds));
 }
@@ -328,32 +331,32 @@ Switches providers based on zoom level.
 public class ZoomAwareMapProvider : IMapProvider
 {
     private readonly SortedList<int, IMapProvider> _zoomProviders;
-    
+
     public string ProviderId => $"zoom-aware:{_zoomProviders.Count}-levels";
-    
+
     public MapProviderCapabilities Capabilities =>
         _zoomProviders.Values.Aggregate(MapProviderCapabilities.None,
             (caps, provider) => caps | provider.Capabilities);
-    
+
     public ZoomAwareMapProvider(Dictionary<int, IMapProvider> zoomProviders)
     {
         _zoomProviders = new SortedList<int, IMapProvider>(zoomProviders);
     }
-    
+
     public async Task<IMapData> GetMapAsync(BoundingBox bounds, CancellationToken ct = default)
     {
         // Return lazy-evaluated map that switches providers based on zoom
         return new ZoomAwareMapData(_zoomProviders, bounds);
     }
-    
+
     public bool CanServe(BoundingBox bounds) =>
         _zoomProviders.Values.Any(p => p.CanServe(bounds));
-    
+
     private IMapProvider GetProviderForZoom(int zoom)
     {
         // Find provider for this zoom level (or closest lower)
         IMapProvider? provider = null;
-        
+
         foreach (var (zoomThreshold, p) in _zoomProviders)
         {
             if (zoom >= zoomThreshold)
@@ -361,7 +364,7 @@ public class ZoomAwareMapProvider : IMapProvider
             else
                 break;
         }
-        
+
         return provider ?? _zoomProviders.Values.First();
     }
 }
@@ -373,24 +376,24 @@ internal class ZoomAwareMapData : IMapData
 {
     private readonly SortedList<int, IMapProvider> _providers;
     private readonly BoundingBox _bounds;
-    
+
     public string MapId => "zoom-aware";
     public BoundingBox Bounds => _bounds;
     public ZoomRange SupportedZoom => new(0, 20);
-    
+
     public ZoomAwareMapData(SortedList<int, IMapProvider> providers, BoundingBox bounds)
     {
         _providers = providers;
         _bounds = bounds;
     }
-    
+
     public IEnumerable<IMapFeature> GetFeatures(BoundingBox bounds, ZoomLevel zoom)
     {
         var provider = GetProviderForZoom(zoom);
         var map = provider.GetMapAsync(bounds).Result; // Cached in practice
         return map.GetFeatures(bounds, zoom);
     }
-    
+
     // ... other IMapData methods delegate to zoom-appropriate provider
 }
 
@@ -416,31 +419,31 @@ Blends providers at tile rendering level.
 public class TileBlendingProvider : IMapProvider
 {
     private readonly List<BlendLayer> _layers;
-    
+
     public string ProviderId => $"blended:{_layers.Count}-layers";
-    
+
     public MapProviderCapabilities Capabilities =>
         _layers.Aggregate(MapProviderCapabilities.None,
             (caps, layer) => caps | layer.Provider.Capabilities);
-    
+
     public TileBlendingProvider(IEnumerable<BlendLayer> layers)
     {
         _layers = layers.OrderBy(l => l.ZIndex).ToList();
     }
-    
+
     public async Task<IMapData> GetMapAsync(BoundingBox bounds, CancellationToken ct = default)
     {
         var layerMaps = new List<(IMapData map, BlendMode mode, double opacity)>();
-        
+
         foreach (var layer in _layers)
         {
             var map = await layer.Provider.GetMapAsync(bounds, ct);
             layerMaps.Add((map, layer.Mode, layer.Opacity));
         }
-        
+
         return new BlendedMapData(layerMaps);
     }
-    
+
     public bool CanServe(BoundingBox bounds) =>
         _layers.All(l => l.Provider.CanServe(bounds));
 }
@@ -480,19 +483,19 @@ var blended = new TileBlendingProvider([
 var historicalFantasy = new LayeredMapProvider(new()
 {
     // Real terrain from heightmap
-    [new(FeatureKind.Mountain, FeatureKind.Hill, FeatureKind.Forest)] = 
+    [new(FeatureKind.Mountain, FeatureKind.Hill, FeatureKind.Forest)] =
         new HeightmapMapProvider("srtm-europe.tif"),
-    
+
     // Fantasy kingdoms and cultures from FMG
-    [new(FeatureKind.CountryBorder, FeatureKind.Capital, FeatureKind.City)] = 
+    [new(FeatureKind.CountryBorder, FeatureKind.Capital, FeatureKind.City)] =
         new FmgMapProvider(settings with { UseHeightmapTemplate = true }),
-    
+
     // Real rivers from OSM (historically accurate)
-    [new(FeatureKind.River)] = 
+    [new(FeatureKind.River)] =
         new VectorTileProvider("https://osm-server/tiles"),
-    
+
     // Custom magic locations
-    [new(FeatureKind.Dungeon, FeatureKind.Marker)] = 
+    [new(FeatureKind.Dungeon, FeatureKind.Marker)] =
         new CustomMapProvider("magic-sites.json")
 });
 ```
@@ -506,20 +509,20 @@ var multiScale = new ZoomAwareMapProvider(new()
 {
     // Zoom 0-4: Pure fantasy (continent view)
     [0] = fmgProvider,
-    
+
     // Zoom 5-8: Blended (region view)
     [5] = new TileBlendingProvider([
         new(fmgProvider, opacity: 0.7),
         new(osmProvider, opacity: 0.3)
     ]),
-    
+
     // Zoom 9-11: Mostly real with fantasy overlays (city view)
     [9] = new LayeredMapProvider(new()
     {
         [new(FeatureKind.Terrain, FeatureKind.Road, FeatureKind.City)] = osmProvider,
         [new(FeatureKind.Dungeon, FeatureKind.Marker)] = fmgProvider
     }),
-    
+
     // Zoom 12+: Pure OSM (street level)
     [12] = osmProvider
 });
@@ -539,10 +542,10 @@ var globalHybrid = new RegionalMapProvider(
             [new(FeatureKind.City)] = osmProvider,
             [new(FeatureKind.Dungeon)] = customProvider
         })),
-        
+
         // Asia: Pure OSM
         new(asiaBounds, osmProvider),
-        
+
         // Atlantis: Pure fantasy with zoom-aware detail
         new(atlantisBounds, new ZoomAwareMapProvider(new()
         {
@@ -572,6 +575,7 @@ var globalHybrid = new RegionalMapProvider(
    - Gap filling
 
 **Acceptance Criteria**:
+
 - [ ] Regional routing works
 - [ ] Layer merging works
 - [ ] Tests pass
@@ -593,6 +597,7 @@ var globalHybrid = new RegionalMapProvider(
    - Complex compositions
 
 **Acceptance Criteria**:
+
 - [ ] Zoom-aware provider works
 - [ ] Blending produces correct output
 - [ ] Tests pass
@@ -613,6 +618,7 @@ var globalHybrid = new RegionalMapProvider(
    - Examples
 
 **Acceptance Criteria**:
+
 - [ ] Performance acceptable
 - [ ] Caching works
 - [ ] Documentation complete
@@ -627,7 +633,7 @@ public async Task RegionalMapProvider_RoutesByRegion()
 {
     var provider1 = CreateMockProvider("provider1");
     var provider2 = CreateMockProvider("provider2");
-    
+
     var regional = new RegionalMapProvider(
         routes: [
             new(new BoundingBox(0, 0, 500, 500), provider1),
@@ -635,10 +641,10 @@ public async Task RegionalMapProvider_RoutesByRegion()
         ],
         fallback: provider1
     );
-    
+
     // Request in provider2's region
     var map = await regional.GetMapAsync(new BoundingBox(600, 100, 100, 100));
-    
+
     Assert.Equal("provider2", ((MockMapData)map).SourceId);
 }
 
@@ -647,16 +653,16 @@ public async Task LayeredMapProvider_MergesLayers()
 {
     var terrainProvider = CreateProviderWithFeatures(FeatureKind.Mountain);
     var cityProvider = CreateProviderWithFeatures(FeatureKind.City);
-    
+
     var layered = new LayeredMapProvider(new()
     {
         [new(FeatureKind.Mountain)] = terrainProvider,
         [new(FeatureKind.City)] = cityProvider
     });
-    
+
     var map = await layered.GetMapAsync(new BoundingBox(0, 0, 512, 512));
     var features = map.GetFeatures(map.Bounds, 8).ToList();
-    
+
     Assert.Contains(features, f => f.Kind == FeatureKind.Mountain);
     Assert.Contains(features, f => f.Kind == FeatureKind.City);
 }
@@ -679,13 +685,13 @@ public async Task ComplexComposition_WorksEndToEnd()
         ],
         fallback: fmgProvider
     );
-    
+
     // Get map
     var map = await hybrid.GetMapAsync(europeBounds);
-    
+
     // Render
     var rendered = SkiaMapRasterizer.Render(map, viewport, options);
-    
+
     // Verify both FMG and OSM features present
     var features = map.GetFeatures(europeBounds, 8).ToList();
     Assert.NotEmpty(features.Where(f => f.Metadata.ContainsKey("fmg-source")));

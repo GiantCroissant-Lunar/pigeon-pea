@@ -1,6 +1,6 @@
 # Dungeon Overlay Rendering Guide
 
-**Date:** 2025-11-21  
+**Date:** 2025-11-21
 **Status:** Complete
 
 ## Overview
@@ -71,13 +71,15 @@ The overlay system supports the following feature types:
 
 ### Doors
 
-**Kind:** `"door"`  
+**Kind:** `"door"`
 **Metadata:**
+
 - `state` (int): 1=Closed, 2=Open, 3=Locked, 4=Broken
-- `orientation` (string): "horizontal" or "vertical"  
+- `orientation` (string): "horizontal" or "vertical"
 - `locked` (bool): Whether door is locked
 
 **Rendering:**
+
 - `+` brown - Closed door
 - `/` brown - Open door
 - `+` red - Locked door
@@ -85,8 +87,9 @@ The overlay system supports the following feature types:
 
 ### Traps
 
-**Kind:** `"trap"`  
+**Kind:** `"trap"`
 **Metadata:**
+
 - `type` (string): Trap type (e.g., "spike", "poison")
 - `damage` (int): Damage dealt
 - `radius` (int): Effect radius
@@ -94,18 +97,21 @@ The overlay system supports the following feature types:
 - `triggered` (bool): Whether trap has been triggered
 
 **Rendering:**
+
 - `^` red - Active trap (discovered or debug mode)
 - `^` gray - Triggered trap
 - Hidden - Undiscovered traps (unless debug mode)
 
 **Visibility Rules:**
+
 - Only shown if `discovered == true` OR debug mode enabled
 - Hidden at scale < 2 (small zoom levels)
 
 ### Treasure
 
-**Kind:** `"treasure"`  
+**Kind:** `"treasure"`
 **Metadata:**
+
 - `container_type` (string): "chest", "pile", "item"
 - `items` (string[]): List of items
 - `gold` (int): Gold amount
@@ -114,33 +120,38 @@ The overlay system supports the following feature types:
 - `trap_type` (string?): Optional trap on container
 
 **Rendering:**
+
 - `∩` gold - Unopened treasure
 - `∩` gray - Opened treasure
 
 ### Spawn Points
 
-**Kind:** `"spawn_point"`  
+**Kind:** `"spawn_point"`
 **Metadata:**
+
 - `spawn_type` (string): "player", "monster", "boss"
 - `monster_id` (string?): Monster type ID
 - `level` (int): Monster level
 - `is_boss` (bool): Whether this is a boss spawn
 
 **Rendering:**
+
 - `○` cyan - Regular spawn point
 - `★` purple - Boss spawn point
 - **Only visible in debug mode**
 
 ### Stairs
 
-**Kind:** `"stairs"`  
+**Kind:** `"stairs"`
 **Metadata:**
+
 - `direction` (string): "up" or "down"
 - `destination_level` (int): Target dungeon level
 - `destination_x` (int): Target X coordinate
 - `destination_y` (int): Target Y coordinate
 
 **Rendering:**
+
 - `<` white - Stairs up
 - `>` white - Stairs down
 
@@ -163,6 +174,7 @@ renderer.RenderWithOverlays(..., scale: 2);
 ## Debug Mode
 
 Enable debug mode to see all features including:
+
 - Undiscovered traps
 - Spawn points
 - Internal metadata
@@ -285,7 +297,7 @@ if (TryDeserialize<SecretDoorMetadata[]>(dungeon, "secret_doors", out var secret
 private static RenderTile GetSecretDoorTile(IOverlayFeature<GridPosition> overlay)
 {
     var discovered = overlay.Metadata.TryGetValue("discovered", out var d) && d is bool db && db;
-    return discovered 
+    return discovered
         ? new RenderTile('§', Color.DarkGray, Color.Black)
         : null; // Hidden until discovered
 }
@@ -323,7 +335,7 @@ public void Full_integration_test()
     var renderer = new DungeonRenderer();
     var platformRenderer = new MockPlatformRenderer(80, 40);
     renderer.Initialize(platformRenderer);
-    
+
     renderer.RenderWithOverlays(
         dungeon.Width,
         dungeon.Height,

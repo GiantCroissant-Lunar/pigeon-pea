@@ -1,11 +1,12 @@
 # Phase 6.3 - Session 3 Summary: Profiling Analysis
 
-**Date:** 2025-11-21  
+**Date:** 2025-11-21
 **Status:** ✅ Completed - Baseline established, optimization targets identified
 
 ## What We Accomplished
 
 ### 1. Profiling Infrastructure Setup ✅
+
 - ✅ Installed `dotnet-trace` and `dotnet-counters` profiling tools
 - ✅ Created benchmark execution program entry point
 - ✅ Configured project for both test and benchmark modes
@@ -20,7 +21,7 @@ From the BenchmarkDotNet output, we can see performance characteristics:
 ```
 ANSI_SingleTile pilot runs:
 - WorkloadPilot 8: 2048 op, 230ms total → 112 μs/op
-- WorkloadPilot 9: 4096 op, 290ms total →  71 μs/op  
+- WorkloadPilot 9: 4096 op, 290ms total →  71 μs/op
 - WorkloadPilot 10: 8192 op, 581ms total →  71 μs/op
 
 ANSI_FullScreen_BatchTiles pilot runs:
@@ -52,18 +53,21 @@ ANSI_ComplexScene pilot runs:
 ### 3. Benchmark Execution Issue 🔍
 
 **Problem:**
+
 ```
 ERROR: Exception during GlobalCleanup!
 No Workload Results were obtained from the run.
 ```
 
 **Root Cause:**
+
 - Benchmarks execute successfully during warmup and measurement
 - Cleanup fails because backends try to reset console state
 - Console may not be available in BenchmarkDotNet subprocess
 - This is expected behavior given our Session 2 console safety fixes
 
 **Impact:**
+
 - Timing data IS captured during pilot/warmup/actual runs
 - Final results table shows "NA" because cleanup failed
 - We can still read performance numbers from the raw output
@@ -100,14 +104,15 @@ No Workload Results were obtained from the run.
 
 Based on pilot run data:
 
-| Operation | Performance | Notes |
-|-----------|-------------|-------|
-| **Single Tile (ANSI)** | ~70-110 μs | Includes command + ANSI + console write |
-| **Batched Tiles (ANSI)** | ~0.57 μs/tile | 20x faster than individual |
-| **Complex Scene (ANSI)** | ~36-38 μs | ~2,000 commands per frame |
-| **Full Screen (80×24)** | ~1.1 ms | 1,920 tiles batched |
+| Operation                | Performance   | Notes                                   |
+| ------------------------ | ------------- | --------------------------------------- |
+| **Single Tile (ANSI)**   | ~70-110 μs    | Includes command + ANSI + console write |
+| **Batched Tiles (ANSI)** | ~0.57 μs/tile | 20x faster than individual              |
+| **Complex Scene (ANSI)** | ~36-38 μs     | ~2,000 commands per frame               |
+| **Full Screen (80×24)**  | ~1.1 ms       | 1,920 tiles batched                     |
 
 **Frame Rate Estimates:**
+
 - Complex scene (2000 tiles): ~38 μs per frame → **26,000 FPS** (CPU bound)
 - Full screen refresh: ~1.1 ms per frame → **900 FPS** (reasonable)
 - Target: 60 FPS → **16.67 ms budget** → Plenty of headroom!
@@ -134,6 +139,7 @@ The benchmark numbers look excellent, but we need to validate with actual gamepl
 ### Priority 2: Console Write Optimization ✅
 
 Already highly optimized through batching:
+
 - Individual tile: 110 μs
 - Batched tile: 0.57 μs
 - **95% improvement achieved**
@@ -143,6 +149,7 @@ No action needed unless profiling shows console I/O as bottleneck.
 ### Priority 3: Memory Allocation Profiling
 
 **Next Steps:**
+
 1. Run benchmarks with memory profiler that doesn't require cleanup
 2. Use dotnet-gcdump on real console app
 3. Identify allocation hot spots:
@@ -153,6 +160,7 @@ No action needed unless profiling shows console I/O as bottleneck.
 ### Priority 4: Braille Backend Analysis
 
 Not profiled in this session. Need to:
+
 1. Run Braille benchmarks separately
 2. Compare to ANSI baseline
 3. Profile pixel-to-braille conversion
@@ -169,6 +177,7 @@ Not profiled in this session. Need to:
 **Proper Fix Options:**
 
 **Option A:** Add console availability check in Cleanup
+
 ```csharp
 [GlobalCleanup]
 public void Cleanup()
@@ -179,7 +188,7 @@ public void Cleanup()
         _ansiBackend?.Dispose();
         return;
     }
-    
+
     _ansiBackend?.Shutdown();
     _ansiBackend?.Dispose();
     // ... etc
@@ -187,6 +196,7 @@ public void Cleanup()
 ```
 
 **Option B:** Create headless backend for benchmarking
+
 - No console dependencies
 - Pure command execution without actual rendering
 - Useful for CI/automated benchmarking
@@ -198,6 +208,7 @@ public void Cleanup()
 **Problem:** Console app can't find plugins when running profiling
 
 **Error:**
+
 ```
 Plugin path does not exist: .../plugins
 Failed to load plugin dungeon-generator-modern-edgar
@@ -213,11 +224,13 @@ Error: No Scene Manager plugin loaded!
 ## Files Created/Modified
 
 **Created:**
+
 - `docs/rfcs/PHASE-6.3-SESSION-3-PROFILING-PLAN.md` - Initial planning document
 - `docs/rfcs/PHASE-6.3-SESSION-3-SUMMARY.md` - This file
 - `dotnet/game-essential/core/tests/PigeonPea.Rendering.Integration.Tests/BenchmarkProgram.cs` - Benchmark entry point
 
 **Modified:**
+
 - `dotnet/game-essential/core/tests/PigeonPea.Rendering.Integration.Tests/PigeonPea.Rendering.Integration.Tests.csproj` - Added OutputType=Exe
 
 ## Next Steps
@@ -225,12 +238,14 @@ Error: No Scene Manager plugin loaded!
 ### Session 4: Real App Profiling + Plugin Deployment
 
 1. **Fix Plugin Paths**
+
    ```powershell
    # Copy plugins to console app directory
    task copy-plugins
    ```
 
 2. **Run Full Console App with Profiler**
+
    ```powershell
    dotnet-trace collect --profile cpu-sampling -- \
      .\PigeonPea.Console.exe --backend ansi
@@ -242,6 +257,7 @@ Error: No Scene Manager plugin loaded!
    - Look for unexpected allocations
 
 4. **Capture Memory Profile**
+
    ```powershell
    dotnet-gcdump collect -p <pid>
    ```
