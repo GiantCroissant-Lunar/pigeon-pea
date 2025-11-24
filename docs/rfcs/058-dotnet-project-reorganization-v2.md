@@ -63,57 +63,57 @@ This RFC proposes:
 
 ### Engine Directory Contents
 
-| Project | csproj Name | Purpose | Notes |
-|---------|-------------|---------|-------|
-| `PigeonPea.Shared.ECS` | PigeonPea.Shared.ECS.csproj | ECS components | DUPLICATE |
-| `PigeonPea.Input.Core` | PigeonPea.Input.Core.csproj | Input system | Standalone |
-| `PigeonPea.Shared.Rendering` | PigeonPea.Shared.Rendering.csproj | Rendering utils | Refs contracts |
-| `NexusGas.Core` | NexusGas.Core.csproj | Ability system | RootNamespace: PigeonPea.Gas |
-| `NexusGoap.Core` | NexusGoap.Core.csproj | GOAP AI | RootNamespace: PigeonPea.Goap |
-| `NexusPerception.Core` | NexusPerception.Core.csproj | Perception | - |
-| `NexusCamera2D.Core` | NexusCamera2D.Core.csproj | Camera | - |
+| Project                      | csproj Name                       | Purpose         | Notes                         |
+| ---------------------------- | --------------------------------- | --------------- | ----------------------------- |
+| `PigeonPea.Shared.ECS`       | PigeonPea.Shared.ECS.csproj       | ECS components  | DUPLICATE                     |
+| `PigeonPea.Input.Core`       | PigeonPea.Input.Core.csproj       | Input system    | Standalone                    |
+| `PigeonPea.Shared.Rendering` | PigeonPea.Shared.Rendering.csproj | Rendering utils | Refs contracts                |
+| `NexusGas.Core`              | NexusGas.Core.csproj              | Ability system  | RootNamespace: PigeonPea.Gas  |
+| `NexusGoap.Core`             | NexusGoap.Core.csproj             | GOAP AI         | RootNamespace: PigeonPea.Goap |
+| `NexusPerception.Core`       | NexusPerception.Core.csproj       | Perception      | -                             |
+| `NexusCamera2D.Core`         | NexusCamera2D.Core.csproj         | Camera          | -                             |
 
 ### Abandoned Directories
 
-| Path | Status |
-|------|--------|
+| Path                                 | Status                        |
+| ------------------------------------ | ----------------------------- |
 | `dotnet/projects/dungeon/dotnet/...` | Empty shell - no csproj files |
-| `dotnet/console-app/` | Empty (if exists) |
+| `dotnet/console-app/`                | Empty (if exists)             |
 
 ## Proposed Changes
 
 ### 1. Terminology Definitions
 
-| Term | Purpose | Contains | Tier |
-|------|---------|----------|------|
-| **contracts/** | Interfaces and DTOs only | `IPathfinder`, `MapCell`, `DungeonConfig` | Tier 1 |
-| **shared/** | Reusable algorithms and models (NOT domain-specific) | GOAP, GAS, ECS components, MarchingSquares | - |
-| **core/** | Domain-specific logic and integrations | `Map.Core`, `Game.AI`, `Language.Core` | - |
-| **plugins/** | Loadable implementations | `Plugin.Map.FMG`, `Plugin.Navigation.AStar` | Tier 3 |
+| Term           | Purpose                                              | Contains                                    | Tier   |
+| -------------- | ---------------------------------------------------- | ------------------------------------------- | ------ |
+| **contracts/** | Interfaces and DTOs only                             | `IPathfinder`, `MapCell`, `DungeonConfig`   | Tier 1 |
+| **shared/**    | Reusable algorithms and models (NOT domain-specific) | GOAP, GAS, ECS components, MarchingSquares  | -      |
+| **core/**      | Domain-specific logic and integrations               | `Map.Core`, `Game.AI`, `Language.Core`      | -      |
+| **plugins/**   | Loadable implementations                             | `Plugin.Map.FMG`, `Plugin.Navigation.AStar` | Tier 3 |
 
 ### 2. Engine Migration
 
 Move all `engine/` projects to appropriate locations:
 
-| Current Location | New Location | Action |
-|------------------|--------------|--------|
-| `engine/core/src/PigeonPea.Gas.Core/NexusGas.Core.csproj` | `game-essential/shared/PigeonPea.Shared.Gas/` | MOVE + RENAME |
-| `engine/core/src/PigeonPea.Goap.Core/NexusGoap.Core.csproj` | `game-essential/shared/PigeonPea.Shared.Goap/` | MOVE + RENAME |
-| `engine/core/src/PigeonPea.Perception.Core/NexusPerception.Core.csproj` | `game-essential/shared/PigeonPea.Shared.Perception/` | MOVE + RENAME |
-| `engine/core/src/PigeonPea.Camera2D.Core/NexusCamera2D.Core.csproj` | `game-essential/shared/PigeonPea.Shared.Camera2D/` | MOVE + RENAME |
-| `engine/core/src/PigeonPea.Shared.Rendering/` | `game-essential/shared/PigeonPea.Shared.Rendering/` | MOVE |
-| `engine/core/src/PigeonPea.Input.Core/` | `app-essential/core/src/PigeonPea.Input.Core/` | MOVE |
-| `engine/core/src/PigeonPea.Shared.ECS/` | DELETE | Duplicate of game-essential version |
-| `engine/core/tests/*` | `game-essential/core/tests/` | MOVE + RENAME |
-| `engine/` | DELETE | Empty after migration |
+| Current Location                                                        | New Location                                         | Action                              |
+| ----------------------------------------------------------------------- | ---------------------------------------------------- | ----------------------------------- |
+| `engine/core/src/PigeonPea.Gas.Core/NexusGas.Core.csproj`               | `game-essential/shared/PigeonPea.Shared.Gas/`        | MOVE + RENAME                       |
+| `engine/core/src/PigeonPea.Goap.Core/NexusGoap.Core.csproj`             | `game-essential/shared/PigeonPea.Shared.Goap/`       | MOVE + RENAME                       |
+| `engine/core/src/PigeonPea.Perception.Core/NexusPerception.Core.csproj` | `game-essential/shared/PigeonPea.Shared.Perception/` | MOVE + RENAME                       |
+| `engine/core/src/PigeonPea.Camera2D.Core/NexusCamera2D.Core.csproj`     | `game-essential/shared/PigeonPea.Shared.Camera2D/`   | MOVE + RENAME                       |
+| `engine/core/src/PigeonPea.Shared.Rendering/`                           | `game-essential/shared/PigeonPea.Shared.Rendering/`  | MOVE                                |
+| `engine/core/src/PigeonPea.Input.Core/`                                 | `app-essential/core/src/PigeonPea.Input.Core/`       | MOVE                                |
+| `engine/core/src/PigeonPea.Shared.ECS/`                                 | DELETE                                               | Duplicate of game-essential version |
+| `engine/core/tests/*`                                                   | `game-essential/core/tests/`                         | MOVE + RENAME                       |
+| `engine/`                                                               | DELETE                                               | Empty after migration               |
 
 ### 3. Directory Cleanup
 
-| Path | Action | Reason |
-|------|--------|--------|
-| `dotnet/projects/` | DELETE | Empty shell, real projects at `projects/dungeon/dotnet/` |
-| `dotnet/console-app/` | DELETE | Empty (if exists) |
-| `dotnet/engine/` | DELETE | After migration complete |
+| Path                  | Action | Reason                                                   |
+| --------------------- | ------ | -------------------------------------------------------- |
+| `dotnet/projects/`    | DELETE | Empty shell, real projects at `projects/dungeon/dotnet/` |
+| `dotnet/console-app/` | DELETE | Empty (if exists)                                        |
+| `dotnet/engine/`      | DELETE | After migration complete                                 |
 
 ### 4. New Navigation & Compute Infrastructure
 
@@ -286,14 +286,14 @@ projects/                               # Consumer applications (at repo root)
 
 ### Files Affected
 
-| Category | Count |
-|----------|-------|
-| Projects to move | 6 |
-| Projects to rename | 4 |
-| Projects to delete | 1 (duplicate Shared.ECS) |
-| Test projects to move | 4 |
-| ProjectReferences to update | ~8-12 files |
-| Directories to delete | 2-3 |
+| Category                    | Count                    |
+| --------------------------- | ------------------------ |
+| Projects to move            | 6                        |
+| Projects to rename          | 4                        |
+| Projects to delete          | 1 (duplicate Shared.ECS) |
+| Test projects to move       | 4                        |
+| ProjectReferences to update | ~8-12 files              |
+| Directories to delete       | 2-3                      |
 
 ### Breaking Changes
 
@@ -307,7 +307,7 @@ projects/                               # Consumer applications (at repo root)
 
 **Rejected:** The name "engine" is misleading and causes confusion. The contents are AI/behavior systems, not a full game engine.
 
-### Move to _lib
+### Move to \_lib
 
 **Rejected:** The Nexus systems are internal game systems, not reusable external libraries like Spade or ModernSatsuma. They belong in `game-essential/shared/`.
 
