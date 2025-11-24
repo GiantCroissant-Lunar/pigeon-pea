@@ -1,5 +1,5 @@
-using PigeonPea.Contracts.Recording.Models;
-using PigeonPea.Contracts.Recording.Services;
+using PigeonPea.Recording.Contracts;
+using PigeonPea.Recording.Contracts;
 using Xunit;
 
 namespace PigeonPea.Contracts.Recording.Tests;

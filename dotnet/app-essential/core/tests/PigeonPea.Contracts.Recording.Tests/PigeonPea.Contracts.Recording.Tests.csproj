@@ -19,10 +19,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+      <ProjectReference Include="..\..\..\contracts\PigeonPea.Recording.Contracts\PigeonPea.Recording.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\contracts\PigeonPea.Recording.Contracts\PigeonPea.Recording.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
 using FluentAssertions;
-using PigeonPea.Contracts.Resource;
+using PigeonPea.Resource.Contracts;
 using Xunit;
 
 namespace PigeonPea.PluginSystem.Tests;
