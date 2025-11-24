@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PigeonPea.Input.Core</RootNamespace>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>PigeonPea.Input.Core</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Pigeon Pea Development Team</Authors>
+    <Description>Engine-agnostic input system inspired by Unity Input System</Description>
+    <PackageTags>gamedev;input;controls;actions</PackageTags>
+    <RepositoryUrl>https://github.com/your-repo/nexus-input</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+</Project>
