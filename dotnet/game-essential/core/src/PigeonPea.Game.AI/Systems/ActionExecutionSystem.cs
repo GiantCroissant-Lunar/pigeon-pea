@@ -1,6 +1,6 @@
 using Arch.Core;
 using Arch.Core.Extensions;
-using PigeonPea.Goap.Actions;
+using PigeonPea.Shared.Goap.Actions;
 using PigeonPea.Game.AI.Components;
 
 namespace PigeonPea.Game.AI.Systems;

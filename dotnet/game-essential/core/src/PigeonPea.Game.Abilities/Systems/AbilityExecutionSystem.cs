@@ -3,10 +3,10 @@ using System.Linq;
 using Arch.Core;
 using Arch.Core.Extensions;
 using MessagePipe;
-using PigeonPea.Gas.Abilities;
-using PigeonPea.Gas.Attributes;
-using PigeonPea.Gas.Effects;
-using PigeonPea.Gas.Tags;
+using PigeonPea.Shared.Gas.Abilities;
+using PigeonPea.Shared.Gas.Attributes;
+using PigeonPea.Shared.Gas.Effects;
+using PigeonPea.Shared.Gas.Tags;
 using PigeonPea.Game.Abilities.Components;
 using PigeonPea.Game.Abilities.Events;
 

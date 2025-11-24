@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using PigeonPea.Gas.Abilities;
-using PigeonPea.Gas.Effects;
-using PigeonPea.Gas.Attributes;
+using PigeonPea.Shared.Gas.Abilities;
+using PigeonPea.Shared.Gas.Effects;
+using PigeonPea.Shared.Gas.Attributes;
 
 namespace PigeonPea.Game.Abilities.Presets;
 

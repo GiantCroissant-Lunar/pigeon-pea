@@ -1,7 +1,7 @@
 namespace PigeonPea.Game.Perception.Integration;
 
 using System.Collections.Generic;
-using PigeonPea.Perception.Enums;
+using PigeonPea.Shared.Perception.Enums;
 
 public interface ISoundEventBus
 {

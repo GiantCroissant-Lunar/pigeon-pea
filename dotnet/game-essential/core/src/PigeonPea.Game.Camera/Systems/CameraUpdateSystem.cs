@@ -1,7 +1,7 @@
 using System.Numerics;
 using Arch.Core;
 using Arch.Core.Extensions;
-using PigeonPea.Camera2D.Core;
+using PigeonPea.Shared.Camera2D.Core;
 using PigeonPea.Game.Camera.Components;
 using PigeonPea.Game.Camera.Extensions;
 using PigeonPea.Shared.Components;

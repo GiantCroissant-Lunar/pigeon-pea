@@ -19,6 +19,7 @@ internal static class FmgSettingsMapper
                 : FantasyMapGenerator.Core.Models.HeightmapMode.Auto,
             UseAdvancedNoise = s.UseAdvancedNoise,
             HeightmapTemplate = s.HeightmapTemplate,
+            VoronoiBackend = FantasyMapGenerator.Core.Models.VoronoiBackend.Nts,
             RNGMode = s.RNGMode switch
             {
                 PigeonPea.Map.Core.RNGMode.Alea => FantasyMapGenerator.Core.Models.RNGMode.Alea,

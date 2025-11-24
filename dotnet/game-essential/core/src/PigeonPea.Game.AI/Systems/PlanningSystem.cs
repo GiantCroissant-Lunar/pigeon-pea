@@ -1,6 +1,6 @@
 using Arch.Core;
 using Arch.Core.Extensions;
-using PigeonPea.Goap.Planning;
+using PigeonPea.Shared.Goap.Planning;
 using PigeonPea.Game.AI.Adapters;
 using PigeonPea.Game.AI.Components;
 using PigeonPea.Game.Perception.Components;

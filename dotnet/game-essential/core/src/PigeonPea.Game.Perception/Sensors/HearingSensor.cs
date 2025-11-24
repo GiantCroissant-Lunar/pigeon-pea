@@ -1,10 +1,10 @@
 namespace PigeonPea.Game.Perception.Sensors;
 
 using System;
-using PigeonPea.Perception.Auditory;
-using PigeonPea.Perception.Enums;
-using PigeonPea.Perception.Models;
-using PigeonPea.Perception.Visual;
+using PigeonPea.Shared.Perception.Auditory;
+using PigeonPea.Shared.Perception.Enums;
+using PigeonPea.Shared.Perception.Models;
+using PigeonPea.Shared.Perception.Visual;
 using PigeonPea.Game.Perception.Integration;
 
 public sealed class HearingSensor : IAuditoryPerception

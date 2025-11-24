@@ -1,4 +1,4 @@
-using PigeonPea.Camera2D.Core;
+using PigeonPea.Shared.Camera2D.Core;
 
 namespace PigeonPea.Game.Camera.Components;
 

@@ -10,7 +10,7 @@
     <ProjectReference Include="..\..\..\..\_lib\modern-edgar-dotnet\src\Edgar.Core\Edgar.Core.csproj" />
     <ProjectReference Include="..\PigeonPea.Overlays\PigeonPea.Overlays.csproj" />
     <!-- Temporarily removed PigeonPea.Shared reference due to transitive dependency issues -->
-    <!-- <ProjectReference Include="..\PigeonPea.Shared\PigeonPea.Shared.csproj" /> -->
+    <!-- <ProjectReference Include="..\..\shared\PigeonPea.Shared\PigeonPea.Shared.csproj" /> -->
   </ItemGroup>
   <ItemGroup>
     <!-- Temporarily exclude FmgWorldOverlaySource which depends on PigeonPea.Shared -->

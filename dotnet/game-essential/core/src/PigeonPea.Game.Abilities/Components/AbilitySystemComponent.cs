@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using PigeonPea.Gas.Abilities;
-using PigeonPea.Gas.Attributes;
-using PigeonPea.Gas.Tags;
+using PigeonPea.Shared.Gas.Abilities;
+using PigeonPea.Shared.Gas.Attributes;
+using PigeonPea.Shared.Gas.Tags;
 
 namespace PigeonPea.Game.Abilities.Components;
 

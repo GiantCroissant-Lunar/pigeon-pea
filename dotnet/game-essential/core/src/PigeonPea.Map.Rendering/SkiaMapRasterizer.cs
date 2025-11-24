@@ -6,6 +6,7 @@ using PigeonPea.Map.Contracts.Features;
 using PigeonPea.Map.Contracts.Spatial;
 using PigeonPea.Overlays;
 using SkiaSharp;
+using Contracts = PigeonPea.Map.Contracts;
 
 namespace PigeonPea.Map.Rendering;
 

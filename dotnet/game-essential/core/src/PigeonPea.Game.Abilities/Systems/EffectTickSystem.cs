@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using Arch.Core;
 using Arch.Core.Extensions;
-using PigeonPea.Gas.Attributes;
-using PigeonPea.Gas.Effects;
+using PigeonPea.Shared.Gas.Attributes;
+using PigeonPea.Shared.Gas.Effects;
 using PigeonPea.Game.Abilities.Components;
 
 namespace PigeonPea.Game.Abilities.Systems;

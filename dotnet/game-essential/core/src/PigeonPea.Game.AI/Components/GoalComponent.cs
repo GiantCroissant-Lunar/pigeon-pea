@@ -1,4 +1,4 @@
-using PigeonPea.Goap.Goals;
+using PigeonPea.Shared.Goap.Goals;
 
 namespace PigeonPea.Game.AI.Components;
 

@@ -1,4 +1,4 @@
-using PigeonPea.Camera2D.Core;
+using PigeonPea.Shared.Camera2D.Core;
 using PigeonPea.Rendering.Contracts;
 using Arch.Core;
 using Arch.Core.Extensions;

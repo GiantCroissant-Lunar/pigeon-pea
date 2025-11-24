@@ -7,6 +7,7 @@ using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 using SkiaSharp;
 using SharedViewport = PigeonPea.Shared.Rendering.Viewport;
+using Contracts = PigeonPea.Map.Contracts;
 
 namespace PigeonPea.Map.Rendering;
 

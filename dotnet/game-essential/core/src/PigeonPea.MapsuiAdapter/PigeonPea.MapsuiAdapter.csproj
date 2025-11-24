@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    <ProjectReference Include="..\..\shared\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
   </ItemGroup>
 
 </Project>

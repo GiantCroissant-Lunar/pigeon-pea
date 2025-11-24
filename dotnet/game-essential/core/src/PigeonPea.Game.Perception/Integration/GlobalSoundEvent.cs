@@ -1,6 +1,6 @@
 namespace PigeonPea.Game.Perception.Integration;
 
-using PigeonPea.Perception.Enums;
+using PigeonPea.Shared.Perception.Enums;
 
 public sealed class GlobalSoundEvent
 {

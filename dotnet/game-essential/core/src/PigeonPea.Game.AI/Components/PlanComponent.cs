@@ -1,5 +1,5 @@
-using PigeonPea.Goap.Actions;
-using PigeonPea.Goap.Planning;
+using PigeonPea.Shared.Goap.Actions;
+using PigeonPea.Shared.Goap.Planning;
 
 namespace PigeonPea.Game.AI.Components;
 

@@ -1,4 +1,4 @@
-using PigeonPea.Perception.Models;
+using PigeonPea.Shared.Perception.Models;
 
 namespace PigeonPea.Game.Perception.Components;
 
