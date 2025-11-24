@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PigeonPea.Map.Composition\PigeonPea.Map.Composition.csproj" />
-    <ProjectReference Include="..\..\src\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

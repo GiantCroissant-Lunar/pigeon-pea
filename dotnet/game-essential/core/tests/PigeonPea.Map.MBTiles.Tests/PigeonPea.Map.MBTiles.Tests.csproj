@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -25,7 +25,7 @@
     <ProjectReference Include="..\..\src\PigeonPea.Map.Export\PigeonPea.Map.Export.csproj" />
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Map.MBTiles\PigeonPea.Plugin.Map.MBTiles.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Map.Encoding\PigeonPea.Map.Encoding.csproj" />
-    <ProjectReference Include="..\..\src\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

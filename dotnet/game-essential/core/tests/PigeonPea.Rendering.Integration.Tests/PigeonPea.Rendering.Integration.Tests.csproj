@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\console-app\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" />
     <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\console-app\plugins\PigeonPea.Plugins.Rendering.Terminal.Braille\PigeonPea.Plugins.Rendering.Terminal.Braille.csproj" />
     <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\windows-app\plugins\src\PigeonPea.Plugins.Rendering.Windows.SkiaSharp\PigeonPea.Plugins.Rendering.Windows.SkiaSharp.csproj" />
