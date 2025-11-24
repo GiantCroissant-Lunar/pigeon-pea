@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Recording.Services;
+using PigeonPea.Recording.Contracts;
 
 namespace PigeonPea.Plugins.Logging.Recording;
 

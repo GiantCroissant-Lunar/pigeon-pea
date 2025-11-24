@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Diagnostic.Services;
+using PigeonPea.Diagnostic.Contracts;
 using System.Collections.Concurrent;
 
 namespace PigeonPea.Plugins.Logging.Diagnostic;

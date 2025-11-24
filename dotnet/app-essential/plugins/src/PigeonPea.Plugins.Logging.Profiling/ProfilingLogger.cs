@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Profiling.Services;
+using PigeonPea.Profiling.Contracts;
 
 namespace PigeonPea.Plugins.Logging.Profiling;
 

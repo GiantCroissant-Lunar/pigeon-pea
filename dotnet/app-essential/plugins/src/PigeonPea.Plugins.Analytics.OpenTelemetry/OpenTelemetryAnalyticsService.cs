@@ -4,7 +4,7 @@ using System.Diagnostics.Metrics;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using PigeonPea.Contracts.Analytics.Services;
+using PigeonPea.Analytics.Contracts;
 
 namespace PigeonPea.Plugins.Analytics.OpenTelemetry;
 

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Recording.Services;
-using PigeonPea.Contracts.Recording.Models;
+using PigeonPea.Recording.Contracts;
+using PigeonPea.Recording.Contracts;
 
 namespace PigeonPea.Plugins.Logging.Recording;
 

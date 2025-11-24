@@ -2,7 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using LibVLCSharp.Shared;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Audio.Services;
+using PigeonPea.Audio.Contracts;
 
 namespace PigeonPea.Plugins.Audio.LibVlc;
 

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <InternalsVisibleTo Include="PigeonPea.Plugins.Analytics.OpenTelemetry.Tests" />
+      <ProjectReference Include="..\..\..\contracts\PigeonPea.Analytics.Contracts\PigeonPea.Analytics.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,10 +22,12 @@
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Prometheus.HttpListener" Version="1.7.0-rc.1" />
     <PackageReference Include="OpenTelemetry.Exporter.Jaeger" Version="1.5.1" />
+      <ProjectReference Include="..\..\..\contracts\PigeonPea.Analytics.Contracts\PigeonPea.Analytics.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="plugin.json" />
+      <ProjectReference Include="..\..\..\contracts\PigeonPea.Analytics.Contracts\PigeonPea.Analytics.Contracts.csproj" />
   </ItemGroup>
 
   <Target Name="CopyPluginJson" AfterTargets="Build">
@@ -38,7 +41,8 @@
     </PropertyGroup>
     <ItemGroup>
       <PluginFiles Include="$(PluginOutputPath)**\*.*" />
-    </ItemGroup>
+        <ProjectReference Include="..\..\..\contracts\PigeonPea.Analytics.Contracts\PigeonPea.Analytics.Contracts.csproj" />
+  </ItemGroup>
     <MakeDir Directories="$(PluginTargetDir)" />
     <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginTargetDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
   </Target>

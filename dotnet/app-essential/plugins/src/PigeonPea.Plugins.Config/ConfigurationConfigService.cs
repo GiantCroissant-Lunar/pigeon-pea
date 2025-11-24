@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Extensions.Configuration;
-using PigeonPea.Contracts.Config.Services;
+using PigeonPea.Config.Contracts;
 
 namespace PigeonPea.Plugins.Config;
 

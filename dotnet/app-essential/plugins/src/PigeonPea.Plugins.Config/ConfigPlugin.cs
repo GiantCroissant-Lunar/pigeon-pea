@@ -2,7 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Config.Services;
+using PigeonPea.Config.Contracts;
 using PigeonPea.Contracts.Plugin;
 
 namespace PigeonPea.Plugins.Config;

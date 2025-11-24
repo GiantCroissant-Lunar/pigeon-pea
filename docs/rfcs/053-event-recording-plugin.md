@@ -23,6 +23,7 @@ Implements deterministic event-based recording for PigeonPea game logic, enablin
 ## Motivation
 
 Event recording provides:
+
 - **Deterministic replay**: Reproduce any game session exactly
 - **Step-by-step debugging**: Pause and inspect at any point
 - **Profiling integration**: Correlate events with performance data
@@ -32,6 +33,7 @@ Event recording provides:
 ## Works For Both Apps
 
 Event recording is **application-agnostic** - works identically for:
+
 - ✅ Console App (Terminal.Gui TUI)
 - ✅ Windows App (Avalonia GUI)
 
@@ -56,19 +58,19 @@ Both apps use the same game logic, so event recording captures the same data reg
       "timestamp": 0.0,
       "type": "GameStart",
       "category": "Lifecycle",
-      "data": {"map": "dungeon_1", "difficulty": "normal"}
+      "data": { "map": "dungeon_1", "difficulty": "normal" }
     },
     {
       "timestamp": 1.5,
       "type": "PlayerMove",
       "category": "Input",
-      "data": {"from": {"x": 0, "y": 0}, "to": {"x": 1, "y": 0}}
+      "data": { "from": { "x": 0, "y": 0 }, "to": { "x": 1, "y": 0 } }
     },
     {
       "timestamp": 2.0,
       "type": "EnemySpawn",
       "category": "Entity",
-      "data": {"id": "goblin_1", "type": "goblin", "pos": {"x": 10, "y": 5}}
+      "data": { "id": "goblin_1", "type": "goblin", "pos": { "x": 10, "y": 5 } }
     }
   ],
   "profiling": {
@@ -403,12 +405,12 @@ else
 
 ## Performance Characteristics
 
-| Operation | Time (Estimated) | Notes |
-|-----------|------------------|-------|
-| Record event | ~100ns | Fast enough for 60 FPS - to be validated during implementation |
-| Serialize to JSON | ~50ms | Per 10K events - target performance |
-| Load recording | ~30ms | Per 10K events - target performance |
-| Replay event | ~500ns | Depends on event complexity - to be measured |
+| Operation         | Time (Estimated) | Notes                                                          |
+| ----------------- | ---------------- | -------------------------------------------------------------- |
+| Record event      | ~100ns           | Fast enough for 60 FPS - to be validated during implementation |
+| Serialize to JSON | ~50ms            | Per 10K events - target performance                            |
+| Load recording    | ~30ms            | Per 10K events - target performance                            |
+| Replay event      | ~500ns           | Depends on event complexity - to be measured                   |
 
 **Memory usage**: ~200 bytes per event
 

@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Plugin;
-using PigeonPea.Contracts.Analytics.Services;
+using PigeonPea.Analytics.Contracts;
 using ServiceMetadata = PigeonPea.Contracts.Plugin.ServiceMetadata;
 
 namespace PigeonPea.Plugins.Analytics.OpenTelemetry;

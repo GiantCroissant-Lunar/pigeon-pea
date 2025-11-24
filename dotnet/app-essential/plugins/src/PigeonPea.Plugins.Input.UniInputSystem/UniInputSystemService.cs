@@ -7,7 +7,7 @@ using PigeonPea.Input.Core.Actions;
 using PigeonPea.Input.Core.Controls;
 using PigeonPea.Input.Core.Events;
 using PigeonPea.Input.Core.Json;
-using PigeonPea.Contracts.Input.Services;
+using PigeonPea.Input.Contracts;
 using PigeonPea.Contracts.Plugin;
 
 namespace PigeonPea.Plugins.Input.UniInputSystem;

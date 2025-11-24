@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using PigeonPea.Contracts.Diagnostic.Services;
+using PigeonPea.Diagnostic.Contracts;
 using PigeonPea.Plugins.Diagnostic.Sentry;
 using Xunit;
 

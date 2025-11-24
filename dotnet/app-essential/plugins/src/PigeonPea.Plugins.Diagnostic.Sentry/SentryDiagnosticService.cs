@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using Sentry;
-using PigeonPea.Contracts.Diagnostic.Services;
+using PigeonPea.Diagnostic.Contracts;
 
 namespace PigeonPea.Plugins.Diagnostic.Sentry;
 
