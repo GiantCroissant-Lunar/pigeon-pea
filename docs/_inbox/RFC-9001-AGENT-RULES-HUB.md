@@ -30,7 +30,7 @@ This RFC captures the desired end-state and proposed migration path for a **gene
   - Define a single, generic source of truth for agent rules, adapters, and scripts that is not tied to a specific app or game.
 
 - **G2: Workspace-level consumption**
-  - Allow *workspaces* (like pigeon-pea) to consume and extend the rules hub, without individual libraries knowing about the hub or its repository layout.
+  - Allow _workspaces_ (like pigeon-pea) to consume and extend the rules hub, without individual libraries knowing about the hub or its repository layout.
 
 - **G3: Decoupled libraries**
   - Ensure library repos only reference abstract concepts like `<workspace-root>/.agent`, `<workspace-root>/AGENTS.md`, and optional shared caches (for example `~/.cache/lunar-rules/vX.Y.Z`).
@@ -86,7 +86,7 @@ This structure makes `lunar-snake-hub` unsuitable as a **generic** hub without s
 
 - Re-purpose `lunar-snake-hub` (or a successor repo) into a generic rules hub that:
   - Provides a `.agent/` tree containing **project-agnostic** base rules and adapters.
-  - Avoids any direct mention of specific products (Lablab-Bean, pigeon-pea, etc.) in the *base* rule set.
+  - Avoids any direct mention of specific products (Lablab-Bean, pigeon-pea, etc.) in the _base_ rule set.
   - May support optional, pluggable profiles for specific workspaces or products if needed.
 
 - As part of this, Lablab-Bean-specific content should be:
@@ -113,7 +113,7 @@ Workspaces, not libraries, should opt in to using the hub via one or more mechan
 In all cases:
 
 - Library repos remain unaware of the hub’s repository or package identity.
-- They only refer to generic locations controlled by the *workspace*.
+- They only refer to generic locations controlled by the _workspace_.
 
 ## 4. Keep libraries self-contained and generic
 
