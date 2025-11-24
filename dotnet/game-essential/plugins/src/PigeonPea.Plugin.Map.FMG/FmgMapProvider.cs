@@ -78,7 +78,6 @@ public class FmgMapProvider : IMapProvider
             SeedString = "fmg-demo",
             ReseedAtPhaseStart = true,
             GridMode = GridMode.Jittered,
-            VoronoiBackend = VoronoiBackend.Nts,
             HeightmapMode = HeightmapMode.Template,
             UseAdvancedNoise = false,
             HeightmapTemplate = "continents"

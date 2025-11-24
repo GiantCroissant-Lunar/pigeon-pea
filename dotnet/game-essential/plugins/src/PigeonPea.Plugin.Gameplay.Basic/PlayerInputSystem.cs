@@ -3,7 +3,7 @@ using System.Numerics;
 using Arch.Core;
 using Arch.Core.Extensions;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Input.Services;
+using PigeonPea.Input.Contracts;
 using PigeonPea.Shared.Components;
 
 using InputService = PigeonPea.Contracts.Input.Services.IService;

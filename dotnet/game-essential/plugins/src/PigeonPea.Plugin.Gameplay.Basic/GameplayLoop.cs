@@ -1,7 +1,7 @@
 using Arch.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Input.Services;
+using PigeonPea.Input.Contracts;
 using PigeonPea.Game.Contracts.Services;
 using PigeonPea.Plugin.Gameplay.Basic.Systems;
 using PigeonPea.Shared.Components;
