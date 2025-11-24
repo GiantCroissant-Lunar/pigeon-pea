@@ -74,6 +74,15 @@ tasks:
       - game:build-console
     cmds:
       - task game:run-console
+  game:run-console:versioned:
+    desc: Build, publish, and run console player from versioned artifacts via Nuke Task target (plugin renderer + modern-edgar)
+    cmds:
+      - pwsh -File build/nuke/build.ps1 --target Task --configuration Release --Runtime win-x64 --Player console --PlayerArgs "--renderer plugin --dungeon-gen modern-edgar"
+
+  game:run-console:version:
+    desc: Run console player from specified versioned artifacts (e.g. VERSION=0.1.0-local)
+    cmds:
+      - pwsh -Command "Set-Location build/_artifacts/{{.VERSION}}/PigeonPea.Console; ./PigeonPea.Console.exe --renderer plugin --dungeon-gen modern-edgar"
 
   # PTY test helpers (Node.js)
   pty:install:
