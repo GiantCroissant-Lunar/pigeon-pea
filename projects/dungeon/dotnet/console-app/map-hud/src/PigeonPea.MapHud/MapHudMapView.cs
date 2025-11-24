@@ -1,5 +1,6 @@
 using System;
 using PigeonPea.Map.Core;
+using PigeonPea.Map.Rendering;
 using Terminal.Gui;
 using GuiAttribute = Terminal.Gui.Attribute;
 using GuiColor = Terminal.Gui.Color;
@@ -36,6 +37,55 @@ internal sealed class MapHudMapView : View
         int h = Viewport.Height;
         if (w <= 0 || h <= 0)
             return true;
+
+        bool useNewRenderer = true;
+        if (useNewRenderer)
+        {
+            var viewport = new PigeonPea.Shared.Rendering.Viewport((int)OffsetX, (int)OffsetY, w, h);
+            int maxPpc = 24;
+            int ppc = Math.Max(4, Math.Min(maxPpc, (int)Math.Round(16 / Math.Max(Zoom, 0.5))));
+
+            var frame = SkiaMapRasterizer.Render(
+                Map,
+                viewport,
+                Zoom,
+                ppc,
+                biomeColors: true,
+                rivers: true);
+
+            if (frame.WidthPx <= 0 || frame.HeightPx <= 0 || frame.Rgba == null)
+                return true;
+
+            for (int cy = 0; cy < h; cy++)
+            {
+                Driver.Move(0, cy);
+                for (int cx = 0; cx < w; cx++)
+                {
+                    int px = (cx * frame.WidthPx) / w;
+                    int py = (cy * frame.HeightPx) / h;
+                    int idx = (py * frame.WidthPx + px) * 4;
+                    if (idx + 2 >= frame.Rgba.Length)
+                    {
+                        continue;
+                    }
+
+                    byte r = frame.Rgba[idx];
+                    byte g = frame.Rgba[idx + 1];
+                    byte b = frame.Rgba[idx + 2];
+
+                    var bg = new GuiColor(r, g, b);
+                    var fg = new GuiColor(
+                        (byte)Math.Max(0, r - 40),
+                        (byte)Math.Max(0, g - 40),
+                        (byte)Math.Max(0, b - 40));
+
+                    Driver.SetAttribute(new GuiAttribute(fg, bg));
+                    Driver.AddStr("█");
+                }
+            }
+
+            return true;
+        }
 
         // Simple character-based terrain rendering, similar in spirit to MapDataRenderer's
         // character path but implemented directly against MapData.GetCellAt.
@@ -83,7 +133,7 @@ internal sealed class MapHudMapView : View
                 else if (cell.Height < 70)
                 {
                     // Hills / highlands
-                    glyph = '∧';
+                    glyph = '';
                     fg = GuiColor.BrightGreen;
                     bg = GuiColor.Black;
                 }

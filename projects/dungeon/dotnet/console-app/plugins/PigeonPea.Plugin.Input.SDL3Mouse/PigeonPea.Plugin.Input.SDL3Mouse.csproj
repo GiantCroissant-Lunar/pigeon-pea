@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <!-- Engine layer -->
-    <ProjectReference Include="..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Input.Core\PigeonPea.Input.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.Input.Core\PigeonPea.Input.Core.csproj" />
 
     <!-- App-essential contracts -->
     <ProjectReference Include="..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />

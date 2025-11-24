@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\shared\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -15,9 +15,9 @@
 
   <ItemGroup>
     <!-- Map + rendering primitives only; avoid plugin/contracts graph for now -->
-    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Map.Rendering\PigeonPea.Map.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\shared\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
   </ItemGroup>
 
 </Project>

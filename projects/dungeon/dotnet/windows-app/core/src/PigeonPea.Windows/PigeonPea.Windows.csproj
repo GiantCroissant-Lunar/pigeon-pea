@@ -41,7 +41,7 @@
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
 
     <!-- Engine-level rendering primitives (IRenderer, IRenderTarget, Tile, Viewport, RendererCapabilities) -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\engine\core\src\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\shared\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
 
     <!-- New RFC-032 Rendering Contracts -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />

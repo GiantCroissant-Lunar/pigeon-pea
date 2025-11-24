@@ -36,7 +36,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\..\..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\..\..\..\engine\core\src\PigeonPea.Plugin\PigeonPea.Plugin.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\..\..\app-essential\core\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
   </ItemGroup>
 
   <ItemGroup>
