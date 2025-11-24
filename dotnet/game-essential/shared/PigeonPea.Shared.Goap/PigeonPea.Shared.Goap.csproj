@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PigeonPea.Shared.Goap</RootNamespace>
+    <AssemblyName>PigeonPea.Shared.Goap</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Immutable Collections for WorldState -->
+    <PackageReference Include="System.Collections.Immutable" Version="9.0.0" />
+
+    <!-- Logging -->
+    <PackageReference Include="Serilog" Version="4.2.0" />
+  </ItemGroup>
+
+</Project>

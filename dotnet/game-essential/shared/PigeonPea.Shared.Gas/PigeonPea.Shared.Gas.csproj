@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PigeonPea.Shared.Gas</RootNamespace>
+    <AssemblyName>PigeonPea.Shared.Gas</AssemblyName>
+
+    <!-- NuGet Package Metadata -->
+    <PackageId>PigeonPea.Shared.Gas</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Pigeon Pea Development Team</Authors>
+    <Description>Engine-agnostic Gameplay Ability System inspired by Unreal Engine GAS</Description>
+    <PackageTags>gamedev;abilities;gas;gameplay</PackageTags>
+    <RepositoryUrl>https://github.com/your-repo/nexus-gas</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- No external dependencies - pure C# -->
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,1275 @@
+using Arch.Core;
+using Arch.Core.Extensions;
+using GoRogue.FOV;
+using GoRogue.GameFramework;
+using GoRogue.Pathing;
+using MessagePipe;
+using PigeonPea.Contracts.Plugin;
+using PigeonPea.Dungeon.Contracts;
+using PigeonPea.Dungeon.Contracts.Models;
+using PigeonPea.Rendering.Contracts;
+using PigeonPea.Shared.Components;
+using PigeonPea.Shared.ECS.Components;
+// using PigeonPea.Shared.Dungeon; // Removed: BasicDungeonGenerator moved to plugin
+using PigeonPea.Shared.Events;
+using SadRogue.Primitives;
+using SadRogue.Primitives.GridViews;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using System.Diagnostics.CodeAnalysis;
+using CTile = PigeonPea.Shared.Components.Tile;
+using IInventoryService = PigeonPea.Game.Contracts.Inventory.Services.IService;
+using IStatsService = PigeonPea.Game.Contracts.Stats.Services.IService;
+using ICombatService = PigeonPea.Game.Contracts.Combat.Services.IService;
+using IAnimationService = PigeonPea.Game.Contracts.Animation.Services.IService;
+using IPersistenceService = PigeonPea.Game.Contracts.Persistence.Services.IService;
+using PluginEvents = PigeonPea.Game.Contracts.Events;
+using RTile = PigeonPea.Rendering.Contracts.Tile;
+
+/// <summary>
+/// Core game world managing ECS entities, map, and game state.
+/// </summary>
+[SuppressMessage("Maintainability", "CA1506:AvoidExcessiveClassCoupling", Justification = "GameWorld is an orchestrator that composes many ECS systems and services; high coupling here is intentional.")]
+public class GameWorld
+{
+    public World EcsWorld { get; private set; }
+    public ISettableGridView<IGameObject> Map { get; private set; }
+    public Entity PlayerEntity { get; private set; }
+    private readonly IRenderer? _renderer;
+
+    public int Width { get; }
+    public int Height { get; }
+
+    // Store walkability map for pathfinding/collision
+    public ArrayView<bool> WalkabilityMap { get; private set; }
+
+    // Store transparency map for FOV (walls block sight, floors don't)
+    public ArrayView<bool> TransparencyMap { get; private set; }
+
+    // FOV algorithm instance
+    private readonly IFOV _fovAlgorithm;
+
+    // Pathfinding instance for AI
+    private readonly AStar _pathfinder;
+
+    // Shared random instance for all spawning
+    private readonly Random _random;
+
+    // Dungeon generation strategy
+    private readonly IDungeonGenerator _dungeonGenerator;
+
+    // MessagePipe publishers for event-driven architecture
+    private readonly IPublisher<PlayerDamagedEvent>? _playerDamagedPublisher;
+    private readonly IPublisher<EnemyDefeatedEvent>? _enemyDefeatedPublisher;
+    private readonly IPublisher<ItemPickedUpEvent>? _itemPickedUpPublisher;
+    private readonly IPublisher<ItemUsedEvent>? _itemUsedPublisher;
+    private readonly IPublisher<ItemDroppedEvent>? _itemDroppedPublisher;
+    private readonly IPublisher<PlayerLevelUpEvent>? _playerLevelUpPublisher;
+    private readonly IPublisher<DoorOpenedEvent>? _doorOpenedPublisher;
+    private readonly IPublisher<StairsDescendedEvent>? _stairsDescendedPublisher;
+    // Plugin system event bus (optional)
+    private readonly IEventBus? _eventBus;
+    // Optional game-level inventory service (backed by plugins).
+    private readonly IInventoryService? _inventoryService;
+    private readonly IStatsService? _statsService;
+    private readonly ICombatService? _combatService;
+    private readonly IAnimationService? _animationService;
+    private readonly IPersistenceService? _persistenceService;
+    private readonly ILogger<GameWorld> _logger;
+
+    /// <summary>
+    /// Publishes an event to the plugin system synchronously.
+    /// Plugin exceptions are logged but do not crash the game loop.
+    /// </summary>
+    /// <remarks>
+    /// Synchronous execution ensures events are processed in order with game state.
+    /// Individual plugin handler failures are isolated - one plugin's exception
+    /// won't prevent other plugins from receiving the event.
+    /// </remarks>
+    private void TryPublishPluginEvent<TEvent>(TEvent evt)
+    {
+        if (_eventBus == null) return;
+
+        try
+        {
+            // Synchronous publish to maintain event ordering with game state
+            _eventBus.PublishAsync(evt).GetAwaiter().GetResult();
+        }
+        catch (AggregateException agEx)
+        {
+            // Log each plugin handler failure individually for visibility
+            foreach (var ex in agEx.InnerExceptions)
+            {
+                _logger.LogError(ex,
+                    "Plugin handler failed for event {EventType}: {Message}",
+                    typeof(TEvent).FullName,
+                    ex.Message);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Log single exceptions (shouldn't happen with EventBus, but handle defensively)
+            _logger.LogError(ex,
+                "Plugin event publish failed for {EventType}: {Message}",
+                typeof(TEvent).FullName,
+                ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// Creates a new GameWorld with specified dimensions.
+    /// For use without dependency injection.
+    /// </summary>
+    public GameWorld(int width = 80, int height = 50, IEventBus? eventBus = null, IInventoryService? inventoryService = null, IDungeonGenerator? dungeonGenerator = null, IStatsService? statsService = null, IAnimationService? animationService = null, IPersistenceService? persistenceService = null, ICombatService? combatService = null, ILogger<GameWorld>? logger = null)
+    {
+        Width = width;
+        Height = height;
+
+        EcsWorld = World.Create();
+        Map = new ArrayView<IGameObject>(width, height);
+        WalkabilityMap = new ArrayView<bool>(width, height);
+        TransparencyMap = new ArrayView<bool>(width, height);
+        _random = new Random();
+        _dungeonGenerator = dungeonGenerator ?? new FallbackDungeonGenerator();
+
+        // Publishers remain null - no events published
+        _playerDamagedPublisher = null;
+        _enemyDefeatedPublisher = null;
+        _itemPickedUpPublisher = null;
+        _itemUsedPublisher = null;
+        _itemDroppedPublisher = null;
+        _playerLevelUpPublisher = null;
+        _doorOpenedPublisher = null;
+        _stairsDescendedPublisher = null;
+        _eventBus = eventBus;
+        _inventoryService = inventoryService;
+        _statsService = statsService;
+        _combatService = combatService;
+        _animationService = animationService;
+        _persistenceService = persistenceService;
+        _logger = logger ?? NullLogger<GameWorld>.Instance;
+
+        // Initialize FOV algorithm (recursive shadowcasting)
+        _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
+
+        // Initialize pathfinding (A* with Chebyshev distance for 8-way movement)
+        _pathfinder = new AStar(WalkabilityMap, Distance.Chebyshev);
+
+        InitializeWorld();
+    }
+
+    /// <summary>
+    /// Creates a new GameWorld with MessagePipe event publishers.
+    /// For use with dependency injection - all publishers are automatically resolved from DI container.
+    /// </summary>
+    public GameWorld(
+        int width,
+        int height,
+        IPublisher<PlayerDamagedEvent> playerDamagedPublisher,
+        IPublisher<EnemyDefeatedEvent> enemyDefeatedPublisher,
+        IPublisher<ItemPickedUpEvent> itemPickedUpPublisher,
+        IPublisher<ItemUsedEvent> itemUsedPublisher,
+        IPublisher<ItemDroppedEvent> itemDroppedPublisher,
+        IPublisher<PlayerLevelUpEvent> playerLevelUpPublisher,
+        IPublisher<DoorOpenedEvent> doorOpenedPublisher,
+        IPublisher<StairsDescendedEvent> stairsDescendedPublisher,
+        IEventBus? eventBus = null,
+        IInventoryService? inventoryService = null,
+        IDungeonGenerator? dungeonGenerator = null,
+        IStatsService? statsService = null,
+        IAnimationService? animationService = null,
+        IPersistenceService? persistenceService = null,
+        ICombatService? combatService = null,
+        ILogger<GameWorld>? logger = null)
+    {
+        Width = width;
+        Height = height;
+
+        EcsWorld = World.Create();
+        Map = new ArrayView<IGameObject>(width, height);
+        WalkabilityMap = new ArrayView<bool>(width, height);
+        TransparencyMap = new ArrayView<bool>(width, height);
+        _random = new Random();
+
+        // Store MessagePipe publishers
+        _playerDamagedPublisher = playerDamagedPublisher;
+        _enemyDefeatedPublisher = enemyDefeatedPublisher;
+        _itemPickedUpPublisher = itemPickedUpPublisher;
+        _itemUsedPublisher = itemUsedPublisher;
+        _itemDroppedPublisher = itemDroppedPublisher;
+        _playerLevelUpPublisher = playerLevelUpPublisher;
+        _doorOpenedPublisher = doorOpenedPublisher;
+        _stairsDescendedPublisher = stairsDescendedPublisher;
+        _eventBus = eventBus;
+        _inventoryService = inventoryService;
+        _statsService = statsService;
+        _animationService = animationService;
+        _persistenceService = persistenceService;
+
+        // Initialize FOV algorithm (recursive shadowcasting)
+        _fovAlgorithm = new RecursiveShadowcastingFOV(TransparencyMap);
+
+        // Initialize pathfinding (A* with Chebyshev distance for 8-way movement)
+        _pathfinder = new AStar(WalkabilityMap, Distance.Chebyshev);
+
+        InitializeWorld();
+    }
+
+    // Compatibility constructor for rendering tests
+    public GameWorld(IRenderer renderer, int width, int height, ILogger<GameWorld>? logger = null)
+        : this(width, height, logger: logger)
+    {
+        _renderer = renderer;
+    }
+
+    private void InitializeWorld()
+    {
+        GenerateDungeon();
+        SpawnPlayer();
+        SpawnEnemies();
+        SpawnItems();
+    }
+
+    private void GenerateDungeon()
+    {
+        // Use pluggable dungeon generator to produce an Entity with dungeon data
+        var dungeonEntity = _dungeonGenerator.Generate(EcsWorld, new DungeonGenerationOptions { Width = Width, Height = Height });
+        var data = ExtractDungeonDataFromEntity(dungeonEntity);
+
+        // Create tile entities for each position based on DungeonData
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                bool isWalkable = data.IsWalkable(x, y);
+                bool isOpaque = data.IsOpaque(x, y);
+
+                WalkabilityMap[x, y] = isWalkable;
+                // TransparencyMap: true means tile does NOT block sight
+                TransparencyMap[x, y] = !isOpaque;
+
+                if (isWalkable)
+                {
+                    // Create floor tile
+                    CreateFloorTile(x, y);
+                }
+                else
+                {
+                    // For now, treat non-walkable tiles as walls. Door states can be
+                    // handled later by adding explicit door tile components.
+                    CreateWallTile(x, y);
+                }
+            }
+        }
+    }
+
+    private static DungeonData ExtractDungeonDataFromEntity(Entity dungeonEntity)
+    {
+        // Extract dungeon data from ECS entity
+        if (dungeonEntity.Has<DungeonMapComponent>())
+        {
+            var dungeonMap = dungeonEntity.Get<DungeonMapComponent>();
+            var width = dungeonMap.Width;
+            var height = dungeonMap.Height;
+
+            var data = new DungeonData(width, height);
+
+            for (int y = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++)
+                {
+                    int index = y * width + x;
+                    bool isWalkable = dungeonMap.Walkable[index];
+                    bool isOpaque = dungeonMap.Opaque[index];
+
+                    if (isWalkable)
+                    {
+                        data.SetFloor(x, y);
+                    }
+                    else
+                    {
+                        data.SetWall(x, y);
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        // Fallback: create empty dungeon
+        return new DungeonData(80, 50);
+    }
+
+    private void CreateFloorTile(int x, int y)
+    {
+        EcsWorld.Create(
+            new Position(new Point(x, y)),
+            new Renderable('.', Color.DarkGray),
+            new CTile(TileType.Floor)
+        );
+    }
+
+    private void CreateWallTile(int x, int y)
+    {
+        EcsWorld.Create(
+            new Position(new Point(x, y)),
+            new Renderable('#', Color.White),
+            new CTile(TileType.Wall),
+            new BlocksMovement()
+        );
+    }
+
+    private void SpawnPlayer()
+    {
+        // Find a valid walkable position for player
+        Point playerPos = FindWalkablePosition();
+
+        // Create player entity
+        PlayerEntity = EcsWorld.Create(
+            new Position(playerPos),
+            new Renderable('@', Color.Yellow),
+            new PlayerComponent("Hero"),
+            new Health(100, 100),
+            new CombatStats(5, 2),
+            new FieldOfView(8),
+            new Inventory(10),
+            new Experience(1),
+            new BlocksMovement()
+        );
+
+        // Calculate initial FOV for player
+        UpdateFieldOfView();
+
+        InitializeCombatStats(PlayerEntity, 5, 2);
+    }
+
+    private Point FindWalkablePosition()
+    {
+        // Find first walkable tile (simple approach)
+        // In a real game, you might want to pick a random room center
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                if (WalkabilityMap[x, y])
+                {
+                    return new Point(x, y);
+                }
+            }
+        }
+
+        // Fallback to center if no walkable tile found (shouldn't happen)
+        return new Point(Width / 2, Height / 2);
+    }
+
+    private void SpawnEnemies()
+    {
+        // Spawn a few enemies in random walkable positions
+        int enemyCount = 10;
+
+        for (int i = 0; i < enemyCount; i++)
+        {
+            Point enemyPos = FindRandomWalkablePosition(_random);
+
+            // Create enemy entity (goblin)
+            var enemy = EcsWorld.Create(
+                new Position(enemyPos),
+                new Renderable('g', Color.Green),
+                new Health(20, 20),
+                new CombatStats(3, 1),
+                new AIComponent(AIBehavior.Aggressive),
+                new ExperienceValue(35),
+                new BlocksMovement()
+            );
+
+            InitializeCombatStats(enemy, 3, 1);
+        }
+    }
+
+    private void InitializeCombatStats(Entity entity, int attack, int defense)
+    {
+        if (_statsService == null)
+        {
+            return;
+        }
+
+        _statsService.SetStat(EcsWorld, entity, "attack", attack);
+        _statsService.SetStat(EcsWorld, entity, "defense", defense);
+
+        if (entity.Has<Experience>())
+        {
+            var experience = entity.Get<Experience>();
+            _statsService.SetStat(EcsWorld, entity, "level", experience.Level);
+            _statsService.RecalculateDerivedStats(EcsWorld, entity);
+        }
+    }
+
+    private void LogEntityStats(string label, Entity entity)
+    {
+        if (_statsService == null || !entity.Has<Stats>())
+        {
+            return;
+        }
+
+        try
+        {
+            var statsView = _statsService.GetStats(EcsWorld, entity);
+            var modifiers = _statsService.GetModifiers(EcsWorld, entity);
+
+            _logger.LogDebug("Stats {Label}: Base={BaseStats}, Current={CurrentStats}, Modifiers={Modifiers}",
+                label,
+                statsView.BaseStats,
+                statsView.CurrentStats,
+                modifiers);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogDebug(ex, "Failed to log stats for {Label}", label);
+        }
+    }
+
+    private Point FindRandomWalkablePosition(Random random)
+    {
+        // Try to find a random walkable position (with max attempts to avoid infinite loops)
+        int maxAttempts = 100;
+        for (int attempt = 0; attempt < maxAttempts; attempt++)
+        {
+            int x = random.Next(0, Width);
+            int y = random.Next(0, Height);
+
+            if (WalkabilityMap[x, y] && !IsPositionOccupied(new Point(x, y)))
+            {
+                return new Point(x, y);
+            }
+        }
+
+        // Fallback to first walkable if random attempts failed
+        return FindWalkablePosition();
+    }
+
+    private bool IsPositionOccupied(Point position)
+    {
+        // Check if any entity with BlocksMovement is at this position
+        var blockersQuery = new QueryDescription().WithAll<Position, BlocksMovement>();
+
+        foreach (var chunk in EcsWorld.Query(in blockersQuery))
+        {
+            foreach (ref readonly var pos in chunk.GetSpan<Position>())
+            {
+                if (pos.Point == position)
+                {
+                    return true; // Found a blocker, exit early
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private void SpawnItems()
+    {
+        // Spawn health potions in random locations
+        int potionCount = 5;
+
+        for (int i = 0; i < potionCount; i++)
+        {
+            Point itemPos = FindRandomWalkablePosition(_random);
+
+            // Create health potion
+            EcsWorld.Create(
+                new Position(itemPos),
+                new Renderable('!', Color.Red),
+                new Item("Health Potion", ItemType.Consumable),
+                new Consumable(25),
+                new Pickup()
+            );
+        }
+    }
+
+    /// <summary>
+    /// Updates field of view for all entities with FOV components.
+    /// </summary>
+    private void UpdateFieldOfView()
+    {
+        // Query for all entities with Position and FieldOfView components
+        var fovQuery = new QueryDescription().WithAll<Position, FieldOfView>();
+
+        EcsWorld.Query(in fovQuery, (Entity entity, ref Position pos, ref FieldOfView fov) =>
+        {
+            // Clear previous visible tiles
+            fov.VisibleTiles.Clear();
+
+            // Calculate new FOV from entity's current position
+            _fovAlgorithm.Calculate(pos.Point, fov.Radius);
+
+            // Store visible positions in the component
+            foreach (var visiblePos in _fovAlgorithm.CurrentFOV)
+            {
+                fov.VisibleTiles.Add(visiblePos);
+            }
+
+            // Mark tiles as explored (only for player)
+            if (entity.Has<PlayerComponent>())
+            {
+                MarkTilesAsExplored(fov.VisibleTiles);
+            }
+        });
+    }
+
+    /// <summary>
+    /// Marks tiles at given positions as explored.
+    /// </summary>
+    private void MarkTilesAsExplored(HashSet<Point> positions)
+    {
+        var tileQuery = new QueryDescription().WithAll<Position, CTile>();
+
+        EcsWorld.Query(in tileQuery, (Entity entity, ref Position pos) =>
+        {
+            if (positions.Contains(pos.Point) && !entity.Has<Explored>())
+            {
+                entity.Add(new Explored());
+            }
+        });
+    }
+
+    /// <summary>
+    /// Updates AI behavior for all entities with AI components.
+    /// </summary>
+    private void UpdateAI()
+    {
+        // Get player position
+        if (!PlayerEntity.IsAlive())
+            return;
+
+        var playerPos = PlayerEntity.Get<Position>();
+
+        // Query all AI entities
+        var aiQuery = new QueryDescription().WithAll<Position, AIComponent, Health>();
+
+        EcsWorld.Query(in aiQuery, (Entity entity, ref Position pos, ref AIComponent ai, ref Health health) =>
+        {
+            // Skip dead entities
+            if (!health.IsAlive)
+                return;
+
+            if (ai.Behavior == AIBehavior.Aggressive)
+            {
+                // Calculate distance to player
+                double distance = Distance.Chebyshev.Calculate(pos.Point, playerPos.Point);
+
+                // Only chase if player is close enough (within ~15 tiles)
+                if (distance < 15)
+                {
+                    // Find path to player
+                    var path = _pathfinder.ShortestPath(pos.Point, playerPos.Point);
+
+                    if (path != null)
+                    {
+                        // Store path in AI component
+                        ai.CurrentPath.Clear();
+                        ai.CurrentPath.AddRange(path.Steps);
+
+                        // Move one step along the path (if path has more than 1 step)
+                        if (ai.CurrentPath.Count > 1)
+                        {
+                            Point nextPos = ai.CurrentPath[1]; // [0] is current position
+
+                            // Check if next position is the player - attack instead of move
+                            if (nextPos == playerPos.Point)
+                            {
+                                // Melee attack the player
+                                ResolveMeleeAttack(entity, PlayerEntity);
+                            }
+                            // Only move if next position is not occupied by another entity
+                            else if (!IsPositionOccupied(nextPos))
+                            {
+                                // Create new Position component
+                                entity.Remove<Position>();
+                                entity.Add(new Position(nextPos));
+                            }
+                        }
+                    }
+                }
+            }
+            // Passive AI could wander randomly here
+        });
+    }
+
+    /// <summary>
+    /// Awards experience to an entity and handles level-ups.
+    /// </summary>
+    public void GainExperience(Entity entity, int xp)
+    {
+        if (!entity.Has<Experience>())
+            return;
+
+        var experience = entity.Get<Experience>();
+        var newCurrentXP = experience.CurrentXP + xp;
+        var newLevel = experience.Level;
+        var newXPToNext = experience.XPToNextLevel;
+
+        // Check for level up
+        while (newCurrentXP >= newXPToNext)
+        {
+            newLevel++;
+            newCurrentXP -= newXPToNext;
+            newXPToNext = Experience.CalculateXPForLevel(newLevel + 1);
+
+            // Apply level-up bonuses
+            LevelUp(entity, newLevel);
+        }
+
+        // Create new Experience component with updated values
+        entity.Remove<Experience>();
+        entity.Add(new Experience(newCurrentXP, newLevel, newXPToNext));
+    }
+
+    /// <summary>
+    /// Applies stat increases when leveling up.
+    /// </summary>
+    private void LevelUp(Entity entity, int newLevel)
+    {
+        int healthIncrease = 10;
+
+        // Increase health - create new Health component
+        if (entity.Has<Health>())
+        {
+            var health = entity.Get<Health>();
+            var newMaximum = health.Maximum + healthIncrease;
+            entity.Remove<Health>();
+            entity.Add(new Health(newMaximum, newMaximum)); // Fully heal on level up
+        }
+
+        // Increase combat stats - create new CombatStats component
+        if (entity.Has<CombatStats>())
+        {
+            var stats = entity.Get<CombatStats>();
+            entity.Remove<CombatStats>();
+            entity.Add(new CombatStats(stats.Attack + 1, stats.Defense + 1));
+        }
+
+        if (_statsService != null)
+        {
+            if (entity.Has<CombatStats>())
+            {
+                var updatedStats = entity.Get<CombatStats>();
+                _statsService.SetStat(EcsWorld, entity, "attack", updatedStats.Attack);
+                _statsService.SetStat(EcsWorld, entity, "defense", updatedStats.Defense);
+            }
+
+            _statsService.SetStat(EcsWorld, entity, "level", newLevel);
+            _statsService.RecalculateDerivedStats(EcsWorld, entity);
+        }
+
+        // Publish level up event for player
+        if (entity.Has<PlayerComponent>() && _playerLevelUpPublisher != null)
+        {
+            _playerLevelUpPublisher.Publish(new PlayerLevelUpEvent
+            {
+                NewLevel = newLevel,
+                HealthIncrease = healthIncrease
+            });
+        }
+        // Publish plugin-facing event via IEventBus
+        if (entity.Has<PlayerComponent>())
+        {
+            TryPublishPluginEvent(new PluginEvents.PlayerLevelUpEvent
+            {
+                NewLevel = newLevel,
+                HealthIncrease = healthIncrease
+            });
+        }
+    }
+
+    /// <summary>
+    /// Resolves a melee attack from attacker to defender.
+    /// </summary>
+    private void ResolveMeleeAttack(Entity attacker, Entity defender)
+    {
+        if (!TryGetCombatParticipants(attacker, defender,
+                out var attackerHealth,
+                out var attackerStats,
+                out var defenderHealth,
+                out var defenderStats))
+        {
+            return;
+        }
+
+        LogEntityStats("BeforeAttack_Attacker", attacker);
+        LogEntityStats("BeforeAttack_Defender", defender);
+
+        int damage = CalculateDamage(attacker, defender, attackerStats, defenderStats);
+
+        int newHealth = ApplyDamageToDefender(defender, defenderHealth, damage);
+
+        LogEntityStats("AfterAttack_Attacker", attacker);
+        LogEntityStats("AfterAttack_Defender", defender);
+
+        PublishDamageEvents(attacker, defender, damage, newHealth);
+
+        HandleDefenderDeath(attacker, defender, newHealth);
+    }
+
+    private static bool TryGetCombatParticipants(
+        Entity attacker,
+        Entity defender,
+        out Health attackerHealth,
+        out CombatStats attackerStats,
+        out Health defenderHealth,
+        out CombatStats defenderStats)
+    {
+        attackerHealth = default;
+        attackerStats = default;
+        defenderHealth = default;
+        defenderStats = default;
+
+        if (!attacker.Has<Health>() || !attacker.Has<CombatStats>() ||
+            !defender.Has<Health>() || !defender.Has<CombatStats>())
+        {
+            return false;
+        }
+
+        attackerHealth = attacker.Get<Health>();
+        attackerStats = attacker.Get<CombatStats>();
+        defenderHealth = defender.Get<Health>();
+        defenderStats = defender.Get<CombatStats>();
+
+        return attackerHealth.IsAlive;
+    }
+
+    private int CalculateDamage(Entity attacker, Entity defender, CombatStats attackerStats, CombatStats defenderStats)
+    {
+        if (_combatService != null)
+        {
+            var pluginDamage = _combatService.CalculateMeleeDamage(EcsWorld, attacker, defender);
+            if (pluginDamage > 0)
+            {
+                return pluginDamage;
+            }
+        }
+
+        int attackerAttack = attackerStats.Attack;
+        int defenderDefense = defenderStats.Defense;
+
+        if (_statsService != null && attacker.Has<Stats>() && defender.Has<Stats>())
+        {
+            var attackerAttackStat = _statsService.GetStatValue(EcsWorld, attacker, "attack");
+            var defenderDefenseStat = _statsService.GetStatValue(EcsWorld, defender, "defense");
+
+            attackerAttack = (int)Math.Round(attackerAttackStat);
+            defenderDefense = (int)Math.Round(defenderDefenseStat);
+        }
+
+        return Math.Max(1, attackerAttack - defenderDefense);
+    }
+
+    private static int ApplyDamageToDefender(Entity defender, Health defenderHealth, int damage)
+    {
+        int newHealth = Math.Max(0, defenderHealth.Current - damage);
+
+        defender.Remove<Health>();
+        defender.Add(new Health(newHealth, defenderHealth.Maximum));
+
+        return newHealth;
+    }
+
+    private void PublishDamageEvents(Entity attacker, Entity defender, int damage, int defenderRemainingHealth)
+    {
+        if (!defender.Has<PlayerComponent>())
+        {
+            return;
+        }
+
+        string sourceName = attacker.Has<AIComponent>() ? "Enemy" : "Unknown";
+
+        if (_playerDamagedPublisher != null)
+        {
+            _playerDamagedPublisher.Publish(new PlayerDamagedEvent
+            {
+                Damage = damage,
+                RemainingHealth = defenderRemainingHealth,
+                Source = sourceName
+            });
+        }
+
+        TryPublishPluginEvent(new PluginEvents.PlayerDamagedEvent
+        {
+            Damage = damage,
+            RemainingHealth = defenderRemainingHealth,
+            Source = sourceName
+        });
+    }
+
+    private void HandleDefenderDeath(Entity attacker, Entity defender, int defenderRemainingHealth)
+    {
+        if (defenderRemainingHealth > 0 || defender.Has<Dead>())
+        {
+            return;
+        }
+
+        defender.Add(new Dead());
+
+        if (defender.Has<AIComponent>() && attacker.Has<PlayerComponent>())
+        {
+            int xpGained = defender.Has<ExperienceValue>()
+                ? defender.Get<ExperienceValue>().XP
+                : 0;
+
+            _enemyDefeatedPublisher?.Publish(new EnemyDefeatedEvent
+            {
+                EnemyName = "Enemy",
+                ExperienceGained = xpGained
+            });
+
+            TryPublishPluginEvent(new PluginEvents.EnemyDefeatedEvent
+            {
+                EnemyName = "Enemy",
+                ExperienceGained = xpGained
+            });
+        }
+
+        if (attacker.Has<Experience>() && defender.Has<ExperienceValue>())
+        {
+            var xpValue = defender.Get<ExperienceValue>();
+            GainExperience(attacker, xpValue.XP);
+        }
+    }
+
+    /// <summary>
+    /// Test helper method to trigger melee combat between two entities.
+    /// This public method allows testing of combat and event publishing without reflection.
+    /// </summary>
+    /// <param name="attacker">The attacking entity.</param>
+    /// <param name="defender">The defending entity.</param>
+    public void TestResolveMeleeAttack(Entity attacker, Entity defender)
+    {
+        ResolveMeleeAttack(attacker, defender);
+    }
+
+    /// <summary>
+    /// Removes dead entities from the world.
+    /// </summary>
+    private void CleanupDeadEntities()
+    {
+        var deadQuery = new QueryDescription().WithAll<Dead>();
+        var entitiesToDestroy = new List<Entity>();
+
+        EcsWorld.Query(in deadQuery, (Entity entity) =>
+        {
+            entitiesToDestroy.Add(entity);
+        });
+
+        foreach (var entity in entitiesToDestroy)
+        {
+            EcsWorld.Destroy(entity);
+        }
+    }
+
+    /// <summary>
+    /// Gets an entity at the specified position (returns null if none found).
+    /// </summary>
+    public Entity? GetEntityAt(Point position)
+    {
+        var posQuery = new QueryDescription().WithAll<Position>();
+        Entity? foundEntity = null;
+
+        EcsWorld.Query(in posQuery, (Entity entity, ref Position pos) =>
+        {
+            if (pos.Point == position)
+            {
+                foundEntity = entity;
+            }
+        });
+
+        return foundEntity;
+    }
+
+    /// <summary>
+    /// Attempts to move player in the given direction.
+    /// If an enemy is at the target position, attacks instead.
+    /// </summary>
+    public bool TryMovePlayer(Point direction)
+    {
+        if (!PlayerEntity.IsAlive())
+            return false;
+
+        ref var playerPos = ref PlayerEntity.Get<Position>();
+        Point targetPos = playerPos.Point + direction;
+
+        // Check bounds
+        if (targetPos.X < 0 || targetPos.X >= Width || targetPos.Y < 0 || targetPos.Y >= Height)
+            return false;
+
+        // Check if target is walkable
+        if (!WalkabilityMap[targetPos.X, targetPos.Y])
+            return false;
+
+        // Check if there's an entity at target position
+        var targetEntity = GetEntityAt(targetPos);
+        if (targetEntity.HasValue)
+        {
+            // If it's an enemy with health, attack it
+            if (targetEntity.Value.Has<AIComponent>() && targetEntity.Value.Has<Health>())
+            {
+                ResolveMeleeAttack(PlayerEntity, targetEntity.Value);
+                return true;
+            }
+
+            // If it blocks movement, can't move there
+            if (targetEntity.Value.Has<BlocksMovement>())
+                return false;
+        }
+
+        // Move player - create new Position component
+        PlayerEntity.Remove<Position>();
+        PlayerEntity.Add(new Position(targetPos));
+        return true;
+    }
+
+    /// <summary>
+    /// Attempts to pick up an item at the player's current position.
+    /// </summary>
+    public bool TryPickupItem()
+    {
+        if (!PlayerEntity.IsAlive())
+            return false;
+
+        var playerPos = PlayerEntity.Get<Position>();
+
+        // Find pickup items at player position
+        var pickupQuery = new QueryDescription().WithAll<Position, Item, Pickup>();
+        Entity? itemToPickup = null;
+
+        EcsWorld.Query(in pickupQuery, (Entity entity, ref Position pos) =>
+        {
+            if (pos.Point == playerPos.Point)
+            {
+                itemToPickup = entity;
+            }
+        });
+
+        if (!itemToPickup.HasValue)
+            return false;
+
+        // Get item details before removing components
+        var item = itemToPickup.Value.Get<Item>();
+        string itemName = item.Name;
+        string itemType = item.Type.ToString();
+
+        // If an inventory service is available, use it as the primary inventory path
+        if (_inventoryService != null)
+        {
+            // Attempt to add a single instance of this item to the game-level inventory
+            var added = _inventoryService.TryAddItem(PlayerEntity, itemName, 1);
+            if (!added)
+            {
+                return false;
+            }
+
+            // Remove position and pickup components (item is now in inventory)
+            itemToPickup.Value.Remove<Position>();
+            itemToPickup.Value.Remove<Pickup>();
+
+            // Publish ItemPickedUpEvent
+            if (_itemPickedUpPublisher != null)
+            {
+                _itemPickedUpPublisher.Publish(new ItemPickedUpEvent
+                {
+                    ItemName = itemName,
+                    ItemType = itemType
+                });
+            }
+            // Publish plugin-facing ItemPickedUpEvent
+            TryPublishPluginEvent(new PluginEvents.ItemPickedUpEvent
+            {
+                ItemName = itemName,
+                ItemType = itemType
+            });
+
+            return true;
+        }
+
+        // Legacy path: use ECS Inventory component
+        if (!PlayerEntity.Has<Inventory>())
+            return false;
+
+        ref var inventory = ref PlayerEntity.Get<Inventory>();
+
+        // Check if inventory is full
+        if (inventory.IsFull)
+            return false;
+
+        // Remove position and pickup components (item is now in inventory)
+        itemToPickup.Value.Remove<Position>();
+        itemToPickup.Value.Remove<Pickup>();
+
+        // Add to inventory
+        inventory.Items.Add(itemToPickup.Value);
+
+        // Publish ItemPickedUpEvent
+        if (_itemPickedUpPublisher != null)
+        {
+            _itemPickedUpPublisher.Publish(new ItemPickedUpEvent
+            {
+                ItemName = itemName,
+                ItemType = itemType
+            });
+        }
+        // Publish plugin-facing ItemPickedUpEvent
+        TryPublishPluginEvent(new PluginEvents.ItemPickedUpEvent
+        {
+            ItemName = itemName,
+            ItemType = itemType
+        });
+
+        return true;
+    }
+
+    /// <summary>
+    /// Attempts to use an item from the player's inventory by index.
+    /// </summary>
+    public bool TryUseItem(int itemIndex)
+    {
+        if (!PlayerEntity.IsAlive() || !PlayerEntity.Has<Inventory>())
+            return false;
+
+        ref var inventory = ref PlayerEntity.Get<Inventory>();
+
+        // Check if index is valid
+        if (itemIndex < 0 || itemIndex >= inventory.Items.Count)
+            return false;
+
+        var item = inventory.Items[itemIndex];
+
+        // Handle consumables
+        if (item.Has<Consumable>())
+        {
+            // Get item details before destruction
+            var itemComponent = item.Get<Item>();
+            string itemName = itemComponent.Name;
+            string itemType = itemComponent.Type.ToString();
+
+            var consumable = item.Get<Consumable>();
+            var health = PlayerEntity.Get<Health>();
+
+            // Restore health - create new Health component with updated values
+            var newCurrent = Math.Min(health.Maximum, health.Current + consumable.HealthRestore);
+            PlayerEntity.Remove<Health>();
+            PlayerEntity.Add(new Health(newCurrent, health.Maximum));
+
+            // Remove item from inventory
+            inventory.Items.RemoveAt(itemIndex);
+
+            // Destroy: item entity
+            EcsWorld.Destroy(item);
+
+            // Publish ItemUsedEvent
+            if (_itemUsedPublisher != null)
+            {
+                _itemUsedPublisher.Publish(new ItemUsedEvent
+                {
+                    ItemName = itemName,
+                    ItemType = itemType
+                });
+            }
+            // Publish plugin-facing ItemUsedEvent
+            TryPublishPluginEvent(new PluginEvents.ItemUsedEvent
+            {
+                ItemName = itemName,
+                ItemType = itemType
+            });
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Attempts to drop an item from the player's inventory by index.
+    /// </summary>
+    public bool TryDropItem(int itemIndex)
+    {
+        if (!PlayerEntity.IsAlive() || !PlayerEntity.Has<Inventory>())
+            return false;
+
+        ref var inventory = ref PlayerEntity.Get<Inventory>();
+
+        // Check if index is valid
+        if (itemIndex < 0 || itemIndex >= inventory.Items.Count)
+            return false;
+
+        var item = inventory.Items[itemIndex];
+
+        // Get item details before dropping (for event)
+        var itemComponent = item.Get<Item>();
+        string itemName = itemComponent.Name;
+
+        // Get player position
+        var playerPos = PlayerEntity.Get<Position>();
+
+        // Remove item from inventory
+        inventory.Items.RemoveAt(itemIndex);
+
+        // Add position and pickup components back (item is now on the ground)
+        item.Add(new Position(playerPos.Point));
+        item.Add(new Pickup());
+
+        // Publish ItemDroppedEvent
+        if (_itemDroppedPublisher != null)
+        {
+            _itemDroppedPublisher.Publish(new ItemDroppedEvent
+            {
+                ItemName = itemName
+            });
+        }
+        // Publish plugin-facing ItemDroppedEvent
+        TryPublishPluginEvent(new PluginEvents.ItemDroppedEvent
+        {
+            ItemName = itemName
+        });
+        return true;
+    }
+
+    public void Update(double deltaTime)
+    {
+        // Run ECS systems
+        UpdateFieldOfView();
+        UpdateAI();
+        CleanupDeadEntities();
+
+        // Update animations
+        _animationService?.Update(EcsWorld, (float)deltaTime);
+    }
+
+    public void SaveWorld(string saveName)
+    {
+        if (_persistenceService == null)
+        {
+            _logger.LogWarning("Cannot save world: Persistence service not available.");
+            return;
+        }
+
+        var result = _persistenceService.SaveWorld(EcsWorld, saveName);
+        if (result.Success)
+        {
+            _logger.LogInformation("World saved successfully to {FilePath} ({SizeBytes} bytes)", result.FilePath, result.SizeBytes);
+        }
+        else
+        {
+            _logger.LogError("Failed to save world: {ErrorMessage}", result.ErrorMessage);
+        }
+    }
+
+    public void LoadWorld(string saveName)
+    {
+        if (_persistenceService == null)
+        {
+            _logger.LogWarning("Cannot load world: Persistence service not available.");
+            return;
+        }
+
+        var result = _persistenceService.LoadWorld(EcsWorld, saveName);
+        if (result.Success)
+        {
+            _logger.LogInformation("World loaded successfully. {EntitiesLoaded} entities loaded.", result.EntitiesLoaded);
+            // Re-initialize player entity reference if needed
+            // This is tricky because we need to find the player entity again
+            var playerQuery = new QueryDescription().WithAll<PlayerComponent>();
+            EcsWorld.Query(in playerQuery, (Entity entity) =>
+            {
+                PlayerEntity = entity;
+            });
+        }
+        else
+        {
+            _logger.LogError("Failed to load world: {ErrorMessage}", result.ErrorMessage);
+        }
+    }
+
+    // Compatibility render method for tests using Rendering.IRenderer
+    public void Render(Viewport viewport)
+    {
+        if (_renderer == null) return;
+
+        _renderer.SetViewport(viewport);
+        _renderer.BeginFrame();
+        _renderer.Clear(Color.Black);
+
+        var query = new QueryDescription().WithAll<Position, Renderable>();
+        EcsWorld.Query(in query, (ref Position pos, ref Renderable rend) =>
+        {
+            if (viewport.Contains(pos.Point.X, pos.Point.Y))
+            {
+                var tile = new RTile(rend.Glyph, rend.Foreground, rend.Background);
+                _renderer.DrawTile(pos.Point.X, pos.Point.Y, tile);
+            }
+        });
+
+        _renderer.EndFrame();
+    }
+
+    /// <summary>
+    /// Simple fallback generator that creates a single large room.
+    /// Used when no generator is provided.
+    /// </summary>
+    private class FallbackDungeonGenerator : IDungeonGenerator
+    {
+        public Entity Generate(World world, DungeonGenerationOptions options)
+        {
+            var d = new DungeonData(options.Width, options.Height);
+            // Fill with walls
+            for (int y = 0; y < options.Height; y++)
+                for (int x = 0; x < options.Width; x++)
+                    d.SetWall(x, y);
+
+            // Carve a large central room with 2-tile padding
+            for (int y = 2; y < options.Height - 2; y++)
+                for (int x = 2; x < options.Width - 2; x++)
+                    d.SetFloor(x, y);
+
+            return CreateDungeonEntity(world, d);
+        }
+
+        private Entity CreateDungeonEntity(World world, DungeonData d)
+        {
+            // Convert DungeonData arrays to flat byte arrays for ECS component
+            var walkableArray = new System.Collections.BitArray(d.Width * d.Height);
+            var opaqueArray = new System.Collections.BitArray(d.Width * d.Height);
+            var doorStates = new byte[d.Width * d.Height];
+
+            for (int y = 0; y < d.Height; y++)
+            {
+                for (int x = 0; x < d.Width; x++)
+                {
+                    int index = y * d.Width + x;
+                    walkableArray[index] = d.Walkable[y, x];
+                    opaqueArray[index] = d.Opaque[y, x];
+                    doorStates[index] = (byte)d.Doors[y, x];
+                }
+            }
+
+            // Create dungeon entity in the world
+            var dungeonEntity = world.Create(
+                new DungeonMapComponent
+                {
+                    Width = d.Width,
+                    Height = d.Height,
+                    TileData = new byte[d.Width * d.Height],
+                    DoorStates = doorStates,
+                    Walkable = walkableArray,
+                    Opaque = opaqueArray
+                },
+                new PositionComponent { X = 0, Y = 0 },
+                new RenderableComponent
+                {
+                    Glyph = ' ',
+                    Foreground = SadRogue.Primitives.Color.White,
+                    Background = SadRogue.Primitives.Color.Black
+                }
+            );
+
+            return dungeonEntity;
+        }
+    }
+}

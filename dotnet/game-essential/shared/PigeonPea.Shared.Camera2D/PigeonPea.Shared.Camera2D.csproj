@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PigeonPea.Shared.Camera2D</RootNamespace>
+    <AssemblyName>PigeonPea.Shared.Camera2D</AssemblyName>
+
+    <PackageId>PigeonPea.Shared.Camera2D</PackageId>
+    <Version>0.1.0</Version>
+    <Authors>Pigeon Pea Development Team</Authors>
+    <Description>Engine-agnostic 2D camera system inspired by ProCamera2D</Description>
+    <PackageTags>gamedev;camera;2d;rendering</PackageTags>
+    <RepositoryUrl>https://github.com/your-repo/nexus-camera2d</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+</Project>
