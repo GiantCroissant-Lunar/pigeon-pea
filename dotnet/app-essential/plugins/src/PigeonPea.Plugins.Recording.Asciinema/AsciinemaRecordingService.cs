@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Recording.Models;
-using PigeonPea.Contracts.Recording.Services;
+using PigeonPea.Recording.Contracts;
+using PigeonPea.Recording.Contracts;
 using PigeonPea.Plugins.Recording.Asciinema.Strategies;
 using PigeonPea.Plugins.Recording.Asciinema.Exporters;
 

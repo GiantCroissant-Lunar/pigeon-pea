@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using PigeonPea.Contracts.Profiling.Services;
+using PigeonPea.Profiling.Contracts;
 
 namespace PigeonPea.Plugins.Profiling.Basic.Export;
 

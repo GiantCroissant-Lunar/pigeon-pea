@@ -1,6 +1,6 @@
 using System.Collections.Concurrent;
 using Sentry;
-using PigeonPea.Contracts.Profiling.Services;
+using PigeonPea.Profiling.Contracts;
 using PigeonPea.Plugins.Profiling.Basic.Export;
 using PigeonPea.Plugins.Profiling.Basic.Internal;
 

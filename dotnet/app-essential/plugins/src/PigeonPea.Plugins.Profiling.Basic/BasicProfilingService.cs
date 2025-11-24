@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Profiling.Services;
+using PigeonPea.Profiling.Contracts;
 using PigeonPea.Plugins.Profiling.Basic.Export;
 using PigeonPea.Plugins.Profiling.Basic.Internal;
 

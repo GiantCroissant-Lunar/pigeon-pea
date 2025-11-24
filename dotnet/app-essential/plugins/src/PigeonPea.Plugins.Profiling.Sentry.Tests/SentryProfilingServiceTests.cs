@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using FluentAssertions;
-using PigeonPea.Contracts.Profiling.Services;
+using PigeonPea.Profiling.Contracts;
 using PigeonPea.Plugins.Profiling.Sentry;
 using Xunit;
 

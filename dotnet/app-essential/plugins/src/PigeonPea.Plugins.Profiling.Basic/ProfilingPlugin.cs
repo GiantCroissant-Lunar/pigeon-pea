@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Plugin;
-using PigeonPea.Contracts.Profiling.Services;
+using PigeonPea.Profiling.Contracts;
 using ServiceMetadata = PigeonPea.Contracts.Plugin.ServiceMetadata;
 
 namespace PigeonPea.Plugins.Profiling.Basic;

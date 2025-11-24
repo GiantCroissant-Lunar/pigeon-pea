@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using PigeonPea.Contracts.Profiling.Services;
+using PigeonPea.Profiling.Contracts;
 using PigeonPea.Plugins.Profiling.OpenTelemetry.Export;
 
 namespace PigeonPea.Plugins.Profiling.OpenTelemetry;
