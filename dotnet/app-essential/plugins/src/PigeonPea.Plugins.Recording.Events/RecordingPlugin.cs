@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Plugin;
-using PigeonPea.Contracts.Recording.Services;
+using PigeonPea.Recording.Contracts;
 using ServiceMetadata = PigeonPea.Contracts.Plugin.ServiceMetadata;
 
 namespace PigeonPea.Plugins.Recording.Events;

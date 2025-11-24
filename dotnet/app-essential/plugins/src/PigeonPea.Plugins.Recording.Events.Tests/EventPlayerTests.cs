@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using PigeonPea.Contracts.Recording.Models;
+using PigeonPea.Recording.Contracts;
 using PigeonPea.Plugins.Recording.Events;
 using PigeonPea.Plugins.Recording.Events.Models;
 

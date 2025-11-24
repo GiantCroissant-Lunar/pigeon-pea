@@ -1,6 +1,6 @@
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Recording.Models;
+using PigeonPea.Recording.Contracts;
 
 namespace PigeonPea.Plugins.Recording.FFmpeg.Exporters;
 

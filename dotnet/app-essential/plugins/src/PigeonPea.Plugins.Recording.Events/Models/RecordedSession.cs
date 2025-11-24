@@ -1,4 +1,4 @@
-using PigeonPea.Contracts.Recording.Models;
+using PigeonPea.Recording.Contracts;
 
 namespace PigeonPea.Plugins.Recording.Events.Models;
 

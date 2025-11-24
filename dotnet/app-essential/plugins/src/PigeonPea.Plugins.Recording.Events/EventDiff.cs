@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Recording.Models;
+using PigeonPea.Recording.Contracts;
 using PigeonPea.Plugins.Recording.Events.Models;
 
 namespace PigeonPea.Plugins.Recording.Events;

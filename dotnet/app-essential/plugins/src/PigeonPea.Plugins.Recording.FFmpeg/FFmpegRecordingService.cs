@@ -1,8 +1,8 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Recording.Services;
-using PigeonPea.Contracts.Recording.Models;
+using PigeonPea.Recording.Contracts;
+using PigeonPea.Recording.Contracts;
 using PigeonPea.Plugins.Recording.FFmpeg.Configuration;
 using PigeonPea.Plugins.Recording.FFmpeg.PlatformCapture;
 using PigeonPea.Plugins.Recording.FFmpeg.Exporters;

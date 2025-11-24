@@ -6,8 +6,8 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Contracts.Recording.Models;
-using PigeonPea.Contracts.Recording.Services;
+using PigeonPea.Recording.Contracts;
+using PigeonPea.Recording.Contracts;
 using PigeonPea.Plugins.Recording.Events.Models;
 
 namespace PigeonPea.Plugins.Recording.Events;
