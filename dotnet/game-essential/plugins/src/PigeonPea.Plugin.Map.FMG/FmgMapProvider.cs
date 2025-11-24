@@ -73,7 +73,7 @@ public class FmgMapProvider : IMapProvider
             Seed = HashBounds(bounds),
             Width = width,
             Height = height,
-            NumPoints = 2000,
+            NumPoints = 8000,
             RNGMode = RNGMode.Alea,
             SeedString = "fmg-demo",
             ReseedAtPhaseStart = true,

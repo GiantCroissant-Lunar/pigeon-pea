@@ -177,7 +177,10 @@ internal class FmgMapDataAdapter : IMapData
                     // Render full map at its native resolution (1 pixel per unit)
                     // This ensures we have a high-quality base to sample from.
                     // If the map is huge, we might want to limit this, but for now we follow the plan.
-                    var renderer = new RasterBlurRenderer(TerrainColorSchemes.Classic);
+                    using var renderer = new FlatVoronoiRenderer(
+                        TerrainColorSchemes.Classic,
+                        drawEdges: false,
+                        drawCenters: false);
                     int mapW = _fmg.Inner.Width;
                     int mapH = _fmg.Inner.Height;
                     System.Diagnostics.Debug.WriteLine($"[FmgMapDataAdapter] Map dimensions: {mapW}x{mapH}");

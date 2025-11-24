@@ -24,6 +24,7 @@
 
     <!-- Dependency Injection -->
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.6" />
+      <ProjectReference Include="..\..\..\..\app-essential\contracts\PigeonPea.Input.Contracts\PigeonPea.Input.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,10 +32,11 @@
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
 
     <!-- Shared ECS Components -->
-    <ProjectReference Include="..\..\..\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="..\..\..\shared\PigeonPea.Shared\PigeonPea.Shared.csproj" />
 
     <!-- Game Contracts -->
-    <ProjectReference Include="..\..\..\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\..\app-essential\contracts\PigeonPea.Input.Contracts\PigeonPea.Input.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

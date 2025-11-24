@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="....\..\..\shared\PigeonPea.Shared\PigeonPea.Shared.csproj" />
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
   </ItemGroup>

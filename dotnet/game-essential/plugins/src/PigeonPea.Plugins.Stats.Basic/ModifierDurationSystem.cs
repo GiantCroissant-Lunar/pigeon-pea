@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Arch.Core;
 using Arch.Core.Extensions;
 using PigeonPea.Game.Contracts.Stats.Services;
-using PigeonPea.Shared.Components;
+using PigeonPea.Shared.ECS.Components;
 
 namespace PigeonPea.Plugins.Stats.Basic;
 

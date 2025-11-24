@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\core\src\PigeonPea.Time.Contracts\PigeonPea.Time.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\PigeonPea.Time.Contracts\PigeonPea.Time.Contracts.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

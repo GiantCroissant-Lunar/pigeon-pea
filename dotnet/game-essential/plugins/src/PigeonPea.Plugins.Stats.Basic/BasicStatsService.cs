@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Arch.Core;
 using Arch.Core.Extensions;
 using PigeonPea.Game.Contracts.Stats.Services;
-using PigeonPea.Shared.Components;
-using StatsComponent = PigeonPea.Shared.Components.Stats;
+using PigeonPea.Game.Contracts.Stats.Models;
+using PigeonPea.Shared.ECS.Components;
+using StatsComponent = PigeonPea.Shared.ECS.Components.Stats;
 
 namespace PigeonPea.Plugins.Stats.Basic;
 
@@ -471,11 +472,12 @@ public sealed class BasicStatsService : IService
             }
         }
 
-        if (entity.Has<Experience>())
-        {
-            var experience = entity.Get<Experience>();
-            context["level"] = experience.Level;
-        }
+        // TODO: Add Experience component support when implemented
+        // if (entity.Has<Experience>())
+        // {
+        //     var experience = entity.Get<Experience>();
+        //     context["level"] = experience.Level;
+        // }
 
         foreach (var definition in _definitions.Values)
         {
