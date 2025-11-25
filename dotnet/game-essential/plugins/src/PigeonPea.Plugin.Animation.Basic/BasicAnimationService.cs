@@ -9,7 +9,7 @@ using PigeonPea.Game.Contracts.Animation.Models;
 using PigeonPea.Game.Contracts.Animation.Services;
 using PigeonPea.Shared.ECS.Components;
 
-namespace PigeonPea.Plugins.Animation.Basic;
+namespace PigeonPea.Plugin.Animation.Basic;
 
 public class BasicAnimationService : IService, IPlugin
 {

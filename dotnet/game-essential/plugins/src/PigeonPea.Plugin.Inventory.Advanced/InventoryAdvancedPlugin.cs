@@ -6,7 +6,7 @@ using PigeonPea.Game.Contracts.Inventory.Services;
 using PigeonPea.Game.Contracts.Rendering;
 using PigeonPea.Shared.Inventory.Items;
 
-namespace PigeonPea.Plugins.Inventory.Advanced;
+namespace PigeonPea.Plugin.Inventory.Advanced;
 
 public class InventoryAdvancedPlugin : IPlugin
 {

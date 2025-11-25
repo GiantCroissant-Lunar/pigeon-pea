@@ -1,20 +1,21 @@
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Plugin;
-using PigeonPea.Game.Contracts.Combat.Services;
+using PigeonPea.Game.Contracts.Stats.Services;
 
-namespace PigeonPea.Plugins.Combat.Basic;
+namespace PigeonPea.Plugin.Stats.Basic;
 
-public sealed class CombatPlugin : IPlugin
+public sealed class StatsPlugin : IPlugin
 {
     private ILogger? _logger;
-    private BasicCombatService? _service;
+    private BasicStatsService? _service;
 
-    public string Id => "combat-basic";
+    public string Id => "stats-basic";
 
-    public string Name => "Basic Combat Service";
+    public string Name => "Basic Stats Service";
 
     public string Version => "0.1.0";
 
@@ -25,31 +26,36 @@ public sealed class CombatPlugin : IPlugin
         _logger = context.Logger;
         _logger.LogInformation("Initializing {PluginName} v{Version}", Name, Version);
 
-        _service = new BasicCombatService();
+        var baseDirectory = Path.GetDirectoryName(typeof(StatsPlugin).Assembly.Location) ?? AppContext.BaseDirectory;
+        var definitionsPath = Path.Combine(baseDirectory, "Data", "stats-definitions.json");
+        var definitions = StatsDefinitionsLoader.Load(definitionsPath);
+
+        var formulaEvaluator = new FormulaEvaluator();
+        _service = new BasicStatsService(definitions, formulaEvaluator);
 
         context.Registry.Register<IService>(
             _service,
             new ServiceMetadata
             {
                 Priority = 200,
-                Name = "BasicCombatService",
+                Name = "BasicStatsService",
                 Version = Version,
                 PluginId = Id
             });
 
-        _logger.LogInformation("Basic combat service registered successfully");
+        _logger.LogInformation("Basic stats service registered successfully");
         return Task.CompletedTask;
     }
 
     public Task StartAsync(CancellationToken ct = default)
     {
-        _logger?.LogInformation("Combat plugin started");
+        _logger?.LogInformation("Stats plugin started");
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken ct = default)
     {
-        _logger?.LogInformation("Combat plugin stopped");
+        _logger?.LogInformation("Stats plugin stopped");
         return Task.CompletedTask;
     }
 }

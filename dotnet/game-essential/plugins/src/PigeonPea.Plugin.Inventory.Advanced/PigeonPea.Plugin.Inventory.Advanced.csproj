@@ -12,7 +12,7 @@
     <!-- Core plugin contracts & registry (app-essential) -->
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
     <!-- Game-level inventory service & DTOs -->
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
     <!-- Shared inventory mechanics -->
     <ProjectReference Include="....\..\..\shared\PigeonPea.Shared.Inventory\PigeonPea.Shared.Inventory.csproj" />
     <!-- ECS world & shared components -->

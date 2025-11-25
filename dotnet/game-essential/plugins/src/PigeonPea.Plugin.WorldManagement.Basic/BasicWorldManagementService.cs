@@ -7,7 +7,7 @@ using PigeonPea.Contracts.Plugin;
 using PigeonPea.Game.Contracts.WorldManagement.Models;
 using PigeonPea.Game.Contracts.WorldManagement.Services;
 
-namespace PigeonPea.Plugins.WorldManagement.Basic;
+namespace PigeonPea.Plugin.WorldManagement.Basic;
 
 public class BasicWorldManagementService : IService, IPlugin
 {

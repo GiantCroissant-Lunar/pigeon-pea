@@ -24,10 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\console-app\plugins\PigeonPea.Plugins.Rendering.Terminal.ANSI\PigeonPea.Plugins.Rendering.Terminal.ANSI.csproj" />
-    <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\console-app\plugins\PigeonPea.Plugins.Rendering.Terminal.Braille\PigeonPea.Plugins.Rendering.Terminal.Braille.csproj" />
-    <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\windows-app\plugins\src\PigeonPea.Plugins.Rendering.Windows.SkiaSharp\PigeonPea.Plugins.Rendering.Windows.SkiaSharp.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\console-app\plugins\PigeonPea.Plugin.Rendering.Terminal.ANSI\PigeonPea.Plugin.Rendering.Terminal.ANSI.csproj" />
+    <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\console-app\plugins\PigeonPea.Plugin.Rendering.Terminal.Braille\PigeonPea.Plugin.Rendering.Terminal.Braille.csproj" />
+    <ProjectReference Include="..\..\..\..\..\projects\dungeon\dotnet\windows-app\plugins\src\PigeonPea.Plugin.Rendering.Windows.SkiaSharp\PigeonPea.Plugin.Rendering.Windows.SkiaSharp.csproj" />
   </ItemGroup>
 
 </Project>

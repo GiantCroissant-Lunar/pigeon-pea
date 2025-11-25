@@ -8,7 +8,7 @@ using PigeonPea.Shared.Inventory.Items;
 using SharedInventoryCore = PigeonPea.Shared.Inventory.Core.Inventory;
 using SharedInventorySlot = PigeonPea.Shared.Inventory.Core.InventorySlot;
 
-namespace PigeonPea.Plugins.Inventory.Basic;
+namespace PigeonPea.Plugin.Inventory.Basic;
 
 /// <summary>
 /// Basic implementation of the game-level inventory service.

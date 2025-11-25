@@ -9,17 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <!-- Core plugin contracts & registry (app-essential) -->
     <ProjectReference Include="..\..\..\..\app-essential\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\shared\PigeonPea.Shared\PigeonPea.Shared.csproj" />
-    <ProjectReference Include="..\..\..\shared\PigeonPea.Shared.ECS\PigeonPea.Shared.ECS.csproj" />
+    <!-- Game-level inventory service & DTOs -->
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <!-- Shared inventory mechanics -->
+    <ProjectReference Include="....\..\..\shared\PigeonPea.Shared.Inventory\PigeonPea.Shared.Inventory.csproj" />
+    <!-- ECS world & shared components -->
+    <ProjectReference Include="....\..\..\shared\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <!-- Game-side inventory component/module -->
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Game.Items\PigeonPea.Game.Items.csproj" />
+    <!-- Logging -->
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="plugin.json" />
-    <None Include="Data\stats-definitions.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="Data\stats-definitions.schema.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <Target Name="CopyPluginJson" AfterTargets="Build">
@@ -29,7 +34,7 @@
   <Target Name="CopyPluginToConsoleApp" AfterTargets="Build">
     <PropertyGroup>
       <PluginOutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)\</PluginOutputPath>
-      <PluginTargetDir>$(MSBuildThisFileDirectory)..\..\..\..\projects\dungeon\dotnet\console-app\core\src\PigeonPea.Console\bin\$(Configuration)\$(TargetFramework)\plugins\$(AssemblyName)\</PluginTargetDir>
+      <PluginTargetDir>$(MSBuildThisFileDirectory)..\..\..\..\..\projects\dungeon\dotnet\console-app\core\src\PigeonPea.Console\bin\$(Configuration)\$(TargetFramework)\plugins\$(AssemblyName)\</PluginTargetDir>
     </PropertyGroup>
     <ItemGroup>
       <PluginFiles Include="$(PluginOutputPath)**\*.*" />

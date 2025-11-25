@@ -4,7 +4,7 @@ using Arch.Core.Extensions;
 using PigeonPea.Game.Contracts.Combat.Services;
 using PigeonPea.Shared.Components;
 
-namespace PigeonPea.Plugins.Combat.Basic;
+namespace PigeonPea.Plugin.Combat.Basic;
 
 public sealed class BasicCombatService : IService
 {

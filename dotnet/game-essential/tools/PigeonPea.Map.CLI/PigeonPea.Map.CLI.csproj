@@ -15,7 +15,7 @@
     <ProjectReference Include="..\..\core\src\PigeonPea.Map.Export\PigeonPea.Map.Export.csproj" />
     <ProjectReference Include="..\..\plugins\src\PigeonPea.Plugin.Map.MBTiles\PigeonPea.Plugin.Map.MBTiles.csproj" />
     <ProjectReference Include="..\..\core\src\PigeonPea.Map.Encoding\PigeonPea.Map.Encoding.csproj" />
-    <ProjectReference Include="..\..\contracts\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
+    <ProjectReference Include="..\..\contracts\src\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
     <ProjectReference Include="..\..\plugins\src\PigeonPea.Plugin.Map.FMG\PigeonPea.Plugin.Map.FMG.csproj" />
     <ProjectReference Include="..\..\core\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
   </ItemGroup>

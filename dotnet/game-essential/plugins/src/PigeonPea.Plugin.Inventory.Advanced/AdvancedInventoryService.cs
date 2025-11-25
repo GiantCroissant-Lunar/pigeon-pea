@@ -11,7 +11,7 @@ using PigeonPea.Shared.Inventory.Items;
 using SharedInventoryCore = PigeonPea.Shared.Inventory.Core.Inventory;
 using SharedInventorySlot = PigeonPea.Shared.Inventory.Core.InventorySlot;
 
-namespace PigeonPea.Plugins.Inventory.Advanced;
+namespace PigeonPea.Plugin.Inventory.Advanced;
 
 public sealed class AdvancedInventoryService : IService
 {

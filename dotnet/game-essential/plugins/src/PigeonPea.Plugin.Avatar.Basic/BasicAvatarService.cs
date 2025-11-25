@@ -8,7 +8,7 @@ using PigeonPea.Game.Contracts.Avatar.Models;
 using PigeonPea.Game.Contracts.Avatar.Services;
 using PigeonPea.Shared.ECS.Components;
 
-namespace PigeonPea.Plugins.Avatar.Basic;
+namespace PigeonPea.Plugin.Avatar.Basic;
 
 public class BasicAvatarService : IService, IPlugin
 {

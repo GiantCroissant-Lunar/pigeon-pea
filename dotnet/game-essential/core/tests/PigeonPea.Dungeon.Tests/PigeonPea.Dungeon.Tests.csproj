@@ -23,7 +23,7 @@
     <PackageReference Include="Arch" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Dungeon.ModernEdgar\PigeonPea.Plugin.Dungeon.ModernEdgar.csproj" />
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Dungeon.Basic\PigeonPea.Plugin.Dungeon.Basic.csproj" />
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Dungeon.Rendering\PigeonPea.Plugin.Dungeon.Rendering.csproj" />

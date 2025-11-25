@@ -3,14 +3,17 @@ using Arch.Core.Extensions;
 using PigeonPea.Map.Core;
 using PigeonPea.Shared.ECS.Components;
 using PigeonPea.Shared.ECS.Components.Tags;
+using Plate.SCG.General.DisposePattern.Attributes;
 
 namespace PigeonPea.Map.Control.WorldManager;
 
 /// <summary>
 /// Manages the ECS world for map entities (cities, markers, etc.).
 /// </summary>
-public class MapWorldManager : IDisposable
+[DisposePattern]
+public partial class MapWorldManager
 {
+    [ToBeDisposed]
     private readonly World _world;
     private readonly MapData _mapData;
 
@@ -127,8 +130,4 @@ public class MapWorldManager : IDisposable
         return result;
     }
 
-    public void Dispose()
-    {
-        _world.Dispose();
-    }
 }

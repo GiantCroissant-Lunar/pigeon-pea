@@ -7,7 +7,7 @@ using PigeonPea.Game.Contracts.Stats.Models;
 using PigeonPea.Shared.ECS.Components;
 using StatsComponent = PigeonPea.Shared.ECS.Components.Stats;
 
-namespace PigeonPea.Plugins.Stats.Basic;
+namespace PigeonPea.Plugin.Stats.Basic;
 
 public sealed class BasicStatsService : IService
 {

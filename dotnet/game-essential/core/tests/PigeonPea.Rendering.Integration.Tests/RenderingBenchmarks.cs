@@ -1,8 +1,8 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
-using PigeonPea.Plugins.Rendering.Terminal.ANSI;
-using PigeonPea.Plugins.Rendering.Terminal.Braille;
-using PigeonPea.Plugins.Rendering.Windows.SkiaSharp;
+using PigeonPea.Plugin.Rendering.Terminal.ANSI;
+using PigeonPea.Plugin.Rendering.Terminal.Braille;
+using PigeonPea.Plugin.Rendering.Windows.SkiaSharp;
 using PigeonPea.Rendering.Contracts;
 using SadRogue.Primitives;
 

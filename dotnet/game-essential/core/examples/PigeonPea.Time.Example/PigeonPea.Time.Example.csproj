@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Time.Contracts\PigeonPea.Time.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Time.Contracts\PigeonPea.Time.Contracts.csproj" />
     <ProjectReference Include="..\..\src\PigeonPea.Time.Core\PigeonPea.Time.Core.csproj" />
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Time.Harptos\PigeonPea.Plugin.Time.Harptos.csproj" />
     <ProjectReference Include="..\..\..\plugins\src\PigeonPea.Plugin.Time.Configurable\PigeonPea.Plugin.Time.Configurable.csproj" />

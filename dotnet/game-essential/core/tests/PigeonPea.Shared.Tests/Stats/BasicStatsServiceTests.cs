@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Arch.Core;
 using PigeonPea.Game.Contracts.Stats.Services;
-using PigeonPea.Plugins.Stats.Basic;
+using PigeonPea.Plugin.Stats.Basic;
 using Xunit;
 
 namespace PigeonPea.Shared.Tests.Stats;

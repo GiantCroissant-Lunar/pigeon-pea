@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\contracts\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\contracts\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,15 +6,18 @@ using ObservableCollections;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Events;
 using ReactiveUI;
+using Plate.SCG.General.DisposePattern.Attributes;
 
 namespace PigeonPea.Shared.ViewModels;
 
 /// <summary>
 /// ViewModel for the message log that subscribes to game events and displays messages.
 /// </summary>
-public class MessageLogViewModel : ReactiveObject, IDisposable
+[DisposePattern]
+public partial class MessageLogViewModel : ReactiveObject
 {
     private readonly ObservableList<MessageViewModel> _messages = new();
+    [ToBeDisposed]
     private readonly CompositeDisposable _subscriptions = new();
     private const int MaxMessages = 100;
 
@@ -87,12 +90,4 @@ public class MessageLogViewModel : ReactiveObject, IDisposable
         // Intentionally left blank; this VM updates via MessagePipe events.
     }
 
-    /// <summary>
-    /// Disposes subscriptions.
-    /// </summary>
-    public void Dispose()
-    {
-        _subscriptions.Dispose();
-        GC.SuppressFinalize(this);
-    }
 }

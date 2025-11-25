@@ -8,6 +8,7 @@ using PigeonPea.Game.Contracts.Inventory.Services;
 using PigeonPea.Shared.Components;
 using PigeonPea.Shared.Events;
 using ReactiveUI;
+using Plate.SCG.General.DisposePattern.Attributes;
 
 namespace PigeonPea.Shared.ViewModels;
 
@@ -15,8 +16,10 @@ namespace PigeonPea.Shared.ViewModels;
 /// ViewModel for inventory with reactive collections and event subscriptions.
 /// Automatically updates when inventory changes through MessagePipe events.
 /// </summary>
-public class InventoryViewModel : ReactiveObject, IDisposable
+[DisposePattern]
+public partial class InventoryViewModel : ReactiveObject
 {
+    [ToBeDisposed]
     private readonly IDisposable _subscriptions;
     private int _selectedIndex = -1;
 
@@ -210,11 +213,4 @@ public class InventoryViewModel : ReactiveObject, IDisposable
         // Placeholder for potential future event-driven updates
     }
 
-    /// <summary>
-    /// Disposes the subscriptions.
-    /// </summary>
-    public void Dispose()
-    {
-        _subscriptions?.Dispose();
-    }
 }

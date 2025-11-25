@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using PigeonPea.Rendering.Contracts;
 using SkiaSharp;
 using SadRogue.Primitives;
+using Plate.SCG.General.DisposePattern.Attributes;
 
 namespace PigeonPea.Shared.Rendering;
 
-public sealed class SkiaSharpBackend : IRenderBackend, IDisposable
+[DisposePattern]
+public sealed partial class SkiaSharpBackend : IRenderBackend
 {
+    [ToBeDisposed]
     private SKSurface? _surface;
     private RenderContext? _context;
 
@@ -49,8 +52,7 @@ public sealed class SkiaSharpBackend : IRenderBackend, IDisposable
 
     public void Shutdown()
     {
-        _surface?.Dispose();
-        _surface = null;
+        Dispose();
     }
 
     public void Present()
@@ -170,9 +172,4 @@ public sealed class SkiaSharpBackend : IRenderBackend, IDisposable
     public SKImage Snapshot() => _surface.Snapshot();
 
     private static SKColor ToSkColor(Color c) => new(c.R, c.G, c.B, c.A);
-
-    public void Dispose()
-    {
-        _surface.Dispose();
-    }
 }

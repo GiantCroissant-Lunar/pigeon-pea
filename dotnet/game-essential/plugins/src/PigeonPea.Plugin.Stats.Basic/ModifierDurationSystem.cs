@@ -4,7 +4,7 @@ using Arch.Core.Extensions;
 using PigeonPea.Game.Contracts.Stats.Services;
 using PigeonPea.Shared.ECS.Components;
 
-namespace PigeonPea.Plugins.Stats.Basic;
+namespace PigeonPea.Plugin.Stats.Basic;
 
 public sealed class ModifierDurationSystem
 {

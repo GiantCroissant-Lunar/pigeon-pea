@@ -9,10 +9,12 @@
   <ItemGroup>
     <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
     <PackageReference Include="SkiaSharp" Version="2.88.8" />
+    <PackageReference Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
+    <PackageReference Include="Plate.SCG.General.DisposePattern" Version="0.1.0" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\contracts\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+    <ProjectReference Include="..\..\contracts\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

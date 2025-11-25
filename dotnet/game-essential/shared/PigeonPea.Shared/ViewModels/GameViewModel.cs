@@ -8,6 +8,7 @@ using MessagePipe;
 using Microsoft.Extensions.DependencyInjection;
 using PigeonPea.Shared.Events;
 using ReactiveUI;
+using Plate.SCG.General.DisposePattern.Attributes;
 
 namespace PigeonPea.Shared.ViewModels;
 
@@ -15,12 +16,14 @@ namespace PigeonPea.Shared.ViewModels;
 /// Central view model that owns all other view models and orchestrates updates.
 /// Provides reactive property notifications for the entire game state.
 /// </summary>
-public class GameViewModel : ReactiveObject, IDisposable
+[DisposePattern]
+public partial class GameViewModel : ReactiveObject
 {
     private const int UpdateIntervalMs = 16;
 
     private readonly GameWorld _world;
     private readonly IServiceProvider _services;
+    [ToBeDisposed]
     private readonly CompositeDisposable _subscriptions;
     private readonly IScheduler _scheduler;
     private readonly IPublisher<ItemUsedEvent> _itemUsedPublisher;
@@ -163,11 +166,4 @@ public class GameViewModel : ReactiveObject, IDisposable
         }
     }
 
-    /// <summary>
-    /// Disposes of resources and subscriptions.
-    /// </summary>
-    public void Dispose()
-    {
-        _subscriptions?.Dispose();
-    }
 }

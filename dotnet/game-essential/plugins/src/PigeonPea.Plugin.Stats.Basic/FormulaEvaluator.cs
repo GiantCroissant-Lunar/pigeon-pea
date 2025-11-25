@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PigeonPea.Plugins.Stats.Basic;
+namespace PigeonPea.Plugin.Stats.Basic;
 
 public interface IFormulaEvaluator
 {

@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Navigation.Contracts\PigeonPea.Navigation.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Navigation.Contracts\PigeonPea.Navigation.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

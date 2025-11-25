@@ -21,7 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PigeonPea.Map.Composition\PigeonPea.Map.Composition.csproj" />
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

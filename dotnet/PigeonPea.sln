@@ -29,15 +29,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "app-essential", "app-essent
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{2623FEAD-77C6-7BB6-5D83-B5359FC60587}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Contracts", "app-essential\contracts\PigeonPea.Contracts\PigeonPea.Contracts.csproj", "{44357D2C-7372-4A47-97EE-02BAC92E071A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Contracts", "app-essential\contracts\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj", "{44357D2C-7372-4A47-97EE-02BAC92E071A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Game.Contracts", "game-essential\contracts\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj", "{28640B57-AB32-4463-A1AD-B7B31F27C112}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.PluginSystem", "app-essential\core\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj", "{B795CBE0-00CA-4B2E-B597-BE65D50F8937}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugin-system.Tests", "plugin-system.Tests", "{74B44C54-1F1E-3391-2507-55D1D8F9031C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.PluginSystem.Tests", "app-essential\core\tests\PigeonPea.PluginSystem.Tests\PigeonPea.PluginSystem.Tests.csproj", "{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Game.Contracts", "game-essential\contracts\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj", "{28640B57-AB32-4463-A1AD-B7B31F27C112}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "console-app", "console-app", "{57067FB5-FBD7-55BD-3751-471D2593C55B}"
 EndProject
@@ -51,7 +45,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{C92906F2-2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DC2601A6-B692-DE92-D583-0BBA3BA839B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Scene.Contracts", "game-essential\contracts\PigeonPea.Scene.Contracts\PigeonPea.Scene.Contracts.csproj", "{593AF669-391D-45BC-8448-4A0D18A897BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Scene.Contracts", "game-essential\contracts\src\PigeonPea.Scene.Contracts\PigeonPea.Scene.Contracts.csproj", "{593AF669-391D-45BC-8448-4A0D18A897BF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{777AEC60-D858-BC0B-7623-C9C9754E00D3}"
 EndProject
@@ -63,7 +57,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D9D670EF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Time.Tests", "game-essential\core\tests\PigeonPea.Time.Tests\PigeonPea.Time.Tests.csproj", "{4A6FDFC4-7FB5-44BE-9620-4F3778A1988D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Time.Contracts", "game-essential\contracts\PigeonPea.Time.Contracts\PigeonPea.Time.Contracts.csproj", "{ACECF923-C01A-49F0-9082-075030A08C8B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Time.Contracts", "game-essential\contracts\src\PigeonPea.Time.Contracts\PigeonPea.Time.Contracts.csproj", "{ACECF923-C01A-49F0-9082-075030A08C8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Time.Core", "game-essential\core\src\PigeonPea.Time.Core\PigeonPea.Time.Core.csproj", "{1EB05666-55E5-47EB-BAC3-1FA36F4253C8}"
 EndProject
@@ -77,27 +71,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "plugins", "plugins", "{07D5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9ACEEE83-74E3-56F6-3542-E7EB9A54BDF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugins.Stats.Basic", "game-essential\plugins\src\PigeonPea.Plugins.Stats.Basic\PigeonPea.Plugins.Stats.Basic.csproj", "{C1A7345F-5B2A-4309-A427-5366AD0AD1E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugin.Stats.Basic", "game-essential\plugins\src\PigeonPea.Plugin.Stats.Basic\PigeonPea.Plugin.Stats.Basic.csproj", "{C1A7345F-5B2A-4309-A427-5366AD0AD1E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugins.Avatar.Basic", "game-essential\plugins\src\PigeonPea.Plugins.Avatar.Basic\PigeonPea.Plugins.Avatar.Basic.csproj", "{101C2CF5-F219-40E2-96D5-3278182F64F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugin.Avatar.Basic", "game-essential\plugins\src\PigeonPea.Plugin.Avatar.Basic\PigeonPea.Plugin.Avatar.Basic.csproj", "{101C2CF5-F219-40E2-96D5-3278182F64F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugins.Animation.Basic", "game-essential\plugins\src\PigeonPea.Plugins.Animation.Basic\PigeonPea.Plugins.Animation.Basic.csproj", "{ACDC5C86-7F2B-4E6F-988F-EDE3798B1CA0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugin.Animation.Basic", "game-essential\plugins\src\PigeonPea.Plugin.Animation.Basic\PigeonPea.Plugin.Animation.Basic.csproj", "{ACDC5C86-7F2B-4E6F-988F-EDE3798B1CA0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugins.WorldManagement.Basic", "game-essential\plugins\src\PigeonPea.Plugins.WorldManagement.Basic\PigeonPea.Plugins.WorldManagement.Basic.csproj", "{F04440A6-D400-4A64-BDB2-DF7B4286B9D0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B0F11E69-D714-39B2-4156-5A6CDEBB0B88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugin.WorldManagement.Basic", "game-essential\plugins\src\PigeonPea.Plugin.WorldManagement.Basic\PigeonPea.Plugin.WorldManagement.Basic.csproj", "{F04440A6-D400-4A64-BDB2-DF7B4286B9D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Gas", "game-essential\shared\PigeonPea.Shared.Gas\PigeonPea.Shared.Gas.csproj", "{C5D558DA-9426-4D0F-967D-D1F3EDAFC9F6}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PigeonPea.Goap.Core", "PigeonPea.Goap.Core", "{4907579D-654C-9840-7093-C5220136446F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Goap", "game-essential\shared\PigeonPea.Shared.Goap\PigeonPea.Shared.Goap.csproj", "{AF144BB4-4A8F-4D13-BB81-AE073CB17164}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PigeonPea.Perception.Core", "PigeonPea.Perception.Core", "{54F10616-C66C-2AB3-8980-E984B71CFC01}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Perception", "game-essential\shared\PigeonPea.Shared.Perception\PigeonPea.Shared.Perception.csproj", "{53DC7F35-BF30-4A67-9FB5-65DCAF9B984B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C30E8F30-471D-19F0-461F-F691E8C4128E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Gas.Tests", "game-essential\core\tests\PigeonPea.Shared.Gas.Tests\PigeonPea.Shared.Gas.Tests.csproj", "{4D8574B5-BB42-46DA-AAE5-4DACD9E1EE1E}"
 EndProject
@@ -105,17 +91,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Goap.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Perception.Tests", "game-essential\core\tests\PigeonPea.Shared.Perception.Tests\PigeonPea.Shared.Perception.Tests.csproj", "{B431C6B6-51DD-42D5-A793-CF5A4DB28848}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PigeonPea.Camera2D.Core", "PigeonPea.Camera2D.Core", "{3AD2A281-4911-9879-0D77-20524E333020}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Camera2D", "game-essential\shared\PigeonPea.Shared.Camera2D\PigeonPea.Shared.Camera2D.csproj", "{9DD89401-84E9-4754-891F-20E67BEF3004}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Shared.Camera2D.Tests", "game-essential\core\tests\PigeonPea.Shared.Camera2D.Tests\PigeonPea.Shared.Camera2D.Tests.csproj", "{51EB7284-1D0B-442A-BCAF-4A7BEAF28381}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contracts", "contracts", "{3A3FE11D-7E54-0072-E629-8B6F3F2A232A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Navigation.Contracts", "game-essential\contracts\PigeonPea.Navigation.Contracts\PigeonPea.Navigation.Contracts.csproj", "{AEFF5667-4780-49AD-998B-6D1699DBFFAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Navigation.Contracts", "game-essential\contracts\src\PigeonPea.Navigation.Contracts\PigeonPea.Navigation.Contracts.csproj", "{AEFF5667-4780-49AD-998B-6D1699DBFFAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Compute.Contracts", "game-essential\contracts\PigeonPea.Compute.Contracts\PigeonPea.Compute.Contracts.csproj", "{9E8DE1B7-CF79-4A87-8094-AA12B02870CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Compute.Contracts", "game-essential\contracts\src\PigeonPea.Compute.Contracts\PigeonPea.Compute.Contracts.csproj", "{9E8DE1B7-CF79-4A87-8094-AA12B02870CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugin.Navigation.AStar", "game-essential\plugins\src\PigeonPea.Plugin.Navigation.AStar\PigeonPea.Plugin.Navigation.AStar.csproj", "{E6ED89B7-5C29-4841-8688-E45C2F5A7FA3}"
 EndProject
@@ -125,23 +109,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Plugin.Navigation
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "contracts", "contracts", "{9B015D02-10AF-268A-4F50-EE90C242490D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Analytics.Contracts", "app-essential\contracts\PigeonPea.Analytics.Contracts\PigeonPea.Analytics.Contracts.csproj", "{AAC0AFB2-C1E2-4501-9FB1-EEF01E37C004}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Analytics.Contracts", "app-essential\contracts\src\PigeonPea.Analytics.Contracts\PigeonPea.Analytics.Contracts.csproj", "{AAC0AFB2-C1E2-4501-9FB1-EEF01E37C004}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Audio.Contracts", "app-essential\contracts\PigeonPea.Audio.Contracts\PigeonPea.Audio.Contracts.csproj", "{37B44B3E-1B8A-455E-97C9-12CF2D622A45}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Audio.Contracts", "app-essential\contracts\src\PigeonPea.Audio.Contracts\PigeonPea.Audio.Contracts.csproj", "{37B44B3E-1B8A-455E-97C9-12CF2D622A45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Config.Contracts", "app-essential\contracts\PigeonPea.Config.Contracts\PigeonPea.Config.Contracts.csproj", "{AF745308-E6A4-40F4-8C08-3B700E6E9263}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Config.Contracts", "app-essential\contracts\src\PigeonPea.Config.Contracts\PigeonPea.Config.Contracts.csproj", "{AF745308-E6A4-40F4-8C08-3B700E6E9263}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Diagnostic.Contracts", "app-essential\contracts\PigeonPea.Diagnostic.Contracts\PigeonPea.Diagnostic.Contracts.csproj", "{4E74522C-0C02-4D45-BF71-DEF3554BFB5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Diagnostic.Contracts", "app-essential\contracts\src\PigeonPea.Diagnostic.Contracts\PigeonPea.Diagnostic.Contracts.csproj", "{4E74522C-0C02-4D45-BF71-DEF3554BFB5D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Hud.Contracts", "app-essential\contracts\PigeonPea.Hud.Contracts\PigeonPea.Hud.Contracts.csproj", "{5E8E1CEA-5673-4343-B872-047EDFCB8A02}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Hud.Contracts", "app-essential\contracts\src\PigeonPea.Hud.Contracts\PigeonPea.Hud.Contracts.csproj", "{5E8E1CEA-5673-4343-B872-047EDFCB8A02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Input.Contracts", "app-essential\contracts\PigeonPea.Input.Contracts\PigeonPea.Input.Contracts.csproj", "{D72161CD-2F7C-4D46-A4F9-DB323C446D40}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Input.Contracts", "app-essential\contracts\src\PigeonPea.Input.Contracts\PigeonPea.Input.Contracts.csproj", "{D72161CD-2F7C-4D46-A4F9-DB323C446D40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Profiling.Contracts", "app-essential\contracts\PigeonPea.Profiling.Contracts\PigeonPea.Profiling.Contracts.csproj", "{5F189A04-EBBF-400A-9CAA-1318C55081F2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Profiling.Contracts", "app-essential\contracts\src\PigeonPea.Profiling.Contracts\PigeonPea.Profiling.Contracts.csproj", "{5F189A04-EBBF-400A-9CAA-1318C55081F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Recording.Contracts", "app-essential\contracts\PigeonPea.Recording.Contracts\PigeonPea.Recording.Contracts.csproj", "{D46785EF-20FB-4050-B322-AE4BA46E541E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Recording.Contracts", "app-essential\contracts\src\PigeonPea.Recording.Contracts\PigeonPea.Recording.Contracts.csproj", "{D46785EF-20FB-4050-B322-AE4BA46E541E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Resource.Contracts", "app-essential\contracts\PigeonPea.Resource.Contracts\PigeonPea.Resource.Contracts.csproj", "{90DAFD87-28F9-413E-A82A-808BCBC3C7CE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PigeonPea.Resource.Contracts", "app-essential\contracts\src\PigeonPea.Resource.Contracts\PigeonPea.Resource.Contracts.csproj", "{90DAFD87-28F9-413E-A82A-808BCBC3C7CE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -261,30 +245,6 @@ Global
 		{28640B57-AB32-4463-A1AD-B7B31F27C112}.Release|x64.Build.0 = Release|Any CPU
 		{28640B57-AB32-4463-A1AD-B7B31F27C112}.Release|x86.ActiveCfg = Release|Any CPU
 		{28640B57-AB32-4463-A1AD-B7B31F27C112}.Release|x86.Build.0 = Release|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Debug|x64.Build.0 = Debug|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Debug|x86.Build.0 = Debug|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Release|x64.ActiveCfg = Release|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Release|x64.Build.0 = Release|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Release|x86.ActiveCfg = Release|Any CPU
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937}.Release|x86.Build.0 = Release|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Debug|x64.Build.0 = Debug|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Debug|x86.Build.0 = Debug|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Release|x64.ActiveCfg = Release|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Release|x64.Build.0 = Release|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Release|x86.ActiveCfg = Release|Any CPU
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD}.Release|x86.Build.0 = Release|Any CPU
 		{460ACF5B-8DAD-47DD-AA3A-DF10D331C11C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{460ACF5B-8DAD-47DD-AA3A-DF10D331C11C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{460ACF5B-8DAD-47DD-AA3A-DF10D331C11C}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -717,8 +677,6 @@ Global
 		{2623FEAD-77C6-7BB6-5D83-B5359FC60587} = {91965E0B-06BD-F923-E875-453ABCE7E137}
 		{44357D2C-7372-4A47-97EE-02BAC92E071A} = {2623FEAD-77C6-7BB6-5D83-B5359FC60587}
 		{28640B57-AB32-4463-A1AD-B7B31F27C112} = {2623FEAD-77C6-7BB6-5D83-B5359FC60587}
-		{B795CBE0-00CA-4B2E-B597-BE65D50F8937} = {2623FEAD-77C6-7BB6-5D83-B5359FC60587}
-		{4345EA90-2E9E-4B73-B01B-8FD14E9F47AD} = {74B44C54-1F1E-3391-2507-55D1D8F9031C}
 		{2888333E-3AC2-D8FF-2B50-8CDB78D3AFA4} = {57067FB5-FBD7-55BD-3751-471D2593C55B}
 		{460ACF5B-8DAD-47DD-AA3A-DF10D331C11C} = {2888333E-3AC2-D8FF-2B50-8CDB78D3AFA4}
 		{C92906F2-248E-C6FF-901E-AB8558029A35} = {D5CBEAF3-B4A8-EAF3-2A84-3DA03065FD38}
@@ -739,7 +697,6 @@ Global
 		{101C2CF5-F219-40E2-96D5-3278182F64F5} = {9ACEEE83-74E3-56F6-3542-E7EB9A54BDF5}
 		{ACDC5C86-7F2B-4E6F-988F-EDE3798B1CA0} = {9ACEEE83-74E3-56F6-3542-E7EB9A54BDF5}
 		{F04440A6-D400-4A64-BDB2-DF7B4286B9D0} = {9ACEEE83-74E3-56F6-3542-E7EB9A54BDF5}
-		{B0F11E69-D714-39B2-4156-5A6CDEBB0B88} = {07D57EEB-2F50-60C4-C011-FE4FA775C9A8}
 		{3A3FE11D-7E54-0072-E629-8B6F3F2A232A} = {D5CBEAF3-B4A8-EAF3-2A84-3DA03065FD38}
 		{AEFF5667-4780-49AD-998B-6D1699DBFFAC} = {3A3FE11D-7E54-0072-E629-8B6F3F2A232A}
 		{9E8DE1B7-CF79-4A87-8094-AA12B02870CB} = {3A3FE11D-7E54-0072-E629-8B6F3F2A232A}

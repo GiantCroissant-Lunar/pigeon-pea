@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PigeonPea.Language.Core\PigeonPea.Language.Core.csproj" />
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Language.Contracts\PigeonPea.Language.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Language.Contracts\PigeonPea.Language.Contracts.csproj" />
   </ItemGroup>
 
   <ItemGroup>

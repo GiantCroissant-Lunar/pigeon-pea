@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using PigeonPea.Game.Contracts.Rendering;
 
-namespace PigeonPea.Plugins.Inventory.Advanced;
+namespace PigeonPea.Plugin.Inventory.Advanced;
 
 /// <summary>
 /// Declares HUD panels contributed by the advanced inventory plugin.

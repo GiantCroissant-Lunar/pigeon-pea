@@ -8,7 +8,7 @@ using PigeonPea.Game.Contracts.Inventory.Services;
 using PigeonPea.Game.Contracts.Rendering;
 using PigeonPea.Shared.Inventory.Items;
 
-namespace PigeonPea.Plugins.Inventory.Basic;
+namespace PigeonPea.Plugin.Inventory.Basic;
 
 /// <summary>
 /// Plugin that exposes the basic ECS-backed inventory service implementation.

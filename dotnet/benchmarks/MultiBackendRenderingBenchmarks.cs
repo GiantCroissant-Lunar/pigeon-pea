@@ -79,8 +79,8 @@ public class MultiBackendRenderingBenchmarks
     {
         return backendType switch
         {
-            "ANSI" => new PigeonPea.Plugins.Rendering.Terminal.ANSI.ANSIBackend(),
-            "Braille" => new PigeonPea.Plugins.Rendering.Terminal.Braille.BrailleBackend(),
+            "ANSI" => new PigeonPea.Plugin.Rendering.Terminal.ANSI.ANSIBackend(),
+            "Braille" => new PigeonPea.Plugin.Rendering.Terminal.Braille.BrailleBackend(),
             _ => throw new ArgumentException($"Unknown backend: {backendType}")
         };
     }

@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../../src/PigeonPea.Shared/PigeonPea.Shared.csproj" />
-    <ProjectReference Include="../../../plugins/src/PigeonPea.Plugins.Stats.Basic/PigeonPea.Plugins.Stats.Basic.csproj" />
+    <ProjectReference Include="../../../plugins/src/PigeonPea.Plugin.Stats.Basic/PigeonPea.Plugin.Stats.Basic.csproj" />
   </ItemGroup>
 
 </Project>

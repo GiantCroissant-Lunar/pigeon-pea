@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
     <ProjectReference Include="..\..\..\core\src\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
     <ProjectReference Include="..\..\..\..\_lib\fantasy-map-generator-port\dotnet\src\FantasyMapGenerator.Rendering\FantasyMapGenerator.Rendering.csproj" />
   </ItemGroup>

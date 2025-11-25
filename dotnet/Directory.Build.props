@@ -5,6 +5,7 @@
   <PropertyGroup>
     <!-- Enable code analysis for project code -->
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <LangVersion>latest</LangVersion>
 
     <!-- Treat specific warnings as errors to prevent common issues -->
     <!-- Uncomment to enable: <TreatWarningsAsErrors>true</TreatWarningsAsErrors> -->

@@ -16,11 +16,11 @@
 
   <ItemGroup>
     <!-- Shared inventory core -->
-    <ProjectReference Include="..\..\shared\PigeonPea.Shared.Inventory\PigeonPea.Shared.Inventory.csproj" />
+    <ProjectReference Include="..\..\..\shared\PigeonPea.Shared.Inventory\PigeonPea.Shared.Inventory.csproj" />
     <!-- Shared game world/components -->
-    <ProjectReference Include="..\..\shared\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="..\..\..\shared\PigeonPea.Shared\PigeonPea.Shared.csproj" />
     <!-- Game-level contracts (for future events/services) -->
-    <ProjectReference Include="..\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

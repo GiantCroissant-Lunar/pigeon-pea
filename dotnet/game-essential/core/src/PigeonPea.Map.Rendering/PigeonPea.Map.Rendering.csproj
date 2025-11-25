@@ -12,8 +12,8 @@
   <ItemGroup>
     <ProjectReference Include="..\PigeonPea.Map.Core\PigeonPea.Map.Core.csproj" />
     <ProjectReference Include="..\..\..\shared\PigeonPea.Shared.Rendering\PigeonPea.Shared.Rendering.csproj" />
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\contracts\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Map.Contracts\PigeonPea.Map.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Tiles\**" />

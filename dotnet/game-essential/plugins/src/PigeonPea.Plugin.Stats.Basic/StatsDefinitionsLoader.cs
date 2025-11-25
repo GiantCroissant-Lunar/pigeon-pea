@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using PigeonPea.Game.Contracts.Stats.Services;
 using PigeonPea.Game.Contracts.Stats.Models;
 
-namespace PigeonPea.Plugins.Stats.Basic;
+namespace PigeonPea.Plugin.Stats.Basic;
 
 internal static class StatsDefinitionsLoader
 {
