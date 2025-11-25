@@ -82,6 +82,28 @@ Key requirements:
 
 Claude can execute commands defined in [`.agent/commands/`](.agent/commands/).
 
+### Build Projects (CRITICAL)
+
+**ALWAYS use the `build` command for building .NET projects.** This command is defined in [`.agent/commands/build.yaml`](.agent/commands/build.yaml) and enforces:
+
+- **Versioned artifacts** at `build/_artifacts/{version}` using GitVersion
+- Clean builds that prevent namespace conflicts from stale plugin DLLs
+- Proper plugin copying to `build/_artifacts/{version}/plugins`
+- Build logs at `build/_artifacts/{version}/build-logs`
+- Latest build symlink at `build/_artifacts/latest`
+
+**DO NOT use `dotnet build` or `dotnet publish` directly.** Always use the NUKE build system via the `build` command.
+
+To run the built executables:
+- Console: `./build/_artifacts/latest/PigeonPea.Console/PigeonPea.Console.exe`
+- Windows: `./build/_artifacts/latest/PigeonPea.Windows/PigeonPea.Windows.exe`
+
+Or use the NUKE `Task` target to build and run in one command:
+```powershell
+./build/nuke/build.ps1 Task              # Build and run console app
+./build/nuke/build.ps1 Task --player windows  # Build and run Windows app
+```
+
 ### Run Tests
 
 Use the `run-tests` command to run tests across all supported languages. This command is defined in [`.agent/commands/run-tests.yaml`](.agent/commands/run-tests.yaml) and will automatically:
@@ -148,8 +170,10 @@ The GitHub adapter ([`.agent/adapters/github-adapter.yaml`](.agent/adapters/gith
 This project supports multiple languages. When working with code:
 
 - **.NET (C#):** Located in `./dotnet` directory
-  - Use `dotnet format` for formatting
-  - Run tests with `dotnet test`
+  - **Build:** Use the `build` command (see [`.agent/commands/build.yaml`](.agent/commands/build.yaml))
+  - **Format:** Use `dotnet format` for formatting
+  - **Tests:** Run tests with `dotnet test`
+  - **DO NOT** use `dotnet build` or `dotnet publish` directly - always use the NUKE build system
 
 - **Python:**
   - Use `black` and `isort` for formatting

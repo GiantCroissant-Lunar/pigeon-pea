@@ -184,19 +184,34 @@ interface IPublish : ICompile
                 CopyDirectoryRecursively(
                     PublishDirectory / project.Name,
                     LatestDirectory / project.Name);
+            }
 
-                // For the console player, also copy its dev-time plugins into a shared plugins folder
-                // under the versioned artifacts root (build/_artifacts/{version}/plugins).
-                if (project.Name == "PigeonPea.Console")
-                {
-                    var targetFramework = project.GetProperty<string>("TargetFramework") ?? "net9.0";
-                    var consoleBinPlugins = project.Directory / "bin" / Configuration / targetFramework / "plugins";
+            // Copy ALL built plugins from their source bin directories to the shared plugins folder
+            // This discovers plugins from app-essential, game-essential, and project-specific plugins
+            var pluginProjects = Solution.AllProjects
+                .Where(p => p.Name.Contains("Plugin") && !p.Name.Contains("Test"))
+                .ToList();
 
-                    // Shared plugins under the versioned artifacts root, e.g. build/_artifacts/{version}/plugins
-                    CopyDirectoryRecursively(
-                        consoleBinPlugins,
-                        PublishDirectory / "plugins");
-                }
+            foreach (var pluginProject in pluginProjects)
+            {
+                var targetFramework = pluginProject.GetProperty<string>("TargetFramework") ?? "net9.0";
+                var pluginBinDir = pluginProject.Directory / "bin" / Configuration / targetFramework;
+
+                // Check if plugin.json exists to confirm this is a valid plugin output
+                var pluginJsonPath = pluginBinDir / "plugin.json";
+                if (!File.Exists(pluginJsonPath))
+                    continue;
+
+                // Read plugin.json to get the plugin ID for the destination directory name
+                var pluginJson = System.Text.Json.JsonDocument.Parse(File.ReadAllText(pluginJsonPath));
+                var pluginId = pluginJson.RootElement.GetProperty("id").GetString();
+
+                if (string.IsNullOrEmpty(pluginId))
+                    continue;
+
+                // Copy plugin to shared plugins directory using plugin ID as directory name
+                var destPluginDir = PublishDirectory / "plugins" / pluginId;
+                CopyDirectoryRecursively(pluginBinDir, destPluginDir);
             }
 
             // Mirror shared plugins into the latest alias so runs from build/_artifacts/latest
