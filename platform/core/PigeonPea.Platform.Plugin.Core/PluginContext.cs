@@ -7,7 +7,7 @@ using PigeonPea.Platform.Contracts.Core;
 /// <summary>
 /// Implementation of IPluginContext for plugin initialization.
 /// </summary>
-internal sealed class PluginContext : IPluginContext
+public sealed class PluginContext : IPluginContext
 {
     public PluginContext(
         IRegistry registry,
