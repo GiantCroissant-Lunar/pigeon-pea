@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Authors>PigeonPea Team</Authors>
+    <Description>Analytics logger sink for unified observability</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+    <ProjectReference Include="..\PigeonPea.Logging\PigeonPea.Logging.csproj" />
+      <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Analytics.Contracts\PigeonPea.Analytics.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+      <ProjectReference Include="..\..\..\contracts\src\PigeonPea.Analytics.Contracts\PigeonPea.Analytics.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

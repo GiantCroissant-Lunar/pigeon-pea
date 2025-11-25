@@ -2,7 +2,7 @@ using System;
 using Microsoft.Extensions.Configuration;
 using PigeonPea.Config.Contracts;
 
-namespace PigeonPea.Plugins.Config;
+namespace PigeonPea.Plugin.Config;
 
 public class ConfigurationConfigService : IService
 {

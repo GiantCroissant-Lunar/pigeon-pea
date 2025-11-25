@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="PigeonPea.Plugin.Diagnostic.Sentry.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\core\src\PigeonPea.Contracts\PigeonPea.Contracts.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
+    <PackageReference Include="Plate.SCG.General.DisposePattern" Version="0.1.0" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <PackageReference Include="Sentry" Version="4.13.0" />
+    <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="plugin.json" />
+  </ItemGroup>
+
+  <Target Name="CopyPluginJson" AfterTargets="Build">
+    <Copy SourceFiles="plugin.json" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+  <Target Name="CopyPluginToConsoleApp" AfterTargets="Build">
+    <PropertyGroup>
+      <PluginOutputPath>$(MSBuildThisFileDirectory)bin\$(Configuration)\$(TargetFramework)\</PluginOutputPath>
+      <PluginTargetDir>$(MSBuildThisFileDirectory)..\..\..\..\projects\dungeon\dotnet\console-app\core\src\PigeonPea.Console\bin\$(Configuration)\$(TargetFramework)\plugins\$(AssemblyName)\</PluginTargetDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PluginFiles Include="$(PluginOutputPath)**\*.*" />
+    </ItemGroup>
+    <MakeDir Directories="$(PluginTargetDir)" />
+    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(PluginTargetDir)%(RecursiveDir)" SkipUnchangedFiles="true" />
+  </Target>
+
+</Project>

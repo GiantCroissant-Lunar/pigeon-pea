@@ -2,21 +2,18 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using PigeonPea.Config.Contracts;
+using PigeonPea.Input.Contracts;
 using PigeonPea.Contracts.Plugin;
 
-namespace PigeonPea.Plugin.Config;
+namespace PigeonPea.Plugin.Input.UniInputSystem;
 
-/// <summary>
-/// Plugin that exposes a configuration-backed implementation of the Config IService.
-/// </summary>
-public class ConfigPlugin : IPlugin
+public sealed class UniInputSystemPlugin : IPlugin
 {
     private ILogger? _logger;
-    private ConfigurationConfigService? _service;
+    private UniInputSystemService? _service;
 
-    public string Id => "config-service";
-    public string Name => "Configuration-backed Config Service";
+    public string Id => "input-uni";
+    public string Name => "Uni Input System";
     public string Version => "1.0.0";
 
     public Task InitializeAsync(IPluginContext context, CancellationToken ct = default)
@@ -26,31 +23,32 @@ public class ConfigPlugin : IPlugin
         _logger = context.Logger;
         _logger.LogInformation("Initializing {PluginName} v{Version}", Name, Version);
 
-        _service = new ConfigurationConfigService(context.Configuration);
+        _service = new UniInputSystemService(context.Registry, _logger);
 
         context.Registry.Register<IService>(
             _service,
             new ServiceMetadata
             {
                 Priority = 200,
-                Name = "ConfigurationConfigService",
+                Name = "UniInputSystemService",
                 Version = Version,
                 PluginId = Id
             });
 
-        _logger.LogInformation("Configuration-backed Config service registered successfully");
+        _logger.LogInformation("Uni Input System service registered successfully");
         return Task.CompletedTask;
     }
 
     public Task StartAsync(CancellationToken ct = default)
     {
-        _logger?.LogInformation("Config plugin started");
+        _logger?.LogInformation("UniInputSystem plugin started");
         return Task.CompletedTask;
     }
 
     public Task StopAsync(CancellationToken ct = default)
     {
-        _logger?.LogInformation("Config plugin stopped");
+        _logger?.LogInformation("UniInputSystem plugin stopped");
+        _service?.Dispose();
         return Task.CompletedTask;
     }
 }

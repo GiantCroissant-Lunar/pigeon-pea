@@ -1,12 +1,11 @@
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace PigeonPea.PluginSystem;
 
 /// <summary>
-/// Hosted service that discovers and loads plugins on application startup.
+/// Helper that discovers and loads plugins on application startup.
 /// </summary>
-public class PluginLoaderHostedService : IHostedService
+public class PluginLoaderHostedService
 {
     private readonly ILogger<PluginLoaderHostedService> _logger;
     private readonly IPluginProfileLoader _profileLoader;

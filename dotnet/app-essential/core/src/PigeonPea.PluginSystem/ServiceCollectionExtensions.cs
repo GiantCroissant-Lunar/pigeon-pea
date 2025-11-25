@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PigeonPea.Contracts.Plugin;
 
@@ -52,9 +51,6 @@ public static class ServiceCollectionExtensions
             var host = sp.GetRequiredService<IPluginHost>();
             return new DotNetPluginProfileLoader(loader, host.Profile);
         });
-
-        // Background loader hosted service
-        services.AddHostedService<PluginLoaderHostedService>();
 
         return services;
     }
