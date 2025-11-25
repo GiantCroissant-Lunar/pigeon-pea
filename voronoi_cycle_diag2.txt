@@ -1,0 +1,15 @@
+D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\spade-port\dotnet\tests\Spade.Tests\bin\Debug\net9.0\Spade.Tests.dll 的測試回合 (.NETCoreApp,Version=v9.0)
+VSTest 版本 17.14.1 (x64)
+
+正在啟動測試執行，請稍候...
+總共有 1 個測試檔案與指定的模式相符。
+  失敗 Spade.Tests.VoronoiTests.BuildHullCenterStarCopy_VoronoiCells_HullUnbounded_CenterBounded [42 ms]
+  錯誤訊息:
+   System.InvalidOperationException : Detected cycle in Voronoi face traversal at edge 10. This indicates a malformed DCEL structure.
+  堆疊追蹤:
+     at Spade.Voronoi.VoronoiFace`4.AdjacentEdges()+MoveNext() in D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\spade-port\dotnet\src\Spade\Voronoi\VoronoiFace.cs:line 45
+   at Spade.Tests.VoronoiTests.BuildHullCenterStarCopy_VoronoiCells_HullUnbounded_CenterBounded() in D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\spade-port\dotnet\tests\Spade.Tests\VoronoiTests.cs:line 780
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+失敗!  - 失敗:     1，通過:     0，略過:     0，總計:     1，持續時間: 42 ms - Spade.Tests.dll (net9.0)

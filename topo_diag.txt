@@ -1,0 +1,37 @@
+D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\spade-port\dotnet\tests\Spade.Tests\bin\Debug\net9.0\Spade.Tests.dll 的測試回合 (.NETCoreApp,Version=v9.0)
+VSTest 版本 17.14.1 (x64)
+
+正在啟動測試執行，請稍候...
+總共有 1 個測試檔案與指定的模式相符。
+  失敗 Spade.Tests.Validation.DelaunayOracleTests.DelaunayTopology_SpadeVsNts_On_RectangleWithCenter [93 ms]
+  錯誤訊息:
+   Expected subject to be a collection with 3 item(s) because adjacency for vertex 0 should match NTS on rectangle-with-center, but {1, 3}
+contains 1 item(s) less than
+{3, 1, 4}.
+
+With configuration:
+- Prefer the declared type of the members
+- Compare enums by value
+- Compare tuples by their properties
+- Compare anonymous types by their properties
+- Compare records by their members
+- Include non-browsable members
+- Include all non-private properties
+- Include all non-private fields
+- Match (JSON) member by name (or throw)
+- Be strict about the order of items in byte arrays
+- Without automatic conversion.
+
+  堆疊追蹤:
+     at FluentAssertions.Execution.LateBoundTestFramework.Throw(String message)
+   at FluentAssertions.Execution.CollectingAssertionStrategy.ThrowIfAny(IDictionary`2 context)
+   at FluentAssertions.Execution.AssertionScope.Dispose()
+   at FluentAssertions.Equivalency.EquivalencyValidator.AssertEquality(Comparands comparands, EquivalencyValidationContext context)
+   at FluentAssertions.Equivalency.EquivalencyValidator.AssertEquality(Comparands comparands, EquivalencyValidationContext context)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.BeEquivalentTo[TExpectation](IEnumerable`1 expectation, Func`2 config, String because, Object[] becauseArgs)
+   at FluentAssertions.Collections.GenericCollectionAssertions`3.BeEquivalentTo[TExpectation](IEnumerable`1 expectation, String because, Object[] becauseArgs)
+   at Spade.Tests.Validation.DelaunayOracleTests.DelaunayTopology_SpadeVsNts_On_RectangleWithCenter() in D:\lunar-snake\personal-work\yokan-projects\pigeon-pea\dotnet\_lib\spade-port\dotnet\tests\Spade.Tests\Validation\DelaunayOracleTests.cs:line 270
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+失敗!  - 失敗:     1，通過:     0，略過:     0，總計:     1，持續時間: 93 ms - Spade.Tests.dll (net9.0)

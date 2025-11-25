@@ -17,16 +17,16 @@ function Rename-PluginProject {
         [string]$OldName,
         [string]$NewName
     )
-    
+
     Write-Host "  Processing $OldName..." -ForegroundColor Yellow
-    
+
     # 1. Rename .csproj file first
     $csprojPath = Join-Path $ProjectPath "$OldName.csproj"
     if (Test-Path $csprojPath) {
         $newCsprojPath = Join-Path $ProjectPath "$NewName.csproj"
         git mv $csprojPath $newCsprojPath
     }
-    
+
     # 2. Update content in all files
     Get-ChildItem -Path $ProjectPath -Recurse -Include "*.cs","*.csproj" | ForEach-Object {
         $content = Get-Content $_.FullName -Raw -ErrorAction SilentlyContinue
@@ -37,15 +37,15 @@ function Rename-PluginProject {
             }
         }
     }
-    
+
     # 3. Rename directory
     $newPath = $ProjectPath -replace [regex]::Escape($OldName), $NewName
     if ($ProjectPath -ne $newPath) {
         git mv $ProjectPath $newPath
     }
-    
+
     Write-Host "    ✓ Renamed to $NewName" -ForegroundColor Green
-    
+
     # 4. Update all references in dotnet directory
     $updated = 0
     Get-ChildItem -Path "dotnet" -Recurse -Include "*.cs","*.csproj" | ForEach-Object {
@@ -61,7 +61,7 @@ function Rename-PluginProject {
     if ($updated -gt 0) {
         Write-Host "    ✓ Updated $updated reference(s)" -ForegroundColor Green
     }
-    
+
     return $newPath
 }
 
@@ -109,10 +109,10 @@ foreach ($plugin in $appPlugins) {
     $oldName = $plugin
     $newName = $oldName -replace "\.Plugins\.", ".Plugin."
     $projectPath = "dotnet\app-essential\plugins\src\$oldName"
-    
+
     if (Test-Path $projectPath) {
         $newPath = Rename-PluginProject -ProjectPath $projectPath -OldName $oldName -NewName $newName
-        
+
         if ($newName.EndsWith(".Tests")) {
             $testProjects += $newPath
         }
@@ -149,7 +149,7 @@ foreach ($plugin in $gamePlugins) {
     $oldName = $plugin
     $newName = $oldName -replace "\.Plugins\.", ".Plugin."
     $projectPath = "dotnet\game-essential\plugins\src\$oldName"
-    
+
     if (Test-Path $projectPath) {
         Rename-PluginProject -ProjectPath $projectPath -OldName $oldName -NewName $newName | Out-Null
     }

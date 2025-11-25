@@ -143,7 +143,7 @@ If full implementation is too time-consuming:
 
 After each phase:
 - [ ] `dotnet build PigeonPea.sln` succeeds
-- [ ] `dotnet test PigeonPea.sln` succeeds  
+- [ ] `dotnet test PigeonPea.sln` succeeds
 - [ ] All project references resolve correctly
 - [ ] No broken namespace imports
 - [ ] Git history is clean and logical

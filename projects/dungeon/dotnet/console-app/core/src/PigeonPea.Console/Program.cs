@@ -35,7 +35,7 @@ using IStatsService = PigeonPea.Game.Contracts.Stats.Services.IService;
 using IAvatarService = PigeonPea.Game.Contracts.Avatar.Services.IService;
 using IPersistenceService = PigeonPea.Game.Contracts.Persistence.Services.IService;
 using ICombatService = PigeonPea.Game.Contracts.Combat.Services.IService;
- 
+
 namespace PigeonPea.Console;
 
 internal static class Program
