@@ -15,4 +15,8 @@
     <PackageReference Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\source-generators\PigeonPea.SourceGenerator.Proxy\PigeonPea.SourceGenerator.Proxy.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
 </Project>
