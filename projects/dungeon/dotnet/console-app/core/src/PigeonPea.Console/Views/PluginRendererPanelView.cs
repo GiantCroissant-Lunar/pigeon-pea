@@ -4,7 +4,7 @@ using GameRenderer = PigeonPea.Game.Contracts.Rendering.IRenderer;
 using RenderSurface = PigeonPea.Game.Contracts.Rendering.IRenderSurface;
 using SharedRenderer = PigeonPea.Rendering.Contracts.IRenderer;
 using SharedRenderTarget = PigeonPea.Rendering.Contracts.IRenderTarget;
-using PigeonPea.Contracts.Input.Services;
+using PigeonPea.Input.Contracts.Services;
 using SadRogue.Primitives;
 using Terminal.Gui;
 using Arch.Core;

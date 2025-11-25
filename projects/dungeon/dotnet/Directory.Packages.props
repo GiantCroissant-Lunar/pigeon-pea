@@ -14,30 +14,12 @@
     <PackageVersion Include="Plate.SCG.Shared.Attributes" Version="0.1.0" />
     <PackageVersion Include="Riok.Mapperly" Version="4.1.0" />
 
-    <!-- Testing -->
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
-    <PackageVersion Include="xunit" Version="2.9.2" />
-    <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.2" />
-    <PackageVersion Include="Moq" Version="4.20.72" />
-    <PackageVersion Include="FluentAssertions" Version="6.12.2" />
 
     <!-- Logging and DI -->
     <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="9.0.0" />
 
-    <!-- Avalonia / Skia / UI -->
-    <PackageVersion Include="Avalonia" Version="11.2.2" />
-    <PackageVersion Include="Avalonia.Desktop" Version="11.2.2" />
-    <PackageVersion Include="Avalonia.Themes.Fluent" Version="11.2.2" />
-    <PackageVersion Include="Avalonia.Fonts.Inter" Version="11.2.2" />
-    <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.2" />
-    <PackageVersion Include="Avalonia.Skia" Version="11.2.2" />
-    <PackageVersion Include="Avalonia.ReactiveUI" Version="11.2.2" />
-    <PackageVersion Include="SkiaSharp" Version="3.116.1" />
-    <PackageVersion Include="SkiaSharp.NativeAssets.Linux" Version="3.116.1" />
-    <PackageVersion Include="Plate.SCG.General.DisposePattern" Version="0.1.0" />
 
     <!-- Rendering / Primitives -->
     <PackageVersion Include="TheSadRogue.Primitives" Version="1.6.0-rc3" />

@@ -38,7 +38,7 @@
   <ItemGroup>
     <!-- Copy configuration files to output -->
     <None Include="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
-    <None Include="..\..\..\scales.json" CopyToOutputDirectory="PreserveNewest" Link="scales.json" />
+    <None Include="..\..\..\configs\scales.json" CopyToOutputDirectory="PreserveNewest" Link="scales.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,23 +48,25 @@
 
   <ItemGroup>
     <!-- Reference to Shared Game Logic -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Shared\PigeonPea.Shared.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\shared\PigeonPea.Shared\PigeonPea.Shared.csproj" />
 
     <!-- Plugin System -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\core\src\PigeonPea.PluginSystem\PigeonPea.PluginSystem.csproj" />
 
-    <!-- Config plugin so its outputs are copied into this console's plugins folder -->
+    <!-- Config/input contracts and plugin so their outputs are copied into this console's plugins folder -->
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\contracts\src\PigeonPea.Config.Contracts\PigeonPea.Config.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\contracts\src\PigeonPea.Input.Contracts\PigeonPea.Input.Contracts.csproj" />
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\app-essential\plugins\src\PigeonPea.Plugins.Config\PigeonPea.Plugins.Config.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />
 
     <!-- Game Contracts for IRenderer -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\contracts\src\PigeonPea.Game.Contracts\PigeonPea.Game.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\contracts\src\PigeonPea.Dungeon.Contracts\PigeonPea.Dungeon.Contracts.csproj" />
 
     <!-- Rendering contracts (IRenderer, IRenderTarget, Tile, Viewport, etc.) -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\contracts\src\PigeonPea.Rendering.Contracts\PigeonPea.Rendering.Contracts.csproj" />
 
     <!-- Scene Management Contracts -->
-    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\core\src\PigeonPea.Scene.Contracts\PigeonPea.Scene.Contracts.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\contracts\src\PigeonPea.Scene.Contracts\PigeonPea.Scene.Contracts.csproj" />
 
     <!-- Build inventory plugin so it copies into this console's plugins folder -->
     <ProjectReference Include="..\..\..\..\..\..\..\dotnet\game-essential\plugins\src\PigeonPea.Plugins.Inventory.Basic\PigeonPea.Plugins.Inventory.Basic.csproj" PrivateAssets="all" ReferenceOutputAssembly="false" />

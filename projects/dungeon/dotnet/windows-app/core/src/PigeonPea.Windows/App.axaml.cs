@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using PigeonPea.Contracts.Config.Extensions;
 using PigeonPea.Contracts.Input.Extensions;
 using PigeonPea.Contracts.Plugin;
@@ -43,6 +44,7 @@ public partial class App : Application
 
     public IServiceProvider? Services { get; private set; }
     public SpriteAtlasManager? SpriteAtlasManager { get; private set; }
+    private IHost? _host;
 
     public override void Initialize()
     {
@@ -63,15 +65,17 @@ public partial class App : Application
         var configuration = configurationBuilder.Build();
 
         // Set up dependency injection container
-        var services = new ServiceCollection();
+        var builder = Host.CreateApplicationBuilder();
+        builder.Configuration.AddConfiguration(configuration);
 
         // Logging for plugin system and game services
-        services.AddLogging();
+        builder.Services.AddLogging();
 
         // Register plugin system (IRegistry, IPluginHost, PluginLoader, etc.)
-        services.AddPluginSystem(configuration);
-        services.AddSingleton<IPluginHost>(sp => new PluginHost("dotnet.windows", sp));
-        services.AddSingleton<ISceneManager>(sp =>
+        builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddHostedService<PluginLoaderHostedService>();
+        builder.Services.AddSingleton<IPluginHost>(sp => new PluginHost("dotnet.windows", sp));
+        builder.Services.AddSingleton<ISceneManager>(sp =>
         {
             var registry = sp.GetRequiredService<IRegistry>();
             if (!registry.IsRegistered<ISceneManager>())
@@ -82,32 +86,26 @@ public partial class App : Application
         });
 
         // Add MessagePipe and other Pigeon Pea services
-        services.AddPigeonPeaServices();
+        builder.Services.AddPigeonPeaServices();
 
         // Register generated proxy services (config, inventory, stats) for future plugin integration
-        services.AddConfigServiceProxy();
-        services.AddInventoryServiceProxy();
-        services.AddStatsServiceProxy();
-        services.AddInputServiceProxy();
+        builder.Services.AddConfigServiceProxy();
+        builder.Services.AddInventoryServiceProxy();
+        builder.Services.AddStatsServiceProxy();
+        builder.Services.AddInputServiceProxy();
 
-        services.AddGameplayBasic();
+        builder.Services.AddGameplayBasic();
 
         // Build the service provider
-        Services = services.BuildServiceProvider();
+        _host = builder.Build();
+        _host.StartAsync(CancellationToken.None).GetAwaiter().GetResult();
+        Services = _host.Services;
 
         // Discover and load plugins synchronously so IRegistry is populated before gameplay logic runs
         try
         {
-            var pluginLoader = Services.GetService<PluginLoader>();
-            if (pluginLoader is not null)
-            {
-                var profile = configuration["PluginSystem:Profile"] ?? "dotnet.windows";
-                RuntimeLog($"PluginSystem: using profile '{profile}'");
-                var paths = pluginLoader.GetConfiguredPluginPaths();
-                pluginLoader.DiscoverAndLoadAsync(paths, profile, CancellationToken.None)
-                    .GetAwaiter()
-                    .GetResult();
-            }
+            var profile = configuration["PluginSystem:Profile"] ?? "dotnet.windows";
+            RuntimeLog($"PluginSystem: using profile '{profile}'");
         }
         catch (Exception ex)
         {
@@ -178,7 +176,13 @@ public partial class App : Application
             desktop.MainWindow = new MainWindow(SpriteAtlasManager);
             desktop.Exit += (s, e) =>
             {
-                (Services as IDisposable)?.Dispose();
+                if (_host is not null)
+                {
+                    _host.StopAsync(CancellationToken.None).GetAwaiter().GetResult();
+                    _host.Dispose();
+                    _host = null;
+                }
+
                 SpriteAtlasManager?.Dispose();
             };
         }

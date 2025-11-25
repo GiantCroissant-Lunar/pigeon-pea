@@ -19,6 +19,10 @@
     <PackageReference Include="SDL3-CS" Version="*" />
 
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+
+    <!-- DisposePattern source generator -->
+    <PackageReference Include="Plate.SCG.Shared.Attributes" />
+    <PackageReference Include="Plate.SCG.General.DisposePattern" PrivateAssets="all" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>

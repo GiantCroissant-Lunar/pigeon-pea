@@ -1,5 +1,5 @@
 using System;
-using PigeonPea.Contracts.Input.Services;
+using PigeonPea.Input.Contracts.Services;
 using PigeonPea.Game.Contracts.Models;
 
 namespace PigeonPea.Console;

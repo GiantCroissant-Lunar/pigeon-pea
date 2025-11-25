@@ -4,13 +4,15 @@ using System.Numerics;
 using PigeonPea.Input.Core.Bindings;
 using PigeonPea.Input.Core.Controls;
 using SDL3; // Assuming SDL3-CS exposes this namespace
+using Plate.SCG.General.DisposePattern.Attributes;
 
 namespace PigeonPea.Plugin.Input.SDL3Mouse;
 
 /// <summary>
 /// SDL3 mouse device - Tier 4 provider.
 /// </summary>
-public sealed class SDL3MouseDevice : IInputDevice, IDisposable
+[DisposePattern]
+public sealed partial class SDL3MouseDevice : IInputDevice
 {
     public string DeviceId => "SDL3-Mouse";
     public string DeviceType => "Mouse";
@@ -78,7 +80,7 @@ public sealed class SDL3MouseDevice : IInputDevice, IDisposable
         return new InputValue(false);
     }
 
-    public void Dispose()
+    partial void DisposeUnmanagedResources()
     {
         SDL.SDL_Quit();
     }

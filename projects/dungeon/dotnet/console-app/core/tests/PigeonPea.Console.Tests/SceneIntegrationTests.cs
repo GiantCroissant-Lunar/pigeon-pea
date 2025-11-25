@@ -8,6 +8,7 @@ using Moq;
 using PigeonPea.Contracts.Plugin;
 using PigeonPea.Dungeon.Contracts;
 using PigeonPea.PluginSystem;
+using PigeonPea.Console;
 using PigeonPea.Scene.Contracts;
 using PigeonPea.Shared.Components;
 using Xunit;
@@ -39,6 +40,7 @@ public class SceneIntegrationTests : IDisposable
         builder.Logging.SetMinimumLevel(LogLevel.Warning);
 
         builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddHostedService<PluginLoaderHostedService>();
 
         _host = builder.Build();
         _host.Start();

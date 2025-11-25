@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using PigeonPea.Input.Core.Bindings;
 using PigeonPea.Input.Core.Controls;
 using SDL3; // Assuming SDL3-CS exposes this namespace
+using Plate.SCG.General.DisposePattern.Attributes;
 
 namespace PigeonPea.Plugin.Input.SDL3Gamepad;
 
 /// <summary>
 /// SDL3 gamepad device - Tier 4 provider.
 /// </summary>
-public sealed class SDL3GamepadDevice : IInputDevice, IDisposable
+[DisposePattern]
+public sealed partial class SDL3GamepadDevice : IInputDevice
 {
     public string DeviceId => "SDL3-Gamepad";
     public string DeviceType => "Gamepad";
@@ -110,7 +112,7 @@ public sealed class SDL3GamepadDevice : IInputDevice, IDisposable
         return new InputValue(0f);
     }
 
-    public void Dispose()
+    partial void DisposeUnmanagedResources()
     {
         if (_gamepad != IntPtr.Zero)
         {

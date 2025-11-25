@@ -30,6 +30,7 @@
 
     <!-- Configuration for plugin system and app settings -->
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
 
     <!-- Source Generators -->
     <PackageReference Include="Plate.SCG.Shared.Attributes" />

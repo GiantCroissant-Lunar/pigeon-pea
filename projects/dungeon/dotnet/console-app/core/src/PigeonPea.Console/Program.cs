@@ -8,7 +8,7 @@ using Arch.Core;
 using Arch.Core.Extensions;
 using Scrutor;
 using PigeonPea.Console.Rendering;
-using PigeonPea.Contracts.Config.Extensions;
+using PigeonPea.Config.Contracts.Extensions;
 using PigeonPea.Contracts.Plugin;
 using PigeonPea.Dungeon.Contracts;
 using PigeonPea.Scene.Contracts;
@@ -18,8 +18,8 @@ using PigeonPea.Game.Contracts.Rendering;
 using PigeonPea.Game.Contracts.Inventory.Extensions;
 using PigeonPea.Game.Contracts.Stats.Extensions;
 using PigeonPea.Game.Contracts.Combat.Extensions;
-using PigeonPea.Contracts.Input.Extensions;
-using PigeonPea.Contracts.Input.Services;
+using PigeonPea.Input.Contracts.Extensions;
+using PigeonPea.Input.Contracts.Services;
 using PigeonPea.Game.Inventory;
 using PigeonPea.Game.Inventory.Components;
 using PigeonPea.Shared.Components;
@@ -27,15 +27,50 @@ using PigeonPea.PluginSystem;
 using PigeonPea.Shared;
 using PigeonPea.Shared.Rendering;
 using Serilog;
+using Serilog.Events;
 using Terminal.Gui;
 using IInventoryService = PigeonPea.Game.Contracts.Inventory.Services.IService;
-using IConfigService = PigeonPea.Contracts.Config.Services.IService;
+using IConfigService = PigeonPea.Config.Contracts.Services.IService;
 using IStatsService = PigeonPea.Game.Contracts.Stats.Services.IService;
 using IAvatarService = PigeonPea.Game.Contracts.Avatar.Services.IService;
 using IPersistenceService = PigeonPea.Game.Contracts.Persistence.Services.IService;
 using ICombatService = PigeonPea.Game.Contracts.Combat.Services.IService;
-
+ 
 namespace PigeonPea.Console;
+
+internal static class Program
+{
+    public static int Main(string[] args)
+    {
+        var baseDir = AppContext.BaseDirectory;
+        var logsDir = Path.Combine(baseDir, "logs");
+        Directory.CreateDirectory(logsDir);
+        var logFilePath = Path.Combine(logsDir, "console-serilog.log");
+
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+            .Enrich.FromLogContext()
+            .WriteTo.Console()
+            .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
+            .CreateLogger();
+
+        try
+        {
+            Log.Information("Starting PigeonPea.Console with args: {Args}", args);
+            return GameEntrypoint.Run(args);
+        }
+        catch (Exception ex)
+        {
+            Log.Fatal(ex, "Unhandled exception in PigeonPea.Console");
+            return 1;
+        }
+        finally
+        {
+            Log.CloseAndFlush();
+        }
+    }
+}
 
 static class GameEntrypoint
 {
@@ -170,6 +205,7 @@ static class GameEntrypoint
         builder.Logging.AddSerilog();
 
         builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddHostedService<PluginLoaderHostedService>();
         builder.Services.AddConfigServiceProxy();
         builder.Services.AddPigeonPeaServices();
 
@@ -302,6 +338,7 @@ static class GameEntrypoint
         var builder = Host.CreateApplicationBuilder();
 
         builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddHostedService<PluginLoaderHostedService>();
         builder.Services.AddConfigServiceProxy();
         builder.Services.AddInventoryServiceProxy();
         builder.Services.AddStatsServiceProxy();
@@ -376,6 +413,7 @@ static class GameEntrypoint
 
         // Add plugin system
         builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddHostedService<PluginLoaderHostedService>();
 
         // Expose config service proxy so components can access configuration via IConfigService
         builder.Services.AddConfigServiceProxy();
@@ -1082,6 +1120,7 @@ static class GameEntrypoint
 
         // Add plugin system
         builder.Services.AddPluginSystem(builder.Configuration);
+        builder.Services.AddHostedService<PluginLoaderHostedService>();
 
         // Expose config service proxy so components can access configuration via IConfigService
         builder.Services.AddConfigServiceProxy();
