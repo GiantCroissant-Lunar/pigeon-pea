@@ -1,4 +1,4 @@
-namespace PigeonPea.Platform.Contracts.Analytic;
+namespace PigeonPea.Platform.Contracts.Analytics;
 
 /// <summary>
 /// Analytics service interface for tracking events, metrics, and exceptions.
