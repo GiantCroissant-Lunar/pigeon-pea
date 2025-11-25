@@ -46,6 +46,11 @@ tasks:
     cmds:
       - dotnet format
 
+  build:
+    desc: Build Windows and console players to versioned artifacts via Nuke
+    deps:
+      - game:build-all
+
   game:publish-latest:
     desc: Publish latest console and Windows players via Nuke
     cmds:
@@ -62,6 +67,11 @@ tasks:
     desc: Build console (and windows) players via Nuke PublishPlayers only
     cmds:
       - pwsh -File build/nuke/build.ps1 --target PublishPlayers --configuration Release --Runtime win-x64
+
+  game:build-all:
+    desc: Build Windows and console apps (core + MapHud samples)
+    cmds:
+      - pwsh -File build/nuke/build.ps1 --target Publish --configuration Release --Runtime win-x64
 
   game:run-console:
     desc: Run console player from latest artifacts in Rio terminal (plugin renderer + modern-edgar)

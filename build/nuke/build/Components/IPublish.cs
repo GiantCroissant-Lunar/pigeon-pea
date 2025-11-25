@@ -30,46 +30,87 @@ interface IPublish : ICompile
     bool SelfContained => true;
 
     Target Publish => _ => _
-        .DependsOn(Compile)
+        .DependsOn<IRestore>()
         .AssuredAfterFailure()
         .Executes(() =>
         {
-            var projects = Solution.AllProjects
-                .Where(p => p.GetProperty<string>("OutputType") == "Exe")
-                .ToList();
-
-            // Ensure build-logs directory exists for this version
+            // Ensure build-logs directory exists for this version before writing logs
             Directory.CreateDirectory(BuildLogsDirectory);
 
-            foreach (var project in projects)
+            var buildConfig = this as IBuildConfig;
+            var configuredProjects = buildConfig?.Config?.PublishProjectPaths;
+
+            if (configuredProjects != null && configuredProjects.Count > 0)
             {
-                // Write a minimal metadata file for this publish run
-                var timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ssZ");
-                var metaFile = Path.Combine((string)BuildLogsDirectory, $"publish-players-{timestamp}.log");
-                File.AppendAllText(metaFile,
-                    $"PublishPlayers run at {DateTime.UtcNow:o}{Environment.NewLine}" +
-                    $"Version: {ArtifactsVersion}{Environment.NewLine}" +
-                    $"Runtime: {Runtime}{Environment.NewLine}" +
-                    $"Configuration: {Configuration}{Environment.NewLine}" +
-                    $"Project: {project.Name}{Environment.NewLine}");
-
-                try
+                foreach (var relativePath in configuredProjects)
                 {
-                    DotNetPublish(s => s
-                        .SetProject(project)
-                        .SetConfiguration(Configuration)
-                        .SetOutput(PublishDirectory / project.Name)
-                        .SetRuntime(Runtime)
-                        .SetSelfContained(SelfContained));
+                    var projectPath = RootDirectory / relativePath;
+                    var projectName = Path.GetFileNameWithoutExtension(projectPath);
 
+                    var timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ssZ");
+                    var metaFile = Path.Combine((string)BuildLogsDirectory, $"publish-players-{timestamp}.log");
                     File.AppendAllText(metaFile,
-                        $"Status: Success{Environment.NewLine}{Environment.NewLine}");
+                        $"PublishPlayers run at {DateTime.UtcNow:o}{Environment.NewLine}" +
+                        $"Version: {ArtifactsVersion}{Environment.NewLine}" +
+                        $"Runtime: {Runtime}{Environment.NewLine}" +
+                        $"Configuration: {Configuration}{Environment.NewLine}" +
+                        $"Project: {projectName}{Environment.NewLine}");
+
+                    try
+                    {
+                        DotNetPublish(s => s
+                            .SetProject(projectPath)
+                            .SetConfiguration(Configuration)
+                            .SetOutput(PublishDirectory / projectName)
+                            .SetRuntime(Runtime)
+                            .SetSelfContained(SelfContained));
+
+                        File.AppendAllText(metaFile,
+                            $"Status: Success{Environment.NewLine}{Environment.NewLine}");
+                    }
+                    catch (Exception ex)
+                    {
+                        File.AppendAllText(metaFile,
+                            $"Status: Failed{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}");
+                        throw;
+                    }
                 }
-                catch (Exception ex)
+            }
+            else
+            {
+                var projects = Solution.AllProjects
+                    .Where(p => p.GetProperty<string>("OutputType") == "Exe")
+                    .ToList();
+
+                foreach (var project in projects)
                 {
+                    var timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH-mm-ssZ");
+                    var metaFile = Path.Combine((string)BuildLogsDirectory, $"publish-players-{timestamp}.log");
                     File.AppendAllText(metaFile,
-                        $"Status: Failed{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}");
-                    throw;
+                        $"PublishPlayers run at {DateTime.UtcNow:o}{Environment.NewLine}" +
+                        $"Version: {ArtifactsVersion}{Environment.NewLine}" +
+                        $"Runtime: {Runtime}{Environment.NewLine}" +
+                        $"Configuration: {Configuration}{Environment.NewLine}" +
+                        $"Project: {project.Name}{Environment.NewLine}");
+
+                    try
+                    {
+                        DotNetPublish(s => s
+                            .SetProject(project)
+                            .SetConfiguration(Configuration)
+                            .SetOutput(PublishDirectory / project.Name)
+                            .SetRuntime(Runtime)
+                            .SetSelfContained(SelfContained));
+
+                        File.AppendAllText(metaFile,
+                            $"Status: Success{Environment.NewLine}{Environment.NewLine}");
+                    }
+                    catch (Exception ex)
+                    {
+                        File.AppendAllText(metaFile,
+                            $"Status: Failed{Environment.NewLine}{ex}{Environment.NewLine}{Environment.NewLine}");
+                        throw;
+                    }
                 }
             }
         });

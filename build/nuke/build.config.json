@@ -1,0 +1,21 @@
+{
+  "sourceDir": "dotnet",
+  "websiteDir": "website",
+  "frameworkDirs": ["framework"],
+  "pluginDirs": ["plugins"],
+  "packPlugins": true,
+  "packFramework": true,
+  "excludePluginNames": [],
+  "includePluginNames": [],
+  "syncLocalNugetFeed": false,
+  "localNugetFeedRoot": null,
+  "localNugetFeedFlatSubdir": "flat",
+  "localNugetFeedHierarchicalSubdir": "hierarchical",
+  "localNugetFeedBaseUrl": null,
+  "publishProjectPaths": [
+    "projects/dungeon/dotnet/windows-app/samples/src/PigeonPea.Windows.MapHud/PigeonPea.Windows.MapHud.csproj",
+    "projects/dungeon/dotnet/windows-app/core/src/PigeonPea.Windows/PigeonPea.Windows.csproj",
+    "projects/dungeon/dotnet/console-app/core/src/PigeonPea.Console/PigeonPea.Console.csproj",
+    "projects/dungeon/dotnet/console-app/samples/src/PigeonPea.MapHud/PigeonPea.MapHud.csproj"
+  ]
+}

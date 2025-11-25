@@ -36,6 +36,7 @@ class BuildConfig
     public bool PackFramework { get; set; } = true;
     public List<string> ExcludePluginNames { get; set; } = new();
     public List<string> IncludePluginNames { get; set; } = new();
+    public List<string> PublishProjectPaths { get; set; } = new();
 
     // Local NuGet feed sync settings
     public bool SyncLocalNugetFeed { get; set; } = false;
@@ -71,6 +72,7 @@ class BuildConfig
         cfg.PluginDirs = (cfg.PluginDirs == null || cfg.PluginDirs.Count == 0) ? new() { "plugins" } : cfg.PluginDirs;
         cfg.ExcludePluginNames ??= new();
         cfg.IncludePluginNames ??= new();
+        cfg.PublishProjectPaths ??= new();
         return cfg;
     }
 }
